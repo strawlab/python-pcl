@@ -7,7 +7,6 @@ from libcpp.string cimport string
 from libcpp cimport bool
 
 cdef extern from "minipcl.h":
-    void mpcl_simple_segment_plane(cpp.PointIndices, cpp.ModelCoefficients, cpp.PointCloud_t)
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, cpp.PointNormalCloud_t)
 
 SAC_RANSAC = cpp.SAC_RANSAC
@@ -137,13 +136,6 @@ cdef class PointCloud:
         cdef string s = string(f)
         cdef int ok = cpp.loadPCDFile(s, deref(self.thisptr))
         return ok
-
-    def _simple_segment_plane(self):
-        cdef cpp.PointIndices ind
-        cdef cpp.ModelCoefficients coeffs
-        mpcl_simple_segment_plane(ind, coeffs, deref(self.thisptr))
-        return [ind.indices[i] for i in range(ind.indices.size())],\
-               [coeffs.values[i] for i in range(coeffs.values.size())]
 
     def make_segmenter(self):
         seg = Segmentation()

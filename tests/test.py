@@ -74,13 +74,6 @@ class TestSegmentPlane(unittest.TestCase):
         self.assertEqual(npts, self.p.width)
         self.assertEqual(1, self.p.height)
 
-    def testSegmentPlaneFunc(self):
-        a = np.array(np.mat(SEGINLIERS, dtype=np.float32))
-        
-        indices, model = self.p._simple_segment_plane()
-        self.assertListEqual(indices, SEGINLIERSIDX)
-        self.assertListEqual(model, SEGCOEFF)
-
     def testSegmentPlaneObject(self):
         seg = self.p.make_segmenter()
         seg.set_optimize_coefficients (True)
