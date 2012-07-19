@@ -10,6 +10,12 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, cpp.PointNormalCloud_t)
 
 SAC_RANSAC = cpp.SAC_RANSAC
+SAC_LMEDS = cpp.SAC_LMEDS
+SAC_MSAC = cpp.SAC_MSAC
+SAC_RRANSAC = cpp.SAC_RRANSAC
+SAC_RMSAC = cpp.SAC_RMSAC
+SAC_MLESAC = cpp.SAC_MLESAC
+SAC_PROSAC = cpp.SAC_PROSAC
 
 SACMODEL_PLANE = cpp.SACMODEL_PLANE
 SACMODEL_SPHERE = cpp.SACMODEL_SPHERE
