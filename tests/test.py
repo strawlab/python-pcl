@@ -27,13 +27,21 @@ class TestListIO(unittest.TestCase):
         l = self.p.to_list()
         self.assertEqual(l, _data)
 
-def test_fromnp():
-    p = pcl.PointCloud()
-    a = np.array(np.mat(_DATA, dtype=np.float32))
-    p.from_array(a)
-    for i,d in enumerate(_data):
-        pt = p[i]
-        assert pt == _data[i]
+class TestNumpyIO(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.a = np.array(np.mat(_DATA, dtype=np.float32))
+        self.p.from_array(self.a)
+
+    def testFromNumy(self):
+        for i,d in enumerate(_data):
+            pt = self.p[i]
+            assert pt == _data[i]
+
+    def testToNumpy(self):
+        a = self.p.to_array()
+        self.assertTrue(np.alltrue(a == self.a))
 
 #copy the output of seg
 SEGDATA = \

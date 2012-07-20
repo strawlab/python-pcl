@@ -1,3 +1,5 @@
+import numpy as np
+
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
@@ -112,6 +114,10 @@ cdef class PointCloud:
             self.thisptr.at(i).y = arr[i,1]
             self.thisptr.at(i).z = arr[i,2]
             i += 1
+
+    def to_array(self):
+        #FIXME: this could be done more efficinetly, i'm sure
+        return np.array(self.to_list(), dtype=np.int32)
 
     def from_list(self, _list):
         assert len(_list)
