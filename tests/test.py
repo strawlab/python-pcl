@@ -12,12 +12,20 @@ _DATA = \
 3.0, 6.0, 9.0;
 4.0, 8.0, 12.0"""
 
-def test_fromlist():
-    p = pcl.PointCloud()
-    p.from_list(_data)
-    for i,d in enumerate(_data):
-        pt = p[i]
-        assert pt == _data[i]
+class TestListIO(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_list(_data)
+
+    def testFromList(self):
+        for i,d in enumerate(_data):
+            pt = self.p[i]
+            assert pt == _data[i]
+
+    def testToList(self):
+        l = self.p.to_list()
+        self.assertEqual(l, _data)
 
 def test_fromnp():
     p = pcl.PointCloud()

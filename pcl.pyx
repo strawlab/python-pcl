@@ -126,6 +126,23 @@ cdef class PointCloud:
             self.thisptr.at(i).y = l[1]
             self.thisptr.at(i).z = l[2]
 
+    def to_list(self):
+        cdef int i
+        cdef float x,y,z
+        cdef int n = self.thisptr.size()
+
+        result = []
+
+        i = 0
+        while i < n:
+            #not efficient, oh well...
+            x = self.thisptr.at(i).x
+            y = self.thisptr.at(i).y
+            z = self.thisptr.at(i).z
+            result.append((x,y,z))
+            i = i + 1
+        return result
+
     def resize(self, int x):
         self.thisptr.resize(x)
 
