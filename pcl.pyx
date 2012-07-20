@@ -216,7 +216,7 @@ cdef class PointCloud:
 
         return pycloud
 
-    def extract(self, pyindices, bool negative):
+    def extract(self, pyindices, bool negative=False):
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
         cdef cpp.PointCloud_t *out = new cpp.PointCloud_t()
         cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
