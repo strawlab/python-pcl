@@ -1,3 +1,5 @@
+*.pcd
+
 pcl.cpp
 
 *.py[co]
