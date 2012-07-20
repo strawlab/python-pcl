@@ -43,6 +43,7 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void setRadiusLimits (float, float)
         void setInputCloud (shared_ptr[PointCloud[T]])
         void setInputNormals (shared_ptr[PointCloud[N]])
+        void setEpsAngle (double ea)
         void segment (PointIndices, ModelCoefficients)
 
     cdef cppclass SACSegmentation[T]:

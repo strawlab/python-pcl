@@ -7,7 +7,8 @@ from libcpp.string cimport string
 from libcpp cimport bool
 
 cdef extern from "minipcl.h":
-    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, cpp.PointNormalCloud_t)
+    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, double searchRadius, cpp.PointNormalCloud_t)
+    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t, double ax, double ay, double az)
 
 SAC_RANSAC = cpp.SAC_RANSAC
 SAC_LMEDS = cpp.SAC_LMEDS
@@ -76,6 +77,10 @@ cdef class SegmentationNormal:
         self.me.setMaxIterations (i)
     def set_radius_limits(self, float f1, float f2):
         self.me.setRadiusLimits (f1, f2)
+    def set_eps_angle(self, double ea):
+        self.me.setEpsAngle (ea)
+    def set_axis(self, double ax, double ay, double az):
+        mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
 
 cdef class PointCloud:
     cdef cpp.PointCloud[cpp.PointXYZ] *thisptr
@@ -164,9 +169,9 @@ cdef class PointCloud:
         cseg.setInputCloud(ccloud.makeShared())
         return seg
 
-    def make_segmenter_normals(self, int k):
+    def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
         cdef cpp.PointNormalCloud_t normals
-        mpcl_compute_normals(deref(self.thisptr), k, normals)
+        mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
 
         seg = SegmentationNormal()
         cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
