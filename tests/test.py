@@ -1,4 +1,5 @@
 import unittest
+import tempfile
 
 import pcl
 import numpy as np
@@ -142,5 +143,31 @@ class TestSegmentCylinder(unittest.TestCase):
         npexp = np.array(SEGCYLMOD)
         npmod = np.array(model)
         ssd = sum((npexp - npmod) ** 2)
-        self.assertLess(ssd, 1e-6)        
-        
+        self.assertLess(ssd, 1e-6)
+
+class TestSave(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+
+    def testSave(self):
+        _,d = tempfile.mkstemp(".pcd")
+        self.p.to_file(d)
+        p = pcl.PointCloud()
+        p.from_file(d)
+        self.assertEqual(self.p.size, p.size)
+
+class TestFilter(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_file("tests/flydracyl.pcd")
+
+    def testFilter(self):
+        f = self.p.filter_mls(0.5)
+        #new instance is returned
+        self.assertNotEqual(self.p, f)
+        #mls filter retains the same number of points
+        self.assertEqual(self.p.size, f.size)
+
