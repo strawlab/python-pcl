@@ -181,3 +181,21 @@ cdef class PointCloud:
 
         return seg
 
+    def filter_mls(self, double searchRadius, bool polynomialFit=True, int polynomialOrder=2):
+        cdef cpp.MovingLeastSquares_t mls
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
+        cdef cpp.PointCloud_t *out = new cpp.PointCloud_t()
+
+        mls.setInputCloud(ccloud.makeShared())
+        mls.setSearchRadius(searchRadius)
+        mls.setPolynomialOrder(polynomialOrder);
+        mls.setPolynomialFit(polynomialFit);
+        mls.reconstruct(deref(out))
+
+        cdef PointCloud pycloud = PointCloud()
+        del pycloud.thisptr
+        pycloud.thisptr = out
+
+        return pycloud
+
+
