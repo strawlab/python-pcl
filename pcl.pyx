@@ -139,8 +139,22 @@ cdef class PointCloud:
         return x,y,z
 
     def from_file(self, char *f):
+        cdef int ok = 0
         cdef string s = string(f)
-        cdef int ok = cpp.loadPCDFile(s, deref(self.thisptr))
+        if f.endswith(".pcd"):
+            ok = cpp.loadPCDFile(s, deref(self.thisptr))
+        else:
+            raise ValueError("Incorrect file extension (must be .pcd)")
+        return ok
+
+    def to_file(self, char *f, bool ascii=True):
+        cdef bool binary = not ascii
+        cdef int ok = 0
+        cdef string s = string(f)
+        if f.endswith(".pcd"):
+            ok = cpp.savePCDFile(s, deref(self.thisptr), binary)
+        else:
+            raise ValueError("Incorrect file extension (must be .pcd)")
         return ok
 
     def make_segmenter(self):

@@ -70,6 +70,12 @@ cdef extern from "pcl/PointIndices.h" namespace "pcl":
 
 cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
     int loadPCDFile (string file_name, PointCloud[PointXYZ] cloud)
+    int savePCDFile (string file_name, PointCloud[PointXYZ] cloud, bool binary_mode)
+
+#http://dev.pointclouds.org/issues/624
+#cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
+#    int loadPLYFile (string file_name, PointCloud[PointXYZ] cloud)
+#    int savePLYFile (string file_name, PointCloud[PointXYZ] cloud, bool binary_mode)
 
 cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
     cdef enum SacModel:
