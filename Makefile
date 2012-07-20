@@ -1,8 +1,8 @@
-pcl.so: pcl.pyx setup.py pcl_defs.pxd
+pcl.so: pcl.pyx setup.py pcl_defs.pxd minipcl.cpp
 	python setup.py build_ext --inplace
 
 test: pcl.so tests/test.py
-	nosetests
+	nosetests -s
 
 clean:
 	rm -rf build
