@@ -1,6 +1,7 @@
 #include <pcl/point_types.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/search/kdtree.h>
+#include <pcl/filters/extract_indices.h>
 
 #include <Eigen/Dense>
 
@@ -31,3 +32,15 @@ void mpcl_sacnormal_set_axis(pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl:
     sac.setAxis(vect);
 }
 
+void mpcl_extract(pcl::PointCloud<pcl::PointXYZ> &incloud,
+                  pcl::PointCloud<pcl::PointXYZ> &outcloud,
+                  pcl::PointIndices *indices,
+                  bool negative)
+{
+    pcl::PointIndices::Ptr indicesptr (indices);
+    pcl::ExtractIndices<pcl::PointXYZ> ext;
+    ext.setInputCloud(incloud.makeShared());
+    ext.setIndices(indicesptr);
+    ext.setNegative (negative);
+    ext.filter (outcloud);
+}

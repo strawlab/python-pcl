@@ -171,3 +171,21 @@ class TestFilter(unittest.TestCase):
         #mls filter retains the same number of points
         self.assertEqual(self.p.size, f.size)
 
+class TestExtract(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_file("tests/flydracyl.pcd")
+
+    def testExtractPos(self):
+        p2 = self.p.extract([1,2,3],False)
+        #new instance is returned
+        self.assertNotEqual(self.p, p2)
+        self.assertEqual(p2.size, 3)
+
+    def testExtractNeg(self):
+        p2 = self.p.extract([1,2,3],True)
+        self.assertNotEqual(self.p, p2)
+        self.assertEqual(p2.size, self.p.size - 3)
+
+

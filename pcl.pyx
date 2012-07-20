@@ -9,6 +9,7 @@ from libcpp cimport bool
 cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, double searchRadius, cpp.PointNormalCloud_t)
     void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t, double ax, double ay, double az)
+    void mpcl_extract(cpp.PointCloud_t, cpp.PointCloud_t, cpp.PointIndices_t *, bool)
 
 SAC_RANSAC = cpp.SAC_RANSAC
 SAC_LMEDS = cpp.SAC_LMEDS
@@ -198,4 +199,19 @@ cdef class PointCloud:
 
         return pycloud
 
+    def extract(self, pyindices, bool negative):
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
+        cdef cpp.PointCloud_t *out = new cpp.PointCloud_t()
+        cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
+
+        for i in pyindices:
+            ind.indices.push_back(i)
+
+        mpcl_extract(deref(ccloud), deref(out), ind, negative)
+
+        cdef PointCloud pycloud = PointCloud()
+        del pycloud.thisptr
+        pycloud.thisptr = out
+
+        return pycloud
 

@@ -77,8 +77,18 @@ cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
         vector[float] values
 
 cdef extern from "pcl/PointIndices.h" namespace "pcl":
-    cdef struct PointIndices:
+    #FIXME: I made this a cppclass so that it can be allocated using new (cython barfs otherwise), and
+    #hence passed to shared_ptr. This is needed because if one passes memory allocated
+    #using malloc (which is required if this is a struct) to shared_ptr it aborts with
+    #std::bad_alloc
+    #
+    #I don't know if this is actually a problem. It is cpp and there is no incompatibility in
+    #promoting struct to class in this instance
+    cdef cppclass PointIndices:
         vector[int] indices
+
+ctypedef PointIndices PointIndices_t
+ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
 
 cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
     int loadPCDFile (string file_name, PointCloud[PointXYZ] cloud)
