@@ -16,7 +16,7 @@ setup(name='python-pcl',
                     libraries=["pcl_segmentation", "pcl_io", "OpenNI",
                                "usb-1.0", "pcl_filters", "pcl_sample_consensus",
                                "pcl_features", "pcl_surface", "pcl_search", "pcl_kdtree", "pcl_octree",
-                               "flann_cpp", "flann_cpp-gd", "pcl_common"],
+                               "flann_cpp", "pcl_common"],
                     language="c++")],
       cmdclass={'build_ext': build_ext}
 )
