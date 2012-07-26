@@ -21,11 +21,11 @@ class TestListIO(unittest.TestCase):
     def testFromList(self):
         for i,d in enumerate(_data):
             pt = self.p[i]
-            assert pt == _data[i]
+            assert np.allclose(pt, _data[i])
 
     def testToList(self):
         l = self.p.to_list()
-        self.assertEqual(l, _data)
+        assert np.allclose(l, _data)
 
 class TestNumpyIO(unittest.TestCase):
 
@@ -37,7 +37,7 @@ class TestNumpyIO(unittest.TestCase):
     def testFromNumy(self):
         for i,d in enumerate(_data):
             pt = self.p[i]
-            assert pt == _data[i]
+            assert np.allclose(pt, _data[i])
 
     def testToNumpy(self):
         a = self.p.to_array()
