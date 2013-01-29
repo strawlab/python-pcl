@@ -7,3 +7,9 @@ test: pcl.so tests/test.py
 clean:
 	rm -rf build
 	rm -f pcl.cpp pcl.so
+
+doc: pcl.so conf.py readme.rst
+	sphinx-build -b singlehtml -d build/doctrees . build/html
+
+showdoc: doc
+	gvfs-open build/html/readme.html
