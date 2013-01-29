@@ -1,3 +1,5 @@
+#cython: embedsignature=True
+
 import numpy as np
 
 cimport numpy as cnp
@@ -26,6 +28,9 @@ SACMODEL_SPHERE = cpp.SACMODEL_SPHERE
 SACMODEL_CYLINDER = cpp.SACMODEL_CYLINDER
 
 cdef class Segmentation:
+    """
+    Segmentation class for Sample Consensus methods and models
+    """
     cdef cpp.SACSegmentation_t *me
     def __cinit__(self):
         self.me = new cpp.SACSegmentation_t()
@@ -51,6 +56,13 @@ cdef class Segmentation:
 #yeah, I can't be bothered making this inherit from SACSegmentation, I forget the rules
 #for how this works in cython templated extension types anyway
 cdef class SegmentationNormal:
+    """
+    Segmentation class for Sample Consensus methods and models that require the
+    use of surface normals for estimation.
+
+    Due to Cython limitations this should derive from pcl.Segmentation, but
+    is currently unable to do so.
+    """
     cdef cpp.SACSegmentationNormal_t *me
     def __cinit__(self):
         self.me = new cpp.SACSegmentationNormal_t()
@@ -86,6 +98,9 @@ cdef class SegmentationNormal:
         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
 
 cdef class PointCloud:
+    """
+    Represents a class of points, supporting the PointXYZ type.
+    """
     cdef cpp.PointCloud[cpp.PointXYZ] *thisptr
     def __cinit__(self):
         self.thisptr = new cpp.PointCloud[cpp.PointXYZ]()
@@ -101,6 +116,9 @@ cdef class PointCloud:
         def __get__(self): return self.thisptr.is_dense
 
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
+        """
+        Fill this object from a 2D numpy array (float32)
+        """
         assert arr.shape[1] == 3
 
         cdef int npts = arr.shape[0]
@@ -116,10 +134,16 @@ cdef class PointCloud:
             i += 1
 
     def to_array(self):
+        """
+        Return this object as a 2D numpy array (float32)
+        """
         #FIXME: this could be done more efficinetly, i'm sure
         return np.array(self.to_list(), dtype=np.float32)
 
     def from_list(self, _list):
+        """
+        Fill this pointcloud from a list of 3-tuples
+        """
         assert len(_list)
         assert len(_list[0]) == 3
 
@@ -133,6 +157,9 @@ cdef class PointCloud:
             self.thisptr.at(i).z = l[2]
 
     def to_list(self):
+        """
+        Return this object as a list of 3-tuples
+        """
         cdef int i
         cdef float x,y,z
         cdef int n = self.thisptr.size()
@@ -153,6 +180,9 @@ cdef class PointCloud:
         self.thisptr.resize(x)
 
     def get_point(self, int row, int col):
+        """
+        Return a point (3-tuple) at the given row/column
+        """
         #grr.... the following doesnt compile to valid
         #cython.. so just take the perf hit
         #cdef PointXYZ &p = self.thisptr.at(x,y)
@@ -168,6 +198,10 @@ cdef class PointCloud:
         return x,y,z
 
     def from_file(self, char *f):
+        """
+        Fill this pointcloud from a file (a local path).
+        Only pcd files supported currently.
+        """
         cdef int ok = 0
         cdef string s = string(f)
         if f.endswith(".pcd"):
@@ -177,6 +211,10 @@ cdef class PointCloud:
         return ok
 
     def to_file(self, char *f, bool ascii=True):
+        """
+        Save this pointcloud to a local file.
+        Only saving to binary or ascii pcd is supported
+        """
         cdef bool binary = not ascii
         cdef int ok = 0
         cdef string s = string(f)
@@ -187,6 +225,9 @@ cdef class PointCloud:
         return ok
 
     def make_segmenter(self):
+        """
+        Return a pcl.Segmentation object with this object set as the input-cloud
+        """
         seg = Segmentation()
         cdef cpp.SACSegmentation_t *cseg = <cpp.SACSegmentation_t *>seg.me
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
@@ -194,6 +235,9 @@ cdef class PointCloud:
         return seg
 
     def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a pcl.SegmentationNormal object with this object set as the input-cloud
+        """
         cdef cpp.PointNormalCloud_t normals
         mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
 
@@ -206,6 +250,10 @@ cdef class PointCloud:
         return seg
 
     def filter_mls(self, double searchRadius, bool polynomialFit=True, int polynomialOrder=2):
+        """
+        Perform a Moving Least Squares filter on this cloud and return the
+        new filtered pointcloud.
+        """
         cdef cpp.MovingLeastSquares_t mls
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
         cdef cpp.PointCloud_t *out = new cpp.PointCloud_t()
@@ -223,6 +271,10 @@ cdef class PointCloud:
         return pycloud
 
     def extract(self, pyindices, bool negative=False):
+        """
+        Given a list of indices of points in the pointcloud, return a 
+        new pointcloud containing only those points.
+        """
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
         cdef cpp.PointCloud_t *out = new cpp.PointCloud_t()
         cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
