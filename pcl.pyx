@@ -259,26 +259,16 @@ cdef class PointCloud:
         cfil.setInputCloud(ccloud.makeShared())
         return fil
 
-    def filter_mls(self, double searchRadius, bool polynomialFit=True, int polynomialOrder=2):
+    def make_moving_least_squares(self):
         """
-        Perform a Moving Least Squares filter on this cloud and return the
-        new filtered pointcloud.
+        Return a pcl.MovingLeastSquares object with this object set as the input-cloud
         """
-        cdef cpp.MovingLeastSquares_t mls
+        mls = MovingLeastSquares()
+
+        cdef cpp.MovingLeastSquares_t *cmls = <cpp.MovingLeastSquares_t *>mls.me
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
-        cdef cpp.PointCloud_t *out = new cpp.PointCloud_t()
-
-        mls.setInputCloud(ccloud.makeShared())
-        mls.setSearchRadius(searchRadius)
-        mls.setPolynomialOrder(polynomialOrder);
-        mls.setPolynomialFit(polynomialFit);
-        mls.reconstruct(deref(out))
-
-        cdef PointCloud pycloud = PointCloud()
-        del pycloud.thisptr
-        pycloud.thisptr = out
-
-        return pycloud
+        cmls.setInputCloud(ccloud.makeShared())
+        return mls
 
     def extract(self, pyindices, bool negative=False):
         """
@@ -336,6 +326,32 @@ cdef class StatisticalOutlierRemovalFilter:
         pc = PointCloud()
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         self.me.filter(deref(ccloud))
+        return pc
+
+cdef class MovingLeastSquares:
+    """
+    Smoothing class which is an implementation of the MLS (Moving Least Squares)
+    algorithm for data smoothing and improved normal estimation.
+    """
+    cdef cpp.MovingLeastSquares_t *me
+    def __cinit__(self):
+        self.me = new cpp.MovingLeastSquares_t()
+    def __dealloc__(self):
+        del self.me
+
+    def set_search_radius(self, double radius):
+        self.me.setSearchRadius (radius)
+
+    def set_polynomial_order(self, bool order):
+        self.me.setPolynomialOrder(order)
+
+    def set_polynomial_fit(self, int fit):
+        self.me.setPolynomialFit(fit)
+
+    def reconstruct(self):
+        pc = PointCloud()
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.reconstruct(deref(ccloud))
         return pc
 
 
