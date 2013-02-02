@@ -107,12 +107,16 @@ cdef class PointCloud:
     def __dealloc__(self):
         del self.thisptr
     property width:
+        """ property containing the width of the point cloud """
         def __get__(self): return self.thisptr.width
     property height:
+        """ property containing the height of the point cloud """
         def __get__(self): return self.thisptr.height
     property size:
+        """ property containing the number of points in the point cloud """
         def __get__(self): return self.thisptr.size()
     property is_dense:
+        """ property containing whether the cloud is dense or not """
         def __get__(self): return self.thisptr.is_dense
 
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
@@ -340,15 +344,29 @@ cdef class MovingLeastSquares:
         del self.me
 
     def set_search_radius(self, double radius):
+        """
+        Set the sphere radius that is to be used for determining the k-nearest neighbors used for fitting. 
+        """
         self.me.setSearchRadius (radius)
 
     def set_polynomial_order(self, bool order):
+        """
+        Set the order of the polynomial to be fit. 
+        """
         self.me.setPolynomialOrder(order)
 
     def set_polynomial_fit(self, int fit):
+        """
+        Sets whether the surface and normal are approximated using a polynomial,
+        or only via tangent estimation.
+        """
         self.me.setPolynomialFit(fit)
 
     def reconstruct(self):
+        """
+        Apply the smoothing according to the previously set values and return
+        a new pointcloud
+        """
         pc = PointCloud()
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         self.me.reconstruct(deref(ccloud))

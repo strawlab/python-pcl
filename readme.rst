@@ -50,6 +50,13 @@ provide a foundation for someone wishing to carry on.
 API Documentation
 =================
 
+.. autosummary::
+   pcl.PointCloud
+   pcl.Segmentation
+   pcl.SegmentationNormal
+   pcl.StatisticalOutlierRemovalFilter
+   pcl.MovingLeastSquares
+
 .. automodule:: pcl
    :members:
    :undoc-members:
