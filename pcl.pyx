@@ -249,6 +249,16 @@ cdef class PointCloud:
 
         return seg
 
+    def make_statistical_outlier_filter(self):
+        """
+        Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
+        """
+        fil = StatisticalOutlierRemovalFilter()
+        cdef cpp.StatisticalOutlierRemoval_t *cfil = <cpp.StatisticalOutlierRemoval_t *>fil.me
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
+        cfil.setInputCloud(ccloud.makeShared())
+        return fil
+
     def filter_mls(self, double searchRadius, bool polynomialFit=True, int polynomialOrder=2):
         """
         Perform a Moving Least Squares filter on this cloud and return the
@@ -289,4 +299,43 @@ cdef class PointCloud:
         pycloud.thisptr = out
 
         return pycloud
+
+cdef class StatisticalOutlierRemovalFilter:
+    """
+    Filter class uses point neighborhood statistics to filter outlier data.
+    """
+    cdef cpp.StatisticalOutlierRemoval_t *me
+    def __cinit__(self):
+        self.me = new cpp.StatisticalOutlierRemoval_t()
+    def __dealloc__(self):
+        del self.me
+
+    def set_mean_k(self, int k):
+        """
+        Set the number of points (k) to use for mean distance estimation. 
+        """
+        self.me.setMeanK(k)
+
+    def set_std_dev_mul_thresh(self, double std_mul):
+        """
+        Set the standard deviation multiplier threshold.
+        """
+        self.me.setStddevMulThresh(std_mul)
+
+    def set_negative(self, bool negative):
+        """
+        Set whether the indices should be returned, or all points except the indices. 
+        """
+        self.me.setNegative(negative)
+
+    def filter(self):
+        """
+        Apply the filter according to the previously set parameters and return
+        a new pointcloud
+        """
+        pc = PointCloud()
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.filter(deref(ccloud))
+        return pc
+
 

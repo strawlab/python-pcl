@@ -204,4 +204,30 @@ class TestExtract(unittest.TestCase):
         self.assertNotEqual(self.p, p2)
         self.assertEqual(p2.size, self.p.size - 3)
 
+class TestSegmenterNormal(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+
+    def testFilterPos(self):
+        fil = self.p.make_statistical_outlier_filter()
+        fil.set_mean_k (50)
+        fil.set_std_dev_mul_thresh (1.0)
+        c = fil.filter()
+        self.assertEqual(c.size, 22747)
+        self.assertEqual(c.width, 22747)
+        self.assertEqual(c.height, 1)
+        self.assertTrue(c.is_dense)
+
+    def testFilterNeg(self):
+        fil = self.p.make_statistical_outlier_filter()
+        fil.set_mean_k (50)
+        fil.set_std_dev_mul_thresh (1.0)
+        fil.set_negative(True)
+        c = fil.filter()
+        self.assertEqual(c.size, 1013)
+        self.assertEqual(c.width, 1013)
+        self.assertEqual(c.height, 1)
+        self.assertTrue(c.is_dense)
 
