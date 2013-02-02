@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Bindings to the Point Cloud Library</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="None" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><img class="rightlogo" src="_static/pcl_logo.png" alt="Logo"/><h1 class="heading"><a href="index.html">
+          <span>python-pcl v1.0</span></a></h1>
+        <h2 class="heading"><span>Python Bindings to the Point Cloud Library</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="readme.html#document-readme">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <a href="https://github.com/strawlab/python-pcl">
+<img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a><div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>This is a small python binding to the pointcloud library. Currently, the
+following parts of the API are wrapped (all methods operate on XYZ) point
+types</p>
+<blockquote>
+<div><ul class="simple">
+<li>I/O and integration; saving and loading PCD files</li>
+<li>segmentation</li>
+<li>SAC</li>
+<li>smoothing</li>
+<li>filtering</li>
+</ul>
+</div></blockquote>
+<p>The code tries to follow the Point Cloud API, and also provides helper function
+for interacting with numpy. For example (from tests/test.py)</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pcl</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">.</span><span class="n">PointCloud</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">from_array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)))</span>
+<span class="n">seg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="o">.</span><span class="n">make_segmenter</span><span class="p">()</span>
+<span class="n">seg</span><span class="o">.</span><span class="n">set_model_type</span><span class="p">(</span><span class="n">pcl</span><span class="o">.</span><span class="n">SACMODEL_PLANE</span><span class="p">)</span>
+<span class="n">seg</span><span class="o">.</span><span class="n">set_method_type</span><span class="p">(</span><span class="n">pcl</span><span class="o">.</span><span class="n">SAC_RANSAC</span><span class="p">)</span>
+<span class="n">indices</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">segment</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This release has been tested with</p>
+<blockquote>
+<div><ul class="simple">
+<li>pcl 1.5.1</li>
+<li>Cython 0.16</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="a-note-about-types">
+<h2>A note about types<a class="headerlink" href="#a-note-about-types" title="Permalink to this headline">¶</a></h2>
+<p>Point Cloud is a heavily templated API, and consequently mapping this into python
+using Cython is challenging.</p>
+<p>It is written in Cython, and implements enough hard bits of the API
+(from Cythons perspective, i.e the template/smart_ptr bits)  to
+provide a foundation for someone wishing to carry on.</p>
+</div>
+</div>
+<div class="section" id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#pcl.PointCloud" title="pcl.PointCloud"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.PointCloud</span></tt></a></td>
+<td>Represents a class of points, supporting the PointXYZ type.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pcl.Segmentation" title="pcl.Segmentation"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.Segmentation</span></tt></a></td>
+<td>Segmentation class for Sample Consensus methods and models</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pcl.SegmentationNormal" title="pcl.SegmentationNormal"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.SegmentationNormal</span></tt></a></td>
+<td>Segmentation class for Sample Consensus methods and models that require the</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#pcl.StatisticalOutlierRemovalFilter" title="pcl.StatisticalOutlierRemovalFilter"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.StatisticalOutlierRemovalFilter</span></tt></a></td>
+<td>Filter class uses point neighborhood statistics to filter outlier data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pcl.MovingLeastSquares" title="pcl.MovingLeastSquares"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.MovingLeastSquares</span></tt></a></td>
+<td>Smoothing class which is an implementation of the MLS (Moving Least Squares)</td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-pcl"></span><dl class="class">
+<dt id="pcl.MovingLeastSquares">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">MovingLeastSquares</tt><a class="headerlink" href="#pcl.MovingLeastSquares" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smoothing class which is an implementation of the MLS (Moving Least Squares)
+algorithm for data smoothing and improved normal estimation.</p>
+<dl class="method">
+<dt id="pcl.MovingLeastSquares.reconstruct">
+<tt class="descname">reconstruct</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.MovingLeastSquares.reconstruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the smoothing according to the previously set values and return
+a new pointcloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.MovingLeastSquares.set_polynomial_fit">
+<tt class="descname">set_polynomial_fit</tt><big>(</big><em>self</em>, <em>int fit</em><big>)</big><a class="headerlink" href="#pcl.MovingLeastSquares.set_polynomial_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets whether the surface and normal are approximated using a polynomial,
+or only via tangent estimation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.MovingLeastSquares.set_polynomial_order">
+<tt class="descname">set_polynomial_order</tt><big>(</big><em>self</em>, <em>bool order</em><big>)</big><a class="headerlink" href="#pcl.MovingLeastSquares.set_polynomial_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the order of the polynomial to be fit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.MovingLeastSquares.set_search_radius">
+<tt class="descname">set_search_radius</tt><big>(</big><em>self</em>, <em>double radius</em><big>)</big><a class="headerlink" href="#pcl.MovingLeastSquares.set_search_radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the sphere radius that is to be used for determining the k-nearest neighbors used for fitting.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pcl.PointCloud">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">PointCloud</tt><a class="headerlink" href="#pcl.PointCloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Represents a class of points, supporting the PointXYZ type.</p>
+<dl class="method">
+<dt id="pcl.PointCloud.extract">
+<tt class="descname">extract</tt><big>(</big><em>self</em>, <em>pyindices</em>, <em>bool negative=False</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a list of indices of points in the pointcloud, return a 
+new pointcloud containing only those points.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.from_array">
+<tt class="descname">from_array</tt><big>(</big><em>self</em>, <em>ndarray arr</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.from_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill this object from a 2D numpy array (float32)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.from_file">
+<tt class="descname">from_file</tt><big>(</big><em>self</em>, <em>char *f</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill this pointcloud from a file (a local path).
+Only pcd files supported currently.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.from_list">
+<tt class="descname">from_list</tt><big>(</big><em>self</em>, <em>_list</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fill this pointcloud from a list of 3-tuples</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.get_point">
+<tt class="descname">get_point</tt><big>(</big><em>self</em>, <em>int row</em>, <em>int col</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.get_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a point (3-tuple) at the given row/column</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pcl.PointCloud.height">
+<tt class="descname">height</tt><a class="headerlink" href="#pcl.PointCloud.height" title="Permalink to this definition">¶</a></dt>
+<dd><p>property containing the height of the point cloud</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pcl.PointCloud.is_dense">
+<tt class="descname">is_dense</tt><a class="headerlink" href="#pcl.PointCloud.is_dense" title="Permalink to this definition">¶</a></dt>
+<dd><p>property containing whether the cloud is dense or not</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.make_moving_least_squares">
+<tt class="descname">make_moving_least_squares</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_moving_least_squares" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pcl.MovingLeastSquares object with this object set as the input-cloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.make_segmenter">
+<tt class="descname">make_segmenter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_segmenter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pcl.Segmentation object with this object set as the input-cloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.make_segmenter_normals">
+<tt class="descname">make_segmenter_normals</tt><big>(</big><em>self</em>, <em>int ksearch=-1</em>, <em>double searchRadius=-1.0</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_segmenter_normals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pcl.SegmentationNormal object with this object set as the input-cloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.make_statistical_outlier_filter">
+<tt class="descname">make_statistical_outlier_filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_statistical_outlier_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.resize">
+<tt class="descname">resize</tt><big>(</big><em>self</em>, <em>int x</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.resize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pcl.PointCloud.size">
+<tt class="descname">size</tt><a class="headerlink" href="#pcl.PointCloud.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>property containing the number of points in the point cloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.to_array">
+<tt class="descname">to_array</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.to_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this object as a 2D numpy array (float32)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.to_file">
+<tt class="descname">to_file</tt><big>(</big><em>self</em>, <em>char *f</em>, <em>bool ascii=True</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save this pointcloud to a local file.
+Only saving to binary or ascii pcd is supported</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.to_list">
+<tt class="descname">to_list</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.to_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return this object as a list of 3-tuples</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pcl.PointCloud.width">
+<tt class="descname">width</tt><a class="headerlink" href="#pcl.PointCloud.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>property containing the width of the point cloud</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pcl.Segmentation">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">Segmentation</tt><a class="headerlink" href="#pcl.Segmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segmentation class for Sample Consensus methods and models</p>
+<dl class="method">
+<dt id="pcl.Segmentation.segment">
+<tt class="descname">segment</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.Segmentation.segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.Segmentation.set_distance_threshold">
+<tt class="descname">set_distance_threshold</tt><big>(</big><em>self</em>, <em>float d</em><big>)</big><a class="headerlink" href="#pcl.Segmentation.set_distance_threshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.Segmentation.set_method_type">
+<tt class="descname">set_method_type</tt><big>(</big><em>self</em>, <em>int m</em><big>)</big><a class="headerlink" href="#pcl.Segmentation.set_method_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.Segmentation.set_model_type">
+<tt class="descname">set_model_type</tt><big>(</big><em>self</em>, <em>SacModel m</em><big>)</big><a class="headerlink" href="#pcl.Segmentation.set_model_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.Segmentation.set_optimize_coefficients">
+<tt class="descname">set_optimize_coefficients</tt><big>(</big><em>self</em>, <em>bool b</em><big>)</big><a class="headerlink" href="#pcl.Segmentation.set_optimize_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pcl.SegmentationNormal">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">SegmentationNormal</tt><a class="headerlink" href="#pcl.SegmentationNormal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Segmentation class for Sample Consensus methods and models that require the
+use of surface normals for estimation.</p>
+<p>Due to Cython limitations this should derive from pcl.Segmentation, but
+is currently unable to do so.</p>
+<dl class="method">
+<dt id="pcl.SegmentationNormal.segment">
+<tt class="descname">segment</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.segment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_axis">
+<tt class="descname">set_axis</tt><big>(</big><em>self</em>, <em>double ax</em>, <em>double ay</em>, <em>double az</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_axis" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_distance_threshold">
+<tt class="descname">set_distance_threshold</tt><big>(</big><em>self</em>, <em>float d</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_distance_threshold" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_eps_angle">
+<tt class="descname">set_eps_angle</tt><big>(</big><em>self</em>, <em>double ea</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_eps_angle" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_max_iterations">
+<tt class="descname">set_max_iterations</tt><big>(</big><em>self</em>, <em>int i</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_max_iterations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_method_type">
+<tt class="descname">set_method_type</tt><big>(</big><em>self</em>, <em>int m</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_method_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_model_type">
+<tt class="descname">set_model_type</tt><big>(</big><em>self</em>, <em>SacModel m</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_model_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_normal_distance_weight">
+<tt class="descname">set_normal_distance_weight</tt><big>(</big><em>self</em>, <em>float f</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_normal_distance_weight" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_optimize_coefficients">
+<tt class="descname">set_optimize_coefficients</tt><big>(</big><em>self</em>, <em>bool b</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_optimize_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.SegmentationNormal.set_radius_limits">
+<tt class="descname">set_radius_limits</tt><big>(</big><em>self</em>, <em>float f1</em>, <em>float f2</em><big>)</big><a class="headerlink" href="#pcl.SegmentationNormal.set_radius_limits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pcl.StatisticalOutlierRemovalFilter">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">StatisticalOutlierRemovalFilter</tt><a class="headerlink" href="#pcl.StatisticalOutlierRemovalFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filter class uses point neighborhood statistics to filter outlier data.</p>
+<dl class="method">
+<dt id="pcl.StatisticalOutlierRemovalFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.StatisticalOutlierRemovalFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the filter according to the previously set parameters and return
+a new pointcloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.StatisticalOutlierRemovalFilter.set_mean_k">
+<tt class="descname">set_mean_k</tt><big>(</big><em>self</em>, <em>int k</em><big>)</big><a class="headerlink" href="#pcl.StatisticalOutlierRemovalFilter.set_mean_k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the number of points (k) to use for mean distance estimation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.StatisticalOutlierRemovalFilter.set_negative">
+<tt class="descname">set_negative</tt><big>(</big><em>self</em>, <em>bool negative</em><big>)</big><a class="headerlink" href="#pcl.StatisticalOutlierRemovalFilter.set_negative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set whether the indices should be returned, or all points except the indices.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.StatisticalOutlierRemovalFilter.set_std_dev_mul_thresh">
+<tt class="descname">set_std_dev_mul_thresh</tt><big>(</big><em>self</em>, <em>double std_mul</em><big>)</big><a class="headerlink" href="#pcl.StatisticalOutlierRemovalFilter.set_std_dev_mul_thresh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the standard deviation multiplier threshold.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="readme.html#document-readme">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2013, John Stowers.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
