@@ -13,6 +13,7 @@ types
  * I/O and integration; saving and loading PCD files
  * segmentation
  * SAC
+ * smoothing
  * filtering
 
 The code tries to follow the Point Cloud API, and also provides helper function
