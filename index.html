@@ -47,9 +47,9 @@
   <a href="https://github.com/strawlab/python-pcl">
 <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a><div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
-<p>This is a small python binding to the pointcloud library. Currently, the
-following parts of the API are wrapped (all methods operate on XYZ) point
-types</p>
+<p>This is a small python binding to the <a class="reference external" href="http://pointclouds.org/">pointcloud</a> library.
+Currently, the following parts of the API are wrapped (all methods operate on PointXYZ)
+point types</p>
 <blockquote>
 <div><ul class="simple">
 <li>I/O and integration; saving and loading PCD files</li>
@@ -68,6 +68,16 @@ for interacting with numpy. For example (from tests/test.py)</p>
 <span class="n">seg</span><span class="o">.</span><span class="n">set_model_type</span><span class="p">(</span><span class="n">pcl</span><span class="o">.</span><span class="n">SACMODEL_PLANE</span><span class="p">)</span>
 <span class="n">seg</span><span class="o">.</span><span class="n">set_method_type</span><span class="p">(</span><span class="n">pcl</span><span class="o">.</span><span class="n">SAC_RANSAC</span><span class="p">)</span>
 <span class="n">indices</span><span class="p">,</span> <span class="n">model</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">segment</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>or, for smoothing</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pcl</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">.</span><span class="n">PointCloud</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s">&quot;C/table_scene_lms400.pcd&quot;</span><span class="p">)</span>
+<span class="n">fil</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">make_statistical_outlier_filter</span><span class="p">()</span>
+<span class="n">fil</span><span class="o">.</span><span class="n">set_mean_k</span> <span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">fil</span><span class="o">.</span><span class="n">set_std_dev_mul_thresh</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">fil</span><span class="o">.</span><span class="n">filter</span><span class="p">()</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s">&quot;inliers.pcd&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This work was supported by <a class="reference external" href="http://strawlab.org/">Strawlab</a>.</p>
@@ -115,6 +125,9 @@ provide a foundation for someone wishing to carry on.</p>
 </tr>
 </tbody>
 </table>
+<p>For deficiencies in this documentation, please consule the
+<a class="reference external" href="http://docs.pointclouds.org/trunk/index.html">PCL API docs</a>, and the
+<a class="reference external" href="http://pointclouds.org/documentation/tutorials/">PCL tutorials</a>.</p>
 <span class="target" id="module-pcl"></span><dl class="class">
 <dt id="pcl.MovingLeastSquares">
 <em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">MovingLeastSquares</tt><a class="headerlink" href="#pcl.MovingLeastSquares" title="Permalink to this definition">¶</a></dt>
