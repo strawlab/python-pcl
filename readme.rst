@@ -29,6 +29,8 @@ for interacting with numpy. For example (from tests/test.py)
     seg.set_method_type(pcl.SAC_RANSAC)
     indices, model = seg.segment()
 
+This work was supported by `Strawlab <http://strawlab.org/>`_.
+
 Requirements
 ------------
 
