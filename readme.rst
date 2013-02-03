@@ -6,9 +6,9 @@
 Introduction
 ============
 
-This is a small python binding to the pointcloud library. Currently, the 
-following parts of the API are wrapped (all methods operate on XYZ) point
-types
+This is a small python binding to the `pointcloud <http://pointclouds.org/>`_ library.
+Currently, the following parts of the API are wrapped (all methods operate on PointXYZ)
+point types
 
  * I/O and integration; saving and loading PCD files
  * segmentation
@@ -28,6 +28,18 @@ for interacting with numpy. For example (from tests/test.py)
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
     indices, model = seg.segment()
+
+or, for smoothing
+
+.. code-block:: python
+
+    import pcl
+    p = pcl.PointCloud()
+    p.from_file("C/table_scene_lms400.pcd")
+    fil = p.make_statistical_outlier_filter()
+    fil.set_mean_k (50)
+    fil.set_std_dev_mul_thresh (1.0)
+    fil.filter().to_file("inliers.pcd")
 
 This work was supported by `Strawlab <http://strawlab.org/>`_.
 
@@ -59,6 +71,10 @@ API Documentation
    pcl.SegmentationNormal
    pcl.StatisticalOutlierRemovalFilter
    pcl.MovingLeastSquares
+
+For deficiencies in this documentation, please consule the
+`PCL API docs <http://docs.pointclouds.org/trunk/index.html>`_, and the
+`PCL tutorials <http://pointclouds.org/documentation/tutorials/>`_.
 
 .. automodule:: pcl
    :members:
