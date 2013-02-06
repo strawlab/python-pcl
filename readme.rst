@@ -41,6 +41,9 @@ or, for smoothing
     fil.set_std_dev_mul_thresh (1.0)
     fil.filter().to_file("inliers.pcd")
 
+More samples can be found in the `examples directory <https://github.com/strawlab/python-pcl/tree/master/examples>`_,
+and in the `unit tests <https://github.com/strawlab/python-pcl/blob/master/tests/test.py>`_.
+
 This work was supported by `Strawlab <http://strawlab.org/>`_.
 
 Requirements
@@ -71,6 +74,8 @@ API Documentation
    pcl.SegmentationNormal
    pcl.StatisticalOutlierRemovalFilter
    pcl.MovingLeastSquares
+   pcl.PassThroughFilter
+   pcl.VoxelGridFilter
 
 For deficiencies in this documentation, please consule the
 `PCL API docs <http://docs.pointclouds.org/trunk/index.html>`_, and the
