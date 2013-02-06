@@ -277,6 +277,16 @@ cdef class PointCloud:
         cfil.setInputCloud(ccloud.makeShared())
         return fil
 
+    def make_voxel_grid_filter(self):
+        """
+        Return a pcl.VoxelGridFilter object with this object set as the input-cloud
+        """
+        fil = VoxelGridFilter()
+        cdef cpp.VoxelGrid_t *cfil = <cpp.VoxelGrid_t *>fil.me
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
+        cfil.setInputCloud(ccloud.makeShared())
+        return fil
+
     def make_moving_least_squares(self):
         """
         Return a pcl.MovingLeastSquares object with this object set as the input-cloud
@@ -384,6 +394,32 @@ cdef class MovingLeastSquares:
         pc = PointCloud()
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         self.me.reconstruct(deref(ccloud))
+        return pc
+
+cdef class VoxelGridFilter:
+    """
+    Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
+    """
+    cdef cpp.VoxelGrid_t *me
+    def __cinit__(self):
+        self.me = new cpp.VoxelGrid_t()
+    def __dealloc__(self):
+        del self.me
+
+    def set_leaf_size (self, float x, float y, float z):
+        """
+        Set the voxel grid leaf size.
+        """
+        self.me.setLeafSize(x,y,z)
+
+    def filter(self):
+        """
+        Apply the filter according to the previously set parameters and return
+        a new pointcloud
+        """
+        pc = PointCloud()
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.filter(deref(ccloud))
         return pc
 
 

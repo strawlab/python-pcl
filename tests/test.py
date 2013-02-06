@@ -251,4 +251,17 @@ class TestSegmenterNormal(unittest.TestCase):
         c = fil.filter()
         self._tneg(c)
 
+class TestVoxelGridFilter(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+
+    def testFilter(self):
+        fil = self.p.make_voxel_grid_filter()
+        fil.set_leaf_size(0.01,0.01,0.01)
+        c = fil.filter()
+        self.assertTrue(c.size < self.p.size)
+        self.assertEqual(c.size, 719)
+
 

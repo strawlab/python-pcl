@@ -144,3 +144,12 @@ cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
 
 ctypedef StatisticalOutlierRemoval[PointXYZ] StatisticalOutlierRemoval_t
 
+cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
+    cdef cppclass VoxelGrid[T]:
+        VoxelGrid()
+        void setLeafSize (float, float, float)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void filter(PointCloud[T] c)
+
+ctypedef VoxelGrid[PointXYZ] VoxelGrid_t
+
