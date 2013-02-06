@@ -104,19 +104,19 @@ cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
         SACMODEL_PLANE
         SACMODEL_LINE
         SACMODEL_CIRCLE2D
-        SACMODEL_CIRCLE3D, 
+        SACMODEL_CIRCLE3D
         SACMODEL_SPHERE
         SACMODEL_CYLINDER
         SACMODEL_CONE
-        SACMODEL_TORUS, 
+        SACMODEL_TORUS
         SACMODEL_PARALLEL_LINE
         SACMODEL_PERPENDICULAR_PLANE
         SACMODEL_PARALLEL_LINES
-        SACMODEL_NORMAL_PLANE, 
-        SACMODEL_NORMAL_SPHERE
+        SACMODEL_NORMAL_PLANE
+        #SACMODEL_NORMAL_SPHERE
         SACMODEL_REGISTRATION
         SACMODEL_PARALLEL_PLANE
-        SACMODEL_NORMAL_PARALLEL_PLANE, 
+        SACMODEL_NORMAL_PARALLEL_PLANE
         SACMODEL_STICK
 
 cdef extern from "pcl/sample_consensus/method_types.h" namespace "pcl":
