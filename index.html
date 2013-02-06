@@ -80,6 +80,8 @@ for interacting with numpy. For example (from tests/test.py)</p>
 <span class="n">fil</span><span class="o">.</span><span class="n">filter</span><span class="p">()</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="s">&quot;inliers.pcd&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>More samples can be found in the <a class="reference external" href="https://github.com/strawlab/python-pcl/tree/master/examples">examples directory</a>,
+and in the <a class="reference external" href="https://github.com/strawlab/python-pcl/blob/master/tests/test.py">unit tests</a>.</p>
 <p>This work was supported by <a class="reference external" href="http://strawlab.org/">Strawlab</a>.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
@@ -123,6 +125,12 @@ provide a foundation for someone wishing to carry on.</p>
 <tr class="row-odd"><td><a class="reference internal" href="#pcl.MovingLeastSquares" title="pcl.MovingLeastSquares"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.MovingLeastSquares</span></tt></a></td>
 <td>Smoothing class which is an implementation of the MLS (Moving Least Squares)</td>
 </tr>
+<tr class="row-even"><td><a class="reference internal" href="#pcl.PassThroughFilter" title="pcl.PassThroughFilter"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.PassThroughFilter</span></tt></a></td>
+<td>Passes points in a cloud based on constraints for one particular field of the point type</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#pcl.VoxelGridFilter" title="pcl.VoxelGridFilter"><tt class="xref py py-obj docutils literal"><span class="pre">pcl.VoxelGridFilter</span></tt></a></td>
+<td>Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.</td>
+</tr>
 </tbody>
 </table>
 <p>For deficiencies in this documentation, please consule the
@@ -158,6 +166,29 @@ or only via tangent estimation.</p>
 <tt class="descname">set_search_radius</tt><big>(</big><em>self</em>, <em>double radius</em><big>)</big><a class="headerlink" href="#pcl.MovingLeastSquares.set_search_radius" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the sphere radius that is to be used for determining the k-nearest neighbors used for fitting.</p>
 </dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pcl.PassThroughFilter">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">PassThroughFilter</tt><a class="headerlink" href="#pcl.PassThroughFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Passes points in a cloud based on constraints for one particular field of the point type</p>
+<dl class="method">
+<dt id="pcl.PassThroughFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PassThroughFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the filter according to the previously set parameters and return
+a new pointcloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PassThroughFilter.set_filter_field_name">
+<tt class="descname">set_filter_field_name</tt><big>(</big><em>self</em>, <em>char *field_name</em><big>)</big><a class="headerlink" href="#pcl.PassThroughFilter.set_filter_field_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pcl.PassThroughFilter.set_filter_limits">
+<tt class="descname">set_filter_limits</tt><big>(</big><em>self</em>, <em>float filter_min</em>, <em>float filter_max</em><big>)</big><a class="headerlink" href="#pcl.PassThroughFilter.set_filter_limits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -216,6 +247,12 @@ Only pcd files supported currently.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pcl.PointCloud.make_passthrough_filter">
+<tt class="descname">make_passthrough_filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_passthrough_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pcl.PassThroughFilter object with this object set as the input-cloud</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pcl.PointCloud.make_segmenter">
 <tt class="descname">make_segmenter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_segmenter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a pcl.Segmentation object with this object set as the input-cloud</p>
@@ -231,6 +268,12 @@ Only pcd files supported currently.</p>
 <dt id="pcl.PointCloud.make_statistical_outlier_filter">
 <tt class="descname">make_statistical_outlier_filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_statistical_outlier_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.PointCloud.make_voxel_grid_filter">
+<tt class="descname">make_voxel_grid_filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.PointCloud.make_voxel_grid_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a pcl.VoxelGridFilter object with this object set as the input-cloud</p>
 </dd></dl>
 
 <dl class="method">
@@ -388,6 +431,25 @@ a new pointcloud</p>
 <dt id="pcl.StatisticalOutlierRemovalFilter.set_std_dev_mul_thresh">
 <tt class="descname">set_std_dev_mul_thresh</tt><big>(</big><em>self</em>, <em>double std_mul</em><big>)</big><a class="headerlink" href="#pcl.StatisticalOutlierRemovalFilter.set_std_dev_mul_thresh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the standard deviation multiplier threshold.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pcl.VoxelGridFilter">
+<em class="property">class </em><tt class="descclassname">pcl.</tt><tt class="descname">VoxelGridFilter</tt><a class="headerlink" href="#pcl.VoxelGridFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.</p>
+<dl class="method">
+<dt id="pcl.VoxelGridFilter.filter">
+<tt class="descname">filter</tt><big>(</big><em>self</em><big>)</big><a class="headerlink" href="#pcl.VoxelGridFilter.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply the filter according to the previously set parameters and return
+a new pointcloud</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pcl.VoxelGridFilter.set_leaf_size">
+<tt class="descname">set_leaf_size</tt><big>(</big><em>self</em>, <em>float x</em>, <em>float y</em>, <em>float z</em><big>)</big><a class="headerlink" href="#pcl.VoxelGridFilter.set_leaf_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the voxel grid leaf size.</p>
 </dd></dl>
 
 </dd></dl>
