@@ -153,3 +153,13 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 
 ctypedef VoxelGrid[PointXYZ] VoxelGrid_t
 
+cdef extern from "pcl/filters/passthrough.h" namespace "pcl":
+    cdef cppclass PassThrough[T]:
+        PassThrough()
+        void setFilterFieldName (string field_name)
+        void setFilterLimits (float, float)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void filter(PointCloud[T] c)
+
+ctypedef PassThrough[PointXYZ] PassThrough_t
+

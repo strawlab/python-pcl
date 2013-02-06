@@ -264,4 +264,26 @@ class TestVoxelGridFilter(unittest.TestCase):
         self.assertTrue(c.size < self.p.size)
         self.assertEqual(c.size, 719)
 
+class TestPassthroughFilter(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+
+    def testFilter(self):
+        fil = self.p.make_passthrough_filter()
+        fil.set_filter_field_name ("z")
+        fil.set_filter_limits (0, 0.75)
+        c = fil.filter()
+        self.assertTrue(c.size < self.p.size)
+        self.assertEqual(c.size, 7751)
+
+    def testFilterBoth(self):
+        total = self.p.size
+        fil = self.p.make_passthrough_filter()
+        fil.set_filter_field_name ("z")
+        fil.set_filter_limits (0, 0.75)
+        front = fil.filter().size
+        fil.set_filter_limits (0.75, 100)
+        back = fil.filter().size
+        self.assertEqual(total,front+back)
 

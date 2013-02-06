@@ -287,6 +287,16 @@ cdef class PointCloud:
         cfil.setInputCloud(ccloud.makeShared())
         return fil
 
+    def make_passthrough_filter(self):
+        """
+        Return a pcl.PassThroughFilter object with this object set as the input-cloud
+        """
+        fil = PassThroughFilter()
+        cdef cpp.PassThrough_t *cfil = <cpp.PassThrough_t *>fil.me
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
+        cfil.setInputCloud(ccloud.makeShared())
+        return fil
+
     def make_moving_least_squares(self):
         """
         Return a pcl.MovingLeastSquares object with this object set as the input-cloud
@@ -411,6 +421,33 @@ cdef class VoxelGridFilter:
         Set the voxel grid leaf size.
         """
         self.me.setLeafSize(x,y,z)
+
+    def filter(self):
+        """
+        Apply the filter according to the previously set parameters and return
+        a new pointcloud
+        """
+        pc = PointCloud()
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.filter(deref(ccloud))
+        return pc
+
+cdef class PassThroughFilter:
+    """
+    Passes points in a cloud based on constraints for one particular field of the point type
+    """
+    cdef cpp.PassThrough_t *me
+    def __cinit__(self):
+        self.me = new cpp.PassThrough_t()
+    def __dealloc__(self):
+        del self.me
+
+    def set_filter_field_name(self, char *field_name):
+        cdef string s = string(field_name)
+        self.me.setFilterFieldName (s)
+
+    def set_filter_limits(self, float filter_min, float filter_max):
+        self.me.setFilterLimits (filter_min, filter_max)
 
     def filter(self):
         """
