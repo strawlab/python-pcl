@@ -9,6 +9,7 @@ cimport pcl_defs as cpp
 from cython.operator import dereference as deref
 from libcpp.string cimport string
 from libcpp cimport bool
+from libcpp.vector cimport vector
 
 cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, double searchRadius, cpp.PointNormalCloud_t)
@@ -308,6 +309,16 @@ cdef class PointCloud:
         cmls.setInputCloud(ccloud.makeShared())
         return mls
 
+    def make_kdtree_flann(self):
+        """
+        Return a pcl.kdTreeFLANN object with this object set as the input-cloud
+        """
+        kdtree = KdTreeFLANN()
+        cdef cpp.KdTreeFLANN_t *ckdtree = <cpp.KdTreeFLANN_t *>kdtree.me
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
+        ckdtree.setInputCloud(ccloud.makeShared())
+        return kdtree
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
@@ -459,4 +470,50 @@ cdef class PassThroughFilter:
         self.me.filter(deref(ccloud))
         return pc
 
+cdef class KdTreeFLANN:
+    """
+    Finds k nearest neighbours from points in another pointcloud to points in
+    this pointcloud
+    """
+    cdef cpp.KdTreeFLANN_t *me
+    def __cinit__(self):
+        self.me = new cpp.KdTreeFLANN_t()
+    def __dealloc__(self):
+        del self.me
+
+    def nearest_k_search_for_cloud(self, PointCloud pc, int k=1):
+        """
+        Find the k nearest neighbours and squared distances for all points
+        in the pointcloud. Results are in ndarrays, size (pc.size, k)
+        Returns: (k_indices, k_sqr_distances)
+        """
+        n_points = pc.size
+        cdef cnp.ndarray[float, ndim=2] np_k_sqr_distances = np.zeros(
+            (n_points, k), dtype=np.float32)
+        cdef cnp.ndarray[int, ndim=2] np_k_indices= np.zeros(
+            (n_points, k), dtype=np.int32)
+        for i in range(pc.size):
+            k_i, k_sqr_d = self.nearest_k_search_for_point(pc, i, k)
+            np_k_indices[i,:] = k_i
+            np_k_sqr_distances[i,:] = k_sqr_d
+        return np_k_indices, np_k_sqr_distances
+
+    def nearest_k_search_for_point(self, PointCloud pc, int index, int k=1):
+        """
+        Find the k nearest neighbours and squared distances for the point
+        at pc[index]. Results are in ndarrays, size (k)
+        Returns: (k_indices, k_sqr_distances)
+        """
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        cdef vector[int] k_indices
+        cdef vector[float] k_sqr_distances
+        k_indices.resize(k)
+        k_sqr_distances.resize(k)
+        self.me.nearestKSearch(deref(ccloud), index, k, k_indices, k_sqr_distances)
+        cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
+        cdef cnp.ndarray[int] np_k_indices= np.zeros(k, dtype=np.int32)
+        for i in range(k):
+            np_k_sqr_distances[i] = k_sqr_distances[i]
+            np_k_indices[i] = k_indices[i]
+        return np_k_indices, np_k_sqr_distances
 
