@@ -163,3 +163,12 @@ cdef extern from "pcl/filters/passthrough.h" namespace "pcl":
 
 ctypedef PassThrough[PointXYZ] PassThrough_t
 
+cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
+    cdef cppclass KdTreeFLANN[T]:
+        KdTreeFLANN()
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        int nearestKSearch (PointCloud[T],
+          int, int, vector[int], vector[float])
+
+ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
+
