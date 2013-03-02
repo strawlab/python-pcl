@@ -517,3 +517,22 @@ cdef class KdTreeFLANN:
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
+cdef class OctreePointCloud:
+    cdef cpp.OctreePointCloud_t *me
+   
+    """
+    Constructs octree pointcloud with given resolution at lowest octree level
+    """ 
+    def __cinit__(self, double resolution):
+        self.me = new cpp.OctreePointCloud_t(resolution)
+    
+    def __dealloc__(self):
+        del self.me
+
+    """
+    Provide a pointer to the input data set.
+    """
+    def set_input_cloud(self, PointCloud pc):
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.setInputCloud(ccloud.makeShared())
+

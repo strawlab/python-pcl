@@ -72,6 +72,19 @@ cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:
         KdTree()
 
+cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
+    cdef cppclass OctreePointCloud[T]:
+        OctreePointCloud(double)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void defineBoundingBox(double, double, double, double, double, double)
+        void addPointsFromInputCloud()
+        void deleteTree()
+        bool isVoxelOccupiedAtPoint(double, double, double)
+        int getOccupiedVoxelCenters(vector[PointXYZ])	
+        void deleteVoxelAtPoint(PointXYZ)
+
+ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
+
 cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:
         vector[float] values

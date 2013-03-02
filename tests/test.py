@@ -287,3 +287,12 @@ class TestPassthroughFilter(unittest.TestCase):
         back = fil.filter().size
         self.assertEqual(total,front+back)
 
+class TestOctreePointCloud(unittest.TestCase):
+    def setUp(self):
+        self.t = pcl.OctreePointCloud(0.1)
+
+    def testLoad(self):
+        pc = pcl.PointCloud()
+        pc.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.t.set_input_cloud(pc)
+        
