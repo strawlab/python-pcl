@@ -319,6 +319,14 @@ cdef class PointCloud:
         ckdtree.setInputCloud(ccloud.makeShared())
         return kdtree
 
+    def make_octree(self, double resolution):
+        """
+        Return a pcl.octree object with this object set as the input-cloud
+        """
+        octree = OctreePointCloud(resolution)
+        octree.set_input_cloud(self)
+        return octree
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
@@ -518,66 +526,69 @@ cdef class KdTreeFLANN:
         return np_k_indices, np_k_sqr_distances
 
 cdef class OctreePointCloud:
+    """
+    Octree point cloud
+    """
     cdef cpp.OctreePointCloud_t *me
    
-    """
-    Constructs octree pointcloud with given resolution at lowest octree level
-    """ 
     def __cinit__(self, double resolution):
+        """
+        Constructs octree pointcloud with given resolution at lowest octree level
+        """ 
         self.me = new cpp.OctreePointCloud_t(resolution)
     
     def __dealloc__(self):
         del self.me
 
-    """
-    Provide a pointer to the input data set.
-    """
     def set_input_cloud(self, PointCloud pc):
+        """
+        Provide a pointer to the input data set.
+        """
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         self.me.setInputCloud(ccloud.makeShared())
 
-    """
-    Investigate dimensions of pointcloud data set and define corresponding bounding box for octree. 
-    """
     def define_bounding_box(self):
+        """
+        Investigate dimensions of pointcloud data set and define corresponding bounding box for octree. 
+        """
         self.me.defineBoundingBox()
         
-    """
-    Define bounding box for octree. Bounding box cannot be changed once the octree contains elements.
-    """
     def define_bounding_box(self, double min_x, double min_y, double min_z, double max_x, double max_y, double max_z):
+        """
+        Define bounding box for octree. Bounding box cannot be changed once the octree contains elements.
+        """
         self.me.defineBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z)
 
-    """
-    Add points from input point cloud to octree.
-    """
     def add_points_from_input_cloud(self):
+        """
+        Add points from input point cloud to octree.
+        """
         self.me.addPointsFromInputCloud()
 
-    """
-    Delete the octree structure and its leaf nodes.
-    """
     def delete_tree(self):
+        """
+        Delete the octree structure and its leaf nodes.
+        """
         self.me.deleteTree()
 
-    """
-    Check if voxel at given point coordinates exist.
-    """
     def is_voxel_occupied_at_point(self, point):
+        """
+        Check if voxel at given point coordinates exist.
+        """
         return self.me.isVoxelOccupiedAtPoint(point[0], point[1], point[2])
 
-    """
-    Get list of centers of all occupied voxels.
-    """
     def get_occupied_voxel_centers(self):
+        """
+        Get list of centers of all occupied voxels.
+        """
         cdef cpp.AlignedPointTVector_t points_v
         cdef int num = self.me.getOccupiedVoxelCenters (points_v)
         return [(points_v[i].x, points_v[i].y, points_v[i].z) for i in range(num)]
 
-    """
-    Delete leaf node / voxel at given point.
-    """
     def delete_voxel_at_point(self, point):
+        """
+        Delete leaf node / voxel at given point.
+        """
         cdef cpp.PointXYZ p
         p.x = point[0]
         p.y = point[1]
