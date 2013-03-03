@@ -563,8 +563,8 @@ cdef class OctreePointCloud:
     """
     Check if voxel at given point coordinates exist.
     """
-    def is_voxel_occupied_at_point(self, double point_x, double point_y, double point_z):
-        return self.me.isVoxelOccupiedAtPoint(point_x, point_y, point_z)
+    def is_voxel_occupied_at_point(self, point):
+        return self.me.isVoxelOccupiedAtPoint(point[0], point[1], point[2])
 
     """
     Get list of centers of all occupied voxels.
@@ -573,3 +573,13 @@ cdef class OctreePointCloud:
         cdef cpp.AlignedPointTVector_t points_v
         cdef int num = self.me.getOccupiedVoxelCenters (points_v)
         return [(points_v[i].x, points_v[i].y, points_v[i].z) for i in range(num)]
+
+    """
+    Delete leaf node / voxel at given point.
+    """
+    def delete_voxel_at_point(self, point):
+        cdef cpp.PointXYZ p
+        p.x = point[0]
+        p.y = point[1]
+        p.z = point[2]
+        self.me.deleteVoxelAtPoint(p)

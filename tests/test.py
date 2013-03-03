@@ -297,9 +297,13 @@ class TestOctreePointCloud(unittest.TestCase):
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
-        rs = self.t.is_voxel_occupied_at_point(0.035296999, -0.074322999, 1.2074) 
+        good_point = (0.035296999, -0.074322999, 1.2074)
+        rs = self.t.is_voxel_occupied_at_point(good_point)
         self.assertTrue(rs)
-        rs = self.t.is_voxel_occupied_at_point(0.5, 0.5, 0.5) 
+        bad_point = (0.5, 0.5, 0.5)
+        rs = self.t.is_voxel_occupied_at_point(bad_point) 
         self.assertFalse(rs)
-
-        self.assertEqual(len(self.t.get_occupied_voxel_centers()), 44)
+        voxels_len = 44
+        self.assertEqual(len(self.t.get_occupied_voxel_centers()), voxels_len)
+        self.t.delete_voxel_at_point(good_point)
+        self.assertEqual(len(self.t.get_occupied_voxel_centers()), voxels_len - 1)
