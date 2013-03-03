@@ -545,11 +545,23 @@ cdef class OctreePointCloud:
     """
     Define bounding box for octree. Bounding box cannot be changed once the octree contains elements.
     """
-    def define_bounding_box(self, double minX, double minY, double minZ, double maxX, double maxY, double maxZ):
-        self.me.defineBoundingBox(minX, minY, minZ, maxX, maxY, maxZ)
+    def define_bounding_box(self, double min_x, double min_y, double min_z, double max_x, double max_y, double max_z):
+        self.me.defineBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z)
 
     """
     Add points from input point cloud to octree.
     """
     def add_points_from_input_cloud(self):
         self.me.addPointsFromInputCloud()
+
+    """
+    Delete the octree structure and its leaf nodes.
+    """
+    def delete_tree(self):
+        self.me.deleteTree()
+
+    """
+    Check if voxel at given point coordinates exist.
+    """
+    def is_voxel_occupied_at_point(self, double point_x, double point_y, double point_z):
+        return self.me.isVoxelOccupiedAtPoint(point_x, point_y, point_z)
