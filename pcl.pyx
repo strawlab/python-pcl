@@ -536,3 +536,20 @@ cdef class OctreePointCloud:
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         self.me.setInputCloud(ccloud.makeShared())
 
+    """
+    Investigate dimensions of pointcloud data set and define corresponding bounding box for octree. 
+    """
+    def define_bounding_box(self):
+        self.me.defineBoundingBox()
+        
+    """
+    Define bounding box for octree. Bounding box cannot be changed once the octree contains elements.
+    """
+    def define_bounding_box(self, double minX, double minY, double minZ, double maxX, double maxY, double maxZ):
+        self.me.defineBoundingBox(minX, minY, minZ, maxX, maxY, maxZ)
+
+    """
+    Add points from input point cloud to octree.
+    """
+    def add_points_from_input_cloud(self):
+        self.me.addPointsFromInputCloud()

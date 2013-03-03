@@ -295,4 +295,6 @@ class TestOctreePointCloud(unittest.TestCase):
         pc = pcl.PointCloud()
         pc.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
+        self.t.define_bounding_box()
+        self.t.add_points_from_input_cloud()
         

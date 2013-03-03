@@ -76,6 +76,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloud[T]:
         OctreePointCloud(double)
         void setInputCloud (shared_ptr[PointCloud[T]])
+        void defineBoundingBox()
         void defineBoundingBox(double, double, double, double, double, double)
         void addPointsFromInputCloud()
         void deleteTree()
