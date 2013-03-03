@@ -301,3 +301,5 @@ class TestOctreePointCloud(unittest.TestCase):
         self.assertTrue(rs)
         rs = self.t.is_voxel_occupied_at_point(0.5, 0.5, 0.5) 
         self.assertFalse(rs)
+
+        self.assertEqual(len(self.t.get_occupied_voxel_centers()), 44)

@@ -565,3 +565,11 @@ cdef class OctreePointCloud:
     """
     def is_voxel_occupied_at_point(self, double point_x, double point_y, double point_z):
         return self.me.isVoxelOccupiedAtPoint(point_x, point_y, point_z)
+
+    """
+    Get list of centers of all occupied voxels.
+    """
+    def get_occupied_voxel_centers(self):
+        cdef cpp.AlignedPointTVector_t points_v
+        cdef int num = self.me.getOccupiedVoxelCenters (points_v)
+        return [(points_v[i].x, points_v[i].y, points_v[i].z) for i in range(num)]
