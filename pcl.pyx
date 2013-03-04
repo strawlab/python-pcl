@@ -527,7 +527,7 @@ cdef class KdTreeFLANN:
 
 cdef class OctreePointCloud:
     """
-    Octree point cloud
+    Octree pointcloud
     """
     cdef cpp.OctreePointCloud_t *me
    
@@ -594,3 +594,18 @@ cdef class OctreePointCloud:
         p.y = point[1]
         p.z = point[2]
         self.me.deleteVoxelAtPoint(p)
+
+cdef class OctreePointCloudSearch(OctreePointCloud):
+    """
+    Octree pointcloud search
+    """
+    def __cinit__(self, double resolution):
+        """
+        Constructs octree pointcloud with given resolution at lowest octree level
+        """ 
+        self.me = <cpp.OctreePointCloud_t*> new cpp.OctreePointCloudSearch_t(resolution)
+ 
+    def __dealloc__(self):
+        del self.me
+
+
