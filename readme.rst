@@ -60,10 +60,10 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 Requirements
 ------------
 
-This release has been tested with
+This release has been tested on Ubuntu 12.10 with
 
- * pcl 1.5.1
- * Cython 0.16
+ * pcl 1.5.1-1
+ * Cython 0.16-1 (experimental)
 
 A note about types
 ------------------
