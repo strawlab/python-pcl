@@ -3,6 +3,7 @@ from libcpp.string cimport string
 from libcpp cimport bool
 
 from shared_ptr cimport shared_ptr
+from vector cimport vector as vector2
 
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
@@ -71,6 +72,34 @@ ctypedef MovingLeastSquares[PointXYZ,Normal] MovingLeastSquares_t
 cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:
         KdTree()
+
+cdef extern from "Eigen/src/Core/util/Memory.h" namespace "Eigen":
+    cdef cppclass aligned_allocator[T]:
+        pass
+
+ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
+ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
+
+cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
+    cdef cppclass OctreePointCloud[T]:
+        OctreePointCloud(double)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void defineBoundingBox()
+        void defineBoundingBox(double, double, double, double, double, double)
+        void addPointsFromInputCloud()
+        void deleteTree()
+        bool isVoxelOccupiedAtPoint(double, double, double)
+        int getOccupiedVoxelCenters(AlignedPointTVector_t)	
+        void deleteVoxelAtPoint(PointXYZ)
+
+ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
+
+cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
+    cdef cppclass OctreePointCloudSearch[T]:
+        OctreePointCloudSearch(double)
+        int radiusSearch (PointXYZ, double, vector[int], vector[float], unsigned int)
+
+ctypedef OctreePointCloudSearch[PointXYZ] OctreePointCloudSearch_t
 
 cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:

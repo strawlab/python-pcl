@@ -319,6 +319,14 @@ cdef class PointCloud:
         ckdtree.setInputCloud(ccloud.makeShared())
         return kdtree
 
+    def make_octree(self, double resolution):
+        """
+        Return a pcl.octree object with this object set as the input-cloud
+        """
+        octree = OctreePointCloud(resolution)
+        octree.set_input_cloud(self)
+        return octree
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
@@ -512,6 +520,111 @@ cdef class KdTreeFLANN:
         self.me.nearestKSearch(deref(ccloud), index, k, k_indices, k_sqr_distances)
         cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
         cdef cnp.ndarray[int] np_k_indices= np.zeros(k, dtype=np.int32)
+        for i in range(k):
+            np_k_sqr_distances[i] = k_sqr_distances[i]
+            np_k_indices[i] = k_indices[i]
+        return np_k_indices, np_k_sqr_distances
+
+cdef cpp.PointXYZ to_point_t(point):
+    cdef cpp.PointXYZ p
+    p.x = point[0]
+    p.y = point[1]
+    p.z = point[2]
+    return p
+
+cdef class OctreePointCloud:
+    """
+    Octree pointcloud
+    """
+    cdef cpp.OctreePointCloud_t *me
+   
+    def __cinit__(self, double resolution):
+        """
+        Constructs octree pointcloud with given resolution at lowest octree level
+        """ 
+        self.me = new cpp.OctreePointCloud_t(resolution)
+    
+    def __dealloc__(self):
+        del self.me
+
+    def set_input_cloud(self, PointCloud pc):
+        """
+        Provide a pointer to the input data set.
+        """
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.setInputCloud(ccloud.makeShared())
+
+    def define_bounding_box(self):
+        """
+        Investigate dimensions of pointcloud data set and define corresponding bounding box for octree. 
+        """
+        self.me.defineBoundingBox()
+        
+    def define_bounding_box(self, double min_x, double min_y, double min_z, double max_x, double max_y, double max_z):
+        """
+        Define bounding box for octree. Bounding box cannot be changed once the octree contains elements.
+        """
+        self.me.defineBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z)
+
+    def add_points_from_input_cloud(self):
+        """
+        Add points from input point cloud to octree.
+        """
+        self.me.addPointsFromInputCloud()
+
+    def delete_tree(self):
+        """
+        Delete the octree structure and its leaf nodes.
+        """
+        self.me.deleteTree()
+
+    def is_voxel_occupied_at_point(self, point):
+        """
+        Check if voxel at given point coordinates exist.
+        """
+        return self.me.isVoxelOccupiedAtPoint(point[0], point[1], point[2])
+
+    def get_occupied_voxel_centers(self):
+        """
+        Get list of centers of all occupied voxels.
+        """
+        cdef cpp.AlignedPointTVector_t points_v
+        cdef int num = self.me.getOccupiedVoxelCenters (points_v)
+        return [(points_v[i].x, points_v[i].y, points_v[i].z) for i in range(num)]
+
+    def delete_voxel_at_point(self, point):
+        """
+        Delete leaf node / voxel at given point.
+        """
+        self.me.deleteVoxelAtPoint(to_point_t(point))
+
+cdef class OctreePointCloudSearch(OctreePointCloud):
+    """
+    Octree pointcloud search
+    """
+    def __cinit__(self, double resolution):
+        """
+        Constructs octree pointcloud with given resolution at lowest octree level
+        """ 
+        self.me = <cpp.OctreePointCloud_t*> new cpp.OctreePointCloudSearch_t(resolution)
+ 
+    def __dealloc__(self):
+        del self.me
+    
+    """
+    Search for all neighbors of query point that are within a given radius.
+    
+    Returns: (k_indices, k_sqr_distances)
+    """
+    def radius_search (self, point, double radius, unsigned int max_nn = 0):
+        cdef vector[int] k_indices
+        cdef vector[float] k_sqr_distances
+        if max_nn > 0:
+            k_indices.resize(max_nn)
+            k_sqr_distances.resize(max_nn)
+        cdef int k = (<cpp.OctreePointCloudSearch_t*>self.me).radiusSearch(to_point_t(point), radius, k_indices, k_sqr_distances, max_nn)
+        cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
+        cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
         for i in range(k):
             np_k_sqr_distances[i] = k_sqr_distances[i]
             np_k_indices[i] = k_indices[i]
