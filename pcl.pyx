@@ -525,6 +525,13 @@ cdef class KdTreeFLANN:
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
+cdef cpp.PointXYZ to_point_t(point):
+    cdef cpp.PointXYZ p
+    p.x = point[0]
+    p.y = point[1]
+    p.z = point[2]
+    return p
+
 cdef class OctreePointCloud:
     """
     Octree pointcloud
@@ -589,11 +596,7 @@ cdef class OctreePointCloud:
         """
         Delete leaf node / voxel at given point.
         """
-        cdef cpp.PointXYZ p
-        p.x = point[0]
-        p.y = point[1]
-        p.z = point[2]
-        self.me.deleteVoxelAtPoint(p)
+        self.me.deleteVoxelAtPoint(to_point_t(point))
 
 cdef class OctreePointCloudSearch(OctreePointCloud):
     """
@@ -607,5 +610,23 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
  
     def __dealloc__(self):
         del self.me
-
+    
+    """
+    Search for all neighbors of query point that are within a given radius.
+    
+    Returns: (k_indices, k_sqr_distances)
+    """
+    def radius_search (self, point, double radius, unsigned int max_nn = 0):
+        cdef vector[int] k_indices
+        cdef vector[float] k_sqr_distances
+        if max_nn > 0:
+            k_indices.resize(max_nn)
+            k_sqr_distances.resize(max_nn)
+        cdef int k = (<cpp.OctreePointCloudSearch_t*>self.me).radiusSearch(to_point_t(point), radius, k_indices, k_sqr_distances, max_nn)
+        cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
+        cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
+        for i in range(k):
+            np_k_sqr_distances[i] = k_sqr_distances[i]
+            np_k_indices[i] = k_indices[i]
+        return np_k_indices, np_k_sqr_distances
 
