@@ -94,6 +94,13 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
 
 ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
 
+cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
+    cdef cppclass OctreePointCloudSearch[T]:
+        OctreePointCloudSearch(double)
+        int radiusSearch (PointXYZ, double, vector[int], vector[float], unsigned int)
+
+ctypedef OctreePointCloudSearch[PointXYZ] OctreePointCloudSearch_t
+
 cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:
         vector[float] values
