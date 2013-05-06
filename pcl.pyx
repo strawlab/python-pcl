@@ -267,6 +267,26 @@ cdef class PointCloud:
 
         return seg
 
+    def calc_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a pcl.SegmentationNormal object with this object set as the input-cloud
+        """
+        cdef cpp.PointNormalCloud_t normals
+        mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
+
+        cdef float x,y,z
+        cdef int n = self.thisptr.size()
+        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+
+        cdef int i = 0
+        while i < n:
+            result[i,0] = normals.at(i).normal_x
+            result[i,1] = normals.at(i).normal_y
+            result[i,2] = normals.at(i).normal_z
+            i = i + 1
+
+        return result
+
     def make_statistical_outlier_filter(self):
         """
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
