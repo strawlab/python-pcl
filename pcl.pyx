@@ -180,6 +180,7 @@ cdef class PointCloud:
         assert len(_list[0]) == 3
 
         cdef npts = len(_list)
+        cdef int i
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
@@ -187,6 +188,7 @@ cdef class PointCloud:
             self.thisptr.at(i).x = l[0]
             self.thisptr.at(i).y = l[1]
             self.thisptr.at(i).z = l[2]
+
 
     def to_list(self):
         """
@@ -271,6 +273,8 @@ cdef class PointCloud:
         """
         Return a pcl.SegmentationNormal object with this object set as the input-cloud
         """
+        assert ksearch != -1 or searchRadius != -1.0, "At least one parameters must be entered"
+        
         cdef cpp.PointNormalCloud_t normals
         mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
 
@@ -434,14 +438,15 @@ cdef class MovingLeastSquares:
         """
         self.me.setPolynomialFit(fit)
 
-    def reconstruct(self):
+    def process(self):
         """
         Apply the smoothing according to the previously set values and return
         a new pointcloud
+        PCL version 1.6+
         """
         pc = PointCloud()
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
-        self.me.reconstruct(deref(ccloud))
+        self.me.process(deref(ccloud))
         return pc
 
 cdef class VoxelGridFilter:
