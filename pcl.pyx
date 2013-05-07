@@ -145,7 +145,7 @@ cdef class PointCloud:
         self.thisptr.width = npts
         self.thisptr.height = 1
 
-        cdef i = 0
+        cdef int i = 0
         while i < npts:
             self.thisptr.at(i).x = arr[i,0]
             self.thisptr.at(i).y = arr[i,1]
@@ -156,8 +156,21 @@ cdef class PointCloud:
         """
         Return this object as a 2D numpy array (float32)
         """
-        #FIXME: this could be done more efficinetly, i'm sure
-        return np.array(self.to_list(), dtype=np.float32)
+        cdef int i
+        cdef float x,y,z
+        cdef int n = self.thisptr.size()
+        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+
+        i = 0
+        while i < n:
+            x = self.thisptr.at(i).x
+            y = self.thisptr.at(i).y
+            z = self.thisptr.at(i).z
+            result[i,0] = x
+            result[i,1] = y
+            result[i,2] = z
+            i = i + 1
+        return result
 
     def from_list(self, _list):
         """
@@ -167,6 +180,7 @@ cdef class PointCloud:
         assert len(_list[0]) == 3
 
         cdef npts = len(_list)
+        cdef int i
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
@@ -175,25 +189,12 @@ cdef class PointCloud:
             self.thisptr.at(i).y = l[1]
             self.thisptr.at(i).z = l[2]
 
+
     def to_list(self):
         """
         Return this object as a list of 3-tuples
         """
-        cdef int i
-        cdef float x,y,z
-        cdef int n = self.thisptr.size()
-
-        result = []
-
-        i = 0
-        while i < n:
-            #not efficient, oh well...
-            x = self.thisptr.at(i).x
-            y = self.thisptr.at(i).y
-            z = self.thisptr.at(i).z
-            result.append((x,y,z))
-            i = i + 1
-        return result
+        return self.to_array().tolist()
 
     def resize(self, int x):
         self.thisptr.resize(x)
@@ -267,6 +268,28 @@ cdef class PointCloud:
         cseg.setInputNormals (normals.makeShared());
 
         return seg
+
+    def calc_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a pcl.SegmentationNormal object with this object set as the input-cloud
+        """
+        assert ksearch != -1 or searchRadius != -1.0, "At least one parameters must be entered"
+        
+        cdef cpp.PointNormalCloud_t normals
+        mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
+
+        cdef float x,y,z
+        cdef int n = self.thisptr.size()
+        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+
+        cdef int i = 0
+        while i < n:
+            result[i,0] = normals.at(i).normal_x
+            result[i,1] = normals.at(i).normal_y
+            result[i,2] = normals.at(i).normal_z
+            i = i + 1
+
+        return result
 
     def make_statistical_outlier_filter(self):
         """
@@ -415,14 +438,15 @@ cdef class MovingLeastSquares:
         """
         self.me.setPolynomialFit(fit)
 
-    def reconstruct(self):
+    def process(self):
         """
         Apply the smoothing according to the previously set values and return
         a new pointcloud
+        PCL version 1.6+
         """
         pc = PointCloud()
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
-        self.me.reconstruct(deref(ccloud))
+        self.me.process(deref(ccloud))
         return pc
 
 cdef class VoxelGridFilter:

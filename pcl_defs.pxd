@@ -26,7 +26,11 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float y
         float z
     cdef struct Normal:
-        pass
+        Normal()
+        float normal_x
+        float normal_y
+        float normal_z
+        float curvature
 
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
     cdef cppclass NormalEstimation[T, N]:
@@ -58,16 +62,18 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 
+cdef int raise_py_error()
+
 cdef extern from "pcl/surface/mls.h" namespace "pcl":
-    cdef cppclass MovingLeastSquares[I,N]:
+    cdef cppclass MovingLeastSquares[I,O]:
         MovingLeastSquares()
         void setInputCloud (shared_ptr[PointCloud[I]])
         void setSearchRadius (double)
         void setPolynomialOrder(bool)
         void setPolynomialFit(int)
-        void reconstruct (PointCloud[I])
+        void process (PointCloud[O])
 
-ctypedef MovingLeastSquares[PointXYZ,Normal] MovingLeastSquares_t
+ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
 
 cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:
@@ -89,7 +95,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void addPointsFromInputCloud()
         void deleteTree()
         bool isVoxelOccupiedAtPoint(double, double, double)
-        int getOccupiedVoxelCenters(AlignedPointTVector_t)	
+        int getOccupiedVoxelCenters(AlignedPointTVector_t)  
         void deleteVoxelAtPoint(PointXYZ)
 
 ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
