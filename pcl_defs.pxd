@@ -63,15 +63,15 @@ ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 
 cdef extern from "pcl/surface/mls.h" namespace "pcl":
-    cdef cppclass MovingLeastSquares[I,N]:
+    cdef cppclass MovingLeastSquares[I,O]:
         MovingLeastSquares()
         void setInputCloud (shared_ptr[PointCloud[I]])
         void setSearchRadius (double)
         void setPolynomialOrder(bool)
         void setPolynomialFit(int)
-        void reconstruct (PointCloud[I])
+        void process (PointCloud[O])
 
-ctypedef MovingLeastSquares[PointXYZ,Normal] MovingLeastSquares_t
+ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
 
 cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:

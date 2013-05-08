@@ -438,14 +438,14 @@ cdef class MovingLeastSquares:
         """
         self.me.setPolynomialFit(fit)
 
-    def reconstruct(self):
+    def process(self):
         """
         Apply the smoothing according to the previously set values and return
         a new pointcloud
         """
         pc = PointCloud()
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
-        self.me.reconstruct(deref(ccloud))
+        self.me.process(deref(ccloud))
         return pc
 
 cdef class VoxelGridFilter:
