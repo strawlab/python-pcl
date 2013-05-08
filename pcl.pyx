@@ -145,7 +145,7 @@ cdef class PointCloud:
         self.thisptr.width = npts
         self.thisptr.height = 1
 
-        cdef i = 0
+        cdef int i = 0
         while i < npts:
             self.thisptr.at(i).x = arr[i,0]
             self.thisptr.at(i).y = arr[i,1]
@@ -156,8 +156,21 @@ cdef class PointCloud:
         """
         Return this object as a 2D numpy array (float32)
         """
-        #FIXME: this could be done more efficinetly, i'm sure
-        return np.array(self.to_list(), dtype=np.float32)
+        cdef int i
+        cdef float x,y,z
+        cdef int n = self.thisptr.size()
+        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+
+        i = 0
+        while i < n:
+            x = self.thisptr.at(i).x
+            y = self.thisptr.at(i).y
+            z = self.thisptr.at(i).z
+            result[i,0] = x
+            result[i,1] = y
+            result[i,2] = z
+            i = i + 1
+        return result
 
     def from_list(self, _list):
         """
@@ -179,21 +192,7 @@ cdef class PointCloud:
         """
         Return this object as a list of 3-tuples
         """
-        cdef int i
-        cdef float x,y,z
-        cdef int n = self.thisptr.size()
-
-        result = []
-
-        i = 0
-        while i < n:
-            #not efficient, oh well...
-            x = self.thisptr.at(i).x
-            y = self.thisptr.at(i).y
-            z = self.thisptr.at(i).z
-            result.append((x,y,z))
-            i = i + 1
-        return result
+        return self.to_array().tolist()
 
     def resize(self, int x):
         self.thisptr.resize(x)
