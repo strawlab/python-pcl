@@ -268,7 +268,7 @@ cdef class PointCloud:
 
         return seg
 
-    def compute_normals(self, int ksearch=-1, double searchRadius=-1.0):
+    def calc_normals(self, int ksearch=-1, double searchRadius=-1.0):
         """
         Return a pcl.SegmentationNormal object with this object set as the input-cloud
         """
