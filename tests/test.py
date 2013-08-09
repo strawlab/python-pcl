@@ -185,6 +185,17 @@ class TestFilter(unittest.TestCase):
         mls.set_search_radius(0.5)
         mls.set_polynomial_order(2)
         mls.set_polynomial_fit(True)
+        f = mls.process()
+        #new instance is returned
+        self.assertNotEqual(self.p, f)
+        #mls filter retains the same number of points
+        self.assertEqual(self.p.size, f.size)
+    
+    def testFilter_legacy(self):
+        mls = self.p.make_moving_least_squares()
+        mls.set_search_radius(0.5)
+        mls.set_polynomial_order(2)
+        mls.set_polynomial_fit(True)
         f = mls.reconstruct()
         #new instance is returned
         self.assertNotEqual(self.p, f)
