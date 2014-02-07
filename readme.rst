@@ -33,9 +33,10 @@ for interacting with numpy. For example (from tests/test.py)
 .. code-block:: python
 
     import pcl
+    import numpy as np
     p = pcl.PointCloud()
-    p.from_array(np.array([[1,2,3],[3,4,5]], dtype=np.float32)))
-    seg = self.p.make_segmenter()
+    p.from_array(np.array([[1,2,3],[3,4,5]], dtype=np.float32))
+    seg = p.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
     indices, model = seg.segment()
@@ -89,7 +90,7 @@ API Documentation
    pcl.PassThroughFilter
    pcl.VoxelGridFilter
 
-For deficiencies in this documentation, please consule the
+For deficiencies in this documentation, please consult the
 `PCL API docs <http://docs.pointclouds.org/trunk/index.html>`_, and the
 `PCL tutorials <http://pointclouds.org/documentation/tutorials/>`_.
 
