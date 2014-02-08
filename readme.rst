@@ -62,8 +62,8 @@ Requirements
 
 This release has been tested on Ubuntu 12.10 with
 
- * pcl 1.5.1-1
- * Cython 0.16-1 (experimental)
+ * pcl 1.7.1
+ * Cython 0.20
  * `pkgconfig <https://pypi.python.org/pypi/pkgconfig>` 1.10
 
 A note about types

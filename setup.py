@@ -3,7 +3,7 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 import pkgconfig
 
-PCL_VER = "1.6"
+PCL_VER = "1.7"
 
 pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
             "sample_consensus", "search", "segmentation", "surface"]
