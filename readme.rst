@@ -60,11 +60,10 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 Requirements
 ------------
 
-This release has been tested on Ubuntu 12.10 with
+This release has been tested on Ubuntu 13.10 with
 
  * pcl 1.7.1
  * Cython 0.20
- * `pkgconfig <https://pypi.python.org/pypi/pkgconfig>` 1.10
 
 A note about types
 ------------------
