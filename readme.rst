@@ -64,6 +64,7 @@ This release has been tested on Ubuntu 12.10 with
 
  * pcl 1.5.1-1
  * Cython 0.16-1 (experimental)
+ * `pkgconfig <https://pypi.python.org/pypi/pkgconfig>` 1.10
 
 A note about types
 ------------------
