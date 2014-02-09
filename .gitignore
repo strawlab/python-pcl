@@ -3,6 +3,7 @@
 pcl.cpp
 
 *.py[co]
+*.so
 
 # Packages
 *.egg
@@ -29,3 +30,6 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# Vim
+*.sw[op]
