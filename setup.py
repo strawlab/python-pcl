@@ -3,6 +3,7 @@ from Cython.Distutils import build_ext
 from distutils.core import setup
 from distutils.extension import Extension
 import subprocess
+import numpy
 
 PCL_VER = "1.7"
 
@@ -12,7 +13,7 @@ pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
 pcl_libs = ["pcl_%s-%s" % (lib, PCL_VER) for lib in pcl_libs]
 
 ext_args = defaultdict(list)
-
+ext_args['include_dirs'].append(numpy.get_include())
 
 def pkgconfig(flag):
     return subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
