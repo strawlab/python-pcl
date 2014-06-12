@@ -42,6 +42,10 @@ SACMODEL_PARALLEL_PLANE = cpp.SACMODEL_PARALLEL_PLANE
 SACMODEL_NORMAL_PARALLEL_PLANE = cpp.SACMODEL_NORMAL_PARALLEL_PLANE
 SACMODEL_STICK = cpp.SACMODEL_STICK
 
+
+cnp.import_array()
+
+
 cdef class Segmentation:
     """
     Segmentation class for Sample Consensus methods and models
