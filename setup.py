@@ -28,7 +28,14 @@ ext_args = defaultdict(list)
 
 
 def pkgconfig(flag):
-    return subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
+    # Equivalent in Python 2.7 (but not 2.6):
+    #subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
+    p = subprocess.Popen(['pkg-config', flag] + pcl_libs,
+                         stdout=subprocess.PIPE)
+    stdout, _ = p.communicate()
+    # Assume no evil spaces in filenames; unsure how pkg-config would
+    # handle those, anyway.
+    return stdout.split()
 
 
 for flag in pkgconfig('--cflags-only-I'):
