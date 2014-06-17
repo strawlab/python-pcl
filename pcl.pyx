@@ -144,36 +144,31 @@ cdef class PointCloud:
         """
         assert arr.shape[1] == 3
 
-        cdef int npts = arr.shape[0]
+        cdef cnp.npy_intp npts = arr.shape[0]
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
 
-        cdef int i = 0
-        while i < npts:
+        for i in range(npts):
             self.thisptr.at(i).x = arr[i,0]
             self.thisptr.at(i).y = arr[i,1]
             self.thisptr.at(i).z = arr[i,2]
-            i += 1
 
     def to_array(self):
         """
         Return this object as a 2D numpy array (float32)
         """
-        cdef int i
         cdef float x,y,z
-        cdef int n = self.thisptr.size()
+        cdef cnp.npy_intp n = self.thisptr.size()
         cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
 
-        i = 0
-        while i < n:
+        for i in range(n):
             x = self.thisptr.at(i).x
             y = self.thisptr.at(i).y
             z = self.thisptr.at(i).z
             result[i,0] = x
             result[i,1] = y
             result[i,2] = z
-            i = i + 1
         return result
 
     def from_list(self, _list):
@@ -183,7 +178,7 @@ cdef class PointCloud:
         assert len(_list)
         assert len(_list[0]) == 3
 
-        cdef npts = len(_list)
+        cdef Py_ssize_t npts = len(_list)
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
@@ -198,10 +193,10 @@ cdef class PointCloud:
         """
         return self.to_array().tolist()
 
-    def resize(self, int x):
+    def resize(self, cnp.npy_intp x):
         self.thisptr.resize(x)
 
-    def get_point(self, int row, int col):
+    def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
         """
         Return a point (3-tuple) at the given row/column
         """
@@ -212,8 +207,8 @@ cdef class PointCloud:
         cdef y = self.thisptr.at(row,col).y
         cdef z = self.thisptr.at(row,col).z
         return x,y,z
-        
-    def __getitem__(self, int idx):
+
+    def __getitem__(self, cnp.npy_intp idx):
         cdef x = self.thisptr.at(idx).x
         cdef y = self.thisptr.at(idx).y
         cdef z = self.thisptr.at(idx).z
@@ -411,7 +406,7 @@ cdef class MovingLeastSquares:
         """
         self.me.setPolynomialOrder(order)
 
-    def set_polynomial_fit(self, int fit):
+    def set_polynomial_fit(self, bint fit):
         """
         Sets whether the surface and normal are approximated using a polynomial,
         or only via tangent estimation.
