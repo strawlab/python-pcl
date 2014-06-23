@@ -1,6 +1,7 @@
 *.pcd
 
 pcl.cpp
+pcl.html
 
 *.py[co]
 *.so
