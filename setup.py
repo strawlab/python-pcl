@@ -47,6 +47,9 @@ for flag in pkgconfig('--cflags-only-other'):
     else:
         ext_args['extra_compile_args'].append(flag)
 for flag in pkgconfig('--libs-only-l'):
+    if flag == "-lflann_cpp-gd":
+        print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
+        continue
     ext_args['libraries'].append(flag[2:])
 for flag in pkgconfig('--libs-only-L'):
     ext_args['library_dirs'].append(flag[2:])
@@ -57,7 +60,7 @@ for flag in pkgconfig('--libs-only-other'):
 setup(name='python-pcl',
       description='pcl wrapper',
       url='http://github.com/strawlab/python-pcl',
-      version='0.1',
+      version='0.2',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
       license='BSD',
