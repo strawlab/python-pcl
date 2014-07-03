@@ -1,3 +1,5 @@
+from libc.stddef cimport size_t
+
 from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
@@ -7,15 +9,15 @@ from vector cimport vector as vector2
 
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
-        PointCloud()
-        PointCloud(int, int)
+        PointCloud() except +
+        PointCloud(unsigned int, unsigned int) except +
         unsigned int width
         unsigned int height
         bool is_dense
-        void resize(int)
-        int size()
-        T& operator[](int)
-        T& at(int)
+        void resize(size_t) except +
+        size_t size()
+        T& operator[](size_t)
+        T& at(size_t)
         T& at(int, int)
         shared_ptr[PointCloud[T]] makeShared()
 
@@ -200,4 +202,3 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
           int, int, vector[int], vector[float])
 
 ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
-
