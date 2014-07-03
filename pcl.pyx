@@ -6,6 +6,7 @@ cimport numpy as cnp
 
 cimport pcl_defs as cpp
 
+cimport cython
 from cython.operator import dereference as deref
 from libcpp.string cimport string
 from libcpp cimport bool
@@ -138,6 +139,7 @@ cdef class PointCloud:
         """ property containing whether the cloud is dense or not """
         def __get__(self): return self.thisptr.is_dense
 
+    @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
         Fill this object from a 2D numpy array (float32)
@@ -149,43 +151,43 @@ cdef class PointCloud:
         self.thisptr.width = npts
         self.thisptr.height = 1
 
+        cdef cpp.PointXYZ *p
         for i in range(npts):
-            self.thisptr.at(i).x = arr[i,0]
-            self.thisptr.at(i).y = arr[i,1]
-            self.thisptr.at(i).z = arr[i,2]
+            p = &self.thisptr.at(i)
+            p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
+    @cython.boundscheck(False)
     def to_array(self):
         """
         Return this object as a 2D numpy array (float32)
         """
         cdef float x,y,z
         cdef cnp.npy_intp n = self.thisptr.size()
-        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+        cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
+        cdef cpp.PointXYZ *p
+
+        result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            x = self.thisptr.at(i).x
-            y = self.thisptr.at(i).y
-            z = self.thisptr.at(i).z
-            result[i,0] = x
-            result[i,1] = y
-            result[i,2] = z
+            p = &self.thisptr.at(i)
+            result[i, 0] = p.x
+            result[i, 1] = p.y
+            result[i, 2] = p.z
         return result
 
     def from_list(self, _list):
         """
         Fill this pointcloud from a list of 3-tuples
         """
-        assert len(_list)
-        assert len(_list[0]) == 3
-
         cdef Py_ssize_t npts = len(_list)
+        cdef cpp.PointXYZ *p
+
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
         for i,l in enumerate(_list):
-            self.thisptr.at(i).x = l[0]
-            self.thisptr.at(i).y = l[1]
-            self.thisptr.at(i).z = l[2]
+            p = &self.thisptr.at(i)
+            p.x, p.y, p.z = l
 
     def to_list(self):
         """
@@ -200,19 +202,12 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        #grr.... the following doesnt compile to valid
-        #cython.. so just take the perf hit
-        #cdef PointXYZ &p = self.thisptr.at(x,y)
-        cdef x = self.thisptr.at(row,col).x
-        cdef y = self.thisptr.at(row,col).y
-        cdef z = self.thisptr.at(row,col).z
-        return x,y,z
+        cdef cpp.PointXYZ *p = &self.thisptr.at(row, col)
+        return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp idx):
-        cdef x = self.thisptr.at(idx).x
-        cdef y = self.thisptr.at(idx).y
-        cdef z = self.thisptr.at(idx).z
-        return x,y,z
+        cdef cpp.PointXYZ *p = &self.thisptr.at(idx)
+        return p.x, p.y, p.z
 
     def from_file(self, char *f):
         """
