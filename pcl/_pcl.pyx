@@ -213,14 +213,21 @@ cdef class PointCloud:
         """
         Fill this pointcloud from a file (a local path).
         Only pcd files supported currently.
+
+        Deprecated; use pcl.load instead.
         """
+        return self._from_pcd_file(f)
+
+    def _from_pcd_file(self, const char *s):
         cdef int ok = 0
-        cdef string s = string(f)
-        if f.endswith(".pcd"):
-            with nogil:
-                ok = cpp.loadPCDFile(s, deref(self.thisptr))
-        else:
-            raise ValueError("Incorrect file extension (must be .pcd)")
+        with nogil:
+            ok = cpp.loadPCDFile(string(s), deref(self.thisptr))
+        return ok
+
+    def _from_ply_file(self, const char *s):
+        cdef int ok = 0
+        with nogil:
+            ok = cpp.loadPLYFile(string(s), deref(self.thisptr))
         return ok
 
     def to_file(self, char *f, bool ascii=True):
