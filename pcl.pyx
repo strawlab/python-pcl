@@ -217,7 +217,8 @@ cdef class PointCloud:
         cdef int ok = 0
         cdef string s = string(f)
         if f.endswith(".pcd"):
-            ok = cpp.loadPCDFile(s, deref(self.thisptr))
+            with nogil:
+                ok = cpp.loadPCDFile(s, deref(self.thisptr))
         else:
             raise ValueError("Incorrect file extension (must be .pcd)")
         return ok
@@ -231,7 +232,8 @@ cdef class PointCloud:
         cdef int ok = 0
         cdef string s = string(f)
         if f.endswith(".pcd"):
-            ok = cpp.savePCDFile(s, deref(self.thisptr), binary)
+            with nogil:
+                ok = cpp.savePCDFile(s, deref(self.thisptr), binary)
         else:
             raise ValueError("Incorrect file extension (must be .pcd)")
         return ok
