@@ -1,7 +1,7 @@
 *.pcd
 
-pcl.cpp
-pcl.html
+pcl/_pcl.cpp
+pcl/_pcl.html
 
 *.py[co]
 *.so
