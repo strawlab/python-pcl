@@ -9,22 +9,39 @@ def load(path, format=None):
 
     Format should be "pcd", "ply", or None to infer from the pathname.
     """
-
-    if format is None:
-        for candidate in ["pcd", "ply"]:
-            if path.endswith("." + candidate):
-                format = candidate
-                break
-        else:
-            raise ValueError("Could not determine file format from pathname %s"
-                             % path)
-
+    format = _infer_format(path, format)
     p = PointCloud()
     try:
-        loader = getattr(p, "_from_%s_file" % format.lower())
+        loader = getattr(p, "_from_%s_file" % format)
     except AttributeError:
         raise ValueError("unknown file format %s" % format)
     if loader(path):
         raise IOError("error while loading pointcloud from %r (format=%r)"
                       % (path, format))
     return p
+
+
+def save(cloud, path, format=None, binary=False):
+    """Save pointcloud to file.
+
+    Format should be "pcd", "ply", or None to infer from the pathname.
+    """
+    format = _infer_format(path, format)
+    try:
+        dumper = getattr(cloud, "_to_%s_file" % format)
+    except AttributeError:
+        raise ValueError("unknown file format %s" % format)
+    if dumper(path, binary):
+        raise IOError("error while saving pointcloud to %r (format=%r)"
+                      % (path, format))
+
+
+def _infer_format(path, format):
+    if format is not None:
+        return format.lower()
+
+    for candidate in ["pcd", "ply"]:
+        if path.endswith("." + candidate):
+            return candidate
+
+    raise ValueError("Could not determine file format from pathname %s" % path)
