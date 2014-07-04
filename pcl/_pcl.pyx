@@ -1,5 +1,7 @@
 #cython: embedsignature=True
 
+from collections import Sequence
+import numbers
 import numpy as np
 
 cimport numpy as cnp
@@ -118,12 +120,31 @@ cdef class SegmentationNormal:
         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
 
 cdef class PointCloud:
-    """
-    Represents a class of points, supporting the PointXYZ type.
+    """Represents a cloud of points in 3-d space.
+
+    A point cloud can be initialized from either a NumPy ndarray of shape
+    (n_points, 3), from a list of triples, or from an integer n to create an
+    "empty" cloud of n points.
+
+    To load a point cloud from disk, use pcl.load.
     """
     cdef cpp.PointCloud[cpp.PointXYZ] *thisptr
-    def __cinit__(self):
+
+    def __cinit__(self, init=None):
         self.thisptr = new cpp.PointCloud[cpp.PointXYZ]()
+
+        if init is None:
+            return
+        elif isinstance(init, (numbers.Integral, np.integer)):
+            self.resize(init)
+        elif isinstance(init, np.ndarray):
+            self.from_array(init)
+        elif isinstance(init, Sequence):
+            self.from_list(init)
+        else:
+            raise TypeError("Can't initialize a PointCloud from a %s"
+                            % type(init))
+
     def __dealloc__(self):
         del self.thisptr
     property width:
