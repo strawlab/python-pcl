@@ -128,6 +128,8 @@ cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
 
 cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
     int loadPLYFile(string file_name, PointCloud[PointXYZ] cloud) nogil
+    int savePLYFile(string file_name, PointCloud[PointXYZ] cloud,
+                    bool binary_mode) nogil
 
 #http://dev.pointclouds.org/issues/624
 #cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":

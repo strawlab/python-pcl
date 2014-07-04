@@ -240,31 +240,37 @@ cdef class PointCloud:
         return self._from_pcd_file(f)
 
     def _from_pcd_file(self, const char *s):
-        cdef int ok = 0
+        cdef int error = 0
         with nogil:
             ok = cpp.loadPCDFile(string(s), deref(self.thisptr))
-        return ok
+        return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            ok = cpp.loadPLYFile(string(s), deref(self.thisptr))
-        return ok
+            error = cpp.loadPLYFile(string(s), deref(self.thisptr))
+        return error
 
-    def to_file(self, char *f, bool ascii=True):
+    def to_file(self, const char *fname, bool ascii=True):
+        """Save pointcloud to a file in PCD format.
+
+        Deprecated: use pcl.save instead.
         """
-        Save this pointcloud to a local file.
-        Only saving to binary or ascii pcd is supported
-        """
-        cdef bool binary = not ascii
-        cdef int ok = 0
+        return self._to_pcd_file(fname, not ascii)
+
+    def _to_pcd_file(self, const char *f, bool binary=False):
+        cdef int error = 0
         cdef string s = string(f)
-        if f.endswith(".pcd"):
-            with nogil:
-                ok = cpp.savePCDFile(s, deref(self.thisptr), binary)
-        else:
-            raise ValueError("Incorrect file extension (must be .pcd)")
-        return ok
+        with nogil:
+            error = cpp.savePCDFile(s, deref(self.thisptr), binary)
+        return error
+
+    def _to_ply_file(self, const char *f, bool binary=False):
+        cdef int error = 0
+        cdef string s = string(f)
+        with nogil:
+            error = cpp.savePLYFile(s, deref(self.thisptr), binary)
+        return error
 
     def make_segmenter(self):
         """

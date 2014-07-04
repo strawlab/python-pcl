@@ -1,5 +1,7 @@
-import unittest
+import os.path
+import shutil
 import tempfile
+import unittest
 
 import pcl
 import numpy as np
@@ -162,13 +164,17 @@ class TestSave(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.tmpdir = tempfile.mkdtemp(suffix='pcl-test')
+
+    def tearDown(self):
+        shutil.rmtree(self.tmpdir)
 
     def testSave(self):
-        _,d = tempfile.mkstemp(".pcd")
-        self.p.to_file(d)
-        p = pcl.PointCloud()
-        p.from_file(d)
-        self.assertEqual(self.p.size, p.size)
+        for ext in ["pcd", "ply"]:
+            d = os.path.join(self.tmpdir, "foo." + ext)
+            pcl.save(self.p, d)
+            p = pcl.load(d)
+            self.assertEqual(self.p.size, p.size)
 
 class TestFilter(unittest.TestCase):
 
