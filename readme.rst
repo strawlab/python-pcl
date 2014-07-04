@@ -34,8 +34,7 @@ for interacting with numpy. For example (from tests/test.py)
 
     import pcl
     import numpy as np
-    p = pcl.PointCloud()
-    p.from_array(np.array([[1,2,3],[3,4,5]], dtype=np.float32))
+    p = pcl.PointCloud(np.array([[1, 2, 3], [3, 4, 5]], dtype=np.float32))
     seg = p.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
@@ -46,8 +45,7 @@ or, for smoothing
 .. code-block:: python
 
     import pcl
-    p = pcl.PointCloud()
-    p.from_file("C/table_scene_lms400.pcd")
+    p = pcl.load("C/table_scene_lms400.pcd")
     fil = p.make_statistical_outlier_filter()
     fil.set_mean_k (50)
     fil.set_std_dev_mul_thresh (1.0)
@@ -76,8 +74,8 @@ and CentOS 6.5 with
 A note about types
 ------------------
 
-Point Cloud is a heavily templated API, and consequently mapping this into python
-using Cython is challenging. 
+Point Cloud is a heavily templated API, and consequently mapping this into
+Python using Cython is challenging. 
 
 It is written in Cython, and implements enough hard bits of the API
 (from Cythons perspective, i.e the template/smart_ptr bits)  to

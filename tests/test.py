@@ -15,8 +15,7 @@ _DATA = \
 class TestListIO(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_list(_data)
+        self.p = pcl.PointCloud(_data)
 
     def testFromList(self):
         for i,d in enumerate(_data):
@@ -30,9 +29,8 @@ class TestListIO(unittest.TestCase):
 class TestNumpyIO(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
         self.a = np.array(np.mat(_DATA, dtype=np.float32))
-        self.p.from_array(self.a)
+        self.p = pcl.PointCloud(self.a)
 
     def testFromNumy(self):
         for i,d in enumerate(_data):
