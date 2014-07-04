@@ -605,13 +605,13 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
  
     def __dealloc__(self):
         del self.me
-    
-    """
-    Search for all neighbors of query point that are within a given radius.
-    
-    Returns: (k_indices, k_sqr_distances)
-    """
+
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
+        """
+        Search for all neighbors of query point that are within a given radius.
+
+        Returns: (k_indices, k_sqr_distances)
+        """
         cdef vector[int] k_indices
         cdef vector[float] k_sqr_distances
         if max_nn > 0:
