@@ -64,7 +64,8 @@ setup(name='python-pcl',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
       license='BSD',
-      ext_modules=[Extension("pcl", ["pcl.pyx", "minipcl.cpp"],
+      packages=["pcl"],
+      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
                              language="c++", **ext_args)],
       cmdclass={'build_ext': build_ext}
       )

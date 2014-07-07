@@ -1,11 +1,14 @@
 #cython: embedsignature=True
 
+from collections import Sequence
+import numbers
 import numpy as np
 
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
 
+cimport cython
 from cython.operator import dereference as deref
 from libcpp.string cimport string
 from libcpp cimport bool
@@ -117,12 +120,31 @@ cdef class SegmentationNormal:
         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
 
 cdef class PointCloud:
-    """
-    Represents a class of points, supporting the PointXYZ type.
+    """Represents a cloud of points in 3-d space.
+
+    A point cloud can be initialized from either a NumPy ndarray of shape
+    (n_points, 3), from a list of triples, or from an integer n to create an
+    "empty" cloud of n points.
+
+    To load a point cloud from disk, use pcl.load.
     """
     cdef cpp.PointCloud[cpp.PointXYZ] *thisptr
-    def __cinit__(self):
+
+    def __cinit__(self, init=None):
         self.thisptr = new cpp.PointCloud[cpp.PointXYZ]()
+
+        if init is None:
+            return
+        elif isinstance(init, (numbers.Integral, np.integer)):
+            self.resize(init)
+        elif isinstance(init, np.ndarray):
+            self.from_array(init)
+        elif isinstance(init, Sequence):
+            self.from_list(init)
+        else:
+            raise TypeError("Can't initialize a PointCloud from a %s"
+                            % type(init))
+
     def __dealloc__(self):
         del self.thisptr
     property width:
@@ -138,6 +160,7 @@ cdef class PointCloud:
         """ property containing whether the cloud is dense or not """
         def __get__(self): return self.thisptr.is_dense
 
+    @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
         Fill this object from a 2D numpy array (float32)
@@ -149,43 +172,43 @@ cdef class PointCloud:
         self.thisptr.width = npts
         self.thisptr.height = 1
 
+        cdef cpp.PointXYZ *p
         for i in range(npts):
-            self.thisptr.at(i).x = arr[i,0]
-            self.thisptr.at(i).y = arr[i,1]
-            self.thisptr.at(i).z = arr[i,2]
+            p = &self.thisptr.at(i)
+            p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
+    @cython.boundscheck(False)
     def to_array(self):
         """
         Return this object as a 2D numpy array (float32)
         """
         cdef float x,y,z
         cdef cnp.npy_intp n = self.thisptr.size()
-        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+        cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
+        cdef cpp.PointXYZ *p
+
+        result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            x = self.thisptr.at(i).x
-            y = self.thisptr.at(i).y
-            z = self.thisptr.at(i).z
-            result[i,0] = x
-            result[i,1] = y
-            result[i,2] = z
+            p = &self.thisptr.at(i)
+            result[i, 0] = p.x
+            result[i, 1] = p.y
+            result[i, 2] = p.z
         return result
 
     def from_list(self, _list):
         """
         Fill this pointcloud from a list of 3-tuples
         """
-        assert len(_list)
-        assert len(_list[0]) == 3
-
         cdef Py_ssize_t npts = len(_list)
+        cdef cpp.PointXYZ *p
+
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
         for i,l in enumerate(_list):
-            self.thisptr.at(i).x = l[0]
-            self.thisptr.at(i).y = l[1]
-            self.thisptr.at(i).z = l[2]
+            p = &self.thisptr.at(i)
+            p.x, p.y, p.z = l
 
     def to_list(self):
         """
@@ -200,46 +223,54 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        #grr.... the following doesnt compile to valid
-        #cython.. so just take the perf hit
-        #cdef PointXYZ &p = self.thisptr.at(x,y)
-        cdef x = self.thisptr.at(row,col).x
-        cdef y = self.thisptr.at(row,col).y
-        cdef z = self.thisptr.at(row,col).z
-        return x,y,z
+        cdef cpp.PointXYZ *p = &self.thisptr.at(row, col)
+        return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp idx):
-        cdef x = self.thisptr.at(idx).x
-        cdef y = self.thisptr.at(idx).y
-        cdef z = self.thisptr.at(idx).z
-        return x,y,z
+        cdef cpp.PointXYZ *p = &self.thisptr.at(idx)
+        return p.x, p.y, p.z
 
     def from_file(self, char *f):
         """
         Fill this pointcloud from a file (a local path).
         Only pcd files supported currently.
-        """
-        cdef int ok = 0
-        cdef string s = string(f)
-        if f.endswith(".pcd"):
-            ok = cpp.loadPCDFile(s, deref(self.thisptr))
-        else:
-            raise ValueError("Incorrect file extension (must be .pcd)")
-        return ok
 
-    def to_file(self, char *f, bool ascii=True):
+        Deprecated; use pcl.load instead.
         """
-        Save this pointcloud to a local file.
-        Only saving to binary or ascii pcd is supported
-        """
-        cdef bool binary = not ascii
+        return self._from_pcd_file(f)
+
+    def _from_pcd_file(self, const char *s):
+        cdef int error = 0
+        with nogil:
+            ok = cpp.loadPCDFile(string(s), deref(self.thisptr))
+        return error
+
+    def _from_ply_file(self, const char *s):
         cdef int ok = 0
+        with nogil:
+            error = cpp.loadPLYFile(string(s), deref(self.thisptr))
+        return error
+
+    def to_file(self, const char *fname, bool ascii=True):
+        """Save pointcloud to a file in PCD format.
+
+        Deprecated: use pcl.save instead.
+        """
+        return self._to_pcd_file(fname, not ascii)
+
+    def _to_pcd_file(self, const char *f, bool binary=False):
+        cdef int error = 0
         cdef string s = string(f)
-        if f.endswith(".pcd"):
-            ok = cpp.savePCDFile(s, deref(self.thisptr), binary)
-        else:
-            raise ValueError("Incorrect file extension (must be .pcd)")
-        return ok
+        with nogil:
+            error = cpp.savePCDFile(s, deref(self.thisptr), binary)
+        return error
+
+    def _to_ply_file(self, const char *f, bool binary=False):
+        cdef int error = 0
+        cdef string s = string(f)
+        with nogil:
+            error = cpp.savePLYFile(s, deref(self.thisptr), binary)
+        return error
 
     def make_segmenter(self):
         """
@@ -608,13 +639,13 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
  
     def __dealloc__(self):
         del self.me
-    
-    """
-    Search for all neighbors of query point that are within a given radius.
-    
-    Returns: (k_indices, k_sqr_distances)
-    """
+
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
+        """
+        Search for all neighbors of query point that are within a given radius.
+
+        Returns: (k_indices, k_sqr_distances)
+        """
         cdef vector[int] k_indices
         cdef vector[float] k_sqr_distances
         if max_nn > 0:

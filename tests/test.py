@@ -1,5 +1,7 @@
-import unittest
+import os.path
+import shutil
 import tempfile
+import unittest
 
 import pcl
 import numpy as np
@@ -15,8 +17,7 @@ _DATA = \
 class TestListIO(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_list(_data)
+        self.p = pcl.PointCloud(_data)
 
     def testFromList(self):
         for i,d in enumerate(_data):
@@ -30,9 +31,8 @@ class TestListIO(unittest.TestCase):
 class TestNumpyIO(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
         self.a = np.array(np.mat(_DATA, dtype=np.float32))
-        self.p.from_array(self.a)
+        self.p = pcl.PointCloud(self.a)
 
     def testFromNumy(self):
         for i,d in enumerate(_data):
@@ -122,8 +122,7 @@ DATA ascii
     with open("/tmp/test.pcd","w") as f:
         f.write(TMPL % {"npts":npts,"data":SEGDATA.replace(";","")})
 
-    p = pcl.PointCloud()
-    p.from_file("/tmp/test.pcd")
+    p = pcl.load("/tmp/test.pcd")
 
     assert p.width == npts
     assert p.height == 1
@@ -164,21 +163,23 @@ class TestSegmentCylinder(unittest.TestCase):
 class TestSave(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.tmpdir = tempfile.mkdtemp(suffix='pcl-test')
+
+    def tearDown(self):
+        shutil.rmtree(self.tmpdir)
 
     def testSave(self):
-        _,d = tempfile.mkstemp(".pcd")
-        self.p.to_file(d)
-        p = pcl.PointCloud()
-        p.from_file(d)
-        self.assertEqual(self.p.size, p.size)
+        for ext in ["pcd", "ply"]:
+            d = os.path.join(self.tmpdir, "foo." + ext)
+            pcl.save(self.p, d)
+            p = pcl.load(d)
+            self.assertEqual(self.p.size, p.size)
 
 class TestFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/flydracyl.pcd")
+        self.p = pcl.load("tests/flydracyl.pcd")
 
     def testFilter(self):
         mls = self.p.make_moving_least_squares()
@@ -194,8 +195,7 @@ class TestFilter(unittest.TestCase):
 class TestExtract(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/flydracyl.pcd")
+        self.p = pcl.load("tests/flydracyl.pcd")
 
     def testExtractPos(self):
         p2 = self.p.extract([1,2,3],False)
@@ -211,8 +211,7 @@ class TestExtract(unittest.TestCase):
 class TestSegmenterNormal(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
 
     def _tpos(self, c):
         self.assertEqual(c.size, 22747)
@@ -254,8 +253,7 @@ class TestSegmenterNormal(unittest.TestCase):
 class TestVoxelGridFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
 
     def testFilter(self):
         fil = self.p.make_voxel_grid_filter()
@@ -266,8 +264,7 @@ class TestVoxelGridFilter(unittest.TestCase):
 
 class TestPassthroughFilter(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
 
     def testFilter(self):
         fil = self.p.make_passthrough_filter()
@@ -292,8 +289,7 @@ class TestOctreePointCloud(unittest.TestCase):
         self.t = pcl.OctreePointCloud(0.1)
 
     def testLoad(self):
-        pc = pcl.PointCloud()
-        pc.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
@@ -311,8 +307,7 @@ class TestOctreePointCloud(unittest.TestCase):
 class TestOctreePointCloudSearch(unittest.TestCase):
     def setUp(self):
         self.t = pcl.OctreePointCloudSearch(0.1)
-        pc = pcl.PointCloud()
-        pc.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
