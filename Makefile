@@ -1,4 +1,5 @@
-pcl/_pcl.so: pcl/_pcl.pyx setup.py pcl/pcl_defs.pxd pcl/minipcl.cpp
+pcl/_pcl.so: pcl/_pcl.pyx setup.py pcl/pcl_defs.pxd pcl/minipcl.cpp \
+             pcl/indexing.hpp
 	python setup.py build_ext --inplace
 
 test: pcl/_pcl.so tests/test.py

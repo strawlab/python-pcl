@@ -174,7 +174,7 @@ cdef class PointCloud:
 
         cdef cpp.PointXYZ *p
         for i in range(npts):
-            p = &self.thisptr.at(i)
+            p = cpp.getptr(self.thisptr, i)
             p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
     @cython.boundscheck(False)
@@ -190,7 +190,7 @@ cdef class PointCloud:
         result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            p = &self.thisptr.at(i)
+            p = cpp.getptr(self.thisptr, i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
@@ -206,8 +206,8 @@ cdef class PointCloud:
         self.resize(npts)
         self.thisptr.width = npts
         self.thisptr.height = 1
-        for i,l in enumerate(_list):
-            p = &self.thisptr.at(i)
+        for i, l in enumerate(_list):
+            p = cpp.getptr(self.thisptr, i)
             p.x, p.y, p.z = l
 
     def to_list(self):
@@ -223,11 +223,11 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZ *p = &self.thisptr.at(row, col)
+        cdef cpp.PointXYZ *p = cpp.getptr_at(self.thisptr, row, col)
         return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp idx):
-        cdef cpp.PointXYZ *p = &self.thisptr.at(idx)
+        cdef cpp.PointXYZ *p = cpp.getptr_at(self.thisptr, idx)
         return p.x, p.y, p.z
 
     def from_file(self, char *f):
@@ -566,15 +566,21 @@ cdef class OctreePointCloud:
     Octree pointcloud
     """
     cdef cpp.OctreePointCloud_t *me
-   
+
     def __cinit__(self, double resolution):
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
+    def __init__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me = new cpp.OctreePointCloud_t(resolution)
-    
+
     def __dealloc__(self):
         del self.me
+        self.me = NULL      # just to be sure
 
     def set_input_cloud(self, PointCloud pc):
         """
@@ -637,9 +643,6 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         """ 
         self.me = <cpp.OctreePointCloud_t*> new cpp.OctreePointCloudSearch_t(resolution)
  
-    def __dealloc__(self):
-        del self.me
-
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """
         Search for all neighbors of query point that are within a given radius.
