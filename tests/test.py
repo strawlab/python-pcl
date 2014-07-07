@@ -138,8 +138,7 @@ SEGCYLIN = 11461
 class TestSegmentCylinder(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud()
-        self.p.from_file("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
 
     def testSegment(self):
         seg = self.p.make_segmenter_normals(50)
