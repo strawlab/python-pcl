@@ -571,6 +571,8 @@ cdef class OctreePointCloud:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
         self.me = new cpp.OctreePointCloud_t(resolution)
     
     def __dealloc__(self):
