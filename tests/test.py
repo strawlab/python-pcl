@@ -208,6 +208,20 @@ class TestExtract(unittest.TestCase):
         self.assertNotEqual(self.p, p2)
         self.assertEqual(p2.size, self.p.size - 3)
 
+class TestExceptions(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.PointCloud(np.arange(9, dtype=np.float32).reshape(3, 3))
+
+    def testIndex(self):
+        self.assertRaises(IndexError, self.p.__getitem__, self.p.size)
+        self.assertRaises(Exception, self.p.get_point, self.p.size, 1)
+
+    def testResize(self):
+        # XXX MemoryError isn't actually the prettiest exception for a
+        # negative argument. Don't hesitate to change this test to reflect
+        # better exceptions.
+        self.assertRaises(MemoryError, self.p.resize, -1)
+
 class TestSegmenterNormal(unittest.TestCase):
 
     def setUp(self):
