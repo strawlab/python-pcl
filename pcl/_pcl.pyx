@@ -490,9 +490,16 @@ cdef class PassThroughFilter:
     def __dealloc__(self):
         del self.me
 
-    def set_filter_field_name(self, char *field_name):
-        cdef string s = string(field_name)
-        self.me.setFilterFieldName (s)
+    def set_filter_field_name(self, field_name):
+        cdef bytes fname_ascii
+        if isinstance(field_name, unicode):
+            fname_ascii = field_name.encode("ascii")
+        elif not isinstance(field_name, bytes):
+            raise TypeError("field_name should be a string, got %r"
+                            % field_name)
+        else:
+            fname_ascii = field_name
+        self.me.setFilterFieldName(string(fname_ascii))
 
     def set_filter_limits(self, float filter_min, float filter_max):
         self.me.setFilterLimits (filter_min, filter_max)
