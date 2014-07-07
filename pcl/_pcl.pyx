@@ -566,17 +566,21 @@ cdef class OctreePointCloud:
     Octree pointcloud
     """
     cdef cpp.OctreePointCloud_t *me
-   
+
     def __cinit__(self, double resolution):
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
+    def __init__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        if resolution <= 0.:
-            raise ValueError("Expected resolution > 0., got %r" % resolution)
         self.me = new cpp.OctreePointCloud_t(resolution)
-    
+
     def __dealloc__(self):
         del self.me
+        self.me = NULL      # just to be sure
 
     def set_input_cloud(self, PointCloud pc):
         """
@@ -639,9 +643,6 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         """ 
         self.me = <cpp.OctreePointCloud_t*> new cpp.OctreePointCloudSearch_t(resolution)
  
-    def __dealloc__(self):
-        del self.me
-
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """
         Search for all neighbors of query point that are within a given radius.
