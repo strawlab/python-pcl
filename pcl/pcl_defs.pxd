@@ -16,10 +16,16 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         bool is_dense
         void resize(size_t) except +
         size_t size()
-        T& operator[](size_t)
-        T& at(size_t)
-        T& at(int, int)
+        #T& operator[](size_t)
+        #T& at(size_t) except +
+        #T& at(int, int) except +
         shared_ptr[PointCloud[T]] makeShared()
+
+cdef extern from "indexing.hpp":
+    # Use these instead of operator[] or at.
+    PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
+    PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
+    PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
