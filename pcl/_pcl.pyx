@@ -515,7 +515,7 @@ cdef class KdTreeFLANN:
     """
     cdef cpp.KdTreeFLANN_t *me
 
-    def __cinit__(self, PointCloud pc):
+    def __cinit__(self, PointCloud pc not None):
         # XXX it seems copying the entire pointcloud is the only option in
         # PCL 1.7.1.
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
@@ -525,41 +525,52 @@ cdef class KdTreeFLANN:
     def __dealloc__(self):
         del self.me
 
-    def nearest_k_search_for_cloud(self, PointCloud pc, int k=1):
+    def nearest_k_search_for_cloud(self, PointCloud pc not None, int k=1):
         """
         Find the k nearest neighbours and squared distances for all points
         in the pointcloud. Results are in ndarrays, size (pc.size, k)
         Returns: (k_indices, k_sqr_distances)
         """
-        n_points = pc.size
-        cdef cnp.ndarray[float, ndim=2] np_k_sqr_distances = np.zeros(
-            (n_points, k), dtype=np.float32)
-        cdef cnp.ndarray[int, ndim=2] np_k_indices= np.zeros(
-            (n_points, k), dtype=np.int32)
-        for i in range(pc.size):
-            k_i, k_sqr_d = self.nearest_k_search_for_point(pc, i, k)
-            np_k_indices[i,:] = k_i
-            np_k_sqr_distances[i,:] = k_sqr_d
-        return np_k_indices, np_k_sqr_distances
+        cdef cnp.npy_intp n_points = pc.size
+        cdef cnp.ndarray[float, ndim=2] sqdist = np.zeros((n_points, k),
+                                                          dtype=np.float32)
+        cdef cnp.ndarray[int, ndim=2] ind = np.zeros((n_points, k),
+                                                     dtype=np.int32)
 
-    def nearest_k_search_for_point(self, PointCloud pc, int index, int k=1):
+        for i in range(n_points):
+            self._nearest_k(pc, i, k, ind[i], sqdist[i])
+        return ind, sqdist
+
+    def nearest_k_search_for_point(self, PointCloud pc not None, int index,
+                                   int k=1):
         """
         Find the k nearest neighbours and squared distances for the point
         at pc[index]. Results are in ndarrays, size (k)
         Returns: (k_indices, k_sqr_distances)
         """
+        cdef cnp.ndarray[float] sqdist = np.zeros(k, dtype=np.float32)
+        cdef cnp.ndarray[int] ind = np.zeros(k, dtype=np.int32)
+
+        self._nearest_k(pc, index, k, ind, sqdist)
+        return ind, sqdist
+
+    @cython.boundscheck(False)
+    cdef void _nearest_k(self, PointCloud pc, int index, int k,
+                         cnp.ndarray[ndim=1, dtype=int, mode='c'] ind,
+                         cnp.ndarray[ndim=1, dtype=float, mode='c'] sqdist
+                        ) except +:
+        # k nearest neighbors query for a single point.
         cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         cdef vector[int] k_indices
         cdef vector[float] k_sqr_distances
         k_indices.resize(k)
         k_sqr_distances.resize(k)
-        self.me.nearestKSearch(deref(ccloud), index, k, k_indices, k_sqr_distances)
-        cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
-        cdef cnp.ndarray[int] np_k_indices= np.zeros(k, dtype=np.int32)
+        self.me.nearestKSearch(deref(ccloud), index, k, k_indices,
+                               k_sqr_distances)
+
         for i in range(k):
-            np_k_sqr_distances[i] = k_sqr_distances[i]
-            np_k_indices[i] = k_indices[i]
-        return np_k_indices, np_k_sqr_distances
+            sqdist[i] = k_sqr_distances[i]
+            ind[i] = k_indices[i]
 
 cdef cpp.PointXYZ to_point_t(point):
     cdef cpp.PointXYZ p
