@@ -298,6 +298,37 @@ class TestPassthroughFilter(unittest.TestCase):
         back = fil.filter().size
         self.assertEqual(total,front+back)
 
+class TestKdTree(unittest.TestCase):
+    def setUp(self):
+        rng = np.random.RandomState(42)
+        # Define two dense sets of points of sizes 30 and 170, resp.
+        a = np.random.randn(100, 3).astype(np.float32)
+        a[:30] -= 42
+
+        self.pc = pcl.PointCloud(a)
+        self.kd = pcl.KdTreeFLANN(self.pc)
+
+    def testException(self):
+        self.assertRaises(TypeError, pcl.KdTreeFLANN)
+
+    def testKNN(self):
+        # Small cluster
+        ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, 0, k=2)
+        for i in ind:
+            self.assertGreaterEqual(i, 0)
+            self.assertLess(i, 30)
+        for d in sqdist:
+            self.assertGreaterEqual(d, 0)
+
+        # Big cluster
+        for ref, k in ((80, 1), (59, 3), (60, 10)):
+            ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
+            for i in ind:
+                self.assertGreaterEqual(i, 0)
+                self.assertGreaterEqual(i, 30)
+            for d in sqdist:
+                self.assertGreaterEqual(d, 0)
+
 class TestOctreePointCloud(unittest.TestCase):
     def setUp(self):
         self.t = pcl.OctreePointCloud(0.1)

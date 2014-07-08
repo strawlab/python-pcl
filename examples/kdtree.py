@@ -18,7 +18,7 @@ pc_1 = pcl.PointCloud()
 pc_1.from_array(points_1)
 pc_2 = pcl.PointCloud()
 pc_2.from_array(points_2)
-kd = pc_1.make_kdtree_flann()
+kd = pcl.KdTreeFLANN(pc_1)
 # find the single closest points to each point in point cloud 2
 # (and the sqr distances)
 indices, sqr_distances = kd.nearest_k_search_for_cloud(pc_2, 1)
