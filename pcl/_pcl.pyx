@@ -341,12 +341,10 @@ cdef class PointCloud:
     def make_kdtree_flann(self):
         """
         Return a pcl.kdTreeFLANN object with this object set as the input-cloud
+
+        Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
         """
-        kdtree = KdTreeFLANN()
-        cdef cpp.KdTreeFLANN_t *ckdtree = <cpp.KdTreeFLANN_t *>kdtree.me
-        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
-        ckdtree.setInputCloud(ccloud.makeShared())
-        return kdtree
+        return KdTreeFLANN(self)
 
     def make_octree(self, double resolution):
         """
@@ -510,11 +508,20 @@ cdef class PassThroughFilter:
 cdef class KdTreeFLANN:
     """
     Finds k nearest neighbours from points in another pointcloud to points in
-    this pointcloud
+    a reference pointcloud.
+
+    Must be constructed from the reference point cloud, which is copied, so
+    changed to pc are not reflected in KdTreeFLANN(pc).
     """
     cdef cpp.KdTreeFLANN_t *me
-    def __cinit__(self):
+
+    def __cinit__(self, PointCloud pc):
+        # XXX it seems copying the entire pointcloud is the only option in
+        # PCL 1.7.1.
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
         self.me = new cpp.KdTreeFLANN_t()
+        self.me.setInputCloud(ccloud.makeShared())
+
     def __dealloc__(self):
         del self.me
 
