@@ -160,6 +160,9 @@ cdef class PointCloud:
         """ property containing whether the cloud is dense or not """
         def __get__(self): return self.thisptr.is_dense
 
+    def __repr__(self):
+        return "<PointCloud of %d points>" % self.thisptr.size
+
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
