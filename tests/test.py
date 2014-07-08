@@ -310,6 +310,7 @@ class TestKdTree(unittest.TestCase):
 
     def testException(self):
         self.assertRaises(TypeError, pcl.KdTreeFLANN)
+        self.assertRaises(TypeError, self.kd.nearest_k_search_for_cloud, None)
 
     def testKNN(self):
         # Small cluster
@@ -324,7 +325,6 @@ class TestKdTree(unittest.TestCase):
         for ref, k in ((80, 1), (59, 3), (60, 10)):
             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
             for i in ind:
-                self.assertGreaterEqual(i, 0)
                 self.assertGreaterEqual(i, 30)
             for d in sqdist:
                 self.assertGreaterEqual(d, 0)
