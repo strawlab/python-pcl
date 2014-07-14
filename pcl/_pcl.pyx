@@ -85,9 +85,6 @@ cdef class SegmentationNormal:
     """
     Segmentation class for Sample Consensus methods and models that require the
     use of surface normals for estimation.
-
-    Due to Cython limitations this should derive from pcl.Segmentation, but
-    is currently unable to do so.
     """
     cdef cpp.SACSegmentationNormal_t *me
     def __cinit__(self):
