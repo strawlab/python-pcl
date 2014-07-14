@@ -15,9 +15,13 @@ from libcpp cimport bool
 from libcpp.vector cimport vector
 
 cdef extern from "minipcl.h":
-    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch, double searchRadius, cpp.PointNormalCloud_t)
-    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t, double ax, double ay, double az)
-    void mpcl_extract(cpp.PointCloud_t, cpp.PointCloud_t, cpp.PointIndices_t *, bool)
+    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
+                              double searchRadius,
+                              cpp.PointNormalCloud_t) except +
+    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t,
+                                 double ax, double ay, double az) except +
+    void mpcl_extract(cpp.PointCloud_t, cpp.PointCloud_t, cpp.PointIndices_t *,
+                      bool) except +
 
 SAC_RANSAC = cpp.SAC_RANSAC
 SAC_LMEDS = cpp.SAC_LMEDS
@@ -161,7 +165,7 @@ cdef class PointCloud:
         def __get__(self): return self.thisptr.is_dense
 
     def __repr__(self):
-        return "<PointCloud of %d points>" % self.thisptr.size
+        return "<PointCloud of %d points>" % self.size
 
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
