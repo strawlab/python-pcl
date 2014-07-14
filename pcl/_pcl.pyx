@@ -161,7 +161,7 @@ cdef class PointCloud:
         def __get__(self): return self.thisptr.is_dense
 
     def __repr__(self):
-        return "<PointCloud of %d points>" % self.thisptr.size
+        return "<PointCloud of %d points>" % self.size
 
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
