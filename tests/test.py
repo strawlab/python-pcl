@@ -92,11 +92,8 @@ class TestSegmentPlane(unittest.TestCase):
         self.assertEqual(1, self.p.height)
 
     def testSegmentPlaneObject(self):
-        seg = self.p.make_segmenter()
-        seg.set_optimize_coefficients (True)
-        seg.set_model_type(pcl.SACMODEL_PLANE)
-        seg.set_method_type(pcl.SAC_RANSAC)
-        seg.set_distance_threshold (0.01)
+        seg = pcl.Segmentation(self.p, model='plane', method='ransac',
+                               threshold=0.01)
 
         indices, model = seg.segment()
         self.assertListEqual(indices, SEGINLIERSIDX)
