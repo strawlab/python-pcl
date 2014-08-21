@@ -21,7 +21,8 @@ else:
 
 # Find build/link options for PCL using pkg-config.
 pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
-            "sample_consensus", "search", "segmentation", "surface"]
+            "registration", "sample_consensus", "search", "segmentation",
+            "surface"]
 pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
 
 ext_args = defaultdict(list)
@@ -66,6 +67,9 @@ setup(name='python-pcl',
       license='BSD',
       packages=["pcl"],
       ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
-                             language="c++", **ext_args)],
+                             language="c++", **ext_args),
+                   Extension("pcl.registration", ["pcl/registration.pyx"],
+                             language="c++", **ext_args),
+                  ],
       cmdclass={'build_ext': build_ext}
       )
