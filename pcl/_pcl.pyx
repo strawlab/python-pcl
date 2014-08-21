@@ -132,8 +132,6 @@ cdef class PointCloud:
 
     To load a point cloud from disk, use pcl.load.
     """
-    cdef cpp.PointCloud[cpp.PointXYZ] *thisptr
-
     def __cinit__(self, init=None):
         self.thisptr = new cpp.PointCloud[cpp.PointXYZ]()
 
