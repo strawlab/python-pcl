@@ -34,6 +34,10 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float y
         float z
     cdef struct Normal:
+<<<<<<< HEAD
+=======
+        pass
+>>>>>>> 05f77676c7447e16fd664c45813bfb6497085ecc
         Normal()
         float normal_x
         float normal_y

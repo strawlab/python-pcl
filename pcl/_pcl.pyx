@@ -309,9 +309,12 @@ cdef class PointCloud:
         Return a numpy 2D array containing the normal of the pointcloud
         :TODO: using a loop may be slow, maybe with some numpy magic it can be performed at once.
         """
+<<<<<<< HEAD
         if ksearch == -1 and searchRadius == -1.0:
             raise ValueError, "At least one input parameter must be entered"
         
+=======
+>>>>>>> 05f77676c7447e16fd664c45813bfb6497085ecc
         cdef cpp.PointNormalCloud_t normals
         mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
         cdef float x,y,z
@@ -325,8 +328,11 @@ cdef class PointCloud:
             i += 1
         return result
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 05f77676c7447e16fd664c45813bfb6497085ecc
 
     def make_statistical_outlier_filter(self):
         """
