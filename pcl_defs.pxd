@@ -27,6 +27,11 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
     cdef struct Normal:
         pass
+        Normal()
+        float normal_x
+        float normal_y
+        float normal_z
+        float curvature
 
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
     cdef cppclass NormalEstimation[T, N]:
