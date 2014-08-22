@@ -304,6 +304,28 @@ cdef class PointCloud:
 
         return seg
 
+    def calc_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a numpy 2D vector with the normals of the point cloud
+        """
+        if ksearch == -1 and searchRadius == -1.0:
+            raise ValueError, "At least one input parameter must be entered"
+        cdef cpp.PointNormalCloud_t normals
+        mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
+        cdef int n = self.thisptr.size()
+        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+        cdef int i = 0  
+        cdef int t = 0
+        cdef cpp.Normal *p 
+        while i < n:
+            p = cpp.getptrN_at(&normals, i,t)
+            result[i,0] = p.normal_x
+            result[i,1] = p.normal_y
+            result[i,2] = p.normal_z
+            i += 1
+        return result
+
+
     def make_statistical_outlier_filter(self):
         """
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
