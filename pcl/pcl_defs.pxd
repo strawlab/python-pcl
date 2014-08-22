@@ -128,15 +128,17 @@ ctypedef PointIndices PointIndices_t
 ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
 
 cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
-    int load(string file_name, PointCloud[PointXYZ] &cloud) nogil
-    int loadPCDFile(string file_name, PointCloud[PointXYZ] &cloud) nogil
+    int load(string file_name, PointCloud[PointXYZ] &cloud) nogil except +
+    int loadPCDFile(string file_name,
+                    PointCloud[PointXYZ] &cloud) nogil except +
     int savePCDFile(string file_name, PointCloud[PointXYZ] &cloud,
-                    bool binary_mode) nogil
+                    bool binary_mode) nogil except +
 
 cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
-    int loadPLYFile(string file_name, PointCloud[PointXYZ] &cloud) nogil
+    int loadPLYFile(string file_name,
+                    PointCloud[PointXYZ] &cloud) nogil except +
     int savePLYFile(string file_name, PointCloud[PointXYZ] &cloud,
-                    bool binary_mode) nogil
+                    bool binary_mode) nogil except +
 
 #http://dev.pointclouds.org/issues/624
 #cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":

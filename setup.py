@@ -35,7 +35,8 @@ def pkgconfig(flag):
     stdout, _ = p.communicate()
     # Assume no evil spaces in filenames; unsure how pkg-config would
     # handle those, anyway.
-    return stdout.split()
+    # decode() is required in Python 3. TODO how do know the encoding?
+    return stdout.decode().split()
 
 
 for flag in pkgconfig('--cflags-only-I'):

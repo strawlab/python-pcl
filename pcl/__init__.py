@@ -1,6 +1,8 @@
 # XXX do a more specific import!
 from ._pcl import *
 
+import sys
+
 
 def load(path, format=None):
     """Load pointcloud from path.
@@ -15,7 +17,7 @@ def load(path, format=None):
         loader = getattr(p, "_from_%s_file" % format)
     except AttributeError:
         raise ValueError("unknown file format %s" % format)
-    if loader(path):
+    if loader(_encode(path)):
         raise IOError("error while loading pointcloud from %r (format=%r)"
                       % (path, format))
     return p
@@ -31,9 +33,17 @@ def save(cloud, path, format=None, binary=False):
         dumper = getattr(cloud, "_to_%s_file" % format)
     except AttributeError:
         raise ValueError("unknown file format %s" % format)
-    if dumper(path, binary):
+    if dumper(_encode(path), binary):
         raise IOError("error while saving pointcloud to %r (format=%r)"
                       % (path, format))
+
+
+def _encode(path):
+    # Encode path for use in C++.
+    if isinstance(path, bytes):
+        return path
+    else:
+        return path.encode(sys.getfilesystemencoding())
 
 
 def _infer_format(path, format):
