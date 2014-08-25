@@ -317,8 +317,9 @@ cdef class PointCloud:
         cdef int i = 0  
         cdef int t = 0
         cdef cpp.Normal *p 
+        #cnp.npy_intp idx
         while i < n:
-            p = cpp.getptrN_at(&normals, i,t)
+            p = cpp.getptrN_at(&normals, i)
             result[i,0] = p.normal_x
             result[i,1] = p.normal_y
             result[i,2] = p.normal_z
