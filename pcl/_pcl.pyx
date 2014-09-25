@@ -165,6 +165,12 @@ cdef class PointCloud:
     def __repr__(self):
         return "<PointCloud of %d points>" % self.size
 
+    # Pickle support. XXX this copies the entire pointcloud; it would be nice
+    # to have an asarray member that returns a view, or even better, implement
+    # the buffer protocol (https://docs.python.org/c-api/buffer.html).
+    def __reduce__(self):
+        return type(self), (self.to_array(),)
+
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
