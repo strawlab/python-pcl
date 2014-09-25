@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import numpy as np
 from numpy import cos, sin
 import unittest
@@ -5,7 +7,6 @@ import unittest
 import pcl
 from pcl.registration import icp, gicp, icp_nl
 
-transform = 0
 
 class TestICP(unittest.TestCase):
     def setUp(self):
@@ -28,32 +29,15 @@ class TestICP(unittest.TestCase):
         target = np.dot(source, transform)
         self.target = pcl.PointCloud(target.astype(np.float32))
 
-    def testICP(self):
-        converged, transf, estimate, fitness = icp(self.source, self.target,
-                                                   max_iter=1000)
-        self.assertTrue(converged is True)
-        self.assertLess(fitness, .1)
-
-        # XXX I think I misunderstand fitness, it's not equal to the following
-        # MSS.
-        # mss = (np.linalg.norm(estimate.to_array()
-        #                       - self.source.to_array(), axis=1) ** 2).mean()
-        # self.assertLess(mss, 1)
-
-        # TODO check the actual transformation matrix.
-        print("------ICP")
-        print "Converged: ", converged, "Estimate: ", estimate, "Fitness ", fitness
-        print "Rotation: "
-        print transf[0:3,0:3]
-        print "Translation: ", transf[3, 0:3]
-        print("---------")
-   
-    def testGICP(self):
-        converged, transf, estimate, fitness = gicp(self.source, self.target,
+    def check_algo(self, algo):
+        converged, transf, estimate, fitness = algo(self.source, self.target,
                                                     max_iter=1000)
         self.assertTrue(converged is True)
         self.assertLess(fitness, .1)
 
+        self.assertTrue(isinstance(transf, np.ndarray))
+        self.assertEqual(transf.shape, (4, 4))
+
         # XXX I think I misunderstand fitness, it's not equal to the following
         # MSS.
         # mss = (np.linalg.norm(estimate.to_array()
@@ -61,29 +45,19 @@ class TestICP(unittest.TestCase):
         # self.assertLess(mss, 1)
 
         # TODO check the actual transformation matrix.
-        print("-----GICP")
-        print "Converged: ", converged, "Estimate: ", estimate, "Fitness ", fitness
-        print "Rotation: "
-        print transf[0:3,0:3]
-        print "Translation: ", transf[3, 0:3]
-        print("---------")
+        #print("------", algo)
+        #print("Converged: ", converged, "Estimate: ", estimate,
+        #      "Fitness: ", fitness)
+        #print "Rotation: "
+        #print transf[0:3,0:3]
+        #print "Translation: ", transf[3, 0:3]
+        #print("---------")
+
+    def testICP(self):
+        self.check_algo(icp)
+   
+    def testGICP(self):
+        self.check_algo(gicp)
 
     def testICP_NL(self):
-        converged, transf, estimate, fitness = icp_nl(self.source, self.target,
-                                                      max_iter=1000)
-        self.assertTrue(converged is True)
-        self.assertLess(fitness, .1)
-
-        # XXX I think I misunderstand fitness, it's not equal to the following
-        # MSS.
-        # mss = (np.linalg.norm(estimate.to_array()
-        #                       - self.source.to_array(), axis=1) ** 2).mean()
-        # self.assertLess(mss, 1)
-
-        # TODO check the actual transformation matrix.
-        print("---ICP_NL")
-        print "Converged: ", converged, "Estimate: ", estimate, "Fitness ", fitness
-        print "Rotation: "
-        print transf[0:3,0:3]
-        print "Translation: ", transf[3, 0:3]
-        print("---------")
+        self.check_algo(icp_nl)
