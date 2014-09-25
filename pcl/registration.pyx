@@ -57,6 +57,21 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl":
         void setMaximumIterations(int) except +
 
 
+cdef object transf_to_numpy(const float *data):
+    # Convert (copy) transformation matrix from Eigen to NumPy format.
+    # data should be the buffer of an Eigen 4x4 matrix.
+    cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='c'] transf
+    cdef np.float32_t *transf_data
+
+    transf = np.empty((4, 4), dtype=np.float32, order='c')
+    transf_data = <np.float32_t *>np.PyArray_DATA(transf)
+
+    for i in range(16):
+        transf_data[i] = data[i]
+
+    return transf
+
+
 def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     """Align source to target using iterative closest point (ICP).
 
@@ -98,14 +113,7 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
     icp.align(result.thisptr[0])
 
-    # Convert transformation from Eigen to NumPy format.
-    cdef const float *transf_data = icp.getFinalTransformation().data()
-    cdef np.ndarray[dtype=np.float32_t, ndim=1, mode='c'] transf_flat
-    transf = np.zeros((4, 4), dtype=np.float32)
-    transf_flat = transf.ravel()
-
-    for i in range(16):
-        transf_flat[i] = transf_data[i]
+    transf = transf_to_numpy(icp.getFinalTransformation().data())
 
     return icp.hasConverged(), transf, result, icp.getFitnessScore()
 
@@ -151,14 +159,7 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
     gicp.align(result.thisptr[0])
 
-    # Convert transformation from Eigen to NumPy format.
-    cdef const float *transf_data = gicp.getFinalTransformation().data()
-    cdef np.ndarray[dtype=np.float32_t, ndim=1, mode='c'] transf_flat
-    transf = np.zeros((4, 4), dtype=np.float32)
-    transf_flat = transf.ravel()
-
-    for i in range(16):
-        transf_flat[i] = transf_data[i]
+    transf = transf_to_numpy(gicp.getFinalTransformation().data())
 
     return gicp.hasConverged(), transf, result, gicp.getFitnessScore()
 
@@ -205,13 +206,6 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
     icp_nl.align(result.thisptr[0])
 
-    # Convert transformation from Eigen to NumPy format.
-    cdef const float *transf_data = icp_nl.getFinalTransformation().data()
-    cdef np.ndarray[dtype=np.float32_t, ndim=1, mode='c'] transf_flat
-    transf = np.zeros((4, 4), dtype=np.float32)
-    transf_flat = transf.ravel()
-
-    for i in range(16):
-        transf_flat[i] = transf_data[i]
+    transf = transf_to_numpy(icp_nl.getFinalTransformation().data())
 
     return icp_nl.hasConverged(), transf, result, icp_nl.getFitnessScore()
