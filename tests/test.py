@@ -1,4 +1,5 @@
 import os.path
+import pickle
 import shutil
 import tempfile
 import unittest
@@ -42,6 +43,13 @@ class TestNumpyIO(unittest.TestCase):
     def testToNumpy(self):
         a = self.p.to_array()
         self.assertTrue(np.alltrue(a == self.a))
+
+    def test_pickle(self):
+        """Test pickle support."""
+        # In this testcase because picking reduces to pickling NumPy arrays.
+        s = pickle.dumps(self.p)
+        p = pickle.loads(s)
+        self.assertTrue(np.all(self.a == p.to_array()))
 
 #copy the output of seg
 SEGDATA = \
