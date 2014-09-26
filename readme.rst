@@ -26,6 +26,7 @@ point types
  * SAC
  * smoothing
  * filtering
+ * registration (ICP, GICP, ICP_NL)
 
 The code tries to follow the Point Cloud API, and also provides helper function
 for interacting with numpy. For example (from tests/test.py)
