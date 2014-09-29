@@ -87,7 +87,7 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void setSearchRadius (double)
         void setPolynomialOrder(bool)
         void setPolynomialFit(int)
-        void process (PointCloud[O])
+        void process(PointCloud[O] &) except +
 
 ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
 
@@ -196,7 +196,7 @@ cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
         void setStddevMulThresh (double std_mul)
         void setNegative (bool negative)
         void setInputCloud (shared_ptr[PointCloud[T]])
-        void filter(PointCloud[T] c)
+        void filter(PointCloud[T] &c)
 
 ctypedef StatisticalOutlierRemoval[PointXYZ] StatisticalOutlierRemoval_t
 

@@ -99,19 +99,15 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
     cdef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
 
-    # XXX the following deep-copies both point clouds. ICP desperately wants
-    # shared pointers; it doesn't work on bare pointers or references.
-    # Must check whether http://stackoverflow.com/a/10644487/166749 does what
-    # it promises, else change _pcl.PointCloud to use a smart pointer.
-    icp.setInputSource(source.thisptr.makeShared())
-    icp.setInputTarget(target.thisptr.makeShared())
+    icp.setInputSource(source.thisptr_shared)
+    icp.setInputTarget(target.thisptr_shared)
 
     if max_iter is not None:
         icp.setMaximumIterations(max_iter)
 
     cdef _pcl.PointCloud result = _pcl.PointCloud()
 
-    icp.align(result.thisptr[0])
+    icp.align(result.thisptr()[0])
 
     transf = transf_to_numpy(icp.getFinalTransformation().data())
 
@@ -145,19 +141,15 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
     cdef GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
 
-    # XXX the following deep-copies both point clouds. GICP desperately wants
-    # shared pointers; it doesn't work on bare pointers or references.
-    # Must check whether http://stackoverflow.com/a/10644487/166749 does what
-    # it promises, else change _pcl.PointCloud to use a smart pointer.
-    gicp.setInputSource(source.thisptr.makeShared())
-    gicp.setInputTarget(target.thisptr.makeShared())
+    gicp.setInputSource(source.thisptr_shared)
+    gicp.setInputTarget(target.thisptr_shared)
 
     if max_iter is not None:
         gicp.setMaximumIterations(max_iter)
 
     cdef _pcl.PointCloud result = _pcl.PointCloud()
 
-    gicp.align(result.thisptr[0])
+    gicp.align(result.thisptr()[0])
 
     transf = transf_to_numpy(gicp.getFinalTransformation().data())
 
@@ -192,19 +184,15 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
     cdef IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
 
-    # XXX the following deep-copies both point clouds. GICP desperately wants
-    # shared pointers; it doesn't work on bare pointers or references.
-    # Must check whether http://stackoverflow.com/a/10644487/166749 does what
-    # it promises, else change _pcl.PointCloud to use a smart pointer.
-    icp_nl.setInputSource(source.thisptr.makeShared())
-    icp_nl.setInputTarget(target.thisptr.makeShared())
+    icp_nl.setInputSource(source.thisptr_shared)
+    icp_nl.setInputTarget(target.thisptr_shared)
 
     if max_iter is not None:
         icp_nl.setMaximumIterations(max_iter)
 
     cdef _pcl.PointCloud result = _pcl.PointCloud()
 
-    icp_nl.align(result.thisptr[0])
+    icp_nl.align(result.thisptr()[0])
 
     transf = transf_to_numpy(icp_nl.getFinalTransformation().data())
 
