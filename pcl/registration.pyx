@@ -13,53 +13,47 @@ cimport pcl_defs as cpp
 np.import_array()
 
 
-cdef extern from "pcl/registration/icp.h" namespace "pcl":
-    cdef cppclass IterativeClosestPoint[Source, Target]:
+cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
+    cdef cppclass Registration[Source, Target]:
         cppclass Matrix4:
             float *data()
+        void align(cpp.PointCloud[Source] &) except +
+        Matrix4 getFinalTransformation() except +
+        double getFitnessScore() except +
+        bool hasConverged() except +
+        void setInputSource(cpp.PointCloudPtr_t) except +
+        void setInputTarget(cpp.PointCloudPtr_t) except +
+        void setMaximumIterations(int) except +
 
+cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
+    cdef cppclass IterativeClosestPoint[Source, Target](Registration[Source, Target]):
         IterativeClosestPoint() except +
-        void align(cpp.PointCloud[Source] &) except +
-        Matrix4 getFinalTransformation() except +
-        double getFitnessScore() except +
-        bool hasConverged() except +
-        void setInputSource(cpp.PointCloudPtr_t) except +
-        void setInputTarget(cpp.PointCloudPtr_t) except +
-        void setMaximumIterations(int) except +
 
-cdef extern from "pcl/registration/gicp.h" namespace "pcl":
-    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target]:
-        cppclass Matrix4:
-            float *data()
-
+cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
+    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](Registration[Source, Target]):
         GeneralizedIterativeClosestPoint() except +
-        void align(cpp.PointCloud[Source] &) except +
-        Matrix4 getFinalTransformation() except +
-        double getFitnessScore() except +
-        bool hasConverged() except +
-        void setInputSource(cpp.PointCloudPtr_t) except +
-        void setInputTarget(cpp.PointCloudPtr_t) except +
-        void setMaximumIterations(int) except +
 
-
-cdef extern from "pcl/registration/icp_nl.h" namespace "pcl":
-    cdef cppclass IterativeClosestPointNonLinear[Source, Target]:
-        cppclass Matrix4:
-            float *data()
-
+cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
+    cdef cppclass IterativeClosestPointNonLinear[Source, Target](Registration[Source, Target]):
         IterativeClosestPointNonLinear() except +
-        void align(cpp.PointCloud[Source] &) except +
-        Matrix4 getFinalTransformation() except +
-        double getFitnessScore() except +
-        bool hasConverged() except +
-        void setInputSource(cpp.PointCloudPtr_t) except +
-        void setInputTarget(cpp.PointCloudPtr_t) except +
-        void setMaximumIterations(int) except +
 
 
-cdef object transf_to_numpy(const float *data):
-    # Convert (copy) transformation matrix from Eigen to NumPy format.
-    # data should be the buffer of an Eigen 4x4 matrix.
+cdef object run(Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
+                _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+    reg.setInputSource(source.thisptr_shared)
+    reg.setInputTarget(target.thisptr_shared)
+
+    if max_iter is not None:
+        reg.setMaximumIterations(max_iter)
+
+    cdef _pcl.PointCloud result = _pcl.PointCloud()
+
+    with nogil:
+        reg.align(result.thisptr()[0])
+
+    # Get transformation matrix and convert from Eigen to NumPy format.
+    cdef Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4 mat
+    mat = reg.getFinalTransformation()
     cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='c'] transf
     cdef np.float32_t *transf_data
 
@@ -67,9 +61,9 @@ cdef object transf_to_numpy(const float *data):
     transf_data = <np.float32_t *>np.PyArray_DATA(transf)
 
     for i in range(16):
-        transf_data[i] = data[i]
+        transf_data[i] = mat.data()[i]
 
-    return transf
+    return reg.hasConverged(), transf, result, reg.getFitnessScore()
 
 
 def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
@@ -96,22 +90,8 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-
     cdef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
-
-    icp.setInputSource(source.thisptr_shared)
-    icp.setInputTarget(target.thisptr_shared)
-
-    if max_iter is not None:
-        icp.setMaximumIterations(max_iter)
-
-    cdef _pcl.PointCloud result = _pcl.PointCloud()
-
-    icp.align(result.thisptr()[0])
-
-    transf = transf_to_numpy(icp.getFinalTransformation().data())
-
-    return icp.hasConverged(), transf, result, icp.getFitnessScore()
+    return run(icp, source, target, max_iter)
 
 
 def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
@@ -138,22 +118,8 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-
     cdef GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
-
-    gicp.setInputSource(source.thisptr_shared)
-    gicp.setInputTarget(target.thisptr_shared)
-
-    if max_iter is not None:
-        gicp.setMaximumIterations(max_iter)
-
-    cdef _pcl.PointCloud result = _pcl.PointCloud()
-
-    gicp.align(result.thisptr()[0])
-
-    transf = transf_to_numpy(gicp.getFinalTransformation().data())
-
-    return gicp.hasConverged(), transf, result, gicp.getFitnessScore()
+    return run(gicp, source, target, max_iter)
 
 
 def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
@@ -181,19 +147,5 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-
     cdef IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
-
-    icp_nl.setInputSource(source.thisptr_shared)
-    icp_nl.setInputTarget(target.thisptr_shared)
-
-    if max_iter is not None:
-        icp_nl.setMaximumIterations(max_iter)
-
-    cdef _pcl.PointCloud result = _pcl.PointCloud()
-
-    icp_nl.align(result.thisptr()[0])
-
-    transf = transf_to_numpy(icp_nl.getFinalTransformation().data())
-
-    return icp_nl.hasConverged(), transf, result, icp_nl.getFitnessScore()
+    return run(icp_nl, source, target, max_iter)
