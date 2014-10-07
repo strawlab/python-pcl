@@ -55,11 +55,69 @@ cnp.import_array()
 
 cdef class Segmentation:
     """
-    Segmentation class for Sample Consensus methods and models
+    Segmentation class for Sample Consensus methods and models.
+
+    Parameters
+    ----------
+    pc : PointCloud
+    optimize_coefficients : bool
+    model : string
+        Allowed types are the keys of the dict Segmentation.MODELS.
+    method : string
+        Allowed types are the keys of the dict Segmentation.METHODS.
+    threshold : float
+        Distance threshold.
     """
     cdef cpp.SACSegmentation_t *me
-    def __cinit__(self):
+
+    METHODS = {
+        'ransac': SAC_RANSAC,
+        'lmeds': SAC_LMEDS,
+        'msac': SAC_MSAC,
+        'rransac': SAC_RRANSAC,
+        'rmsac': SAC_RMSAC,
+        'mlesac': SAC_MLESAC,
+        'prosac': SAC_PROSAC,
+    }
+
+    MODELS = {
+        'plane': SACMODEL_PLANE,
+        'line': SACMODEL_LINE,
+        'circle2d': SACMODEL_CIRCLE2D,
+        'circle2d': SACMODEL_CIRCLE3D,
+        'sphere': SACMODEL_SPHERE,
+        'cylinder': SACMODEL_CYLINDER,
+        'cone': SACMODEL_CONE,
+        'torus': SACMODEL_TORUS,
+        'parallel_line': SACMODEL_PARALLEL_LINE,
+        'perpendicular_plane': SACMODEL_PERPENDICULAR_PLANE,
+        'parallel_lines': SACMODEL_PARALLEL_LINES,
+        'normal_plane': SACMODEL_NORMAL_PLANE ,
+        #'normal_sphere': SACMODEL_NORMAL_SPHERE,
+        'registration': SACMODEL_REGISTRATION,
+        'parallel_plane': SACMODEL_PARALLEL_PLANE,
+        'normal_parallel_plane': SACMODEL_NORMAL_PARALLEL_PLANE,
+        'stick': SACMODEL_STICK,
+    }
+
+    # Default values should match the ones in the SACSegmentation c'tor.
+    def __cinit__(self, PointCloud pc, model, method,
+                  optimize_coefficients=True, threshold=0.):
+        # None supported for backward compatibility, i.e. to make
+        # PointCloud.make_segmenter work.
+        cdef int c_method, c_model
+        c_method = -1 if method is None else self.METHODS[method]
+        c_model = -1 if model is None else self.MODELS[model]
+
         self.me = new cpp.SACSegmentation_t()
+        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>pc.thisptr
+        self.me.setInputCloud(ccloud.makeShared())
+
+        self.set_optimize_coefficients(optimize_coefficients)
+        self.set_method_type(c_method)
+        self.set_model_type(c_model)
+        self.set_distance_threshold(threshold)
+
     def __dealloc__(self):
         del self.me
 
@@ -85,9 +143,6 @@ cdef class SegmentationNormal:
     """
     Segmentation class for Sample Consensus methods and models that require the
     use of surface normals for estimation.
-
-    Due to Cython limitations this should derive from pcl.Segmentation, but
-    is currently unable to do so.
     """
     cdef cpp.SACSegmentationNormal_t *me
     def __cinit__(self):
@@ -286,12 +341,10 @@ cdef class PointCloud:
     def make_segmenter(self):
         """
         Return a pcl.Segmentation object with this object set as the input-cloud
+
+        Deprecated. Use the Segmenter class's constructor.
         """
-        seg = Segmentation()
-        cdef cpp.SACSegmentation_t *cseg = <cpp.SACSegmentation_t *>seg.me
-        cdef cpp.PointCloud_t *ccloud = <cpp.PointCloud_t *>self.thisptr
-        cseg.setInputCloud(ccloud.makeShared())
-        return seg
+        return Segmentation(self)
 
     def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
         """
