@@ -3,12 +3,6 @@ from __future__ import print_function
 import numpy as np
 import pcl
 
-pc_1 = pcl.PointCloud()
-pc_1.from_array(points_1)
-pc_2 = pcl.PointCloud()
-pc_2.from_array(points_2)
-kd = pcl.KdTreeFLANN(pc_1)
-
 points_1 = np.array([[0, 0, 0],
                      [1, 0, 0],
                      [0, 1, 0],
@@ -17,6 +11,12 @@ points_2 = np.array([[0, 0, 0.2],
                      [1, 0, 0],
                      [0, 1, 0],
                      [1.1, 1, 0.5]], dtype=np.float32)
+
+pc_1 = pcl.PointCloud()
+pc_1.from_array(points_1)
+pc_2 = pcl.PointCloud()
+pc_2.from_array(points_2)
+kd = pcl.KdTreeFLANN(pc_1)
 
 print('pc_1:')
 print(points_1)
