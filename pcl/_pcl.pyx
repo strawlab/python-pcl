@@ -171,6 +171,19 @@ cdef class PointCloud:
     def __reduce__(self):
         return type(self), (self.to_array(),)
 
+    property sensor_origin:
+        def __get__(self):
+            cdef cpp.Vector4f origin = self.thisptr().sensor_origin_
+            cdef float *data = origin.data()
+            return np.array([data[0], data[1], data[2], data[3]],
+                            dtype=np.float32)
+
+    property sensor_orientation:
+        def __get__(self):
+            # NumPy doesn't have a quaternion type, so we return a 4-vector.
+            cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
+            return np.array([o.w(), o.x(), o.y(), o.z()])
+
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
