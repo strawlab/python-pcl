@@ -7,6 +7,9 @@ import unittest
 import pcl
 import numpy as np
 
+from numpy.testing import assert_array_equal
+
+
 _data = [(i,2*i,3*i+0.2) for i in range(5)]
 _DATA = \
 """0.0, 0.0, 0.2;
@@ -120,7 +123,7 @@ TYPE F F F
 COUNT 1 1 1
 WIDTH %(npts)d
 HEIGHT 1
-VIEWPOINT 0 0 0 0 1 0 0
+VIEWPOINT 0.1 0 0.5 0 1 0 0
 POINTS %(npts)d
 DATA ascii
 %(data)s"""
@@ -139,6 +142,11 @@ DATA ascii
         pt = np.array(p[i])
         ssd = sum((row - pt) ** 2)
         assert ssd < 1e-6
+
+    assert_array_equal(p.sensor_orientation,
+                       np.array([0, 1, 0, 0], dtype=np.float32))
+    assert_array_equal(p.sensor_origin,
+                       np.array([.1, 0, .5, 0], dtype=np.float32))
 
 SEGCYLMOD = [0.0552167, 0.0547035, 0.757707, -0.0270852, -4.41026, -2.88995, 0.0387603]
 SEGCYLIN = 11462
