@@ -32,15 +32,15 @@ void mpcl_sacnormal_set_axis(pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl:
     sac.setAxis(vect);
 }
 
-void mpcl_extract(pcl::PointCloud<pcl::PointXYZ> &incloud,
-                  pcl::PointCloud<pcl::PointXYZ> &outcloud,
+void mpcl_extract(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
+                  pcl::PointCloud<pcl::PointXYZ> *outcloud,
                   pcl::PointIndices *indices,
                   bool negative)
 {
     pcl::PointIndices::Ptr indicesptr (indices);
     pcl::ExtractIndices<pcl::PointXYZ> ext;
-    ext.setInputCloud(incloud.makeShared());
+    ext.setInputCloud(incloud);
     ext.setIndices(indicesptr);
-    ext.setNegative (negative);
-    ext.filter (outcloud);
+    ext.setNegative(negative);
+    ext.filter(*outcloud);
 }
