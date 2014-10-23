@@ -135,7 +135,7 @@ cdef class PointCloud:
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
-        cdef BasePointCloud other
+        cdef PointCloud other
 
         sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
 
