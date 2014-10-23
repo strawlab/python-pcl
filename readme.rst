@@ -64,13 +64,13 @@ This release has been tested on Ubuntu 13.10 with
 
  * Python 2.7.5
  * pcl 1.7.1
- * Cython 0.20.2
+ * Cython 0.21
 
 and CentOS 6.5 with
 
  * Python 2.6.6
  * pcl 1.6.0
- * Cython 0.20.2
+ * Cython 0.21
 
 A note about types
 ------------------

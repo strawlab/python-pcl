@@ -148,6 +148,14 @@ DATA ascii
     assert_array_equal(p.sensor_origin,
                        np.array([.1, 0, .5, 0], dtype=np.float32))
 
+
+def test_copy():
+    a = np.random.randn(100, 3).astype(np.float32)
+    p1 = pcl.PointCloud(a)
+    p2 = pcl.PointCloud(p1)
+    assert_array_equal(p2.to_array(), a)
+
+
 SEGCYLMOD = [0.0552167, 0.0547035, 0.757707, -0.0270852, -4.41026, -2.88995, 0.0387603]
 SEGCYLIN = 11462
 

@@ -12,8 +12,8 @@ void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> &cloud,
 void mpcl_sacnormal_set_axis(pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> &sac,
                              double ax, double ay, double az);
 
-void mpcl_extract(pcl::PointCloud<pcl::PointXYZ> &incloud,
-                  pcl::PointCloud<pcl::PointXYZ> &outcloud,
+void mpcl_extract(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
+                  pcl::PointCloud<pcl::PointXYZ> *outcloud,
                   pcl::PointIndices *indices,
                   bool negative);
 
