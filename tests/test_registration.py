@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import numpy as np
 from numpy import cos, sin
+from numpy.testing import assert_equal
 import unittest
 
 import pcl
@@ -38,13 +39,15 @@ class TestICP(unittest.TestCase):
         self.assertTrue(isinstance(transf, np.ndarray))
         self.assertEqual(transf.shape, (4, 4))
 
+        self.assertFalse(np.any(transf[:3] == 0))
+        assert_equal(transf[3], [0, 0, 0, 1])
+
         # XXX I think I misunderstand fitness, it's not equal to the following
         # MSS.
         # mss = (np.linalg.norm(estimate.to_array()
         #                       - self.source.to_array(), axis=1) ** 2).mean()
         # self.assertLess(mss, 1)
 
-        # TODO check the actual transformation matrix.
         #print("------", algo)
         #print("Converged: ", converged, "Estimate: ", estimate,
         #      "Fitness: ", fitness)
