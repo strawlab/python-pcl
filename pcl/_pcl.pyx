@@ -404,6 +404,24 @@ cdef class StatisticalOutlierRemovalFilter:
     def __dealloc__(self):
         del self.me
 
+    property mean_k:
+        def __get__(self):
+            return self.me.getMeanK()
+        def __set__(self, int k):
+            self.me.setMeanK(k)
+
+    property negative:
+        def __get__(self):
+            return self.me.getNegative()
+        def __set__(self, bool neg):
+            self.me.setNegative(neg)
+
+    property stddev_mul_thresh:
+        def __get__(self):
+            return self.me.getStddevMulThresh()
+        def __set__(self, double thresh):
+            self.me.setStddevMulThresh(thresh)
+
     def set_mean_k(self, int k):
         """
         Set the number of points (k) to use for mean distance estimation. 
