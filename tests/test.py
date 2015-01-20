@@ -7,7 +7,7 @@ import unittest
 import pcl
 import numpy as np
 
-from numpy.testing import assert_array_equal
+from numpy.testing import assert_array_almost_equal, assert_array_equal
 
 
 _data = [(i,2*i,3*i+0.2) for i in range(5)]
@@ -38,7 +38,7 @@ class TestNumpyIO(unittest.TestCase):
         self.a = np.array(np.mat(_DATA, dtype=np.float32))
         self.p = pcl.PointCloud(self.a)
 
-    def testFromNumy(self):
+    def testFromNumpy(self):
         for i,d in enumerate(_data):
             pt = self.p[i]
             assert np.allclose(pt, _data[i])
@@ -46,6 +46,13 @@ class TestNumpyIO(unittest.TestCase):
     def testToNumpy(self):
         a = self.p.to_array()
         self.assertTrue(np.alltrue(a == self.a))
+
+    def test_asarray(self):
+        p = pcl.PointCloud(self.p)      # copy
+        old0 = p[0]
+        a = np.asarray(p)               # view
+        a[:] += 6
+        assert_array_almost_equal(p[0], a[0])
 
     def test_pickle(self):
         """Test pickle support."""

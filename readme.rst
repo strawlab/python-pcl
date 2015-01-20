@@ -29,7 +29,7 @@ point types
  * registration (ICP, GICP, ICP_NL)
 
 The code tries to follow the Point Cloud API, and also provides helper function
-for interacting with numpy. For example (from tests/test.py)
+for interacting with NumPy. For example (from tests/test.py)
 
 .. code-block:: python
 
@@ -52,6 +52,20 @@ or, for smoothing
     fil.set_std_dev_mul_thresh (1.0)
     fil.filter().to_file("inliers.pcd")
 
+Point clouds can be viewed as NumPy arrays, so modifying them is possible
+using all the familiar NumPy functionality:
+
+.. code-block:: python
+
+    import numpy as np
+    import pcl
+    p = pcl.PointCloud(10)  # "empty" point cloud
+    a = np.asarray(p)       # NumPy view on the cloud
+    a[:] = 0                # fill with zeros
+    print(p[3])             # prints (0.0, 0.0, 0.0)
+    a[:, 0] = 1             # set x coordinates to 1
+    print(p[3])             # prints (1.0, 0.0, 0.0)
+
 More samples can be found in the `examples directory <https://github.com/strawlab/python-pcl/tree/master/examples>`_,
 and in the `unit tests <https://github.com/strawlab/python-pcl/blob/master/tests/test.py>`_.
 
@@ -60,11 +74,11 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 Requirements
 ------------
 
-This release has been tested on Ubuntu 13.10 with
+This release has been tested on Linux Mint 17 with
 
- * Python 2.7.5
- * pcl 1.7.1
- * Cython 0.21
+ * Python 2.7.6
+ * pcl 1.7.2
+ * Cython 0.21.2
 
 and CentOS 6.5 with
 
