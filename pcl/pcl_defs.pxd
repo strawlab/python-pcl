@@ -192,8 +192,11 @@ ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
     cdef cppclass StatisticalOutlierRemoval[T]:
         StatisticalOutlierRemoval()
+        int getMeanK()
         void setMeanK (int nr_k)
+        double getStddevMulThresh()
         void setStddevMulThresh (double std_mul)
+        bool getNegative()
         void setNegative (bool negative)
         void setInputCloud (shared_ptr[PointCloud[T]])
         void filter(PointCloud[T] &c)
