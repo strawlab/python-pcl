@@ -40,6 +40,11 @@ cdef extern from "indexing.hpp":
     PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
     PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
     PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
+    
+    # Use these instead of operator[] or at.
+    Normal *getptrN(PointCloud[Normal] *, size_t)
+    Normal *getptrN_at(PointCloud[Normal] *, size_t) except +
+    Normal *getptrN_at(PointCloud[Normal] *, int, int) except +
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
@@ -48,7 +53,11 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float y
         float z
     cdef struct Normal:
-        pass
+        Normal()
+        float normal_x
+        float normal_y
+        float normal_z
+        float curvature
 
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
     cdef cppclass NormalEstimation[T, N]:
