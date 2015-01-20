@@ -13,7 +13,7 @@ test: pcl/_pcl.so tests/test.py
 
 clean:
 	rm -rf build
-	rm -f pcl/_pcl.cpp pcl/_pcl.so
+	rm -f pcl/_pcl.cpp pcl/_pcl.so pcl/registration.so
 
 doc: pcl.so conf.py readme.rst
 	sphinx-build -b singlehtml -d build/doctrees . build/html
