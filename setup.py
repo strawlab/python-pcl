@@ -6,6 +6,11 @@ from distutils.extension import Extension
 import subprocess
 import numpy
 import sys
+import platform
+import os
+
+if platform.system() == "Darwin":
+	os.environ['ARCHFLAGS'] = ''
 
 # Try to find PCL. XXX we should only do this when trying to build or install.
 PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
