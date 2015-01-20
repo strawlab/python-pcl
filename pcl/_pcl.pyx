@@ -10,6 +10,9 @@ cimport pcl_defs as cpp
 
 cimport cython
 from cython.operator import dereference as deref
+
+from cpython cimport Py_buffer
+
 from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
@@ -125,6 +128,20 @@ cdef class SegmentationNormal:
     def set_axis(self, double ax, double ay, double az):
         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
 
+
+# Empirically determine strides, for buffer support.
+# XXX Is there a more elegant way to get these?
+cdef Py_ssize_t _strides[2]
+cdef PointCloud _pc_tmp = PointCloud(np.array([[1, 2, 3],
+                                               [4, 5, 6]], dtype=np.float32))
+cdef cpp.PointCloud[cpp.PointXYZ] *p = _pc_tmp.thisptr()
+_strides[0] = (  <Py_ssize_t><void *>cpp.getptr(p, 1)
+               - <Py_ssize_t><void *>cpp.getptr(p, 0))
+_strides[1] = (  <Py_ssize_t><void *>&(cpp.getptr(p, 0).y)
+               - <Py_ssize_t><void *>&(cpp.getptr(p, 0).x))
+_pc_tmp = None
+
+
 cdef class PointCloud:
     """Represents a cloud of points in 3-d space.
 
@@ -136,6 +153,8 @@ cdef class PointCloud:
     """
     def __cinit__(self, init=None):
         cdef PointCloud other
+
+        self._view_count = 0
 
         sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
 
@@ -169,6 +188,32 @@ cdef class PointCloud:
 
     def __repr__(self):
         return "<PointCloud of %d points>" % self.size
+
+    # Buffer protocol support. Taking a view locks the pointcloud for
+    # resizing, because that can move it around in memory.
+    def __getbuffer__(self, Py_buffer *buffer, int flags):
+        # TODO parse flags
+        cdef Py_ssize_t npoints = self.thisptr().size()
+
+        if self._view_count == 0:
+            self._view_count += 1
+            self._shape[0] = npoints
+            self._shape[1] = 3
+
+        buffer.buf = <char *>&(cpp.getptr_at(self.thisptr(), 0).x)
+        buffer.format = 'f'
+        buffer.internal = NULL
+        buffer.itemsize = sizeof(float)
+        buffer.len = npoints * 3 * sizeof(float)
+        buffer.ndim = 2
+        buffer.obj = self
+        buffer.readonly = 0
+        buffer.shape = self._shape
+        buffer.strides = _strides
+        buffer.suboffsets = NULL
+
+    def __releasebuffer__(self, Py_buffer *buffer):
+        self._view_count -= 1
 
     # Pickle support. XXX this copies the entire pointcloud; it would be nice
     # to have an asarray member that returns a view, or even better, implement
@@ -246,6 +291,9 @@ cdef class PointCloud:
         return self.to_array().tolist()
 
     def resize(self, cnp.npy_intp x):
+        if self._view_count > 0:
+            raise ValueError("can't resize PointCloud while there are"
+                             " arrays/memoryviews referencing it")
         self.thisptr().resize(x)
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
