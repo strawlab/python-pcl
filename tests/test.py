@@ -252,6 +252,16 @@ class TestExceptions(unittest.TestCase):
         # better exceptions.
         self.assertRaises(MemoryError, self.p.resize, -1)
 
+class TestCalcNormals(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.PointCloud()
+        self.p.from_list([[0,0,0],[1,0,0],[0,1,0]])
+    def testCalcNormals(self):
+        normals = self.p.calc_normals(20)
+        truth = np.array([[0,0,1],[0,0,1],[0,0,1]])
+        self.assertEqual(normals, truth)
+        self.assertEqual(normals.size, self.p.size)
+
 class TestSegmenterNormal(unittest.TestCase):
 
     def setUp(self):

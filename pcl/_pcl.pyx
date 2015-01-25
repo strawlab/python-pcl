@@ -372,6 +372,36 @@ cdef class PointCloud:
         cseg.setInputNormals (normals.makeShared());
 
         return seg
+        
+    def calc_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a numpy 2D array containing the normal of the pointcloud
+        :TODO: using a loop may be slow, maybe with some numpy magic it can be performed at once.
+        """
+<<<<<<< HEAD
+        if ksearch == -1 and searchRadius == -1.0:
+            raise ValueError, "At least one input parameter must be entered"
+        
+=======
+>>>>>>> 05f77676c7447e16fd664c45813bfb6497085ecc
+        cdef cpp.PointNormalCloud_t normals
+        mpcl_compute_normals(deref(self.thisptr), ksearch, searchRadius, normals)
+        cdef float x,y,z
+        cdef int n = self.thisptr.size()
+        cdef cnp.ndarray[float, ndim=2] result = np.empty([n,3], dtype=np.float32)
+        cdef int i = 0
+        while i < n:
+            result[i,0] = normals.at(i).normal_x
+            result[i,1] = normals.at(i).normal_y
+            result[i,2] = normals.at(i).normal_z
+            i += 1
+        return result
+
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 05f77676c7447e16fd664c45813bfb6497085ecc
 
     def make_statistical_outlier_filter(self):
         """
