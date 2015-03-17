@@ -33,6 +33,7 @@ pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
 ext_args = defaultdict(list)
 ext_args['include_dirs'].append(numpy.get_include())
 
+
 def pkgconfig(flag):
     # Equivalent in Python 2.7 (but not 2.6):
     #subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
@@ -63,6 +64,9 @@ for flag in pkgconfig('--libs-only-L'):
 for flag in pkgconfig('--libs-only-other'):
     ext_args['extra_link_args'].append(flag)
 
+# Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).
+ext_args['define_macros'].append(
+    ("EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET", "1"))
 
 setup(name='python-pcl',
       description='pcl wrapper',
