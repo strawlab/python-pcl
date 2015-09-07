@@ -278,7 +278,7 @@ class TestSegmenterNormal(unittest.TestCase):
     def testFilterPos(self):
         fil = self.p.make_statistical_outlier_filter()
         fil.set_mean_k(50)
-        self.assertEqual(fil.k, 50)
+        self.assertEqual(fil.mean_k, 50)
         fil.set_std_dev_mul_thresh(1.0)
         self.assertEqual(fil.stddev_mul_thresh, 1.0)
         c = fil.filter()
