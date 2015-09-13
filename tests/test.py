@@ -119,8 +119,7 @@ class TestSegmentPlane(unittest.TestCase):
 
 
 def test_pcd_read():
-    TMPL = """
-# .PCD v.7 - Point Cloud Data file format
+    TMPL = """# .PCD v.7 - Point Cloud Data file format
 VERSION .7
 FIELDS x y z
 SIZE 4 4 4
@@ -135,10 +134,11 @@ DATA ascii
 
     a = np.array(np.mat(SEGDATA, dtype=np.float32))
     npts = a.shape[0]
-    with open("/tmp/test.pcd", "w") as f:
+    tmp_file =  tempfile.mkstemp(suffix='.pcd')[1]
+    with open(tmp_file, "w") as f:
         f.write(TMPL % {"npts": npts, "data": SEGDATA.replace(";", "")})
 
-    p = pcl.load("/tmp/test.pcd")
+    p = pcl.load(tmp_file)
 
     assert p.width == npts
     assert p.height == 1
@@ -169,7 +169,7 @@ SEGCYLIN = 11462
 class TestSegmentCylinder(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 
     def testSegment(self):
         seg = self.p.make_segmenter_normals(50)
@@ -194,7 +194,7 @@ class TestSegmentCylinder(unittest.TestCase):
 class TestSave(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.tmpdir = tempfile.mkdtemp(suffix='pcl-test')
 
     def tearDown(self):
@@ -211,7 +211,7 @@ class TestSave(unittest.TestCase):
 class TestFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/flydracyl.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
 
     def testFilter(self):
         mls = self.p.make_moving_least_squares()
@@ -228,7 +228,7 @@ class TestFilter(unittest.TestCase):
 class TestExtract(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/flydracyl.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
 
     def testExtractPos(self):
         p2 = self.p.extract([1, 2, 3], False)
@@ -261,7 +261,7 @@ class TestExceptions(unittest.TestCase):
 class TestSegmenterNormal(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 
     def _tpos(self, c):
         self.assertEqual(c.size, 22745)
@@ -308,7 +308,7 @@ class TestSegmenterNormal(unittest.TestCase):
 class TestVoxelGridFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 
     def testFilter(self):
         fil = self.p.make_voxel_grid_filter()
@@ -381,7 +381,7 @@ class TestOctreePointCloud(unittest.TestCase):
         self.t = pcl.OctreePointCloud(0.1)
 
     def testLoad(self):
-        pc = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
@@ -402,7 +402,7 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 
     def setUp(self):
         self.t = pcl.OctreePointCloudSearch(0.1)
-        pc = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
