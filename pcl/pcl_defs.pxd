@@ -68,6 +68,9 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void setInputNormals (shared_ptr[PointCloud[N]])
         void setEpsAngle (double ea)
         void segment (PointIndices, ModelCoefficients)
+        void setMinMaxOpeningAngle(double, double)
+        void getMinMaxOpeningAngle(double, double)
+
 
     cdef cppclass SACSegmentation[T]:
         void setOptimizeCoefficients (bool)
@@ -76,6 +79,14 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void setDistanceThreshold (float)
         void setInputCloud (shared_ptr[PointCloud[T]])
         void segment (PointIndices, ModelCoefficients)
+
+cdef extern from "pcl/sample_consensus/sac_model_cylinder.h" namespace "pcl":
+
+    cdef cppclass SampleConsensusModelCylinder[T, N]:
+        int countWithinDistance(vector[double], double)
+        void getDistancesToModel(vector[double], vector[double])
+
+
 
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
