@@ -80,14 +80,6 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void setInputCloud (shared_ptr[PointCloud[T]])
         void segment (PointIndices, ModelCoefficients)
 
-cdef extern from "pcl/sample_consensus/sac_model_cylinder.h" namespace "pcl":
-
-    cdef cppclass SampleConsensusModelCylinder[T, N]:
-        int countWithinDistance(vector[double], double)
-        void getDistancesToModel(vector[double], vector[double])
-
-
-
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 
