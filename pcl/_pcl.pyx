@@ -95,19 +95,15 @@ cdef class SegmentationNormal:
     is currently unable to do so.
     """
     cdef cpp.SACSegmentationNormal_t *me
-    # cdef cpp.ModelCoefficients *coeffs
     def __cinit__(self):
         self.me = new cpp.SACSegmentationNormal_t()
-        # self._coeffs = None
     def __dealloc__(self):
         del self.me
-        # del self._coeffs
 
     def segment(self):
         cdef cpp.PointIndices ind
         cdef cpp.ModelCoefficients coeffs
         self.me.segment (ind, coeffs)
-        # self._coeffs = coeffs
         return [ind.indices[i] for i in range(ind.indices.size())],\
                [coeffs.values[i] for i in range(coeffs.values.size())]
 
