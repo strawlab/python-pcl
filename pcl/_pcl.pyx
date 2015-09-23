@@ -95,15 +95,19 @@ cdef class SegmentationNormal:
     is currently unable to do so.
     """
     cdef cpp.SACSegmentationNormal_t *me
+    # cdef cpp.ModelCoefficients *coeffs
     def __cinit__(self):
         self.me = new cpp.SACSegmentationNormal_t()
+        # self._coeffs = None
     def __dealloc__(self):
         del self.me
+        # del self._coeffs
 
     def segment(self):
         cdef cpp.PointIndices ind
         cdef cpp.ModelCoefficients coeffs
         self.me.segment (ind, coeffs)
+        # self._coeffs = coeffs
         return [ind.indices[i] for i in range(ind.indices.size())],\
                [coeffs.values[i] for i in range(coeffs.values.size())]
 
@@ -127,6 +131,41 @@ cdef class SegmentationNormal:
         self.me.setEpsAngle (ea)
     def set_axis(self, double ax, double ay, double az):
         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
+    def set_min_max_opening_angle(self, double min_angle, double max_angle):
+        """ Set the minimum and maximum cone opening angles in radians for a cone model.
+        """
+        self.me.setMinMaxOpeningAngle(min_angle, max_angle)
+    def get_min_max_opening_angle(self):
+        min_angle = 0.0
+        max_angle = 0.0
+        self.me.getMinMaxOpeningAngle(min_angle, max_angle)
+        return min_angle, max_angle
+
+
+cdef class SampleConsensusModelCylinder(SegmentationNormal):
+
+    cdef cpp.SampleConsensusModelCylinder_t *me
+    # cdef cpp.ModelCoefficients *coeffs
+    def __cinit__(self):
+        self.me = new cpp.SACSegmentationNormal_t()
+
+    def get_distance_to_model(self, list model_coefficients):
+        """ Compute all distances from the model. You must have already fit the model.
+        :return: vector of distances
+        """
+
+        cdef vector[double] distances
+
+        self.me.getDistancesToModel(self._coeffs, distances)
+    # def count_within_distance(self, list model_coefficients, double threshold):
+    #     cdef cpp.ModelCoefficients coeffs
+    #     cdef vector[float] vals = model_coefficients
+    #     coeffs.values = vals
+    #     #coeffs.values.resize(len(model_coefficients))
+    #     # for i, v in enumerate(model_coefficients):
+    #     #     coeffs.value[i] = v
+    #     return self.me.countWithinDistance(vals, threshold)
+
 
 
 # Empirically determine strides, for buffer support.
