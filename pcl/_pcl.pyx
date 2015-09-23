@@ -142,32 +142,6 @@ cdef class SegmentationNormal:
         return min_angle, max_angle
 
 
-cdef class SampleConsensusModelCylinder(SegmentationNormal):
-
-    cdef cpp.SampleConsensusModelCylinder_t *me
-    # cdef cpp.ModelCoefficients *coeffs
-    def __cinit__(self):
-        self.me = new cpp.SACSegmentationNormal_t()
-
-    def get_distance_to_model(self, list model_coefficients):
-        """ Compute all distances from the model. You must have already fit the model.
-        :return: vector of distances
-        """
-
-        cdef vector[double] distances
-
-        self.me.getDistancesToModel(self._coeffs, distances)
-    # def count_within_distance(self, list model_coefficients, double threshold):
-    #     cdef cpp.ModelCoefficients coeffs
-    #     cdef vector[float] vals = model_coefficients
-    #     coeffs.values = vals
-    #     #coeffs.values.resize(len(model_coefficients))
-    #     # for i, v in enumerate(model_coefficients):
-    #     #     coeffs.value[i] = v
-    #     return self.me.countWithinDistance(vals, threshold)
-
-
-
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
 cdef Py_ssize_t _strides[2]
