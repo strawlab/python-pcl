@@ -127,6 +127,15 @@ cdef class SegmentationNormal:
         self.me.setEpsAngle (ea)
     def set_axis(self, double ax, double ay, double az):
         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
+    def set_min_max_opening_angle(self, double min_angle, double max_angle):
+        """ Set the minimum and maximum cone opening angles in radians for a cone model.
+        """
+        self.me.setMinMaxOpeningAngle(min_angle, max_angle)
+    def get_min_max_opening_angle(self):
+        min_angle = 0.0
+        max_angle = 0.0
+        self.me.getMinMaxOpeningAngle(min_angle, max_angle)
+        return min_angle, max_angle
 
 
 # Empirically determine strides, for buffer support.
