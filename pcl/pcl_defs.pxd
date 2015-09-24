@@ -68,6 +68,9 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void setInputNormals (shared_ptr[PointCloud[N]])
         void setEpsAngle (double ea)
         void segment (PointIndices, ModelCoefficients)
+        void setMinMaxOpeningAngle(double, double)
+        void getMinMaxOpeningAngle(double, double)
+
 
     cdef cppclass SACSegmentation[T]:
         void setOptimizeCoefficients (bool)
