@@ -53,6 +53,13 @@ class TestNumpyIO(unittest.TestCase):
         a[:] += 6
         assert_array_almost_equal(p[0], a[0])
 
+        # Regression test: deleting a second view would previously
+        # reset the view count to zero.
+        b = np.asarray(p)
+        del b
+
+        self.assertRaises(ValueError, p.resize, 2 * len(p))
+
     def test_pickle(self):
         """Test pickle support."""
         # In this testcase because picking reduces to pickling NumPy arrays.
