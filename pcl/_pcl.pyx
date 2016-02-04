@@ -138,7 +138,7 @@ cdef class SegmentationNormal:
         return min_angle, max_angle
 
 
-# Empirically determine strides, for buffer support.
+# Empirically determine strides, for buffer protocol support.
 # XXX Is there a more elegant way to get these?
 cdef Py_ssize_t _strides[2]
 cdef PointCloud _pc_tmp = PointCloud(np.array([[1, 2, 3],
@@ -205,9 +205,9 @@ cdef class PointCloud:
         cdef Py_ssize_t npoints = self.thisptr().size()
 
         if self._view_count == 0:
-            self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 3
+        self._view_count += 1
 
         buffer.buf = <char *>&(cpp.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
