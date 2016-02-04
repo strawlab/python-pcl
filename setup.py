@@ -3,83 +3,234 @@ from collections import defaultdict
 from Cython.Distutils import build_ext
 from distutils.core import setup
 from distutils.extension import Extension
+from Cython.Build import cythonize
 import subprocess
 import numpy
 import sys
 import platform
 import os
 
-if platform.system() == "Darwin":
-	os.environ['ARCHFLAGS'] = ''
-
-# Try to find PCL. XXX we should only do this when trying to build or install.
-PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
-
-for pcl_version in PCL_SUPPORTED:
-    if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
-        break
-else:
-    print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
-    for version in PCL_SUPPORTED:
-        print('    pkg-config pcl_common%s' % version, file=sys.stderr)
-    sys.exit(1)
-
-# Find build/link options for PCL using pkg-config.
-pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
-            "registration", "sample_consensus", "search", "segmentation",
-            "surface"]
-pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
-
-ext_args = defaultdict(list)
-ext_args['include_dirs'].append(numpy.get_include())
-
-
 def pkgconfig(flag):
     # Equivalent in Python 2.7 (but not 2.6):
-    #subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
-    p = subprocess.Popen(['pkg-config', flag] + pcl_libs,
-                         stdout=subprocess.PIPE)
-    stdout, _ = p.communicate()
+    # subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
+
+    # print(['pkg-config', flag] + pcl_libs)
+    # p = subprocess.Popen(['pkg-config', flag] + pcl_libs, stdout=subprocess.PIPE)
+    p = subprocess.Popen(['pkg-config', flag] + ['pcl_common-1.6'], stdout=subprocess.PIPE)
+    stdout, stderr = p.communicate()
     # Assume no evil spaces in filenames; unsure how pkg-config would
     # handle those, anyway.
     # decode() is required in Python 3. TODO how do know the encoding?
+    
+    print('return')
+    print(stderr)
     return stdout.decode().split()
 
+if platform.system() == "Windows":
+	# Check 32bit or 64bit
+	is_64bits = sys.maxsize > 2**32
+	# if is_64bits == True
 
-for flag in pkgconfig('--cflags-only-I'):
-    ext_args['include_dirs'].append(flag[2:])
-for flag in pkgconfig('--cflags-only-other'):
-    if flag.startswith('-D'):
-        macro, value = flag[2:].split('=', 1)
-        ext_args['define_macros'].append((macro, value))
-    else:
-        ext_args['extra_compile_args'].append(flag)
-for flag in pkgconfig('--libs-only-l'):
-    if flag == "-lflann_cpp-gd":
-        print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
-        continue
-    ext_args['libraries'].append(flag[2:])
-for flag in pkgconfig('--libs-only-L'):
-    ext_args['library_dirs'].append(flag[2:])
-for flag in pkgconfig('--libs-only-other'):
-    ext_args['extra_link_args'].append(flag)
+	# Try to find PCL. XXX we should only do this when trying to build or install.
+	PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
 
-# Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).
-ext_args['define_macros'].append(
-    ("EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET", "1"))
+	for pcl_version in PCL_SUPPORTED:
+	    if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
+	        break
+	else:
+	    print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
+	    for version in PCL_SUPPORTED:
+	        print('    pkg-config pcl_common%s' % version, file=sys.stderr)
+	    sys.exit(1)
 
-setup(name='python-pcl',
-      description='pcl wrapper',
-      url='http://github.com/strawlab/python-pcl',
-      version='0.2',
-      author='John Stowers',
-      author_email='john.stowers@gmail.com',
-      license='BSD',
-      packages=["pcl"],
-      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
-                             language="c++", **ext_args),
-                   Extension("pcl.registration", ["pcl/registration.pyx"],
-                             language="c++", **ext_args),
-                  ],
-      cmdclass={'build_ext': build_ext}
-      )
+	# print(pcl_version)
+
+	# Find build/link options for PCL using pkg-config.
+	pcl_libs = ["common", "features", "filters", "kdtree", "octree",
+	            "registration", "sample_consensus", "search", "segmentation",
+	            "surface"]
+	pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
+	# pcl_libs += ['Eigen3']
+	# print(pcl_libs)
+	
+	ext_args = defaultdict(list)
+	ext_args['include_dirs'].append(numpy.get_include())
+	# ext_args['include_dirs'].append(['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include'])
+	# ext_args['include_dirs'].append(['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include'])
+	debugs = ['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include']
+	# debugs = ['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include']
+	for debug in debugs:
+		ext_args['include_dirs'].append(debug)
+
+	# ext_args['library_dirs'].append(['C:\\Program Files\\PCL 1.6.0\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\lib'])
+	debugs = ['C:\\Program Files\\PCL 1.6.0\\lib', 'G:\\boost\\boost_1_55_0\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\lib']
+	for debug in debugs:
+		ext_args['library_dirs'].append(debug)
+
+	# debug
+	ext_args['libraries'].append(["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"])
+	# debugs = ["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd"]
+	# add boost
+	# dynamic lib
+	# debugs = ['pcl_apps_debug', 'pcl_common_debug', 'pcl_features_debug', 'pcl_filters_debug', 'pcl_io_debug', 'pcl_io_ply_debug', 'pcl_kdtree_debug', 'pcl_keypoints_debug', 'pcl_octree_debug', 'pcl_registration_debug', 'pcl_sample_consensus_debug', 'pcl_segmentation_debug', 'pcl_search_debug', 'pcl_surface_debug', 'pcl_tracking_debug', 'pcl_visualization_debug', 'flann-gd', 'flann_s-gd', 'boost_date_time-vc100-mt-gd-1_49', 'boost_filesystem-vc100-mt-gd-1_49', 'boost_graph-vc100-mt-gd-1_49', 'boost_graph_parallel-vc100-mt-gd-1_49', 'boost_iostreams-vc100-mt-gd-1_49', 'boost_locale-vc100-mt-gd-1_49', 'boost_math_c99-vc100-mt-gd-1_49', 'boost_math_c99f-vc100-mt-gd-1_49', 'boost_math_tr1-vc100-mt-gd-1_49', 'boost_math_tr1f-vc100-mt-gd-1_49', 'boost_mpi-vc100-mt-gd-1_49', 'boost_prg_exec_monitor-vc100-mt-gd-1_49', 'boost_program_options-vc100-mt-gd-1_49', 'boost_random-vc100-mt-gd-1_49', 'boost_regex-vc100-mt-gd-1_49', 'boost_serialization-vc100-mt-gd-1_49', 'boost_signals-vc100-mt-gd-1_49', 'boost_system-vc100-mt-gd-1_49', 'boost_thread-vc100-mt-gd-1_49', 'boost_timer-vc100-mt-gd-1_49', 'boost_unit_test_framework-vc100-mt-gd-1_49', 'boost_wave-vc100-mt-gd-1_49', 'boost_wserialization-vc100-mt-gd-1_49']
+	# static lib
+	# debugs = ['pcl_apps_debug', 'pcl_common_debug', 'pcl_features_debug', 'pcl_filters_debug', 'pcl_io_debug', 'pcl_io_ply_debug', 'pcl_kdtree_debug', 'pcl_keypoints_debug', 'pcl_octree_debug', 'pcl_registration_debug', 'pcl_sample_consensus_debug', 'pcl_segmentation_debug', 'pcl_search_debug', 'pcl_surface_debug', 'pcl_tracking_debug', 'pcl_visualization_debug', 'flann-gd', 'flann_s-gd', 'libboost_chrono-vc100-mt-gd-1_49', 'libboost_date_time-vc100-mt-gd-1_49', 'libboost_filesystem-vc100-mt-gd-1_49', 'libboost_graph_parallel-vc100-mt-gd-1_49', 'libboost_iostreams-vc100-mt-gd-1_49', 'libboost_locale-vc100-mt-gd-1_49', 'libboost_math_c99-vc100-mt-gd-1_49', 'libboost_math_c99f-vc100-mt-gd-1_49', 'libboost_math_tr1-vc100-mt-gd-1_49', 'libboost_math_tr1f-vc100-mt-gd-1_49', 'libboost_mpi-vc100-mt-gd-1_49', 'libboost_prg_exec_monitor-vc100-mt-gd-1_49', 'libboost_program_options-vc100-mt-gd-1_49', 'libboost_random-vc100-mt-gd-1_49', 'libboost_regex-vc100-mt-gd-1_49', 'libboost_serialization-vc100-mt-gd-1_49', 'libboost_signals-vc100-mt-gd-1_49', 'libboost_system-vc100-mt-gd-1_49', 'libboost_test_exec_monitor-vc100-mt-gd-1_49', 'libboost_thread-vc100-mt-gd-1_49', 'libboost_timer-vc100-mt-gd-1_49', 'libboost_unit_test_framework-vc100-mt-gd-1_49', 'libboost_wave-vc100-mt-gd-1_49', 'libboost_wserialization-vc100-mt-gd-1_49']
+	for debug in debugs:
+	    ext_args['libraries'].append(debug)
+	
+	# release
+	# releases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann-gd', 'flann_s-gd']
+	# add boost
+	# dynamic lib
+	# releases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann-gd', 'flann_s-gd', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
+	# static lib
+	# boost_chrono-vc100-mt-1_49 -> NG(1.47/1.49)
+	# boost_date_time-vc100-mt-1_49.lib -> NG
+	# releases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann-gd', 'flann_s-gd', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
+	# for release in releases:
+	#     ext_args['libraries'].append(release)
+	
+	# ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
+	debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
+	for debug in debugs:
+		define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
+	
+	ext_args['extra_compile_args'].append('/EHsc')
+	
+	# include_dirs=['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include', 'C:\\Anaconda2\\envs\\my_env\\Lib\\site-packages\\numpy\\core\\include'],
+	# library_dirs=['C:\\Program Files\\PCL 1.6.0\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\lib'],
+	# libraries=["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd", "boost_chrono-vc100-mt-1_49", "boost_date_time-vc100-mt-1_49", "boost_filesystem-vc100-mt-1_49", "boost_graph-vc100-mt-1_49", "boost_graph_parallel-vc100-mt-1_49", "boost_iostreams-vc100-mt-1_49", "boost_locale-vc100-mt-1_49", "boost_math_c99-vc100-mt-1_49", "boost_math_c99f-vc100-mt-1_49", "boost_math_tr1-vc100-mt-1_49", "boost_math_tr1f-vc100-mt-1_49", "boost_mpi-vc100-mt-1_49", "boost_prg_exec_monitor-vc100-mt-1_49", "boost_program_options-vc100-mt-1_49", "boost_random-vc100-mt-1_49", "boost_regex-vc100-mt-1_49", "boost_serialization-vc100-mt-1_49", "boost_signals-vc100-mt-1_49", "boost_system-vc100-mt-1_49", "boost_thread-vc100-mt-1_49", "boost_timer-vc100-mt-1_49", "boost_unit_test_framework-vc100-mt-1_49", "boost_wave-vc100-mt-1_49", "boost_wserialization-vc100-mt-1_49", "libboost_chrono-vc100-mt-1_49", "libboost_date_time-vc100-mt-1_49", "libboost_filesystem-vc100-mt-1_49", "libboost_graph_parallel-vc100-mt-1_49", "libboost_iostreams-vc100-mt-1_49", "libboost_locale-vc100-mt-1_49", "libboost_math_c99-vc100-mt-1_49", "libboost_math_c99f-vc100-mt-1_49", "libboost_math_tr1-vc100-mt-1_49", "libboost_math_tr1f-vc100-mt-1_49", "libboost_mpi-vc100-mt-1_49", "libboost_prg_exec_monitor-vc100-mt-1_49", "libboost_program_options-vc100-mt-1_49", "libboost_random-vc100-mt-1_49", "libboost_regex-vc100-mt-1_49", "libboost_serialization-vc100-mt-1_49", "libboost_signals-vc100-mt-1_49", "libboost_system-vc100-mt-1_49", "libboost_test_exec_monitor-vc100-mt-1_49", "libboost_thread-vc100-mt-1_49", "libboost_timer-vc100-mt-1_49", "libboost_unit_test_framework-vc100-mt-1_49", "libboost_wave-vc100-mt-1_49", "libboost_wserialization-vc100-mt-1_49"],
+	## define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
+	# define_macros=[('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')],
+	# extra_compile_args=["/EHsc"],
+	
+	# for flag in pkgconfig('--cflags-only-I'):
+	#     # ext_args['include_dirs'].append(flag[2:])
+	#     for test in flag:
+	#     	print(test)
+	#     ext_args['include_dirs'].append(flag)
+	# 
+	# for flag in pkgconfig('--cflags-only-other'):
+	#     if flag.startswith('-D'):
+	#         macro, value = flag[2:].split('=', 1)
+	#         ext_args['define_macros'].append((macro, value))
+	#     else:
+	#        ext_args['extra_compile_args'].append(flag)
+	# 
+	# for flag in pkgconfig('--libs-only-l'):
+	#     if flag == "-lflann_cpp-gd":
+	#         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
+	#         continue
+	#     ext_args['libraries'].append(flag[2:])
+	# 
+	# for flag in pkgconfig('--libs-only-L'):
+	#     ext_args['library_dirs'].append(flag[2:])
+	# 
+	# for flag in pkgconfig('--libs-only-other'):
+	#     ext_args['extra_link_args'].append(flag)
+	# 
+	# # Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).
+	# ext_args['define_macros'].append(
+	#     ("EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET", "1"))
+	# 
+	print(ext_args)
+	
+	setup(name='python-pcl',
+	      description='pcl wrapper',
+	      url='http://github.com/strawlab/python-pcl',
+	      version='0.2',
+	      author='John Stowers',
+	      author_email='john.stowers@gmail.com',
+	      license='BSD',
+	      packages=["pcl"],
+	      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
+	                             language = "c++", **ext_args),
+	                   # Extension("pcl.registration", ["pcl/registration.pyx"],
+	                   #           # language="c++", **ext_args)],
+	                   # debug
+	                   # gdb_debug=True,
+	                  ],
+	      cmdclass={'build_ext': build_ext}
+	      )
+	      
+else:
+	# Not 'Windows'
+	if platform.system() == "Darwin":
+		os.environ['ARCHFLAGS'] = ''
+
+	# Try to find PCL. XXX we should only do this when trying to build or install.
+	PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
+
+	for pcl_version in PCL_SUPPORTED:
+	    if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
+	    # if pkgconfig.exists('pcl_common-1.6') == 0:
+	        break
+	else:
+	    print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
+	    for version in PCL_SUPPORTED:
+	        print('    pkg-config pcl_common%s' % version, file=sys.stderr)
+	    sys.exit(1)
+
+	# Find build/link options for PCL using pkg-config.
+	pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
+	            "registration", "sample_consensus", "search", "segmentation",
+	            "surface"]
+	pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
+
+	ext_args = defaultdict(list)
+	ext_args['include_dirs'].append(numpy.get_include())
+
+	def pkgconfig(flag):
+	    # Equivalent in Python 2.7 (but not 2.6):
+	    #subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
+	    p = subprocess.Popen(['pkg-config', flag] + pcl_libs,
+	                         stdout=subprocess.PIPE)
+	    stdout, _ = p.communicate()
+	    # Assume no evil spaces in filenames; unsure how pkg-config would
+	    # handle those, anyway.
+	    # decode() is required in Python 3. TODO how do know the encoding?
+	    return stdout.decode().split()
+
+
+	for flag in pkgconfig('--cflags-only-I'):
+	    ext_args['include_dirs'].append(flag[2:])
+
+	for flag in pkgconfig('--cflags-only-other'):
+	    if flag.startswith('-D'):
+	        macro, value = flag[2:].split('=', 1)
+	        ext_args['define_macros'].append((macro, value))
+	    else:
+	        ext_args['extra_compile_args'].append(flag)
+
+	for flag in pkgconfig('--libs-only-l'):
+	    if flag == "-lflann_cpp-gd":
+	        print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
+	        continue
+	    ext_args['libraries'].append(flag[2:])
+
+	for flag in pkgconfig('--libs-only-L'):
+	    ext_args['library_dirs'].append(flag[2:])
+
+	for flag in pkgconfig('--libs-only-other'):
+	    ext_args['extra_link_args'].append(flag)
+
+	# Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).
+	ext_args['define_macros'].append(
+	    ("EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET", "1"))
+
+	setup(name='python-pcl',
+	      description='pcl wrapper',
+	      url='http://github.com/strawlab/python-pcl',
+	      version='0.2',
+	      author='John Stowers',
+	      author_email='john.stowers@gmail.com',
+	      license='BSD',
+	      packages=["pcl"],
+	      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
+	                              language="c++", **ext_args),
+	                   Extension("pcl.registration", ["pcl/registration.pyx"],
+	                              language="c++", **ext_args),
+	                  ],
+	      cmdclass={'build_ext': build_ext}
+	)
+
