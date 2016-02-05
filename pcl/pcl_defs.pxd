@@ -4,8 +4,15 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
-from shared_ptr cimport shared_ptr
+# NG
+# from libcpp.memory cimport shared_ptr
+from boost_shared_ptr cimport shared_ptr
+
 from vector cimport vector as vector2
+
+###############################################################################
+# Types
+###############################################################################
 
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Vector4f:
@@ -97,6 +104,9 @@ ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
 cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:
         KdTree()
+        void setInputCloud (shared_ptr[PointCloud[T]])
+
+ctypedef KdTree[PointXYZ] KdTree_t
 
 ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
 ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
@@ -158,36 +168,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #    int loadPLYFile (string file_name, PointCloud[PointXYZ] cloud)
 #    int savePLYFile (string file_name, PointCloud[PointXYZ] cloud, bool binary_mode)
 
-cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
-    cdef enum SacModel:
-        SACMODEL_PLANE
-        SACMODEL_LINE
-        SACMODEL_CIRCLE2D
-        SACMODEL_CIRCLE3D
-        SACMODEL_SPHERE
-        SACMODEL_CYLINDER
-        SACMODEL_CONE
-        SACMODEL_TORUS
-        SACMODEL_PARALLEL_LINE
-        SACMODEL_PERPENDICULAR_PLANE
-        SACMODEL_PARALLEL_LINES
-        SACMODEL_NORMAL_PLANE
-        #SACMODEL_NORMAL_SPHERE
-        SACMODEL_REGISTRATION
-        SACMODEL_PARALLEL_PLANE
-        SACMODEL_NORMAL_PARALLEL_PLANE
-        SACMODEL_STICK
-
-cdef extern from "pcl/sample_consensus/method_types.h" namespace "pcl":
-    cdef enum:
-        SAC_RANSAC = 0
-        SAC_LMEDS = 1
-        SAC_MSAC = 2
-        SAC_RRANSAC = 3
-        SAC_RMSAC = 4
-        SAC_MLESAC = 5
-        SAC_PROSAC = 6
-
 ctypedef PointCloud[PointXYZ] PointCloud_t
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
@@ -229,7 +209,44 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
     cdef cppclass KdTreeFLANN[T]:
         KdTreeFLANN()
         void setInputCloud (shared_ptr[PointCloud[T]])
-        int nearestKSearch (PointCloud[T],
-          int, int, vector[int], vector[float])
+        int nearestKSearch (PointCloud[T], int, int, vector[int], vector[float])
 
 ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
+# ctypedef KdTreeFLANN[PointXYZRGB] KdTreeFLANN_t2
+
+###############################################################################
+# Enum
+###############################################################################
+cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
+    cdef enum SacModel:
+        SACMODEL_PLANE
+        SACMODEL_LINE
+        SACMODEL_CIRCLE2D
+        SACMODEL_CIRCLE3D
+        SACMODEL_SPHERE
+        SACMODEL_CYLINDER
+        SACMODEL_CONE
+        SACMODEL_TORUS
+        SACMODEL_PARALLEL_LINE
+        SACMODEL_PERPENDICULAR_PLANE
+        SACMODEL_PARALLEL_LINES
+        SACMODEL_NORMAL_PLANE
+        #SACMODEL_NORMAL_SPHERE
+        SACMODEL_REGISTRATION
+        SACMODEL_PARALLEL_PLANE
+        SACMODEL_NORMAL_PARALLEL_PLANE
+        SACMODEL_STICK
+
+cdef extern from "pcl/sample_consensus/method_types.h" namespace "pcl":
+    cdef enum:
+        SAC_RANSAC = 0
+        SAC_LMEDS = 1
+        SAC_MSAC = 2
+        SAC_RRANSAC = 3
+        SAC_RMSAC = 4
+        SAC_MLESAC = 5
+        SAC_PROSAC = 6
+
+###############################################################################
+# Activation
+###############################################################################
