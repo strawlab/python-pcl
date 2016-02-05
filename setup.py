@@ -22,8 +22,6 @@ def pkgconfig(flag):
     # handle those, anyway.
     # decode() is required in Python 3. TODO how do know the encoding?
     
-    print('return')
-    print(stderr)
     return stdout.decode().split()
 
 if platform.system() == "Windows":
@@ -45,6 +43,17 @@ if platform.system() == "Windows":
 
 	# print(pcl_version)
 
+	# environment Value
+	for k, v in os.environ.items():
+	    # print("{key} : {value}".format(key=k, value=v))
+	    if k == "PCL_ROOT":
+	        pcl_root = v
+	        # print(pcl_root)
+
+	# Add environment Value
+	# os.environ["VS90COMNTOOLS"] = '%VS100COMNTOOLS%'
+	# os.environ["VS90COMNTOOLS"] = '%VS120COMNTOOLS%'
+
 	# Find build/link options for PCL using pkg-config.
 	pcl_libs = ["common", "features", "filters", "kdtree", "octree",
 	            "registration", "sample_consensus", "search", "segmentation",
@@ -52,13 +61,13 @@ if platform.system() == "Windows":
 	pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
 	# pcl_libs += ['Eigen3']
 	# print(pcl_libs)
-	
+
 	ext_args = defaultdict(list)
 	ext_args['include_dirs'].append(numpy.get_include())
 	# ext_args['include_dirs'].append(['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include'])
-	# ext_args['include_dirs'].append(['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include'])
 	# inc_dirs = ['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include']
-	inc_dirs = ['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include']
+	# inc_dirs = ['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include']
+	inc_dirs = [pcl_root + '\\include\\pcl-1.6', pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include']
 	for inc_dir in inc_dirs:
 		ext_args['include_dirs'].append(inc_dir)
 
@@ -69,14 +78,14 @@ if platform.system() == "Windows":
 
 	# debug
 	# ext_args['libraries'].append(["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"])
-	# libdebugs = ["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd"]
+	libdebugs = ["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"]
 	# add boost
 	# dynamic lib
 	# libdebugs = ['pcl_apps_debug', 'pcl_common_debug', 'pcl_features_debug', 'pcl_filters_debug', 'pcl_io_debug', 'pcl_io_ply_debug', 'pcl_kdtree_debug', 'pcl_keypoints_debug', 'pcl_octree_debug', 'pcl_registration_debug', 'pcl_sample_consensus_debug', 'pcl_segmentation_debug', 'pcl_search_debug', 'pcl_surface_debug', 'pcl_tracking_debug', 'pcl_visualization_debug', 'flann-gd', 'flann_s-gd', 'boost_date_time-vc100-mt-gd-1_49', 'boost_filesystem-vc100-mt-gd-1_49', 'boost_graph-vc100-mt-gd-1_49', 'boost_graph_parallel-vc100-mt-gd-1_49', 'boost_iostreams-vc100-mt-gd-1_49', 'boost_locale-vc100-mt-gd-1_49', 'boost_math_c99-vc100-mt-gd-1_49', 'boost_math_c99f-vc100-mt-gd-1_49', 'boost_math_tr1-vc100-mt-gd-1_49', 'boost_math_tr1f-vc100-mt-gd-1_49', 'boost_mpi-vc100-mt-gd-1_49', 'boost_prg_exec_monitor-vc100-mt-gd-1_49', 'boost_program_options-vc100-mt-gd-1_49', 'boost_random-vc100-mt-gd-1_49', 'boost_regex-vc100-mt-gd-1_49', 'boost_serialization-vc100-mt-gd-1_49', 'boost_signals-vc100-mt-gd-1_49', 'boost_system-vc100-mt-gd-1_49', 'boost_thread-vc100-mt-gd-1_49', 'boost_timer-vc100-mt-gd-1_49', 'boost_unit_test_framework-vc100-mt-gd-1_49', 'boost_wave-vc100-mt-gd-1_49', 'boost_wserialization-vc100-mt-gd-1_49']
 	# static lib
 	# libdebugs = ['pcl_apps_debug', 'pcl_common_debug', 'pcl_features_debug', 'pcl_filters_debug', 'pcl_io_debug', 'pcl_io_ply_debug', 'pcl_kdtree_debug', 'pcl_keypoints_debug', 'pcl_octree_debug', 'pcl_registration_debug', 'pcl_sample_consensus_debug', 'pcl_segmentation_debug', 'pcl_search_debug', 'pcl_surface_debug', 'pcl_tracking_debug', 'pcl_visualization_debug', 'flann-gd', 'flann_s-gd', 'libboost_chrono-vc100-mt-gd-1_49', 'libboost_date_time-vc100-mt-gd-1_49', 'libboost_filesystem-vc100-mt-gd-1_49', 'libboost_graph_parallel-vc100-mt-gd-1_49', 'libboost_iostreams-vc100-mt-gd-1_49', 'libboost_locale-vc100-mt-gd-1_49', 'libboost_math_c99-vc100-mt-gd-1_49', 'libboost_math_c99f-vc100-mt-gd-1_49', 'libboost_math_tr1-vc100-mt-gd-1_49', 'libboost_math_tr1f-vc100-mt-gd-1_49', 'libboost_mpi-vc100-mt-gd-1_49', 'libboost_prg_exec_monitor-vc100-mt-gd-1_49', 'libboost_program_options-vc100-mt-gd-1_49', 'libboost_random-vc100-mt-gd-1_49', 'libboost_regex-vc100-mt-gd-1_49', 'libboost_serialization-vc100-mt-gd-1_49', 'libboost_signals-vc100-mt-gd-1_49', 'libboost_system-vc100-mt-gd-1_49', 'libboost_test_exec_monitor-vc100-mt-gd-1_49', 'libboost_thread-vc100-mt-gd-1_49', 'libboost_timer-vc100-mt-gd-1_49', 'libboost_unit_test_framework-vc100-mt-gd-1_49', 'libboost_wave-vc100-mt-gd-1_49', 'libboost_wserialization-vc100-mt-gd-1_49']
-	# for libdebug in libdebugs:
-	#     ext_args['libraries'].append(libdebug)
+	for libdebug in libdebugs:
+	    ext_args['libraries'].append(libdebug)
 	
 	# release
 	# libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
@@ -86,9 +95,9 @@ if platform.system() == "Windows":
 	# static lib
 	# boost_chrono-vc100-mt-1_49 -> NG(1.47/1.49)
 	# boost_date_time-vc100-mt-1_49.lib -> NG
-	libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
-	for librelease in libreleases:
-	    ext_args['libraries'].append(librelease)
+	# libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
+	# for librelease in libreleases:
+	#     ext_args['libraries'].append(librelease)
 	
 	# ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
 	debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
@@ -96,7 +105,7 @@ if platform.system() == "Windows":
 		define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
 
 	ext_args['extra_compile_args'].append('/EHsc')
-	ext_args['extra_compile_args'].append('/MT')
+	# ext_args['extra_compile_args'].append('/MT')
 	
 	# include_dirs=['C:\\Program Files\\PCL 1.6.0\\include\\pcl-1.6', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\include', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\include', 'C:\\Anaconda2\\envs\\my_env\\Lib\\site-packages\\numpy\\core\\include'],
 	# library_dirs=['C:\\Program Files\\PCL 1.6.0\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\Boost\\lib', 'C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\lib'],
