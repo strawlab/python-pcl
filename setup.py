@@ -46,7 +46,7 @@ if platform.system() == "Windows":
 	PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
 
 	for pcl_version in PCL_SUPPORTED:
-	    if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
+	    if subprocess.call(['pkg-config\\pkg-config', 'pcl_common%s' % pcl_version]) == 0:
 	        break
 	else:
 	    print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
