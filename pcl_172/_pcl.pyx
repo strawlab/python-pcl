@@ -9,8 +9,7 @@ cimport numpy as cnp
 cimport pcl_defs as cpp
 
 cimport cython
-# from cython.operator import dereference as deref
-from cython.operator cimport dereference as deref, preincrement as inc
+from cython.operator import dereference as deref
 
 from cpython cimport Py_buffer
 
@@ -72,12 +71,8 @@ cdef class Segmentation:
     def segment(self):
         cdef cpp.PointIndices ind
         cdef cpp.ModelCoefficients coeffs
-        
-        # NG
-        print('segment 1')
         self.me.segment (ind, coeffs)
-        print('segment 2')
-        return [ind.indices[i] for i in range(ind.indices.size())], \
+        return [ind.indices[i] for i in range(ind.indices.size())],\
                [coeffs.values[i] for i in range(coeffs.values.size())]
 
     def set_optimize_coefficients(self, bool b):
@@ -101,10 +96,7 @@ cdef class SegmentationNormal:
     """
     cdef cpp.SACSegmentationNormal_t *me
     def __cinit__(self):
-        print('SACSegmentationNormal 1')
         self.me = new cpp.SACSegmentationNormal_t()
-        print('SACSegmentationNormal 2')
-
     def __dealloc__(self):
         del self.me
 
@@ -380,12 +372,8 @@ cdef class PointCloud:
         Return a pcl.SegmentationNormal object with this object set as the input-cloud
         """
         cdef cpp.PointNormalCloud_t normals
-        print('make_segmenter_normals 1')
-        p = self.thisptr()
-        print('make_segmenter_normals 2')
-        mpcl_compute_normals(deref(self.thisptr()), ksearch, searchRadius, normals)
-        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-        print('make_segmenter_normals 3')
+        mpcl_compute_normals(deref(self.thisptr()), ksearch, searchRadius,
+                             normals)
 
         seg = SegmentationNormal()
         cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
@@ -430,22 +418,12 @@ cdef class PointCloud:
         cmls.setInputCloud(self.thisptr_shared)
         return mls
 
-    def make_kdtree(self):
-        """
-        Return a pcl.kdTree object with this object set as the input-cloud
-
-        Deprecated: use the pcl.kdTree constructor on this cloud.
-        """
-        print('make_kdtree')
-        return KdTree(self)
-
     def make_kdtree_flann(self):
         """
         Return a pcl.kdTreeFLANN object with this object set as the input-cloud
 
         Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
         """
-        print('make_kdtree_flann')
         return KdTreeFLANN(self)
 
     def make_octree(self, double resolution):
@@ -625,24 +603,6 @@ cdef class PassThroughFilter:
         self.me.filter(pc.thisptr()[0])
         return pc
 
-cdef class KdTree:
-    """
-    Finds k nearest neighbours from points in another pointcloud to points in
-    a reference pointcloud.
-
-    Must be constructed from the reference point cloud, which is copied, so
-    changed to pc are not reflected in KdTree(pc).
-    """
-    cdef cpp.KdTree_t *me
-
-    def __cinit__(self, PointCloud pc not None):
-        self.me = new cpp.KdTree_t()
-
-        print('init KdTree:')
-
-        self.me.setInputCloud(pc.thisptr_shared)
-
-
 cdef class KdTreeFLANN:
     """
     Finds k nearest neighbours from points in another pointcloud to points in
@@ -655,18 +615,7 @@ cdef class KdTreeFLANN:
 
     def __cinit__(self, PointCloud pc not None):
         self.me = new cpp.KdTreeFLANN_t()
-
-        # TODO: NG
-        print('init KdTreeFLANN:')
-
-        # print(pc.thisptr_shared)
         self.me.setInputCloud(pc.thisptr_shared)
-        # self.me.setInputCloud(dereference(pc.thisptr_shared))
-        # dereference(self.me).setInputCloud(pc.thisptr_shared)
-        # p.setInputCloud(pc.thisptr_shared)
-        # self.me.setInputCloud(pc)
-
-        # print('init2:')
 
     def __dealloc__(self):
         del self.me
