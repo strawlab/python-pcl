@@ -1,9 +1,9 @@
 language: python 
- 
+
 python:
-	2.7
-	3.4
-	3.5
+    - "2.7"
+    - "3.4"
+    - "3.5"
 
 before_install:
    sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
@@ -11,8 +11,8 @@ before_install:
    sudo apt-get install libpcl-all
 
 install: 
-	pip install cython
-	pip numpy
+    pip install cython
+    pip numpy
 
 script: 
    BENCHMARK=1 python setup.py -v test 

@@ -6,17 +6,6 @@ platform:
   - x64 
 environment: 
   PCL_INSTALL_DIR: C:\\Program Files
-  matrix: 
-    - PCL_INSTALL_TRIPLE: x86_64-pc-windows-msvc 
-      VCVARS: "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\bin\\amd64\\vcvars64.bat" 
-      RUST_VERSION: 1.6.0
-    - PCL_INSTALL_TRIPLE: x86_64-pc-windows-msvc 
-      VCVARS: "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\amd64\\vcvars64.bat" 
-      RUST_VERSION: 1.7.2
-    - PCL_INSTALL_TRIPLE: x86_64-pc-windows-msvc 
-      VCVARS: "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\bin\\amd64\\vcvars64.bat" 
-      RUST_VERSION: master
-
 
 install: 
   - ps: Start-FileDownload "https://3230d63b5fc54e62148e-c95ac804525aac4b6dba79b00b39d1d3.ssl.cf1.rackcdn.com/Anaconda3-2.5.0-Windows-x86_64.exe" 
