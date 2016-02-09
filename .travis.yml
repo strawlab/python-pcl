@@ -12,7 +12,7 @@ before_script:
 
 script: 
     - pip install cython
-    - pip numpy
+    - pip install numpy
     - python setup.py install
 
 os:
