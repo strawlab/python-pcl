@@ -6,9 +6,9 @@ python:
     - "3.5"
 
 before_script:
-   - sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
-   - sudo apt-get update
-   - sudo apt-get install libpcl-all
+   - sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+   - sudo apt-get update -y
+   - sudo apt-get install libpcl-all -y
 
 script: 
     - pip install cython

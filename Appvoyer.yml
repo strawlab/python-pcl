@@ -5,7 +5,6 @@ branches:
 platform: 
   - x64 
 environment: 
-  PCL_INSTALL_DIR: C:\\Program Files
 
 install: 
   - ps: Start-FileDownload "https://3230d63b5fc54e62148e-c95ac804525aac4b6dba79b00b39d1d3.ssl.cf1.rackcdn.com/Anaconda3-2.5.0-Windows-x86_64.exe" 
@@ -30,5 +29,3 @@ install:
 
 build: false 
 test_script: 
-  - cargo build --verbose 
-  - cargo test --verbose 
