@@ -8,7 +8,7 @@ cimport numpy as cnp
 
 cimport pcl_defs as cpp
 cimport pcl_features as features
-cimport pcl_segmentation as segmentation
+# cimport pcl_segmentation as segmentation
 
 cimport cython
 # from cython.operator import dereference as deref
@@ -26,36 +26,36 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
                               double searchRadius,
                               cpp.PointNormalCloud_t) except +
-    void mpcl_sacnormal_set_axis(segmentation.SACSegmentationNormal_t,
+    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t,
                                  double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                       cpp.PointIndices_t *, bool) except +
 
-SAC_RANSAC = segmentation.SAC_RANSAC
-SAC_LMEDS = segmentation.SAC_LMEDS
-SAC_MSAC = segmentation.SAC_MSAC
-SAC_RRANSAC = segmentation.SAC_RRANSAC
-SAC_RMSAC = segmentation.SAC_RMSAC
-SAC_MLESAC = segmentation.SAC_MLESAC
-SAC_PROSAC = segmentation.SAC_PROSAC
+SAC_RANSAC = cpp.SAC_RANSAC
+SAC_LMEDS = cpp.SAC_LMEDS
+SAC_MSAC = cpp.SAC_MSAC
+SAC_RRANSAC = cpp.SAC_RRANSAC
+SAC_RMSAC = cpp.SAC_RMSAC
+SAC_MLESAC = cpp.SAC_MLESAC
+SAC_PROSAC = cpp.SAC_PROSAC
 
-SACMODEL_PLANE = segmentation.SACMODEL_PLANE
-SACMODEL_LINE = segmentation.SACMODEL_LINE
-SACMODEL_CIRCLE2D = segmentation.SACMODEL_CIRCLE2D
-SACMODEL_CIRCLE3D = segmentation.SACMODEL_CIRCLE3D
-SACMODEL_SPHERE = segmentation.SACMODEL_SPHERE
-SACMODEL_CYLINDER = segmentation.SACMODEL_CYLINDER
-SACMODEL_CONE = segmentation.SACMODEL_CONE
-SACMODEL_TORUS = segmentation.SACMODEL_TORUS
-SACMODEL_PARALLEL_LINE = segmentation.SACMODEL_PARALLEL_LINE
-SACMODEL_PERPENDICULAR_PLANE = segmentation.SACMODEL_PERPENDICULAR_PLANE
-SACMODEL_PARALLEL_LINES = segmentation.SACMODEL_PARALLEL_LINES
-SACMODEL_NORMAL_PLANE = segmentation.SACMODEL_NORMAL_PLANE 
-#SACMODEL_NORMAL_SPHERE = segmentation.SACMODEL_NORMAL_SPHERE
-SACMODEL_REGISTRATION = segmentation.SACMODEL_REGISTRATION
-SACMODEL_PARALLEL_PLANE = segmentation.SACMODEL_PARALLEL_PLANE
-SACMODEL_NORMAL_PARALLEL_PLANE = segmentation.SACMODEL_NORMAL_PARALLEL_PLANE
-SACMODEL_STICK = segmentation.SACMODEL_STICK
+SACMODEL_PLANE = cpp.SACMODEL_PLANE
+SACMODEL_LINE = cpp.SACMODEL_LINE
+SACMODEL_CIRCLE2D = cpp.SACMODEL_CIRCLE2D
+SACMODEL_CIRCLE3D = cpp.SACMODEL_CIRCLE3D
+SACMODEL_SPHERE = cpp.SACMODEL_SPHERE
+SACMODEL_CYLINDER = cpp.SACMODEL_CYLINDER
+SACMODEL_CONE = cpp.SACMODEL_CONE
+SACMODEL_TORUS = cpp.SACMODEL_TORUS
+SACMODEL_PARALLEL_LINE = cpp.SACMODEL_PARALLEL_LINE
+SACMODEL_PERPENDICULAR_PLANE = cpp.SACMODEL_PERPENDICULAR_PLANE
+SACMODEL_PARALLEL_LINES = cpp.SACMODEL_PARALLEL_LINES
+SACMODEL_NORMAL_PLANE = cpp.SACMODEL_NORMAL_PLANE 
+SACMODEL_NORMAL_SPHERE = cpp.SACMODEL_NORMAL_SPHERE
+SACMODEL_REGISTRATION = cpp.SACMODEL_REGISTRATION
+SACMODEL_PARALLEL_PLANE = cpp.SACMODEL_PARALLEL_PLANE
+SACMODEL_NORMAL_PARALLEL_PLANE = cpp.SACMODEL_NORMAL_PARALLEL_PLANE
+SACMODEL_STICK = cpp.SACMODEL_STICK
 
 
 cnp.import_array()
@@ -65,9 +65,9 @@ cdef class Segmentation:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef segmentation.SACSegmentation_t *me
+    cdef cpp.SACSegmentation_t *me
     def __cinit__(self):
-        self.me = new segmentation.SACSegmentation_t()
+        self.me = new cpp.SACSegmentation_t()
     def __dealloc__(self):
         del self.me
 
@@ -81,7 +81,7 @@ cdef class Segmentation:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, segmentation.SacModel m):
+    def set_model_type(self, cpp.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -100,9 +100,7 @@ cdef class SegmentationNormal:
     """
     cdef cpp.SACSegmentationNormal_t *me
     def __cinit__(self):
-        print('SACSegmentationNormal 1')
         self.me = new cpp.SACSegmentationNormal_t()
-        print('SACSegmentationNormal 2')
 
     def __dealloc__(self):
         del self.me
@@ -116,7 +114,7 @@ cdef class SegmentationNormal:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, segmentation.SacModel m):
+    def set_model_type(self, cpp.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -384,7 +382,7 @@ cdef class PointCloud:
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
 
         seg = SegmentationNormal()
-        cdef segmentation.SACSegmentationNormal_t *cseg = <segmentation.SACSegmentationNormal_t *>seg.me
+        cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
 

@@ -163,8 +163,10 @@ def test_copy():
 
 SEGCYLMOD = [0.0552167, 0.0547035, 0.757707,
              -0.0270852, -4.41026, -2.88995, 0.0387603]
-SEGCYLIN = 11462
-
+# 1.6
+SEGCYLIN = 11461
+# 1.7.2
+# SEGCYLIN = 11462
 
 class TestSegmentCylinder(unittest.TestCase):
 
@@ -418,3 +420,6 @@ class TestOctreePointCloudSearch(unittest.TestCase):
         rs = self.t.radius_search(good_point, 0.5)
         self.assertEqual(len(rs[0]), 19730)
         self.assertEqual(len(rs[1]), 19730)
+
+if __name__ == '__main__':
+    unittest.main()

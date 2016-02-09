@@ -28,9 +28,6 @@ if platform.system() == "Windows":
 	is_64bits = sys.maxsize > 2**32
 	# if is_64bits == True
 
-	# PCL 1.6.0 python Version == 3.4(>= 3.4?, 2.7 -> NG)
-	# PCL 1.7.2 python Version >= ???
-
 	# environment Value
 	for k, v in os.environ.items():
 	    # print("{key} : {value}".format(key=k, value=v))
@@ -54,7 +51,27 @@ if platform.system() == "Windows":
 	        print('    pkg-config pcl_common%s' % version, file=sys.stderr)
 	    sys.exit(1)
 
-	print(pcl_version)
+	# print(pcl_version)
+
+	# Python Version Check
+	info = sys.version_info
+
+	if pcl_version == '-1.6':
+		# PCL 1.6.0 python Version == 3.4(>= 3.4?, 2.7 -> NG)
+		if info.major == 3 and info.minor == 4:
+			pass
+		else:
+			print('no building Python Version')
+			exit(1)
+	elif pcl_version == '-1.7':
+		# PCL 1.7.2 python Version >= 3.5
+		if info.major == 3 and info.minor >= 5:
+			pass
+		else:
+			print('no building Python Version')
+			exit(1)
+	else:
+		pass
 
 	# Add environment Value
 	# os.environ["VS90COMNTOOLS"] = '%VS100COMNTOOLS%'
@@ -142,6 +159,7 @@ if platform.system() == "Windows":
 		define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
 
 	ext_args['extra_compile_args'].append('/EHsc')
+
 	# NG
 	# ext_args['extra_compile_args'].append('/NODEFAULTLIB:msvcrtd')
 	# ext_args['extra_compile_args'].append('/MD')
@@ -167,10 +185,9 @@ if platform.system() == "Windows":
 		      author_email='john.stowers@gmail.com',
 		      license='BSD',
 		      packages=["pcl"],
-		      ext_modules=[Extension("pcl._pcl", ["pcl_160/_pcl.pyx", "pcl_160/minipcl.cpp"],
+		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
-		                   # 1.6.0 NG
-		                   # Extension("pcl.registration", ["pcl_160/registration.pyx"],
+		                   # Extension("pcl.registration", ["pcl/pcl_registration.pyx"],
 		                   #           language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
@@ -186,9 +203,9 @@ if platform.system() == "Windows":
 		      author_email='john.stowers@gmail.com',
 		      license='BSD',
 		      packages=["pcl"],
-		      ext_modules=[Extension("pcl._pcl", ["pcl_172/_pcl.pyx", "pcl_172/minipcl.cpp"],
+		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
-		                   Extension("pcl.registration", ["pcl_172/registration.pyx"],
+		                   Extension("pcl.registration", ["pcl/registration.pyx"],
 		                             language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
@@ -272,10 +289,10 @@ else:
 		      author_email='john.stowers@gmail.com',
 		      license='BSD',
 		      packages=["pcl"],
-		      ext_modules=[Extension("pcl._pcl", ["pcl_160/_pcl.pyx", "pcl_160/minipcl.cpp"],
+		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
 		                   # 1.6.0 NG
-		                   # Extension("pcl.registration", ["pcl_160/registration.pyx"],
+		                   # Extension("pcl.registration", ["pcl/registration.pyx"],
 		                   #           language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
@@ -291,9 +308,9 @@ else:
 		      author_email='john.stowers@gmail.com',
 		      license='BSD',
 		      packages=["pcl"],
-		      ext_modules=[Extension("pcl._pcl", ["pcl_172/_pcl.pyx", "pcl_172/minipcl.cpp"],
+		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
-		                   Extension("pcl.registration", ["pcl_172/registration.pyx"],
+		                   Extension("pcl.registration", ["pcl/registration.pyx"],
 		                             language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,

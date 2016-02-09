@@ -7,6 +7,8 @@ import numpy as np
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
+cimport pcl_features as features
+# cimport pcl_segmentation as segmentation
 
 cimport cython
 # from cython.operator import dereference as deref
@@ -49,7 +51,7 @@ SACMODEL_PARALLEL_LINE = cpp.SACMODEL_PARALLEL_LINE
 SACMODEL_PERPENDICULAR_PLANE = cpp.SACMODEL_PERPENDICULAR_PLANE
 SACMODEL_PARALLEL_LINES = cpp.SACMODEL_PARALLEL_LINES
 SACMODEL_NORMAL_PLANE = cpp.SACMODEL_NORMAL_PLANE 
-#SACMODEL_NORMAL_SPHERE = cpp.SACMODEL_NORMAL_SPHERE
+SACMODEL_NORMAL_SPHERE = cpp.SACMODEL_NORMAL_SPHERE
 SACMODEL_REGISTRATION = cpp.SACMODEL_REGISTRATION
 SACMODEL_PARALLEL_PLANE = cpp.SACMODEL_PARALLEL_PLANE
 SACMODEL_NORMAL_PARALLEL_PLANE = cpp.SACMODEL_NORMAL_PARALLEL_PLANE
@@ -73,10 +75,7 @@ cdef class Segmentation:
         cdef cpp.PointIndices ind
         cdef cpp.ModelCoefficients coeffs
         
-        # NG
-        print('segment 1')
         self.me.segment (ind, coeffs)
-        print('segment 2')
         return [ind.indices[i] for i in range(ind.indices.size())], \
                [coeffs.values[i] for i in range(coeffs.values.size())]
 
@@ -101,9 +100,7 @@ cdef class SegmentationNormal:
     """
     cdef cpp.SACSegmentationNormal_t *me
     def __cinit__(self):
-        print('SACSegmentationNormal 1')
         self.me = new cpp.SACSegmentationNormal_t()
-        print('SACSegmentationNormal 2')
 
     def __dealloc__(self):
         del self.me
@@ -380,12 +377,9 @@ cdef class PointCloud:
         Return a pcl.SegmentationNormal object with this object set as the input-cloud
         """
         cdef cpp.PointNormalCloud_t normals
-        print('make_segmenter_normals 1')
         p = self.thisptr()
-        print('make_segmenter_normals 2')
         mpcl_compute_normals(deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-        print('make_segmenter_normals 3')
 
         seg = SegmentationNormal()
         cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
@@ -430,22 +424,12 @@ cdef class PointCloud:
         cmls.setInputCloud(self.thisptr_shared)
         return mls
 
-    def make_kdtree(self):
-        """
-        Return a pcl.kdTree object with this object set as the input-cloud
-
-        Deprecated: use the pcl.kdTree constructor on this cloud.
-        """
-        print('make_kdtree')
-        return KdTree(self)
-
     def make_kdtree_flann(self):
         """
         Return a pcl.kdTreeFLANN object with this object set as the input-cloud
 
         Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
         """
-        print('make_kdtree_flann')
         return KdTreeFLANN(self)
 
     def make_octree(self, double resolution):
@@ -638,7 +622,6 @@ cdef class KdTree:
     def __cinit__(self, PointCloud pc not None):
         self.me = new cpp.KdTree_t()
 
-        print('init KdTree:')
 
         self.me.setInputCloud(pc.thisptr_shared)
 
@@ -656,17 +639,7 @@ cdef class KdTreeFLANN:
     def __cinit__(self, PointCloud pc not None):
         self.me = new cpp.KdTreeFLANN_t()
 
-        # TODO: NG
-        print('init KdTreeFLANN:')
-
-        # print(pc.thisptr_shared)
         self.me.setInputCloud(pc.thisptr_shared)
-        # self.me.setInputCloud(dereference(pc.thisptr_shared))
-        # dereference(self.me).setInputCloud(pc.thisptr_shared)
-        # p.setInputCloud(pc.thisptr_shared)
-        # self.me.setInputCloud(pc)
-
-        # print('init2:')
 
     def __dealloc__(self):
         del self.me

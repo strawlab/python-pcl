@@ -17,8 +17,6 @@ from vector cimport vector as vector2
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Vector4f:
         float *data()
-    cdef cppclass Matrix4f:
-    	float *data()
     cdef cppclass Quaternionf:
         float w()
         float x()
@@ -58,173 +56,41 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
     cdef struct Normal:
         pass
-    cdef struct PointXYZRGBA:
-        PointXYZRGBA()
-        float x
-        float y
-        float z
-        uint32_t rgba
-    cdef struct PointXYZRGBL:
-        PointXYZRGBA()
-        float x
-        float y
-        float z
-        uint32_t rgba
-        uint32_t label
-    cdef struct PointXYZHSV:
-    	float x
-        float y
-        float z
-        float h
-        float s
-        float v
-	cdef struct PointXY:
-    	float x
-        float y
-	cdef struct InterestPoint
-	    float x
-    	float y
-	    float z
-    	float strength
-    cdef struct PointXYZI
-        float x
-    	float y
-    	float z
-    	float intensity
-    cdef struct PointXYZL
-    	float x
-    	float y
-    	float z
-    	uint32_t label
-    cdef struct Label
-    	uint32_t, label
-	cdef struct Normal:
-    	float normal_x
-    	float normal_y
-    	float normal_z
-    	float curvature
-	cdef struct Axis:
-    	float normal_x
-    	float normal_y
-    	float normal_z
-	cdef struct PointNormal:
-	    float x
-	    float y
-	    float z
-	    float normal_x
-	    float normal_y
-	    float normal_z
-	    float curvature
-	cdef struct PointXYZRGBNormal:
-	    float x
-	    float y
-	    float z
-	    float rgb
-	    float normal_x
-	    float normal_y
-	    float normal_z
-	    float curvature
 
-	cdef struct PointXYZINormal:
-	    float x
-	    float y
-	    float z
-	    float intensity
-	    float normal_x
-	    float normal_y
-	    float normal_z
-	    float curvature
-	cdef struct PointWithRange:
-	    float x
-	    float y
-	    float z
-	    float range
-	cdef struct PointWithViewpoint:
-	    float x
-	    float y
-	    float z
-	    float vp_x
-	    float vp_y
-	    float vp_z
-	cdef struct MomentInvariants:
-	    float j1
-	    float j2
-	    float j3
-	cdef struct PrincipalRadiiRSD:
-	    float r_min
-	    float r_max
-	cdef struct Boundary:
-	    uint8_t boundary_point
-	cdef struct PrincipalCurvatures:
-	    float principal_curvature_x
-	    float principal_curvature_y
-	    float principal_curvature_z
-	    float pc1
-	    float pc2
-	cdef struct PFHSignature125:
-	    float[125] histogram
-	cdef struct PFHRGBSignature250:
-	    float[250] histogram
-	cdef struct PPFSignature:
-	    float f1
-	    float f2
-	    float f3
-	    float f4
-	    float alpha_m
-	cdef struct PPFRGBSignature:
-	    float f1
-	    float f2
-	    float f3
-	    float f4
-	    float r_ratio
-	    float g_ratio
-	    float b_ratio
-	    float alpha_m
-	cdef struct NormalBasedSignature12:
-	    float[12] values
-	cdef struct SHOT352:
-	    float[352] descriptor
-	    float[9] rf
-	cdef struct SHOT1344:
-	    float[1344] descriptor
-	    float[9] rf
-	cdef struct FPFHSignature33:
-	    float[33] histogram
-	cdef struct VFHSignature308:
-	    float[308] histogram
-	cdef struct ESFSignature640:
-	    float[640] histogram
-	cdef struct Narf36:
-	    float[36] descriptor
-	cdef struct GFPFHSignature16:
-	    float[16] histogram
-	cdef struct IntensityGradient:
-	    float gradient_x
-	    float gradient_y
-	    float gradient_z
-	cdef struct PointWithScale:
-	    float x
-	    float y
-	    float z
-	    float scale
-	cdef struct PointSurfel:
-	    float x
-	    float y
-	    float z
-	    float normal_x
-	    float normal_y
-	    float normal_z
-	    uint32_t rgba
-	    float radius
-	    float confidence
-	    float curvature
-	cdef struct ReferenceFrame:
-	    float[3] x_axis
-	    float[3] y_axis
-	    float[3] z_axis
-	    //float confidence
+cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
+    cdef cppclass NormalEstimation[T, N]:
+        NormalEstimation()
 
-cdef extern from "pcl/surface/mls.h" namespace "pcl":
+cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
+    cdef cppclass SACSegmentationFromNormals[T, N]:
+        SACSegmentationFromNormals()
+        void setOptimizeCoefficients (bool)
+        void setModelType (SacModel)
+        void setMethodType (int)
+        void setNormalDistanceWeight (float)
+        void setMaxIterations (int)
+        void setDistanceThreshold (float)
+        void setRadiusLimits (float, float)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void setInputNormals (shared_ptr[PointCloud[N]])
+        void setEpsAngle (double ea)
+        void segment (PointIndices, ModelCoefficients)
+        void setMinMaxOpeningAngle(double, double)
+        void getMinMaxOpeningAngle(double, double)
+
+
+    cdef cppclass SACSegmentation[T]:
+        void setOptimizeCoefficients (bool)
+        void setModelType (SacModel)
+        void setMethodType (int)
+        void setDistanceThreshold (float)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void segment (PointIndices, ModelCoefficients)
+
+ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
+ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
+
+cdef extern from "pcl/surface/mls.h" namespace "pcl":
     cdef cppclass MovingLeastSquares[I,O]:
         MovingLeastSquares()
         void setInputCloud (shared_ptr[PointCloud[I]])
@@ -266,7 +132,7 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
 
 ctypedef OctreePointCloudSearch[PointXYZ] OctreePointCloudSearch_t
 
-cdefextern from "pcl/ModelCoefficients.h" namespace "pcl":
+cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:
         vector[float] values
 
@@ -351,6 +217,35 @@ ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
 ###############################################################################
 # Enum
 ###############################################################################
+cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
+    cdef enum SacModel:
+        SACMODEL_PLANE
+        SACMODEL_LINE
+        SACMODEL_CIRCLE2D
+        SACMODEL_CIRCLE3D
+        SACMODEL_SPHERE
+        SACMODEL_CYLINDER
+        SACMODEL_CONE
+        SACMODEL_TORUS
+        SACMODEL_PARALLEL_LINE
+        SACMODEL_PERPENDICULAR_PLANE
+        SACMODEL_PARALLEL_LINES
+        SACMODEL_NORMAL_PLANE
+        #SACMODEL_NORMAL_SPHERE
+        SACMODEL_REGISTRATION
+        SACMODEL_PARALLEL_PLANE
+        SACMODEL_NORMAL_PARALLEL_PLANE
+        SACMODEL_STICK
+
+cdef extern from "pcl/sample_consensus/method_types.h" namespace "pcl":
+    cdef enum:
+        SAC_RANSAC = 0
+        SAC_LMEDS = 1
+        SAC_MSAC = 2
+        SAC_RRANSAC = 3
+        SAC_RMSAC = 4
+        SAC_MLESAC = 5
+        SAC_PROSAC = 6
 
 ###############################################################################
 # Activation
