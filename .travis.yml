@@ -6,13 +6,13 @@ python:
     - "3.5"
 
 before_install:
-   "sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl"
-   "sudo apt-get update"
-   "sudo apt-get install libpcl-all"
+   - "sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl"
+   - "sudo apt-get update"
+   - "sudo apt-get install libpcl-all"
 
 install: 
-    "pip install cython"
-    "pip numpy"
+    - "pip install cython"
+    - "pip numpy"
 
 script: 
    BENCHMARK=1 python setup.py -v test 
