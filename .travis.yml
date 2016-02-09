@@ -5,17 +5,15 @@ python:
     - "3.4"
     - "3.5"
 
-before_install:
-   - "sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl"
-   - "sudo apt-get update"
-   - "sudo apt-get install libpcl-all"
-
-install: 
-    - "pip install cython"
-    - "pip numpy"
+before_script:
+   - sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl
+   - sudo apt-get update
+   - sudo apt-get install libpcl-all
 
 script: 
-   BENCHMARK=1 python setup.py -v test 
+    - pip install cython
+    - pip numpy
+    - python setup.py install
 
 os:
   :linux
