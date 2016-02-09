@@ -10,20 +10,10 @@ import sys
 import platform
 import os
 
-def pkgconfig(flag):
-    # Equivalent in Python 2.7 (but not 2.6):
-    # subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
-
-    # print(['pkg-config', flag] + pcl_libs)
-    # p = subprocess.Popen(['pkg-config', flag] + pcl_libs, stdout=subprocess.PIPE)
-    p = subprocess.Popen(['pkg-config', flag] + ['pcl_common-1.6'], stdout=subprocess.PIPE)
-    stdout, stderr = p.communicate()
-    # Assume no evil spaces in filenames; unsure how pkg-config would
-    # handle those, anyway.
-    # decode() is required in Python 3. TODO how do know the encoding?
-    return stdout.decode().split()
-
 if platform.system() == "Windows":
+	# sys.path.append('./src')
+	# sys.path.append('./tests')
+
 	# Check 32bit or 64bit
 	is_64bits = sys.maxsize > 2**32
 	# if is_64bits == True
@@ -217,6 +207,8 @@ if platform.system() == "Windows":
 
 else:
 	# Not 'Windows'
+	sys.path.append('./tests')
+
 	if platform.system() == "Darwin":
 		os.environ['ARCHFLAGS'] = ''
 
@@ -225,7 +217,6 @@ else:
 
 	for pcl_version in PCL_SUPPORTED:
 	    if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
-	    # if pkgconfig.exists('pcl_common-1.6') == 0:
 	        break
 	else:
 	    print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
@@ -244,7 +235,7 @@ else:
 
 	def pkgconfig(flag):
 	    # Equivalent in Python 2.7 (but not 2.6):
-	    #subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
+	    # subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
 	    p = subprocess.Popen(['pkg-config', flag] + pcl_libs,
 	                         stdout=subprocess.PIPE)
 	    stdout, _ = p.communicate()
