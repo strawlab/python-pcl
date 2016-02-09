@@ -47,6 +47,9 @@ cdef extern from "indexing.hpp":
     PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
     PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
     PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
+    # PointXYZRGBA *getptr(PointCloud[PointXYZRGBA] *, size_t)
+    # PointXYZRGBA *getptr_at(PointCloud[PointXYZRGBA] *, size_t) except +
+    # PointXYZRGBA *getptr_at(PointCloud[PointXYZRGBA] *, int, int) except +
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
@@ -56,6 +59,278 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
     cdef struct Normal:
         pass
+
+# cdef extern from "pcl/point_types.h" namespace "pcl":
+#      cdef struct Normal:
+#       float normal_x
+#       float normal_y
+#       float normal_z
+#       float curvature
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct PointXYZRGBA:
+         PointXYZRGBA()
+         float x
+         float y
+         float z
+         # uint32_t rgba
+         unsigned long rgba
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct PointXYZRGBL:
+         PointXYZRGBA()
+         float x
+         float y
+         float z
+         # uint32_t rgba
+         unsigned long rgba
+         # uint32_t label
+         unsigned long label
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct PointXYZHSV:
+         PointXYZHSV()
+         float x
+         float y
+         float z
+         float h
+         float s
+         float v
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct PointXY:
+         PointXY()
+         float x
+         float y
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct InterestPoint:
+        InterestPoint()
+        float x
+        float y
+        float z
+        float strength
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct PointXYZI:
+        PointXYZI()
+        float x
+        float y
+        float z
+        float intensity
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct PointXYZL:
+        PointXYZL()
+        float x
+        float y
+        float z
+        unsigned long label
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+     cdef struct Label:
+        Label()
+        # uint32_t label
+        unsigned long label
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct Axis:
+        Axis()
+        float normal_x
+        float normal_y
+        float normal_z
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointNormal:
+        PointNormal()
+        float x
+        float y
+        float z
+        float normal_x
+        float normal_y
+        float normal_z
+        float curvature
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointXYZRGBNormal:
+        PointXYZRGBNormal()
+        float x
+        float y
+        float z
+        float rgb
+        float normal_x
+        float normal_y
+        float normal_z
+        float curvature
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointXYZINormal:
+        PointXYZINormal()
+        float x
+        float y
+        float z
+        float intensity
+        float normal_x
+        float normal_y
+        float normal_z
+        float curvature
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointWithRange:
+        PointWithRange()
+        float x
+        float y
+        float z
+        float range
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointWithViewpoint:
+        PointWithViewpoint()
+        float x
+        float y
+        float z
+        float vp_x
+        float vp_y
+        float vp_z
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct MomentInvariants:
+        MomentInvariants()
+        float j1
+        float j2
+        float j3
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PrincipalRadiiRSD:
+        PrincipalRadiiRSD()
+        float r_min
+        float r_max
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct Boundary:
+        Boundary()
+        # uint8_t boundary_point
+        unsigned char boundary_point
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PrincipalCurvatures:
+        PrincipalCurvatures()
+        float principal_curvature_x
+        float principal_curvature_y
+        float principal_curvature_z
+        float pc1
+        float pc2
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PFHSignature125:
+        PFHSignature125()
+        float[125] histogram
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PFHRGBSignature250:
+        PFHRGBSignature250()
+        float[250] histogram
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PPFSignature:
+        PPFSignature()
+        float f1
+        float f2
+        float f3
+        float f4
+        float alpha_m
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PPFRGBSignature:
+        PPFRGBSignature()
+        float f1
+        float f2
+        float f3
+        float f4
+        float r_ratio
+        float g_ratio
+        float b_ratio
+        float alpha_m
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct NormalBasedSignature12:
+        NormalBasedSignature12()
+        float[12] values
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct SHOT352:
+        SHOT352()
+        float[352] descriptor
+        float[9] rf
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct SHOT1344:
+        SHOT1344()
+        float[1344] descriptor
+        float[9] rf
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct FPFHSignature33:
+        FPFHSignature33()
+        float[33] histogram
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct VFHSignature308:
+        VFHSignature308()
+        float[308] histogram
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct ESFSignature640:
+        ESFSignature640()
+        float[640] histogram
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct Narf36:
+        Narf36()
+        float[36] descriptor
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct GFPFHSignature16:
+        GFPFHSignature16()
+        float[16] histogram
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct IntensityGradient:
+        IntensityGradient()
+        float gradient_x
+        float gradient_y
+        float gradient_z
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointWithScale:
+        PointWithScale()
+        float x
+        float y
+        float z
+        float scale
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointSurfel:
+        PointSurfel()
+        float x
+        float y
+        float z
+        float normal_x
+        float normal_y
+        float normal_z
+        # uint32_t rgba
+        unsigned long rgba
+        float radius
+        float confidence
+        float curvature
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct ReferenceFrame:
+        ReferenceFrame()
+        float[3] x_axis
+        float[3] y_axis
+        float[3] z_axis
+        # float confidence
 
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
     cdef cppclass NormalEstimation[T, N]:
@@ -88,7 +363,9 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void segment (PointIndices, ModelCoefficients)
 
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
+ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation2_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
+ctypedef SACSegmentationFromNormals[PointXYZRGBA,Normal] SACSegmentationNormal2_t
 
 cdef extern from "pcl/surface/mls.h" namespace "pcl":
     cdef cppclass MovingLeastSquares[I,O]:
@@ -100,6 +377,7 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void process(PointCloud[O] &) except +
 
 ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
+ctypedef MovingLeastSquares[PointXYZRGBA,PointXYZRGBA] MovingLeastSquares2_t
 
 cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:
@@ -107,6 +385,7 @@ cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
         void setInputCloud (shared_ptr[PointCloud[T]])
 
 ctypedef KdTree[PointXYZ] KdTree_t
+ctypedef KdTree[PointXYZRGBA] KdTree2_t
 
 ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
 ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
@@ -120,7 +399,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void addPointsFromInputCloud()
         void deleteTree()
         bool isVoxelOccupiedAtPoint(double, double, double)
-        int getOccupiedVoxelCenters(AlignedPointTVector_t)	
+        int getOccupiedVoxelCenters(AlignedPointTVector_t)  
         void deleteVoxelAtPoint(PointXYZ)
 
 ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
@@ -231,7 +510,7 @@ cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
         SACMODEL_PERPENDICULAR_PLANE
         SACMODEL_PARALLEL_LINES
         SACMODEL_NORMAL_PLANE
-        #SACMODEL_NORMAL_SPHERE
+        SACMODEL_NORMAL_SPHERE
         SACMODEL_REGISTRATION
         SACMODEL_PARALLEL_PLANE
         SACMODEL_NORMAL_PARALLEL_PLANE
