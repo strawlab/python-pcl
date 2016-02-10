@@ -42,14 +42,24 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         Quaternionf sensor_orientation_
         Vector4f sensor_origin_
 
+ctypedef fused PointCloudTypes:
+    PointXYZ
+    PointXYZRGBA
+
 cdef extern from "indexing.hpp":
     # Use these instead of operator[] or at.
-    PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
-    PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
-    PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
-    # PointXYZRGBA *getptr(PointCloud[PointXYZRGBA] *, size_t)
-    # PointXYZRGBA *getptr_at(PointCloud[PointXYZRGBA] *, size_t) except +
-    # PointXYZRGBA *getptr_at(PointCloud[PointXYZRGBA] *, int, int) except +
+    cdef PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
+    cdef PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
+    cdef PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
+    # cpdef PointCloudTypes *getptr(PointCloud[PointXYZ] *, size_t)
+    # cpdef PointCloudTypes *getptr_at(PointCloud[PointXYZ] *, size_t) except +
+    # cpdef PointCloudTypes *getptr_at(PointCloud[PointXYZ] *, int, int) except +
+    # cdef PointXYZRGBA *getptr2(PointCloud[PointXYZRGBA] *, size_t)
+    # cdef PointXYZRGBA *getptr_at2(PointCloud[PointXYZRGBA] *, size_t) except +
+    # cdef PointXYZRGBA *getptr_at2(PointCloud[PointXYZRGBA] *, int, int) except +
+    # T *getptr(PointCloud[T] *, size_t)
+    # T *getptr_at(PointCloud[T] *, size_t) except +
+    # T *getptr_at(PointCloud[T] *, int, int) except +
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
@@ -448,8 +458,10 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #    int savePLYFile (string file_name, PointCloud[PointXYZ] cloud, bool binary_mode)
 
 ctypedef PointCloud[PointXYZ] PointCloud_t
+ctypedef PointCloud[PointXYZRGBA] PointCloud2_t
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
+ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloudPtr2_t
 
 cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
     cdef cppclass StatisticalOutlierRemoval[T]:
