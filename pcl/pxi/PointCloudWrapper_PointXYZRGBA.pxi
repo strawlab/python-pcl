@@ -16,7 +16,7 @@ cdef class PointCloud_PointXYZRGBA:
 
         self._view_count = 0
 
-        sp_assign(self.thisptr2_shared, new cpp.PointCloud[cpp.PointXYZRGBA]())
+        sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr2_shared, new cpp.PointCloud[cpp.PointXYZRGBA]())
 
         if init is None:
             return
@@ -160,11 +160,11 @@ cdef class PointCloud_PointXYZRGBA:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(self.thisptr2(), row, col)
+        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(<cpp.PointCloud[cpp.PointXYZRGBA]> self.thisptr2(), row, col)
         return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp idx):
-        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(self.thisptr2(), idx)
+        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(<cpp.PointCloud[cpp.PointXYZRGBA]> self.thisptr2(), idx)
         return p.x, p.y, p.z
 
     def from_file(self, char *f):
@@ -179,14 +179,14 @@ cdef class PointCloud_PointXYZRGBA:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            ok = cpp.loadPCDFile(string(s), deref(self.thisptr2()))
+            error = cpp.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            error = cpp.loadPLYFile(string(s), deref(self.thisptr2()))
-        return error
+            ok = cpp.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()))
+        return ok
 
     def to_file(self, const char *fname, bool ascii=True):
         """Save pointcloud to a file in PCD format.
@@ -199,13 +199,13 @@ cdef class PointCloud_PointXYZRGBA:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePCDFile(s, deref(self.thisptr2()), binary)
+            error = cpp.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePLYFile(s, deref(self.thisptr2()), binary)
+            error = cpp.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()), binary)
         return error
 

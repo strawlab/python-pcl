@@ -25,7 +25,7 @@ cdef class PointCloud:
 
         self._view_count = 0
 
-        sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
+        sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
 
         if init is None:
             return
@@ -69,7 +69,7 @@ cdef class PointCloud:
             self._shape[0] = npoints
             self._shape[1] = 3
 
-        buffer.buf = <char *>&(cpp.getptr_at(self.thisptr(), 0).x)
+        buffer.buf = <char *>&(cpp.getptr_at(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), 0).x)
         buffer.format = 'f'
         buffer.internal = NULL
         buffer.itemsize = sizeof(float)
@@ -117,7 +117,7 @@ cdef class PointCloud:
 
         cdef cpp.PointXYZ *p
         for i in range(npts):
-            p = cpp.getptr(self.thisptr(), i)
+            p = cpp.getptr(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), i)
             p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
     @cython.boundscheck(False)
@@ -133,7 +133,7 @@ cdef class PointCloud:
         result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            p = cpp.getptr(self.thisptr(), i)
+            p = cpp.getptr(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
@@ -150,7 +150,7 @@ cdef class PointCloud:
         self.thisptr().width = npts
         self.thisptr().height = 1
         for i, l in enumerate(_list):
-            p = cpp.getptr(self.thisptr(), i)
+            p = cpp.getptr(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), i)
             p.x, p.y, p.z = l
 
     def to_list(self):
@@ -169,11 +169,11 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZ *p = cpp.getptr_at(self.thisptr(), row, col)
+        cdef cpp.PointXYZ *p = cpp.getptr_at(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), row, col)
         return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp idx):
-        cdef cpp.PointXYZ *p = cpp.getptr_at(self.thisptr(), idx)
+        cdef cpp.PointXYZ *p = cpp.getptr_at(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), idx)
         return p.x, p.y, p.z
 
     def from_file(self, char *f):
@@ -188,14 +188,14 @@ cdef class PointCloud:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            ok = cpp.loadPCDFile(string(s), deref(self.thisptr()))
+            error = cpp.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            error = cpp.loadPLYFile(string(s), deref(self.thisptr()))
-        return error
+            ok = cpp.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+        return ok
 
     def to_file(self, const char *fname, bool ascii=True):
         """Save pointcloud to a file in PCD format.
@@ -208,14 +208,14 @@ cdef class PointCloud:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePCDFile(s, deref(self.thisptr()), binary)
+            error = cpp.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePLYFile(s, deref(self.thisptr()), binary)
+            error = cpp.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
         return error
 
     def make_segmenter(self):
@@ -233,7 +233,7 @@ cdef class PointCloud:
         """
         cdef cpp.PointNormalCloud_t normals
         p = self.thisptr()
-        mpcl_compute_normals(deref(self.thisptr()), ksearch, searchRadius, normals)
+        mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = SegmentationNormal()
         cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
@@ -247,7 +247,7 @@ cdef class PointCloud:
         """
         fil = StatisticalOutlierRemovalFilter()
         cdef cpp.StatisticalOutlierRemoval_t *cfil = <cpp.StatisticalOutlierRemoval_t *>fil.me
-        cfil.setInputCloud(self.thisptr_shared)
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
     def make_voxel_grid_filter(self):
@@ -256,7 +256,7 @@ cdef class PointCloud:
         """
         fil = VoxelGridFilter()
         cdef cpp.VoxelGrid_t *cfil = <cpp.VoxelGrid_t *>fil.me
-        cfil.setInputCloud(self.thisptr_shared)
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
     def make_passthrough_filter(self):
@@ -265,7 +265,7 @@ cdef class PointCloud:
         """
         fil = PassThroughFilter()
         cdef cpp.PassThrough_t *cfil = <cpp.PassThrough_t *>fil.me
-        cfil.setInputCloud(self.thisptr_shared)
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
     def make_moving_least_squares(self):
@@ -274,7 +274,7 @@ cdef class PointCloud:
         """
         mls = MovingLeastSquares()
         cdef cpp.MovingLeastSquares_t *cmls = <cpp.MovingLeastSquares_t *>mls.me
-        cmls.setInputCloud(self.thisptr_shared)
+        cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return mls
 
     def make_kdtree_flann(self):
