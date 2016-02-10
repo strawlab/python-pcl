@@ -209,5 +209,32 @@ cdef class PointCloud:
             error = cpp.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 
+    def make_segmenter(self):
+        """
+        Return a pcl.Segmentation object with this object set as the input-cloud
+        """
+        seg = Segmentation()
+        cdef cpp.SACSegmentation_t *cseg = <cpp.SACSegmentation_t *>seg.me
+        cseg.setInputCloud(self.thisptr_shared)
+        return seg
+
+    def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a pcl.SegmentationNormal object with this object set as the input-cloud
+        """
+        cdef cpp.PointNormalCloud_t normals
+        p = self.thisptr()
+        mpcl_compute_normals(deref(self.thisptr()), ksearch, searchRadius, normals)
+        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
+
+        seg = SegmentationNormal()
+        cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
+        cseg.setInputCloud(self.thisptr_shared)
+        cseg.setInputNormals (normals.makeShared());
+
+        return seg
+
 ###
 
+include "Segmentation.pxi"
+include "SegmentationNormal.pxi"
