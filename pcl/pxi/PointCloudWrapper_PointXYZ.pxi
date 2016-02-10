@@ -234,7 +234,82 @@ cdef class PointCloud:
 
         return seg
 
+    def make_statistical_outlier_filter(self):
+        """
+        Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
+        """
+        fil = StatisticalOutlierRemovalFilter()
+        cdef cpp.StatisticalOutlierRemoval_t *cfil = <cpp.StatisticalOutlierRemoval_t *>fil.me
+        cfil.setInputCloud(self.thisptr_shared)
+        return fil
+
+    def make_voxel_grid_filter(self):
+        """
+        Return a pcl.VoxelGridFilter object with this object set as the input-cloud
+        """
+        fil = VoxelGridFilter()
+        cdef cpp.VoxelGrid_t *cfil = <cpp.VoxelGrid_t *>fil.me
+        cfil.setInputCloud(self.thisptr_shared)
+        return fil
+
+    def make_passthrough_filter(self):
+        """
+        Return a pcl.PassThroughFilter object with this object set as the input-cloud
+        """
+        fil = PassThroughFilter()
+        cdef cpp.PassThrough_t *cfil = <cpp.PassThrough_t *>fil.me
+        cfil.setInputCloud(self.thisptr_shared)
+        return fil
+
+    def make_moving_least_squares(self):
+        """
+        Return a pcl.MovingLeastSquares object with this object as input cloud.
+        """
+        mls = MovingLeastSquares()
+        cdef cpp.MovingLeastSquares_t *cmls = <cpp.MovingLeastSquares_t *>mls.me
+        cmls.setInputCloud(self.thisptr_shared)
+        return mls
+
+    def make_kdtree_flann(self):
+        """
+        Return a pcl.kdTreeFLANN object with this object set as the input-cloud
+
+        Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
+        """
+        return KdTreeFLANN(self)
+
+    def make_octree(self, double resolution):
+        """
+        Return a pcl.octree object with this object set as the input-cloud
+        """
+        octree = OctreePointCloud(resolution)
+        octree.set_input_cloud(self)
+        return octree
+
+    def extract(self, pyindices, bool negative=False):
+        """
+        Given a list of indices of points in the pointcloud, return a 
+        new pointcloud containing only those points.
+        """
+        cdef PointCloud result
+        cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
+
+        for i in pyindices:
+            ind.indices.push_back(i)
+
+        result = PointCloud()
+        mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
+        # XXX are we leaking memory here? del ind causes a double free...
+
+        return result
+
 ###
 
 include "Segmentation.pxi"
 include "SegmentationNormal.pxi"
+include "StatisticalOutlierRemovalFilter.pxi"
+include "VoxelGridFilter.pxi"
+include "PassThroughFilter.pxi"
+include "MovingLeastSquares.pxi"
+include "KdTree_FLANN.pxi"
+include "OctreePointCloud.pxi"
