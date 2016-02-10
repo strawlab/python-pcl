@@ -444,21 +444,29 @@ ctypedef PointIndices PointIndices_t
 ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
 
 cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
+    # XYZ
     int load(string file_name, PointCloud[PointXYZ] &cloud) nogil except +
     int loadPCDFile(string file_name,
                     PointCloud[PointXYZ] &cloud) nogil except +
     int savePCDFile(string file_name, PointCloud[PointXYZ] &cloud,
                     bool binary_mode) nogil except +
-#   int load(string file_name, PointCloud[PointXYZRGBA] &cloud) nogil except +
-#    int loadPCDFile(string file_name,
-#                    PointCloud[PointXYZRGBA] &cloud) nogil except +
-#    int savePCDFile(string file_name, PointCloud[PointXYZRGBA] &cloud,
-#                    bool binary_mode) nogil except +
+    # XYZRGBA
+    int load(string file_name, PointCloud[PointXYZRGBA] &cloud) nogil except +
+    int loadPCDFile(string file_name,
+                    PointCloud[PointXYZRGBA] &cloud) nogil except +
+    int savePCDFile(string file_name, PointCloud[PointXYZRGBA] &cloud,
+                    bool binary_mode) nogil except +
 
 cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
+    # XYZ
     int loadPLYFile(string file_name,
                     PointCloud[PointXYZ] &cloud) nogil except +
     int savePLYFile(string file_name, PointCloud[PointXYZ] &cloud,
+                    bool binary_mode) nogil except +
+    # XYZRGBA
+    int loadPLYFile(string file_name,
+                    PointCloud[PointXYZRGBA] &cloud) nogil except +
+    int savePLYFile(string file_name, PointCloud[PointXYZRGBA] &cloud,
                     bool binary_mode) nogil except +
 
 #http://dev.pointclouds.org/issues/624

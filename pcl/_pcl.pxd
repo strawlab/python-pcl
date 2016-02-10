@@ -16,6 +16,6 @@ cdef class PointCloud:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
         return self.thisptr_shared.get()
 
-    # cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr(self) nogil:
-    #     # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGBA>.
-    #     return self.thisptr2_shared.get()
+    cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr2(self) nogil:
+        # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGBA>.
+        return self.thisptr2_shared.get()
