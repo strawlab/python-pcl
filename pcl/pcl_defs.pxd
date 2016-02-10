@@ -42,6 +42,7 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         Quaternionf sensor_orientation_
         Vector4f sensor_origin_
 
+# use cython type ?
 ctypedef fused PointCloudTypes:
     PointXYZ
     PointXYZRGBA
@@ -60,6 +61,9 @@ cdef extern from "indexing.hpp":
     # T *getptr(PointCloud[T] *, size_t)
     # T *getptr_at(PointCloud[T] *, size_t) except +
     # T *getptr_at(PointCloud[T] *, int, int) except +
+    # cpdef PointCloudTypes *getptr(PointCloud[PointCloudTypes] *, size_t)
+    # cpdef PointCloudTypes *getptr_at(PointCloud[PointCloudTypes] *, size_t) except +
+    # cpdef PointCloudTypes *getptr_at(PointCloud[PointCloudTypes] *, int, int) except +
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
@@ -445,6 +449,11 @@ cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
                     PointCloud[PointXYZ] &cloud) nogil except +
     int savePCDFile(string file_name, PointCloud[PointXYZ] &cloud,
                     bool binary_mode) nogil except +
+#   int load(string file_name, PointCloud[PointXYZRGBA] &cloud) nogil except +
+#    int loadPCDFile(string file_name,
+#                    PointCloud[PointXYZRGBA] &cloud) nogil except +
+#    int savePCDFile(string file_name, PointCloud[PointXYZRGBA] &cloud,
+#                    bool binary_mode) nogil except +
 
 cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
     int loadPLYFile(string file_name,

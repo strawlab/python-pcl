@@ -2,6 +2,15 @@
 cimport pcl_defs as cpp
 from boost_shared_ptr cimport sp_assign
 
+cdef extern from "minipcl.h":
+    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
+                              double searchRadius,
+                              cpp.PointNormalCloud_t) except +
+    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t,
+                                 double ax, double ay, double az) except +
+    void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
+                      cpp.PointIndices_t *, bool) except +
+
 cdef class PointCloud:
     """Represents a cloud of points in 3-d space.
 
@@ -226,12 +235,10 @@ cdef class PointCloud:
         p = self.thisptr()
         mpcl_compute_normals(deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-
         seg = SegmentationNormal()
         cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
-
         return seg
 
     def make_statistical_outlier_filter(self):
@@ -302,7 +309,6 @@ cdef class PointCloud:
         # XXX are we leaking memory here? del ind causes a double free...
 
         return result
-
 ###
 
 include "Segmentation.pxi"
@@ -313,3 +319,4 @@ include "PassThroughFilter.pxi"
 include "MovingLeastSquares.pxi"
 include "KdTree_FLANN.pxi"
 include "OctreePointCloud.pxi"
+

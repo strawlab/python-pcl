@@ -1,7 +1,5 @@
 cimport pcl_defs as cpp
 from libcpp cimport bool
-# from libcpp.memory cimport shared_ptr
-
 
 ###############################################################################
 # Types

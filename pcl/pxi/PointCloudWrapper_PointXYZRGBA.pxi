@@ -12,7 +12,7 @@ cdef class PointCloud_PointXYZRGBA:
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
-        cdef PointCloud other
+        cdef PointCloud2 other
 
         self._view_count = 0
 
@@ -28,23 +28,23 @@ cdef class PointCloud_PointXYZRGBA:
             self.from_list(init)
         elif isinstance(init, type(self)):
             other = init
-            self.thisptr()[0] = other.thisptr()[0]
+            self.thisptr2()[0] = other.thisptr2()[0]
         else:
             raise TypeError("Can't initialize a PointCloud from a %s"
                             % type(init))
 
     property width:
         """ property containing the width of the point cloud """
-        def __get__(self): return self.thisptr().width
+        def __get__(self): return self.thisptr2().width
     property height:
         """ property containing the height of the point cloud """
-        def __get__(self): return self.thisptr().height
+        def __get__(self): return self.thisptr2().height
     property size:
         """ property containing the number of points in the point cloud """
-        def __get__(self): return self.thisptr().size()
+        def __get__(self): return self.thisptr2().size()
     property is_dense:
         """ property containing whether the cloud is dense or not """
-        def __get__(self): return self.thisptr().is_dense
+        def __get__(self): return self.thisptr2().is_dense
 
     def __repr__(self):
         return "<PointCloud of %d points>" % self.size
@@ -53,14 +53,14 @@ cdef class PointCloud_PointXYZRGBA:
     # resizing, because that can move it around in memory.
     def __getbuffer__(self, Py_buffer *buffer, int flags):
         # TODO parse flags
-        cdef Py_ssize_t npoints = self.thisptr().size()
+        cdef Py_ssize_t npoints = self.thisptr2().size()
 
         if self._view_count == 0:
             self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 3
 
-        buffer.buf = <char *>&(cpp.getptr_at(self.thisptr(), 0).x)
+        buffer.buf = <char *>&(cpp.getptr2_at(self.thisptr2(), 0).x)
         buffer.format = 'f'
         buffer.internal = NULL
         buffer.itemsize = sizeof(float)
@@ -83,7 +83,7 @@ cdef class PointCloud_PointXYZRGBA:
 
     property sensor_origin:
         def __get__(self):
-            cdef cpp.Vector4f origin = self.thisptr().sensor_origin_
+            cdef cpp.Vector4f origin = self.thisptr2().sensor_origin_
             cdef float *data = origin.data()
             return np.array([data[0], data[1], data[2], data[3]],
                             dtype=np.float32)
@@ -91,7 +91,7 @@ cdef class PointCloud_PointXYZRGBA:
     property sensor_orientation:
         def __get__(self):
             # NumPy doesn't have a quaternion type, so we return a 4-vector.
-            cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
+            cdef cpp.Quaternionf o = self.thisptr2().sensor_orientation_
             return np.array([o.w(), o.x(), o.y(), o.z()])
 
     @cython.boundscheck(False)
@@ -103,12 +103,12 @@ cdef class PointCloud_PointXYZRGBA:
 
         cdef cnp.npy_intp npts = arr.shape[0]
         self.resize(npts)
-        self.thisptr().width = npts
-        self.thisptr().height = 1
+        self.thisptr2().width = npts
+        self.thisptr2().height = 1
 
         cdef cpp.PointXYZRGBA *p
         for i in range(npts):
-            p = cpp.getptr(self.thisptr(), i)
+            p = cpp.getptr2(self.thisptr2(), i)
             p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
     @cython.boundscheck(False)
@@ -117,14 +117,14 @@ cdef class PointCloud_PointXYZRGBA:
         Return this object as a 2D numpy array (float32)
         """
         cdef float x,y,z
-        cdef cnp.npy_intp n = self.thisptr().size()
+        cdef cnp.npy_intp n = self.thisptr2().size()
         cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
         cdef cpp.PointXYZRGBA *p
 
         result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            p = cpp.getptr(self.thisptr(), i)
+            p = cpp.getptr2(self.thisptr2(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
@@ -138,10 +138,10 @@ cdef class PointCloud_PointXYZRGBA:
         cdef cpp.PointXYZRGBA *p
 
         self.resize(npts)
-        self.thisptr().width = npts
-        self.thisptr().height = 1
+        self.thisptr2().width = npts
+        self.thisptr2().height = 1
         for i, l in enumerate(_list):
-            p = cpp.getptr(self.thisptr(), i)
+            p = cpp.getptr2(self.thisptr2(), i)
             p.x, p.y, p.z = l
 
     def to_list(self):
@@ -154,17 +154,17 @@ cdef class PointCloud_PointXYZRGBA:
         if self._view_count > 0:
             raise ValueError("can't resize PointCloud while there are"
                              " arrays/memoryviews referencing it")
-        self.thisptr().resize(x)
+        self.thisptr2().resize(x)
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZRGBA *p = cpp.getptr_at(self.thisptr(), row, col)
+        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(self.thisptr2(), row, col)
         return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp idx):
-        cdef cpp.PointXYZRGBA *p = cpp.getptr_at(self.thisptr(), idx)
+        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(self.thisptr2(), idx)
         return p.x, p.y, p.z
 
     def from_file(self, char *f):
@@ -179,13 +179,13 @@ cdef class PointCloud_PointXYZRGBA:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            ok = cpp.loadPCDFile(string(s), deref(self.thisptr()))
+            ok = cpp.loadPCDFile(string(s), deref(self.thisptr2()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            error = cpp.loadPLYFile(string(s), deref(self.thisptr()))
+            error = cpp.loadPLYFile(string(s), deref(self.thisptr2()))
         return error
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -199,13 +199,13 @@ cdef class PointCloud_PointXYZRGBA:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePCDFile(s, deref(self.thisptr()), binary)
+            error = cpp.savePCDFile(s, deref(self.thisptr2()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePLYFile(s, deref(self.thisptr()), binary)
+            error = cpp.savePLYFile(s, deref(self.thisptr2()), binary)
         return error
 

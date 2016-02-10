@@ -1,6 +1,7 @@
 
 cimport pcl_defs as cpp
-include "PointXYZtoPointXYZ.pxi"
+# include "PointXYZtoPointXYZ.pxi" --> multiple define ng
+include "OctreePointCloud.pxi"
 
 cdef class OctreePointCloudSearch(OctreePointCloud):
     """
