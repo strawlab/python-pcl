@@ -84,13 +84,13 @@ cdef class PointCloud_PointXYZRGBA:
         if self._view_count == 0:
             self._view_count += 1
             self._shape[0] = npoints
-            self._shape[1] = 3
+            self._shape[1] = 4
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr2(), 0).x)
         buffer.format = 'f'
         buffer.internal = NULL
         buffer.itemsize = sizeof(float)
-        buffer.len = npoints * 3 * sizeof(float)
+        buffer.len = npoints * 4 * sizeof(float)
         buffer.ndim = 2
         buffer.obj = self
         buffer.readonly = 0
@@ -147,28 +147,29 @@ cdef class PointCloud_PointXYZRGBA:
         cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
         cdef cpp.PointXYZRGBA *p
 
-        result = np.empty((n, 3), dtype=np.float32)
+        result = np.empty((n, 4), dtype=np.float32)
 
         for i in range(n):
             p = idx.getptr(self.thisptr2(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
+            result[i, 3] = p.rgba
         return result
 
-#     def from_list(self, _list):
-#        """
-#        Fill this pointcloud from a list of 3-tuples
-#        """
-#        cdef Py_ssize_t npts = len(_list)
-#        cdef cpp.PointXYZRGBA *p
-#
-#        self.resize(npts)
-#        self.thisptr2().width = npts
-#        self.thisptr2().height = 1
-#        for i, l in enumerate(_list):
-#            p = idx.getptr(self.thisptr2(), i)
-#            p.x, p.y, p.z, p.rgba = l
+    @cython.boundscheck(False)
+    def from_list(self, _list):
+       """
+       Fill this pointcloud from a list of 4-tuples
+       """
+       cdef Py_ssize_t npts = len(_list)
+       cdef cpp.PointXYZRGBA *p
+       self.resize(npts)
+       self.thisptr2().width = npts
+       self.thisptr2().height = 1
+       for i, l in enumerate(_list):
+           p = idx.getptr(self.thisptr2(), <int> i)
+           p.x, p.y, p.z, p.rgba = l
 
     def to_list(self):
         """

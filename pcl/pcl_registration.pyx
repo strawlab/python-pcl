@@ -13,7 +13,7 @@ cimport pcl_registration as pcl_reg
 
 np.import_array()
 
-cdef object run(Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
+cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
                 _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     reg.setInputSource(source.thisptr_shared)
     reg.setInputTarget(target.thisptr_shared)
@@ -27,7 +27,7 @@ cdef object run(Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
         reg.align(result.thisptr()[0])
 
     # Get transformation matrix and convert from Eigen to NumPy format.
-    cdef Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4 mat
+    cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4 mat
     mat = reg.getFinalTransformation()
     cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='fortran'] transf
     cdef np.float32_t *transf_data
@@ -65,7 +65,7 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
+    cdef pcl_reg.IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
     return run(icp, source, target, max_iter)
 
 
@@ -93,7 +93,7 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
+    cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
     return run(gicp, source, target, max_iter)
 
 
@@ -122,5 +122,5 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
+    cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
     return run(icp_nl, source, target, max_iter)

@@ -1,6 +1,3 @@
-#!python
-#cython: boundscheck=False
-
 # main
 cimport pcl_defs as cpp
 # parts
@@ -14,8 +11,8 @@ cimport pcl_octree as pcloct
 cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
 
-
 cimport indexing as idx
+
 from boost_shared_ptr cimport sp_assign
 
 cdef extern from "minipcl.h":
@@ -161,29 +158,29 @@ cdef class PointCloud:
         cdef cpp.PointXYZ *p
 
         result = np.empty((n, 3), dtype=np.float32)
-
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
+
         return result
 
-#     def from_list(self, _list):
-#        """
-#        Fill this pointcloud from a list of 3-tuples
-#        """
-#        cdef Py_ssize_t npts = len(_list)
-#        cdef cpp.PointXYZ* p
-#
-#        self.resize(npts)
-#        self.thisptr().width = npts
-#        self.thisptr().height = 1
-#
-#        # enumerate ?
-#        for index, l in enumerate(_list):
-#            p = idx.getptr(self.thisptr(), index)
-#            p.x, p.y, p.z = l
+    def from_list(self, _list):
+        """
+        Fill this pointcloud from a list of 3-tuples
+        """
+        cdef Py_ssize_t npts = len(_list)
+        self.resize(npts)
+        self.thisptr().width = npts
+        self.thisptr().height = 1
+        cdef cpp.PointXYZ* p
+        # OK
+        # p = idx.getptr(self.thisptr(), 1)
+        # enumerate ? -> i -> type unknown
+        for i, l in enumerate(_list):
+             p = idx.getptr(self.thisptr(), <int> i)
+             p.x, p.y, p.z = l
 
     def to_list(self):
         """

@@ -1,3 +1,4 @@
+from libc.stddef cimport size_t
 cimport pcl_defs as cpp
 
 ###############################################################################
