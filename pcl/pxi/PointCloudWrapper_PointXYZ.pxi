@@ -7,7 +7,7 @@ cimport pcl_defs as cpp
 cimport pcl_features as pclftr
 cimport pcl_filters as pclfil
 cimport pcl_io as pclio
-# cimport pcl_kdtree as pclkdt
+cimport pcl_kdtree as pclkdt
 # cimport pcl_octree as pcloct
 # cimport pcl_sample_consensus as pcl_sc
 # cimport pcl_search as pcl_sch

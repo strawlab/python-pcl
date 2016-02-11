@@ -1,6 +1,6 @@
 
 cimport pcl_defs as cpp
-
+cimport pcl_kdtree as pclkdt
 cdef class KdTreeFLANN:
     """
     Finds k nearest neighbours from points in another pointcloud to points in
@@ -9,10 +9,10 @@ cdef class KdTreeFLANN:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in KdTreeFLANN(pc).
     """
-    cdef cpp.KdTreeFLANN_t *me
+    cdef pclkdt.KdTreeFLANN_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new cpp.KdTreeFLANN_t()
+        self.me = new pclkdt.KdTreeFLANN_t()
 
         self.me.setInputCloud(pc.thisptr_shared)
 

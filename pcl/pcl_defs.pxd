@@ -328,10 +328,6 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float[3] z_axis
         # float confidence
 
-cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
-    cdef cppclass NormalEstimation[T, N]:
-        NormalEstimation()
-
 cdef extern from "pcl/surface/mls.h" namespace "pcl":
     cdef cppclass MovingLeastSquares[I,O]:
         MovingLeastSquares()
@@ -343,14 +339,6 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
 
 ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
 ctypedef MovingLeastSquares[PointXYZRGBA,PointXYZRGBA] MovingLeastSquares2_t
-
-cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
-    cdef cppclass KdTree[T]:
-        KdTree()
-        void setInputCloud (shared_ptr[PointCloud[T]])
-
-ctypedef KdTree[PointXYZ] KdTree_t
-ctypedef KdTree[PointXYZRGBA] KdTree2_t
 
 ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
 ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
@@ -399,15 +387,6 @@ ctypedef PointCloud[PointXYZRGBA] PointCloud2_t
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloudPtr2_t
-
-cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
-    cdef cppclass KdTreeFLANN[T]:
-        KdTreeFLANN()
-        void setInputCloud (shared_ptr[PointCloud[T]])
-        int nearestKSearch (PointCloud[T], int, int, vector[int], vector[float])
-
-ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
-# ctypedef KdTreeFLANN[PointXYZRGB] KdTreeFLANN_t2
 
 ###############################################################################
 # Enum
