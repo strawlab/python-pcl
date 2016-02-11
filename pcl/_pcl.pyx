@@ -53,7 +53,7 @@ SACMODEL_STICK = pclseg.SACMODEL_STICK
 cnp.import_array()
 
 include "pxi/PointCloudWrapper_PointXYZ.pxi"
-# include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
+include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 
 include "pxi/OctreePointCloudSearch.pxi"
 
