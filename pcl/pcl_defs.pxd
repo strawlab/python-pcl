@@ -43,27 +43,9 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         Vector4f sensor_origin_
 
 # use cython type ?
-ctypedef fused PointCloudTypes:
-    PointXYZ
-    PointXYZRGBA
-
-cdef extern from "indexing.hpp":
-    # Use these instead of operator[] or at.
-    cdef PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
-    cdef PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
-    cdef PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
-    # cpdef PointCloudTypes *getptr(PointCloud[PointXYZ] *, size_t)
-    # cpdef PointCloudTypes *getptr_at(PointCloud[PointXYZ] *, size_t) except +
-    # cpdef PointCloudTypes *getptr_at(PointCloud[PointXYZ] *, int, int) except +
-    # cdef PointXYZRGBA *getptr2(PointCloud[PointXYZRGBA] *, size_t)
-    # cdef PointXYZRGBA *getptr_at2(PointCloud[PointXYZRGBA] *, size_t) except +
-    # cdef PointXYZRGBA *getptr_at2(PointCloud[PointXYZRGBA] *, int, int) except +
-    # T *getptr(PointCloud[T] *, size_t)
-    # T *getptr_at(PointCloud[T] *, size_t) except +
-    # T *getptr_at(PointCloud[T] *, int, int) except +
-    # cpdef PointCloudTypes *getptr(PointCloud[PointCloudTypes] *, size_t)
-    # cpdef PointCloudTypes *getptr_at(PointCloud[PointCloudTypes] *, size_t) except +
-    # cpdef PointCloudTypes *getptr_at(PointCloud[PointCloudTypes] *, int, int) except +
+# ctypedef fused PointCloudTypes:
+#     PointXYZ
+#     PointXYZRGBA
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:

@@ -1,12 +1,14 @@
 
 cimport pcl_defs as cpp
 # include "PointXYZtoPointXYZ.pxi" --> multiple define ng
-include "OctreePointCloud.pxi"
+# include "OctreePointCloud.pxi"
 
 cdef class OctreePointCloudSearch(OctreePointCloud):
     """
     Octree pointcloud search
     """
+    # cdef cpp.OctreePointCloud_t *me
+
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level

@@ -51,19 +51,7 @@ SACMODEL_STICK = cpp.SACMODEL_STICK
 cnp.import_array()
 
 include "pxi/PointCloudWrapper_PointXYZ.pxi"
-# include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
+include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 
-# Empirically determine strides, for buffer support.
-# XXX Is there a more elegant way to get these?
-cdef Py_ssize_t _strides[2]
-cdef PointCloud _pc_tmp = PointCloud(np.array([[1, 2, 3],
-                                               [4, 5, 6]], dtype=np.float32))
-cdef cpp.PointCloud[cpp.PointXYZ] *p = _pc_tmp.thisptr()
-_strides[0] = (  <Py_ssize_t><void *>cpp.getptr(p, 1)
-               - <Py_ssize_t><void *>cpp.getptr(p, 0))
-_strides[1] = (  <Py_ssize_t><void *>&(cpp.getptr(p, 0).y)
-               - <Py_ssize_t><void *>&(cpp.getptr(p, 0).x))
-_pc_tmp = None
-
-# include "pxi/OctreePointCloudSearch.pxi"
+include "pxi/OctreePointCloudSearch.pxi"
 

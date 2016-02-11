@@ -47,6 +47,9 @@ cdef extern from "indexing.hpp":
     PointXYZ *getptr(PointCloud[PointXYZ] *, size_t)
     PointXYZ *getptr_at(PointCloud[PointXYZ] *, size_t) except +
     PointXYZ *getptr_at(PointCloud[PointXYZ] *, int, int) except +
+    # PointXYZRGBA *getptr(PointCloud[PointXYZRGBA] *, size_t)
+    # PointXYZRGBA *getptr_at(PointCloud[PointXYZRGBA] *, size_t) except +
+    # PointXYZRGBA *getptr_at(PointCloud[PointXYZRGBA] *, int, int) except +
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
@@ -233,10 +236,15 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void process(PointCloud[O] &) except +
 
 ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
+ctypedef MovingLeastSquares[PointXYZRGBA,PointXYZRGBA] MovingLeastSquares2_t
 
 cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
     cdef cppclass KdTree[T]:
         KdTree()
+        void setInputCloud (shared_ptr[PointCloud[T]])
+
+ctypedef KdTree[PointXYZ] KdTree_t
+ctypedef KdTree[PointXYZRGBA] KdTree2_t
 
 ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
 ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
@@ -339,8 +347,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
     cdef cppclass KdTreeFLANN[T]:
         KdTreeFLANN()
         void setInputCloud (shared_ptr[PointCloud[T]])
-        int nearestKSearch (PointCloud[T],
-          int, int, vector[int], vector[float])
+        int nearestKSearch (PointCloud[T], int, int, vector[int], vector[float])
 
 ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
 # ctypedef KdTreeFLANN[PointXYZRGB] KdTreeFLANN_t2

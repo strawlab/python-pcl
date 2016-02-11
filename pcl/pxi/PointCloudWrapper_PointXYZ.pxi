@@ -1,5 +1,8 @@
+#!python
+#cython: boundscheck=False
 
 cimport pcl_defs as cpp
+cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 
 cdef extern from "minipcl.h":
@@ -10,6 +13,18 @@ cdef extern from "minipcl.h":
                                  double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                       cpp.PointIndices_t *, bool) except +
+
+# Empirically determine strides, for buffer support.
+# XXX Is there a more elegant way to get these?
+cdef Py_ssize_t _strides[2]
+cdef PointCloud _pc_tmp = PointCloud(np.array([[1, 2, 3],
+                                               [4, 5, 6]], dtype=np.float32))
+cdef cpp.PointCloud[cpp.PointXYZ] *p = _pc_tmp.thisptr()
+_strides[0] = (  <Py_ssize_t><void *>idx.getptr(p, 1)
+               - <Py_ssize_t><void *>idx.getptr(p, 0))
+_strides[1] = (  <Py_ssize_t><void *>&(idx.getptr(p, 0).y)
+               - <Py_ssize_t><void *>&(idx.getptr(p, 0).x))
+_pc_tmp = None
 
 cdef class PointCloud:
     """Represents a cloud of points in 3-d space.
@@ -25,7 +40,9 @@ cdef class PointCloud:
 
         self._view_count = 0
 
-        sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
+        # TODO: NG --> import pcl --> pyd Error(python shapedptr/C++ shard ptr collusion?)
+        # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
+        sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
 
         if init is None:
             return
@@ -69,7 +86,7 @@ cdef class PointCloud:
             self._shape[0] = npoints
             self._shape[1] = 3
 
-        buffer.buf = <char *>&(cpp.getptr_at(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), 0).x)
+        buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
         buffer.internal = NULL
         buffer.itemsize = sizeof(float)
@@ -117,7 +134,7 @@ cdef class PointCloud:
 
         cdef cpp.PointXYZ *p
         for i in range(npts):
-            p = cpp.getptr(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), i)
+            p = idx.getptr(self.thisptr(), i)
             p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
     @cython.boundscheck(False)
@@ -133,25 +150,27 @@ cdef class PointCloud:
         result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            p = cpp.getptr(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), i)
+            p = idx.getptr(self.thisptr(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
         return result
 
-    def from_list(self, _list):
-        """
-        Fill this pointcloud from a list of 3-tuples
-        """
-        cdef Py_ssize_t npts = len(_list)
-        cdef cpp.PointXYZ *p
-
-        self.resize(npts)
-        self.thisptr().width = npts
-        self.thisptr().height = 1
-        for i, l in enumerate(_list):
-            p = cpp.getptr(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), i)
-            p.x, p.y, p.z = l
+#     def from_list(self, _list):
+#        """
+#        Fill this pointcloud from a list of 3-tuples
+#        """
+#        cdef Py_ssize_t npts = len(_list)
+#        cdef cpp.PointXYZ* p
+#
+#        self.resize(npts)
+#        self.thisptr().width = npts
+#        self.thisptr().height = 1
+#
+#        # enumerate ?
+#        for index, l in enumerate(_list):
+#            p = idx.getptr(self.thisptr(), index)
+#            p.x, p.y, p.z = l
 
     def to_list(self):
         """
@@ -169,11 +188,11 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZ *p = cpp.getptr_at(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), row, col)
+        cdef cpp.PointXYZ *p = idx.getptr_at2(self.thisptr(), row, col)
         return p.x, p.y, p.z
 
-    def __getitem__(self, cnp.npy_intp idx):
-        cdef cpp.PointXYZ *p = cpp.getptr_at(<cpp.PointCloud[cpp.PointXYZ]*> self.thisptr(), idx)
+    def __getitem__(self, cnp.npy_intp nmidx):
+        cdef cpp.PointXYZ *p = idx.getptr_at(self.thisptr(), nmidx)
         return p.x, p.y, p.z
 
     def from_file(self, char *f):
@@ -188,13 +207,17 @@ cdef class PointCloud:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            error = cpp.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+            # NG
+            # error = cpp.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+            error = cpp.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            ok = cpp.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+            # NG
+            # ok = cpp.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+            ok = cpp.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -208,14 +231,21 @@ cdef class PointCloud:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+            # NG
+            # error = cpp.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+            # OK
+            error = cpp.savePCDFile(s, deref(self.thisptr()), binary)
+            # cpp.PointCloud[cpp.PointXYZ] *p = self.thisptr()
+            # error = cpp.savePCDFile(s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+            # NG
+            # error = cpp.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+            error = cpp.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 
     def make_segmenter(self):

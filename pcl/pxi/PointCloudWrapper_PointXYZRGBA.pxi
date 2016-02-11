@@ -1,6 +1,20 @@
 
 cimport pcl_defs as cpp
+cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
+from _pcl cimport PointCloud_PointXYZRGBA
+
+# Empirically determine strides, for buffer support.
+# XXX Is there a more elegant way to get these?
+cdef Py_ssize_t _strides2[2]
+cdef PointCloud_PointXYZRGBA _pc_tmp2 = PointCloud(np.array([[1, 2, 3, 0],
+                                                            [4, 5, 6, 0]], dtype=np.float32))
+cdef cpp.PointCloud[cpp.PointXYZRGBA] *p2 = _pc_tmp2.thisptr2()
+_strides2[0] = (  <Py_ssize_t><void *>idx.getptr(p2, 1)
+               - <Py_ssize_t><void *>idx.getptr(p2, 0))
+_strides2[1] = (  <Py_ssize_t><void *>&(idx.getptr(p2, 0).y)
+               - <Py_ssize_t><void *>&(idx.getptr(p2, 0).x))
+_pc_tmp2 = None
 
 cdef class PointCloud_PointXYZRGBA:
     """Represents a cloud of points in 3-d space.
@@ -12,11 +26,12 @@ cdef class PointCloud_PointXYZRGBA:
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
-        cdef PointCloud2 other
+        cdef PointCloud_PointXYZRGBA other
 
         self._view_count = 0
 
-        sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr2_shared, new cpp.PointCloud[cpp.PointXYZRGBA]())
+        # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr2_shared, new cpp.PointCloud[cpp.PointXYZRGBA]())
+        sp_assign(self.thisptr2_shared, new cpp.PointCloud[cpp.PointXYZRGBA]())
 
         if init is None:
             return
@@ -60,7 +75,7 @@ cdef class PointCloud_PointXYZRGBA:
             self._shape[0] = npoints
             self._shape[1] = 3
 
-        buffer.buf = <char *>&(cpp.getptr2_at(self.thisptr2(), 0).x)
+        buffer.buf = <char *>&(idx.getptr_at(self.thisptr2(), 0).x)
         buffer.format = 'f'
         buffer.internal = NULL
         buffer.itemsize = sizeof(float)
@@ -108,7 +123,7 @@ cdef class PointCloud_PointXYZRGBA:
 
         cdef cpp.PointXYZRGBA *p
         for i in range(npts):
-            p = cpp.getptr2(self.thisptr2(), i)
+            p = idx.getptr(self.thisptr2(), i)
             p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
 
     @cython.boundscheck(False)
@@ -124,25 +139,25 @@ cdef class PointCloud_PointXYZRGBA:
         result = np.empty((n, 3), dtype=np.float32)
 
         for i in range(n):
-            p = cpp.getptr2(self.thisptr2(), i)
+            p = idx.getptr(self.thisptr2(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
         return result
 
-    def from_list(self, _list):
-        """
-        Fill this pointcloud from a list of 3-tuples
-        """
-        cdef Py_ssize_t npts = len(_list)
-        cdef cpp.PointXYZRGBA *p
-
-        self.resize(npts)
-        self.thisptr2().width = npts
-        self.thisptr2().height = 1
-        for i, l in enumerate(_list):
-            p = cpp.getptr2(self.thisptr2(), i)
-            p.x, p.y, p.z = l
+#     def from_list(self, _list):
+#        """
+#        Fill this pointcloud from a list of 3-tuples
+#        """
+#        cdef Py_ssize_t npts = len(_list)
+#        cdef cpp.PointXYZRGBA *p
+#
+#        self.resize(npts)
+#        self.thisptr2().width = npts
+#        self.thisptr2().height = 1
+#        for i, l in enumerate(_list):
+#            p = idx.getptr(self.thisptr2(), i)
+#            p.x, p.y, p.z, p.rgba = l
 
     def to_list(self):
         """
@@ -160,12 +175,12 @@ cdef class PointCloud_PointXYZRGBA:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(<cpp.PointCloud[cpp.PointXYZRGBA]> self.thisptr2(), row, col)
-        return p.x, p.y, p.z
+        cdef cpp.PointXYZRGBA *p = idx.getptr_at2(self.thisptr2(), row, col)
+        return p.x, p.y, p.z, p.rgba
 
-    def __getitem__(self, cnp.npy_intp idx):
-        cdef cpp.PointXYZRGBA *p = cpp.getptr2_at(<cpp.PointCloud[cpp.PointXYZRGBA]> self.thisptr2(), idx)
-        return p.x, p.y, p.z
+    def __getitem__(self, cnp.npy_intp nmidx):
+        cdef cpp.PointXYZRGBA *p = idx.getptr_at(self.thisptr2(), nmidx)
+        return p.x, p.y, p.z, p.rgba
 
     def from_file(self, char *f):
         """
@@ -179,13 +194,17 @@ cdef class PointCloud_PointXYZRGBA:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            error = cpp.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()))
+            error = cpp.loadPCDFile(string(s), deref(self.thisptr2()))
+            # cpp.PointCloud[cpp.PointXYZRGBA] *p = self.thisptr2()
+            # error = cpp.loadPCDFile(string(s), p)
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            ok = cpp.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()))
+            ok = cpp.loadPLYFile(string(s), deref(self.thisptr2()))
+            # cpp.PointCloud[cpp.PointXYZRGBA] *p = self.thisptr2()
+            # ok = cpp.loadPLYFile(string(s), p)
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -199,13 +218,17 @@ cdef class PointCloud_PointXYZRGBA:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()), binary)
+            error = cpp.savePCDFile(s, deref(self.thisptr2()), binary)
+            # cpp.PointCloud[cpp.PointXYZRGBA] *
+            # error = cpp.savePCDFile(s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = cpp.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr2()), binary)
+            error = cpp.savePLYFile(s, deref(self.thisptr2()), binary)
+            # cpp.PointCloud[cpp.PointXYZRGBA] *p = self.thisptr2()
+            # error = cpp.savePLYFile(s, p, binary)
         return error
 
