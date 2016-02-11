@@ -1,14 +1,15 @@
 
 cimport pcl_defs as cpp
+cimport pcl_surface as pclsf
 
 cdef class MovingLeastSquares:
     """
     Smoothing class which is an implementation of the MLS (Moving Least Squares)
     algorithm for data smoothing and improved normal estimation.
     """
-    cdef cpp.MovingLeastSquares_t *me
+    cdef pclsf.MovingLeastSquares_t *me
     def __cinit__(self):
-        self.me = new cpp.MovingLeastSquares_t()
+        self.me = new pclsf.MovingLeastSquares_t()
     def __dealloc__(self):
         del self.me
 

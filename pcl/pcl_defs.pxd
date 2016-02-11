@@ -25,6 +25,9 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass aligned_allocator[T]:
         pass
 
+ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
+ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
+
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
         PointCloud() except +
@@ -327,42 +330,6 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float[3] y_axis
         float[3] z_axis
         # float confidence
-
-cdef extern from "pcl/surface/mls.h" namespace "pcl":
-    cdef cppclass MovingLeastSquares[I,O]:
-        MovingLeastSquares()
-        void setInputCloud (shared_ptr[PointCloud[I]])
-        void setSearchRadius (double)
-        void setPolynomialOrder(bool)
-        void setPolynomialFit(int)
-        void process(PointCloud[O] &) except +
-
-ctypedef MovingLeastSquares[PointXYZ,PointXYZ] MovingLeastSquares_t
-ctypedef MovingLeastSquares[PointXYZRGBA,PointXYZRGBA] MovingLeastSquares2_t
-
-ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
-ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
-
-cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloud[T]:
-        OctreePointCloud(double)
-        void setInputCloud (shared_ptr[PointCloud[T]])
-        void defineBoundingBox()
-        void defineBoundingBox(double, double, double, double, double, double)
-        void addPointsFromInputCloud()
-        void deleteTree()
-        bool isVoxelOccupiedAtPoint(double, double, double)
-        int getOccupiedVoxelCenters(AlignedPointTVector_t)  
-        void deleteVoxelAtPoint(PointXYZ)
-
-ctypedef OctreePointCloud[PointXYZ] OctreePointCloud_t
-
-cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudSearch[T]:
-        OctreePointCloudSearch(double)
-        int radiusSearch (PointXYZ, double, vector[int], vector[float], unsigned int)
-
-ctypedef OctreePointCloudSearch[PointXYZ] OctreePointCloudSearch_t
 
 cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:

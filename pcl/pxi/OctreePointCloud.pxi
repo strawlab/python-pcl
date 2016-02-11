@@ -1,12 +1,13 @@
 
 cimport pcl_defs as cpp
+cimport pcl_octree as pcloct
 include "PointXYZtoPointXYZ.pxi"
 
 cdef class OctreePointCloud:
     """
     Octree pointcloud
     """
-    cdef cpp.OctreePointCloud_t *me
+    cdef pcloct.OctreePointCloud_t *me
 
     def __cinit__(self, double resolution):
         self.me = NULL
@@ -17,7 +18,7 @@ cdef class OctreePointCloud:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = new cpp.OctreePointCloud_t(resolution)
+        self.me = new pcloct.OctreePointCloud_t(resolution)
 
     def __dealloc__(self):
         del self.me
