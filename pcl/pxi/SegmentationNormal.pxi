@@ -1,11 +1,12 @@
 
+cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
 
 cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
                               double searchRadius,
                               cpp.PointNormalCloud_t) except +
-    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t,
+    void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
                                  double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                       cpp.PointIndices_t *, bool) except +
@@ -21,9 +22,9 @@ cdef class SegmentationNormal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef cpp.SACSegmentationNormal_t *me
+    cdef pclseg.SACSegmentationNormal_t *me
     def __cinit__(self):
-        self.me = new cpp.SACSegmentationNormal_t()
+        self.me = new pclseg.SACSegmentationNormal_t()
 
     def __dealloc__(self):
         del self.me
@@ -37,7 +38,7 @@ cdef class SegmentationNormal:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, cpp.SacModel m):
+    def set_model_type(self, pclseg.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)

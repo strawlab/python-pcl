@@ -1,13 +1,14 @@
 
 cimport pcl_defs as cpp
+cimport pcl_filters as pclfil
 
 cdef class PassThroughFilter:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef cpp.PassThrough_t *me
+    cdef pclfil.PassThrough_t *me
     def __cinit__(self):
-        self.me = new cpp.PassThrough_t()
+        self.me = new pclfil.PassThrough_t()
     def __dealloc__(self):
         del self.me
 

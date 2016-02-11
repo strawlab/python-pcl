@@ -1,13 +1,14 @@
 
 cimport pcl_defs as cpp
+cimport pcl_filters as pclfil
 
 cdef class StatisticalOutlierRemovalFilter:
     """
     Filter class uses point neighborhood statistics to filter outlier data.
     """
-    cdef cpp.StatisticalOutlierRemoval_t *me
+    cdef pclfil.StatisticalOutlierRemoval_t *me
     def __cinit__(self):
-        self.me = new cpp.StatisticalOutlierRemoval_t()
+        self.me = new pclfil.StatisticalOutlierRemoval_t()
     def __dealloc__(self):
         del self.me
 

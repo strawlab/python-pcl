@@ -1,7 +1,20 @@
 #!python
 #cython: boundscheck=False
 
+# main
 cimport pcl_defs as cpp
+# parts
+cimport pcl_features as pclftr
+cimport pcl_filters as pclfil
+# cimport pcl_io as pclio
+# cimport pcl_kdtree as pclkdt
+# cimport pcl_octree as pcloct
+# cimport pcl_sample_consensus as pcl_sc
+# cimport pcl_search as pcl_sch
+cimport pcl_segmentation as pclseg
+# cimport pcl_surface as pclsf
+
+
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 
@@ -9,7 +22,7 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
                               double searchRadius,
                               cpp.PointNormalCloud_t) except +
-    void mpcl_sacnormal_set_axis(cpp.SACSegmentationNormal_t,
+    void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
                                  double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                       cpp.PointIndices_t *, bool) except +
@@ -253,7 +266,7 @@ cdef class PointCloud:
         Return a pcl.Segmentation object with this object set as the input-cloud
         """
         seg = Segmentation()
-        cdef cpp.SACSegmentation_t *cseg = <cpp.SACSegmentation_t *>seg.me
+        cdef pclseg.SACSegmentation_t *cseg = <pclseg.SACSegmentation_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         return seg
 
@@ -266,7 +279,7 @@ cdef class PointCloud:
         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = SegmentationNormal()
-        cdef cpp.SACSegmentationNormal_t *cseg = <cpp.SACSegmentationNormal_t *>seg.me
+        cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg
@@ -276,7 +289,7 @@ cdef class PointCloud:
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
         """
         fil = StatisticalOutlierRemovalFilter()
-        cdef cpp.StatisticalOutlierRemoval_t *cfil = <cpp.StatisticalOutlierRemoval_t *>fil.me
+        cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
@@ -285,7 +298,7 @@ cdef class PointCloud:
         Return a pcl.VoxelGridFilter object with this object set as the input-cloud
         """
         fil = VoxelGridFilter()
-        cdef cpp.VoxelGrid_t *cfil = <cpp.VoxelGrid_t *>fil.me
+        cdef pclfil.VoxelGrid_t *cfil = <pclfil.VoxelGrid_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
@@ -294,7 +307,7 @@ cdef class PointCloud:
         Return a pcl.PassThroughFilter object with this object set as the input-cloud
         """
         fil = PassThroughFilter()
-        cdef cpp.PassThrough_t *cfil = <cpp.PassThrough_t *>fil.me
+        cdef pclfil.PassThrough_t *cfil = <pclfil.PassThrough_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 

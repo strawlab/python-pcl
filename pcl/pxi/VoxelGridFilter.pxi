@@ -1,13 +1,14 @@
 
 cimport pcl_defs as cpp
+cimport pcl_filters as pclfil
 
 cdef class VoxelGridFilter:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef cpp.VoxelGrid_t *me
+    cdef pclfil.VoxelGrid_t *me
     def __cinit__(self):
-        self.me = new cpp.VoxelGrid_t()
+        self.me = new pclfil.VoxelGrid_t()
     def __dealloc__(self):
         del self.me
 

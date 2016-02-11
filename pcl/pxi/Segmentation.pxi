@@ -1,13 +1,14 @@
 
+cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
 
 cdef class Segmentation:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef cpp.SACSegmentation_t *me
+    cdef pclseg.SACSegmentation_t *me
     def __cinit__(self):
-        self.me = new cpp.SACSegmentation_t()
+        self.me = new pclseg.SACSegmentation_t()
     def __dealloc__(self):
         del self.me
 
@@ -21,7 +22,7 @@ cdef class Segmentation:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, cpp.SacModel m):
+    def set_model_type(self, pclseg.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
