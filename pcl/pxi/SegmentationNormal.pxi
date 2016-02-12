@@ -3,14 +3,14 @@ cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
 cimport pcl_sample_consensus as pcl_sc
 
-cdef extern from "minipcl.h":
-    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
-                              double searchRadius,
-                              cpp.PointNormalCloud_t) except +
-    void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
-                                 double ax, double ay, double az) except +
-    void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
-                      cpp.PointIndices_t *, bool) except +
+# cdef extern from "minipcl.h":
+#     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
+#                               double searchRadius,
+#                               cpp.PointNormalCloud_t) except +
+#     void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
+#                                  double ax, double ay, double az) except +
+#     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
+#                       cpp.PointIndices_t *, bool) except +
 
 
 #yeah, I can't be bothered making this inherit from SACSegmentation, I forget the rules
@@ -55,8 +55,8 @@ cdef class SegmentationNormal:
         self.me.setRadiusLimits (f1, f2)
     def set_eps_angle(self, double ea):
         self.me.setEpsAngle (ea)
-    def set_axis(self, double ax, double ay, double az):
-        mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
+#     def set_axis(self, double ax, double ay, double az):
+#         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
         """ Set the minimum and maximum cone opening angles in radians for a cone model.
         """
