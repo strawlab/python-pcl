@@ -1,6 +1,7 @@
 
 cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
+cimport pcl_sample_consensus as pcl_sc
 
 cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
@@ -38,7 +39,7 @@ cdef class SegmentationNormal:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)

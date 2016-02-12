@@ -73,7 +73,16 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
          float y
          float z
          # uint32_t rgba
-         unsigned long rgba
+         # unsigned long rgba
+         float rgba
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct PointXYZRGB:
+         PointXYZRGB()
+         float x
+         float y
+         float z
+         float rgb
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
      cdef struct PointXYZRGBL:
@@ -82,9 +91,11 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
          float y
          float z
          # uint32_t rgba
-         unsigned long rgba
+         #unsigned long rgba
+         float rgba
          # uint32_t label
-         unsigned long label
+         #unsigned long label
+         float label
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
      cdef struct PointXYZHSV:
@@ -124,13 +135,15 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float x
         float y
         float z
-        unsigned long label
+        # unsigned long label
+        float label
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
      cdef struct Label:
         Label()
         # uint32_t label
-        unsigned long label
+        # unsigned long label
+        float label
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct Axis:
@@ -351,9 +364,11 @@ ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
 
 ctypedef PointCloud[PointXYZ] PointCloud_t
 ctypedef PointCloud[PointXYZRGBA] PointCloud2_t
+ctypedef PointCloud[PointXYZRGB] PointCloud3_t
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloudPtr2_t
+ctypedef shared_ptr[PointCloud[PointXYZRGB]] PointCloudPtr3_t
 
 ###############################################################################
 # Enum
