@@ -15,14 +15,14 @@ cimport indexing as idx
 
 from boost_shared_ptr cimport sp_assign
 
-cdef extern from "minipcl.h":
-    void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
-                              double searchRadius,
-                              cpp.PointNormalCloud_t) except +
-    void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
-                                 double ax, double ay, double az) except +
-    void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
-                      cpp.PointIndices_t *, bool) except +
+# cdef extern from "minipcl.h":
+#     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
+#                               double searchRadius,
+#                               cpp.PointNormalCloud_t) except +
+#     void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
+#                                  double ax, double ay, double az) except +
+#     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
+#                       cpp.PointIndices_t *, bool) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
@@ -267,19 +267,19 @@ cdef class PointCloud:
         cseg.setInputCloud(self.thisptr_shared)
         return seg
 
-    def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
-        """
-        Return a pcl.SegmentationNormal object with this object set as the input-cloud
-        """
-        cdef cpp.PointNormalCloud_t normals
-        p = self.thisptr()
-        mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
-        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-        seg = SegmentationNormal()
-        cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
-        cseg.setInputCloud(self.thisptr_shared)
-        cseg.setInputNormals (normals.makeShared());
-        return seg
+#     def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
+#         """
+#         Return a pcl.SegmentationNormal object with this object set as the input-cloud
+#         """
+#         cdef cpp.PointNormalCloud_t normals
+#         p = self.thisptr()
+#         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
+#         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
+#         seg = SegmentationNormal()
+#         cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
+#         cseg.setInputCloud(self.thisptr_shared)
+#         cseg.setInputNormals (normals.makeShared());
+#         return seg
 
     def make_statistical_outlier_filter(self):
         """
@@ -333,22 +333,23 @@ cdef class PointCloud:
         octree.set_input_cloud(self)
         return octree
 
-    def extract(self, pyindices, bool negative=False):
-        """
-        Given a list of indices of points in the pointcloud, return a 
-        new pointcloud containing only those points.
-        """
-        cdef PointCloud result
-        cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
+#     def extract(self, pyindices, bool negative=False):
+#         """
+#         Given a list of indices of points in the pointcloud, return a 
+#         new pointcloud containing only those points.
+#         """
+#         cdef PointCloud result
+#         cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
+# 
+#         for i in pyindices:
+#             ind.indices.push_back(i)
+# 
+#         result = PointCloud()
+#         mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
+#         # XXX are we leaking memory here? del ind causes a double free...
+# 
+#         return result
 
-        for i in pyindices:
-            ind.indices.push_back(i)
-
-        result = PointCloud()
-        mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
-        # XXX are we leaking memory here? del ind causes a double free...
-
-        return result
 ###
 
 include "Segmentation.pxi"
