@@ -15,7 +15,7 @@ script:
     - pip install numpy
     - python setup.py build_ext -i
     - python setup.py install
-    - python tests\test.py
+    - python tests/test.py
 
 os:
   :linux
