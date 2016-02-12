@@ -211,6 +211,201 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
 
 ###
 
+# class CVFHEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
+cdef extern from "pcl/features/cvfh.h" namespace "pcl":
+    cdef cppclass CVFHEstimation[I, N, O]:
+    	CVFHEstimation()
+    	# public:
+      	# using Feature<PointInT, PointOutT>::feature_name_;
+      	# using Feature<PointInT, PointOutT>::getClassName;
+      	# using Feature<PointInT, PointOutT>::indices_;
+      	# using Feature<PointInT, PointOutT>::k_;
+      	# using Feature<PointInT, PointOutT>::search_radius_;
+      	# using Feature<PointInT, PointOutT>::surface_;
+      	# using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
+
+      	# ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+      	# ctypedef typename pcl::search::Search<PointNormal>::Ptr KdTreePtr;
+      	# ctypedef typename pcl::NormalEstimation<PointNormal, PointNormal> NormalEstimator;
+      	# ctypedef typename pcl::VFHEstimation<PointInT, PointNT, pcl::VFHSignature308> VFHEstimator;
+
+      	# brief Removes normals with high curvature caused by real edges or noisy data
+        # param[in] cloud pointcloud to be filtered
+        # param[out] indices_out the indices of the points with higher curvature than threshold
+        # param[out] indices_in the indices of the remaining points after filtering
+        # param[in] threshold threshold value for curvature
+        #
+        void filterNormalsWithHighCurvature (const pcl::PointCloud<PointNT> & cloud, std::vector<int> & indices_to_use, std::vector<int> &indices_out,
+                                      std::vector<int> &indices_in, float threshold);
+
+      	# brief Set the viewpoint.
+        # param[in] vpx the X coordinate of the viewpoint
+        # param[in] vpy the Y coordinate of the viewpoint
+        # param[in] vpz the Z coordinate of the viewpoint
+      	inline void setViewPoint (float vpx, float vpy, float vpz)
+
+      	# brief Set the radius used to compute normals
+        # param[in] radius_normals the radius
+      	inline void setRadiusNormals (float radius_normals)
+
+      	# brief Get the viewpoint. 
+        # param[out] vpx the X coordinate of the viewpoint
+        # param[out] vpy the Y coordinate of the viewpoint
+        # param[out] vpz the Z coordinate of the viewpoint
+      	inline void getViewPoint (float &vpx, float &vpy, float &vpz)
+
+      	# brief Get the centroids used to compute different CVFH descriptors
+        # param[out] centroids vector to hold the centroids
+      	inline void getCentroidClusters (std::vector<Eigen::Vector3f> & centroids)
+      
+      	# brief Get the normal centroids used to compute different CVFH descriptors
+        # param[out] centroids vector to hold the normal centroids
+      	inline void getCentroidNormalClusters (std::vector<Eigen::Vector3f> & centroids)
+
+      	# brief Sets max. Euclidean distance between points to be added to the cluster 
+        # param[in] d the maximum Euclidean distance 
+
+      	inline void setClusterTolerance (float d)
+
+      	# brief Sets max. deviation of the normals between two points so they can be clustered together
+        # param[in] d the maximum deviation 
+      	inline void setEPSAngleThreshold (float d)
+
+      	# brief Sets curvature threshold for removing normals
+        # param[in] d the curvature threshold 
+      	inline void setCurvatureThreshold (float d)
+
+      	# brief Set minimum amount of points for a cluster to be considered
+        # param[in] min the minimum amount of points to be set 
+      	inline void setMinPoints (size_t min)
+
+      	# brief Sets wether if the CVFH signatures should be normalized or not
+        # param[in] normalize true if normalization is required, false otherwise 
+      	inline void setNormalizeBins (bool normalize)
+
+      	# brief Overloaded computed method from pcl::Feature.
+        # param[out] output the resultant point cloud model dataset containing the estimated features
+      	void compute (PointCloudOut &output);
+
+    	# protected:
+      	# /** \brief Centroids that were used to compute different CVFH descriptors */
+      	# std::vector<Eigen::Vector3f> centroids_dominant_orientations_;
+      	# /** \brief Normal centroids that were used to compute different CVFH descriptors */
+      	# std::vector<Eigen::Vector3f> dominant_normals_;
+
+###
+
+
+# class ESFEstimation: public Feature<PointInT, PointOutT>
+cdef extern from "pcl/features/esf.h" namespace "pcl":
+    cdef cppclass ESFEstimation[I, O]:
+    	ESFEstimation ()
+    	# public:
+      	# using Feature<PointInT, PointOutT>::feature_name_;
+      	# using Feature<PointInT, PointOutT>::getClassName;
+      	# using Feature<PointInT, PointOutT>::indices_;
+      	# using Feature<PointInT, PointOutT>::k_;
+      	# using Feature<PointInT, PointOutT>::search_radius_;
+      	# using Feature<PointInT, PointOutT>::input_;
+      	# using Feature<PointInT, PointOutT>::surface_;
+
+      	# ctypedef typename pcl::PointCloud<PointInT> PointCloudIn;
+      	# ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+
+      	void compute (PointCloudOut &output)
+
+    	# protected:
+      	# void computeFeature (PointCloudOut &output);
+
+      	# int lci (const int x1, const int y1, const int z1, 
+        #    const int x2, const int y2, const int z2, 
+        #    float &ratio, int &incnt, int &pointcount);
+
+      	# void computeESF (PointCloudIn &pc, std::vector<float> &hist);
+      	# void voxelize9 (PointCloudIn &cluster);
+      	# void cleanup9 (PointCloudIn &cluster);
+      	# void scale_points_unit_sphere (const pcl::PointCloud<PointInT> &pc, float scalefactor, Eigen::Vector4f& centroid);
+
+###
+
+# 
+cdef extern from "pcl/features/feature.h" namespace "pcl":
+	cdef inline void solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+                     						const Eigen::Vector4f &point,
+                        					Eigen::Vector4f &plane_parameters, float &curvature);
+	cdef inline void solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+                        float &nx, float &ny, float &nz, float &curvature);
+
+# class Feature : public PCLBase<PointInT>
+cdef cppclass Feature[T]:
+    	Feature ()
+    	# public:
+      	# using PCLBase<PointInT>::indices_;
+      	# using PCLBase<PointInT>::input_;
+
+      	# ctypedef PCLBase<PointInT> BaseClass;
+      	# ctypedef boost::shared_ptr< Feature<PointInT, PointOutT> > Ptr;
+      	# ctypedef boost::shared_ptr< const Feature<PointInT, PointOutT> > ConstPtr;
+      	# ctypedef typename pcl::search::Search<PointInT> KdTree;
+      	# ctypedef typename pcl::search::Search<PointInT>::Ptr KdTreePtr;
+      	# ctypedef pcl::PointCloud<PointInT> PointCloudIn;
+      	# ctypedef typename PointCloudIn::Ptr PointCloudInPtr;
+      	# ctypedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
+      	# ctypedef pcl::PointCloud<PointOutT> PointCloudOut;
+      	# ctypedef boost::function<int (size_t, double, std::vector<int> &, std::vector<float> &)> SearchMethod;
+      	# ctypedef boost::function<int (const PointCloudIn &cloud, size_t index, double, std::vector<int> &, std::vector<float> &)> SearchMethodSurface;
+
+    	# public:
+      	inline void setSearchSurface (const PointCloudInConstPtr &cloud)
+      	inline PointCloudInConstPtr getSearchSurface () const
+      	inline void setSearchMethod (const KdTreePtr &tree)
+      	inline KdTreePtr getSearchMethod () const
+		inline double getSearchParameter () const
+      	inline void setKSearch (int k)
+      	inline int getKSearch () const
+      	inline void setRadiusSearch (double radius)
+      	inline double getRadiusSearch () const
+	    void compute (PointCloudOut &output);
+      	void computeEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
+
+    	# protected:
+      	# /** \brief The feature name. */
+      	# std::string feature_name_;
+      	# /** \brief The search method template for points. */
+      	# SearchMethodSurface search_method_surface_;
+      	# PointCloudInConstPtr surface_;
+      	# /** \brief A pointer to the spatial search object. */
+      	# KdTreePtr tree_;
+      	# /** \brief The actual search parameter (from either \a search_radius_ or \a k_). */
+      	# double search_parameter_;
+      	# /** \brief The nearest neighbors search radius for each point. */
+      	# double search_radius_;
+      	# /** \brief The number of K nearest neighbors to use for each point. */
+      	# int k_;
+
+      	# /** \brief Get a string representation of the name of this class. */
+      	# inline const std::string& getClassName () const { return (feature_name_); }
+      	# virtual bool initCompute ();
+
+      	# /** \brief This method should get called after ending the actual computation. */
+      	# virtual bool deinitCompute ();
+
+      	# /** \brief If no surface is given, we use the input PointCloud as the surface. */
+      	# bool fake_surface_;
+
+      	# inline int
+      	# searchForNeighbors (size_t index, double parameter,
+        #                   std::vector<int> &indices, std::vector<float> &distances) const
+
+      	# inline int
+      	# searchForNeighbors (const PointCloudIn &cloud, size_t index, double parameter,
+        # 	                  std::vector<int> &indices, std::vector<float> &distances) const
+
+    	# public:
+      	# EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+###
+
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
     cdef cppclass NormalEstimation[T, N]:
         NormalEstimation()
