@@ -362,9 +362,9 @@ cdef extern from "pcl/PointIndices.h" namespace "pcl":
 ctypedef PointIndices PointIndices_t
 ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
 
-ctypedef PointCloud[PointXYZ] PointCloud_t
-ctypedef PointCloud[PointXYZRGBA] PointCloud2_t
-ctypedef PointCloud[PointXYZRGB] PointCloud3_t
+ctypedef PointCloud[PointXYZ]& PointCloud_t
+ctypedef PointCloud[PointXYZRGBA]& PointCloud2_t
+ctypedef PointCloud[PointXYZRGB]& PointCloud3_t
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloudPtr2_t
