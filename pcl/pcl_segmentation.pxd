@@ -53,6 +53,26 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 
+###
+# comparator.h
+# edge_aware_plane_comparator.h
+# euclidean_cluster_comparator.h
+# euclidean_plane_coefficient_comparator.h
+# extract_clusters.h
+# extract_labeled_clusters.h
+# extract_polygonal_prism_data.h
+# organized_connected_component_segmentation.h
+# organized_multi_plane_segmentation.h
+# planar_polygon_fusion.h
+# planar_region.h
+# plane_coefficient_comparator.h
+# plane_refinement_comparator.h
+# region_3d.h
+# rgb_plane_coefficient_comparator.h
+# sac_segmentation.h
+# segment_differences.h
+
+
 ###############################################################################
 # Enum
 ###############################################################################

@@ -5,6 +5,36 @@ from libcpp.vector cimport vector
 cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
+###
+
+# octree.h
+###
+
+# octree2buf_base.h
+###
+
+# octree_base.h
+###
+
+# octree_container.h
+###
+
+# octree_impl.h
+###
+
+# octree_iterator.h
+###
+
+# octree_key.h
+###
+
+# octree_nodes.h
+###
+
+# octree_node_pool.h
+###
+
+# octree_pointcloud.h
 cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloud[T]:
         OctreePointCloud(double)
@@ -20,6 +50,20 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
 ctypedef OctreePointCloud[cpp.PointXYZ] OctreePointCloud_t
 ctypedef OctreePointCloud[cpp.PointXYZRGBA] OctreePointCloud2_t
 
+# octree_pointcloud_changedetector.h
+###
+# octree_pointcloud_density.h
+###
+# octree_pointcloud_occupancy.h
+###
+# octree_pointcloud_pointvector.h
+###
+# octree_pointcloud_singlepoint.h
+###
+# octree_pointcloud_voxelcentroid.h
+###
+
+# octree_search.h
 cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloudSearch[T]:
         OctreePointCloudSearch(double)
@@ -27,4 +71,6 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
 
 ctypedef OctreePointCloudSearch[cpp.PointXYZ] OctreePointCloudSearch_t
 ctypedef OctreePointCloudSearch[cpp.PointXYZRGBA] OctreePointCloudSearch2_t
+
+###
 

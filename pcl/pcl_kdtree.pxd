@@ -5,6 +5,16 @@ cimport pcl_defs as cpp
 
 from boost_shared_ptr cimport shared_ptr
 
+# flann.h
+
+###
+
+# io.h
+
+###
+
+# kdtree.h
+
 # cdef extern from "pcl/search/kdtree.h" namespace "pcl::search":
 #     cdef cppclass KdTree[T]:
 #         KdTree()
@@ -13,6 +23,9 @@ from boost_shared_ptr cimport shared_ptr
 # ctypedef KdTree[cpp.PointXYZ] KdTree_t
 # ctypedef KdTree[cpp.PointXYZRGBA] KdTree2_t
 
+###
+
+# kdtree_flann.h
 cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
     cdef cppclass KdTreeFLANN[T]:
         KdTreeFLANN()
@@ -21,3 +34,5 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 
 ctypedef KdTreeFLANN[cpp.PointXYZ] KdTreeFLANN_t
 ctypedef KdTreeFLANN[cpp.PointXYZRGBA] KdTreeFLANN_t2
+
+###

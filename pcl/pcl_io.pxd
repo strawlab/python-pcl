@@ -47,3 +47,19 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 
 
 # cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
+
+###
+# file_io.h
+# grabber.h
+# io.h
+# lzf.h
+# obj_io.h
+# oni_grabber.h
+# openni_grabber.h
+# pcd_grabber.h
+# pcd_io.h
+# pcl_io_exception.h
+# ply_io.h
+# tar.h
+# vtk_io.h
+# vtk_lib_io.h

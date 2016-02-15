@@ -8,6 +8,34 @@ from boost_shared_ptr cimport shared_ptr
 # Types
 ###############################################################################
 
+###
+# lmeds.h
+# method_types.h
+# mlesac.h
+# model_types.h
+# msac.h
+# prosac.h
+# ransac.h
+# rmsac.h
+# rransac.h
+# sac.h
+# sac_model.h
+# sac_model_circle.h
+# sac_model_cone.h
+# sac_model_cylinder.h
+# sac_model_line.h
+# sac_model_normal_parallel_plane.h
+# sac_model_normal_plane.h
+# sac_model_normal_sphere.h
+# sac_model_parallel_line.h
+# sac_model_parallel_plane.h
+# sac_model_perpendicular_plane.h
+# sac_model_plane.h
+# sac_model_registration.h
+# sac_model_sphere.h
+# sac_model_stick.h
+
+
 ###############################################################################
 # Enum
 ###############################################################################
