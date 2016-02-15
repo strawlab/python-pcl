@@ -9,7 +9,7 @@ import numpy as np
 
 cimport _pcl
 cimport pcl_defs as cpp
-cimport pcl_registration as pcl_reg
+cimport pcl_registration_160 as pcl_reg
 
 np.import_array()
 

@@ -177,7 +177,7 @@ if platform.system() == "Windows":
 		      packages=["pcl"],
 		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
-		                   # Extension("pcl.registration", ["pcl/pcl_registration.pyx"],
+		                   # Extension("pcl.registration", ["pcl/pcl_registration_160.pyx"],
 		                   #           language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
@@ -195,7 +195,7 @@ if platform.system() == "Windows":
 		      packages=["pcl"],
 		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
-		                   Extension("pcl.registration", ["pcl/pcl_registration.pyx"],
+		                   Extension("pcl.registration", ["pcl/pcl_registration_172.pyx"],
 		                             language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
@@ -283,8 +283,8 @@ else:
 		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
 		                   # 1.6.0 NG
-		                   # Extension("pcl.registration", ["pcl/pcl_registration.pyx"],
-		                   #           language="c++", **ext_args),
+		                   Extension("pcl.registration", ["pcl/pcl_registration_160.pyx"],
+		                             language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
 		                  ],
@@ -301,7 +301,7 @@ else:
 		      packages=["pcl"],
 		      ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
 		                             language = "c++", **ext_args),
-		                   Extension("pcl.registration", ["pcl/pcl_registration.pyx"],
+		                   Extension("pcl.registration", ["pcl/pcl_registration_172.pyx"],
 		                             language="c++", **ext_args),
 		                   # debug
 		                   # gdb_debug=True,
