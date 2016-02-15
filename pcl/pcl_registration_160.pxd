@@ -3109,42 +3109,672 @@ cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
 ###
 
 # transformation_estimation_lm.h
+    template <typename PointSource, typename PointTarget>
+    class TransformationEstimationLM : public TransformationEstimation<PointSource, PointTarget>
+    {
+      typedef pcl::PointCloud<PointSource> PointCloudSource;
+      typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+      typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+
+      typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+
+      typedef PointIndices::Ptr PointIndicesPtr;
+      typedef PointIndices::ConstPtr PointIndicesConstPtr;
+
+      public:
+        /** \brief Constructor. */
+        TransformationEstimationLM () : 
+          weights_ (), tmp_src_ (), tmp_tgt_ (), tmp_idx_src_ (), tmp_idx_tgt_ (), warp_point_ ()
+        {};
+
+        /** \brief Copy constructor. 
+          * \param[in] src the TransformationEstimationLM object to copy into this 
+          */
+        TransformationEstimationLM (const TransformationEstimationLM &src) : 
+          weights_ (src.weights_), 
+          tmp_src_ (src.tmp_src_), 
+          tmp_tgt_ (src.tmp_tgt_), 
+          tmp_idx_src_ (src.tmp_idx_src_), 
+          tmp_idx_tgt_ (src.tmp_idx_tgt_), 
+          warp_point_ (src.warp_point_)
+        {};
+
+        /** \brief Copy operator. 
+          * \param[in] src the TransformationEstimationLM object to copy into this 
+          */
+        TransformationEstimationLM&
+        operator = (const TransformationEstimationLM &src)
+        {
+          weights_ = src.weights_;
+          tmp_src_ = src.tmp_src_; 
+          tmp_tgt_ = src.tmp_tgt_; 
+          tmp_idx_src_ = src.tmp_idx_src_;
+          tmp_idx_tgt_ = src.tmp_idx_tgt_; 
+          warp_point_ = src.warp_point_;
+        }
+
+         /** \brief Destructor. */
+        virtual ~TransformationEstimationLM () {};
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const std::vector<int> &indices_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from 
+          * \a indices_src
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const std::vector<int> &indices_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            const std::vector<int> &indices_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[in] correspondences the vector of correspondences between source and target point cloud
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            const pcl::Correspondences &correspondences,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Set the function we use to warp points. Defaults to rigid 6D warp.
+          * \param[in] warp_fcn a shared pointer to an object that warps points
+          */
+        void
+        setWarpFunction (const boost::shared_ptr<WarpPointRigid<PointSource, PointTarget> > &warp_fcn)
+        {
+          warp_point_ = warp_fcn;
+        }
+
+      protected:
+        /** \brief Compute the distance between a source point and its corresponding target point
+          * \param[in] p_src The source point
+          * \param[in] p_tgt The target point
+          * \return The distance between \a p_src and \a p_tgt
+          *
+         * \note A different distance function can be defined by creating a subclass of TransformationEstimationLM and 
+          * overriding this method. (See \a TransformationEstimationPointToPlane)
+          */
+        virtual double 
+        computeDistance (const PointSource &p_src, const PointTarget &p_tgt)
+        {
+          Vector4fMapConst s = p_src.getVector4fMap ();
+          Vector4fMapConst t = p_tgt.getVector4fMap ();
+          return (pcl::distances::l2 (s, t));
+        }
+
+        /** \brief The vector of residual weights. Used internall in the LM loop. */
+        std::vector<double> weights_;
+
+        /** \brief Temporary pointer to the source dataset. */
+        const PointCloudSource *tmp_src_;
+
+        /** \brief Temporary pointer to the target dataset. */
+        const PointCloudTarget  *tmp_tgt_;
+
+        /** \brief Temporary pointer to the source dataset indices. */
+        const std::vector<int> *tmp_idx_src_;
+
+        /** \brief Temporary pointer to the target dataset indices. */
+        const std::vector<int> *tmp_idx_tgt_;
+
+        /** \brief The parameterized function used to warp the source to the target. */
+        boost::shared_ptr<WarpPointRigid<PointSource, PointTarget> > warp_point_;
+        
+        /** Base functor all the models that need non linear optimization must
+          * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
+          * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
+          */
+        template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
+        struct Functor
+        {
+          typedef _Scalar Scalar;
+          enum 
+          {
+            InputsAtCompileTime = NX,
+            ValuesAtCompileTime = NY
+          };
+          typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
+          typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
+          typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
+
+          /** \brief Empty Construtor. */
+          Functor () : m_data_points_ (ValuesAtCompileTime) {}
+
+          /** \brief Constructor
+            * \param[in] m_data_points number of data points to evaluate.
+            */
+          Functor (int m_data_points) : m_data_points_ (m_data_points) {}
+        
+          /** \brief Destructor. */
+          virtual ~Functor () {}
+
+          /** \brief Get the number of values. */ 
+          int
+          values () const { return (m_data_points_); }
+
+          protected:
+            int m_data_points_;
+        };
+
+        struct OptimizationFunctor : public Functor<double>
+        {
+          using Functor<double>::values;
+
+          /** Functor constructor
+            * \param[in] m_data_points the number of data points to evaluate
+            * \param[in,out] estimator pointer to the estimator object
+            */
+          OptimizationFunctor (int m_data_points, TransformationEstimationLM<PointSource, PointTarget> *estimator) : 
+            Functor<double> (m_data_points), estimator_ (estimator) {}
+
+          /** Copy constructor
+            * \param[in] the optimization functor to copy into this
+            */
+          inline OptimizationFunctor (const OptimizationFunctor &src) : 
+            Functor<double> (src.m_data_points_), estimator_ ()
+          {
+            *this = src;
+          }
+
+          /** Copy operator
+            * \param[in] the optimization functor to copy into this
+            */
+          inline OptimizationFunctor& 
+          operator = (const OptimizationFunctor &src) 
+          { 
+            Functor<double>::operator=(src);
+            estimator_ = src.estimator_; 
+            return (*this); 
+          }
+
+          /** \brief Destructor. */
+          virtual ~OptimizationFunctor () {}
+
+          /** Fill fvec from x. For the current state vector x fill the f values
+            * \param[in] x state vector
+            * \param[out] fvec f values vector
+            */
+          int 
+          operator () (const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const;
+
+          TransformationEstimationLM<PointSource, PointTarget> *estimator_;
+        };
+
+        struct OptimizationFunctorWithIndices : public Functor<double>
+        {
+          using Functor<double>::values;
+
+          /** Functor constructor
+            * \param[in] m_data_points the number of data points to evaluate
+            * \param[in,out] estimator pointer to the estimator object
+            */
+          OptimizationFunctorWithIndices (int m_data_points, TransformationEstimationLM *estimator) :
+            Functor<double> (m_data_points), estimator_ (estimator) {}
+
+          /** Copy constructor
+            * \param[in] the optimization functor to copy into this
+            */
+          inline OptimizationFunctorWithIndices (const OptimizationFunctorWithIndices &src) : 
+            Functor<double> (src.m_data_points_), estimator_ ()
+          {
+            *this = src;
+          }
+
+          /** Copy operator
+            * \param[in] the optimization functor to copy into this
+            */
+          inline OptimizationFunctorWithIndices& 
+          operator = (const OptimizationFunctorWithIndices &src) 
+          { 
+            Functor<double>::operator=(src);
+            estimator_ = src.estimator_; 
+            return (*this); 
+          }
+
+          /** \brief Destructor. */
+          virtual ~OptimizationFunctorWithIndices () {}
+
+          /** Fill fvec from x. For the current state vector x fill the f values
+            * \param[in] x state vector
+            * \param[out] fvec f values vector
+            */
+          int 
+          operator () (const Eigen::VectorXd &x, Eigen::VectorXd &fvec) const;
+
+          TransformationEstimationLM<PointSource, PointTarget> *estimator_;
+        };
+      public:
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+    };
 
 ###
 
 # transformation_estimation_point_to_plane.h
 
+    template <typename PointSource, typename PointTarget>
+    class TransformationEstimationPointToPlane : public TransformationEstimationLM<PointSource, PointTarget>
+    {
+      public:
+        typedef boost::shared_ptr<TransformationEstimationPointToPlane<PointSource, PointTarget> > Ptr;
+        typedef pcl::PointCloud<PointSource> PointCloudSource;
+        typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        typedef PointIndices::Ptr PointIndicesPtr;
+        typedef PointIndices::ConstPtr PointIndicesConstPtr;
+
+
+        TransformationEstimationPointToPlane () {};
+        virtual ~TransformationEstimationPointToPlane () {};
+
+      protected:
+        virtual double
+        computeDistance (const PointSource &p_src, const PointTarget &p_tgt)
+        { 
+          // Compute the point-to-plane distance
+          Vector4fMapConst s = p_src.getVector4fMap ();
+          Vector4fMapConst t = p_tgt.getVector4fMap ();
+          Vector4fMapConst n = p_tgt.getNormalVector4fMap ();
+          return ((s - t).dot (n));
+        }
+
+    };
+
 ###
 
 # transformation_estimation_point_to_plane_lls.h
+
+    template <typename PointSource, typename PointTarget>
+    class TransformationEstimationPointToPlaneLLS : public TransformationEstimation<PointSource, PointTarget>
+    {
+      public:
+        TransformationEstimationPointToPlaneLLS () {};
+        virtual ~TransformationEstimationPointToPlaneLLS () {};
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const std::vector<int> &indices_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const std::vector<int> &indices_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            const std::vector<int> &indices_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[in] correspondences the vector of correspondences between source and target point cloud
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            const pcl::Correspondences &correspondences,
+            Eigen::Matrix4f &transformation_matrix);
+
+      protected:
+        /** \brief Construct a 4 by 4 tranformation matrix from the provided rotation and translation.
+          * \param[in] alpha the rotation about the x-axis
+          * \param[in] beta the rotation about the y-axis
+          * \param[in] gamma the rotation about the z-axis
+          * \param[in] tx the x translation
+          * \param[in] ty the y translation
+          * \param[in] tz the z translation
+          * \param[out] transformation the resultant transformation matrix
+          */
+        inline void
+        constructTransformationMatrix (const float & alpha, const float & beta, const float & gamma,
+                                       const float & tx, const float & ty, const float & tz,
+                                       Eigen::Matrix4f &transformation_matrix);
 
 ###
 
 # transformation_estimation_svd.h
 
+    template <typename PointSource, typename PointTarget>
+    class TransformationEstimationSVD : public TransformationEstimation<PointSource, PointTarget>
+    {
+      public:
+        TransformationEstimationSVD () {};
+        virtual ~TransformationEstimationSVD () {};
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const std::vector<int> &indices_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        inline void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const std::vector<int> &indices_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            const std::vector<int> &indices_tgt,
+            Eigen::Matrix4f &transformation_matrix);
+
+        /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[in] correspondences the vector of correspondences between source and target point cloud
+          * \param[out] transformation_matrix the resultant transformation matrix
+          */
+        void
+        estimateRigidTransformation (
+            const pcl::PointCloud<PointSource> &cloud_src,
+            const pcl::PointCloud<PointTarget> &cloud_tgt,
+            const pcl::Correspondences &correspondences,
+            Eigen::Matrix4f &transformation_matrix);
+
+      protected:
+
+        /** \brief Obtain a 4x4 rigid transformation matrix from a correlation matrix H = src * tgt'
+          * \param[in] cloud_src_demean the input source cloud, demeaned, in Eigen format
+          * \param[in] centroid_src the input source centroid, in Eigen format
+          * \param[in] cloud_tgt_demean the input target cloud, demeaned, in Eigen format
+          * \param[in] centroid_tgt the input target cloud, in Eigen format
+          * \param[out] transformation_matrix the resultant 4x4 rigid transformation matrix
+          */ 
+        void
+        getTransformationFromCorrelation (const Eigen::MatrixXf &cloud_src_demean,
+                                          const Eigen::Vector4f &centroid_src,
+                                          const Eigen::MatrixXf &cloud_tgt_demean,
+                                          const Eigen::Vector4f &centroid_tgt,
+                                          Eigen::Matrix4f &transformation_matrix);
+    };
+
 ###
 
 # transformation_validation.h
+    template <typename PointSource, typename PointTarget>
+    class TransformationValidation
+    {
+      public:
+        typedef pcl::PointCloud<PointSource> PointCloudSource;
+        typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+
+        typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+
+        TransformationValidation () {};
+        virtual ~TransformationValidation () {};
+
+        /** \brief Validate the given transformation with respect to the input cloud data, and return a score.
+          *
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          *
+          * \return the score or confidence measure for the given
+          * transformation_matrix with respect to the input data
+          */
+        virtual double
+        validateTransformation (
+            const PointCloudSourceConstPtr &cloud_src,
+            const PointCloudTargetConstPtr &cloud_tgt,
+            const Eigen::Matrix4f &transformation_matrix) = 0;
+
+
+        typedef boost::shared_ptr<TransformationValidation<PointSource, PointTarget> > Ptr;
+        typedef boost::shared_ptr<const TransformationValidation<PointSource, PointTarget> > ConstPtr;
+    };
 
 ###
 
 # transformation_validation_euclidean.h
+    template <typename PointSource, typename PointTarget>
+    class TransformationValidationEuclidean
+    {
+      public:
+        typedef boost::shared_ptr<TransformationValidation<PointSource, PointTarget> > Ptr;
+        typedef boost::shared_ptr<const TransformationValidation<PointSource, PointTarget> > ConstPtr;
+
+        typedef typename pcl::KdTree<PointTarget> KdTree;
+        typedef typename pcl::KdTree<PointTarget>::Ptr KdTreePtr;
+
+        typedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
+
+        typedef typename TransformationValidation<PointSource, PointTarget>::PointCloudSourceConstPtr PointCloudSourceConstPtr;
+        typedef typename TransformationValidation<PointSource, PointTarget>::PointCloudTargetConstPtr PointCloudTargetConstPtr;
+
+        /** \brief Constructor.
+          * Sets the \a max_range parameter to double::max, and initializes the internal search \a tree
+          * to a FLANN kd-tree.
+          */
+        TransformationValidationEuclidean () : 
+          max_range_ (std::numeric_limits<double>::max ()),
+          tree_ (new pcl::KdTreeFLANN<PointTarget>)
+        {
+        }
+
+        virtual ~TransformationValidationEuclidean () {};
+
+        /** \brief Set the maximum allowable distance between a point and its correspondence in the 
+          * target in order for a correspondence to be considered \a valid. Default: double::max.
+          * \param[in] max_range the new maximum allowable distance
+          */
+        inline void
+        setMaxRange (double max_range)
+        {
+          max_range_ = max_range;
+        }
+
+        /** \brief Validate the given transformation with respect to the input cloud data, and return a score.
+          *
+          * \param[in] cloud_src the source point cloud dataset
+          * \param[in] cloud_tgt the target point cloud dataset
+          * \param[out] transformation_matrix the resultant transformation matrix
+          *
+          * \return the score or confidence measure for the given
+          * transformation_matrix with respect to the input data
+          */
+        double
+        validateTransformation (
+            const PointCloudSourceConstPtr &cloud_src,
+            const PointCloudTargetConstPtr &cloud_tgt,
+            const Eigen::Matrix4f &transformation_matrix);
+
+      protected:
+        /** \brief The maximum allowable distance between a point and its correspondence in the target 
+          * in order for a correspondence to be considered \a valid. Default: double::max.
+          */
+        double max_range_;
+
+        /** \brief A pointer to the spatial search object. */
+        KdTreePtr tree_;
+
+      public:
+        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 ###
 
 # transforms.h
-
+# common/transforms.h
 ###
 
 # warp_point_rigid.h
+  template <class PointSourceT, class PointTargetT>
+  class WarpPointRigid
+  {
+  public:
+
+    WarpPointRigid (int nr_dim): nr_dim_ (nr_dim), transform_matrix_ (Eigen::Matrix4f::Zero ())
+    {
+      transform_matrix_ (3,3) = 1.0;
+    };
+
+    virtual ~WarpPointRigid () {};
+
+    virtual void 
+    setParam (const Eigen::VectorXf& p) = 0;
+
+    void 
+    warpPoint (const PointSourceT& pnt_in, PointSourceT& pnt_out) const
+    {
+      pnt_out.getVector3fMap () = transform_matrix_.topLeftCorner<3, 3> () * pnt_in.getVector3fMap() + 
+        transform_matrix_.block<3,1> (0, 3);
+      pnt_out.data [3] = pnt_in.data [3];
+    }
+
+    int 
+    getDimension () const {return nr_dim_;}
+
+    const Eigen::Matrix4f& 
+    getTransform () const { return transform_matrix_; }
+    
+  public:
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+  protected:
+    int nr_dim_;
+    Eigen::Matrix4f transform_matrix_;
+  };
 
 ###
 
 # warp_point_rigid_3d.h
+  template <class PointSourceT, class PointTargetT>
+  class WarpPointRigid3D : public WarpPointRigid<PointSourceT, PointTargetT>
+  {
+  public:
+    WarpPointRigid3D ()
+      : WarpPointRigid<PointSourceT, PointTargetT> (3) {}
+
+    virtual void setParam (const Eigen::VectorXf & p)
+    {
+      assert(p.rows () == this->getDimension ());
+      Eigen::Matrix4f &trans = this->transform_matrix_;
+
+      trans = Eigen::Matrix4f::Zero ();
+      trans (3, 3) = 1;
+      trans (2, 2) = 1; // Rotation around the Z-axis
+
+      // Copy the rotation and translation components
+      trans.block <4, 1> (0, 3) = Eigen::Vector4f (p[0], p[1], 0, 1.0);
+
+      // Compute w from the unit quaternion
+      Eigen::Rotation2D<float> r (p[2]);
+      trans.topLeftCorner<2, 2> () = r.toRotationMatrix ();
+    }
+  };
 
 ###
 
 # warp_point_rigid_6d.h
+  template <class PointSourceT, class PointTargetT>
+  class WarpPointRigid6D : public WarpPointRigid<PointSourceT, PointTargetT>
+  {
+  public:
+    WarpPointRigid6D ()
+      : WarpPointRigid<PointSourceT, PointTargetT> (6) {}
+
+    virtual void setParam (const Eigen::VectorXf& p)
+    {
+      assert(p.rows () == this->getDimension ());
+      Eigen::Matrix4f& trans = this->transform_matrix_;      
+
+      trans = Eigen::Matrix4f::Zero ();
+      trans (3,3) = 1;
+
+      // Copy the rotation and translation components
+      trans.block <4, 1> (0, 3) = Eigen::Vector4f(p[0], p[1], p[2], 1.0);
+
+      // Compute w from the unit quaternion
+      Eigen::Quaternionf q (0, p[3], p[4], p[5]);
+      q.w () = sqrt (1 - q.dot (q));
+      trans.topLeftCorner<3, 3> () = q.toRotationMatrix();
+    }
+  };
 
 ###
 
