@@ -5,6 +5,8 @@ from libcpp.vector cimport vector
 cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
+cimport eigen as eig
+
 ###
 
 # octree.h
@@ -44,7 +46,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void addPointsFromInputCloud()
         void deleteTree()
         bool isVoxelOccupiedAtPoint(double, double, double)
-        int getOccupiedVoxelCenters(cpp.AlignedPointTVector_t)  
+        int getOccupiedVoxelCenters(eig.AlignedPointTVector_t)  
         void deleteVoxelAtPoint(cpp.PointXYZ)
 
 ctypedef OctreePointCloud[cpp.PointXYZ] OctreePointCloud_t

@@ -1,6 +1,9 @@
 
 cimport pcl_defs as cpp
 cimport pcl_octree as pcloct
+
+cimport eigen as eig
+
 include "PointXYZtoPointXYZ.pxi"
 
 cdef class OctreePointCloud:
@@ -64,7 +67,7 @@ cdef class OctreePointCloud:
         """
         Get list of centers of all occupied voxels.
         """
-        cdef cpp.AlignedPointTVector_t points_v
+        cdef eig.AlignedPointTVector_t points_v
         cdef int num = self.me.getOccupiedVoxelCenters (points_v)
         return [(points_v[i].x, points_v[i].y, points_v[i].z) for i in range(num)]
 

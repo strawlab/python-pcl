@@ -8,25 +8,105 @@ from libcpp cimport bool
 # from libcpp.memory cimport shared_ptr
 from boost_shared_ptr cimport shared_ptr
 
+# Eigen
+from eigen cimport Vector4f
+from eigen cimport Quaternionf
+
 from vector cimport vector as vector2
+
 
 ###############################################################################
 # Types
 ###############################################################################
 
-cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
-    cdef cppclass Vector4f:
-        float *data()
-    cdef cppclass Quaternionf:
-        float w()
-        float x()
-        float y()
-        float z()
-    cdef cppclass aligned_allocator[T]:
-        pass
-
-ctypedef aligned_allocator[PointXYZ] aligned_allocator_t 
-ctypedef vector2[PointXYZ, aligned_allocator_t] AlignedPointTVector_t
+# template <>
+# class PCL_EXPORTS PCLBase<sensor_msgs::PointCloud2>
+# {
+#   public:
+#     typedef sensor_msgs::PointCloud2 PointCloud2;
+#     typedef PointCloud2::Ptr PointCloud2Ptr;
+#     typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
+# 
+#       typedef PointIndices::Ptr PointIndicesPtr;
+#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
+# 
+#       /** \brief Empty constructor. */
+#       PCLBase () : input_ (), indices_ (), use_indices_ (false), fake_indices_ (false),
+#                    field_sizes_ (0), x_idx_ (-1), y_idx_ (-1), z_idx_ (-1),
+#                    x_field_name_ ("x"), y_field_name_ ("y"), z_field_name_ ("z")
+#       {};
+# 
+#       /** \brief destructor. */
+#       virtual ~PCLBase() 
+#       {
+#         input_.reset ();
+#         indices_.reset ();
+#       }
+# 
+#       /** \brief Provide a pointer to the input dataset
+#         * \param cloud the const boost shared pointer to a PointCloud message
+#         */
+#       void 
+#       setInputCloud (const PointCloud2ConstPtr &cloud);
+# 
+#       /** \brief Get a pointer to the input point cloud dataset. */
+#        PointCloud2ConstPtr const 
+#       getInputCloud () { return (input_); }
+# 
+#       /** \brief Provide a pointer to the vector of indices that represents the input data.
+#         * \param indices a pointer to the vector of indices that represents the input data.
+#         */
+#        void
+#       setIndices (const IndicesPtr &indices)
+#       {
+#         indices_ = indices;
+#         fake_indices_ = false;
+#         use_indices_  = true;
+#       }
+# 
+#       /** \brief Provide a pointer to the vector of indices that represents the input data.
+#         * \param indices a pointer to the vector of indices that represents the input data.
+#         */
+#        void
+#       setIndices (const PointIndicesConstPtr &indices)
+#       {
+#         indices_.reset (new std::vector<int> (indices->indices));
+#         fake_indices_ = false;
+#         use_indices_  = true;
+#       }
+# 
+#       /** \brief Get a pointer to the vector of indices used. */
+#        IndicesPtr const 
+#       getIndices () { return (indices_); }
+# 
+#     protected:
+#       /** \brief The input point cloud dataset. */
+#       PointCloud2ConstPtr input_;
+# 
+#       /** \brief A pointer to the vector of point indices to use. */
+#       IndicesPtr indices_;
+# 
+#       /** \brief Set to true if point indices are used. */
+#       bool use_indices_;
+# 
+#       /** \brief If no set of indices are given, we construct a set of fake indices that mimic the input PointCloud. */
+#       bool fake_indices_;
+# 
+#       /** \brief The size of each individual field. */
+#       std::vector<int> field_sizes_;
+# 
+#       /** \brief The x-y-z fields indices. */
+#       int x_idx_, y_idx_, z_idx_;
+# 
+#       /** \brief The desired x-y-z field names. */
+#       std::string x_field_name_, y_field_name_, z_field_name_;
+# 
+#       bool initCompute ();
+#       bool deinitCompute ();
+#     public:
+#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+#   };
+###
 
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
@@ -369,6 +449,29 @@ ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloudPtr2_t
 ctypedef shared_ptr[PointCloud[PointXYZRGB]] PointCloudPtr3_t
+
+# pcl_base.h
+# template <typename PointT>
+# class PCLBase
+cdef extern from "pcl/pcl_base.h" namespace "pcl":
+    cdef cppclass PCLBase[T]:
+        PCLBase ()
+        # PCLBase (const PCLBase& base)
+        # void setInputCloud (const PointCloudPtr_t &cloud)
+        # PointCloudPtr_t const getInputCloud ()
+        # void setIndices (const IndicesPtr_t &indices)
+        # #  void setIndices (const IndicesConstPtr &indices)
+        # void setIndices (const PointIndicesPtr_t &indices)
+        # void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
+        # IndicesPtr_t const getIndices ()
+        # # const PointT& operator[] (size_t pos)
+        # # public:
+        # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+# // definitions used everywhere
+ctypedef shared_ptr[vector[int]] IndicesPtr_t;
+# # ctypedef shared_ptr[vector[int]] IndicesPtrConst_t;
+
 
 ###############################################################################
 # Enum

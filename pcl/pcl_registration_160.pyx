@@ -10,13 +10,18 @@ import numpy as np
 cimport _pcl
 cimport pcl_defs as cpp
 cimport pcl_registration_160 as pcl_reg
+from boost_shared_ptr cimport shared_ptr
+
+from eigen cimport Matrix4f
 
 np.import_array()
 
 cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
                 _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
-    reg.setInputSource(source.thisptr_shared)
-    reg.setInputTarget(target.thisptr_shared)
+    reg.setInputSource(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]?> source.thisptr_shared)
+    reg.setInputTarget(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]?> target.thisptr_shared)
+    # reg.setInputSource(source.thisptr_shared)
+    # reg.setInputTarget(target.thisptr_shared)
 
     if max_iter is not None:
         reg.setMaximumIterations(max_iter)
@@ -27,7 +32,8 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
         reg.align(result.thisptr()[0])
 
     # Get transformation matrix and convert from Eigen to NumPy format.
-    cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4 mat
+    # cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4f mat
+    cdef Matrix4f mat
     mat = reg.getFinalTransformation()
     cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='fortran'] transf
     cdef np.float32_t *transf_data
