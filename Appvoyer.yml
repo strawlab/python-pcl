@@ -24,6 +24,7 @@ init:
   - cmd: PCL-1.7.2-AllInOne-msvc2015-win64.exe /VERYSILENT /NORESTART
   - cmd: Anaconda3-2.5.0-Windows-x86_64.exe /VERYSILENT /NORESTART
 
+# scripts that run after cloning repository
 install: 
   - cmd: conda create -n py34 python=3.4
   - cmd: conda create -n py35 python=3.5

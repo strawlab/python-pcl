@@ -450,6 +450,10 @@ ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloudPtr2_t
 ctypedef shared_ptr[PointCloud[PointXYZRGB]] PointCloudPtr3_t
 
+# definitions used everywhere
+ctypedef shared_ptr[vector[int]] IndicesPtr_t;
+# ctypedef shared_ptr[vector[int]] IndicesPtrConst_t;
+
 # pcl_base.h
 # template <typename PointT>
 # class PCLBase
@@ -459,19 +463,16 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
         # PCLBase (const PCLBase& base)
         # virtual void setInputCloud (PointCloudPtr_t cloud)
         void setInputCloud (PointCloudPtr_t cloud)
-        # PointCloudPtr_t getInputCloud ()
-        # void setIndices (const IndicesPtr_t &indices)
+        PointCloudPtr_t getInputCloud ()
+        void setIndices (IndicesPtr_t &indices)
         # #  void setIndices (const IndicesConstPtr &indices)
-        # void setIndices (const PointIndicesPtr_t &indices)
-        # void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
-        # IndicesPtr_t const getIndices ()
+        void setIndices (const PointIndicesPtr_t &indices)
+        void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
+        IndicesPtr_t const getIndices ()
         # # const PointT& operator[] (size_t pos)
         # # public:
         # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
-# // definitions used everywhere
-ctypedef shared_ptr[vector[int]] IndicesPtr_t;
-# # ctypedef shared_ptr[vector[int]] IndicesPtrConst_t;
 
 
 ###############################################################################

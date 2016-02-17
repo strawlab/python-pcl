@@ -4,6 +4,9 @@ from libcpp cimport bool
 cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
+# Cython - limits.pxd
+# from libcpp cimport numeric_limits
+
 # base
 from eigen cimport Matrix4f
 
@@ -27,10 +30,12 @@ from eigen cimport Matrix4f
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target]:
         # Registration()
-        void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
+        # override?
+        void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
+        # void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
         # cdef void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
         #   cpp.PCLBase.setInputSource(ptcloud)
-        void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
+        # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
         # public:
         # using PCLBase<PointSource>::initCompute;
         # using PCLBase<PointSource>::deinitCompute;
@@ -59,8 +64,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # inline PointCloudTargetConstPtr const getInputTarget ()
         cpp.PointCloudPtr_t getInputTarget ()
-
-        # brief Get the final transformation matrix estimated by the registration method.
+        # brief Get the final transformation matrix estimated by the registration method.
         Matrix4f getFinalTransformation ()
         # /** \brief Get the last incremental transformation matrix estimated by the registration method. */
         Matrix4f getLastIncrementalTransformation ()
@@ -122,7 +126,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * \param max_range maximum allowable distance between a point and its correspondence in the target 
         #   * (default: double::max)
         #   */
-        #  double getFitnessScore (double max_range = std::numeric_limits<double>::max ());
+        #  double getFitnessScore (double max_range = numeric_limits[double]::max ());
         double getFitnessScore() except +
         # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
         #   * from two sets of correspondence distances (distances between source and target points)
@@ -133,18 +137,16 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # /** \brief Return the state of convergence after the last align run */
         #  bool hasConverged ()
         bool hasConverged() except +
-        # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
-        #   * (input) as \a output.
-        #   * \param output the resultant input transfomed point cloud dataset
-        #   */
+        # brief Call the registration algorithm which estimates the transformation and returns the transformed source 
+        # (input) as \a output.
+        # param output the resultant input transfomed point cloud dataset
         #  void align (PointCloudSource &output);
         void align(cpp.PointCloud[Source] &) except +
-        # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
-        #   * (input) as \a output.
-        #   * \param output the resultant input transfomed point cloud dataset
-        #   * \param guess the initial gross estimation of the transformation
-        #   */
-        #  void align (PointCloudSource &output, const Eigen::Matrix4f& guess);
+        # brief Call the registration algorithm which estimates the transformation and returns the transformed source 
+        # (input) as \a output.
+        # param output the resultant input transfomed point cloud dataset
+        # param guess the initial gross estimation of the transformation
+        # void align (PointCloudSource &output, const Eigen::Matrix4f& guess);
         # /** \brief Abstract class get name method. */
         #  const string& getClassName () const
 
@@ -590,11 +592,6 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 #           */
 #         template <typename PointT> inline void 
 #         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
-#         {
-#           if (!data_container_)
-#             data_container_.reset (new DataContainer<PointT>);
-#           boost::static_pointer_cast<DataContainer<PointT> > (data_container_)->setInputCloud (cloud);
-#         }
 # 
 #         /** \brief Provide a target point cloud dataset (must contain XYZ
 #           * data!), used to compute the correspondence distance.  
@@ -1011,10 +1008,6 @@ cdef extern from "pcl/registration/correspondence_rejection_surface_normal.h" na
 #           */
 #         template <typename PointT> inline void 
 #         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &input)
-#         {
-#           assert (data_container_ && "Initilize the data container object by calling intializeDataContainer () before using this function");
-#           boost::static_pointer_cast<DataContainer<PointT> > (data_container_)->setInputCloud (input);
-#         }
 # 
 #         /** \brief Provide a target point cloud dataset (must contain XYZ
 #           * data!), used to compute the correspondence distance.  
@@ -1156,11 +1149,6 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 #           */
 #         template <typename PointT> inline void 
 #         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
-#         {
-#           if (!data_container_)
-#             data_container_.reset (new DataContainer<PointT>);
-#           boost::static_pointer_cast<DataContainer<PointT> > (data_container_)->setInputCloud (cloud);
-#         }
 # 
 #         /** \brief Provide a target point cloud dataset (must contain XYZ
 #           * data!), used to compute the correspondence distance.  
@@ -1610,7 +1598,7 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
 #       /** \brief Provide a pointer to the input dataset
 #         * \param cloud the const boost shared pointer to a PointCloud message
 #         */
-        void setInputCloud (cpp.PointCloudPtr_t ptcloud)
+#       void setInputCloud (cpp.PointCloudPtr_t ptcloud)
 # 
 #       /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
 #         * \param[in] target the input point cloud target

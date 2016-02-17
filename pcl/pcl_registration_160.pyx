@@ -36,14 +36,13 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
     cdef cpp.PCLBase[cpp.PointXYZ] pclbase
     # NG(Convert)
     # pclbase = reg
-    pclbase = <cpp.PCLBase[cpp.PointXYZ]> reg
-    # cdef cpp.PCLBase pclbase
     # pclbase = <cpp.PCLBase> reg
+    pclbase = <cpp.PCLBase[cpp.PointXYZ]> reg
     # pclbase.setInputCloud(source.thisptr_shared)
-    # getInputCloud
     pclbase.setInputCloud(<cpp.PointCloudPtr_t> source.thisptr_shared)
-    # reg.setInputCloud(source.thisptr_shared)
-
+    # set PointCloud?
+    # getInputCloud
+    # reg.setInputCloud(<cpp.PointCloudPtr_t> pclbase.getInputCloud())
     reg.setInputTarget(target.thisptr_shared)
 
     if max_iter is not None:
@@ -66,6 +65,12 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
 
     for i in range(16):
         transf_data[i] = mat.data()[i]
+
+    print (reg.hasConverged())
+    print (transf)
+    print (result)
+    # NG
+    print (reg.getFitnessScore())
 
     return reg.hasConverged(), transf, result, reg.getFitnessScore()
 
