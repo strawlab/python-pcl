@@ -1,18 +1,30 @@
 branches:
-  except:
+  # whitelist
+  only:
     - master
+  # blacklist 
+  except: 
+    - gh-pages 
+
+# Do not build on tags (GitHub only) 
+skip_tags: true 
+
+# Operating system (build VM template) 
+os: Windows Server 2012 
 
 platform: 
   - x64 
 environment: 
 
-install: 
+init:
   - ps: Start-FileDownload "https://3230d63b5fc54e62148e-c95ac804525aac4b6dba79b00b39d1d3.ssl.cf1.rackcdn.com/Anaconda3-2.5.0-Windows-x86_64.exe" 
   - ps: Start-FileDownload "http://sourceforge.net/projects/pointclouds/files/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe/download"
   - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - cmd: PCL-1.6.0-AllInOne-msvc2010-win64.exe /VERYSILENT /NORESTART
   - cmd: PCL-1.7.2-AllInOne-msvc2015-win64.exe /VERYSILENT /NORESTART
   - cmd: Anaconda3-2.5.0-Windows-x86_64.exe /VERYSILENT /NORESTART
+
+install: 
   - cmd: conda create -n py34 python=3.4
   - cmd: conda create -n py35 python=3.5
   - cmd: activate py34
@@ -26,6 +38,5 @@ install:
   - cmd: python setup.py install
   - cmd: deactivate
 
-
-build: false 
+build: off 
 test_script: 

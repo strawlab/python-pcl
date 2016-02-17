@@ -6,7 +6,7 @@ from numpy.testing import assert_equal
 import unittest
 
 import pcl
-from pcl.pcl_registration_172 import icp, gicp, icp_nl
+from pcl.pcl_registration_160 import icp, gicp, icp_nl
 
 
 class TestICP(unittest.TestCase):
@@ -64,3 +64,6 @@ class TestICP(unittest.TestCase):
 
     def testICP_NL(self):
         self.check_algo(icp_nl)
+
+if __name__ == '__main__':
+    unittest.main()

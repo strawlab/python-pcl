@@ -42,18 +42,14 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
     # pclbase.setInputCloud(source.thisptr_shared)
     # getInputCloud
     pclbase.setInputCloud(<cpp.PointCloudPtr_t> source.thisptr_shared)
-    print ('test run3')
     # reg.setInputCloud(source.thisptr_shared)
 
-    print ('test run4')
     reg.setInputTarget(target.thisptr_shared)
-    print ('test run5')
 
     if max_iter is not None:
         reg.setMaximumIterations(max_iter)
 
     cdef _pcl.PointCloud result = _pcl.PointCloud()
-    print ('test run6')
 
     with nogil:
         reg.align(result.thisptr()[0])
@@ -70,8 +66,6 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
 
     for i in range(16):
         transf_data[i] = mat.data()[i]
-
-    print ('test run7')
 
     return reg.hasConverged(), transf, result, reg.getFitnessScore()
 
