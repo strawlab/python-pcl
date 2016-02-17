@@ -16,17 +16,44 @@ from eigen cimport Matrix4f
 
 np.import_array()
 
+# cdef class PyRegistration:
+#     cdef cpp.PCLBase *thisptr
+#     def __cinit__(self):
+#         if type(self) is PyRegistration:
+#             self.thisptr = new cpp.PCLBase()
+#     def __dealloc__(self):
+#         if type(self) is PyBaseClass:
+#             del self.thisptr
+#     def SetInputCloud(self, name):
+#         self.thisptr.SetName(name)
+
+
 cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
                 _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
-    reg.setInputSource(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]?> source.thisptr_shared)
-    reg.setInputTarget(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]?> target.thisptr_shared)
+    # 1.6.0 NG(No descrription)
     # reg.setInputSource(source.thisptr_shared)
-    # reg.setInputTarget(target.thisptr_shared)
+    # PCLBase
+    cdef cpp.PCLBase[cpp.PointXYZ] pclbase
+    # NG(Convert)
+    # pclbase = reg
+    pclbase = <cpp.PCLBase[cpp.PointXYZ]> reg
+    # cdef cpp.PCLBase pclbase
+    # pclbase = <cpp.PCLBase> reg
+    # pclbase.setInputCloud(source.thisptr_shared)
+    # getInputCloud
+    pclbase.setInputCloud(<cpp.PointCloudPtr_t> source.thisptr_shared)
+    print ('test run3')
+    # reg.setInputCloud(source.thisptr_shared)
+
+    print ('test run4')
+    reg.setInputTarget(target.thisptr_shared)
+    print ('test run5')
 
     if max_iter is not None:
         reg.setMaximumIterations(max_iter)
 
     cdef _pcl.PointCloud result = _pcl.PointCloud()
+    print ('test run6')
 
     with nogil:
         reg.align(result.thisptr()[0])
@@ -43,6 +70,8 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
 
     for i in range(16):
         transf_data[i] = mat.data()[i]
+
+    print ('test run7')
 
     return reg.hasConverged(), transf, result, reg.getFitnessScore()
 
@@ -72,6 +101,7 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
+    # icp.setInputCloud(source);
     return run(icp, source, target, max_iter)
 
 
@@ -100,6 +130,7 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
+    # gicp.setInputCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> source);
     return run(gicp, source, target, max_iter)
 
 
@@ -129,4 +160,5 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
+    # icp_nl.setInputCloud(source);
     return run(icp_nl, source, target, max_iter)

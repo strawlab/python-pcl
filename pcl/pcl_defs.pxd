@@ -457,8 +457,9 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
     cdef cppclass PCLBase[T]:
         PCLBase ()
         # PCLBase (const PCLBase& base)
-        # void setInputCloud (const PointCloudPtr_t &cloud)
-        # PointCloudPtr_t const getInputCloud ()
+        # virtual void setInputCloud (PointCloudPtr_t cloud)
+        void setInputCloud (PointCloudPtr_t cloud)
+        # PointCloudPtr_t getInputCloud ()
         # void setIndices (const IndicesPtr_t &indices)
         # #  void setIndices (const IndicesConstPtr &indices)
         # void setIndices (const PointIndicesPtr_t &indices)
