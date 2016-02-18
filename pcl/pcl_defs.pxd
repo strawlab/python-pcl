@@ -4,7 +4,6 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
-# NG
 # from libcpp.memory cimport shared_ptr
 from boost_shared_ptr cimport shared_ptr
 
@@ -13,7 +12,6 @@ from eigen cimport Vector4f
 from eigen cimport Quaternionf
 
 from vector cimport vector as vector2
-
 
 ###############################################################################
 # Types
@@ -466,9 +464,9 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
         PointCloudPtr_t getInputCloud ()
         void setIndices (IndicesPtr_t &indices)
         # #  void setIndices (const IndicesConstPtr &indices)
-        void setIndices (const PointIndicesPtr_t &indices)
-        void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
-        IndicesPtr_t const getIndices ()
+#        void setIndices (const PointIndicesPtr_t &indices)
+#        void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
+#        IndicesPtr_t const getIndices ()
         # # const PointT& operator[] (size_t pos)
         # # public:
         # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW

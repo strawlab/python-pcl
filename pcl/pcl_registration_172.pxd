@@ -1,4 +1,4 @@
-from libcpp cimport bool
+﻿from libcpp cimport bool
 
 # main
 cimport pcl_defs as cpp
@@ -14,7 +14,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         cppclass Matrix4:
             float *data()
         void align(cpp.PointCloud[Source] &) except +
-        Matrix4f getFinalTransformation() except +
+        Matrix4 getFinalTransformation() except +
         double getFitnessScore() except +
         bool hasConverged() except +
         void setInputSource(cpp.PointCloudPtr_t) except +
@@ -589,11 +589,6 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 #           */
 #         template <typename PointT> inline void 
 #         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
-#         {
-#           if (!data_container_)
-#             data_container_.reset (new DataContainer<PointT>);
-#           boost::static_pointer_cast<DataContainer<PointT> > (data_container_)->setInputCloud (cloud);
-#         }
 # 
 #         /** \brief Provide a target point cloud dataset (must contain XYZ
 #           * data!), used to compute the correspondence distance.  
@@ -1010,10 +1005,6 @@ cdef extern from "pcl/registration/correspondence_rejection_surface_normal.h" na
 #           */
 #         template <typename PointT> inline void 
 #         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &input)
-#         {
-#           assert (data_container_ && "Initilize the data container object by calling intializeDataContainer () before using this function");
-#           boost::static_pointer_cast<DataContainer<PointT> > (data_container_)->setInputCloud (input);
-#         }
 # 
 #         /** \brief Provide a target point cloud dataset (must contain XYZ
 #           * data!), used to compute the correspondence distance.  
@@ -1155,11 +1146,6 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 #           */
 #         template <typename PointT> inline void 
 #         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
-#         {
-#           if (!data_container_)
-#             data_container_.reset (new DataContainer<PointT>);
-#           boost::static_pointer_cast<DataContainer<PointT> > (data_container_)->setInputCloud (cloud);
-#         }
 # 
 #         /** \brief Provide a target point cloud dataset (must contain XYZ
 #           * data!), used to compute the correspondence distance.  
@@ -1609,7 +1595,7 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
 #       /** \brief Provide a pointer to the input dataset
 #         * \param cloud the const boost shared pointer to a PointCloud message
 #         */
-        void setInputCloud (cpp.PointCloudPtr_t ptcloud)
+#       void setInputCloud (cpp.PointCloudPtr_t ptcloud)
 # 
 #       /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
 #         * \param[in] target the input point cloud target

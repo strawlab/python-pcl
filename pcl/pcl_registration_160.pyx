@@ -16,18 +16,6 @@ from eigen cimport Matrix4f
 
 np.import_array()
 
-# cdef class PyRegistration:
-#     cdef cpp.PCLBase *thisptr
-#     def __cinit__(self):
-#         if type(self) is PyRegistration:
-#             self.thisptr = new cpp.PCLBase()
-#     def __dealloc__(self):
-#         if type(self) is PyBaseClass:
-#             del self.thisptr
-#     def SetInputCloud(self, name):
-#         self.thisptr.SetName(name)
-
-
 cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
                 _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     # 1.6.0 NG(No descrription)
