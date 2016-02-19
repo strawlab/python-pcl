@@ -1,5 +1,6 @@
 from libcpp.string cimport string
 from libcpp cimport bool
+from libcpp.vector cimport vector
 
 # main
 cimport pcl_defs as cpp
@@ -162,9 +163,10 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 
 ### Inheritance class ###
 
-# # approximate_voxel_grid.h
-# # template <typename PointT>
-# # struct xNdCopyEigenPointFunctor
+# approximate_voxel_grid.h
+# NG ###
+# template <typename PointT>
+# struct xNdCopyEigenPointFunctor
 # cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
 #     cdef struct xNdCopyEigenPointFunctor[T]:
 #         # ctypedef typename traits::POD<PointT>::type Pod;
@@ -178,158 +180,146 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 #         # ctypedef typename traits::POD<PointT>::type Pod;
 #         # xNdCopyPointEigenFunctor (const PointT &p1, Eigen::VectorXf &p2)
 #         # template<typename Key> void operator() ()
+# NG ###
+
+# template <typename PointT>
+# class ApproximateVoxelGrid: public Filter<PointT>
+cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
+    cdef cppclass ApproximateVoxelGrid[T](Filter[T]):
+        ApproximateVoxelGrid()
+        # ApproximateVoxelGrid (const ApproximateVoxelGrid &src) : 
+        # ApproximateVoxelGrid& operator = (const ApproximateVoxelGrid &src)
+        # using Filter<PointT>::filter_name_;
+        # using Filter<PointT>::getClassName;
+        # using Filter<PointT>::input_;
+        # using Filter<PointT>::indices_;
+        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # public:
+        # * \brief Set the voxel grid leaf size.
+        # * \param[in] leaf_size the voxel grid leaf size
+        # void setLeafSize (const Eigen::Vector3f &leaf_size) 
+        # * \brief Set the voxel grid leaf size.
+        # * \param[in] lx the leaf size for X
+        # * \param[in] ly the leaf size for Y
+        # * \param[in] lz the leaf size for Z
+        void setLeafSize (float lx, float ly, float lz)
+        # /** \brief Get the voxel grid leaf size. */
+        # Eigen::Vector3f getLeafSize () const { return (leaf_size_); }
+        # * \brief Set to true if all fields need to be downsampled, or false if just XYZ.
+        # * \param downsample the new value (true/false)
+        # */
+        void setDownsampleAllData (bool downsample)
+        # * \brief Get the state of the internal downsampling parameter (true if
+        #   * all fields need to be downsampled, false if just XYZ). 
+        #   */
+        bool getDownsampleAllData () const
+###
+
+# bilateral.h
+# template<typename PointT>
+# class BilateralFilter : public Filter<PointT>
+cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
+    cdef cppclass BilateralFilter[T](Filter[T]):
+        BilateralFilter()
+        # using Filter<PointT>::input_;
+        # using Filter<PointT>::indices_;
+        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
+        # ctypedef typename pcl::search::Search<PointT>::Ptr KdTreePtr;
+        # public:
+        # * \brief Filter the input data and store the results into output
+        # * \param[out] output the resultant point cloud message
+        # */
+        void applyFilter (cpp.PointCloud[T] &output)
+        # * \brief Compute the intensity average for a single point
+        # * \param[in] pid the point index to compute the weight for
+        # * \param[in] indices the set of nearest neighor indices 
+        # * \param[in] distances the set of nearest neighbor distances
+        # * \return the intensity average at a given point index
+        double  computePointWeight (const int pid, const vector[int] &indices, const vector[float] &distances)
+        # * \brief Set the half size of the Gaussian bilateral filter window.
+        # * \param[in] sigma_s the half size of the Gaussian bilateral filter window to use
+        # */
+        void setHalfSize (const double sigma_s)
+        # * \brief Get the half size of the Gaussian bilateral filter window as set by the user. */
+        double getHalfSize ()
+        #  \brief Set the standard deviation parameter
+        #   * \param[in] sigma_r the new standard deviation parameter
+        #   */
+        void setStdDev (const double sigma_r)
+        # * \brief Get the value of the current standard deviation parameter of the bilateral filter. */
+        double getStdDev ()
+        # * \brief Provide a pointer to the search object.
+        # * \param[in] tree a pointer to the spatial search object.
+        # */
+        # void setSearchMethod (const KdTreePtr &tree)
+###
+
+# clipper3D.h
+# Override class
+# template<typename PointT>
+# class Clipper3D
+#     public:
+#         * \brief virtual destructor. Never throws an exception.
+#       virtual ~Clipper3D () throw () {}
 # 
-# # template <typename PointT>
-# # class ApproximateVoxelGrid: public Filter<PointT>
-# cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
-#     cdef cppclass ApproximateVoxelGrid[T](Filter[T]):
-#         ApproximateVoxelGrid()
-#         # ApproximateVoxelGrid (const ApproximateVoxelGrid &src) : 
-#         # ApproximateVoxelGrid& operator = (const ApproximateVoxelGrid &src)
-#         # using Filter<PointT>::filter_name_;
-#         # using Filter<PointT>::getClassName;
-#         # using Filter<PointT>::input_;
-#         # using Filter<PointT>::indices_;
-#         # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # public:
-#         # * \brief Set the voxel grid leaf size.
-#         # * \param[in] leaf_size the voxel grid leaf size
-#         # void setLeafSize (const Eigen::Vector3f &leaf_size) 
-#         # * \brief Set the voxel grid leaf size.
-#         # * \param[in] lx the leaf size for X
-#         # * \param[in] ly the leaf size for Y
-#         # * \param[in] lz the leaf size for Z
-#         # */
-#         void setLeafSize (float lx, float ly, float lz)
-#         # /** \brief Get the voxel grid leaf size. */
-#         # Eigen::Vector3f getLeafSize () const { return (leaf_size_); }
-#         # * \brief Set to true if all fields need to be downsampled, or false if just XYZ.
-#         # * \param downsample the new value (true/false)
-#         # */
-#         void setDownsampleAllData (bool downsample)
-#         # * \brief Get the state of the internal downsampling parameter (true if
-#         #   * all fields need to be downsampled, false if just XYZ). 
-#         #   */
-#         bool getDownsampleAllData () const
-# ###
+#         * \brief interface to clip a single point
+#         * \param[in] point the point to check against
+#         * \return true, it point still exists, false if its clipped
+#       virtual bool clipPoint3D (const PointT& point) const = 0;
 # 
-# # bilateral.h
-# # template<typename PointT>
-# # class BilateralFilter : public Filter<PointT>
-# cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
-#     cdef cppclass BilateralFilter[T](Filter[T]):
-#         BilateralFilter()
-#         # using Filter<PointT>::input_;
-#         # using Filter<PointT>::indices_;
-#         # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-#         # ctypedef typename pcl::search::Search<PointT>::Ptr KdTreePtr;
-#         # public:
-#         # * \brief Filter the input data and store the results into output
-#         # * \param[out] output the resultant point cloud message
-#         # */
-#         void applyFilter (cpp.PointCloud[T] &output)
-#         # * \brief Compute the intensity average for a single point
-#         # * \param[in] pid the point index to compute the weight for
-#         # * \param[in] indices the set of nearest neighor indices 
-#         # * \param[in] distances the set of nearest neighbor distances
-#         # * \return the intensity average at a given point index
-#         double  computePointWeight (const int pid, const vector[int] &indices, const vector[float] &distances)
-#         # * \brief Set the half size of the Gaussian bilateral filter window.
-#         # * \param[in] sigma_s the half size of the Gaussian bilateral filter window to use
-#         # */
-#         void setHalfSize (const double sigma_s)
-#         # * \brief Get the half size of the Gaussian bilateral filter window as set by the user. */
-#         double getHalfSize ()
-#         #  \brief Set the standard deviation parameter
-#         #   * \param[in] sigma_r the new standard deviation parameter
-#         #   */
-#         void setStdDev (const double sigma_r)
-#         # * \brief Get the value of the current standard deviation parameter of the bilateral filter. */
-#         double getStdDev ()
-#         # * \brief Provide a pointer to the search object.
-#         # * \param[in] tree a pointer to the spatial search object.
-#         # */
-#         void setSearchMethod (const KdTreePtr &tree)
-# ###
+#         * \brief interface to clip a line segment given by two end points. The order of the end points is unimportant and will sty the same after clipping.
+#         * This means basically, that the direction of the line will not flip after clipping.
+#         * \param[in,out] pt1 start point of the line
+#         * \param[in,out] pt2 end point of the line
+#         * \return true if the clipped line is not empty, thus the parameters are still valid, false if line completely outside clipping space
+#       virtual bool clipLineSegment3D (PointT& pt1, PointT& pt2) const = 0;
 # 
-# # clipper3D.h
-# # Override class
-# # template<typename PointT>
-# # class Clipper3D
-# #     public:
-# #       /**
-# #         * \brief virtual destructor. Never throws an exception.
-# #         */
-# #       virtual ~Clipper3D () throw () {}
-# # 
-# #       /**
-# #         * \brief interface to clip a single point
-# #         * \param[in] point the point to check against
-# #         * \return true, it point still exists, false if its clipped
-# #         */
-# #       virtual bool clipPoint3D (const PointT& point) const = 0;
-# # 
-# #       /**
-# #         * \brief interface to clip a line segment given by two end points. The order of the end points is unimportant and will sty the same after clipping.
-# #         * This means basically, that the direction of the line will not flip after clipping.
-# #         * \param[in,out] pt1 start point of the line
-# #         * \param[in,out] pt2 end point of the line
-# #         * \return true if the clipped line is not empty, thus the parameters are still valid, false if line completely outside clipping space
-# #         */
-# #       virtual bool clipLineSegment3D (PointT& pt1, PointT& pt2) const = 0;
-# # 
-# #       /**
-# #         * \brief interface to clip a planar polygon given by an ordered list of points
-# #         * \param[in,out] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
-# #         */
-# #       virtual void clipPlanarPolygon3D (std::vector<PointT>& polygon) const = 0;
-# # 
-# #       /**
-# #         * \brief interface to clip a planar polygon given by an ordered list of points
-# #         * \param[in] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
-# #         * \param[out] clipped_polygon the clipped polygon
-# #         */
-# #       virtual void clipPlanarPolygon3D (const std::vector<PointT>& polygon, std::vector<PointT>& clipped_polygon) const = 0;
-# # 
-# #       /**
-# #         * \brief interface to clip a point cloud
-# #         * \param[in] cloud_in input point cloud
-# #         * \param[out] clipped indices of points that remain after clipping the input cloud
-# #         * \param[in] indices the indices of points in the point cloud to be clipped.
-# #         * \return list of indices of remaining points after clipping.
-# #         */
-# #       virtual void clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const = 0;
-# # 
-# #       /**
-# #         * \brief polymorphic method to clone the underlying clipper with its parameters.
-# #         * \return the new clipper object from the specific subclass with all its parameters.
-# #         */
-# #       virtual Clipper3D<PointT>* clone () const = 0;
-# ###
+#         * \brief interface to clip a planar polygon given by an ordered list of points
+#         * \param[in,out] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
+#       virtual void clipPlanarPolygon3D (std::vector<PointT>& polygon) const = 0;
 # 
-# # conditional_removal.h
-# # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
-# # typedef enum 
-# # {
-# # GT, GE, LT, LE, EQ
-# # }
-# # CompareOp;
-# 
-# # template<typename PointT>
-# # class PointDataAtOffset
+#         * \brief interface to clip a planar polygon given by an ordered list of points
+#         * \param[in] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
+#         * \param[out] clipped_polygon the clipped polygon
+#       virtual void clipPlanarPolygon3D (const std::vector<PointT>& polygon, std::vector<PointT>& clipped_polygon) const = 0;
+# 
+#         * \brief interface to clip a point cloud
+#         * \param[in] cloud_in input point cloud
+#         * \param[out] clipped indices of points that remain after clipping the input cloud
+#         * \param[in] indices the indices of points in the point cloud to be clipped.
+#         * \return list of indices of remaining points after clipping.
+#       virtual void clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const = 0;
+# 
+#         * \brief polymorphic method to clone the underlying clipper with its parameters.
+#         * \return the new clipper object from the specific subclass with all its parameters.
+#       virtual Clipper3D<PointT>* clone () const = 0;
+###
+
+# conditional_removal.h
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+# typedef enum 
+# {
+# GT, GE, LT, LE, EQ
+# }
+# CompareOp;
+
+# NG ###
+# no define constructor
+# 
+# template<typename PointT>
+# class PointDataAtOffset
 # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
 #     cdef cppclass PointDataAtOffset[T]:
-#         PointDataAtOffset (uint8_t datatype, uint32_t offset)
-#         int compare (const PointT& p, const double& val);
-# 
-# ###
-# 
-# #  template<typename PointT>
-# #  class FieldComparison : public ComparisonBase<PointT>
+#         # PointDataAtOffset (uint8_t datatype, uint32_t offset)
+#         # int compare (const T& p, const double& val);
+###
+# template<typename PointT>
+# class FieldComparison : public ComparisonBase<PointT>
 # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
 #     cdef cppclass FieldComparison[T](ComparisonBase[T]):
+#       FieldComparison (string field_name, CompareOp op, double compare_val)
 #         # FieldComparison (string field_name, CompareOp op, double compare_val)
 #         # FieldComparison (const FieldComparison &src) :
 #         # FieldComparison& operator = (const FieldComparison &src)
@@ -339,10 +329,10 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 #         # public:
 #         #   typedef boost::shared_ptr<FieldComparison<PointT> > Ptr;
 #         #   typedef boost::shared_ptr<const FieldComparison<PointT> > ConstPtr;
-# ###
-# 
-# # template<typename PointT>
-# # class PackedRGBComparison : public ComparisonBase<PointT>
+###
+
+# template<typename PointT>
+# class PackedRGBComparison : public ComparisonBase<PointT>
 # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
 #     cdef cppclass PackedRGBComparison[T](ComparisonBase[T]):
 #         # PackedRGBComparison (string component_name, CompareOp op, double compare_val)
@@ -386,7 +376,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 #         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW     //needed whenever there is a fixed size Eigen:: vector or matrix in a class
 #         # ctypedef boost::shared_ptr<TfQuadraticXYZComparison<PointT> > Ptr;
 #         # typedef boost::shared_ptr<const TfQuadraticXYZComparison<PointT> > ConstPtr;
-#         void setComparisonOperator (const pcl::ComparisonOps::CompareOp op)
+#         # void setComparisonOperator (const pcl::ComparisonOps::CompareOp op)
 #         # * \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
 #         #  */
 #         # void setComparisonMatrix (const Eigen::Matrix3f &matrix)
@@ -419,299 +409,290 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 #         # \return the result of this comparison.
 #         # virtual bool evaluate (const PointT &point) const;
 # ###
-# 
-# # template<typename PointT>
-# # class ConditionAnd : public ConditionBase<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass ConditionAnd[T](ConditionBase[T]):
-#         # using ConditionBase<PointT>::conditions_;
-#         # using ConditionBase<PointT>::comparisons_;
-#         # public:
-#         # ctypedef boost::shared_ptr<ConditionAnd<PointT> > Ptr;
-#         # ctypedef boost::shared_ptr<const ConditionAnd<PointT> > ConstPtr;
-# ###
-# 
-# # template<typename PointT>
-# # class ConditionOr : public ConditionBase<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass ConditionOr[T](ConditionBase[T]):
-#         # using ConditionBase<PointT>::conditions_;
-#         # using ConditionBase<PointT>::comparisons_;
-#         # public:
-#         # ctypedef boost::shared_ptr<ConditionOr<PointT> > Ptr;
-#         # ctypedef boost::shared_ptr<const ConditionOr<PointT> > ConstPtr;
-# ###
-# 
-# # template<typename PointT>
-# # class ConditionalRemoval : public Filter<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass ConditionalRemoval[T](Filter[T]):
-#         ConditionalRemoval()
-#         # ConditionalRemoval(int)
-#         # ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false) :
-#         # using Filter<PointT>::input_;
-#         # using Filter<PointT>::filter_name_;
-#         # using Filter<PointT>::getClassName;
-#         # using Filter<PointT>::removed_indices_;
-#         # using Filter<PointT>::extract_removed_indices_;
-#         # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # public:
-#         # ctypedef typename pcl::ConditionBase<PointT> ConditionBase;
-#         # ctypedef typename ConditionBase::Ptr ConditionBasePtr;
-#         # ctypedef typename ConditionBase::ConstPtr ConditionBaseConstPtr;
-#         void setKeepOrganized (bool val)
-#         bool getKeepOrganized () const
-#         void setUserFilterValue (float val)
-#         void setCondition (ConditionBasePtr condition);
-# ###
-# 
-# # crop_box.h
-# # template<typename PointT>
-# # class CropBox : public FilterIndices<PointT>
-# cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
-#     cdef cppclass CropBox[T](FilterIndices[T]):
-#         CropBox()
-#         # using Filter<PointT>::filter_name_;
-#         # using Filter<PointT>::getClassName;
-#         # using Filter<PointT>::indices_;
-#         # using Filter<PointT>::input_;
-#         # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # public:
-#         # * \brief Set the minimum point of the box
-#         # * \param[in] min_pt the minimum point of the box
-#         # */
-#         # void setMin (const Eigen::Vector4f &min_pt)
-#         # * \brief Get the value of the minimum point of the box, as set by the user
-#         # * * \return the value of the internal \a min_pt parameter.
-#         # * */
-#         # Eigen::Vector4f getMin () const
-#         # * \brief Set the maximum point of the box
-#         # * \param[in] max_pt the maximum point of the box
-#         # void setMax (const Eigen::Vector4f &max_pt)
-#         # \brief Get the value of the maxiomum point of the box, as set by the user
-#         # \return the value of the internal \a max_pt parameter.
-#         # Eigen::Vector4f getMax () const
-#         # \brief Set a translation value for the box
-#         # \param[in] translation the (tx,ty,tz) values that the box should be translated by
-#         # void setTranslation (const Eigen::Vector3f &translation)
-#         # \brief Get the value of the box translation parameter as set by the user. */
-#         # Eigen::Vector3f getTranslation () const
-#         # \brief Set a rotation value for the box
-#         # \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
-#         # void setRotation (const Eigen::Vector3f &rotation)
-#         # \brief Get the value of the box rotatation parameter, as set by the user. */
-#         # Eigen::Vector3f getRotation () const
-#         # \brief Set a transformation that should be applied to the cloud before filtering
-#         # \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
-#         # void setTransform (const Eigen::Affine3f &transform)
-#         # \brief Get the value of the transformation parameter, as set by the user. */
-#         # Eigen::Affine3f getTransform () const
-# 
-# #  template<>
-# #  class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
-# #  {
-# #    using Filter<sensor_msgs::PointCloud2>::filter_name_;
-# #    using Filter<sensor_msgs::PointCloud2>::getClassName;
-# #    typedef sensor_msgs::PointCloud2 PointCloud2;
-# #    typedef PointCloud2::Ptr PointCloud2Ptr;
-# #    typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
-# #
-# #    public:
-# #    /** \brief Empty constructor. */
-# #      CropBox () :
-# #
-# #      /** \brief Set the minimum point of the box
-# #        * \param[in] min_pt the minimum point of the box
-# #        */
-# #      void setMin (const Eigen::Vector4f& min_pt)
-# #
-# #      /** \brief Get the value of the minimum point of the box, as set by the user
-# #        * \return the value of the internal \a min_pt parameter.
-# #        */
-# #      Eigen::Vector4f getMin () const
-# #
-# #      /** \brief Set the maximum point of the box
-# #        * \param[in] max_pt the maximum point of the box
-# #        */
-# #      void setMax (const Eigen::Vector4f &max_pt)
-# #
-# #      /** \brief Get the value of the maxiomum point of the box, as set by the user
-# #        * \return the value of the internal \a max_pt parameter.
-# #        */
-# #      Eigen::Vector4f getMax () const
-# #
-# #      /** \brief Set a translation value for the box
-# #        * \param[in] translation the (tx,ty,tz) values that the box should be translated by
-# #        */
-# #      void setTranslation (const Eigen::Vector3f &translation)
-# #
-# #      /** \brief Get the value of the box translation parameter as set by the user. */
-# #      Eigen::Vector3f getTranslation () const
-# #
-# #      /** \brief Set a rotation value for the box
-# #        * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
-# #        */
-# #      void setRotation (const Eigen::Vector3f &rotation)
-# #
-# #      /** \brief Get the value of the box rotatation parameter, as set by the user. */
-# #      Eigen::Vector3f getRotation () const
-# #
-# #      /** \brief Set a transformation that should be applied to the cloud before filtering
-# #        * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
-# #        */
-# #      void setTransform (const Eigen::Affine3f &transform)
-# #
-# #      /** \brief Get the value of the transformation parameter, as set by the user. */
-# #      Eigen::Affine3f getTransform () const
-# ###
-# 
-# # crop_hull.h
-# #  template<typename PointT>
-# #  class CropHull: public FilterIndices<PointT>
-# cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
-#     cdef cppclass CropHull[T](FilterIndices[T]):
-#         CropHull()
-#         # using Filter<PointT>::filter_name_;
-#         # using Filter<PointT>::indices_;
-#         # using Filter<PointT>::input_;
-#         # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # /** \brief Set the vertices of the hull used to filter points.
-#         #  * \param[in] polygons Vector of polygons (Vertices structures) forming
-#         #  * the hull used for filtering points.
-#         #  */
-#         # void setHullIndices (const vector[Vertices]& polygons)
-#         # \brief Get the vertices of the hull used to filter points.
-#         # vector[Vertices] getHullIndices () const
-#         #   /** \brief Set the point cloud that the hull indices refer to
-#         #  * \param[in] points the point cloud that the hull indices refer to
-#         #  */
-#         # void setHullCloud (PointCloudPtr points)
-#         #/** \brief Get the point cloud that the hull indices refer to. */
-#         # PointCloudPtr getHullCloud () const
-#         #/** \brief Set the dimensionality of the hull to be used.
-#         #  * This should be set to correspond to the dimensionality of the
-#         #  * convex/concave hull produced by the pcl::ConvexHull and
-#         #  * pcl::ConcaveHull classes.
-#         #  * \param[in] dim Dimensionailty of the hull used to filter points.
-#         #  */
-#         void setDim (int dim)
-#         # /** \brief Remove points outside the hull (default), or those inside the hull.
-#         # * \param[in] crop_outside If true, the filter will remove points
-#         # * outside the hull. If false, those inside will be removed.
-#         # */
-#         void setCropOutside(bool crop_outside)
-# ###
-# 
-# # extract_indices.h
-# # template<typename PointT>
-# # class ExtractIndices : public FilterIndices<PointT>
-# cdef extern from "pcl/filters/extract_indices.h" namespace "pcl":
-#     cdef cppclass ExtractIndices[T](FilterIndices[T]):
-#         ExtractIndices()
-#         # ctypedef typename FilterIndices<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # ctypedef typename pcl::traits::fieldList<PointT>::type FieldList;
-# 
-#         # * \brief Apply the filter and store the results directly in the input cloud.
-#         # * \details This method will save the time and memory copy of an output cloud but can not alter the original size of the input cloud:
-#         # * It operates as though setKeepOrganized() is true and will overwrite the filtered points instead of remove them.
-#         # * All fields of filtered points are replaced with the value set by setUserFilterValue() (default = NaN).
-#         # * This method also automatically alters the input cloud set via setInputCloud().
-#         # * It does not alter the value of the internal keep organized boolean as set by setKeepOrganized().
-#         # * \param[in/out] cloud The point cloud used for input and output.
-#         void filterDirectly (PointCloudPtr &cloud);
-# 
-# #   template<>
-# #   class PCL_EXPORTS ExtractIndices<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
-# #   {
-# #     public:
-# #       typedef sensor_msgs::PointCloud2 PointCloud2;
-# #       typedef PointCloud2::Ptr PointCloud2Ptr;
-# #       typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
-# # 
-# #       /** \brief Empty constructor. */
-# #       ExtractIndices ()
-# #       {
-# #         use_indices_ = true;
-# #         filter_name_ = "ExtractIndices";
-# #       }
-# # 
-# #     protected:
-# #       using PCLBase<PointCloud2>::input_;
-# #       using PCLBase<PointCloud2>::indices_;
-# #       using PCLBase<PointCloud2>::use_indices_;
-# #       using Filter<PointCloud2>::filter_name_;
-# #       using Filter<PointCloud2>::getClassName;
-# #       using FilterIndices<PointCloud2>::negative_;
-# #       using FilterIndices<PointCloud2>::keep_organized_;
-# #       using FilterIndices<PointCloud2>::user_filter_value_;
-# # 
-# #       /** \brief Extract point indices into a separate PointCloud
-# #         * \param[out] output the resultant point cloud
-# #         */
-# #       void
-# #       applyFilter (PointCloud2 &output);
-# # 
-# #       /** \brief Extract point indices
-# #         * \param indices the resultant indices
-# #         */
-# #       void
-# #       applyFilter (std::vector<int> &indices);
-# #
-# ###
+# NG end ###
 
-# # normal_space.h
-# # template<typename PointT, typename NormalT>
-# # class NormalSpaceSampling : public FilterIndices<PointT>
-# cdef extern from "pcl/filters/normal_space.h" namespace "pcl":
-#     cdef cppclass NormalSpaceSampling[T, Normal](FilterIndices[T]):
-#         NormalSpaceSampling()
-#         # using FilterIndices<PointT>::filter_name_;
-#         # using FilterIndices<PointT>::getClassName;
-#         # using FilterIndices<PointT>::indices_;
-#         # using FilterIndices<PointT>::input_;
-#         # ctypedef typename FilterIndices<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # ctypedef typename pcl::PointCloud<NormalT>::Ptr NormalsPtr;
-#         # /** \brief Set number of indices to be sampled.
-#         #   * \param[in] sample the number of sample indices
-#         #   */
-#         void setSample (unsigned int sample)
-#         # /** \brief Get the value of the internal \a sample parameter. */
-#         unsigned int getSample () const
-#         #  \brief Set seed of random function.
-#         #   * \param[in] seed the input seed
-#         #   */
-#         void setSeed (unsigned int seed)
-#         # /** \brief Get the value of the internal \a seed parameter. */
-#         unsigned int getSeed () const
-#         # /** \brief Set the number of bins in x, y and z direction
-#         #   * \param[in] binsx number of bins in x direction
-#         #   * \param[in] binsy number of bins in y direction
-#         #   * \param[in] binsz number of bins in z direction
-#         #   */
-#         void setBins (unsigned int binsx, unsigned int binsy, unsigned int binsz)
-#         # /** \brief Get the number of bins in x, y and z direction
-#         #   * \param[out] binsx number of bins in x direction
-#         #   * \param[out] binsy number of bins in y direction
-#         #   * \param[out] binsz number of bins in z direction
-#         #   */
-#         void getBins (unsigned int& binsx, unsigned int& binsy, unsigned int& binsz) const
-#         # * \brief Set the normals computed on the input point cloud
-#         #   * \param[in] normals the normals computed for the input cloud
-#         #   */
-#         # void setNormals (const NormalsPtr &normals)
-#         # * \brief Get the normals computed on the input point cloud */
-#         # NormalsPtr getNormals () const
-# ###
+# template<typename PointT>
+# class ConditionAnd : public ConditionBase<PointT>
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass ConditionAnd[T](ConditionBase[T]):
+        ConditionAnd()
+        # using ConditionBase<PointT>::conditions_;
+        # using ConditionBase<PointT>::comparisons_;
+        # public:
+        # ctypedef boost::shared_ptr<ConditionAnd<PointT> > Ptr;
+        # ctypedef boost::shared_ptr<const ConditionAnd<PointT> > ConstPtr;
+###
+
+# template<typename PointT>
+# class ConditionOr : public ConditionBase<PointT>
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass ConditionOr[T](ConditionBase[T]):
+        ConditionOr()
+        # using ConditionBase<PointT>::conditions_;
+        # using ConditionBase<PointT>::comparisons_;
+        # public:
+        # ctypedef boost::shared_ptr<ConditionOr<PointT> > Ptr;
+        # ctypedef boost::shared_ptr<const ConditionOr<PointT> > ConstPtr;
+###
+
+# template<typename PointT>
+# class ConditionalRemoval : public Filter<PointT>
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass ConditionalRemoval[T](Filter[T]):
+        ConditionalRemoval()
+        # ConditionalRemoval(int)
+        # ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false) :
+        # using Filter<PointT>::input_;
+        # using Filter<PointT>::filter_name_;
+        # using Filter<PointT>::getClassName;
+        # using Filter<PointT>::removed_indices_;
+        # using Filter<PointT>::extract_removed_indices_;
+        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # public:
+        # ctypedef typename pcl::ConditionBase<PointT> ConditionBase;
+        # ctypedef typename ConditionBase::Ptr ConditionBasePtr;
+        # ctypedef typename ConditionBase::ConstPtr ConditionBaseConstPtr;
+        void setKeepOrganized (bool val)
+        bool getKeepOrganized ()
+        void setUserFilterValue (float val)
+        # void setCondition (ConditionBasePtr condition);
+###
+
+# crop_box.h
+# template<typename PointT>
+# class CropBox : public FilterIndices<PointT>
+cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
+    cdef cppclass CropBox[T](FilterIndices[T]):
+        CropBox()
+        # using Filter<PointT>::filter_name_;
+        # using Filter<PointT>::getClassName;
+        # using Filter<PointT>::indices_;
+        # using Filter<PointT>::input_;
+        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # public:
+        # * \brief Set the minimum point of the box
+        # * \param[in] min_pt the minimum point of the box
+        # */
+        # void setMin (const Eigen::Vector4f &min_pt)
+        # * \brief Get the value of the minimum point of the box, as set by the user
+        # * * \return the value of the internal \a min_pt parameter.
+        # * */
+        # Eigen::Vector4f getMin () const
+        # * \brief Set the maximum point of the box
+        # * \param[in] max_pt the maximum point of the box
+        # void setMax (const Eigen::Vector4f &max_pt)
+        # \brief Get the value of the maxiomum point of the box, as set by the user
+        # \return the value of the internal \a max_pt parameter.
+        # Eigen::Vector4f getMax () const
+        # \brief Set a translation value for the box
+        # \param[in] translation the (tx,ty,tz) values that the box should be translated by
+        # void setTranslation (const Eigen::Vector3f &translation)
+        # \brief Get the value of the box translation parameter as set by the user. */
+        # Eigen::Vector3f getTranslation () const
+        # \brief Set a rotation value for the box
+        # \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
+        # void setRotation (const Eigen::Vector3f &rotation)
+        # \brief Get the value of the box rotatation parameter, as set by the user. */
+        # Eigen::Vector3f getRotation () const
+        # \brief Set a transformation that should be applied to the cloud before filtering
+        # \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
+        # void setTransform (const Eigen::Affine3f &transform)
+        # \brief Get the value of the transformation parameter, as set by the user. */
+        # Eigen::Affine3f getTransform () const
+
+#  template<>
+#  class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
+#  {
+#    using Filter<sensor_msgs::PointCloud2>::filter_name_;
+#    using Filter<sensor_msgs::PointCloud2>::getClassName;
+#    typedef sensor_msgs::PointCloud2 PointCloud2;
+#    typedef PointCloud2::Ptr PointCloud2Ptr;
+#    typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
+#
+#    public:
+#    /** \brief Empty constructor. */
+#      CropBox () :
+#
+#      /** \brief Set the minimum point of the box
+#        * \param[in] min_pt the minimum point of the box
+#        */
+#      void setMin (const Eigen::Vector4f& min_pt)
+#
+#      /** \brief Get the value of the minimum point of the box, as set by the user
+#        * \return the value of the internal \a min_pt parameter.
+#        */
+#      Eigen::Vector4f getMin () const
+#
+#      /** \brief Set the maximum point of the box
+#        * \param[in] max_pt the maximum point of the box
+#        */
+#      void setMax (const Eigen::Vector4f &max_pt)
+#
+#      /** \brief Get the value of the maxiomum point of the box, as set by the user
+#        * \return the value of the internal \a max_pt parameter.
+#        */
+#      Eigen::Vector4f getMax () const
+#
+#      /** \brief Set a translation value for the box
+#        * \param[in] translation the (tx,ty,tz) values that the box should be translated by
+#        */
+#      void setTranslation (const Eigen::Vector3f &translation)
+#
+#      /** \brief Get the value of the box translation parameter as set by the user. */
+#      Eigen::Vector3f getTranslation () const
+#
+#      /** \brief Set a rotation value for the box
+#        * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
+#        */
+#      void setRotation (const Eigen::Vector3f &rotation)
+#
+#      /** \brief Get the value of the box rotatation parameter, as set by the user. */
+#      Eigen::Vector3f getRotation () const
+#
+#      /** \brief Set a transformation that should be applied to the cloud before filtering
+#        * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
+#        */
+#      void setTransform (const Eigen::Affine3f &transform)
+#
+#      /** \brief Get the value of the transformation parameter, as set by the user. */
+#      Eigen::Affine3f getTransform () const
+###
+
+# crop_hull.h
+#  template<typename PointT>
+#  class CropHull: public FilterIndices<PointT>
+cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
+    cdef cppclass CropHull[T](FilterIndices[T]):
+        CropHull()
+        # using Filter<PointT>::filter_name_;
+        # using Filter<PointT>::indices_;
+        # using Filter<PointT>::input_;
+        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # /** \brief Set the vertices of the hull used to filter points.
+        #  * \param[in] polygons Vector of polygons (Vertices structures) forming
+        #  * the hull used for filtering points.
+        #  */
+        # void setHullIndices (const vector[Vertices]& polygons)
+        # \brief Get the vertices of the hull used to filter points.
+        # vector[Vertices] getHullIndices () const
+        #   /** \brief Set the point cloud that the hull indices refer to
+        #  * \param[in] points the point cloud that the hull indices refer to
+        #  */
+        # void setHullCloud (PointCloudPtr points)
+        #/** \brief Get the point cloud that the hull indices refer to. */
+        # PointCloudPtr getHullCloud () const
+        #/** \brief Set the dimensionality of the hull to be used.
+        #  * This should be set to correspond to the dimensionality of the
+        #  * convex/concave hull produced by the pcl::ConvexHull and
+        #  * pcl::ConcaveHull classes.
+        #  * \param[in] dim Dimensionailty of the hull used to filter points.
+        #  */
+        void setDim (int dim)
+        # /** \brief Remove points outside the hull (default), or those inside the hull.
+        # * \param[in] crop_outside If true, the filter will remove points
+        # * outside the hull. If false, those inside will be removed.
+        # */
+        void setCropOutside(bool crop_outside)
+###
+
+# extract_indices.h
+# template<typename PointT>
+# class ExtractIndices : public FilterIndices<PointT>
+cdef extern from "pcl/filters/extract_indices.h" namespace "pcl":
+    cdef cppclass ExtractIndices[T](FilterIndices[T]):
+        ExtractIndices()
+        # ctypedef typename FilterIndices<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # ctypedef typename pcl::traits::fieldList<PointT>::type FieldList;
+        # * \brief Apply the filter and store the results directly in the input cloud.
+        # * \details This method will save the time and memory copy of an output cloud but can not alter the original size of the input cloud:
+        # * It operates as though setKeepOrganized() is true and will overwrite the filtered points instead of remove them.
+        # * All fields of filtered points are replaced with the value set by setUserFilterValue() (default = NaN).
+        # * This method also automatically alters the input cloud set via setInputCloud().
+        # * It does not alter the value of the internal keep organized boolean as set by setKeepOrganized().
+        # * \param[in/out] cloud The point cloud used for input and output.
+        # void filterDirectly (PointCloudPtr &cloud);
+
+# template<>
+# class PCL_EXPORTS ExtractIndices<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
+# public:
+#       typedef sensor_msgs::PointCloud2 PointCloud2;
+#       typedef PointCloud2::Ptr PointCloud2Ptr;
+#       typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
+# 
+#       /** \brief Empty constructor. */
+#       ExtractIndices ()
+#     protected:
+#       using PCLBase<PointCloud2>::input_;
+#       using PCLBase<PointCloud2>::indices_;
+#       using PCLBase<PointCloud2>::use_indices_;
+#       using Filter<PointCloud2>::filter_name_;
+#       using Filter<PointCloud2>::getClassName;
+#       using FilterIndices<PointCloud2>::negative_;
+#       using FilterIndices<PointCloud2>::keep_organized_;
+#       using FilterIndices<PointCloud2>::user_filter_value_;
+# 
+#       /** \brief Extract point indices into a separate PointCloud
+#         * \param[out] output the resultant point cloud
+#       void applyFilter (PointCloud2 &output);
+# 
+#       /** \brief Extract point indices
+#         * \param indices the resultant indices
+#       void applyFilter (std::vector<int> &indices);
+###
+
+# normal_space.h
+# template<typename PointT, typename NormalT>
+# class NormalSpaceSampling : public FilterIndices<PointT>
+cdef extern from "pcl/filters/normal_space.h" namespace "pcl":
+    cdef cppclass NormalSpaceSampling[T, Normal](FilterIndices[T]):
+        NormalSpaceSampling()
+        # using FilterIndices<PointT>::filter_name_;
+        # using FilterIndices<PointT>::getClassName;
+        # using FilterIndices<PointT>::indices_;
+        # using FilterIndices<PointT>::input_;
+        # ctypedef typename FilterIndices<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # ctypedef typename pcl::PointCloud<NormalT>::Ptr NormalsPtr;
+        # /** \brief Set number of indices to be sampled.
+        #   * \param[in] sample the number of sample indices
+        #   */
+        void setSample (unsigned int sample)
+        # /** \brief Get the value of the internal \a sample parameter. */
+        unsigned int getSample () const
+        #  \brief Set seed of random function.
+        #   * \param[in] seed the input seed
+        #   */
+        void setSeed (unsigned int seed)
+        # /** \brief Get the value of the internal \a seed parameter. */
+        unsigned int getSeed () const
+        # /** \brief Set the number of bins in x, y and z direction
+        #   * \param[in] binsx number of bins in x direction
+        #   * \param[in] binsy number of bins in y direction
+        #   * \param[in] binsz number of bins in z direction
+        #   */
+        void setBins (unsigned int binsx, unsigned int binsy, unsigned int binsz)
+        # /** \brief Get the number of bins in x, y and z direction
+        #   * \param[out] binsx number of bins in x direction
+        #   * \param[out] binsy number of bins in y direction
+        #   * \param[out] binsz number of bins in z direction
+        #   */
+        void getBins (unsigned int& binsx, unsigned int& binsy, unsigned int& binsz) const
+        # * \brief Set the normals computed on the input point cloud
+        #   * \param[in] normals the normals computed for the input cloud
+        #   */
+        # void setNormals (const NormalsPtr &normals)
+        # * \brief Get the normals computed on the input point cloud */
+        # NormalsPtr getNormals () const
+###
 
 # passthrough.h
 # template <typename PointT>
@@ -821,37 +802,37 @@ ctypedef PassThrough[cpp.PointXYZRGBA] PassThrough2_t
 #         # clone () const;
 ###
 
-# # project_inliers.h
-# # template<typename PointT>
-# # class ProjectInliers : public Filter<PointT>
-# cdef extern from "pcl/filters/project_inliers.h" namespace "pcl":
-#     cdef cppclass ProjectInliers[T](Filter[T]):
-#         ProjectInliers ()
-#         # using Filter<PointT>::input_;
-#         # using Filter<PointT>::indices_;
-#         # using Filter<PointT>::filter_name_;
-#         # using Filter<PointT>::getClassName;
-#         # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-#         # ctypedef typename PointCloud::Ptr PointCloudPtr;
-#         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-#         # ctypedef typename SampleConsensusModel<PointT>::Ptr SampleConsensusModelPtr;
-#         # public:
-#         # /** \brief The type of model to use (user given parameter).
-#         #   * \param model the model type (check \a model_types.h)
-#         void setModelType (int model)
-#         # /** \brief Get the type of SAC model used. */
-#         int getModelType ()
-#         # /** \brief Provide a pointer to the model coefficients.
-#         #   * \param model a pointer to the model coefficients
-#         # void setModelCoefficients (const ModelCoefficientsConstPtr &model)
-#         # /** \brief Get a pointer to the model coefficients. */
-#         # ModelCoefficientsConstPtr getModelCoefficients ()
-#         # /** \brief Set whether all data will be returned, or only the projected inliers.
-#         #   * \param val true if all data should be returned, false if only the projected inliers
-#         void setCopyAllData (bool val)
-#         # /** \brief Get whether all data is being copied (true), or only the projected inliers (false). */
-#         bool getCopyAllData ()
-# ###
+# project_inliers.h
+# template<typename PointT>
+# class ProjectInliers : public Filter<PointT>
+cdef extern from "pcl/filters/project_inliers.h" namespace "pcl":
+    cdef cppclass ProjectInliers[T](Filter[T]):
+        ProjectInliers ()
+        # using Filter<PointT>::input_;
+        # using Filter<PointT>::indices_;
+        # using Filter<PointT>::filter_name_;
+        # using Filter<PointT>::getClassName;
+        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
+        # ctypedef typename PointCloud::Ptr PointCloudPtr;
+        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # ctypedef typename SampleConsensusModel<PointT>::Ptr SampleConsensusModelPtr;
+        # public:
+        # /** \brief The type of model to use (user given parameter).
+        #   * \param model the model type (check \a model_types.h)
+        void setModelType (int model)
+        # /** \brief Get the type of SAC model used. */
+        int getModelType ()
+        # /** \brief Provide a pointer to the model coefficients.
+        #   * \param model a pointer to the model coefficients
+        # void setModelCoefficients (const ModelCoefficientsConstPtr &model)
+        # /** \brief Get a pointer to the model coefficients. */
+        # ModelCoefficientsConstPtr getModelCoefficients ()
+        # /** \brief Set whether all data will be returned, or only the projected inliers.
+        #   * \param val true if all data should be returned, false if only the projected inliers
+        void setCopyAllData (bool val)
+        # /** \brief Get whether all data is being copied (true), or only the projected inliers (false). */
+        bool getCopyAllData ()
+###
 
 # template<>
 # class PCL_EXPORTS ProjectInliers<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
@@ -979,27 +960,27 @@ cdef extern from "pcl/filters/random_sample.h" namespace "pcl":
         #   */
         unsigned int getSeed ()
 
-# # template<>
-# # class PCL_EXPORTS RandomSample<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
-# #     using FilterIndices<sensor_msgs::PointCloud2>::filter_name_;
-# #     using FilterIndices<sensor_msgs::PointCloud2>::getClassName;
-# #     typedef sensor_msgs::PointCloud2 PointCloud2;
-# #     typedef PointCloud2::Ptr PointCloud2Ptr;
-# #     typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
-# #     public:
-# #       /** \brief Empty constructor. */
-# #       RandomSample () : sample_ (UINT_MAX), seed_ (static_cast<unsigned int> (time (NULL)))
-# #       /** \brief Set number of indices to be sampled.
-# #         * \param sample
-# #       void setSample (unsigned int sample)
-# #       /** \brief Get the value of the internal \a sample parameter.
-# #       unsigned int getSample ()
-# #       /** \brief Set seed of random function.
-# #         * \param seed
-# #       void setSeed (unsigned int seed)
-# #       /** \brief Get the value of the internal \a seed parameter.
-# #       unsigned int getSeed ()
-# ###
+# template<>
+# class PCL_EXPORTS RandomSample<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
+#     using FilterIndices<sensor_msgs::PointCloud2>::filter_name_;
+#     using FilterIndices<sensor_msgs::PointCloud2>::getClassName;
+#     typedef sensor_msgs::PointCloud2 PointCloud2;
+#     typedef PointCloud2::Ptr PointCloud2Ptr;
+#     typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
+#     public:
+#       /** \brief Empty constructor. */
+#       RandomSample () : sample_ (UINT_MAX), seed_ (static_cast<unsigned int> (time (NULL)))
+#       /** \brief Set number of indices to be sampled.
+#         * \param sample
+#       void setSample (unsigned int sample)
+#       /** \brief Get the value of the internal \a sample parameter.
+#       unsigned int getSample ()
+#       /** \brief Set seed of random function.
+#         * \param seed
+#       void setSeed (unsigned int seed)
+#       /** \brief Get the value of the internal \a seed parameter.
+#       unsigned int getSeed ()
+###
 
 # statistical_outlier_removal.h
 # template<typename PointT>
@@ -1177,72 +1158,48 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #     public:
 #       /** \brief Empty constructor. */
 #       VoxelGrid ()
-# 
 #       /** \brief Destructor. */
 #       virtual ~VoxelGrid ()
-# 
 #       /** \brief Set the voxel grid leaf size.
 #         * \param[in] leaf_size the voxel grid leaf size
-#         */
 #       void setLeafSize (const Eigen::Vector4f &leaf_size) 
-# 
 #       /** \brief Set the voxel grid leaf size.
 #         * \param[in] lx the leaf size for X
 #         * \param[in] ly the leaf size for Y
 #         * \param[in] lz the leaf size for Z
-#         */
 #       void setLeafSize (float lx, float ly, float lz)
-# 
 #       /** \brief Get the voxel grid leaf size. */
 #       Eigen::Vector3f getLeafSize ()
-# 
 #       /** \brief Set to true if all fields need to be downsampled, or false if just XYZ.
 #         * \param[in] downsample the new value (true/false)
-#         */
 #       void setDownsampleAllData (bool downsample)
-# 
 #       /** \brief Get the state of the internal downsampling parameter (true if
 #         * all fields need to be downsampled, false if just XYZ). 
-#         */
 #       bool getDownsampleAllData ()
-# 
 #       /** \brief Set to true if leaf layout information needs to be saved for later access.
 #         * \param[in] save_leaf_layout the new value (true/false)
-#         */
 #       void setSaveLeafLayout (bool save_leaf_layout)
-# 
 #       /** \brief Returns true if leaf layout information will to be saved for later access. */
 #       bool getSaveLeafLayout ()
-# 
 #       /** \brief Get the minimum coordinates of the bounding box (after
 #         * filtering is performed). 
-#         */
 #       Eigen::Vector3i getMinBoxCoordinates ()
-# 
 #       /** \brief Get the minimum coordinates of the bounding box (after
 #         * filtering is performed). 
-#         */
 #       Eigen::Vector3i getMaxBoxCoordinates ()
-#
 #       /** \brief Get the number of divisions along all 3 axes (after filtering
 #         * is performed). 
-#         */
 #       Eigen::Vector3i getNrDivisions ()
-#
 #       /** \brief Get the multipliers to be applied to the grid coordinates in
 #         * order to find the centroid index (after filtering is performed). 
-#         */
 #       Eigen::Vector3i getDivisionMultiplier ()
-#
 #       /** \brief Returns the index in the resulting downsampled cloud of the specified point.
 #         * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering performed,
 #         * and that the point is inside the grid, to avoid invalid access (or use getGridCoordinates+getCentroidIndexAt)
 #         * \param[in] x the X point coordinate to get the index at
 #         * \param[in] y the Y point coordinate to get the index at
 #         * \param[in] z the Z point coordinate to get the index at
-#         */
 #       int getCentroidIndex (float x, float y, float z)
-#
 #       /** \brief Returns the indices in the resulting downsampled cloud of the points at the specified grid coordinates,
 #         * relative to the grid coordinates of the specified point (or -1 if the cell was empty/out of bounds).
 #         * \param[in] x the X coordinate of the reference point (corresponding cell is allowed to be empty/out of bounds)
@@ -1250,9 +1207,7 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #         * \param[in] z the Z coordinate of the reference point (corresponding cell is allowed to be empty/out of bounds)
 #         * \param[out] relative_coordinates matrix with the columns being the coordinates of the requested cells, relative to the reference point's cell
 #         * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering performed
-#         */
 #       vector[int] getNeighborCentroidIndices (float x, float y, float z, const Eigen::MatrixXi &relative_coordinates)
-#
 #       /** \brief Returns the indices in the resulting downsampled cloud of the points at the specified grid coordinates,
 #         * relative to the grid coordinates of the specified point (or -1 if the cell was empty/out of bounds).
 #         * \param[in] x the X coordinate of the reference point (corresponding cell is allowed to be empty/out of bounds)
@@ -1260,59 +1215,41 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #         * \param[in] z the Z coordinate of the reference point (corresponding cell is allowed to be empty/out of bounds)
 #         * \param[out] relative_coordinates vector with the elements being the coordinates of the requested cells, relative to the reference point's cell
 #         * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering performed
-#         */
 #       vector[int] getNeighborCentroidIndices (float x, float y, float z, const vector[Eigen::Vector3i] &relative_coordinates)
-# 
 #       /** \brief Returns the layout of the leafs for fast access to cells relative to current position.
 #         * \note position at (i-min_x) + (j-min_y)*div_x + (k-min_z)*div_x*div_y holds the index of the element at coordinates (i,j,k) in the grid (-1 if empty)
-#         */
 #       vector[int] getLeafLayout ()
-# 
 #       /** \brief Returns the corresponding (i,j,k) coordinates in the grid of point (x,y,z).
 #         * \param[in] x the X point coordinate to get the (i, j, k) index at
 #         * \param[in] y the Y point coordinate to get the (i, j, k) index at
 #         * \param[in] z the Z point coordinate to get the (i, j, k) index at
-#         */
 #       Eigen::Vector3i getGridCoordinates (float x, float y, float z) 
-# 
 #       /** \brief Returns the index in the downsampled cloud corresponding to a given set of coordinates.
 #         * \param[in] ijk the coordinates (i,j,k) in the grid (-1 if empty)
-#         */
 #       int getCentroidIndexAt (const Eigen::Vector3i &ijk)
-# 
 #       /** \brief Provide the name of the field to be used for filtering data. In conjunction with  \a setFilterLimits,
 #         * points having values outside this interval will be discarded.
 #         * \param[in] field_name the name of the field that contains values used for filtering
-#         */
 #       void setFilterFieldName (const string &field_name)
-# 
 #       /** \brief Get the name of the field used for filtering. */
 #       std::string const getFilterFieldName ()
-# 
 #       /** \brief Set the field filter limits. All points having field values outside this interval will be discarded.
 #         * \param[in] limit_min the minimum allowed field value
 #         * \param[in] limit_max the maximum allowed field value
-#         */
 #       void setFilterLimits (const double &limit_min, const double &limit_max)
-# 
 #       /** \brief Get the field filter limits (min/max) set by the user. The default values are -FLT_MAX, FLT_MAX. 
 #         * \param[out] limit_min the minimum allowed field value
 #         * \param[out] limit_max the maximum allowed field value
-#         */
 #       void getFilterLimits (double &limit_min, double &limit_max)
-# 
 #       /** \brief Set to true if we want to return the data outside the interval specified by setFilterLimits (min, max).
 #         * Default: false.
 #         * \param[in] limit_negative return data inside the interval (false) or outside (true)
-#         */
 #       void setFilterLimitsNegative (const bool limit_negative)
 #       /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
 #         * \param[out] limit_negative true if data \b outside the interval [min; max] is to be returned, false otherwise
-#         */
 #       void getFilterLimitsNegative (bool &limit_negative)
 #       /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
 #         * \return true if data \b outside the interval [min; max] is to be returned, false otherwise
-#         */
 #       bool getFilterLimitsNegative ()
 #     protected:
 #       /** \brief The size of a leaf. */
@@ -1323,15 +1260,12 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #       bool downsample_all_data_;
 #       /** \brief Set to true if leaf layout information needs to be saved in \a
 #         * leaf_layout. 
-#         */
 #       bool save_leaf_layout_;
 #       /** \brief The leaf layout information for fast access to cells relative
 #         * to current position 
-#         */
 #       std::vector<int> leaf_layout_;
 #       /** \brief The minimum and maximum bin coordinates, the number of
 #         * divisions, and the division multiplier. 
-#         */
 #       Eigen::Vector4i min_b_, max_b_, div_b_, divb_mul_;
 #       /** \brief The desired user filter field name. */
 #       std::string filter_field_name_;
@@ -1343,7 +1277,6 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #       bool filter_limit_negative_;
 #       /** \brief Downsample a Point Cloud using a voxelized grid approach
 #         * \param[out] output the resultant point cloud
-#         */
 #       void applyFilter (PointCloud2 &output);
 ###
 
