@@ -144,9 +144,11 @@ if platform.system() == "Windows":
 	    ext_args['libraries'].append(librelease)
 
 	# ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
-	debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
+	# define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
+	# debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
+	debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')]
 	for debug in debugs:
-		define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
+		ext_args['define_macros'].append(debug)
 
 	ext_args['extra_compile_args'].append('/EHsc')
 
@@ -207,7 +209,7 @@ if platform.system() == "Windows":
 
 else:
 	# Not 'Windows'
-	sys.path.append('./tests')
+	# sys.path.append('./tests')
 
 	if platform.system() == "Darwin":
 		os.environ['ARCHFLAGS'] = ''
