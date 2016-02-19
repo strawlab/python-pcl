@@ -19,7 +19,6 @@ from vector cimport vector as vector2
 
 # template <>
 # class PCL_EXPORTS PCLBase<sensor_msgs::PointCloud2>
-# {
 #   public:
 #     typedef sensor_msgs::PointCloud2 PointCloud2;
 #     typedef PointCloud2::Ptr PointCloud2Ptr;
@@ -472,7 +471,6 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
         # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
 
-
 ###############################################################################
 # Enum
 ###############################################################################
@@ -480,3 +478,4 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
 ###############################################################################
 # Activation
 ###############################################################################
+

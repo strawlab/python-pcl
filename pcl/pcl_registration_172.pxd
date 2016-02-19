@@ -340,7 +340,7 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
 # }
 # 
 # /**
-#  * BFGS stands for Broyden–Fletcher–Goldfarb–Shanno (BFGS) method for solving 
+#  * BFGS stands for Broyden窶擢letcher窶敵oldfarb窶鉄hanno (BFGS) method for solving 
 #  * unconstrained nonlinear optimization problems. 
 #  * For further details please visit: http://en.wikipedia.org/wiki/BFGS_method
 #  * The method provided here is almost similar to the one provided by GSL.
@@ -3443,7 +3443,7 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 #   /** \brief A 3D Normal Distribution Transform registration implementation for point cloud data.
 #     * \note For more information please see
 #     * <b>Magnusson, M. (2009). The Three-Dimensional Normal-Distributions Transform  
-#     * an Ef�cient Representation for Registration, Surface Analysis, and Loop Detection.
+#     * an Ef珣ient Representation for Registration, Surface Analysis, and Loop Detection.
 #     * PhD thesis, Orebro University. Orebro Studies in Technology 36.</b>,
 #     * <b>More, J., and Thuente, D. (1994). Line Search Algorithm with Guaranteed Sufficient Decrease
 #     * In ACM Transactions on Mathematical Software.</b> and
