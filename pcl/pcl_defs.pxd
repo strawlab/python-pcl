@@ -13,9 +13,63 @@ from eigen cimport Quaternionf
 
 from vector cimport vector as vector2
 
+# Vertices
+# ctypedef unsigned int uint32_t
+
 ###############################################################################
 # Types
 ###############################################################################
+
+### base class ###
+
+###
+
+### Inheritance class ###
+
+# channel_properties.h
+###
+
+# cloud_properties.h
+###
+
+# correspondence.h
+###
+
+# exceptions.h
+
+###
+
+# for_each_type.h
+
+###
+
+# pcl_config.h
+
+###
+
+# pcl_exports.h
+
+###
+
+# pcl_macros.h
+
+###
+
+# pcl_tests.h
+
+###
+
+# point_representation.h
+
+###
+
+# point_traits.h
+
+###
+
+# point_types_conversion.h
+
+###
 
 # template <>
 # class PCL_EXPORTS PCLBase<sensor_msgs::PointCloud2>
@@ -23,88 +77,50 @@ from vector cimport vector as vector2
 #     typedef sensor_msgs::PointCloud2 PointCloud2;
 #     typedef PointCloud2::Ptr PointCloud2Ptr;
 #     typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
-# 
 #       typedef PointIndices::Ptr PointIndicesPtr;
 #       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-# 
 #       /** \brief Empty constructor. */
-#       PCLBase () : input_ (), indices_ (), use_indices_ (false), fake_indices_ (false),
-#                    field_sizes_ (0), x_idx_ (-1), y_idx_ (-1), z_idx_ (-1),
-#                    x_field_name_ ("x"), y_field_name_ ("y"), z_field_name_ ("z")
-#       {};
-# 
+#       PCLBase ()
 #       /** \brief destructor. */
 #       virtual ~PCLBase() 
-#       {
-#         input_.reset ();
-#         indices_.reset ();
-#       }
-# 
 #       /** \brief Provide a pointer to the input dataset
 #         * \param cloud the const boost shared pointer to a PointCloud message
 #         */
-#       void 
-#       setInputCloud (const PointCloud2ConstPtr &cloud);
-# 
+#       void setInputCloud (const PointCloud2ConstPtr &cloud);
 #       /** \brief Get a pointer to the input point cloud dataset. */
-#        PointCloud2ConstPtr const 
-#       getInputCloud () { return (input_); }
-# 
+#        PointCloud2ConstPtr const getInputCloud ()
 #       /** \brief Provide a pointer to the vector of indices that represents the input data.
 #         * \param indices a pointer to the vector of indices that represents the input data.
 #         */
-#        void
-#       setIndices (const IndicesPtr &indices)
-#       {
-#         indices_ = indices;
-#         fake_indices_ = false;
-#         use_indices_  = true;
-#       }
-# 
+#        void setIndices (const IndicesPtr &indices)
 #       /** \brief Provide a pointer to the vector of indices that represents the input data.
 #         * \param indices a pointer to the vector of indices that represents the input data.
 #         */
-#        void
-#       setIndices (const PointIndicesConstPtr &indices)
-#       {
-#         indices_.reset (new std::vector<int> (indices->indices));
-#         fake_indices_ = false;
-#         use_indices_  = true;
-#       }
-# 
+#        void setIndices (const PointIndicesConstPtr &indices)
 #       /** \brief Get a pointer to the vector of indices used. */
-#        IndicesPtr const 
-#       getIndices () { return (indices_); }
-# 
+#        IndicesPtr const getIndices ()
 #     protected:
 #       /** \brief The input point cloud dataset. */
 #       PointCloud2ConstPtr input_;
-# 
 #       /** \brief A pointer to the vector of point indices to use. */
 #       IndicesPtr indices_;
-# 
 #       /** \brief Set to true if point indices are used. */
 #       bool use_indices_;
-# 
 #       /** \brief If no set of indices are given, we construct a set of fake indices that mimic the input PointCloud. */
 #       bool fake_indices_;
-# 
 #       /** \brief The size of each individual field. */
 #       std::vector<int> field_sizes_;
-# 
 #       /** \brief The x-y-z fields indices. */
 #       int x_idx_, y_idx_, z_idx_;
-# 
 #       /** \brief The desired x-y-z field names. */
 #       std::string x_field_name_, y_field_name_, z_field_name_;
-# 
 #       bool initCompute ();
 #       bool deinitCompute ();
 #     public:
 #       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
 ###
 
+# point_cloud.h
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
         PointCloud() except +
@@ -122,11 +138,13 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         Quaternionf sensor_orientation_
         Vector4f sensor_origin_
 
+###
+
+# point_types.h
 # use cython type ?
 # ctypedef fused PointCloudTypes:
 #     PointXYZ
 #     PointXYZRGBA
-
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct PointXYZ:
         PointXYZ()
@@ -420,11 +438,16 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float[3] y_axis
         float[3] z_axis
         # float confidence
+###
 
+# ModelCoefficients.h
 cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:
         vector[float] values
 
+###
+
+# PointIndices.h
 cdef extern from "pcl/PointIndices.h" namespace "pcl":
     #FIXME: I made this a cppclass so that it can be allocated using new (cython barfs otherwise), and
     #hence passed to shared_ptr. This is needed because if one passes memory allocated
@@ -438,6 +461,8 @@ cdef extern from "pcl/PointIndices.h" namespace "pcl":
 
 ctypedef PointIndices PointIndices_t
 ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
+
+###
 
 ctypedef PointCloud[PointXYZ] PointCloud_t
 ctypedef PointCloud[PointXYZRGBA] PointCloud2_t
@@ -469,7 +494,69 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
         # # const PointT& operator[] (size_t pos)
         # # public:
         # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+###
 
+# PolygonMesh.h
+# namespace pcl
+#  struct PolygonMesh
+cdef extern from "pcl/PolygonMesh.h" namespace "pcl":
+    cdef cppclass PolygonMesh:
+        PolygonMesh()
+
+# ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr;
+# ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr;
+# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PolygonMesh &v)
+###
+
+# TextureMesh.h
+# namespace pcl
+# struct TexMaterial
+cdef extern from "pcl/TextureMesh.h" namespace "pcl":
+    cdef cppclass TexMaterial:
+        TexMaterial ()
+        # cdef struct RGB
+        #     float r
+        #     float g
+        #     float b
+        string tex_name
+        string tex_file
+        # RGB tex_Ka
+        # RGB tex_Kd
+        # RGB tex_Ks
+        float tex_d
+        float tex_Ns
+        int tex_illum
+###
+
+cdef extern from "pcl/TextureMesh.h" namespace "pcl":
+    cdef cppclass TextureMesh:
+        TextureMesh ()
+        # std_msgs::Header          header
+        # sensor_msgs::PointCloud2  cloud
+        # vector[vector[Vertices] ]    tex_polygons             // polygon which is mapped with specific texture defined in TexMaterial
+        # vector[vector[Eigen::Vector2f] ]  tex_coordinates     // UV coordinates
+        # vector[TexMaterial]               tex_materials       // define texture material
+
+# ctypedef shared_ptr[TextureMesh] TextureMeshPtr_t
+# ctypedef shared_ptr[TextureMesh const] TextureMeshConstPtr_t
+###
+
+# Vertices.h
+# namespace pcl
+# struct Vertices
+cdef extern from "pcl/Vertices.h" namespace "pcl":
+    cdef struct Vertices:
+        Vertices()
+        vector[size_t] vertices;
+        # public:
+        # ctypedef shared_ptr[Vertices] Ptr
+        # ctypedef shared_ptr[Vertices const] ConstPtr
+
+# ctypedef Vertices Vertices_t
+ctypedef shared_ptr[Vertices] VerticesPtr_t
+# ctypedef shared_ptr[Vertices const] VerticesConstPtr
+# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::Vertices & v)
+###
 
 ###############################################################################
 # Enum
