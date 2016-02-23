@@ -370,7 +370,7 @@ cdef class Vertices:
         
         # self.me = new cpp.Vertices()
         # sp_assign(<cpp.shared_ptr[cpp.Vertices]> self.thisptr_shared, new cpp.Vertices())
-        sp_assign(<cpp.shared_ptr[cpp.Vertices]> self.thisptr_shared, new cpp.Vertices())
+        # sp_assign(<cpp.shared_ptr[cpp.Vertices]> self.thisptr_shared, new cpp.Vertices())
         
         if init is None:
             return
