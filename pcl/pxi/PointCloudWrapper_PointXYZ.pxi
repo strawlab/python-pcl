@@ -335,36 +335,43 @@ cdef class PointCloud:
         octree.set_input_cloud(self)
         return octree
 
-#     def extract(self, pyindices, bool negative=False):
-#         """
-#         Given a list of indices of points in the pointcloud, return a 
-#         new pointcloud containing only those points.
-#         """
-#         cdef PointCloud result
-#         cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
-# 
-#         for i in pyindices:
-#             ind.indices.push_back(i)
-# 
-#         result = PointCloud()
-#         # (<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr())
-#         mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
-#         # XXX are we leaking memory here? del ind causes a double free...
-# 
-#         return result
+    def extract(self, pyindices, bool negative=False):
+        """
+        Given a list of indices of points in the pointcloud, return a 
+        new pointcloud containing only those points.
+        """
+        cdef PointCloud result
+        cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
+        
+        for i in pyindices:
+            ind.indices.push_back(i)
+        
+        result = PointCloud()
+        # (<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr())
+        mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
+        # XXX are we leaking memory here? del ind causes a double free...
+        
+        return result
 ###
 
 cdef class Vertices:
     """
     """
+    cdef cpp.shared_ptr[cpp.Vertices] thisptr_shared
     cdef cpp.Vertices *me
+
+    # Buffer protocol support.
+    cdef Py_ssize_t _shape[2]
+    cdef Py_ssize_t _view_count
 
     def __cinit__(self, init=None):
         # cdef cpp.Vertices vertices
-
+        self._view_count = 0
+        
         # self.me = new cpp.Vertices()
-        # sp_assign(self, new cpp.Vertices())
-
+        # sp_assign(<cpp.shared_ptr[cpp.Vertices]> self.thisptr_shared, new cpp.Vertices())
+        sp_assign(<cpp.shared_ptr[cpp.Vertices]> self.thisptr_shared, new cpp.Vertices())
+        
         if init is None:
             return
 #        elif isinstance(init, (numbers.Integral, np.integer)):

@@ -4,7 +4,7 @@
 #include <pcl/point_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 
-void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> &cloud,
+void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> cloud,
                           int ksearch,
                           double searchRadius,
                           pcl::PointCloud<pcl::Normal> &out);

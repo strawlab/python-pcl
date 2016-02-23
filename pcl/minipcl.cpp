@@ -8,7 +8,7 @@
 #include "minipcl.h"
 
 // set ksearch and radius to < 0 to disable 
-void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> &cloud,
+void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> cloud,
                           int ksearch,
                           double searchRadius,
                           pcl::PointCloud<pcl::Normal> &out)

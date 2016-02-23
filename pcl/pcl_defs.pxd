@@ -545,7 +545,7 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
 # namespace pcl
 # struct Vertices
 cdef extern from "pcl/Vertices.h" namespace "pcl":
-    cdef struct Vertices:
+    cdef cppclass Vertices:
         Vertices()
         vector[size_t] vertices;
         # public:
