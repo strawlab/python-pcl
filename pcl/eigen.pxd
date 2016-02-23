@@ -15,8 +15,14 @@ from vector cimport vector as vector2
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Matrix4f:
         float *data()
+    cdef cppclass Matrix3f:
+        float *data()
     cdef cppclass Vector4f:
         float *data()
+    cdef cppclass Vector3f:
+        float *data()
+    cdef cppclass Vector3i:
+        int *data()
     cdef cppclass Quaternionf:
         float w()
         float x()
@@ -24,6 +30,9 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float z()
     cdef cppclass aligned_allocator[T]:
         pass
+
+# Affine3f
+# VectorXf
 
 ctypedef aligned_allocator[cpp.PointXYZ] aligned_allocator_t 
 ctypedef vector2[cpp.PointXYZ, aligned_allocator_t] AlignedPointTVector_t
@@ -36,6 +45,7 @@ ctypedef vector2[cpp.PointXYZ, aligned_allocator_t] AlignedPointTVector_t
 #         Matrix3d() except +
 #         double& element "operator()"(int row,int col)
 # 
+# NG
 # cdef extern from "Eigen/Dense" namespace "Eigen":
 #     cdef cppclass Vector3d:
 #         Matrix3d() except +
