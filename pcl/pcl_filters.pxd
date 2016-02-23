@@ -63,11 +63,11 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         # ctypedef typename PointCloud::Ptr PointCloudPtr;
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # /** \brief Get the point indices being removed */
-        # cpp.IndicesPtr_t const getRemovedIndices ()
+        cpp.IndicesPtr_t getRemovedIndices ()
         # /** \brief Calls the filtering method and returns the filtered dataset in output.
         #   * \param[out] output the resultant filtered point cloud dataset
         #   */
-        # void filter (cpp.PointCloud[T] &output)
+        void filter (cpp.PointCloud[T] &output)
 
 # template<>
 # class PCL_EXPORTS Filter<sensor_msgs::PointCloud2> : public PCLBase<sensor_msgs::PointCloud2>
@@ -78,13 +78,11 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
 #       /** \brief Empty constructor. 
 #         * \param[in] extract_removed_indices set to true if the filtered data indices should be saved in a 
 #         * separate list. Default: false.
-#         */
 #       Filter (bool extract_removed_indices = false)
 #       /** \brief Get the point indices being removed */
 #       IndicesConstPtr const getRemovedIndices ()
 #       /** \brief Calls the filtering method and returns the filtered dataset in output.
 #         * \param[out] output the resultant filtered point cloud dataset
-#         */
 #       void filter (PointCloud2 &output);
 ###
 
@@ -94,33 +92,33 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
 cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
     cdef cppclass FilterIndices[T](Filter[T]):
         FilterIndices()
-#         # public:
-#         # ctypedef pcl::PointCloud<PointT> PointCloud;
-#         void filter (cpp.PointCloud[T] &output)
-#         # brief Calls the filtering method and returns the filtered point cloud indices.
-#         # param[out] indices the resultant filtered point cloud indices
-#         void filter (vector[int] &indices)
-#         # \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
-#         # \param[in] negative false = normal filter behavior (default), true = inverted behavior.
-#         void setNegative (bool negative)
-#         # \brief Get whether the regular conditions for points filtering should apply, or the inverted conditions.
-#         # \return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
-#         bool getNegative ()
-#         # \brief Set whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default: NaN),
-#         # or removed from the PointCloud, thus potentially breaking its organized structure.
-#         # \param[in] keep_organized false = remove points (default), true = redefine points, keep structure.
-#         void setKeepOrganized (bool keep_organized)
-#         # brief Get whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default = NaN),
-#         # or removed from the PointCloud, thus potentially breaking its organized structure.
-#         # return The value of the internal \a keep_organized_ parameter; false = remove points (default), true = redefine points, keep structure.
-#         bool getKeepOrganized ()
-#         # brief Provide a value that the filtered points should be set to instead of removing them.
-#         # Used in conjunction with \a setKeepOrganized ().
-#         # param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
-#         void setUserFilterValue (float value)
-#         # brief Get the point indices being removed
-#         # return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
-#         # IndicesConstPtr const getRemovedIndices ()
+        # public:
+        # ctypedef pcl::PointCloud<PointT> PointCloud;
+        void filter (cpp.PointCloud[T] &output)
+        # brief Calls the filtering method and returns the filtered point cloud indices.
+        # param[out] indices the resultant filtered point cloud indices
+        void filter (vector[int] &indices)
+        # \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
+        # \param[in] negative false = normal filter behavior (default), true = inverted behavior.
+        void setNegative (bool negative)
+        # \brief Get whether the regular conditions for points filtering should apply, or the inverted conditions.
+        # \return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
+        bool getNegative ()
+        # \brief Set whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default: NaN),
+        # or removed from the PointCloud, thus potentially breaking its organized structure.
+        # \param[in] keep_organized false = remove points (default), true = redefine points, keep structure.
+        void setKeepOrganized (bool keep_organized)
+        # brief Get whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default = NaN),
+        # or removed from the PointCloud, thus potentially breaking its organized structure.
+        # return The value of the internal \a keep_organized_ parameter; false = remove points (default), true = redefine points, keep structure.
+        bool getKeepOrganized ()
+        # brief Provide a value that the filtered points should be set to instead of removing them.
+        # Used in conjunction with \a setKeepOrganized ().
+        # param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
+        void setUserFilterValue (float value)
+        # brief Get the point indices being removed
+        # return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
+        cpp.IndicesPtr_t getRemovedIndices ()
 
 # template<>
 # class PCL_EXPORTS FilterIndices<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
@@ -128,16 +126,13 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 #       typedef sensor_msgs::PointCloud2 PointCloud2;
 #       /** \brief Constructor.
 #         * \param[in] extract_removed_indices Set to true if you want to extract the indices of points being removed (default = false).
-#         */
 #       FilterIndices (bool extract_removed_indices = false) :
 #       /** \brief Empty virtual destructor. */
-#       virtual
-#       ~FilterIndices ()
-#       virtual void
-#       filter (PointCloud2 &output)
+#       virtual ~FilterIndices ()
+#       virtual void filter (PointCloud2 &output)
 #       /** \brief Calls the filtering method and returns the filtered point cloud indices.
 #         * \param[out] indices the resultant filtered point cloud indices
-#       void filter (vector[int] &indices);
+#       void filter (vector[int] &indices)
 #       /** \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
 #         * \param[in] negative false = normal filter behavior (default), true = inverted behavior.
 #       void setNegative (bool negative)
@@ -169,6 +164,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 # struct xNdCopyEigenPointFunctor
 # cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
 #     cdef struct xNdCopyEigenPointFunctor[T]:
+#         xNdCopyEigenPointFunctor()
 #         # ctypedef typename traits::POD<PointT>::type Pod;
 #         # xNdCopyEigenPointFunctor (const Eigen::VectorXf &p1, PointT &p2)
 #         # template<typename Key> void operator() ()
@@ -177,6 +173,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 # # struct xNdCopyPointEigenFunctor
 # cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
 #     cdef struct xNdCopyPointEigenFunctor[T]:
+#         xNdCopyPointEigenFunctor()
 #         # ctypedef typename traits::POD<PointT>::type Pod;
 #         # xNdCopyPointEigenFunctor (const PointT &p1, Eigen::VectorXf &p2)
 #         # template<typename Key> void operator() ()
@@ -189,6 +186,7 @@ cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
         ApproximateVoxelGrid()
         # ApproximateVoxelGrid (const ApproximateVoxelGrid &src) : 
         # ApproximateVoxelGrid& operator = (const ApproximateVoxelGrid &src)
+        # ApproximateVoxelGrid& element "operator()"(ApproximateVoxelGrid src)
         # using Filter<PointT>::filter_name_;
         # using Filter<PointT>::getClassName;
         # using Filter<PointT>::input_;
@@ -199,21 +197,19 @@ cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
         # public:
         # * \brief Set the voxel grid leaf size.
         # * \param[in] leaf_size the voxel grid leaf size
-        # void setLeafSize (const Eigen::Vector3f &leaf_size) 
+        void setLeafSize (eigen3.Vector3f &leaf_size) 
         # * \brief Set the voxel grid leaf size.
         # * \param[in] lx the leaf size for X
         # * \param[in] ly the leaf size for Y
         # * \param[in] lz the leaf size for Z
         void setLeafSize (float lx, float ly, float lz)
         # /** \brief Get the voxel grid leaf size. */
-        # Eigen::Vector3f getLeafSize () const { return (leaf_size_); }
+        eigen3.Vector3f getLeafSize ()
         # * \brief Set to true if all fields need to be downsampled, or false if just XYZ.
         # * \param downsample the new value (true/false)
-        # */
         void setDownsampleAllData (bool downsample)
         # * \brief Get the state of the internal downsampling parameter (true if
-        #   * all fields need to be downsampled, false if just XYZ). 
-        #   */
+        # * all fields need to be downsampled, false if just XYZ). 
         bool getDownsampleAllData () const
 ###
 
@@ -230,7 +226,6 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # public:
         # * \brief Filter the input data and store the results into output
         # * \param[out] output the resultant point cloud message
-        # */
         void applyFilter (cpp.PointCloud[T] &output)
         # * \brief Compute the intensity average for a single point
         # * \param[in] pid the point index to compute the weight for
@@ -240,19 +235,16 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         double  computePointWeight (const int pid, const vector[int] &indices, const vector[float] &distances)
         # * \brief Set the half size of the Gaussian bilateral filter window.
         # * \param[in] sigma_s the half size of the Gaussian bilateral filter window to use
-        # */
         void setHalfSize (const double sigma_s)
         # * \brief Get the half size of the Gaussian bilateral filter window as set by the user. */
         double getHalfSize ()
-        #  \brief Set the standard deviation parameter
-        #   * \param[in] sigma_r the new standard deviation parameter
-        #   */
+        # \brief Set the standard deviation parameter
+        # * \param[in] sigma_r the new standard deviation parameter
         void setStdDev (const double sigma_r)
         # * \brief Get the value of the current standard deviation parameter of the bilateral filter. */
         double getStdDev ()
         # * \brief Provide a pointer to the search object.
         # * \param[in] tree a pointer to the spatial search object.
-        # */
         # void setSearchMethod (const KdTreePtr &tree)
 ###
 
@@ -968,7 +960,6 @@ ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval2_
 #       StatisticalOutlierRemoval (bool extract_removed_indices = false) :
 #       /** \brief Set the number of points (k) to use for mean distance estimation
 #         * \param nr_k the number of points to use for mean distance estimation
-#         */
 #       void setMeanK (int nr_k)
 #       /** \brief Get the number of points to use for mean distance estimation. */
 #       int getMeanK ()
@@ -977,18 +968,15 @@ ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval2_
 #         * will be considered outliers, where \f$ \mu \f$ is the estimated mean,
 #         * and \f$ \sigma \f$ is the standard deviation.
 #         * \param std_mul the standard deviation multiplier threshold
-#         */
 #       void setStddevMulThresh (double std_mul)
 #       /** \brief Get the standard deviation multiplier threshold as set by the user. */
 #       double getStddevMulThresh ()
 #       /** \brief Set whether the indices should be returned, or all points \e except the indices.
 #         * \param negative true if all points \e except the input indices will be returned, false otherwise
-#         */
 #       void setNegative (bool negative)
 #       /** \brief Get the value of the internal #negative_ parameter. If
 #         * true, all points \e except the input indices will be returned.
 #         * \return The value of the "negative" flag
-#         */
 #       bool getNegative ()
 #       void applyFilter (PointCloud2 &output);
 ###
