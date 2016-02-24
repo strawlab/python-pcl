@@ -159,7 +159,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
         # virtual int radiusSearch (int index, double radius, std::vector<int> &k_indices,
         #               std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
-		# 
+        # 
         # /** \brief Search for all the nearest neighbors of the query point in a given radius.
         #   * \param[in] cloud the point cloud data
         #   * \param[in] indices the indices in \a cloud. If indices is empty, neighbors will be searched for all points.
@@ -192,7 +192,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #                std::vector< std::vector<int> > &k_indices,
         #                std::vector< std::vector<float> > &k_sqr_distances,
         #                unsigned int max_nn = 0) const
-      	# protected:
+        # protected:
         # void sortResults (std::vector<int>& indices, std::vector<float>& distances) const;
         # PointCloudConstPtr input_;
         # IndicesConstPtr indices_;
@@ -222,7 +222,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
 #         #     Entry ()
 #         #     unsigned index;
 #         #     float distance;
-# 		  
+#         
 #         # replace by some metric functor
 #         float getDistSqr (const PointT& point1, const PointT& point2) const;
 #         # BruteForce (bool sorted_results = false)
@@ -257,42 +257,42 @@ cdef extern from "pcl/Search/flann_search.h" namespace "pcl":
         # void setLeafSize (float, float, float)
         # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
         # void filter(cpp.PointCloud[T] c)
-      	# # ctypedef typename Search<PointT>::PointCloud PointCloud;
-      	# # ctypedef typename Search<PointT>::PointCloudConstPtr PointCloudConstPtr;
-      	# ctypedef sharedptr[vector[int]] IndicesPtr;
-      	# ctypedef sharedptr[vector[int]] IndicesConstPtr;
-      	# # ctypedef flann::NNIndex[FlannDistance] Index;
-      	# ctypedef sharedptr[flann::NNIndex[FlannDistance]] IndexPtr;
-      	# ctypedef sharedptr[flann::Matrix[float]] MatrixPtr;
-      	# ctypedef sharedptr[flann::Matrix[float]] MatrixConstPtr;
-      	# # ctypedef pcl::PointRepresentation<PointT> PointRepresentation;
-      	# //typedef boost::shared_ptr<PointRepresentation> PointRepresentationPtr;
-      	# ctypedef sharedptr[PointRepresentation] PointRepresentationConstPtr;
-      	# # using Search<PointT>::input_;
-      	# # using Search<PointT>::indices_;
-      	# # using Search<PointT>::sorted_results_;
-      	# public:
-      	# ctypedef sharedptr[FlannSearch[PointT]] Ptr;
-      	# ctypedef sharedptr[FlannSearch[PointT]] ConstPtr;
-      	# # cdef cppclass FlannIndexCreator
-      	# #    virtual IndexPtr createIndex (MatrixConstPtr data)=0;
-      	# # class KdTreeIndexCreator: public FlannIndexCreator
-      	# cdef cppclass KdTreeIndexCreator:
-      	# # KdTreeIndexCreator (unsigned int max_leaf_size=15)
-      	# KdTreeIndexCreator (unsigned int)
-      	# # virtual IndexPtr createIndex (MatrixConstPtr data);
-      	# cdef FlannSearch (bool sorted = true, FlannIndexCreator* creator = new KdTreeIndexCreator());
-      	# cdef void setEpsilon (double eps)
-      	# cdef double getEpsilon ()
-      	# cdef void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr& indices = IndicesConstPtr ());
-      	# cdef int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
-      	# cdef void nearestKSearch (const PointCloud& cloud, const std::vector<int>& indices, int k, 
-        # 							std::vector< std::vector<int> >& k_indices, std::vector< std::vector<float> >& k_sqr_distances) const;
-      	# cdef int radiusSearch (const PointT& point, double radius, 
-        #             			std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
-        #             			unsigned int max_nn = 0) const;
-      	# cdef void radiusSearch (const PointCloud& cloud, const std::vector<int>& indices, double radius, std::vector< std::vector<int> >& k_indices,
-        #              			vector[vector[float]] k_sqr_distances, unsigned int max_nn=0) const;
+        # # ctypedef typename Search<PointT>::PointCloud PointCloud;
+        # # ctypedef typename Search<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # ctypedef sharedptr[vector[int]] IndicesPtr;
+        # ctypedef sharedptr[vector[int]] IndicesConstPtr;
+        # # ctypedef flann::NNIndex[FlannDistance] Index;
+        # ctypedef sharedptr[flann::NNIndex[FlannDistance]] IndexPtr;
+        # ctypedef sharedptr[flann::Matrix[float]] MatrixPtr;
+        # ctypedef sharedptr[flann::Matrix[float]] MatrixConstPtr;
+        # # ctypedef pcl::PointRepresentation<PointT> PointRepresentation;
+        # //typedef boost::shared_ptr<PointRepresentation> PointRepresentationPtr;
+        # ctypedef sharedptr[PointRepresentation] PointRepresentationConstPtr;
+        # # using Search<PointT>::input_;
+        # # using Search<PointT>::indices_;
+        # # using Search<PointT>::sorted_results_;
+        # public:
+        # ctypedef sharedptr[FlannSearch[PointT]] Ptr;
+        # ctypedef sharedptr[FlannSearch[PointT]] ConstPtr;
+        # # cdef cppclass FlannIndexCreator
+        # #    virtual IndexPtr createIndex (MatrixConstPtr data)=0;
+        # # class KdTreeIndexCreator: public FlannIndexCreator
+        # cdef cppclass KdTreeIndexCreator:
+        # # KdTreeIndexCreator (unsigned int max_leaf_size=15)
+        # KdTreeIndexCreator (unsigned int)
+        # # virtual IndexPtr createIndex (MatrixConstPtr data);
+        # cdef FlannSearch (bool sorted = true, FlannIndexCreator* creator = new KdTreeIndexCreator());
+        # cdef void setEpsilon (double eps)
+        # cdef double getEpsilon ()
+        # cdef void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr& indices = IndicesConstPtr ());
+        # cdef int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
+        # cdef void nearestKSearch (const PointCloud& cloud, const std::vector<int>& indices, int k, 
+        #                           std::vector< std::vector<int> >& k_indices, std::vector< std::vector<float> >& k_sqr_distances) const;
+        # cdef int radiusSearch (const PointT& point, double radius, 
+        #                       std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
+        #                       unsigned int max_nn = 0) const;
+        # cdef void radiusSearch (const PointCloud& cloud, const std::vector<int>& indices, double radius, std::vector< std::vector<int> >& k_indices,
+        #                       vector[vector[float]] k_sqr_distances, unsigned int max_nn=0) const;
         # cdef void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
         # cdef PointRepresentationConstPtr getPointRepresentation ()
         # # protected:
@@ -388,8 +388,8 @@ cdef extern from "pcl/Search/Octree.h" namespace "pcl::search":
 
 cdef extern from "pcl/Search/organized.h" namespace "pcl::search":
     cdef cppclass OrganizedNeighbor[T]:
-    	OrganizedNeighbor()
-    	# OrganizedNeighbor (bool sorted_results = false, float eps = 1e-4f, unsigned pyramid_level = 5)
+        OrganizedNeighbor()
+        # OrganizedNeighbor (bool sorted_results = false, float eps = 1e-4f, unsigned pyramid_level = 5)
         # public:
         # ctypedef pcl::PointCloud<PointT> PointCloud;
         # ctypedef boost::shared_ptr<PointCloud> PointCloudPtr;
@@ -400,21 +400,21 @@ cdef extern from "pcl/Search/organized.h" namespace "pcl::search":
         # using pcl::search::Search<PointT>::indices_;
         # using pcl::search::Search<PointT>::sorted_results_;
         # using pcl::search::Search<PointT>::input_;
-        cdef bool isValid () const
-        cdef void computeCameraMatrix (Eigen::Matrix3f& camera_matrix) const;
-        cdef void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr &indices = IndicesConstPtr ())
-        cdef int radiusSearch (
-                                const PointT &p_q,
-                                double radius,
-                                std::vector<int> &k_indices,
-                                std::vector<float> &k_sqr_distances,
-                                unsigned int max_nn = 0) const;
-        cdef void estimateProjectionMatrix ();
-        cdef int nearestKSearch (
-                        const PointT &p_q,
-                        int k,
-                        std::vector<int> &k_indices,
-                        std::vector<float> &k_sqr_distances) const;
+        # bool isValid () const
+        # void computeCameraMatrix (Eigen::Matrix3f& camera_matrix) const;
+        # void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr &indices = IndicesConstPtr ())
+        # int radiusSearch (
+        #                         const PointT &p_q,
+        #                         double radius,
+        #                         std::vector<int> &k_indices,
+        #                         std::vector<float> &k_sqr_distances,
+        #                         unsigned int max_nn = 0) const;
+        # cdef void estimateProjectionMatrix ();
+        # cdef int nearestKSearch (
+        #                 const PointT &p_q,
+        #                 int k,
+        #                 std::vector<int> &k_indices,
+        #                 std::vector<float> &k_sqr_distances) const;
         cdef bool projectPoint (const PointT& p, pcl::PointXY& q) const;
         # protected:
         # cdef struct Entry
