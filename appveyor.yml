@@ -70,11 +70,11 @@ build_script:
 - cmd: >-
     @powershell -NoProfile -ExecutionPolicy unrestricted -Command "PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn -Verb runas"
 
-    cd ..
+    cd c:\Program Files
 
-    cd ..
-    
     dir
+
+    set PCL_ROOT="C:\Program Files\PCL 1.6.0"
 
     pip install Cython
 
