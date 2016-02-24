@@ -37,7 +37,6 @@ cdef extern from "pcl/tracking/tracker.h" namespace "pcl::tracking":
         # public:
         # brief Base method for tracking for all points given in 
         # <setInputCloud (), setIndices ()> using the indices in setIndices () 
-        #
         cdef void compute ()
         # protected:
         # brief The tracker name. 
@@ -120,7 +119,6 @@ cdef extern from "pcl/tracking/nearest_pair_point_cloud_coherence.h" namespace "
         # ctypedef boost::shared_ptr<const NearestPairPointCloudCoherence<PointInT> > ConstPtr;
         # ctypedef boost::shared_ptr<pcl::search::Search<PointInT> > SearchPtr;
         # ctypedef boost::shared_ptr<const pcl::search::Search<PointInT> > SearchConstPtr;
-        
         # brief Provide a pointer to a dataset to add additional information
         # to estimate the features for every point in the input dataset.  This
         # is optional, if this is not set, it will only use the data in the
@@ -128,16 +126,13 @@ cdef extern from "pcl/tracking/nearest_pair_point_cloud_coherence.h" namespace "
         # need to compute the features for a downsampled cloud. 
         # param cloud a pointer to a PointCloud message
         cdef void setSearchMethod (const SearchPtr &search)
-        
         # brief Get a pointer to the point cloud dataset.
         # cdef SearchPtr getSearchMethod ()
         # brief add a PointCoherence to the PointCloudCoherence.
         # param coherence a pointer to PointCoherence.
-        #
         cdef void setTargetCloud (const PointCloudInConstPtr &cloud)
         # brief set maximum distance to be taken into account.
         # param maximum distance.
-        # 
         cdef void setMaximumDistance (double )
         # protected:
         # using PointCloudCoherence<PointInT>::point_coherences_;
@@ -280,8 +275,7 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         cdef double getFitRatio()
         # brief reset the particles to restart tracking
         cdef void resetTracking ()
-        
-        ###
+        ###
         # protected:
         # brief compute the parameters for the bounding box of 
         # hypothesis pointclouds.
@@ -294,14 +288,12 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         cdef void calcBoundingBox (double &x_min, double &x_max,
                               double &y_min, double &y_max,
                               double &z_min, double &z_max);
-        
         # brief crop the pointcloud by the bounding box calculated
         #  from hypothesis and the reference pointcloud.
         # param cloud a pointer to pointcloud to be cropped.
         # param output a pointer to be assigned the cropped pointcloud.
         cdef void cropInputPointCloud (const PointCloudInConstPtr &cloud, PointCloudIn &output);
-        
-        # brief compute a reference pointcloud transformed to the pose that
+        # brief compute a reference pointcloud transformed to the pose that
         # hypothesis represents.
         # param hypothesis a particle which represents a hypothesis.
         # param indices the indices which should be taken into account.
@@ -310,7 +302,6 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         cdef void computeTransformedPointCloud (const StateT& hypothesis,
                                            std::vector<int>& indices,
                                            PointCloudIn &cloud);
-        
         # brief compute a reference pointcloud transformed to the pose that
         # hypothesis represents and calculate indices taking occlusion into \
         #  account.
@@ -321,7 +312,6 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         cdef void computeTransformedPointCloudWithNormal (const StateT& hypothesis,
                                            std::vector<int>& indices,
                                            PointCloudIn &cloud);
-        
         # brief compute a reference pointcloud transformed to the pose that
         # hypothesis represents and calculate indices without taking
         # occlusion into account.
@@ -329,51 +319,38 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         # param cloud the resultant point cloud model dataset which
         #         is transformed to hypothesis.
         cdef void computeTransformedPointCloudWithoutNormal (const StateT& hypothesis, PointCloudIn &cloud);
-        
         # brief This method should get called before starting the actual computation.
         cdef bool initCompute ()
-        
         # brief weighting phase of particle filter method.
         # calculate the likelihood of all of the particles and set the weights.
         cdef void weight ()
-        
         # brief resampling phase of particle filter method.
         # sampling the particles according to the weights calculated in weight method.
         # in particular, "sample with replacement" is archieved by walker's alias method.
         cdef void resample ()
-        
         # brief calculate the weighted mean of the particles and set it as the result
         cdef void update ()
-        
         # brief normalize the weights of all the particels.
         cdef void normalizeWeight ()
-        
         # brief initialize the particles. initial_noise_covariance_ and initial_noise_mean_ are
         # used for gausiaan sampling.
         cdef void initParticles (bool reset)
-        
-        # brief track the pointcloud using particle filter method.
+        # brief track the pointcloud using particle filter method.
         cdef void computeTracking ()
-        
         # brief implementation of "sample with replacement" using Walker's alias method.
         # about Walker's alias method, you can check the paper below:
         # param a an alias table, which generated by genAliasTable.
         # param q a table of weight, which generated by genAliasTable.
         cdef int sampleWithReplacement (const std::vector<int>& a, const std::vector<double>& q)
-        
         # brief generate the tables for walker's alias method
         cdef void genAliasTable (std::vector<int> &a, std::vector<double> &q, const PointCloudStateConstPtr &particles)
-        
         # brief resampling the particle with replacement
         cdef void resampleWithReplacement ()
-        
         # brief resampling the particle in deterministic way
         cdef void resampleDeterministic ()
-        
         # brief run change detection and return true if there is a change.
         # param input a pointer to the input pointcloud.
         cdef bool testChangeDetection (const PointCloudInConstPtr &input)
-        
         # the number of iteration of particlefilter.
         # int iteration_num_;
         # brief the number of the particles.
@@ -549,20 +526,17 @@ cdef extern from "pcl/tracking/kld_adaptive_particle_filter.h" namespace "pcl::t
         # double normalQuantile (double u)
         # brief calculate K-L boundary. K-L boundary follows 1/2e*chi(k-1, 1-d)^2.
         # param[in] k the number of bins and the first parameter of chi distribution.
-        # 
         # cdef double calcKLBound (int k)
         # brief insert a bin into the set of the bins. if that bin is already registered,
         #   return false. if not, return true.
         # param bin a bin to be inserted.
         # param B a set of the bins
-        # 
         # cdef bool insertIntoBins (std::vector<int> bin, std::vector<std::vector<int> > &B);
         # brief This method should get called before starting the actual computation.
         # cdef bool initCompute ();
         # brief resampling phase of particle filter method.
         #  sampling the particles according to the weights calculated in weight method.
         #  in particular, "sample with replacement" is archieved by walker's alias method.
-        # 
         # cdef void resample ();
         # brief the maximum number of the particles.
         # unsigned int maximum_particle_number_;
@@ -604,30 +578,23 @@ cdef extern from "pcl/tracking/kld_adaptive_particle_filter_omp.h" namespace "pc
         # using KLDAdaptiveParticleFilterTracker<PointInT, StateT>::normalizeWeight;
         # using KLDAdaptiveParticleFilterTracker<PointInT, StateT>::normalizeParticleWeight;
         # using KLDAdaptiveParticleFilterTracker<PointInT, StateT>::calcBoundingBox;
-
         # ctypedef Tracker<PointInT, StateT> BaseClass;
-      
         # ctypedef typename Tracker<PointInT, StateT>::PointCloudIn PointCloudIn;
         # ctypedef typename PointCloudIn::Ptr PointCloudInPtr;
         # ctypedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-
         # ctypedef typename Tracker<PointInT, StateT>::PointCloudState PointCloudState;
         # ctypedef typename PointCloudState::Ptr PointCloudStatePtr;
         # ctypedef typename PointCloudState::ConstPtr PointCloudStateConstPtr;
-
         # ctypedef PointCoherence<PointInT> Coherence;
         # ctypedef boost::shared_ptr< Coherence > CoherencePtr;
         # ctypedef boost::shared_ptr< const Coherence > CoherenceConstPtr;
-
         # ctypedef PointCloudCoherence<PointInT> CloudCoherence;
         # ctypedef boost::shared_ptr< CloudCoherence > CloudCoherencePtr;
         # ctypedef boost::shared_ptr< const CloudCoherence > CloudCoherenceConstPtr;
-
         # brief Initialize the scheduler and set the number of threads to use.
         # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         #
         cdef void setNumberOfThreads (unsigned int nr_threads)
-
         # protected:
         # brief The number of threads the scheduler should use.
         # unsigned int threads_;
@@ -635,8 +602,7 @@ cdef extern from "pcl/tracking/kld_adaptive_particle_filter_omp.h" namespace "pc
         # calculate the likelihood of all of the particles and set the weights.
         #
         # cdef void weight ();
-
-###
+###
 
 # class NormalCoherence: public PointCoherence<PointInT>
 cdef extern from "pcl/tracking/normal_coherence.h" namespace "pcl::tracking":
@@ -645,10 +611,8 @@ cdef extern from "pcl/tracking/normal_coherence.h" namespace "pcl::tracking":
         # brief set the weight of coherence
         # param weight the weight of coherence
         cdef void setWeight (double )
-
         # brief get the weight of coherence
         cdef double getWeight ()
-
         # protected:
         # brief return the normal coherence between the two points.
         # param source instance of source point.
@@ -656,20 +620,16 @@ cdef extern from "pcl/tracking/normal_coherence.h" namespace "pcl::tracking":
         #
         # double computeCoherence (PointInT &source, PointInT &target);
         # double weight_;
-
-###
+###
 
 # class ParticleFilterOMPTracker: public ParticleFilterTracker<PointInT, StateT>
-
 cdef extern from "pcl/tracking/particle_filter_omp.h" namespace "pcl::tracking":
     cdef cppclass ParticleFilterOMPTracker[T, S](ParticleFilterTracker[T, S]):
         ParticleFilterOMPTracker ()
-
         # brief Initialize the scheduler and set the number of threads to use.
         # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         ParticleFilterOMPTracker (unsigned int )
-
-        # public:
+        # public:
         # using Tracker<PointInT, StateT>::tracker_name_;
         # using Tracker<PointInT, StateT>::search_;
         # using Tracker<PointInT, StateT>::input_;
@@ -691,9 +651,7 @@ cdef extern from "pcl/tracking/particle_filter_omp.h" namespace "pcl::tracking":
         # using ParticleFilterTracker<PointInT, StateT>::normalizeWeight;
         # using ParticleFilterTracker<PointInT, StateT>::normalizeParticleWeight;
         # using ParticleFilterTracker<PointInT, StateT>::calcBoundingBox;
-
         # ctypedef Tracker<PointInT, StateT> BaseClass;
-        
         # ctypedef typename Tracker<PointInT, StateT>::PointCloudIn PointCloudIn;
         # ctypedef typename PointCloudIn::Ptr PointCloudInPtr;
         # ctypedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
@@ -721,9 +679,8 @@ cdef extern from "pcl/tracking/tracking.h" namespace "pcl::tracking":
     # state definition
     cdef struct ParticleXYZRPY
     cdef struct ParticleXYR
-
     # brief return the value of normal distribution
     # mean
     # sigma
     cdef double sampleNormal (double , double);
-
+###

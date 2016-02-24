@@ -70,11 +70,11 @@ build_script:
   # Build the compiled extension
   # - "%CMD_IN_ENV% python setup.py build"
 - cmd: >-
-  @powershell -NoProfile -ExecutionPolicy unrestricted -Command "PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn -Verb runas"
-  pip install Cython
-  pip install numpy
-  python setup.py build_ext -i
-  python setup.py install
+    @powershell -NoProfile -ExecutionPolicy unrestricted -Command "PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn -Verb runas"
+    pip install Cython
+    pip install numpy
+    python setup.py build_ext -i
+    python setup.py install
 
 test_script:
   # Run the project tests
