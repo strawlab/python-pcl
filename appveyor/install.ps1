@@ -2,10 +2,7 @@
 # Authors: Olivier Grisel, Jonathan Helmus, Kyle Kastner, and Alex Willmer
 # License: CC0 1.0 Universal: http://creativecommons.org/publicdomain/zero/1.0/
 
-$MINICONDA_URL = "http://repo.continuum.io/miniconda/"
-$BASE_URL = "https://www.python.org/ftp/python/"
-$GET_PIP_URL = "https://bootstrap.pypa.io/get-pip.py"
-$GET_PIP_PATH = "C:\get-pip.py"
+$BASE_PCL_URL = "http://jaist.dl.sourceforge.net/project/pointclouds/"
 
 $PYTHON_PRERELEASE_REGEX = @"
 (?x)
@@ -59,86 +56,13 @@ function ParsePythonVersion ($python_version) {
     return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
 }
 
-
-function DownloadPython ($python_version, $platform_suffix) {
-    $major, $minor, $micro, $prerelease = ParsePythonVersion $python_version
-
-    if (($major -le 2 -and $micro -eq 0) `
-        -or ($major -eq 3 -and $minor -le 2 -and $micro -eq 0) `
-        ) {
-        $dir = "$major.$minor"
-        $python_version = "$major.$minor$prerelease"
-    } else {
-        $dir = "$major.$minor.$micro"
-    }
-
-    if ($prerelease) {
-        if (($major -le 2) `
-            -or ($major -eq 3 -and $minor -eq 1) `
-            -or ($major -eq 3 -and $minor -eq 2) `
-            -or ($major -eq 3 -and $minor -eq 3) `
-            ) {
-            $dir = "$dir/prev"
-        }
-    }
-
-    if (($major -le 2) -or ($major -le 3 -and $minor -le 4)) {
-        $ext = "msi"
-        if ($platform_suffix) {
-            $platform_suffix = ".$platform_suffix"
-        }
-    } else {
-        $ext = "exe"
-        if ($platform_suffix) {
-            $platform_suffix = "-$platform_suffix"
-        }
-    }
-
-    $filename = "python-$python_version$platform_suffix.$ext"
-    $url = "$BASE_URL$dir/$filename"
-    $filepath = Download $filename $url
-    return $filepath
-}
-
-
-function InstallPython ($python_version, $architecture, $python_home) {
-    Write-Host "Installing Python" $python_version "for" $architecture "bit architecture to" $python_home
-    if (Test-Path $python_home) {
-        Write-Host $python_home "already exists, skipping."
-        return $false
-    }
-    if ($architecture -eq "32") {
-        $platform_suffix = ""
-    } else {
-        $platform_suffix = "amd64"
-    }
-    $installer_path = DownloadPython $python_version $platform_suffix
-    $installer_ext = [System.IO.Path]::GetExtension($installer_path)
-    Write-Host "Installing $installer_path to $python_home"
-    $install_log = $python_home + ".log"
-    if ($installer_ext -eq '.msi') {
-        InstallPythonMSI $installer_path $python_home $install_log
-    } else {
-        InstallPythonEXE $installer_path $python_home $install_log
-    }
-    if (Test-Path $python_home) {
-        Write-Host "Python $python_version ($architecture) installation complete"
-    } else {
-        Write-Host "Failed to install Python in $python_home"
-        Get-Content -Path $install_log
-        Exit 1
-    }
-}
-
-
-function InstallPythonEXE ($exepath, $python_home, $install_log) {
-    $install_args = "/quiet InstallAllUsers=1 TargetDir=$python_home"
+function InstallPCLEXE ($exepath, $pcl_home, $install_log) {
+    $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     RunCommand $exepath $install_args
 }
 
-
-function InstallPythonMSI ($msipath, $python_home, $install_log) {
-    $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$python_home"
+function InstallPCLMSI ($msipath, $pcl_home, $install_log) {
+    $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$pcl_home"
     $uninstall_args = "/qn /x $msipath"
     RunCommand "msiexec.exe" $install_args
     if (-not(Test-Path $python_home)) {
@@ -153,25 +77,68 @@ function RunCommand ($command, $command_args) {
     Start-Process -FilePath $command -ArgumentList $command_args -Wait -Passthru
 }
 
+function DownloadPCL ($pcl_version, $platform_suffix) {
+    # $major, $minor, $micro, $prerelease = ParsePythonVersion $pcl_version
+    $major, $minor, $micro = ParsePythonVersion $pcl_version
 
-function InstallPip ($python_home) {
-    $pip_path = $python_home + "\Scripts\pip.exe"
-    $python_path = $python_home + "\python.exe"
-    if (-not(Test-Path $pip_path)) {
-        Write-Host "Installing pip..."
-        $webclient = New-Object System.Net.WebClient
-        $webclient.DownloadFile($GET_PIP_URL, $GET_PIP_PATH)
-        Write-Host "Executing:" $python_path $GET_PIP_PATH
-        & $python_path $GET_PIP_PATH
-    } else {
-        Write-Host "pip already installed."
+    if ($major -le 1 -and $minor -eq 6) 
+    {
+        # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe
+        $dir = "$major.$minor.$micro"
+        $msvcver = "msvc2010"
+        $url = $dir"/PCL-"$dir"-AllInOne-msvc2010-"$platform_suffix".exe
     }
+    else if (($major -le 1 -and $minor -eq 7 -and )
+    {
+        # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2015-win64.exe
+        $dir = "$major.$minor.$micro"
+        $msvcver = "msvc2015"
+    } else {
+        $dir = "$major.$minor.$micro"
+        $msvcver = "msvc2015"
+    }
+
+    $filename = "PCL-$dir-AllInOne-$msvcver-$platform_suffix.exe"
+    $url = "$BASE_PCL_URL$dir/PCL-$dir-AllInOne-$msvcver-$platform_suffix.exe"
+    # ’u‚«Š·‚¦—\’è
+    $filepath = Download $filename $url
+    return $filepath
 }
 
+function InstallPCL ($pcl_version, $architecture, $pcl_home) {
+    $pcl_path = $python_home + "\Scripts\pip.exe"
+    
+    if ($architecture -eq "32") {
+        $platform_suffix = "win32"
+    } else {
+        $platform_suffix = "win64"
+    }
+
+    $installer_path = DownloadPCL $pcl_version $platform_suffix
+    $installer_ext = [System.IO.Path]::GetExtension($installer_path)
+    Write-Host "Installing $installer_path to $python_home"
+    if ($installer_ext -eq '.msi') {
+        InstallPCLMSI $installer_path $python_home $install_log
+    } else {
+        InstallPCLEXE $installer_path $python_home $install_log
+    }
+    if (Test-Path $python_home) {
+        Write-Host "Python $python_version ($architecture) installation complete"
+    } else {
+        Write-Host "Failed to install Python in $python_home"
+        Get-Content -Path $install_log
+        Exit 1
+    }
+
+}
+
+$pcl_version = "1.6.0"
 
 function main () {
-    InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPip $env:PYTHON
+    # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    # InstallPip $env:PYTHON
+    # DownloadPCL $pcl_version, $platform_suffix
+    InstallPCL $pcl_version, $platform_suffix
 }
 
 main
