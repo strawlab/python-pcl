@@ -86,7 +86,7 @@ function DownloadPCL ($pcl_version, $platform_suffix) {
         # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe
         $dir = "$major.$minor.$micro"
         $msvcver = "msvc2010"
-        $url = $dir"/PCL-"$dir"-AllInOne-msvc2010-"$platform_suffix".exe
+        $url = "$dir/PCL-$dir-AllInOne-msvc2010-$platform_suffix.exe"
     }
     else if (($major -le 1 -and $minor -eq 7 -and )
     {
@@ -138,7 +138,7 @@ function main () {
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # InstallPip $env:PYTHON
     # DownloadPCL $pcl_version, $platform_suffix
-    InstallPCL $pcl_version, $platform_suffix
+    InstallPCL $pcl_version, $env:PYTHON_ARCH
 }
 
 main
