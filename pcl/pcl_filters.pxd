@@ -466,38 +466,39 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         # ctypedef typename PointCloud::Ptr PointCloudPtr;
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # public:
-        # * \brief Set the minimum point of the box
-        # * \param[in] min_pt the minimum point of the box
-        # void setMin (const eigen3.Vector4f &min_pt)
+        # \brief Set the minimum point of the box
+        # \param[in] min_pt the minimum point of the box
+        void setMin (const eigen3.Vector4f &min_pt)
         # """
-        #     brief Get the value of the minimum point of the box, as set by the user
-        #     return the value of the internal \a min_pt parameter.
+        # brief Get the value of the minimum point of the box, as set by the user
+        # return the value of the internal \a min_pt parameter.
         # """
-        # eigen3.Vector4f getMin () const
-        # * \brief Set the maximum point of the box
-        # * \param[in] max_pt the maximum point of the box
+        eigen3.Vector4f getMin ()
+        
+        # \brief Set the maximum point of the box
+        # \param[in] max_pt the maximum point of the box
         # void setMax (const eigen3.Vector4f &max_pt)
         # \brief Get the value of the maxiomum point of the box, as set by the user
         # \return the value of the internal \a max_pt parameter.
-        # eigen3.Vector4f getMax () const
+        eigen3.Vector4f getMax () const
         # \brief Set a translation value for the box
         # \param[in] translation the (tx,ty,tz) values that the box should be translated by
-        # void setTranslation (const Eigen::Vector3f &translation)
+        void setTranslation (const eigen3.Vector3f &translation)
         # \brief Get the value of the box translation parameter as set by the user. */
-        # Eigen::Vector3f getTranslation () const
+        eigen3.Vector3f getTranslation () const
         # \brief Set a rotation value for the box
         # \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
-        # void setRotation (const Eigen::Vector3f &rotation)
+        void setRotation (const eigen3.Vector3f &rotation)
         # \brief Get the value of the box rotatation parameter, as set by the user. */
-        # Eigen::Vector3f getRotation () const
+        eigen3.Vector3f getRotation () const
         # \brief Set a transformation that should be applied to the cloud before filtering
         # \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
-        # void setTransform (const Eigen::Affine3f &transform)
+        # void setTransform (const eigen3.Affine3f &transform)
         # \brief Get the value of the transformation parameter, as set by the user. */
-        # Eigen::Affine3f getTransform () const
+        # eigen3.Affine3f getTransform () const
 
-#  template<>
-#  class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
+# template<>
+# class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
 #    using Filter<sensor_msgs::PointCloud2>::filter_name_;
 #    using Filter<sensor_msgs::PointCloud2>::getClassName;
 #    typedef sensor_msgs::PointCloud2 PointCloud2;
@@ -508,35 +509,28 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
 #      CropBox () :
 #      /** \brief Set the minimum point of the box
 #        * \param[in] min_pt the minimum point of the box
-#        */
 #      void setMin (const Eigen::Vector4f& min_pt)
 #      /** \brief Get the value of the minimum point of the box, as set by the user
 #        * \return the value of the internal \a min_pt parameter.
-#        */
 #      Eigen::Vector4f getMin () const
 #      /** \brief Set the maximum point of the box
 #        * \param[in] max_pt the maximum point of the box
-#        */
 #      void setMax (const Eigen::Vector4f &max_pt)
 #      /** \brief Get the value of the maxiomum point of the box, as set by the user
 #        * \return the value of the internal \a max_pt parameter.
-#        */
 #      Eigen::Vector4f getMax () const
 #      /** \brief Set a translation value for the box
 #        * \param[in] translation the (tx,ty,tz) values that the box should be translated by
-#        */
 #      void setTranslation (const Eigen::Vector3f &translation)
 #      /** \brief Get the value of the box translation parameter as set by the user. */
 #      Eigen::Vector3f getTranslation () const
 #      /** \brief Set a rotation value for the box
 #        * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
-#        */
 #      void setRotation (const Eigen::Vector3f &rotation)
 #      /** \brief Get the value of the box rotatation parameter, as set by the user. */
 #      Eigen::Vector3f getRotation () const
 #      /** \brief Set a transformation that should be applied to the cloud before filtering
 #        * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
-#        */
 #      void setTransform (const Eigen::Affine3f &transform)
 #      /** \brief Get the value of the transformation parameter, as set by the user. */
 #      Eigen::Affine3f getTransform () const
