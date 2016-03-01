@@ -28,10 +28,11 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float x()
         float y()
         float z()
+    cdef cppclass Affine3f:
+        float *data()
     cdef cppclass aligned_allocator[T]:
         pass
 
-# Affine3f
 # VectorXf
 
 ctypedef aligned_allocator[cpp.PointXYZ] aligned_allocator_t 

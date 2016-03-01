@@ -548,6 +548,7 @@ cdef extern from "pcl/Vertices.h" namespace "pcl":
     cdef cppclass Vertices:
         Vertices()
         vector[size_t] vertices;
+        # ostream& element "operator()"(ostream s, Vertices v)
         # public:
         # ctypedef shared_ptr[Vertices] Ptr
         # ctypedef shared_ptr[Vertices const] ConstPtr

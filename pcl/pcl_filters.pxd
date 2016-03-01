@@ -24,7 +24,7 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<ComparisonBase<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ComparisonBase<PointT> > ConstPtr;
-        ##
+        #
         # brief Return if the comparison is capable.
         bool isCapable ()
         # /** \brief Evaluate function. */
@@ -458,13 +458,6 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
 cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
     cdef cppclass CropBox[T](FilterIndices[T]):
         CropBox()
-        # using Filter<PointT>::filter_name_;
-        # using Filter<PointT>::getClassName;
-        # using Filter<PointT>::indices_;
-        # using Filter<PointT>::input_;
-        # ctypedef typename Filter<PointT>::PointCloud PointCloud;
-        # ctypedef typename PointCloud::Ptr PointCloudPtr;
-        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # public:
         # \brief Set the minimum point of the box
         # \param[in] min_pt the minimum point of the box
@@ -474,10 +467,9 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         # return the value of the internal \a min_pt parameter.
         # """
         eigen3.Vector4f getMin ()
-        
         # \brief Set the maximum point of the box
         # \param[in] max_pt the maximum point of the box
-        # void setMax (const eigen3.Vector4f &max_pt)
+        void setMax (const eigen3.Vector4f &max_pt)
         # \brief Get the value of the maxiomum point of the box, as set by the user
         # \return the value of the internal \a max_pt parameter.
         eigen3.Vector4f getMax () const
@@ -493,9 +485,9 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         eigen3.Vector3f getRotation () const
         # \brief Set a transformation that should be applied to the cloud before filtering
         # \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
-        # void setTransform (const eigen3.Affine3f &transform)
+        void setTransform (const eigen3.Affine3f &transform)
         # \brief Get the value of the transformation parameter, as set by the user. */
-        # eigen3.Affine3f getTransform () const
+        eigen3.Affine3f getTransform () const
 
 # template<>
 # class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
