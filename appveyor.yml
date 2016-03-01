@@ -7,7 +7,7 @@ environment:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+    # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
   # Version 1.6.0 Check
@@ -47,7 +47,7 @@ install:
   # - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
-  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
+  # - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
   
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
@@ -72,16 +72,15 @@ install:
   - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe"
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   
+  # Module Install
+  # Import-Module ".\appveyor\PS-Zip\PS-Zip.psm1" -Force
+  
   # @powershell -NoProfile -ExecutionPolicy unrestricted -Command "Start-Process -Verb runas /user:administrator PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn"
   - ps : appveyor\install.ps1
 
 build_script:
 - cmd: >-
     PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn
-
-    cd c:\Program Files
-
-    dir
 
     pip install Cython
 

@@ -3,6 +3,7 @@
 # License: CC0 1.0 Universal: http://creativecommons.org/publicdomain/zero/1.0/
 
 $BASE_PCL_URL = "http://jaist.dl.sourceforge.net/project/pointclouds/"
+$BASE_NUMPY_WHL_URL = "http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/"
 
 $PYTHON_PRERELEASE_REGEX = @"
 (?x)
@@ -105,40 +106,118 @@ function DownloadPCL ($pcl_version, $platform_suffix) {
     return $filepath
 }
 
-function InstallPCL ($pcl_version, $architecture, $pcl_home) {
-    $pcl_path = $python_home + "\Scripts\pip.exe"
-    
+function ParsePythonVersion ($python_version) {
+    if ($python_version -match $PYTHON_PRERELEASE_REGEX) {
+        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro,
+                $matches.prerelease)
+    }
+    $version_obj = [version]$python_version
+    return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
+}
+
+function InstallNumpy ($pcl_version, $architecture, $python_home) 
+{
+    $major, $minor, $micro, $prerelease = ParsePythonVersion $python_version
+
+    $cp_ver = "cp$major$minor"
+
     if ($architecture -eq "32") {
-        $platform_suffix = "win32"
+        $platform_suffix = "32"
     } else {
-        $platform_suffix = "win64"
+        $platform_suffix = "win_amd64"
     }
 
+    $mathLib = "mkl"
+    if ($mathLib -eq "mkl")
+    {
+        $cp_last_ver = "$cp_verm"
+    }
+    else
+    {
+        $cp_last_ver = "none"
+    }
+    
+    $numpy_ver = "1.10.4"
+
+    Write-Host "Installing Python" $python_version "for" $architecture "bit architecture to" $python_home
+    # if (Test-Path $python_home) 
+    # {
+    #     Write-Host $python_home "already exists, skipping."
+    #     return $false
+    # }
+
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp27-cp27m-win32.whl
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp27-cp27m-win_amd64.whl
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp34-cp34m-win32.whl
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp34-cp34m-win_amd64.whl
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp35-cp35m-win32.whl
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp35-cp35m-win_amd64.whl
+    # numpy-1.10.4+vanilla-cp27-none-win32.whl
+    # numpy-1.10.4+vanilla-cp27-none-win_amd64.whl
+    # numpy-1.10.4+vanilla-cp34-none-win32.whl
+    # numpy-1.10.4+vanilla-cp34-none-win_amd64.whl
+    # numpy-1.10.4+vanilla-cp35-none-win32.whl
+    # numpy-1.10.4+vanilla-cp35-none-win_amd64.whl
+    # numpy-1.11.0rc1+mkl-cp27-cp27m-win32.whl
+    # numpy-1.11.0rc1+mkl-cp27-cp27m-win_amd64.whl
+    # numpy-1.11.0rc1+mkl-cp34-cp34m-win32.whl
+    # numpy-1.11.0rc1+mkl-cp34-cp34m-win_amd64.whl
+    # numpy-1.11.0rc1+mkl-cp35-cp35m-win32.whl
+    # numpy-1.11.0rc1+mkl-cp35-cp35m-win_amd64.whl
+    $filename = "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.exe"
+    $url = "$BASE_NUMPY_WHL_URLnumpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.exe"
+    # replace another function
+    $filepath = Download $filename $url
+    return $filepath
+}
+
+function InstallPCL ($pcl_version, $architecture, $pcl_home) 
+{
+    $pcl_path = $python_home + "\Scripts\pip.exe"
+    
+    if ($architecture -eq "32")
+    {
+        $platform_suffix = "win32"
+    }
+    else
+    {
+        $platform_suffix = "win64"
+    }
+    
     $installer_path = DownloadPCL $pcl_version $platform_suffix
     $installer_ext = [System.IO.Path]::GetExtension($installer_path)
-    Write-Host "Installing $installer_path to $python_home"
-    if ($installer_ext -eq '.msi') {
+    Write-Host "Installing $installer_path to $pcl_home"
+    $install_log = $pcl_home + ".log"
+    if ($installer_ext -eq '.msi')
+    {
         InstallPCLMSI $installer_path $python_home $install_log
-    } else {
+    }
+    else
+    {
         InstallPCLEXE $installer_path $python_home $install_log
     }
-    if (Test-Path $python_home) {
+    
+    if (Test-Path $python_home) 
+    {
         Write-Host "Python $python_version ($architecture) installation complete"
-    } else {
+    }
+    else 
+    {
         Write-Host "Failed to install Python in $python_home"
         Get-Content -Path $install_log
         Exit 1
     }
-
 }
+
+http://www.lfd.uci.edu/~gohlke/pythonlibs/
 
 $pcl_version = "1.6.0"
 
 function main () {
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    # InstallPip $env:PYTHON
-    # DownloadPCL $pcl_version, $platform_suffix
-    InstallPCL $pcl_version, $env:PYTHON_ARCH
+    # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
+    InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    InstallPCL $pcl_version, $env:PYTHON_ARCH, "C:\project"
 }
 
 main

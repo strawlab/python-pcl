@@ -4,18 +4,16 @@ import numpy as np
 import pcl
 from numpy import array
 
-# cloud = pcl.load("pcldata\table_scene_mug_stereo_textured.pcd")
-
 # http://www.pcl-users.org/CropHull-filter-question-td4030345.html
 # pcl::PointCloud <pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud <pcl::PointXYZ>);
-datacloud = pcl.PointCloud()
-points_1 = np.array([
-                    ,
-#                   ], dtype=np.float32)
+# datacloud = pcl.load("pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd")
+datacloud = pcl.load('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
+
+print(datacloud)
 
 filterCloud = pcl.PointCloud()
 vt = pcl.Vertices()
-vertices = vector[pcl.Vertices]
+# vertices = vector[pcl.Vertices]
 
 # // inside point
 # cloud->push_back(pcl::PointXYZ(M_PI * 0.3, M_PI * 0.3, 0));
@@ -29,7 +27,7 @@ vertices = vector[pcl.Vertices]
 # cloud->push_back(pcl::PointXYZ(-M_PI*0.3,-M_PI*0.3,0));
 
 points_2 = np.array([
-						[1 * 0.3 , 1 * 0.3, 0]
+                        [1 * 0.3, 1 * 0.3, 0],
                         [0, 0, 0],
                         [1, 0, 0],
                         [1, 1 * 0.5, 0],
@@ -38,6 +36,7 @@ points_2 = np.array([
                         [-1 * 0.3 , -1 * 0.3, 0]
                     ], dtype=np.float32)
 filterCloud.from_array(points_2)
+# 
 vt.vertices.push_back(1)
 vt.vertices.push_back(2)
 vt.vertices.push_back(3)
