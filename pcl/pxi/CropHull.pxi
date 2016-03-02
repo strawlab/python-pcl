@@ -5,6 +5,7 @@ from libcpp cimport bool
 cimport pcl_defs as cpp
 cimport pcl_filters as pclfil
 
+from boost_shared_ptr cimport shared_ptr
 
 # include "Vertices.pxi"
 
@@ -24,16 +25,18 @@ cdef class CropHull:
         del self.me
 
     # @cython.boundscheck(False)
+    # def SetParameter(self, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] points, cpp.Vertices vt):
     def SetParameter(self, PointCloud points, Vertices vt):
         cdef vector[cpp.Vertices] tmp_vertices
-        tmp_vertices.push_back(deref(vt))
+        # tmp_vertices.push_back(deref(vt))
+        tmp_vertices.push_back(<cpp.Vertices> vt)
         self.me.setHullIndices(tmp_vertices)
-        self.me.setHullCloud(points)
+        self.me.setHullCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> points)
         self.me.setDim(<int> 2)
-        self.me.setCropOutside(<bool> false)
+        self.me.setCropOutside(<bool> False)
 
-    def Filtering(PointCloud outputCloud)
-        self.me.filter(outputCloud)
+    def Filtering(self, PointCloud outputCloud):
+        self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud)
 
     # @cython.boundscheck(False)
     # cdef void _nearest_k(self, PointCloud pc, int index, int k,
