@@ -1,0 +1,165 @@
+Cython で組む時の注意点
+
+・__init__.py の文字コード変更(Windows)
+
+・setup.py のビルド時に
+cythonize をつける
+
+・ライブラリのビルド状態は統一させる
+※ Debug/Release 版を混在させない
+
+※ gil に関して
+関数を GIL なしのコーラブルとして宣言する
+C の関数ヘッダや関数の型に nogil を指定すれば、 GIL がなくてもその関数を安全に呼び出せることを宣言できます:
+cdef void my_gil_free_func(int spam) nogil:
+    ...
+Cython でこのような関数を定義する場合、関数の引数、ローカル変数、戻り 値に Python の値は使えません。また、関数内ではいかなる Python オブジェ クトの操作も行えず、GIL を再取得しないまま、 Python のオブジェクトを操 作するような外部の処理も一切呼び出してはなりません。現状、Cython はこ の制約を部分的にチェックしていますが、完全ではありません。将来的には、 より厳格なチェックを行う可能性があります。
+
+http://omake.accense.com/static/doc-ja/cython/src/userguide/external_C_code.html
+
+どっちもNG
+dereference -> NG
+Cannot convert 'PointCloudPtr_t' to Python object
+
+pc.thisptr_shared
+pcl\_pcl.pyx:634:41: Cannot convert Python object to 'shared_ptr[PointCloud[PointXYZ]]'
+
+KdTree について
+名前空間 pcl::search , pcl に存在
+"pcl/search/kdtree.h", pcl/kdtree/kdtree.h
+※ 定義は pcl::search のみ対応
+http://docs.cython.org/src/userguide/external_C_code.html
+
+-- C++ クラス ラッピング方法 -- 
+Templates
+Create Cython wrapper class
+http://docs.cython.org/src/userguide/wrapping_CPlusPlus.html
+
+Linux ではOK
+Windows ではNG
+
+self.thisptr_shared
+self.thisptr()
+
+※ VC の std::vector の Line238 で例外エラー
+
+pkg-config (Win Version)
+http://stackoverflow.com/questions/1710922/how-to-install-pkg-config-in-windows
+
+Cython――Cとの融合によるPythonの高速化
+http://www.oreilly.co.jp/books/9784873117270/
+
+pyx 上での変換
+p = <型情報> hogehoge
+
+http://stackoverflow.com/questions/10114710/how-to-keep-a-c-class-name-unmodified-with-cython
+http://stackoverflow.com/questions/8933263/how-do-i-wrap-a-c-class-with-cython
+
+Boost の動作でNGとなる原因 予測
+Python をビルドしたであろう Windows の Version と PCL がビルドしているバージョン(+ OS のbit数)を合わせる？
+→ Python 3.4 が VS2010 のDLL環境を持っているのでそれで試す?
+
+Boost 使う時のルール(VC, /MT追加, /MDd)
+http://www44.atwiki.jp/bokuyo/pages/86.html
+
+Boost 手順書
+http://www.boost.org/doc/libs/1_47_0/more/getting_started/windows.html#link-from-within-the-visual-studio-ide
+
+% Python2.7 の使用するVSのバージョン(2008)
+→ Boost のライブラリを2008仕様で使うこと
+% Python3.4の使用するVSのバージョン(2010)
+→ Boost のライブラリを2010仕様で使うこと -> PCL1.6.0
+% Python3.5の使用するVSのバージョン(2015?)
+→ Boost のライブラリを2015仕様で使うこと -> PCL1.7.2
+※ boost の hpp をビルドしているので python のVersion に対応したライブラリを要求される様子。
+※ 対応しているVSが入っていないと, vsvarsall.bat でエラーとなる。
+※ 2.7 の環境下でも動いた。-> 一度、python3.4 で cpp, pyd をビルド済みだから動いただけ。
+※ Boost を外部に持たせれば何とかなりそう？
+※ 何かしら、対応していないモードで入れても 他の原因で python 周りでバグになりそうなためやめておく？
+※ Express で動くかどうかは知らない。(やるメリットないし)
+
+Using Microsoft Visual C with Python
+https://matthew-brett.github.io/pydagogue/python_msvc.html
+
+参考
+http://blog.ionelmc.ro/2014/12/21/compiling-python-extensions-on-windows/
+
+※ 使用するライブラリは Release 版を使用すること!!!(混在はNG)
+※ Boost のライブラリはビルド時の設定に入れなくてもOK(ヘッダとライブラリパスのみ)
+※ 使用しているVersion の確認方法 -> python.exe が置いているフォルダの msvc 関係の dll のVersion 確認。
+
+- Pythonスクリプト実行中に自身のバージョンを取得する方法
+import sys
+sys.version_info
+
+PythonでEXEファイルのバージョン取得
+http://www.ctrlshift.net/blog/?id=20090404_get_exe_version_in_python
+http://ja.pymotw.com/2/platform/
+※ Python のバージョン
+
+もう一度フォルダを削除した後に作成NG
+ → キャッシュに何か残していないか？
+ → setup.py の記述に何かある？(static library の定義は入れるのでは？)
+
+% PCL 1.6.0
+set VS90COMNTOOLS=%VS100COMNTOOLS%
+
+% PCL 1.7.2
+set VS140COMNTOOLS=%VS120COMNTOOLS%
+
+% Toolset
+toolset=msvc-11.0
+
+http://www.vtk.org/download/
+
+SetupTools の活用
+https://blog.ymyzk.com/2014/11/setuptools-cython/
+
+Cython の詳しい説明(日本語)
+http://hhsprings.pinoko.jp/site-hhs/2015/02/setuptools%E6%9C%80%E6%96%B0%E3%81%AF%E3%81%BE%E3%81%A0cython%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AA%E3%82%89%E3%81%9A/
+
+Linker Tool Error
+https://msdn.microsoft.com/ja-jp/library/6wtdswk0.aspx
+
+/NODEFAULTLIB (ライブラリを無視する)
+https://msdn.microsoft.com/ja-jp/library/3tz4da4a.aspx
+
+Cython はまりどころ(1) ～ (3)
+http://hhsprings.pinoko.jp/site-hhs/2015/04/cython%e3%81%ae%e3%81%a9%e3%83%84%e3%83%9c%e3%82%8a%e6%96%b9%e3%82%b7%e3%83%aa%e3%83%bc%e3%82%ba1/
+
+Cython を VisualStudio でビルドする際の Tool について
+https://www.microsoft.com/en-us/download/details.aspx?id=44266
+
+※ Install していないと、
+※ +αで Build する対象のVSを環境変数で設定する。
+
+http://www.ctrlshift.net/blog/?id=20090404_get_exe_version_in_python
+
+VTK に関して
+→ VTK の Python Wrapper を使用する。
+http://yuzatakujp1013.hatenablog.com/entry/2015/12/02/031529
+
+→ CMake 等でビルドする際にVTK 自体に Wrapper Python で ビルドしておく必要あり
+http://www.nips.ac.jp/huinfo/documents/python/python04.html
+http://ameblo.jp/oyasai10/entry-10558671200.html
+
+変数
+VTK_WRAP_PYTHON 
+
+対話型コマンドで import 出来ない時
+※ clear.bat コマンド実行後、再度 install する。
+
+vc と gcc でのコンパイル時の違い
+http://d.hatena.ne.jp/ousttrue/20081119/1227064302
+
+
+
+---
+
+実装
+・Boost.Python/Boost.Numpy に置き換える? → ×
+・pcl_defs.pxd の機能毎に分割してファイル化する？
+
+・http://stackoverflow.com/questions/14038002/opencv-how-to-calculate-distance-between-camera-and-object-using-image
+
+

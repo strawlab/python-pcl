@@ -1,0 +1,60 @@
+
+参考例
+Eigen をCython から使用する際のライブラリ？
+https://github.com/strohel/Ceygen
+
+Ubuntu へのInstall(githubからビルドして利用)
+http://larrylisky.com/2014/03/03/installing-pcl-on-ubuntu/
+
+テストする際のファイル
+TravisCI(Linux/Mac OS)
+
+AppVoyer(Windows)
+http://qiita.com/dalance/items/a0d0a3f6a82a9e2a569e
+
+参考例(Template)
+https://github.com/Stebalien/tempfile
+
+PCL1.7.2
+https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe
+
+https://docs.travis-ci.com/user/languages/python
+
+CI上で pip のキャッシュを効かせるための手順
+https://github.com/pytest-dev/pytest/issues/1000
+
+CodecovでPythonコードリポジトリのコードカバレッジを継続的に計測する
+http://raimon49.github.io/2016/01/17/continuous-code-coverage-with-codecov.html
+
+CI環境構築 ~ Python編 ~
+http://qiita.com/masashi127/items/5bfcba5cad8e82958844
+
+http://rcmdnk.github.io/blog/2014/09/08/computer-github-travis/
+
+Wrapper 上で Template を使用する場合の記述？
+http://stackoverflow.com/questions/31436593/cython-templates-in-python-class-wrappers
+
+Cython はまりどころ(1) ～ (3)
+http://hhsprings.pinoko.jp/site-hhs/2015/04/cython%e3%81%ae%e3%81%a9%e3%83%84%e3%83%9c%e3%82%8a%e6%96%b9%e3%82%b7%e3%83%aa%e3%83%bc%e3%82%ba1/
+
+実験コードをCythonでゴリゴリ実装したら つらかった話 
+http://cocu.hatenablog.com/entry/2016/01/31/171236
+
+Wiki
+https://www.google.co.jp/url?sa=t&rct=j&q=&esrc=s&source=web&cd=3&ved=0ahUKEwjK27GE3ezKAhXLJJQKHbo8CBoQFggvMAI&url=https%3A%2F%2Fgithub.com%2Fcython%2Fcython%2Fwiki%2FFAQ&usg=AFQjCNHMBJXrNU-tfoZH4GyTDKOXZAJGfg&bvm=bv.113943665,d.dGo&cad=rja
+
+コンパイラ設定
+http://omake.accense.com/static/doc-ja/cython/src/reference/compilation.html
+
+---
+
+// エラー要因!!
+cimport indexing as idx
+
+def __getitem__(self, cnp.npy_intp idx):
+        cdef cpp.PointXYZ *p = idx.getptr_at(self.thisptr(), idx)
+        return p.x, p.y, p.z
+
+// 型変換
+http://omake.accense.com/static/doc-ja/cython/src/userguide/extension_types.html#readonly
+

@@ -24,10 +24,10 @@ cdef class CropHull:
     def __dealloc__(self):
         del self.me
 
-    # @cython.boundscheck(False)
-    # def SetParameter(self, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] points, cpp.Vertices vt):
+    # def SetParameter(self, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] points, shared_ptr[cpp.Vertices] vt):
     def SetParameter(self, PointCloud points, Vertices vt):
         cdef vector[cpp.Vertices] tmp_vertices
+        # NG
         # tmp_vertices.push_back(deref(vt))
         tmp_vertices.push_back(<cpp.Vertices> vt)
         self.me.setHullIndices(tmp_vertices)
