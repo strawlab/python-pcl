@@ -15,6 +15,15 @@ $PYTHON_PRERELEASE_REGEX = @"
 (?<prerelease>[a-z]{1,2}\d+)
 "@
 
+$PCL_PRERELEASE_REGEX = @"
+(?x)
+(?<major>\d+)
+\.
+(?<minor>\d+)
+\.
+(?<micro>\d+)
+"@
+
 
 function Download ($filename, $url) {
     $webclient = New-Object System.Net.WebClient
@@ -57,6 +66,15 @@ function ParsePythonVersion ($python_version) {
     return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
 }
 
+function ParsePCLVersion ($pcl_version) {
+    if ($python_version -match $PCL_PRERELEASE_REGEX) {
+        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
+    }
+    $version_obj = [version]$pcl_version
+    return ($version_obj.major, $version_obj.minor, $version_obj.micro, "")
+}
+
+
 function InstallPCLEXE ($exepath, $pcl_home, $install_log) {
     $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     RunCommand $exepath $install_args
@@ -79,8 +97,8 @@ function RunCommand ($command, $command_args) {
 }
 
 function DownloadPCL ($pcl_version, $platform_suffix) {
-    # $major, $minor, $micro, $prerelease = ParsePythonVersion $pcl_version
-    $major, $minor, $micro = ParsePythonVersion $pcl_version
+    # $major, $minor, $micro, $prerelease = ParsePCLVersion $pcl_version
+    $major, $minor, $micro = ParsePCLVersion $pcl_version
 
     if ($major -le 1 -and $minor -eq 6) 
     {
@@ -123,7 +141,7 @@ function ParsePythonVersion ($python_version) {
     return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
 }
 
-function InstallNumpy ($pcl_version, $architecture, $python_home) 
+function InstallNumpy ($python_version, $architecture, $python_home) 
 {
     $major, $minor, $micro, $prerelease = ParsePythonVersion $python_version
 
@@ -181,7 +199,7 @@ function InstallNumpy ($pcl_version, $architecture, $python_home)
 
 function InstallPCL ($pcl_version, $architecture, $pcl_home) 
 {
-    $pcl_path = $python_home + "\Scripts\pip.exe"
+    # $pcl_path = $python_home + "\Scripts\pip.exe"
     
     if ($architecture -eq "32")
     {
@@ -217,7 +235,7 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     }
 }
 
-http://www.lfd.uci.edu/~gohlke/pythonlibs/
+# http://www.lfd.uci.edu/~gohlke/pythonlibs/
 
 $pcl_version = "1.6.0"
 
