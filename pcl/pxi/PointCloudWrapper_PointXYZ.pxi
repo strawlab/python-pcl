@@ -49,13 +49,13 @@ cdef class PointCloud:
     """
     def __cinit__(self, init=None):
         cdef PointCloud other
-
+        
         self._view_count = 0
-
+        
         # TODO: NG --> import pcl --> pyd Error(python shapedptr/C++ shard ptr collusion?)
         # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
         sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
-
+        
         if init is None:
             return
         elif isinstance(init, (numbers.Integral, np.integer)):
@@ -92,7 +92,7 @@ cdef class PointCloud:
     def __getbuffer__(self, Py_buffer *buffer, int flags):
         # TODO parse flags
         cdef Py_ssize_t npoints = self.thisptr().size()
-
+        
         if self._view_count == 0:
             self._view_count += 1
             self._shape[0] = npoints
@@ -138,12 +138,12 @@ cdef class PointCloud:
         Fill this object from a 2D numpy array (float32)
         """
         assert arr.shape[1] == 3
-
+        
         cdef cnp.npy_intp npts = arr.shape[0]
         self.resize(npts)
         self.thisptr().width = npts
         self.thisptr().height = 1
-
+        
         cdef cpp.PointXYZ *p
         for i in range(npts):
             p = idx.getptr(self.thisptr(), i)
@@ -158,14 +158,14 @@ cdef class PointCloud:
         cdef cnp.npy_intp n = self.thisptr().size()
         cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
         cdef cpp.PointXYZ *p
-
+        
         result = np.empty((n, 3), dtype=np.float32)
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
-
+        
         return result
 
     def from_list(self, _list):
@@ -211,7 +211,7 @@ cdef class PointCloud:
         """
         Fill this pointcloud from a file (a local path).
         Only pcd files supported currently.
-
+        
         Deprecated; use pcl.load instead.
         """
         return self._from_pcd_file(f)
@@ -335,6 +335,14 @@ cdef class PointCloud:
         octree.set_input_cloud(self)
         return octree
 
+    def make_crophull(self):
+        """
+        Return a pcl.Vertices object with this object set as the input-cloud
+
+        Deprecated: use the pcl.Vertices constructor on this cloud.
+        """
+        return CropHull(self)
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
@@ -363,4 +371,4 @@ include "MovingLeastSquares.pxi"
 include "KdTree_FLANN.pxi"
 include "OctreePointCloud.pxi"
 include "Vertices.pxi"
-
+include "CropHull.pxi"

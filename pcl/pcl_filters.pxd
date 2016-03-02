@@ -561,6 +561,8 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         # \param[in] crop_outside If true, the filter will remove points
         # outside the hull. If false, those inside will be removed.
         void setCropOutside(bool crop_outside)
+
+ctypedef CropHull[cpp.PointXYZ] CropHull_t
 ###
 
 # extract_indices.h

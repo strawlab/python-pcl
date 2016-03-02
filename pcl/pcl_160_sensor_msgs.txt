@@ -14,16 +14,16 @@ cimport pcl_160_std_msgs as std_msgs
 
 cdef extern from "sensor_msgs/Image.h" namespace "sensor_msgs":
     cdef struct Image:
-	    Image ()
-
-	    std_msgs.Header  header
-	    pcl::uint32_t height;
-	    pcl::uint32_t width;
-	    string encoding;
-	    pcl::uint8_t is_bigendian;
-	    pcl::uint32_t step;
-
-	    vector<pcl::uint8_t> data;
+        Image ()
+        
+        std_msgs.Header  header
+        pcl::uint32_t height;
+        pcl::uint32_t width;
+        string encoding;
+        pcl::uint8_t is_bigendian;
+        pcl::uint32_t step;
+        
+        vector<pcl::uint8_t> data;
 
 ctypedef shared_ptr[Image] ImagePtr;
 ctypedef shared_ptr[Image*] ImageConstPtr;
@@ -33,21 +33,21 @@ ctypedef shared_ptr[Image*] ImageConstPtr;
 ###
 
 cdef extern from "sensor_msgs/PointCloud2.h" namespace "sensor_msgs":
-	cdef struct PointCloud2:
-		PointCloud2 ()
-
-	    std_msgs.Header  header
-	    pcl::uint32_t height;
-	    pcl::uint32_t width;
-	    std::vector< ::sensor_msgs::PointField>  fields;
-
-	    pcl::uint8_t is_bigendian;
-	    pcl::uint32_t point_step;
-	    pcl::uint32_t row_step;
-
-	    std::vector<pcl::uint8_t> data;
-
-	    pcl::uint8_t is_dense;
+    cdef struct PointCloud2:
+        PointCloud2 ()
+        
+        std_msgs.Header  header
+        pcl::uint32_t height;
+        pcl::uint32_t width;
+        std::vector< ::sensor_msgs::PointField>  fields;
+        
+        pcl::uint8_t is_bigendian;
+        pcl::uint32_t point_step;
+        pcl::uint32_t row_step;
+        
+        std::vector<pcl::uint8_t> data;
+        
+        pcl::uint8_t is_dense;
 
 ctypedef sharedptr[PointCloud2] PointCloud2Ptr;
 ctypedef sharedptr[PointCloud2*] PointCloud2ConstPtr;
@@ -57,22 +57,22 @@ ctypedef sharedptr[PointCloud2*] PointCloud2ConstPtr;
 ###
 
 cdef extern from "sensor_msgs/PointField.h" namespace "sensor_msgs":
-	cdef struct PointField:
-		PointField ()
-
-	    string name
-	    pcl::uint32_t offset;
-	    pcl::uint8_t datatype;
-	    pcl::uint32_t count;
-
-	    enum { INT8 = 1 };
-	    enum { UINT8 = 2 };
-	    enum { INT16 = 3 };
-	    enum { UINT16 = 4 };
-	    enum { INT32 = 5 };
-	    enum { UINT32 = 6 };
-	    enum { FLOAT32 = 7 };
-	    enum { FLOAT64 = 8 };
+    cdef struct PointField:
+        PointField ()
+        
+        string name
+        pcl::uint32_t offset;
+        pcl::uint8_t datatype;
+        pcl::uint32_t count;
+        
+        enum { INT8 = 1 };
+        enum { UINT8 = 2 };
+        enum { INT16 = 3 };
+        enum { UINT16 = 4 };
+        enum { INT32 = 5 };
+        enum { UINT32 = 6 };
+        enum { FLOAT32 = 7 };
+        enum { FLOAT64 = 8 };
 
 ctypedef sharedptr[PointField] PointFieldPtr;
 ctypedef sharedptr[PointField*] PointFieldConstPtr;
