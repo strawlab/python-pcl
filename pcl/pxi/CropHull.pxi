@@ -24,19 +24,22 @@ cdef class CropHull:
     def __dealloc__(self):
         del self.me
 
-    # def SetParameter(self, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] points, shared_ptr[cpp.Vertices] vt):
+    # def SetParameter(self, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] points, cpp.Vertices vt):
     def SetParameter(self, PointCloud points, Vertices vt):
         cdef vector[cpp.Vertices] tmp_vertices
         # NG
         # tmp_vertices.push_back(deref(vt))
-        tmp_vertices.push_back(<cpp.Vertices> vt)
+        # tmp_vertices.push_back<cpp.Vertices>(vt)
+        # tmp_vertices.push_back[cpp.Vertices](vt)
+        # tmp_vertices.push_back(vt)
         self.me.setHullIndices(tmp_vertices)
-        self.me.setHullCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> points)
+        # self.me.setHullCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> points)
+        self.me.setHullCloud(points)
         self.me.setDim(<int> 2)
         self.me.setCropOutside(<bool> False)
 
-    def Filtering(self, PointCloud outputCloud):
-        self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud)
+    # def Filtering(self, PointCloud outputCloud):
+    #  # self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud)
 
     # @cython.boundscheck(False)
     # cdef void _nearest_k(self, PointCloud pc, int index, int k,
