@@ -25,6 +25,8 @@ from vector cimport vector as vector2
 # Types
 ###############################################################################
 
+### base class ###
+
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     cdef cppclass SACSegmentationFromNormals[T, N]:
         SACSegmentationFromNormals()
@@ -89,6 +91,74 @@ cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
 #     protected:
 #       PointCloudConstPtr input_;
 ###
+
+# plane_coefficient_comparator.h
+# namespace pcl
+# /** \brief PlaneCoefficientComparator is a Comparator that operates on plane coefficients, for use in planar segmentation.
+#   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
+#   *
+#   * \author Alex Trevor
+#   */
+# template<typename PointT, typename PointNT>
+# class PlaneCoefficientComparator: public Comparator<PointT>
+cdef extern from "pcl/segmentation/plane_coefficient_comparator.h" namespace "pcl":
+    cdef cppclass PlaneCoefficientComparator[T, NT](Comparator[T]):
+        PlaneCoefficientComparator()
+        # PlaneCoefficientComparator (boost::shared_ptr<std::vector<float> >& plane_coeff_d)
+#       public:
+#       typedef typename Comparator<PointT>::PointCloud PointCloud;
+#       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
+#       typedef typename pcl::PointCloud<PointNT> PointCloudN;
+#       typedef typename PointCloudN::Ptr PointCloudNPtr;
+#       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+#       typedef boost::shared_ptr<PlaneCoefficientComparator<PointT, PointNT> > Ptr;
+#       typedef boost::shared_ptr<const PlaneCoefficientComparator<PointT, PointNT> > ConstPtr;
+#       using pcl::Comparator<PointT>::input_;
+# 
+#       virtual void setInputCloud (const PointCloudConstPtr& cloud)
+#       /** \brief Provide a pointer to the input normals.
+#         * \param[in] normals the input normal cloud
+#       inline void setInputNormals (const PointCloudNConstPtr &normals)
+#       /** \brief Get the input normals. */
+#       inline PointCloudNConstPtr getInputNormals () const
+#       /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
+#         * \param[in] plane_coeff_d a pointer to the plane coefficients.
+#       void setPlaneCoeffD (boost::shared_ptr<std::vector<float> >& plane_coeff_d)
+# 
+#       /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
+#         * \param[in] plane_coeff_d a pointer to the plane coefficients.
+#       void setPlaneCoeffD (std::vector<float>& plane_coeff_d)
+#       /** \brief Get a pointer to the vector of the d-coefficient of the planes' hessian normal form. */
+#       const std::vector<float>& getPlaneCoeffD () const
+#       /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
+#         * \param[in] angular_threshold the tolerance in radians
+#       virtual void setAngularThreshold (float angular_threshold)
+#       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
+#       inline float getAngularThreshold () const
+#       /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
+#         * \param[in] distance_threshold the tolerance in meters (at 1m)
+#         * \param[in] depth_dependent whether to scale the threshold based on range from the sensor (default: false)
+#       void setDistanceThreshold (float distance_threshold, bool depth_dependent = false)
+#       /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
+#       inline float getDistanceThreshold () const
+#       /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
+#         * and the difference between the d component of the normals is less than distance threshold, else false
+#         * \param idx1 The first index for the comparison
+#         * \param idx2 The second index for the comparison
+#       virtual bool compare (int idx1, int idx2) const
+#       
+#       protected:
+#       PointCloudNConstPtr normals_;
+#       boost::shared_ptr<std::vector<float> > plane_coeff_d_;
+#       float angular_threshold_;
+#       float distance_threshold_;
+#       bool depth_dependent_;
+#       Eigen::Vector3f z_axis_;
+#       public:
+#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+###
+
+### Inheritance class ###
 
 # edge_aware_plane_comparator.h
 # namespace pcl
@@ -1392,175 +1462,6 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 #   };
 ###
 
-# plane_coefficient_comparator.h
-# namespace pcl
-# {
-#   /** \brief PlaneCoefficientComparator is a Comparator that operates on plane coefficients, for use in planar segmentation.
-#     * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#     *
-#     * \author Alex Trevor
-#     */
-#   template<typename PointT, typename PointNT>
-#   class PlaneCoefficientComparator: public Comparator<PointT>
-#   {
-#     public:
-#       typedef typename Comparator<PointT>::PointCloud PointCloud;
-#       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       
-#       typedef typename pcl::PointCloud<PointNT> PointCloudN;
-#       typedef typename PointCloudN::Ptr PointCloudNPtr;
-#       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       
-#       typedef boost::shared_ptr<PlaneCoefficientComparator<PointT, PointNT> > Ptr;
-#       typedef boost::shared_ptr<const PlaneCoefficientComparator<PointT, PointNT> > ConstPtr;
-# 
-#       using pcl::Comparator<PointT>::input_;
-#       
-#       /** \brief Empty constructor for PlaneCoefficientComparator. */
-#       PlaneCoefficientComparator ()
-#         : normals_ ()
-#         , plane_coeff_d_ ()
-#         , angular_threshold_ (pcl::deg2rad (2.0f))
-#         , distance_threshold_ (0.02f)
-#         , depth_dependent_ (true)
-#         , z_axis_ (Eigen::Vector3f (0.0, 0.0, 1.0) )
-#       {
-#       }
-# 
-#       /** \brief Constructor for PlaneCoefficientComparator.
-#         * \param[in] plane_coeff_d a reference to a vector of d coefficients of plane equations.  Must be the same size as the input cloud and input normals.  a, b, and c coefficients are in the input normals.
-#         */
-#       PlaneCoefficientComparator (boost::shared_ptr<std::vector<float> >& plane_coeff_d) 
-#         : normals_ ()
-#         , plane_coeff_d_ (plane_coeff_d)
-#         , angular_threshold_ (pcl::deg2rad (2.0f))
-#         , distance_threshold_ (0.02f)
-#         , depth_dependent_ (true)
-#         , z_axis_ (Eigen::Vector3f (0.0f, 0.0f, 1.0f) )
-#       {
-#       }
-#       
-#       /** \brief Destructor for PlaneCoefficientComparator. */
-#       virtual
-#       ~PlaneCoefficientComparator ()
-#       {
-#       }
-# 
-#       virtual void 
-#       setInputCloud (const PointCloudConstPtr& cloud)
-#       {
-#         input_ = cloud;
-#       }
-#       
-#       /** \brief Provide a pointer to the input normals.
-#         * \param[in] normals the input normal cloud
-#         */
-#       inline void
-#       setInputNormals (const PointCloudNConstPtr &normals)
-#       {
-#         normals_ = normals;
-#       }
-# 
-#       /** \brief Get the input normals. */
-#       inline PointCloudNConstPtr
-#       getInputNormals () const
-#       {
-#         return (normals_);
-#       }
-# 
-#       /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
-#         * \param[in] plane_coeff_d a pointer to the plane coefficients.
-#         */
-#       void
-#       setPlaneCoeffD (boost::shared_ptr<std::vector<float> >& plane_coeff_d)
-#       {
-#         plane_coeff_d_ = plane_coeff_d;
-#       }
-# 
-#       /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
-#         * \param[in] plane_coeff_d a pointer to the plane coefficients.
-#         */
-#       void
-#       setPlaneCoeffD (std::vector<float>& plane_coeff_d)
-#       {
-#         plane_coeff_d_ = boost::make_shared<std::vector<float> >(plane_coeff_d);
-#       }
-#       
-#       /** \brief Get a pointer to the vector of the d-coefficient of the planes' hessian normal form. */
-#       const std::vector<float>&
-#       getPlaneCoeffD () const
-#       {
-#         return (plane_coeff_d_);
-#       }
-# 
-#       /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
-#         * \param[in] angular_threshold the tolerance in radians
-#         */
-#       virtual void
-#       setAngularThreshold (float angular_threshold)
-#       {
-#         angular_threshold_ = cosf (angular_threshold);
-#       }
-#       
-#       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
-#       inline float
-#       getAngularThreshold () const
-#       {
-#         return (acosf (angular_threshold_) );
-#       }
-# 
-#       /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
-#         * \param[in] distance_threshold the tolerance in meters (at 1m)
-#         * \param[in] depth_dependent whether to scale the threshold based on range from the sensor (default: false)
-#         */
-#       void
-#       setDistanceThreshold (float distance_threshold, 
-#                             bool depth_dependent = false)
-#       {
-#         distance_threshold_ = distance_threshold;
-#         depth_dependent_ = depth_dependent;
-#       }
-# 
-#       /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
-#       inline float
-#       getDistanceThreshold () const
-#       {
-#         return (distance_threshold_);
-#       }
-#       
-#       /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
-#         * and the difference between the d component of the normals is less than distance threshold, else false
-#         * \param idx1 The first index for the comparison
-#         * \param idx2 The second index for the comparison
-#         */
-#       virtual bool
-#       compare (int idx1, int idx2) const
-#       {
-#         float threshold = distance_threshold_;
-#         if (depth_dependent_)
-#         {
-#           Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();
-#           
-#           float z = vec.dot (z_axis_);
-#           threshold *= z * z;
-#         }
-#         return ( (fabs ((*plane_coeff_d_)[idx1] - (*plane_coeff_d_)[idx2]) < threshold)
-#                  && (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ ) );
-#       }
-#       
-#     protected:
-#       PointCloudNConstPtr normals_;
-#       boost::shared_ptr<std::vector<float> > plane_coeff_d_;
-#       float angular_threshold_;
-#       float distance_threshold_;
-#       bool depth_dependent_;
-#       Eigen::Vector3f z_axis_;
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
-###
-
 # plane_refinement_comparator.h
 # namespace pcl
 # {
@@ -2247,35 +2148,29 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 
 # segment_differences.h
 # namespace pcl
-# {
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Obtain the difference between two aligned point clouds as another point cloud, given a distance threshold.
-#     * \param src the input point cloud source
-#     * \param tgt the input point cloud target we need to obtain the difference against
-#     * \param threshold the distance threshold (tolerance) for point correspondences. (e.g., check if f a point p1 from 
-#     * src has a correspondence > threshold than a point p2 from tgt)
-#     * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching built over \a tgt
-#     * \param output the resultant output point cloud difference
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> 
-#   void getPointCloudDifference (
-#       const pcl::PointCloud<PointT> &src, const pcl::PointCloud<PointT> &tgt, 
-#       double threshold, const boost::shared_ptr<pcl::search::Search<PointT> > &tree,
-#       pcl::PointCloud<PointT> &output);
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief @b SegmentDifferences obtains the difference between two spatially
-#     * aligned point clouds and returns the difference between them for a maximum
-#     * given distance threshold.
-#     * \author Radu Bogdan Rusu
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT>
-#   class SegmentDifferences: public PCLBase<PointT>
-#   {
+# /** \brief Obtain the difference between two aligned point clouds as another point cloud, given a distance threshold.
+#   * \param src the input point cloud source
+#   * \param tgt the input point cloud target we need to obtain the difference against
+#   * \param threshold the distance threshold (tolerance) for point correspondences. (e.g., check if f a point p1 from 
+#   * src has a correspondence > threshold than a point p2 from tgt)
+#   * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching built over \a tgt
+#   * \param output the resultant output point cloud difference
+#   * \ingroup segmentation
+#   */
+# template <typename PointT> 
+# void getPointCloudDifference (
+#     const pcl::PointCloud<PointT> &src, const pcl::PointCloud<PointT> &tgt, 
+#     double threshold, const boost::shared_ptr<pcl::search::Search<PointT> > &tree,
+#     pcl::PointCloud<PointT> &output);
+
+# /** \brief @b SegmentDifferences obtains the difference between two spatially
+#   * aligned point clouds and returns the difference between them for a maximum
+#   * given distance threshold.
+#   * \author Radu Bogdan Rusu
+#   * \ingroup segmentation
+#   */
+# template <typename PointT>
+# class SegmentDifferences: public PCLBase<PointT>
 #     typedef PCLBase<PointT> BasePCLBase;
 # 
 #     public:
@@ -2290,74 +2185,48 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 #       typedef PointIndices::ConstPtr PointIndicesConstPtr;
 # 
 #       /** \brief Empty constructor. */
-#       SegmentDifferences () : 
-#         tree_ (), target_ (), distance_threshold_ (0)
-#       {};
+#       SegmentDifferences ()
 # 
 #       /** \brief Provide a pointer to the target dataset against which we
 #         * compare the input cloud given in setInputCloud
-#         *
 #         * \param cloud the target PointCloud dataset
-#         */
-#       inline void 
-#       setTargetCloud (const PointCloudConstPtr &cloud) { target_ = cloud; }
+#       inline void setTargetCloud (const PointCloudConstPtr &cloud)
 # 
 #       /** \brief Get a pointer to the input target point cloud dataset. */
-#       inline PointCloudConstPtr const 
-#       getTargetCloud () { return (target_); }
-# 
+#       inline PointCloudConstPtr const getTargetCloud ()
 #       /** \brief Provide a pointer to the search object.
 #         * \param tree a pointer to the spatial search object.
-#         */
-#       inline void 
-#       setSearchMethod (const KdTreePtr &tree) { tree_ = tree; }
-# 
+#       inline void setSearchMethod (const KdTreePtr &tree)
 #       /** \brief Get a pointer to the search method used. */
-#       inline KdTreePtr 
-#       getSearchMethod () { return (tree_); }
-# 
+#       inline KdTreePtr getSearchMethod ()
 #       /** \brief Set the maximum distance tolerance (squared) between corresponding
 #         * points in the two input datasets.
-#         *
 #         * \param sqr_threshold the squared distance tolerance as a measure in L2 Euclidean space
-#         */
-#       inline void 
-#       setDistanceThreshold (double sqr_threshold) { distance_threshold_ = sqr_threshold; }
-# 
+#       inline void setDistanceThreshold (double sqr_threshold)
 #       /** \brief Get the squared distance tolerance between corresponding points as a
 #         * measure in the L2 Euclidean space.
-#         */
-#       inline double 
-#       getDistanceThreshold () { return (distance_threshold_); }
+#       inline double getDistanceThreshold ()
 # 
 #       /** \brief Segment differences between two input point clouds.
 #         * \param output the resultant difference between the two point clouds as a PointCloud
 #         */
-#       void 
-#       segment (PointCloud &output);
-# 
-#     protected:
+#       void segment (PointCloud &output);
+#       protected:
 #       // Members derived from the base class
 #       using BasePCLBase::input_;
 #       using BasePCLBase::indices_;
 #       using BasePCLBase::initCompute;
 #       using BasePCLBase::deinitCompute;
-# 
 #       /** \brief A pointer to the spatial search object. */
 #       KdTreePtr tree_;
-# 
 #       /** \brief The input target point cloud dataset. */
 #       PointCloudConstPtr target_;
-# 
 #       /** \brief The distance tolerance (squared) as a measure in the L2
 #         * Euclidean space between corresponding points. 
 #         */
 #       double distance_threshold_;
-# 
 #       /** \brief Class getName method. */
-#       virtual std::string 
-#       getClassName () const { return ("SegmentDifferences"); }
-#   };
+#       virtual std::string getClassName () const { return ("SegmentDifferences"); }
 ###
 
 ###############################################################################
