@@ -3,11 +3,11 @@ os:
 - Windows Server 2012 R2
 
 environment:
-  # global:
-  #   # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-  #   # /E:ON and /V:ON options are not enabled in the batch script intepreter
-  #   # See: http://stackoverflow.com/a/13751649/163740
-  #   # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
   # Version 1.6.0 Check
@@ -15,10 +15,12 @@ environment:
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "32"
     PCL_ROOT: "C:\Program Files\PCL 1.6.0"
+
   - PYTHON: "C:\\Python34-x64"
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\Program Files\PCL 1.6.0"
+
   # Version 1.7.2, 1.8.0 Check
   #  - PYTHON: "C:\\Python35"
   #    PYTHON_VERSION: "3.5.0"
@@ -27,9 +29,11 @@ environment:
   #    PYTHON_VERSION: "3.5.0"
   #    PYTHON_ARCH: "64"
 
+
 branches: 
   only: 
     - master 
+
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.

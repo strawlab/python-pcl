@@ -42,9 +42,9 @@ before_install:
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
-      sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
-      sudo apt-get update -y
-      sudo apt-get install libpcl-all -y
+      sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      sudo apt-get update -y;
+      sudo apt-get install libpcl-all -y;
     fi
 
 script: 
