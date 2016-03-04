@@ -41,10 +41,11 @@ before_install:
 
     fi
 
-before_script:
-   - sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
-   - sudo apt-get update -y
-   - sudo apt-get install libpcl-all -y
+  - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
+      sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+      sudo apt-get update -y
+      sudo apt-get install libpcl-all -y
+    fi
 
 script: 
     - pip install cython
