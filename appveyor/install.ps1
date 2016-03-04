@@ -15,6 +15,7 @@ $PYTHON_PRERELEASE_REGEX = @"
 (?<prerelease>[a-z]{1,2}\d+)
 "@
 
+
 $PCL_PRERELEASE_REGEX = @"
 (?x)
 (?<major>\d+)
@@ -25,7 +26,8 @@ $PCL_PRERELEASE_REGEX = @"
 "@
 
 
-function Download ($filename, $url) {
+function Download ($filename, $url) 
+{
     $webclient = New-Object System.Net.WebClient
 
     $basedir = $pwd.Path + "\"
