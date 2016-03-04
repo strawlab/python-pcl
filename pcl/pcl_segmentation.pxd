@@ -56,336 +56,162 @@ ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 ###
 # comparator.h
 # namespace pcl
-# {
 #   /** \brief Comparator is the base class for comparators that compare two points given some function.
 #     * Currently intended for use with OrganizedConnectedComponentSegmentation
-#     *
 #     * \author Alex Trevor
-#     */
-#   template <typename PointT>
-#   class Comparator
-#   {
-#     public:
+# template <typename PointT>
+# class Comparator
+cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
+    cdef cppclass Comparator[T]:
+    	Comparator()
+#     	public:
 #       typedef pcl::PointCloud<PointT> PointCloud;
 #       typedef typename PointCloud::Ptr PointCloudPtr;
 #       typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-# 
 #       typedef boost::shared_ptr<Comparator<PointT> > Ptr;
 #       typedef boost::shared_ptr<const Comparator<PointT> > ConstPtr;
-# 
-#       /** \brief Empty constructor for comparator. */
-#       Comparator () : input_ ()
-#       {
-#       }
-#       
-#       /** \brief Empty destructor for comparator. */
-#       virtual
-#       ~Comparator ()
-#       {
-#       }
 #       
 #       /** \brief Set the input cloud for the comparator.
 #         * \param[in] cloud the point cloud this comparator will operate on
 #         */
-#       virtual void 
-#       setInputCloud (const PointCloudConstPtr& cloud)
-#       {
-#         input_ = cloud;
-#       }
-#       
+#       virtual void setInputCloud (const PointCloudConstPtr& cloud)
+#
 #       /** \brief Get the input cloud this comparator operates on. */
-#       virtual PointCloudConstPtr
-#       getInputCloud () const
-#       {
-#         return (input_);
-#       }
+#       virtual PointCloudConstPtr getInputCloud () const
 # 
 #       /** \brief Compares the two points in the input cloud designated by these two indices.
 #         * This is pure virtual and must be implemented by subclasses with some comparison function.
 #         * \param[in] idx1 the index of the first point.
 #         * \param[in] idx2 the index of the second point.
 #         */
-#       virtual bool
-#       compare (int idx1, int idx2) const = 0;
+#       virtual bool compare (int idx1, int idx2) const = 0;
 #       
 #     protected:
 #       PointCloudConstPtr input_;
-#   };
 ###
 
 # edge_aware_plane_comparator.h
 # namespace pcl
-# {
-#   /** \brief EdgeAwarePlaneComparator is a Comparator that operates on plane coefficients, 
-#     * for use in planar segmentation.
-#     * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#     *
-#     * \author Stefan Holzer, Alex Trevor
-#     */
-#   template<typename PointT, typename PointNT>
-#   class EdgeAwarePlaneComparator: public PlaneCoefficientComparator<PointT, PointNT>
-#   {
-#     public:
+# /** \brief EdgeAwarePlaneComparator is a Comparator that operates on plane coefficients, 
+#   * for use in planar segmentation.
+#   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
+#   * \author Stefan Holzer, Alex Trevor
+#   */
+# template<typename PointT, typename PointNT>
+# class EdgeAwarePlaneComparator: public PlaneCoefficientComparator<PointT, PointNT>
+cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl":
+    cdef cppclass EdgeAwarePlaneComparator[T, NT](PlaneCoefficientComparator[T, NT]):
+    	EdgeAwarePlaneComparator()
+    	# EdgeAwarePlaneComparator (const float *distance_map)
+     	# public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
 #       typedef typename PointCloudN::Ptr PointCloudNPtr;
 #       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       
 #       typedef boost::shared_ptr<EdgeAwarePlaneComparator<PointT, PointNT> > Ptr;
 #       typedef boost::shared_ptr<const EdgeAwarePlaneComparator<PointT, PointNT> > ConstPtr;
-# 
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::input_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::plane_coeff_d_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
 # 
-#       /** \brief Empty constructor for PlaneCoefficientComparator. */
-#       EdgeAwarePlaneComparator ()
-#       {
-#       }
-# 
-#       /** \brief Empty constructor for PlaneCoefficientComparator. 
-#         * \param[in] distance_map the distance map to use
-#         */
-#       EdgeAwarePlaneComparator (const float *distance_map) : 
-#         distance_map_ (distance_map)
-#       {
-#       }
-# 
-#       /** \brief Destructor for PlaneCoefficientComparator. */
-#       virtual
-#       ~EdgeAwarePlaneComparator ()
-#       {
-#       }
-# 
 #       /** \brief Set a distance map to use. For an example of a valid distance map see 
 #         * \ref OrganizedIntegralImageNormalEstimation
 #         * \param[in] distance_map the distance map to use
 #         */
-#       inline void
-#       setDistanceMap (const float *distance_map)
-#       {
-#         distance_map_ = distance_map;
-#       }
-# 
+#       inline void setDistanceMap (const float *distance_map)
 #       /** \brief Return the distance map used. */
-#       const float*
-#       getDistanceMap () const
-#       {
-#         return (distance_map_);
-#       }
+#       const float* getDistanceMap () const
 #       
-#     protected:
+#     	protected:
 #       /** \brief Compare two neighboring points, by using normal information, curvature, and euclidean distance information.
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.
-#         */
-#       bool
-#       compare (int idx1, int idx2) const
-#       {
-#         float dx = input_->points[idx1].x - input_->points[idx2].x;
-#         float dy = input_->points[idx1].y - input_->points[idx2].y;
-#         float dz = input_->points[idx1].z - input_->points[idx2].z;
-#         float dist = sqrtf (dx*dx + dy*dy + dz*dz);
-# 
-#         bool normal_ok = (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ );
-#         bool dist_ok = (dist < distance_threshold_);
-# 
-#         bool curvature_ok = normals_->points[idx1].curvature < 0.04;
-#         bool plane_d_ok = fabs ((*plane_coeff_d_)[idx1] - (*plane_coeff_d_)[idx2]) < 0.04;
-#         
-#         if (distance_map_[idx1] < 5)    // 5 pixels
-#           curvature_ok = false;
-#         
-#         return (dist_ok && normal_ok && curvature_ok && plane_d_ok);
-#       }
-# 
+#       bool compare (int idx1, int idx2) const
 #     protected:
 #       const float* distance_map_;
-#   };
 ###
 
 # euclidean_cluster_comparator.h
 # namespace pcl
-# {
-#   /** \brief EuclideanClusterComparator is a comparator used for finding clusters supported by planar surfaces.
-#     * This needs to be run as a second pass after extracting planar surfaces, using MultiPlaneSegmentation for example.
-#     *
-#     * \author Alex Trevor
-#     */
-#   template<typename PointT, typename PointNT, typename PointLT>
-#   class EuclideanClusterComparator: public Comparator<PointT>
-#   {
-#     public:
+# /** \brief EuclideanClusterComparator is a comparator used for finding clusters supported by planar surfaces.
+#   * This needs to be run as a second pass after extracting planar surfaces, using MultiPlaneSegmentation for example.
+#   * \author Alex Trevor
+# template<typename PointT, typename PointNT, typename PointLT>
+# class EuclideanClusterComparator: public Comparator<PointT>
+cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pcl":
+    cdef cppclass EuclideanClusterComparator[T, NT, LT](Comparator[T]):
+    	EuclideanClusterComparator()
+#     	public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
 #       typedef typename PointCloudN::Ptr PointCloudNPtr;
 #       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       
 #       typedef typename pcl::PointCloud<PointLT> PointCloudL;
 #       typedef typename PointCloudL::Ptr PointCloudLPtr;
 #       typedef typename PointCloudL::ConstPtr PointCloudLConstPtr;
-# 
 #       typedef boost::shared_ptr<EuclideanClusterComparator<PointT, PointNT, PointLT> > Ptr;
 #       typedef boost::shared_ptr<const EuclideanClusterComparator<PointT, PointNT, PointLT> > ConstPtr;
-# 
 #       using pcl::Comparator<PointT>::input_;
 #       
-#       /** \brief Empty constructor for EuclideanClusterComparator. */
-#       EuclideanClusterComparator ()
-#         : normals_ ()
-#         , angular_threshold_ (0.0f)
-#         , distance_threshold_ (0.005f)
-#         , depth_dependent_ ()
-#         , z_axis_ ()
-#       {
-#       }
-#       
-#       /** \brief Destructor for EuclideanClusterComparator. */
-#       virtual
-#       ~EuclideanClusterComparator ()
-#       {
-#       }
-# 
-#       virtual void 
-#       setInputCloud (const PointCloudConstPtr& cloud)
-#       {
-#         input_ = cloud;
-#         Eigen::Matrix3f rot = input_->sensor_orientation_.toRotationMatrix ();
-#         z_axis_ = rot.col (2);
-#       }
-#       
+#       virtual void setInputCloud (const PointCloudConstPtr& cloud)
 #       /** \brief Provide a pointer to the input normals.
 #         * \param[in] normals the input normal cloud
-#         */
-#       inline void
-#       setInputNormals (const PointCloudNConstPtr &normals)
-#       {
-#         normals_ = normals;
-#       }
-# 
+#       inline void setInputNormals (const PointCloudNConstPtr &normals)
 #       /** \brief Get the input normals. */
-#       inline PointCloudNConstPtr
-#       getInputNormals () const
-#       {
-#         return (normals_);
-#       }
-# 
+#       inline PointCloudNConstPtr getInputNormals () const
 #       /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
 #         * \param[in] angular_threshold the tolerance in radians
-#         */
-#       virtual inline void
-#       setAngularThreshold (float angular_threshold)
-#       {
-#         angular_threshold_ = cosf (angular_threshold);
-#       }
-#       
+#       virtual inline void setAngularThreshold (float angular_threshold)
 #       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
-#       inline float
-#       getAngularThreshold () const
-#       {
-#         return (acos (angular_threshold_) );
-#       }
-# 
+#       inline float getAngularThreshold () const
 #       /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
 #         * \param[in] distance_threshold the tolerance in meters
-#         */
-#       inline void
-#       setDistanceThreshold (float distance_threshold, bool depth_dependent)
-#       {
-#         distance_threshold_ = distance_threshold;
-#         depth_dependent_ = depth_dependent;
-#       }
-# 
+#       inline void setDistanceThreshold (float distance_threshold, bool depth_dependent)
 #       /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
-#       inline float
-#       getDistanceThreshold () const
-#       {
-#         return (distance_threshold_);
-#       }
-# 
+#       inline float getDistanceThreshold () const
 #       /** \brief Set label cloud
 #         * \param[in] labels The label cloud
-#         */
-#       void
-#       setLabels (PointCloudLPtr& labels)
-#       {
-#         labels_ = labels;
-#       }
-# 
+#       void setLabels (PointCloudLPtr& labels)
 #       /** \brief Set labels in the label cloud to exclude.
 #         * \param exclude_labels a vector of bools corresponding to whether or not a given label should be considered
-#         */
-#       void
-#       setExcludeLabels (std::vector<bool>& exclude_labels)
-#       {
-#         exclude_labels_ = boost::make_shared<std::vector<bool> >(exclude_labels);
-#       }
-# 
+#       void setExcludeLabels (std::vector<bool>& exclude_labels)
 #       /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
 #         * and the difference between the d component of the normals is less than distance threshold, else false
 #         * \param idx1 The first index for the comparison
 #         * \param idx2 The second index for the comparison
-#         */
-#       virtual bool
-#       compare (int idx1, int idx2) const
-#       {
-#         int label1 = labels_->points[idx1].label;
-#         int label2 = labels_->points[idx2].label;
-#         
-#         if (label1 == -1 || label2 == -1)
-#           return false;
-#         
-#         if ( (*exclude_labels_)[label1] || (*exclude_labels_)[label2])
-#           return false;
-#         
-#         float dx = input_->points[idx1].x - input_->points[idx2].x;
-#         float dy = input_->points[idx1].y - input_->points[idx2].y;
-#         float dz = input_->points[idx1].z - input_->points[idx2].z;
-#         float dist = sqrt (dx*dx + dy*dy + dz*dz);
-# 
-#         return (dist < distance_threshold_);
-#       }
+#       virtual bool compare (int idx1, int idx2) const
 #       
-#     protected:
+#     	protected:
 #       PointCloudNConstPtr normals_;
 #       PointCloudLPtr labels_;
-# 
 #       boost::shared_ptr<std::vector<bool> > exclude_labels_;
 #       float angular_threshold_;
 #       float distance_threshold_;
 #       bool depth_dependent_;
 #       Eigen::Vector3f z_axis_;
-#   };
 ###
 
 # euclidean_plane_coefficient_comparator.h
 # namespace pcl
-# {
-#   /** \brief EuclideanPlaneCoefficientComparator is a Comparator that operates on plane coefficients, 
-#     * for use in planar segmentation.
-#     * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#     *
-#     * \author Alex Trevor
-#     */
-#   template<typename PointT, typename PointNT>
-#   class EuclideanPlaneCoefficientComparator: public PlaneCoefficientComparator<PointT, PointNT>
-#   {
+# /** \brief EuclideanPlaneCoefficientComparator is a Comparator that operates on plane coefficients, 
+#   * for use in planar segmentation.
+#   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
+#   *
+#   * \author Alex Trevor
+# template<typename PointT, typename PointNT>
+# class EuclideanPlaneCoefficientComparator: public PlaneCoefficientComparator<PointT, PointNT>
 #     public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
 #       typedef typename PointCloudN::Ptr PointCloudNPtr;
 #       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       
 #       typedef boost::shared_ptr<EuclideanPlaneCoefficientComparator<PointT, PointNT> > Ptr;
 #       typedef boost::shared_ptr<const EuclideanPlaneCoefficientComparator<PointT, PointNT> > ConstPtr;
-# 
 #       using pcl::Comparator<PointT>::input_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
@@ -423,20 +249,17 @@ ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 
 # extract_clusters.h
 # namespace pcl
-# {
-#   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
-#     * \param cloud the point cloud message
-#     * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
-#     * \note the tree has to be created as a spatial locator on \a cloud
-#     * \param tolerance the spatial cluster tolerance as a measure in L2 Euclidean space
-#     * \param clusters the resultant clusters containing point indices (as a vector of PointIndices)
-#     * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
-#     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> void 
-#   extractEuclideanClusters (
+# /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
+#   * \param cloud the point cloud message
+#   * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
+#   * \note the tree has to be created as a spatial locator on \a cloud
+#   * \param tolerance the spatial cluster tolerance as a measure in L2 Euclidean space
+#   * \param clusters the resultant clusters containing point indices (as a vector of PointIndices)
+#   * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
+#   * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
+#   * \ingroup segmentation
+# template <typename PointT> void 
+# extractEuclideanClusters (
 #       const PointCloud<PointT> &cloud, const boost::shared_ptr<search::Search<PointT> > &tree, 
 #       float tolerance, std::vector<PointIndices> &clusters, 
 #       unsigned int min_pts_per_cluster = 1, unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ());

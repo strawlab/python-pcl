@@ -3,44 +3,49 @@ from __future__ import print_function
 import numpy as np
 import pcl
 
-cloud = pcl.load("pcldata\table_scene_mug_stereo_textured.pcd")
+# cloud = pcl.load('pcldata\tutorials\table_scene_mug_stereo_textured.pcd')
+cloud = pcl.load('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
 
-print(cloud.size)
+# pcl::CropBox<PointXYZI> clipper;
+# clipper.setInputCloud(cloud);
+clipper = cloud.make_cropbox()
 
-fil = cloud.make_passthrough_filter()
-fil.set_filter_field_name("z")
-fil.set_filter_limits(0, 1.5)
-cloud_filtered = fil.filter()
+# pcl::PCDWriter writer;
+# pcl::PointCloud<PointXYZI>::Ptr outcloud;
+outcloud = pcl.PointCloud()
 
-print(cloud_filtered.size)
+# clipper.setTranslation(Eigen::Vector3f(pose->tx, pose->ty, pose->tz));
+# clipper.setRotation(Eigen::Vector3f(pose->rx, pose->ry, pose->rz));
+# clipper.setMin(-Eigen::Vector4f(tracklet->l/2, tracklet->w/2, 0, 0));
+# clipper.setMax(Eigen::Vector4f(tracklet->l/2, tracklet->w/2, tracklet->h, 0));
+# clipper.filter(*outcloud);
+tx = 0
+ty = 0
+tz = 0
+clipper.set_Translation(tx, ty, tz)
+rx = 0
+ry = 0
+rz = 0
+clipper.set_Rotation(rx, ry, rz)
+minx = -1.5
+miny = -1.5
+minz = 2
+mins = 0
+maxx = 3.5
+maxy = 3.5
+maxz = 3
+maxs = 0
+clipper.set_MinMax(minx, miny, minz, mins, maxx, maxy, maxz, maxs)
+clipper.Filtering(outcloud)
 
-seg = cloud_filtered.make_segmenter_normals(ksearch=50)
-seg.set_optimize_coefficients(True)
-seg.set_model_type(pcl.SACMODEL_NORMAL_PLANE)
-seg.set_normal_distance_weight(0.1)
-seg.set_method_type(pcl.SAC_RANSAC)
-seg.set_max_iterations(100)
-seg.set_distance_threshold(0.03)
-indices, model = seg.segment()
+# outcloud.to_file('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\test.pcd')
+pcl.save(outcloud, "test.pcd")
 
-print(model)
-
-cloud_plane = cloud_filtered.extract(indices, negative=False)
-cloud_plane.to_file("table_scene_mug_stereo_textured_plane.pcd")
-
-cloud_cyl = cloud_filtered.extract(indices, negative=True)
-
-seg = cloud_cyl.make_segmenter_normals(ksearch=50)
-seg.set_optimize_coefficients(True)
-seg.set_model_type(pcl.SACMODEL_CYLINDER)
-seg.set_normal_distance_weight(0.1)
-seg.set_method_type(pcl.SAC_RANSAC)
-seg.set_max_iterations(10000)
-seg.set_distance_threshold(0.05)
-seg.set_radius_limits(0, 0.1)
-indices, model = seg.segment()
-
-print(model)
-
-cloud_cylinder = cloud_cyl.extract(indices, negative=False)
-cloud_cylinder.to_file("table_scene_mug_stereo_textured_cylinder.pcd")
+# stringstream outfilename;
+# outfilename << outfile << tracklet->objectType << i << ".pcd";
+# if(!outcloud->empty()){
+# 	cout << "Found "<<outcloud->size() << " points, writing to " << outfilename.str() << endl;
+# 	writer.write<PointXYZI> (outfilename.str(), *outcloud, false);
+# }else{
+# 	cerr << "Couldn't find points for tracklet" << tracklet->objectType << i << endl;
+# }

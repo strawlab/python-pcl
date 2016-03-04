@@ -13,7 +13,6 @@ print(datacloud)
 
 filterCloud = pcl.PointCloud()
 vt = pcl.Vertices()
-# vertices = vector[pcl.Vertices]
 
 # // inside point
 # cloud->push_back(pcl::PointXYZ(M_PI * 0.3, M_PI * 0.3, 0));
@@ -47,6 +46,7 @@ vt.from_array(vertices_point_1)
 # vt.vertices.push_back(3)
 # vt.vertices.push_back(4)
 # vt.vertices.push_back(5)
+# vertices = vector[pcl.Vertices]
 # vertices.push_back(vt)
 
 outputCloud = pcl.PointCloud()
@@ -63,9 +63,10 @@ crophull.SetParameter(filterCloud, vt)
 # indices = vector[int]
 # cropHull.filter(indices);
 # outputCloud = cropHull.filter();
+# print("before: " + outputCloud)
 crophull.Filtering(outputCloud)
-
 print(outputCloud)
+
 
 # Viewer
 # // pcl::PointCloud <pcl::PointXYZ>::Ptr filtered_cloud = cloud (new pcl::PointCloud <pcl::PointXYZ>);

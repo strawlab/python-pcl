@@ -5,40 +5,61 @@ from libcpp cimport bool
 cimport pcl_defs as cpp
 cimport pcl_filters as pclfil
 
+cimport eigen as eigen3
+
 from boost_shared_ptr cimport shared_ptr
 
-# include "Vertices.pxi"
-
-cdef class CropHull:
+cdef class CropBox:
     """
     
     Must be constructed from the reference point cloud, which is copied, so
-    changed to pc are not reflected in CropHull(pc).
+    changed to pc are not reflected in CropBox(pc).
     """
-    cdef pclfil.CropHull_t *me
+    cdef pclfil.CropBox_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new pclfil.CropHull_t()
+        self.me = new pclfil.CropBox_t()
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me
 
-    # def SetParameter(self, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] points, cpp.Vertices vt):
-    def SetParameter(self, PointCloud points, Vertices vt):
-        cdef const vector[cpp.Vertices] tmp_vertices
-        # NG
-        # tmp_vertices.push_back(deref(vt))
-        # tmp_vertices.push_back<cpp.Vertices>(vt)
-        # tmp_vertices.push_back[cpp.Vertices](vt)
-        # tmp_vertices.push_back(vt)
-        # tmp_vertices.push_back(deref(vt.thisptr()))
-        self.me.setHullIndices(tmp_vertices)
-        # self.me.setHullCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> points)
-        # convert <PointCloud> to <shared_ptr[cpp.PointCloud[cpp.PointXYZ]]>
-        self.me.setHullCloud(points.thisptr_shared)
-        self.me.setDim(<int> 2)
-        self.me.setCropOutside(<bool> False)
+    def set_Translation(self, tx, ty, tz):
+        # Convert Eigen::Vector3f
+        cdef eigen3.Vector3f origin
+        cdef float *data = origin.data()
+        data[0] = tx
+        data[1] = ty
+        data[2] = tz
+        self.me.setTranslation(origin)
+
+    # def set_Rotation(self, cnp.ndarray[ndim=3, dtype=int, mode='c'] ind):
+    def set_Rotation(self, rx, ry, rz):
+        # Convert Eigen::Vector3f
+        cdef eigen3.Vector3f origin
+        cdef float *data = origin.data()
+        data[0] = rx
+        data[1] = ry
+        data[2] = rz
+        self.me.setRotation(origin)
+
+    def set_MinMax(self, minx, miny, minz, mins, maxx, maxy, maxz, maxs):
+        # Convert Eigen::Vector4f
+        cdef eigen3.Vector4f originMin
+        cdef float *dataMin = originMin.data()
+        dataMin[0] = minx
+        dataMin[1] = miny
+        dataMin[2] = minz
+        dataMin[3] = mins
+        self.me.setMin(originMin)
+        
+        cdef eigen3.Vector4f originMax;
+        cdef float *dataMax = originMax.data()
+        dataMax[0] = maxx
+        dataMax[1] = maxy
+        dataMax[2] = maxz
+        dataMax[3] = maxs
+        self.me.setMax(originMax)
 
     def Filtering(self, PointCloud outputCloud):
         # NG

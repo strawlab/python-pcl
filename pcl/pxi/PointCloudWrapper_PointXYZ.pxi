@@ -337,11 +337,19 @@ cdef class PointCloud:
 
     def make_crophull(self):
         """
-        Return a pcl.Vertices object with this object set as the input-cloud
+        Return a pcl.CropHull object with this object set as the input-cloud
 
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return CropHull(self)
+        
+    def make_cropbox(self):
+        """
+        Return a pcl.CropBox object with this object set as the input-cloud
+
+        Deprecated: use the pcl.Vertices constructor on this cloud.
+        """
+        return CropBox(self)
 
     def extract(self, pyindices, bool negative=False):
         """
@@ -372,3 +380,4 @@ include "KdTree_FLANN.pxi"
 include "OctreePointCloud.pxi"
 include "Vertices.pxi"
 include "CropHull.pxi"
+include "CropBox.pxi"

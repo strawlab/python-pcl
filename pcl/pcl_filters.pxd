@@ -526,6 +526,8 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
 #      void setTransform (const Eigen::Affine3f &transform)
 #      /** \brief Get the value of the transformation parameter, as set by the user. */
 #      Eigen::Affine3f getTransform () const
+
+ctypedef CropBox[cpp.PointXYZ] CropBox_t
 ###
 
 # crop_hull.h

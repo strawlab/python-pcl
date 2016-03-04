@@ -1,4 +1,4 @@
-# Sample script to install Python and pip under Windows
+# Sample script to install PointCloudLibrary and pip under Windows
 # Authors: Olivier Grisel, Jonathan Helmus, Kyle Kastner, and Alex Willmer
 # License: CC0 1.0 Universal: http://creativecommons.org/publicdomain/zero/1.0/
 
@@ -30,7 +30,8 @@ function Download ($filename, $url) {
 
     $basedir = $pwd.Path + "\"
     $filepath = $basedir + $filename
-    if (Test-Path $filename) {
+    if (Test-Path $filename) 
+    {
         Write-Host "Reusing" $filepath
         return $filepath
     }
@@ -47,9 +48,13 @@ function Download ($filename, $url) {
             Start-Sleep 1
         }
     }
-    if (Test-Path $filepath) {
+    
+    if (Test-Path $filepath) 
+    {
         Write-Host "File saved at" $filepath
-    } else {
+    }
+    else 
+    {
         # Retry once to get the error message if any at the last try
         $webclient.DownloadFile($url, $filepath)
     }
@@ -57,46 +62,57 @@ function Download ($filename, $url) {
 }
 
 
-function ParsePythonVersion ($python_version) {
-    if ($python_version -match $PYTHON_PRERELEASE_REGEX) {
-        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro,
-                $matches.prerelease)
+function ParsePythonVersion ($python_version) 
+{
+    if ($python_version -match $PYTHON_PRERELEASE_REGEX) 
+    {
+        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro, $matches.prerelease)
     }
+    
     $version_obj = [version]$python_version
     return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
 }
 
-function ParsePCLVersion ($pcl_version) {
-    if ($python_version -match $PCL_PRERELEASE_REGEX) {
+function ParsePCLVersion ($pcl_version) 
+{
+    if ($python_version -match $PCL_PRERELEASE_REGEX) 
+    {
         return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
     }
+    
+    # Convert NG
     $version_obj = [version]$pcl_version
     return ($version_obj.major, $version_obj.minor, $version_obj.micro, "")
 }
 
 
-function InstallPCLEXE ($exepath, $pcl_home, $install_log) {
+function InstallPCLEXE ($exepath, $pcl_home, $install_log)
+{
     $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     RunCommand $exepath $install_args
 }
 
-function InstallPCLMSI ($msipath, $pcl_home, $install_log) {
+function InstallPCLMSI ($msipath, $pcl_home, $install_log)
+{
     $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$pcl_home"
     $uninstall_args = "/qn /x $msipath"
     RunCommand "msiexec.exe" $install_args
-    if (-not(Test-Path $python_home)) {
-        Write-Host "Python seems to be installed else-where, reinstalling."
+    if (-not(Test-Path $python_home)) 
+    {
+        Write-Host "PointCloudLibrary seems to be installed else-where, reinstalling."
         RunCommand "msiexec.exe" $uninstall_args
         RunCommand "msiexec.exe" $install_args
     }
 }
 
-function RunCommand ($command, $command_args) {
+function RunCommand ($command, $command_args) 
+{
     Write-Host $command $command_args
     Start-Process -FilePath $command -ArgumentList $command_args -Wait -Passthru
 }
 
-function DownloadPCL ($pcl_version, $platform_suffix) {
+function DownloadPCL ($pcl_version, $platform_suffix) 
+{
     # $major, $minor, $micro, $prerelease = ParsePCLVersion $pcl_version
     $major, $minor, $micro = ParsePCLVersion $pcl_version
 
@@ -132,11 +148,14 @@ function DownloadPCL ($pcl_version, $platform_suffix) {
     return $filepath
 }
 
-function ParsePythonVersion ($python_version) {
-    if ($python_version -match $PYTHON_PRERELEASE_REGEX) {
-        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro,
-                $matches.prerelease)
+function ParsePythonVersion ($python_version) 
+{
+    if ($python_version -match $PYTHON_PRERELEASE_REGEX) 
+    {
+        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro, $matches.prerelease)
     }
+    
+    # Convert NG
     $version_obj = [version]$python_version
     return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
 }
@@ -190,8 +209,8 @@ function InstallNumpy ($python_version, $architecture, $python_home)
     # numpy-1.11.0rc1+mkl-cp34-cp34m-win_amd64.whl
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win32.whl
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win_amd64.whl
-    $filename = "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.exe"
-    $url = "$BASE_NUMPY_WHL_URLnumpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.exe"
+    $filename = "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
+    $url = "$BASE_NUMPY_WHL_URLnumpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
     # replace another function
     $filepath = Download $filename $url
     return $filepath

@@ -421,5 +421,49 @@ class TestOctreePointCloudSearch(unittest.TestCase):
         self.assertEqual(len(rs[0]), 19730)
         self.assertEqual(len(rs[1]), 19730)
 
+# Add
+# class TestCropHull(unittest.TestCase):
+# 
+#     def setUp(self):
+#         # TestData
+#         self.pc = pcl.PointCloud(a)
+#         self.kd = pcl.CropHull(self.pc)
+# 
+#     def testException(self):
+#         self.assertRaises(TypeError, pcl.CropHull)
+#         self.assertRaises(TypeError, self.)
+# 
+#     def testCrop(self):
+#         # Big cluster
+#         for ref, k in ((80, 1), (59, 3), (60, 10)):
+#             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
+#             for i in ind:
+#                 self.assertGreaterEqual(i, 30)
+#             for d in sqdist:
+#                 self.assertGreaterEqual(d, 0)
+# 
+
+# class TestCropBox(unittest.TestCase):
+# 
+#     def setUp(self):
+#         # TestData
+#         self.pc = pcl.PointCloud(a)
+#         self.kd = pcl.CropBox(self.pc)
+# 
+#     def testException(self):
+#         self.assertRaises(TypeError, pcl.CropHull)
+#         self.assertRaises(TypeError, self.kd.nearest_k_search_for_cloud, None)
+# 
+#     def testCrop(self):
+#         # Big cluster
+#         for ref, k in ((80, 1), (59, 3), (60, 10)):
+#             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
+#             for i in ind:
+#                 self.assertGreaterEqual(i, 30)
+#             for d in sqdist:
+#                 self.assertGreaterEqual(d, 0)
+# 
+
+
 if __name__ == '__main__':
     unittest.main()
