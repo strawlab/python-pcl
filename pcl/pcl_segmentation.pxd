@@ -63,8 +63,8 @@ ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
 # class Comparator
 cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
     cdef cppclass Comparator[T]:
-    	Comparator()
-#     	public:
+        Comparator()
+#       public:
 #       typedef pcl::PointCloud<PointT> PointCloud;
 #       typedef typename PointCloud::Ptr PointCloudPtr;
 #       typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -101,9 +101,9 @@ cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
 # class EdgeAwarePlaneComparator: public PlaneCoefficientComparator<PointT, PointNT>
 cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl":
     cdef cppclass EdgeAwarePlaneComparator[T, NT](PlaneCoefficientComparator[T, NT]):
-    	EdgeAwarePlaneComparator()
-    	# EdgeAwarePlaneComparator (const float *distance_map)
-     	# public:
+        EdgeAwarePlaneComparator()
+        # EdgeAwarePlaneComparator (const float *distance_map)
+        # public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
@@ -125,7 +125,7 @@ cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl
 #       /** \brief Return the distance map used. */
 #       const float* getDistanceMap () const
 #       
-#     	protected:
+#       protected:
 #       /** \brief Compare two neighboring points, by using normal information, curvature, and euclidean distance information.
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.
@@ -143,8 +143,8 @@ cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl
 # class EuclideanClusterComparator: public Comparator<PointT>
 cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pcl":
     cdef cppclass EuclideanClusterComparator[T, NT, LT](Comparator[T]):
-    	EuclideanClusterComparator()
-#     	public:
+        EuclideanClusterComparator()
+#       public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
@@ -185,7 +185,7 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 #         * \param idx2 The second index for the comparison
 #       virtual bool compare (int idx1, int idx2) const
 #       
-#     	protected:
+#       protected:
 #       PointCloudNConstPtr normals_;
 #       PointCloudLPtr labels_;
 #       boost::shared_ptr<std::vector<bool> > exclude_labels_;
