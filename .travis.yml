@@ -48,6 +48,7 @@ before_install:
     fi
 
 script: 
+    - pip install --upgrade pip
     - pip install cython
     - pip install numpy
     - python setup.py build_ext -i
