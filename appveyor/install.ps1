@@ -177,7 +177,7 @@ function InstallNumpy ($python_version, $architecture, $python_home)
     $mathLib = "mkl"
     if ($mathLib -eq "mkl")
     {
-        $cp_last_ver = "$cp_verm"
+        $cp_last_ver = $cp_ver + "m"
     }
     else
     {
