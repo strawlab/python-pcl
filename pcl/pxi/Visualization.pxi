@@ -45,6 +45,15 @@ cdef class Visualization:
         # self.thisptr().showCloud(deref(pc), cloudname)
         self.thisptr().showCloud(pc.thisptr_shared, cloudname)
 
+    def ShowGrayCloud(self, _pcl.PointCloud_PointXYZI pc, string cloudname='cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+
+    def ShowColorACloud(self, _pcl.PointCloud_PointXYZRGBA pc, string cloudname='cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+
+    def ShowColorCloud(self, _pcl.PointCloud_PointXYZRGB pc, string cloudname='cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+
     def WasStopped(self, int millis_to_wait = 1):
         self.thisptr().wasStopped(millis_to_wait)
 

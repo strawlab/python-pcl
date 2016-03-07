@@ -3,7 +3,7 @@
 
 cimport pcl_defs as cpp
 
-# class override
+# class override(PointCloud)
 cdef class PointCloud:
     cdef cpp.PointCloudPtr_t thisptr_shared     # XYZ
     
@@ -15,22 +15,44 @@ cdef class PointCloud:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
         return self.thisptr_shared.get()
 
-# class override
-cdef class PointCloud_PointXYZRGBA:
-    # cdef cpp.PointCloudPtr_t thisptr_shared     # XYZ
-    cdef cpp.PointCloudPtr2_t thisptr2_shared   # XYZRGBA
+
+# class override(PointCloud_PointXYZI)
+cdef class PointCloud_PointXYZI:
+    cdef cpp.PointCloud_PointXYZI_Ptr_t thisptr_shared     # XYZI
     
     # Buffer protocol support.
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-#    cdef inline cpp.PointCloud[cpp.PointXYZ] *thisptr(self) nogil:
-#        # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
-#        return self.thisptr_shared.get()
+    cdef inline cpp.PointCloud[cpp.PointXYZI] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
+        return self.thisptr_shared.get()
 
-    cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr2(self) nogil:
+
+# class override(PointCloud_PointXYZRGB)
+cdef class PointCloud_PointXYZRGB:
+    cdef cpp.PointCloud_PointXYZRGB_Ptr_t thisptr_shared
+    
+    # Buffer protocol support.
+    cdef Py_ssize_t _shape[2]
+    cdef Py_ssize_t _view_count
+    
+    cdef inline cpp.PointCloud[cpp.PointXYZRGB] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGB>.
+        return self.thisptr_shared.get()
+
+
+# class override(PointCloud_PointXYZRGBA)
+cdef class PointCloud_PointXYZRGBA:
+    cdef cpp.PointCloud_PointXYZRGBA_Ptr_t thisptr_shared   # XYZRGBA
+    
+    # Buffer protocol support.
+    cdef Py_ssize_t _shape[2]
+    cdef Py_ssize_t _view_count
+    
+    cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGBA>.
-        return self.thisptr2_shared.get()
+        return self.thisptr_shared.get()
 
 # class override
 cdef class Vertices:

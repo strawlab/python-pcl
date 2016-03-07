@@ -20,6 +20,20 @@ cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
                      cpp.PointCloud[cpp.PointXYZ] &cloud,
                      vector[int] &indices, 
                      bool binary_mode) nogil except +
+
+    # XYZI
+    int load(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
+    int loadPCDFile(string file_name,
+                    cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
+    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud,
+                    bool binary_mode) nogil except +
+
+    # XYZRGB
+    int load(string file_name, cpp.PointCloud[cpp.PointXYZRGB] &cloud) nogil except +
+    int loadPCDFile(string file_name,
+                    cpp.PointCloud[cpp.PointXYZRGB] &cloud) nogil except +
+    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointXYZRGB] &cloud,
+                    bool binary_mode) nogil except +
 
     # XYZRGBA
     int load(string file_name, cpp.PointCloud[cpp.PointXYZRGBA] &cloud) nogil except +
@@ -34,6 +48,19 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
                     cpp.PointCloud[cpp.PointXYZ] &cloud) nogil except +
     int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZ] &cloud,
                     bool binary_mode) nogil except +
+
+    # XYZI
+    int loadPLYFile(string file_name,
+                    cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
+    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud,
+                    bool binary_mode) nogil except +
+
+    # XYZRGB
+    int loadPLYFile(string file_name,
+                    cpp.PointCloud[cpp.PointXYZRGB] &cloud) nogil except +
+    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZRGB] &cloud,
+                    bool binary_mode) nogil except +
+
     # XYZRGBA
     int loadPLYFile(string file_name,
                     cpp.PointCloud[cpp.PointXYZRGBA] &cloud) nogil except +
@@ -51,25 +78,16 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 ###
 # file_io.h
 # namespace pcl
-# {
-#   /** \brief Point Cloud Data (FILE) file format reader interface.
-#     * Any (FILE) format file reader should implement its virtual methodes.
-#     * \author Nizar Sallem
-#     * \ingroup io
-#     */
-#   class PCL_EXPORTS FileReader
-#   {
+# class PCL_EXPORTS FileReader
 #     public:
 #       /** \brief empty constructor */ 
 #       FileReader() {}
 #       /** \brief empty destructor */ 
 #       virtual ~FileReader() {}
 #       /** \brief Read a point cloud data header from a FILE file. 
-#         *
 #         * Load only the meta information (number of points, their types, etc),
 #         * and not the points themselves, from a given FILE file. Useful for fast
 #         * evaluation of the underlying data structure.
-#         *
 #         * Returns:
 #         *  * < 0 (-1) on error
 #         *  * > 0 on success
@@ -391,96 +409,51 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 
 # grabber.h
 # namespace pcl
-# {
-# 
-#   /** \brief Grabber interface for PCL 1.x device drivers
-#     * \author Suat Gedikli <gedikli@willowgarage.com>
-#     * \ingroup io
-#     */
-#   class PCL_EXPORTS Grabber
-#   {
+# /** \brief Grabber interface for PCL 1.x device drivers
+#  * \author Suat Gedikli <gedikli@willowgarage.com>
+#  * \ingroup io
+#  */
+# class PCL_EXPORTS Grabber
 #     public:
-# 
 #       /** \brief Constructor. */
 #       Grabber () : signals_ (), connections_ (), shared_connections_ () {}
-# 
 #       /** \brief virtual desctructor. */
 #       virtual inline ~Grabber () throw ();
-# 
 #       /** \brief registers a callback function/method to a signal with the corresponding signature
 #         * \param[in] callback: the callback function/method
 #         * \return Connection object, that can be used to disconnect the callback method from the signal again.
-#         */
-#       template<typename T> boost::signals2::connection 
-#       registerCallback (const boost::function<T>& callback);
-# 
+#       template<typename T> boost::signals2::connection registerCallback (const boost::function<T>& callback);
 #       /** \brief indicates whether a signal with given parameter-type exists or not
 #         * \return true if signal exists, false otherwise
-#         */
-#       template<typename T> bool 
-#       providesCallback () const;
-# 
+#       template<typename T> bool providesCallback () const;
 #       /** \brief For devices that are streaming, the streams are started by calling this method.
 #         *        Trigger-based devices, just trigger the device once for each call of start.
-#         */
-#       virtual void 
-#       start () = 0;
-# 
+#       virtual void start () = 0;
 #       /** \brief For devices that are streaming, the streams are stopped.
 #         *        This method has no effect for triggered devices.
-#         */
-#       virtual void 
-#       stop () = 0;
-# 
+#       virtual void stop () = 0;
 #       /** \brief returns the name of the concrete subclass.
 #         * \return the name of the concrete driver.
-#         */
-#       virtual std::string 
-#       getName () const = 0;
-# 
+#       virtual std::string getName () const = 0;
 #       /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
 #         * \return true if grabber is running / streaming. False otherwise.
-#         */
-#       virtual bool 
-#       isRunning () const = 0;
-# 
+#       virtual bool isRunning () const = 0;
 #       /** \brief returns fps. 0 if trigger based. */
-#       virtual float 
-#       getFramesPerSecond () const = 0;
+#       virtual float getFramesPerSecond () const = 0;
 # 
-#     protected:
-# 
-#       virtual void
-#       signalsChanged () { }
-# 
-#       template<typename T> boost::signals2::signal<T>* 
-#       find_signal () const;
-# 
-#       template<typename T> int 
-#       num_slots () const;
-# 
-#       template<typename T> void 
-#       disconnect_all_slots ();
-# 
-#       template<typename T> void 
-#       block_signal ();
-#       
-#       template<typename T> void 
-#       unblock_signal ();
-#       
-#       inline void 
-#       block_signals ();
-#       
-#       inline void 
-#       unblock_signals ();
-# 
-#       template<typename T> boost::signals2::signal<T>* 
-#       createSignal ();
-# 
+#       protected:
+#       virtual void signalsChanged () { }
+#       template<typename T> boost::signals2::signal<T>* find_signal () const;
+#       template<typename T> int num_slots () const;
+#       template<typename T> void disconnect_all_slots ();
+#       template<typename T> void block_signal ();
+#       template<typename T> void unblock_signal ();
+#       inline void block_signals ();
+#       inline void unblock_signals ();
+#       template<typename T> boost::signals2::signal<T>* createSignal ();
 #       std::map<std::string, boost::signals2::signal_base*> signals_;
 #       std::map<std::string, std::vector<boost::signals2::connection> > connections_;
 #       std::map<std::string, std::vector<boost::signals2::shared_connection_block> > shared_connections_;
-#   } ;
 # 
 #   Grabber::~Grabber () throw ()
 #   {
@@ -536,80 +509,19 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         cIt->block ();
 #   }
 # 
-#   void
-#   Grabber::unblock_signals ()
-#   {
-#     for (std::map<std::string, boost::signals2::signal_base*>::iterator signal_it = signals_.begin (); signal_it != signals_.end (); ++signal_it)
-#       for (std::vector<boost::signals2::shared_connection_block>::iterator cIt = shared_connections_[signal_it->first].begin (); cIt != shared_connections_[signal_it->first].end (); ++cIt)
-#         cIt->unblock ();
-#   }
+#   void Grabber::unblock_signals ()
 # 
 #   template<typename T> int
 #   Grabber::num_slots () const
-#   {
-#     typedef boost::signals2::signal<T> Signal;
-# 
-#     // see if we have a signal for this type
-#     std::map<std::string, boost::signals2::signal_base*>::const_iterator signal_it = signals_.find (typeid (T).name ());
-#     if (signal_it != signals_.end ())
-#     {
-#       Signal* signal = dynamic_cast<Signal*> (signal_it->second);
-#       return (static_cast<int> (signal->num_slots ()));
-#     }
-#     return (0);
-#   }
 # 
 #   template<typename T> boost::signals2::signal<T>*
 #   Grabber::createSignal ()
-#   {
-#     typedef boost::signals2::signal<T> Signal;
-# 
-#     if (signals_.find (typeid (T).name ()) == signals_.end ())
-#     {
-#       Signal* signal = new Signal ();
-#       signals_[typeid (T).name ()] = signal;
-#       return (signal);
-#     }
-#     return (0);
-#   }
 # 
 #   template<typename T> boost::signals2::connection
 #   Grabber::registerCallback (const boost::function<T> & callback)
-#   {
-#     typedef boost::signals2::signal<T> Signal;
-#     if (signals_.find (typeid (T).name ()) == signals_.end ())
-#     {
-#       std::stringstream sstream;
-# 
-#       sstream << "no callback for type:" << typeid (T).name ();
-#       /*
-#       sstream << "registered Callbacks are:" << std::endl;
-#       for( std::map<std::string, boost::signals2::signal_base*>::const_iterator cIt = signals_.begin ();
-#            cIt != signals_.end (); ++cIt)
-#       {
-#         sstream << cIt->first << std::endl;
-#       }*/
-# 
-#       THROW_PCL_IO_EXCEPTION ("[%s] %s", getName ().c_str (), sstream.str ().c_str ());
-#       //return (boost::signals2::connection ());
-#     }
-#     Signal* signal = dynamic_cast<Signal*> (signals_[typeid (T).name ()]);
-#     boost::signals2::connection ret = signal->connect (callback);
-# 
-#     connections_[typeid (T).name ()].push_back (ret);
-#     shared_connections_[typeid (T).name ()].push_back (boost::signals2::shared_connection_block (connections_[typeid (T).name ()].back (), false));
-#     signalsChanged ();
-#     return (ret);
-#   }
 # 
 #   template<typename T> bool
 #   Grabber::providesCallback () const
-#   {
-#     if (signals_.find (typeid (T).name ()) == signals_.end ())
-#       return (false);
-#     return (true);
-#   }
-# 
 ###
 
 # io.h
@@ -648,12 +560,11 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #   struct PointXYZRGB;
 #   struct PointXYZRGBA;
 #   struct PointXYZI;
-#   template <typename T> class PointCloud;
 # 
-#   /** \brief A simple ONI grabber.
-#     * \author Suat Gedikli
-#     */
-#   class PCL_EXPORTS ONIGrabber : public Grabber
+# template <typename T> class PointCloud;
+# /** \brief A simple ONI grabber.
+#  * \author Suat Gedikli
+# class PCL_EXPORTS ONIGrabber : public Grabber
 #   {
 #     public:
 #       //define callback signature typedefs
@@ -867,163 +778,12 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       /** \brief Obtain a list of the available image modes that this device supports. */
 #       std::vector<std::pair<int, XnMapOutputMode> >
 #       getAvailableImageModes () const;
-# 
-#     private:
-#       /** \brief ... */
-#       void
-#       onInit (const std::string& device_id, const Mode& depth_mode, const Mode& image_mode);
-# 
-#       /** \brief ... */
-#       void
-#       setupDevice (const std::string& device_id, const Mode& depth_mode, const Mode& image_mode);
-# 
-#       /** \brief ... */
-#       void
-#       updateModeMaps ();
-# 
-#       /** \brief ... */
-#       void
-#       startSynchronization ();
-# 
-#       /** \brief ... */
-#       void
-#       stopSynchronization ();
-# 
-#       /** \brief ... */
-#       bool
-#       mapConfigMode2XnMode (int mode, XnMapOutputMode &xnmode) const;
-# 
-#       // callback methods
-#       /** \brief ... */
-#       void
-#       imageCallback (boost::shared_ptr<openni_wrapper::Image> image, void* cookie);
-# 
-#       /** \brief ... */
-#       void
-#       depthCallback (boost::shared_ptr<openni_wrapper::DepthImage> depth_image, void* cookie);
-# 
-#       /** \brief ... */
-#       void
-#       irCallback (boost::shared_ptr<openni_wrapper::IRImage> ir_image, void* cookie);
-# 
-#       /** \brief ... */
-#       void
-#       imageDepthImageCallback (const boost::shared_ptr<openni_wrapper::Image> &image,
-#                                const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image);
-# 
-#       /** \brief ... */
-#       void
-#       irDepthImageCallback (const boost::shared_ptr<openni_wrapper::IRImage> &image,
-#                             const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image);
-# 
-#       /** \brief ... */
-#       virtual void
-#       signalsChanged ();
-# 
-#       // helper methods
-# 
-#       /** \brief ... */
-#       virtual inline void
-#       checkImageAndDepthSynchronizationRequired ();
-# 
-#       /** \brief ... */
-#       virtual inline void
-#       checkImageStreamRequired ();
-# 
-#       /** \brief ... */
-#       virtual inline void
-#       checkDepthStreamRequired ();
-# 
-#       /** \brief ... */
-#       virtual inline void
-#       checkIRStreamRequired ();
-# 
-#       /** \brief ... */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >
-#       convertToXYZPointCloud (const boost::shared_ptr<openni_wrapper::DepthImage> &depth) const;
-# 
-#       /** \brief ... */
-#       template <typename PointT> typename pcl::PointCloud<PointT>::Ptr
-#       convertToXYZRGBPointCloud (const boost::shared_ptr<openni_wrapper::Image> &image,
-#                                  const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;      
-#       /** \brief ... */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >
-#       convertToXYZIPointCloud (const boost::shared_ptr<openni_wrapper::IRImage> &image,
-#                                const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
-# 
-#       Synchronizer<boost::shared_ptr<openni_wrapper::Image>, boost::shared_ptr<openni_wrapper::DepthImage> > rgb_sync_;
-#       Synchronizer<boost::shared_ptr<openni_wrapper::IRImage>, boost::shared_ptr<openni_wrapper::DepthImage> > ir_sync_;
-# 
-#       /** \brief Convert a pair of depth + RGB images to a PointCloud<MatrixXf> dataset.
-#         * \param[in] image the RGB image
-#         * \param[in] depth_image the depth image
-#         * \return a PointCloud<MatrixXf> dataset
-#         */
-#       boost::shared_ptr<pcl::PointCloud<Eigen::MatrixXf> >
-#       convertToEigenPointCloud (const boost::shared_ptr<openni_wrapper::Image> &image,
-#                                 const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
-#       
-#       /** \brief the actual openni device*/
-#       boost::shared_ptr<openni_wrapper::OpenNIDevice> device_;
-# 
-#       std::string rgb_frame_id_;
-#       std::string depth_frame_id_;
-#       unsigned image_width_;
-#       unsigned image_height_;
-#       unsigned depth_width_;
-#       unsigned depth_height_;
-#       
-#       bool image_required_;
-#       bool depth_required_;
-#       bool ir_required_;
-#       bool sync_required_;
-# 
-#       boost::signals2::signal<sig_cb_openni_image>* image_signal_;
-#       boost::signals2::signal<sig_cb_openni_depth_image>* depth_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_ir_image>* ir_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_image_depth_image>* image_depth_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_ir_depth_image>* ir_depth_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud>* point_cloud_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_i>* point_cloud_i_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_rgb>* point_cloud_rgb_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_rgba>* point_cloud_rgba_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_eigen>* point_cloud_eigen_signal_;
-# 
-#       struct modeComp
-#       {
-# 
-#         bool operator () (const XnMapOutputMode& mode1, const XnMapOutputMode & mode2) const
-#         {
-#           if (mode1.nXRes < mode2.nXRes)
-#             return true;
-#           else if (mode1.nXRes > mode2.nXRes)
-#             return false;
-#           else if (mode1.nYRes < mode2.nYRes)
-#             return true;
-#           else if (mode1.nYRes > mode2.nYRes)
-#             return false;
-#           else if (mode1.nFPS < mode2.nFPS)
-#             return true;
-#           else
-#             return false;
-#         }
-#       } ;
-#       std::map<int, XnMapOutputMode> config2xn_map_;
-# 
-#       openni_wrapper::OpenNIDevice::CallbackHandle depth_callback_handle;
-#       openni_wrapper::OpenNIDevice::CallbackHandle image_callback_handle;
-#       openni_wrapper::OpenNIDevice::CallbackHandle ir_callback_handle;
-#       bool running_;
-# 
-#     public:
+#       public:
 #       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #   };
 # 
 #   boost::shared_ptr<openni_wrapper::OpenNIDevice>
 #   OpenNIGrabber::getDevice () const
-#   {
-#     return device_;
-#   }
 # 
 ###
 

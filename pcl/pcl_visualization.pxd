@@ -20,31 +20,29 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         # CloudViewer ()
         CloudViewer (string& window_name)
         # public:
-        # typedef pcl::PointCloud<pcl::PointXYZRGBA> ColorACloud;
-        # typedef pcl::PointCloud<pcl::PointXYZRGB> ColorCloud;
-        # typedef pcl::PointCloud<pcl::PointXYZI> GrayCloud;
-        # typedef pcl::PointCloud<pcl::PointXYZ> MonochromeCloud;
         # /** \brief Show a cloud, with an optional key for multiple clouds.
-        #   * \param[in] cloud RGB point cloud
-        #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
+        # * \param[in] cloud RGB point cloud
+        # * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
         # void showCloud (const ColorCloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
+        void showCloud (cpp.PointCloud_PointXYZRGB_Ptr_t cloud, const string cloudname)
         # /** \brief Show a cloud, with an optional key for multiple clouds.
-        #   * \param[in] cloud RGB point cloud
-        #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
+        #  * \param[in] cloud RGBA point cloud
+        #  * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
         # void showCloud (const ColorACloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
+        void showCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, const string cloudname)
         # /** \brief Show a cloud, with an optional key for multiple clouds.
         #   * \param[in] cloud XYZI point cloud
         #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        # void showCloud (const GrayCloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
+        void showCloud (cpp.PointCloud_PointXYZI_Ptr_t cloud, string cloudname);
         # /** \brief Show a cloud, with an optional key for multiple clouds.
         #   * \param[in] cloud XYZ point cloud
         #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        #   */
         void showCloud (cpp.PointCloudPtr_t cloud, string cloudname)
         # /** \brief Check if the gui was quit, you should quit also
         #  * \param millis_to_wait This will request to "spin" for the number of milliseconds, before exiting.
         #  * \return true if the user signaled the gui to stop
         bool wasStopped (int millis_to_wait)
+        # 
         # /** Visualization callable function, may be used for running things on the UI thread.
         # typedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
         # /** \brief Run a callbable object on the UI thread. Will persist until removed
@@ -90,7 +88,6 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # template<typename T> inline boost::signals2::connection  registerPointPickingCallback (void (T::*callback) (const pcl::visualization::PointPickingEvent&, void*), T& instance, void* cookie = NULL)
-        
 
 # ctypedef CloudViewer CloudViewer_t
 ctypedef shared_ptr[CloudViewer] CloudViewerPtr_t
@@ -102,7 +99,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         PCLHistogramVisualizer ()
         # /** \brief Spin once method. Calls the interactor and updates the screen once. 
         #   *  \param[in] time - How long (in ms) should the visualization loop be allowed to run.
-        #   */
         # #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 4))
         # void spinOnce (int time = 1, bool force_redraw = false);
         # #else
@@ -115,7 +111,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] g the green component of the RGB color
         #   * \param[in] b the blue component of the RGB color
         #   * \param[in] viewport the view port (default: all)
-        #   */
         # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0);
         # /** \brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
@@ -123,7 +118,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] id the point cloud object id (default: cloud)
         #   * \param[in] win_width the width of the window
         #   * \param[in] win_height the height of the window
-        #   */
         # template <typename PointT> bool 
         # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
         #                      int hsize, 
@@ -134,7 +128,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] id the point cloud object id (default: cloud)
         #   * \param[in] win_width the width of the window
         #   * \param[in] win_height the height of the window
-        #   */
         # bool 
         # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
         #                      const std::string &field_name, 
@@ -146,7 +139,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] id the point cloud object id (default: cloud)
         #   * \param[in] win_width the width of the window
         #   * \param[in] win_height the height of the window 
-        #   */
         # template <typename PointT> bool 
         # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
         #                      const std::string &field_name, 
@@ -159,7 +151,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] id the point cloud object id (default: cloud)
         #   * \param[in] win_width the width of the window
         #   * \param[in] win_height the height of the window
-        #   */
         # bool 
         # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
         #                      const std::string &field_name, 
@@ -170,7 +161,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] hsize the length of the histogram
         #   * \param[in] id the point cloud object id (default: cloud)
-        #   */
         # template <typename PointT> bool 
         # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, int hsize, const std::string &id = "cloud");
         # 
@@ -178,19 +168,16 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
         #   * \param[in] id the point cloud object id (default: cloud)
-        #   */
         # bool 
         # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
         #                         const std::string &field_name, 
         #                         const std::string &id = "cloud");
-        #                      
         # 
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
         #   * \param[in] index the point index to extract the histogram from
         #   * \param[in] id the point cloud object id (default: cloud)
-        #   */
         # template <typename PointT> bool 
         # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, const std::string &field_name,
         #                              const int index, const std::string &id = "cloud");
@@ -200,7 +187,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] field_name the field name containing the histogram
         #   * \param[in] index the point index to extract the histogram from
         #   * \param[in] id the point cloud object id (default: cloud)
-        #   */
         # bool 
         # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
         #                         const std::string &field_name, const int index,
@@ -208,7 +194,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # /** \brief Set the Y range to minp-maxp for all histograms.
         #    * \param[in] minp the minimum Y range
         #    * \param[in] maxp the maximum Y range
-        #    */
         # void 
         # setGlobalYRange (float minp, float maxp);
         # /** \brief Update all window positions on screen so that they fit. */

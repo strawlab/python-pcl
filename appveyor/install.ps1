@@ -3,7 +3,8 @@
 # License: CC0 1.0 Universal: http://creativecommons.org/publicdomain/zero/1.0/
 
 $BASE_PCL_URL = "http://jaist.dl.sourceforge.net/project/pointclouds/"
-$BASE_NUMPY_WHL_URL = "http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/"
+$BASE_NUMPY_WHL_URL = "http://www.lfd.uci.edu/~gohlke/pythonlibs/"
+$NUMPY_DOWNLOAD_URL = "djcobkfp"
 
 $PYTHON_PRERELEASE_REGEX = @"
 (?x)
@@ -212,7 +213,7 @@ function InstallNumpy ($python_version, $architecture, $python_home)
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win32.whl
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win_amd64.whl
     $filename = "numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" +"-" + "$platform_suffix.whl"
-    $url = "$BASE_NUMPY_WHL_URL" + "numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" + "-" + "$platform_suffix.whl"
+    $url = "$BASE_NUMPY_WHL_URL" + "$NUMPY_DOWNLOAD_URL" + "/numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" + "-" + "$platform_suffix.whl"
     # replace another function
     $filepath = Download $filename $url
     return $filepath

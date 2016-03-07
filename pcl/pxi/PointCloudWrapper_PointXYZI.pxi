@@ -249,111 +249,111 @@ cdef class PointCloud_PointXYZI:
             error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 
-    def make_segmenter(self):
-        """
-        Return a pcl.Segmentation object with this object set as the input-cloud
-        """
-        seg = Segmentation()
-        cdef pclseg.SACSegmentation_t *cseg = <pclseg.SACSegmentation_t *>seg.me
-        cseg.setInputCloud(self.thisptr_shared)
-        return seg
-
-    def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
-        """
-        Return a pcl.SegmentationNormal object with this object set as the input-cloud
-        """
-        cdef cpp.PointNormalCloud_t normals
-        mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), ksearch, searchRadius, normals)
-        # p = self.thisptr()
-        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-        seg = SegmentationNormal()
-        cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
-        cseg.setInputCloud(self.thisptr_shared)
-        cseg.setInputNormals (normals.makeShared());
-        return seg
-
-    def make_statistical_outlier_filter(self):
-        """
-        Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
-        """
-        fil = StatisticalOutlierRemovalFilter()
-        cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
-        return fil
-
-    def make_voxel_grid_filter(self):
-        """
-        Return a pcl.VoxelGridFilter object with this object set as the input-cloud
-        """
-        fil = VoxelGridFilter()
-        cdef pclfil.VoxelGrid_t *cfil = <pclfil.VoxelGrid_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
-        return fil
-
-    def make_passthrough_filter(self):
-        """
-        Return a pcl.PassThroughFilter object with this object set as the input-cloud
-        """
-        fil = PassThroughFilter()
-        cdef pclfil.PassThrough_t *cfil = <pclfil.PassThrough_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
-        return fil
-
-    def make_moving_least_squares(self):
-        """
-        Return a pcl.MovingLeastSquares object with this object as input cloud.
-        """
-        mls = MovingLeastSquares()
-        cdef pclsf.MovingLeastSquares_t *cmls = <pclsf.MovingLeastSquares_t *>mls.me
-        cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
-        return mls
-
-    def make_kdtree_flann(self):
-        """
-        Return a pcl.kdTreeFLANN object with this object set as the input-cloud
-
-        Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
-        """
-        return KdTreeFLANN(self)
-
-    def make_octree(self, double resolution):
-        """
-        Return a pcl.octree object with this object set as the input-cloud
-        """
-        octree = OctreePointCloud(resolution)
-        octree.set_input_cloud(self)
-        return octree
-
-    def make_crophull(self):
-        """
-        Return a pcl.CropHull object with this object set as the input-cloud
-
-        Deprecated: use the pcl.Vertices constructor on this cloud.
-        """
-        return CropHull(self)
-        
-    def make_cropbox(self):
-        """
-        Return a pcl.CropBox object with this object set as the input-cloud
-
-        Deprecated: use the pcl.Vertices constructor on this cloud.
-        """
-        return CropBox(self)
+#     def make_segmenter(self):
+#         """
+#         Return a pcl.Segmentation object with this object set as the input-cloud
+#         """
+#         seg = Segmentation()
+#         cdef pclseg.SACSegmentation_t *cseg = <pclseg.SACSegmentation_t *>seg.me
+#         cseg.setInputCloud(self.thisptr_shared)
+#         return seg
+# 
+#     def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
+#         """
+#         Return a pcl.SegmentationNormal object with this object set as the input-cloud
+#         """
+#         cdef cpp.PointNormalCloud_t normals
+#         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), ksearch, searchRadius, normals)
+#         # p = self.thisptr()
+#         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
+#         seg = SegmentationNormal()
+#         cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
+#         cseg.setInputCloud(self.thisptr_shared)
+#         cseg.setInputNormals (normals.makeShared());
+#         return seg
+# 
+#     def make_statistical_outlier_filter(self):
+#         """
+#         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
+#         """
+#         fil = StatisticalOutlierRemovalFilter()
+#         cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
+#         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+#         return fil
+# 
+#     def make_voxel_grid_filter(self):
+#         """
+#         Return a pcl.VoxelGridFilter object with this object set as the input-cloud
+#         """
+#         fil = VoxelGridFilter()
+#         cdef pclfil.VoxelGrid_t *cfil = <pclfil.VoxelGrid_t *>fil.me
+#         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+#         return fil
+# 
+#     def make_passthrough_filter(self):
+#         """
+#         Return a pcl.PassThroughFilter object with this object set as the input-cloud
+#         """
+#         fil = PassThroughFilter()
+#         cdef pclfil.PassThrough_t *cfil = <pclfil.PassThrough_t *>fil.me
+#         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+#         return fil
+# 
+#     def make_moving_least_squares(self):
+#         """
+#         Return a pcl.MovingLeastSquares object with this object as input cloud.
+#         """
+#         mls = MovingLeastSquares()
+#         cdef pclsf.MovingLeastSquares_t *cmls = <pclsf.MovingLeastSquares_t *>mls.me
+#         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+#         return mls
+# 
+#     def make_kdtree_flann(self):
+#         """
+#         Return a pcl.kdTreeFLANN object with this object set as the input-cloud
+# 
+#         Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
+#         """
+#         return KdTreeFLANN(self)
+# 
+#     def make_octree(self, double resolution):
+#         """
+#         Return a pcl.octree object with this object set as the input-cloud
+#         """
+#         octree = OctreePointCloud(resolution)
+#         octree.set_input_cloud(self)
+#         return octree
+# 
+#     def make_crophull(self):
+#         """
+#         Return a pcl.CropHull object with this object set as the input-cloud
+# 
+#         Deprecated: use the pcl.Vertices constructor on this cloud.
+#         """
+#         return CropHull(self)
+#         
+#     def make_cropbox(self):
+#         """
+#         Return a pcl.CropBox object with this object set as the input-cloud
+# 
+#         Deprecated: use the pcl.Vertices constructor on this cloud.
+#         """
+#         return CropBox(self)
 
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
         new pointcloud containing only those points.
         """
-        cdef PointCloud result
+        cdef PointCloud_PointXYZI result
         cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
         
         for i in pyindices:
             ind.indices.push_back(i)
         
-        result = PointCloud()
+        result = PointCloud_PointXYZI()
         # (<cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr())
-        mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
+        # mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
         # XXX are we leaking memory here? del ind causes a double free...
         
         return result
