@@ -169,7 +169,7 @@ function InstallNumpy ($python_version, $architecture, $python_home)
     $cp_ver = "cp$major$minor"
 
     if ($architecture -eq "32") {
-        $platform_suffix = "32"
+        $platform_suffix = "win32"
     } else {
         $platform_suffix = "win_amd64"
     }
@@ -212,7 +212,7 @@ function InstallNumpy ($python_version, $architecture, $python_home)
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win32.whl
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win_amd64.whl
     $filename = "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
-    $url = "$BASE_NUMPY_WHL_URLnumpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
+    $url = "$BASE_NUMPY_WHL_URL" + "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
     # replace another function
     $filepath = Download $filename $url
     return $filepath

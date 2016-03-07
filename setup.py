@@ -88,7 +88,9 @@ if platform.system() == "Windows":
         # NG
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\FLANN\include']
         # 3rdParty
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include']
+        # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include']
+        # + add VTK
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-5.8']
         # extern
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', pcl_root + '\\3rdParty\\FLANN\include']
     elif pcl_version == '-1.7':
@@ -102,8 +104,10 @@ if platform.system() == "Windows":
 
     # set library path
     # 3rdParty(+Boost)
-    lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
-    # extern -> NG
+    # lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
+    # 3rdParty(+Boost, +VTK)
+    lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
+    # extern -> NG?
     # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
     # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib64-msvc-10.0', pcl_root + '\\3rdParty\\FLANN\lib']
     for lib_dir in lib_dirs:
@@ -180,6 +184,8 @@ if platform.system() == "Windows":
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx"],
+                                     language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
                                      language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
