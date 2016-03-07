@@ -143,9 +143,9 @@ function DownloadPCL ($pcl_version, $platform_suffix)
         $msvcver = "msvc2015"
     }
 
-    $filename = "PCL-$dir-AllInOne-$msvcver-$platform_suffix.exe"
-    $url = "$BASE_PCL_URL$dir/PCL-$dir-AllInOne-$msvcver-$platform_suffix.exe"
-    # ’u‚«Š·‚¦—\’è
+    $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+    $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+    # (plan modified function)
     $filepath = Download $filename $url
     return $filepath
 }
@@ -211,8 +211,8 @@ function InstallNumpy ($python_version, $architecture, $python_home)
     # numpy-1.11.0rc1+mkl-cp34-cp34m-win_amd64.whl
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win32.whl
     # numpy-1.11.0rc1+mkl-cp35-cp35m-win_amd64.whl
-    $filename = "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
-    $url = "$BASE_NUMPY_WHL_URL" + "numpy-$numpy_ver+$mathLib-$cp_ver-$cp_last_ver-$platform_suffix.whl"
+    $filename = "numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" +"-" + "$platform_suffix.whl"
+    $url = "$BASE_NUMPY_WHL_URL" + "numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" + "-" + "$platform_suffix.whl"
     # replace another function
     $filepath = Download $filename $url
     return $filepath
@@ -258,13 +258,11 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
 
 # http://www.lfd.uci.edu/~gohlke/pythonlibs/
 
-$pcl_version = "1.6.0"
-
 function main () {
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPCL $pcl_version, $env:PYTHON_ARCH, "C:\project"
+    InstallPCL $env:PCL_VERSION, $env:PYTHON_ARCH, "C:\project"
 }
 
 main
