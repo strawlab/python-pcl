@@ -86,7 +86,7 @@ function ParsePCLVersion ($pcl_version)
     
     # Convert NG
     $version_obj = [version]$pcl_version
-    return ($version_obj.major, $version_obj.minor, $version_obj.micro, "")
+    return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
 }
 
 
@@ -258,11 +258,12 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     }
 }
 
-function main () {
+function main () 
+{
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPCL $env:PCL_VERSION, $env:PYTHON_ARCH, "C:\project"
+    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH "C:\project"
 }
 
 main

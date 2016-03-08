@@ -56,4 +56,4 @@ install:
 
 script:
   - python tests/test.py
-  - flake8
+
