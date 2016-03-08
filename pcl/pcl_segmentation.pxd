@@ -15,6 +15,9 @@ from pcl_defs cimport PointIndices
 from pcl_defs cimport ModelCoefficients
 from pcl_defs cimport PointCloud
 from pcl_defs cimport PointXYZ
+from pcl_defs cimport PointXYZI
+from pcl_defs cimport PointXYZRGB
+from pcl_defs cimport PointXYZRGBA
 from pcl_defs cimport Normal
 
 from pcl_sample_consensus cimport SacModel
@@ -53,7 +56,13 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void segment (PointIndices, ModelCoefficients)
 
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
+ctypedef SACSegmentation[PointXYZI] SACSegmentation_PointXYZI_t
+ctypedef SACSegmentation[PointXYZRGB] SACSegmentation_PointXYZRGB_t
+ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation_PointXYZRGBA_t
 ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
+ctypedef SACSegmentationFromNormals[PointXYZI,Normal] SACSegmentation_PointXYZI_Normal_t
+ctypedef SACSegmentationFromNormals[PointXYZRGB,Normal] SACSegmentation_PointXYZRGB_Normal_t
+ctypedef SACSegmentationFromNormals[PointXYZRGBA,Normal] SACSegmentation_PointXYZRGBA_Normal_t
 
 ###
 # comparator.h
@@ -200,7 +209,7 @@ cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.
 #       bool compare (int idx1, int idx2) const
-#     protected:
+#     	protected:
 #       const float* distance_map_;
 ###
 
@@ -270,11 +279,13 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 # /** \brief EuclideanPlaneCoefficientComparator is a Comparator that operates on plane coefficients, 
 #   * for use in planar segmentation.
 #   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#   *
 #   * \author Alex Trevor
 # template<typename PointT, typename PointNT>
 # class EuclideanPlaneCoefficientComparator: public PlaneCoefficientComparator<PointT, PointNT>
-#     public:
+cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" namespace "pcl":
+    cdef cppclass EuclideanPlaneCoefficientComparator[T, NT](PlaneCoefficientComparator[T, NT]):
+        EuclideanPlaneCoefficientComparator()
+#     	public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
@@ -286,35 +297,12 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
-#       
-#       /** \brief Empty constructor for PlaneCoefficientComparator. */
-#       EuclideanPlaneCoefficientComparator ()
-#       {
-#       }
-# 
-#       /** \brief Destructor for PlaneCoefficientComparator. */
-#       virtual
-#       ~EuclideanPlaneCoefficientComparator ()
-#       {
-#       }
 # 
 #       /** \brief Compare two neighboring points, by using normal information, and euclidean distance information.
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.
 #         */
-#       virtual bool
-#       compare (int idx1, int idx2) const
-#       {
-#         float dx = input_->points[idx1].x - input_->points[idx2].x;
-#         float dy = input_->points[idx1].y - input_->points[idx2].y;
-#         float dz = input_->points[idx1].z - input_->points[idx2].z;
-#         float dist = sqrtf (dx*dx + dy*dy + dz*dz);
-#         
-#         return ( (dist < distance_threshold_)
-#                  && (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ ) );
-#       }
-#   };
-# 
+#       virtual bool compare (int idx1, int idx2) const
 ###
 
 # extract_clusters.h

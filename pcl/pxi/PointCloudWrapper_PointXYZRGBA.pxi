@@ -15,6 +15,15 @@ cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 from _pcl cimport PointCloud_PointXYZRGBA
 
+cdef extern from "minipcl.h":
+    void mpcl_compute_normals_PointXYZRGBA(cpp.PointCloud_PointXYZRGBA_t, int ksearch,
+                              double searchRadius,
+                              cpp.PointNormalCloud_t) except +
+    void mpcl_sacnormal_set_axis_PointXYZRGBA(pclseg.SACSegmentation_PointXYZRGBA_Normal_t,
+                              double ax, double ay, double az) except +
+    void mpcl_extract_PointXYZRGBA(cpp.PointCloud_PointXYZRGBA_Ptr_t, cpp.PointCloud_PointXYZRGBA_t *,
+                              cpp.PointIndices_t *, bool) except +
+
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
 cdef Py_ssize_t _strides2[2]
@@ -244,29 +253,29 @@ cdef class PointCloud_PointXYZRGBA:
             # error = cpp.savePLYFile(s, p, binary)
         return error
 
-#    def make_segmenter(self):
-#        """
-#        Return a pcl.Segmentation object with this object set as the input-cloud
-#        """
-#        seg = Segmentation()
-#        cdef pclseg.SACSegmentation2_t *cseg = <pclseg.SACSegmentation2_t *>seg.me
-#        cseg.setInputCloud(self.thisptr_shared)
-#        return seg
-#
-#    def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
-#        """
-#        Return a pcl.SegmentationNormal object with this object set as the input-cloud
-#        """
-#        cdef cpp.PointNormalCloud_t normals
-#        p = self.thisptr()
-#        mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
-#        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-#        seg = SegmentationNormal()
-#        cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
-#        cseg.setInputCloud(self.thisptr_shared)
-#        cseg.setInputNormals (normals.makeShared());
-#        return seg
-#
+    def make_segmenter(self):
+        """
+        Return a pcl.Segmentation object with this object set as the input-cloud
+        """
+        seg = Segmentation_PointXYZRGBA()
+        cdef pclseg.SACSegmentation_PointXYZRGBA_t *cseg = <pclseg.SACSegmentation_PointXYZRGBA_t *>seg.me
+        cseg.setInputCloud(self.thisptr_shared)
+        return seg
+
+    def make_segmenter_normals(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a pcl.SegmentationNormal object with this object set as the input-cloud
+        """
+        cdef cpp.PointNormalCloud_t normals
+        p = self.thisptr()
+        mpcl_compute_normals_PointXYZRGBA(<cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr()), ksearch, searchRadius, normals)
+        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
+        seg = Segmentation_PointXYZRGBA_Normal()
+        cdef pclseg.SACSegmentation_PointXYZRGBA_Normal_t *cseg = <pclseg.SACSegmentation_PointXYZRGBA_Normal_t *>seg.me
+        cseg.setInputCloud(self.thisptr_shared)
+        cseg.setInputNormals (normals.makeShared());
+        return seg
+
 #    def make_statistical_outlier_filter(self):
 #        """
 #        Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
@@ -319,23 +328,19 @@ cdef class PointCloud_PointXYZRGBA:
 #        octree.set_input_cloud(self)
 #        return octree
 #
-#    def extract(self, pyindices, bool negative=False):
-#        """
-#        Given a list of indices of points in the pointcloud, return a 
-#        new pointcloud containing only those points.
-#        """
-#        cdef PointCloud result
-#        cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
-#
-#        for i in pyindices:
-#            ind.indices.push_back(i)
-#
-#        result = PointCloud_PointXYZRGBA()
-#        mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
-#        # XXX are we leaking memory here? del ind causes a double free...
-#
-#        return result
-#
+    def extract(self, pyindices, bool negative=False):
+        """
+        Given a list of indices of points in the pointcloud, return a 
+        new pointcloud containing only those points.
+        """
+        cdef PointCloud_PointXYZRGBA result
+        cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
+        for i in pyindices:
+            ind.indices.push_back(i)
+        result = PointCloud_PointXYZRGBA()
+        mpcl_extract_PointXYZRGBA(self.thisptr_shared, result.thisptr(), ind, negative)
+        # XXX are we leaking memory here? del ind causes a double free...
+        return result
 ###
 
 # include "Segmentation.pxi"

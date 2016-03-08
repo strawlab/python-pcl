@@ -42,7 +42,6 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         #  * \param millis_to_wait This will request to "spin" for the number of milliseconds, before exiting.
         #  * \return true if the user signaled the gui to stop
         bool wasStopped (int millis_to_wait)
-        # 
         # /** Visualization callable function, may be used for running things on the UI thread.
         # typedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
         # /** \brief Run a callbable object on the UI thread. Will persist until removed

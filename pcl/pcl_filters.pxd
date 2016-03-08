@@ -932,7 +932,9 @@ cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
         void filter(cpp.PointCloud[T] &c)
 
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZ] StatisticalOutlierRemoval_t
-ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval2_t
+ctypedef StatisticalOutlierRemoval[cpp.PointXYZI] StatisticalOutlierRemoval_PointXYZI_t
+ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGB] StatisticalOutlierRemoval_PointXYZRGB_t
+ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval_PointXYZRGBA_t
 
 # template<>
 # class PCL_EXPORTS StatisticalOutlierRemoval<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>

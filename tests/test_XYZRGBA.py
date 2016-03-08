@@ -10,12 +10,12 @@ import numpy as np
 from numpy.testing import assert_array_almost_equal, assert_array_equal
 
 
-_data = [(i, 2 * i, 3 * i + 0.2) for i in range(5)]
-_DATA = """0.0, 0.0, 0.2;
-           1.0, 2.0, 3.2;
-           2.0, 4.0, 6.2;
-           3.0, 6.0, 9.2;
-           4.0, 8.0, 12.2"""
+_data = [(i, 2 * i, 3 * i + 0.2, 16777215) for i in range(5)]
+_DATA = """0.0, 0.0, 0.2, 16777215;
+           1.0, 2.0, 3.2, 16777215;
+           2.0, 4.0, 6.2, 16777215;
+           3.0, 6.0, 9.2, 16777215;
+           4.0, 8.0, 12.2, 16777215"""
 
 
 class TestListIO(unittest.TestCase):
@@ -155,7 +155,7 @@ DATA ascii
 
 
 def test_copy():
-    a = np.random.randn(100, 3).astype(np.float32)
+    a = np.random.randn(100, 4).astype(np.float32)
     p1 = pcl.PointCloud_PointXYZRGBA(a)
     p2 = pcl.PointCloud_PointXYZRGBA(p1)
     assert_array_equal(p2.to_array(), a)

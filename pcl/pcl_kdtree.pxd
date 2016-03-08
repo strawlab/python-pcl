@@ -197,7 +197,9 @@ cdef extern from "pcl/kdtree/kdtree.h" namespace "pcl::search":
         # virtual std::string  getName () const = 0;
 
 ctypedef KdTree[cpp.PointXYZ] KdTree_t
-ctypedef KdTree[cpp.PointXYZRGBA] KdTree2_t
+ctypedef KdTree[cpp.PointXYZI] KdTree_PointXYZI_t
+ctypedef KdTree[cpp.PointXYZRGB] KdTree_PointXYZRGB_t
+ctypedef KdTree[cpp.PointXYZRGBA] KdTree_PointXYZRGBA_t
 ###
 
 # kdtree_flann.h
@@ -269,7 +271,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 
 # template <>
 # class KdTreeFLANN <Eigen::MatrixXf>
-#     public:
+#     	public:
 #       typedef pcl::PointCloud<Eigen::MatrixXf> PointCloud;
 #       typedef PointCloud::ConstPtr PointCloudConstPtr;
 #       typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
@@ -285,12 +287,10 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 #       KdTreeFLANN (const KdTreeFLANN<Eigen::MatrixXf> &k) : 
 #       inline KdTreeFLANN& operator = (const KdTreeFLANN<Eigen::MatrixXf>& k)
 #       inline void setEpsilon (float eps)
-#       inline Ptr makeShared () { return Ptr (new KdTreeFLANN<Eigen::MatrixXf> (*this)); } 
-# 
+#       inline Ptr makeShared ()
 #       void setInputCloud (const PointCloudConstPtr &cloud, const IndicesConstPtr &indices = IndicesConstPtr ())
 #       inline IndicesConstPtr getIndices () const
 #       inline PointCloudConstPtr getInputCloud () const
-# 
 #       template <typename T> int nearestKSearch (const T &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
 #       inline int nearestKSearch (const PointCloud &cloud, int index, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
 #       inline int nearestKSearch (int index, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
@@ -298,13 +298,10 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 #       inline int radiusSearch (const PointCloud &cloud, int index, double radius, 
 #                     std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, 
 #                     unsigned int max_nn = 0) const
-# 
 #       inline int radiusSearch (int index, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
-# 
 #       /** \brief Get the search epsilon precision (error bound) for nearest neighbors searches. */
 #       inline float getEpsilon () const
-# 
-#     protected:
+#     	protected:
 #       /** \brief The input point cloud dataset containing the points we need to use. */
 #       PointCloudConstPtr input_;
 #       /** \brief A pointer to the vector of point indices to use. */
@@ -316,6 +313,8 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 ### 
 
 ctypedef KdTreeFLANN[cpp.PointXYZ] KdTreeFLANN_t
-ctypedef KdTreeFLANN[cpp.PointXYZRGBA] KdTreeFLANN_t2
+ctypedef KdTreeFLANN[cpp.PointXYZI] KdTreeFLANN_XYZI_t
+ctypedef KdTreeFLANN[cpp.PointXYZRGB] KdTreeFLANN_XYZRGB_t
+ctypedef KdTreeFLANN[cpp.PointXYZRGBA] KdTreeFLANN_XYZRGBA_t
 
 ###
