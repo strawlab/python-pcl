@@ -205,6 +205,8 @@ if platform.system() == "Windows":
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #         language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],

@@ -72,7 +72,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #    int loadPLYFile (string file_name, PointCloud[cpp.PointXYZ] cloud)
 #    int savePLYFile (string file_name, PointCloud[cpp.PointXYZ] cloud, bool binary_mode)
 
-
 # cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 
 ###
@@ -407,6 +406,8 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #                         fields_count * sizeof (uint8_t)], reinterpret_cast<char*> (&value), sizeof (uint8_t));
 ###
 
+### base class
+
 # grabber.h
 # namespace pcl
 # /** \brief Grabber interface for PCL 1.x device drivers
@@ -414,11 +415,10 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #  * \ingroup io
 #  */
 # class PCL_EXPORTS Grabber
-#     public:
-#       /** \brief Constructor. */
-#       Grabber () : signals_ (), connections_ (), shared_connections_ () {}
-#       /** \brief virtual desctructor. */
-#       virtual inline ~Grabber () throw ();
+cdef extern from "pcl/io/grabber.h" namespace "pcl":
+    cdef cppclass Grabber:
+        Grabber ()
+#       public:
 #       /** \brief registers a callback function/method to a signal with the corresponding signature
 #         * \param[in] callback: the callback function/method
 #         * \return Connection object, that can be used to disconnect the callback method from the signal again.
@@ -455,73 +455,16 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       std::map<std::string, std::vector<boost::signals2::connection> > connections_;
 #       std::map<std::string, std::vector<boost::signals2::shared_connection_block> > shared_connections_;
 # 
-#   Grabber::~Grabber () throw ()
-#   {
-#     for (std::map<std::string, boost::signals2::signal_base*>::iterator signal_it = signals_.begin (); signal_it != signals_.end (); ++signal_it)
-#       delete signal_it->second;
-#   }
-# 
-#   template<typename T> boost::signals2::signal<T>*
-#   Grabber::find_signal () const
-#   {
-#     typedef boost::signals2::signal<T> Signal;
-# 
-#     std::map<std::string, boost::signals2::signal_base*>::const_iterator signal_it = signals_.find (typeid (T).name ());
-#     if (signal_it != signals_.end ())
-#       return (dynamic_cast<Signal*> (signal_it->second));
-# 
-#     return (NULL);
-#   }
-# 
-#   template<typename T> void
-#   Grabber::disconnect_all_slots ()
-#   {
-#     typedef boost::signals2::signal<T> Signal;
-# 
-#     if (signals_.find (typeid (T).name ()) != signals_.end ())
-#     {
-#       Signal* signal = dynamic_cast<Signal*> (signals_[typeid (T).name ()]);
-#       signal->disconnect_all_slots ();
-#     }
-#   }
-# 
-#   template<typename T> void
-#   Grabber::block_signal ()
-#   {
-#     if (connections_.find (typeid (T).name ()) != connections_.end ())
-#       for (std::vector<boost::signals2::shared_connection_block>::iterator cIt = shared_connections_[typeid (T).name ()].begin (); cIt != shared_connections_[typeid (T).name ()].end (); ++cIt)
-#         cIt->block ();
-#   }
-# 
-#   template<typename T> void
-#   Grabber::unblock_signal ()
-#   {
-#     if (connections_.find (typeid (T).name ()) != connections_.end ())
-#       for (std::vector<boost::signals2::shared_connection_block>::iterator cIt = shared_connections_[typeid (T).name ()].begin (); cIt != shared_connections_[typeid (T).name ()].end (); ++cIt)
-#         cIt->unblock ();
-#   }
-# 
-#   void
-#   Grabber::block_signals ()
-#   {
-#     for (std::map<std::string, boost::signals2::signal_base*>::iterator signal_it = signals_.begin (); signal_it != signals_.end (); ++signal_it)
-#       for (std::vector<boost::signals2::shared_connection_block>::iterator cIt = shared_connections_[signal_it->first].begin (); cIt != shared_connections_[signal_it->first].end (); ++cIt)
-#         cIt->block ();
-#   }
-# 
+#   template<typename T> boost::signals2::signal<T>* Grabber::find_signal () const
+#   template<typename T> void Grabber::disconnect_all_slots ()
+#   template<typename T> void Grabber::block_signal ()
+#   template<typename T> void Grabber::unblock_signal ()
+#   void Grabber::block_signals ()
 #   void Grabber::unblock_signals ()
-# 
-#   template<typename T> int
-#   Grabber::num_slots () const
-# 
-#   template<typename T> boost::signals2::signal<T>*
-#   Grabber::createSignal ()
-# 
-#   template<typename T> boost::signals2::connection
-#   Grabber::registerCallback (const boost::function<T> & callback)
-# 
-#   template<typename T> bool
-#   Grabber::providesCallback () const
+#   template<typename T> int Grabber::num_slots () const
+#   template<typename T> boost::signals2::signal<T>* Grabber::createSignal ()
+#   template<typename T> boost::signals2::connection Grabber::registerCallback (const boost::function<T> & callback)
+#   template<typename T> bool Grabber::providesCallback () const
 ###
 
 # io.h
@@ -565,131 +508,111 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 # /** \brief A simple ONI grabber.
 #  * \author Suat Gedikli
 # class PCL_EXPORTS ONIGrabber : public Grabber
-#   {
-#     public:
-#       //define callback signature typedefs
-#       typedef void (sig_cb_openni_image) (const boost::shared_ptr<openni_wrapper::Image>&);
-#       typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<openni_wrapper::DepthImage>&);
-#       typedef void (sig_cb_openni_ir_image) (const boost::shared_ptr<openni_wrapper::IRImage>&);
-#       typedef void (sig_cb_openni_image_depth_image) (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
-#       typedef void (sig_cb_openni_ir_depth_image) (const boost::shared_ptr<openni_wrapper::IRImage>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
-#       typedef void (sig_cb_openni_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
-#       typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
-#       typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
-#       typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-# 
-#       /** \brief constuctor
-#         * \param[in] file_name the path to the ONI file
-#         * \param[in] repeat whether the play back should be in an infinite loop or not
-#         * \param[in] stream whether the playback should be in streaming mode or in triggered mode.
-#         */
-#       ONIGrabber (const std::string& file_name, bool repeat, bool stream);
-# 
-#       /** \brief destructor never throws an exception */
-#       virtual ~ONIGrabber () throw ();
-# 
-#       /** \brief For devices that are streaming, the streams are started by calling this method.
-#         *        Trigger-based devices, just trigger the device once for each call of start.
-#         */
-#       virtual void 
-#       start ();
-# 
-#       /** \brief For devices that are streaming, the streams are stopped.
-#         *        This method has no effect for triggered devices.
-#         */
-#       virtual void 
-#       stop ();
-# 
-#       /** \brief returns the name of the concrete subclass.
-#         * \return the name of the concrete driver.
-#         */
-#       virtual std::string 
-#       getName () const;
-# 
-#       /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
-#         * \return true if grabber is running / streaming. False otherwise.
-#         */
-#       virtual bool 
-#       isRunning () const;
-# 
-#       /** \brief returns the frames pre second. 0 if it is trigger based. */
-#       virtual float 
-#       getFramesPerSecond () const;
-# 
-#     protected:
-#       /** \brief internal OpenNI (openni_wrapper) callback that handles image streams */
-#       void
-#       imageCallback (boost::shared_ptr<openni_wrapper::Image> image, void* cookie);
-# 
-#       /** \brief internal OpenNI (openni_wrapper) callback that handles depth streams */
-#       void
-#       depthCallback (boost::shared_ptr<openni_wrapper::DepthImage> depth_image, void* cookie);
-# 
-#       /** \brief internal OpenNI (openni_wrapper) callback that handles IR streams */
-#       void
-#       irCallback (boost::shared_ptr<openni_wrapper::IRImage> ir_image, void* cookie);
-# 
-#       /** \brief internal callback that handles synchronized image + depth streams */
-#       void
-#       imageDepthImageCallback (const boost::shared_ptr<openni_wrapper::Image> &image,
-#                                const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image);
-# 
-#       /** \brief internal callback that handles synchronized IR + depth streams */
-#       void
-#       irDepthImageCallback (const boost::shared_ptr<openni_wrapper::IRImage> &image,
-#                             const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image);
-# 
-#       /** \brief internal method to assemble a point cloud object */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >
-#       convertToXYZPointCloud (const boost::shared_ptr<openni_wrapper::DepthImage> &depth) const;
-# 
-#       /** \brief internal method to assemble a point cloud object */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >
-#       convertToXYZRGBPointCloud (const boost::shared_ptr<openni_wrapper::Image> &image,
-#                                  const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
-# 
-#       /** \brief internal method to assemble a point cloud object */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> >
-#       convertToXYZRGBAPointCloud (const boost::shared_ptr<openni_wrapper::Image> &image,
-#                                   const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
-# 
-#       /** \brief internal method to assemble a point cloud object */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >
-#       convertToXYZIPointCloud (const boost::shared_ptr<openni_wrapper::IRImage> &image,
-#                                const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
-# 
-#       /** \brief synchronizer object to synchronize image and depth streams*/
-#       Synchronizer<boost::shared_ptr<openni_wrapper::Image>, boost::shared_ptr<openni_wrapper::DepthImage> > rgb_sync_;
-# 
-#       /** \brief synchronizer object to synchronize IR and depth streams*/
-#       Synchronizer<boost::shared_ptr<openni_wrapper::IRImage>, boost::shared_ptr<openni_wrapper::DepthImage> > ir_sync_;
-# 
-#       /** \brief the actual openni device*/
-#       boost::shared_ptr<openni_wrapper::DeviceONI> device_;
-#       std::string rgb_frame_id_;
-#       std::string depth_frame_id_;
-#       bool running_;
-#       unsigned image_width_;
-#       unsigned image_height_;
-#       unsigned depth_width_;
-#       unsigned depth_height_;
-#       openni_wrapper::OpenNIDevice::CallbackHandle depth_callback_handle;
-#       openni_wrapper::OpenNIDevice::CallbackHandle image_callback_handle;
-#       openni_wrapper::OpenNIDevice::CallbackHandle ir_callback_handle;
-#       boost::signals2::signal<sig_cb_openni_image >*            image_signal_;
-#       boost::signals2::signal<sig_cb_openni_depth_image >*      depth_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_ir_image >*         ir_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_image_depth_image>* image_depth_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_ir_depth_image>*    ir_depth_image_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud >*      point_cloud_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_i >*    point_cloud_i_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_rgb >*  point_cloud_rgb_signal_;
-#       boost::signals2::signal<sig_cb_openni_point_cloud_rgba >*  point_cloud_rgba_signal_;
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
-# 
+# cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
+#     cdef cppclass ONIGrabber(Grabber):
+#         ONIGrabber (string file_name, bool repeat, bool stream)
+        # public:
+        # //define callback signature typedefs
+        # typedef void (sig_cb_openni_image) (const boost::shared_ptr<openni_wrapper::Image>&);
+        # typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<openni_wrapper::DepthImage>&);
+        # typedef void (sig_cb_openni_ir_image) (const boost::shared_ptr<openni_wrapper::IRImage>&);
+        # typedef void (sig_cb_openni_image_depth_image) (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
+        # typedef void (sig_cb_openni_ir_depth_image) (const boost::shared_ptr<openni_wrapper::IRImage>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
+        # typedef void (sig_cb_openni_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
+        # typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
+        # typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
+        # typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        #
+        # /** \brief For devices that are streaming, the streams are started by calling this method.
+        #   *        Trigger-based devices, just trigger the device once for each call of start.
+        #   */
+        # virtual void start ()
+        # /** \brief For devices that are streaming, the streams are stopped.
+        #  *        This method has no effect for triggered devices.
+        #  */
+        # virtual void stop ()
+        # /** \brief returns the name of the concrete subclass.
+        #  * \return the name of the concrete driver.
+        #  */
+        # virtual string getName () const;
+        # /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
+        #  * \return true if grabber is running / streaming. False otherwise.
+        #  */
+        # virtual bool isRunning () const;
+        # /** \brief returns the frames pre second. 0 if it is trigger based. */
+        # virtual float getFramesPerSecond () const;
+        # 
+        # protected:
+        # /** \brief internal OpenNI (openni_wrapper) callback that handles image streams */
+        # void
+        # imageCallback (boost::shared_ptr<openni_wrapper::Image> image, void* cookie);
+        # 
+        # /** \brief internal OpenNI (openni_wrapper) callback that handles depth streams */
+        # void
+        # depthCallback (boost::shared_ptr<openni_wrapper::DepthImage> depth_image, void* cookie);
+        # 
+        # /** \brief internal OpenNI (openni_wrapper) callback that handles IR streams */
+        # void
+        # irCallback (boost::shared_ptr<openni_wrapper::IRImage> ir_image, void* cookie);
+        # 
+        # /** \brief internal callback that handles synchronized image + depth streams */
+        # void
+        # imageDepthImageCallback (const boost::shared_ptr<openni_wrapper::Image> &image,
+        #                         const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image);
+        # 
+        # /** \brief internal callback that handles synchronized IR + depth streams */
+        # void
+        # irDepthImageCallback (const boost::shared_ptr<openni_wrapper::IRImage> &image,
+        #                      const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image);
+        # 
+        # /** \brief internal method to assemble a point cloud object */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >
+        # convertToXYZPointCloud (const boost::shared_ptr<openni_wrapper::DepthImage> &depth) const;
+        # 
+        # /** \brief internal method to assemble a point cloud object */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGB> >
+        # convertToXYZRGBPointCloud (const boost::shared_ptr<openni_wrapper::Image> &image,
+        #                           const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
+        # 
+        # /** \brief internal method to assemble a point cloud object */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> >
+        # convertToXYZRGBAPointCloud (const boost::shared_ptr<openni_wrapper::Image> &image,
+        #                            const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
+        # 
+        # /** \brief internal method to assemble a point cloud object */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >
+        # convertToXYZIPointCloud (const boost::shared_ptr<openni_wrapper::IRImage> &image,
+        #                         const boost::shared_ptr<openni_wrapper::DepthImage> &depth_image) const;
+        # 
+        # /** \brief synchronizer object to synchronize image and depth streams*/
+        # Synchronizer<boost::shared_ptr<openni_wrapper::Image>, boost::shared_ptr<openni_wrapper::DepthImage> > rgb_sync_;
+        # 
+        # /** \brief synchronizer object to synchronize IR and depth streams*/
+        # Synchronizer<boost::shared_ptr<openni_wrapper::IRImage>, boost::shared_ptr<openni_wrapper::DepthImage> > ir_sync_;
+        # 
+        # /** \brief the actual openni device*/
+        # boost::shared_ptr<openni_wrapper::DeviceONI> device_;
+        # std::string rgb_frame_id_;
+        # std::string depth_frame_id_;
+        # bool running_;
+        # unsigned image_width_;
+        # unsigned image_height_;
+        # unsigned depth_width_;
+        # unsigned depth_height_;
+        # openni_wrapper::OpenNIDevice::CallbackHandle depth_callback_handle;
+        # openni_wrapper::OpenNIDevice::CallbackHandle image_callback_handle;
+        # openni_wrapper::OpenNIDevice::CallbackHandle ir_callback_handle;
+        # boost::signals2::signal<sig_cb_openni_image >*            image_signal_;
+        # boost::signals2::signal<sig_cb_openni_depth_image >*      depth_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_ir_image >*         ir_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_image_depth_image>* image_depth_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_ir_depth_image>*    ir_depth_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud >*      point_cloud_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud_i >*    point_cloud_i_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud_rgb >*  point_cloud_rgb_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud_rgba >*  point_cloud_rgba_signal_;
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 ###
 
 # openni_grabber.h
@@ -706,81 +629,72 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #     * \ingroup io
 #     */
 #   class PCL_EXPORTS OpenNIGrabber : public Grabber
-#   {
-#     public:
-# 
-#       typedef enum
-#       {
-#         OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
-#         OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
-#         OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
-#         OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
-#         OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
-#         OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
-#         OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
-#         OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-#         OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-#         OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
-#       } Mode;
-# 
-#       //define callback signature typedefs
-#       typedef void (sig_cb_openni_image) (const boost::shared_ptr<openni_wrapper::Image>&);
-#       typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<openni_wrapper::DepthImage>&);
-#       typedef void (sig_cb_openni_ir_image) (const boost::shared_ptr<openni_wrapper::IRImage>&);
-#       typedef void (sig_cb_openni_image_depth_image) (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
-#       typedef void (sig_cb_openni_ir_depth_image) (const boost::shared_ptr<openni_wrapper::IRImage>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
-#       typedef void (sig_cb_openni_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
-#       typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
-#       typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
-#       typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-#       typedef void (sig_cb_openni_point_cloud_eigen) (const boost::shared_ptr<const pcl::PointCloud<Eigen::MatrixXf> >&);
-# 
-#     public:
-#       /** \brief Constructor
-#         * \param[in] device_id ID of the device, which might be a serial number, bus@address or the index of the device.
-#         * \param[in] depth_mode the mode of the depth stream
-#         * \param[in] image_mode the mode of the image stream
-#         */
-#       OpenNIGrabber (const std::string& device_id = "",
-#                      const Mode& depth_mode = OpenNI_Default_Mode,
-#                      const Mode& image_mode = OpenNI_Default_Mode);
-# 
-#       /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
-#       virtual ~OpenNIGrabber () throw ();
-# 
-#       /** \brief Start the data acquisition. */
-#       virtual void
-#       start ();
-# 
-#       /** \brief Stop the data acquisition. */
-#       virtual void
-#       stop ();
-# 
-#       /** \brief Check if the data acquisition is still running. */
-#       virtual bool
-#       isRunning () const;
-# 
-#       virtual std::string
-#       getName () const;
-# 
-#       /** \brief Obtain the number of frames per second (FPS). */
-#       virtual float 
-#       getFramesPerSecond () const;
-# 
-#       /** \brief Get a boost shared pointer to the \ref OpenNIDevice object. */
-#       inline boost::shared_ptr<openni_wrapper::OpenNIDevice>
-#       getDevice () const;
-# 
-#       /** \brief Obtain a list of the available depth modes that this device supports. */
-#       std::vector<std::pair<int, XnMapOutputMode> >
-#       getAvailableDepthModes () const;
-# 
-#       /** \brief Obtain a list of the available image modes that this device supports. */
-#       std::vector<std::pair<int, XnMapOutputMode> >
-#       getAvailableImageModes () const;
-#       public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
+# cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
+#     cdef cppclass OpenNIGrabber(Grabber):
+#         OpenNIGrabber ()
+        # OpenNIGrabber (const std::string& device_id = "",
+        #                const Mode& depth_mode = OpenNI_Default_Mode,
+        #                const Mode& image_mode = OpenNI_Default_Mode);
+        # public:
+        # typedef enum
+        # {
+        #   OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
+        #   OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
+        #   OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
+        #   OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
+        #   OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
+        #   OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
+        #   OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
+        #   OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        #   OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        #   OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        # } Mode;
+        # 
+        # //define callback signature typedefs
+        # typedef void (sig_cb_openni_image) (const boost::shared_ptr<openni_wrapper::Image>&);
+        # typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<openni_wrapper::DepthImage>&);
+        # typedef void (sig_cb_openni_ir_image) (const boost::shared_ptr<openni_wrapper::IRImage>&);
+        # typedef void (sig_cb_openni_image_depth_image) (const boost::shared_ptr<openni_wrapper::Image>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
+        # typedef void (sig_cb_openni_ir_depth_image) (const boost::shared_ptr<openni_wrapper::IRImage>&, const boost::shared_ptr<openni_wrapper::DepthImage>&, float constant) ;
+        # typedef void (sig_cb_openni_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
+        # typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
+        # typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
+        # typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        # typedef void (sig_cb_openni_point_cloud_eigen) (const boost::shared_ptr<const pcl::PointCloud<Eigen::MatrixXf> >&);
+        # 
+        # public:
+        # 
+        # /** \brief Start the data acquisition. */
+        # virtual void start ();
+        # 
+        # /** \brief Stop the data acquisition. */
+        # virtual void
+        # stop ();
+        # 
+        # /** \brief Check if the data acquisition is still running. */
+        # virtual bool
+        # isRunning () const;
+        # 
+        # virtual std::string
+        # getName () const;
+        # 
+        # /** \brief Obtain the number of frames per second (FPS). */
+        # virtual float 
+        # getFramesPerSecond () const;
+        # 
+        # /** \brief Get a boost shared pointer to the \ref OpenNIDevice object. */
+        # inline boost::shared_ptr<openni_wrapper::OpenNIDevice>
+        # getDevice () const;
+        # 
+        # /** \brief Obtain a list of the available depth modes that this device supports. */
+        # std::vector<std::pair<int, XnMapOutputMode> >
+        # getAvailableDepthModes () const;
+        # 
+        # /** \brief Obtain a list of the available image modes that this device supports. */
+        # std::vector<std::pair<int, XnMapOutputMode> >
+        # getAvailableImageModes () const;
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 # 
 #   boost::shared_ptr<openni_wrapper::OpenNIDevice>
 #   OpenNIGrabber::getDevice () const
@@ -794,7 +708,9 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #     * \ingroup io
 #     */
 #   class PCL_EXPORTS PCDGrabberBase : public Grabber
-#   {
+# cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
+#     cdef cppclass PCDGrabberBase(Grabber):
+#         PCDGrabberBase ()
 #     public:
 #       /** \brief Constructor taking just one PCD file or one TAR file containing multiple PCD files.
 #         * \param[in] pcd_file path to the PCD file
@@ -1772,22 +1688,13 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         *this = p;
 #       }
 # 
-#       PLYReader&
-#       operator = (const PLYReader &p)
-#       {
-#         origin_ = p.origin_;
-#         orientation_ = p.orientation_;
-#         range_grid_ = p.range_grid_;
-#         return (*this);
-#       }
+#       PLYReader& operator = (const PLYReader &p)
 # 
 #       ~PLYReader () { delete range_grid_; }
 #       /** \brief Read a point cloud data header from a PLY file.
-#         *
 #         * Load only the meta information (number of points, their types, etc),
 #         * and not the points themselves, from a given PLY file. Useful for fast
 #         * evaluation of the underlying data structure.
-#         *
 #         * Returns:
 #         *  * < 0 (-1) on error
 #         *  * > 0 on success
@@ -1804,8 +1711,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         * add a 512 byte header in front of the actual file, so set the offset
 #         * to the next byte after the header (e.g., 513).
 #         */
-#       int 
-#       readHeader (const std::string &file_name, sensor_msgs::PointCloud2 &cloud,
+#       int readHeader (const std::string &file_name, sensor_msgs::PointCloud2 &cloud,
 #                   Eigen::Vector4f &origin, Eigen::Quaternionf &orientation,
 #                   int &ply_version, int &data_type, unsigned int &data_idx, const int offset = 0);
 # 
@@ -1821,8 +1727,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         * add a 512 byte header in front of the actual file, so set the offset
 #         * to the next byte after the header (e.g., 513).
 #         */
-#       int 
-#       read (const std::string &file_name, sensor_msgs::PointCloud2 &cloud,
+#       int read (const std::string &file_name, sensor_msgs::PointCloud2 &cloud,
 #             Eigen::Vector4f &origin, Eigen::Quaternionf &orientation, int& ply_version, const int offset = 0);
 # 
 #       /** \brief Read a point cloud data from a PLY file (PLY_V6 only!) and store it into a sensor_msgs/PointCloud2.
@@ -1840,14 +1745,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         * add a 512 byte header in front of the actual file, so set the offset
 #         * to the next byte after the header (e.g., 513).
 #         */
-#       inline int 
-#       read (const std::string &file_name, sensor_msgs::PointCloud2 &cloud, const int offset = 0)
-#       {
-#         Eigen::Vector4f origin;
-#         Eigen::Quaternionf orientation;
-#         int ply_version;
-#         return read (file_name, cloud, origin, orientation, ply_version, offset);
-#       }
+#       inline int read (const std::string &file_name, sensor_msgs::PointCloud2 &cloud, const int offset = 0)
 # 
 #       /** \brief Read a point cloud data from any PLY file, and convert it to the given template format.
 #         * \param[in] file_name the name of the file containing the actual PointCloud data
@@ -1886,9 +1784,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         */
 #       void 
 #       infoCallback (const std::string& filename, std::size_t line_number, const std::string& message)
-#       {
-#         PCL_DEBUG ("[pcl::PLYReader] %s:%lu: %s\n", filename.c_str (), line_number, message.c_str ());
-#       }
 #       
 #       /** \brief Warning callback function
 #         * \param[in] filename PLY file read
@@ -1897,9 +1792,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         */
 #       void 
 #       warningCallback (const std::string& filename, std::size_t line_number, const std::string& message)
-#       {
-#         PCL_WARN ("[pcl::PLYReader] %s:%lu: %s\n", filename.c_str (), line_number, message.c_str ());
-#       }
 #       
 #       /** \brief Error callback function
 #         * \param[in] filename PLY file read
@@ -1908,9 +1800,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         */
 #       void 
 #       errorCallback (const std::string& filename, std::size_t line_number, const std::string& message)
-#       {
-#         PCL_ERROR ("[pcl::PLYReader] %s:%lu: %s\n", filename.c_str (), line_number, message.c_str ());
-#       }
 #       
 #       /** \brief function called when the keyword element is parsed
 #         * \param[in] element_name element name
@@ -1957,143 +1846,116 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #         * converts intensity from int to float before writing it down in cloud data.
 #         * param[in] intensity
 #         */
-#       inline void
-#       vertexIntensityCallback (pcl::io::ply::uint8 intensity);
+#       inline void vertexIntensityCallback (pcl::io::ply::uint8 intensity);
 #       
 #       /** Callback function for origin x component.
 #         * param[in] value origin x value
 #         */
-#       inline void
-#       originXCallback (const float& value) { origin_[0] = value; }
+#       inline void originXCallback (const float& value)
 #       
 #       /** Callback function for origin y component.
 #         * param[in] value origin y value
 #         */
-#       inline void
-#       originYCallback (const float& value) { origin_[1] = value; }
+#       inline void originYCallback (const float& value)
 # 
 #       /** Callback function for origin z component.
 #         * param[in] value origin z value
 #         */      
-#       inline void
-#       originZCallback (const float& value) { origin_[2] = value; }
+#       inline void originZCallback (const float& value)
 #     
 #       /** Callback function for orientation x axis x component.
 #         * param[in] value orientation x axis x value
 #         */
-#       inline void
-#       orientationXaxisXCallback (const float& value) { orientation_ (0,0) = value; }
+#       inline void orientationXaxisXCallback (const float& value)
 #       
 #       /** Callback function for orientation x axis y component.
 #         * param[in] value orientation x axis y value
 #         */
-#       inline void
-#       orientationXaxisYCallback (const float& value) { orientation_ (0,1) = value; }
+#       inline void orientationXaxisYCallback (const float& value)
 #       
 #       /** Callback function for orientation x axis z component.
 #         * param[in] value orientation x axis z value
 #         */
-#       inline void
-#       orientationXaxisZCallback (const float& value) { orientation_ (0,2) = value; }
+#       inline void orientationXaxisZCallback (const float& value)
 #       
 #       /** Callback function for orientation y axis x component.
 #         * param[in] value orientation y axis x value
 #         */
-#       inline void
-#       orientationYaxisXCallback (const float& value) { orientation_ (1,0) = value; }
+#       inline void orientationYaxisXCallback (const float& value)
 #       
 #       /** Callback function for orientation y axis y component.
 #         * param[in] value orientation y axis y value
 #         */
-#       inline void
-#       orientationYaxisYCallback (const float& value) { orientation_ (1,1) = value; }
+#       inline void orientationYaxisYCallback (const float& value)
 # 
 #       /** Callback function for orientation y axis z component.
 #         * param[in] value orientation y axis z value
 #         */
-#       inline void
-#       orientationYaxisZCallback (const float& value) { orientation_ (1,2) = value; }
+#       inline void orientationYaxisZCallback (const float& value)
 #       
 #       /** Callback function for orientation z axis x component.
 #         * param[in] value orientation z axis x value
 #         */
-#       inline void
-#       orientationZaxisXCallback (const float& value) { orientation_ (2,0) = value; }
+#       inline void orientationZaxisXCallback (const float& value)
 #     
 #       /** Callback function for orientation z axis y component.
 #         * param[in] value orientation z axis y value
 #         */
-#       inline void
-#       orientationZaxisYCallback (const float& value) { orientation_ (2,1) = value; }
+#       inline void orientationZaxisYCallback (const float& value)
 #       
 #       /** Callback function for orientation z axis z component.
 #         * param[in] value orientation z axis z value
 #         */
-#       inline void
-#       orientationZaxisZCallback (const float& value) { orientation_ (2,2) = value; }
+#       inline void orientationZaxisZCallback (const float& value)
 #       
 #       /** Callback function to set the cloud height
 #         * param[in] height cloud height
 #         */
-#       inline void
-#       cloudHeightCallback (const int &height) { cloud_->height = height; }
+#       inline void cloudHeightCallback (const int &height)
 # 
 #       /** Callback function to set the cloud width
 #         * param[in] width cloud width
 #         */
-#       inline void
-#       cloudWidthCallback (const int &width) { cloud_->width = width; }
+#       inline void cloudWidthCallback (const int &width)
 #         
 #       /** Append a float property to the cloud fields.
 #         * param[in] name property name
 #         * param[in] count property count: 1 for scalar properties and higher for a 
 #         * list property.
-#         */
-#       void
-#       appendFloatProperty (const std::string& name, const size_t& count = 1);
+#       void appendFloatProperty (const std::string& name, const size_t& count = 1);
 # 
 #       /** Callback function for the begin of vertex line */
-#       void
-#       vertexBeginCallback ();
+#       void vertexBeginCallback ();
 # 
 #       /** Callback function for the end of vertex line */
-#       void
-#       vertexEndCallback ();
+#       void vertexEndCallback ();
 # 
 #       /** Callback function for the begin of range_grid line */
-#       void
-#       rangeGridBeginCallback ();
+#       void rangeGridBeginCallback ();
 # 
 #       /** Callback function for the begin of range_grid vertex_indices property 
 #         * param[in] size vertex_indices list size  
 #         */
-#       void
-#       rangeGridVertexIndicesBeginCallback (pcl::io::ply::uint8 size);
+#       void rangeGridVertexIndicesBeginCallback (pcl::io::ply::uint8 size);
 # 
 #       /** Callback function for each range_grid vertex_indices element
 #         * param[in] vertex_index index of the vertex in vertex_indices
 #         */      
-#       void
-#       rangeGridVertexIndicesElementCallback (pcl::io::ply::int32 vertex_index);
+#       void rangeGridVertexIndicesElementCallback (pcl::io::ply::int32 vertex_index);
 # 
 #       /** Callback function for the end of a range_grid vertex_indices property */
-#       void
-#       rangeGridVertexIndicesEndCallback ();
+#       void rangeGridVertexIndicesEndCallback ();
 # 
 #       /** Callback function for the end of a range_grid element end */
-#       void
-#       rangeGridEndCallback ();
+#       void rangeGridEndCallback ();
 # 
 #       /** Callback function for obj_info */
-#       void
-#       objInfoCallback (const std::string& line);
+#       void objInfoCallback (const std::string& line);
 # 
 #       /// origin
 #       Eigen::Vector4f origin_;
-# 
 #       /// orientation
 #       Eigen::Matrix3f orientation_;
-# 
 #       //vertex element artifacts
 #       sensor_msgs::PointCloud2 *cloud_;
 #       size_t vertex_count_, vertex_properties_counter_;
@@ -2102,8 +1964,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       std::vector<std::vector <int> > *range_grid_;
 #       size_t range_count_, range_grid_vertex_indices_element_index_;
 #       size_t rgb_offset_before_;
-#       
-#     public:
+#     	public:
 #       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #   };
 # 
@@ -2135,9 +1996,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #                             const Eigen::Quaternionf &orientation,
 #                             int valid_points,
 #                             bool use_camera = true)
-#       {
-#         return (generateHeader (cloud, origin, orientation, true, use_camera, valid_points));
-#       }
 #       
 #       /** \brief Generate the header of a PLY v.7 file format
 #         * \param[in] cloud the point cloud data message
@@ -2154,9 +2012,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #                            const Eigen::Quaternionf &orientation,
 #                            int valid_points,
 #                            bool use_camera = true)
-#       {
-#         return (generateHeader (cloud, origin, orientation, false, use_camera, valid_points));
-#       }
 # 
 #       /** \brief Save point cloud data to a PLY file containing n-D points, in ASCII format
 #         * \param[in] file_name the output file name
@@ -2198,12 +2053,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #              const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
 #              const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
 #              const bool binary = false)
-#       {
-#         if (binary)
-#           return (this->writeBinary (file_name, cloud, origin, orientation));
-#         else
-#           return (this->writeASCII (file_name, cloud, origin, orientation, 8, true));
-#       }
 # 
 #       /** \brief Save point cloud data to a PLY file containing n-D points
 #         * \param[in] file_name the output file name
@@ -2221,12 +2070,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #              const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
 #              bool binary = false,
 #              bool use_camera = true)
-#       {
-#         if (binary)
-#           return (this->writeBinary (file_name, cloud, origin, orientation));
-#         else
-#           return (this->writeASCII (file_name, cloud, origin, orientation, 8, use_camera));
-#       }
 # 
 #       /** \brief Save point cloud data to a PLY file containing n-D points
 #         * \param[in] file_name the output file name
@@ -2244,9 +2087,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #              const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
 #              bool binary = false,
 #              bool use_camera = true)
-#       {
-#         return (write (file_name, *cloud, origin, orientation, binary, use_camera));
-#       }
 # 
 #       /** \brief Save point cloud data to a PLY file containing n-D points
 #         * \param[in] file_name the output file name
@@ -2261,44 +2101,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #              const pcl::PointCloud<PointT> &cloud, 
 #              bool binary = false,
 #              bool use_camera = true)
-#       {
-#         Eigen::Vector4f origin = cloud.sensor_origin_;
-#         Eigen::Quaternionf orientation = cloud.sensor_orientation_;
-# 
-#         sensor_msgs::PointCloud2 blob;
-#         pcl::toROSMsg (cloud, blob);
-# 
-#         // Save the data
-#         return (this->write (file_name, blob, origin, orientation, binary, use_camera));
-#       }
-#       
-#     private:
-#       /** \brief Generate a PLY header.
-#         * \param[in] cloud the input point cloud
-#         * \param[in] binary whether the PLY file should be saved as binary data (true) or ascii (false)
-#         */
-#       std::string
-#       generateHeader (const sensor_msgs::PointCloud2 &cloud, 
-#                       const Eigen::Vector4f &origin, 
-#                       const Eigen::Quaternionf &orientation,
-#                       bool binary, 
-#                       bool use_camera,
-#                       int valid_points);
-#       
-#       void
-#       writeContentWithCameraASCII (int nr_points, 
-#                                    int point_size,
-#                                    const sensor_msgs::PointCloud2 &cloud, 
-#                                    const Eigen::Vector4f &origin, 
-#                                    const Eigen::Quaternionf &orientation,
-#                                    std::ofstream& fs);
-# 
-#       void
-#       writeContentWithRangeGridASCII (int nr_points, 
-#                                       int point_size,
-#                                       const sensor_msgs::PointCloud2 &cloud, 
-#                                       std::ostringstream& fs,
-#                                       int& nb_valid_points);
 #   };
 # 
 #   namespace io
@@ -2314,10 +2116,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       */
 #     inline int
 #     loadPLYFile (const std::string &file_name, sensor_msgs::PointCloud2 &cloud)
-#     {
-#       pcl::PLYReader p;
-#       return (p.read (file_name, cloud));
-#     }
 # 
 #     /** \brief Load any PLY file into a templated PointCloud type.
 #       * \param[in] file_name the name of the file to load
@@ -2330,11 +2128,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #     inline int
 #     loadPLYFile (const std::string &file_name, sensor_msgs::PointCloud2 &cloud,
 #                  Eigen::Vector4f &origin, Eigen::Quaternionf &orientation)
-#     {
-#       pcl::PLYReader p;
-#       int ply_version;
-#       return (p.read (file_name, cloud, origin, orientation, ply_version));
-#     }
 # 
 #     /** \brief Load any PLY file into a templated PointCloud type
 #       * \param[in] file_name the name of the file to load
@@ -2343,10 +2136,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       */
 #     template<typename PointT> inline int
 #     loadPLYFile (const std::string &file_name, pcl::PointCloud<PointT> &cloud)
-#     {
-#       pcl::PLYReader p;
-#       return (p.read (file_name, cloud));
-#     }
 # 
 #     /** \brief Save point cloud data to a PLY file containing n-D points
 #       * \param[in] file_name the output file name
@@ -2361,10 +2150,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #                  const Eigen::Vector4f &origin = Eigen::Vector4f::Zero (), 
 #                  const Eigen::Quaternionf &orientation = Eigen::Quaternionf::Identity (),
 #                  bool binary_mode = false, bool use_camera = true)
-#     {
-#       PLYWriter w;
-#       return (w.write (file_name, cloud, origin, orientation, binary_mode, use_camera));
-#     }
 # 
 #     /** \brief Templated version for saving point cloud data to a PLY file
 #       * containing a specific given cloud format
@@ -2375,10 +2160,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       */
 #     template<typename PointT> inline int
 #     savePLYFile (const std::string &file_name, const pcl::PointCloud<PointT> &cloud, bool binary_mode = false)
-#     {
-#       PLYWriter w;
-#       return (w.write<PointT> (file_name, cloud, binary_mode));
-#     }
 # 
 #     /** \brief Templated version for saving point cloud data to a PLY file
 #       * containing a specific given cloud format.
@@ -2388,10 +2169,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       */
 #     template<typename PointT> inline int
 #     savePLYFileASCII (const std::string &file_name, const pcl::PointCloud<PointT> &cloud)
-#     {
-#       PLYWriter w;
-#       return (w.write<PointT> (file_name, cloud, false));
-#     }
 # 
 #     /** \brief Templated version for saving point cloud data to a PLY file containing a specific given cloud format.
 #       * \param[in] file_name the output file name
@@ -2400,10 +2177,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #       */
 #     template<typename PointT> inline int
 #     savePLYFileBinary (const std::string &file_name, const pcl::PointCloud<PointT> &cloud)
-#     {
-#       PLYWriter w;
-#       return (w.write<PointT> (file_name, cloud, true));
-#     }
 # 
 #     /** \brief Templated version for saving point cloud data to a PLY file containing a specific given cloud format
 #       * \param[in] file_name the output file name
@@ -2415,15 +2188,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #     template<typename PointT> int
 #     savePLYFile (const std::string &file_name, const pcl::PointCloud<PointT> &cloud,
 #                  const std::vector<int> &indices, bool binary_mode = false)
-#     {
-#       // Copy indices to a new point cloud
-#       pcl::PointCloud<PointT> cloud_out;
-#       copyPointCloud (cloud, indices, cloud_out);
-#       // Save the data
-#       PLYWriter w;
-#       return (w.write<PointT> (file_name, cloud_out, binary_mode));
-#     }
-# 
+#
 #     /** \brief Saves a PolygonMesh in ascii PLY format.
 #       * \param[in] file_name the name of the file to write to disk
 #       * \param[in] mesh the polygonal mesh to save
@@ -2482,9 +2247,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 
 # vtk_io.h
 # namespace pcl
-# {
-#   namespace io
-#   {
+# namespace io
 #     /** \brief Saves a PolygonMesh in ascii VTK format. 
 #       * \param[in] file_name the name of the file to write to disk
 #       * \param[in] triangles the polygonal mesh to save
@@ -2507,9 +2270,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 
 # vtk_lib_io.h
 # namespace pcl
-# {
 #   namespace io
-#   {
 #     /** \brief Convert vtkPolyData object to a PCL PolygonMesh
 #       * \param[in] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
 #       * \param[out] mesh PCL Polygon Mesh to fill
@@ -2654,7 +2415,6 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 #     vtkStructuredGridToPointCloud (vtkStructuredGrid* const structured_grid, 
 #                                    pcl::PointCloud<PointT>& cloud);
 # 
-#   }
 # 
 ###
 

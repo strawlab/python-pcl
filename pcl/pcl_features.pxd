@@ -67,9 +67,7 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # virtual bool deinitCompute ();
         # /** \brief If no surface is given, we use the input PointCloud as the surface. */
         # bool fake_surface_;
-        # inline int
-        # searchForNeighbors (size_t index, double parameter,
-        #                   std::vector<int> &indices, std::vector<float> &distances) const
+        # inline int searchForNeighbors (size_t index, double parameter, vector[int] &indices, vector[float] &distances) const
         # inline int
         # searchForNeighbors (const PointCloudIn &cloud, size_t index, double parameter,
         #                     std::vector<int> &indices, std::vector<float> &distances) const

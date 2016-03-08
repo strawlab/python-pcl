@@ -47,11 +47,11 @@ before_install:
       sudo apt-get install libpcl-all -y;
     fi
 
-script: 
-    - pip install --upgrade pip
-    - pip install cython
-    - pip install numpy
-    - python setup.py build_ext -i
-    - python setup.py install
-    - python tests/test.py
+install:
+  - pip install --upgrade pip
+  - pip install cython
+  - pip install numpy
+  - python setup.py build_ext -i
+  - python setup.py install
+  - python tests/test.py
 
