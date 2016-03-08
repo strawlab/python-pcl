@@ -2,11 +2,8 @@ from __future__ import print_function
 
 import numpy as np
 import pcl
-from numpy import array
 
 # http://www.pcl-users.org/CropHull-filter-question-td4030345.html
-# pcl::PointCloud <pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud <pcl::PointXYZ>);
-# datacloud = pcl.load("pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd")
 datacloud = pcl.load('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
 
 print(datacloud)
@@ -69,7 +66,6 @@ print(outputCloud)
 
 
 # Viewer
-# // pcl::PointCloud <pcl::PointXYZ>::Ptr filtered_cloud = cloud (new pcl::PointCloud <pcl::PointXYZ>);
 # // pcl::visualization::CloudViewer viewer ("Cluster viewer");
 # // viewer.showCloud(colored_cloud);
 
@@ -79,4 +75,3 @@ print(outputCloud)
 # ss << "min_cut_seg" << ".pcd";
 # // writer.write<pcl::PointXYZRGB> (ss.str (), *cloud, false);
 # pcl::io::savePCDFile(ss.str(), *outputCloud, false);
-

@@ -1,7 +1,7 @@
-#port of
-#http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php
-#you need to download
-#http://svn.pointclouds.org/data/tutorials/table_scene_mug_stereo_textured.pcd
+# port of
+# http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php
+# you need to download
+# http://svn.pointclouds.org/data/tutorials/table_scene_mug_stereo_textured.pcd
 
 import pcl
 

@@ -53,5 +53,7 @@ install:
   - pip install numpy
   - python setup.py build_ext -i
   - python setup.py install
-  - python tests/test.py
 
+script:
+  - python tests/test.py
+  - flake8

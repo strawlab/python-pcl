@@ -24,6 +24,7 @@ $PCL_PRERELEASE_REGEX = @"
 (?<minor>\d+)
 \.
 (?<micro>\d+)
+(?<prerelease>[a-z]{1,2}\d+)
 "@
 
 
@@ -78,7 +79,7 @@ function ParsePythonVersion ($python_version)
 
 function ParsePCLVersion ($pcl_version) 
 {
-    if ($python_version -match $PCL_PRERELEASE_REGEX) 
+    if ($pcl_version -match $PCL_PRERELEASE_REGEX) 
     {
         return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
     }
@@ -256,8 +257,6 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
         Exit 1
     }
 }
-
-# http://www.lfd.uci.edu/~gohlke/pythonlibs/
 
 function main () {
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
