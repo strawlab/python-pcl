@@ -6,6 +6,7 @@ cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
 cimport eigen as eig
+from vector cimport vector as vector2
 
 ###############################################################################
 # Types
@@ -693,11 +694,21 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void addPointsFromInputCloud()
         void deleteTree()
         bool isVoxelOccupiedAtPoint(double, double, double)
-        int getOccupiedVoxelCenters(eig.AlignedPointTVector_t)  
-        void deleteVoxelAtPoint(cpp.PointXYZ)
+        # int getOccupiedVoxelCenters(eig.AlignedPointTVector_t)
+        # int getOccupiedVoxelCenters(eig.AlignedPointTVector_PointXYZI_t)
+        # int getOccupiedVoxelCenters(eig.AlignedPointTVector_PointXYZRGB_t)
+        # int getOccupiedVoxelCenters(eig.AlignedPointTVector_PointXYZRGBA_t)
+        int getOccupiedVoxelCenters(vector2[[T], eig.aligned_allocator_t])
+        # void deleteVoxelAtPoint(cpp.PointXYZ)
+        # void deleteVoxelAtPoint(cpp.PointXYZI)
+        # void deleteVoxelAtPoint(cpp.PointXYZRGB)
+        # void deleteVoxelAtPoint(cpp.PointXYZRGBA)
+        void deleteVoxelAtPoint([T])
 
 ctypedef OctreePointCloud[cpp.PointXYZ] OctreePointCloud_t
-ctypedef OctreePointCloud[cpp.PointXYZRGBA] OctreePointCloud2_t
+ctypedef OctreePointCloud[cpp.PointXYZI] OctreePointCloud_PointXYZI_t
+ctypedef OctreePointCloud[cpp.PointXYZRGB] OctreePointCloud_PointXYZRGB_t
+ctypedef OctreePointCloud[cpp.PointXYZRGBA] OctreePointCloud_PointXYZRGBA_t
 
 # # namespace pcl
 # # namespace octree
@@ -1051,9 +1062,14 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloudSearch[T]:
         OctreePointCloudSearch(double)
         int radiusSearch (cpp.PointXYZ, double, vector[int], vector[float], unsigned int)
+        int radiusSearch (cpp.PointXYZI, double, vector[int], vector[float], unsigned int)
+        int radiusSearch (cpp.PointXYZRGB, double, vector[int], vector[float], unsigned int)
+        int radiusSearch (cpp.PointXYZRGBA, double, vector[int], vector[float], unsigned int)
 
 ctypedef OctreePointCloudSearch[cpp.PointXYZ] OctreePointCloudSearch_t
-ctypedef OctreePointCloudSearch[cpp.PointXYZRGBA] OctreePointCloudSearch2_t
+ctypedef OctreePointCloudSearch[cpp.PointXYZI] OctreePointCloudSearch_PointXYZI_t
+ctypedef OctreePointCloudSearch[cpp.PointXYZRGB] OctreePointCloudSearch_PointXYZRGB_t
+ctypedef OctreePointCloudSearch[cpp.PointXYZRGBA] OctreePointCloudSearch_PointXYZRGBA_t
 
 ###
 

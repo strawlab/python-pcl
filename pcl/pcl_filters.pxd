@@ -665,7 +665,9 @@ cdef extern from "pcl/filters/passthrough.h" namespace "pcl":
         void filter(cpp.PointCloud[T] c)
 
 ctypedef PassThrough[cpp.PointXYZ] PassThrough_t
-ctypedef PassThrough[cpp.PointXYZRGBA] PassThrough2_t
+ctypedef PassThrough[cpp.PointXYZI] PassThrough_PointXYZI_t
+ctypedef PassThrough[cpp.PointXYZRGB] PassThrough_PointXYZRGB_t
+ctypedef PassThrough[cpp.PointXYZRGBA] PassThrough_PointXYZRGBA_t
 
 # template<>
 # class PCL_EXPORTS PassThrough<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>

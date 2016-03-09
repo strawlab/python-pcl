@@ -83,7 +83,7 @@ cdef class KdTreeFLANN_PointXYZI:
     def __dealloc__(self):
         del self.me
 
-    def nearest_k_search_for_cloud(self, PointCloud pc not None, int k=1):
+    def nearest_k_search_for_cloud(self, PointCloud_PointXYZI pc not None, int k=1):
         """
         Find the k nearest neighbours and squared distances for all points
         in the pointcloud. Results are in ndarrays, size (pc.size, k)
@@ -211,7 +211,7 @@ cdef class KdTreeFLANN_PointXYZRGBA:
     def __dealloc__(self):
         del self.me
 
-    def nearest_k_search_for_cloud(self, PointCloud pc not None, int k=1):
+    def nearest_k_search_for_cloud(self, PointCloud_PointXYZRGBA pc not None, int k=1):
         """
         Find the k nearest neighbours and squared distances for all points
         in the pointcloud. Results are in ndarrays, size (pc.size, k)

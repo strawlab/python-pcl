@@ -81,7 +81,8 @@ function ParsePCLVersion ($pcl_version)
 {
     if ($pcl_version -match $PCL_PRERELEASE_REGEX) 
     {
-        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
+        # return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
+        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro, $matches.prerelease)
     }
     
     # Convert NG
@@ -123,20 +124,23 @@ function DownloadPCL ($pcl_version, $platform_suffix)
     if ($major -le 1 -and $minor -eq 6) 
     {
         # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe
-        $dir = "$major.$minor.$micro"
+        # $dir = "$major.$minor.$micro"
+        $dir = "$major.$minor.0"
         $msvcver = "msvc2010"
         $url = "$dir/PCL-$dir-AllInOne-msvc2010-$platform_suffix.exe"
     }
     elseif ($major -le 1 -and $minor -eq 7)
     {
         # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2015-win64.exe
-        $dir = "$major.$minor.$micro"
+        # $dir = "$major.$minor.$micro"
+        $dir = "$major.$minor.2"
         $msvcver = "msvc2015"
     }
     elseif ($major -le 1 -and $minor -eq 8)
     {
         # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2015-win64.exe
-        $dir = "$major.$minor.$micro"
+        # $dir = "$major.$minor.$micro"
+        $dir = "$major.$minor.0"
         $msvcver = "msvc2015"
     } 
     else 

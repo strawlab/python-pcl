@@ -19,722 +19,553 @@ ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_Poi
 ctypedef MovingLeastSquares[cpp.PointXYZRGB, cpp.PointXYZRGB] MovingLeastSquares_PointXYZRGB_t
 ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquares_PointXYZRGBA_t
 
+
+### base class ###
+
+# reconstruction.h
+# namespace pcl
+# /** \brief Pure abstract class. All types of meshing/reconstruction
+#   * algorithms in \b libpcl_surface must inherit from this, in order to make
+#   * sure we have a consistent API. The methods that we care about here are:
+#   *  - \b setSearchMethod(&SearchPtr): passes a search locator
+#   *  - \b reconstruct(&PolygonMesh): creates a PolygonMesh object from the input data
+#   * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
+#   */
+# template <typename PointInT>
+# class PCLSurfaceBase: public PCLBase<PointInT>
+cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
+    cdef cppclass PCLSurfaceBase[In](cpp.PCLBase[In]):
+        PCLSurfaceBase()
+#       public:
+#       typedef typename pcl::search::Search<PointInT> KdTree;
+#       typedef typename pcl::search::Search<PointInT>::Ptr KdTreePtr;
+#       /** \brief Provide an optional pointer to a search object.
+#         * \param[in] tree a pointer to the spatial search object.
+#       inline void setSearchMethod (const KdTreePtr &tree)
+#       /** \brief Get a pointer to the search method used. */
+#       inline KdTreePtr getSearchMethod ()
+#       /** \brief Base method for surface reconstruction for all points given in
+#         * <setInputCloud (), setIndices ()> 
+#         * \param[out] output the resultant reconstructed surface model
+#       virtual void reconstruct (pcl::PolygonMesh &output) = 0;
+#       protected:
+#       /** \brief A pointer to the spatial search object. */
+#       KdTreePtr tree_;
+#       /** \brief Abstract class get name method. */
+#       virtual std::string getClassName () const { return (""); }
+###
+
+# /** \brief SurfaceReconstruction represents a base surface reconstruction
+#   * class. All \b surface reconstruction methods take in a point cloud and
+#   * generate a new surface from it, by either re-sampling the data or
+#   * generating new data altogether. These methods are thus \b not preserving
+#   * the topology of the original data.
+#   * \note Reconstruction methods that always preserve the original input
+#   * point cloud data as the surface vertices and simply construct the mesh on
+#   * top should inherit from \ref MeshConstruction.
+#   * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
+#   * \ingroup surface
+#   */
+# template <typename PointInT>
+# class SurfaceReconstruction: public PCLSurfaceBase<PointInT>
+cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
+    cdef cppclass SurfaceReconstruction[In](PCLSurfaceBase[In]):
+        SurfaceReconstruction()
+#       public:
+#       using PCLSurfaceBase<PointInT>::input_;
+#       using PCLSurfaceBase<PointInT>::indices_;
+#       using PCLSurfaceBase<PointInT>::initCompute;
+#       using PCLSurfaceBase<PointInT>::deinitCompute;
+#       using PCLSurfaceBase<PointInT>::tree_;
+#       using PCLSurfaceBase<PointInT>::getClassName;
+#       
+#       /** \brief Base method for surface reconstruction for all points given in
+#        * <setInputCloud (), setIndices ()> 
+#        * \param[out] output the resultant reconstructed surface model
+#        */
+#       virtual void reconstruct (pcl::PolygonMesh &output);
+#       /** \brief Base method for surface reconstruction for all points given in
+#         * <setInputCloud (), setIndices ()> 
+#         * \param[out] points the resultant points lying on the new surface
+#         * \param[out] polygons the resultant polygons, as a set of
+#         * vertices. The Vertices structure contains an array of point indices.
+#         */
+#       virtual void 
+#       reconstruct (pcl::PointCloud<PointInT> &points,
+#                    std::vector<pcl::Vertices> &polygons);
+#       protected:
+#       /** \brief A flag specifying whether or not the derived reconstruction
+#         * algorithm needs the search object \a tree.*/
+#       bool check_tree_;
+#       /** \brief Abstract surface reconstruction method. 
+#         * \param[out] output the output polygonal mesh 
+#         */
+#       virtual void performReconstruction (pcl::PolygonMesh &output) = 0;
+#       /** \brief Abstract surface reconstruction method. 
+#         * \param[out] points the resultant points lying on the surface
+#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
+#         */
+#       virtual void 
+#       performReconstruction (pcl::PointCloud<PointInT> &points, 
+#                              std::vector<pcl::Vertices> &polygons) = 0;
+###
+
+# /** \brief MeshConstruction represents a base surface reconstruction
+#   * class. All \b mesh constructing methods that take in a point cloud and
+#   * generate a surface that uses the original data as vertices should inherit
+#   * from this class.
+#   *
+#   * \note Reconstruction methods that generate a new surface or create new
+#   * vertices in locations different than the input data should inherit from
+#   * \ref SurfaceReconstruction.
+#   *
+#   * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
+#   * \ingroup surface
+#   */
+# template <typename PointInT>
+# class MeshConstruction: public PCLSurfaceBase<PointInT>
+cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
+    cdef cppclass MeshConstruction[In](PCLSurfaceBase[In]):
+        MeshConstruction()
+        # public:
+        # using PCLSurfaceBase<PointInT>::input_;
+        # using PCLSurfaceBase<PointInT>::indices_;
+        # using PCLSurfaceBase<PointInT>::initCompute;
+        # using PCLSurfaceBase<PointInT>::deinitCompute;
+        # using PCLSurfaceBase<PointInT>::tree_;
+        # using PCLSurfaceBase<PointInT>::getClassName;
+        
+        # /** \brief Base method for surface reconstruction for all points given in
+        #   * <setInputCloud (), setIndices ()> 
+        #   * \param[out] output the resultant reconstructed surface model
+        #   *
+        #   * \note This method copies the input point cloud data from
+        #   * PointCloud<T> to PointCloud2, and is implemented here for backwards
+        #   * compatibility only!
+        #   *
+        #   */
+        # virtual void reconstruct (pcl::PolygonMesh &output);
+        # /** \brief Base method for mesh construction for all points given in
+        #   * <setInputCloud (), setIndices ()> 
+        #   * \param[out] polygons the resultant polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        #   */
+        # virtual void reconstruct (std::vector<pcl::Vertices> &polygons);
+        # 
+        # protected:
+        # /** \brief A flag specifying whether or not the derived reconstruction
+        #   * algorithm needs the search object \a tree.*/
+        # bool check_tree_;
+        # /** \brief Abstract surface reconstruction method. 
+        #   * \param[out] output the output polygonal mesh 
+        #   */
+        # virtual void performReconstruction (pcl::PolygonMesh &output) = 0;
+        # /** \brief Abstract surface reconstruction method. 
+        #   * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
+        #   */
+        # virtual void performReconstruction (std::vector<pcl::Vertices> &polygons) = 0;
+###
+
+# processing.h
+# namespace pcl
+# /** \brief @b CloudSurfaceProcessing represents the base class for algorithms that take a point cloud as an input and
+#   * produce a new output cloud that has been modified towards a better surface representation. These types of
+#   * algorithms include surface smoothing, hole filling, cloud upsampling etc.
+#   * \author Alexandru E. Ichim
+#   * \ingroup surface
+#   */
+# template <typename PointInT, typename PointOutT>
+# class CloudSurfaceProcessing : public PCLBase<PointInT>
+cdef extern from "pcl/surface/processing.h" namespace "pcl":
+    cdef cppclass CloudSurfaceProcessing[In, Out](cpp.PCLBase[In]):
+        CloudSurfaceProcessing()
+#       public:
+#       using PCLBase<PointInT>::input_;
+#       using PCLBase<PointInT>::indices_;
+#       using PCLBase<PointInT>::initCompute;
+#       using PCLBase<PointInT>::deinitCompute;
+#       public:
+#       /** \brief Process the input cloud and store the results
+#         * \param[out] output the cloud where the results will be stored
+#       virtual void process (pcl::PointCloud<PointOutT> &output);
+#       protected:
+#       /** \brief Abstract cloud processing method */
+#       virtual void performProcessing (pcl::PointCloud<PointOutT> &output) = 0;
+### 
+
+# /** \brief @b MeshProcessing represents the base class for mesh processing algorithms.
+#   * \author Alexandru E. Ichim
+#   * \ingroup surface
+#   */
+# class PCL_EXPORTS MeshProcessing
+#       public:
+#       typedef PolygonMesh::ConstPtr PolygonMeshConstPtr;
+#       /** \brief Constructor. */
+#       MeshProcessing () : input_mesh_ () {};
+#       /** \brief Destructor. */
+#       virtual ~MeshProcessing () {}
+#       /** \brief Set the input mesh that we want to process
+#         * \param[in] input the input polygonal mesh
+#       void setInputMesh (const pcl::PolygonMeshConstPtr &input) 
+#       /** \brief Process the input surface mesh and store the results
+#         * \param[out] output the resultant processed surface model
+#       void process (pcl::PolygonMesh &output);
+#       protected:
+#       /** \brief Initialize computation. Must be called before processing starts. */
+#       virtual bool initCompute ();
+#       /** \brief UnInitialize computation. Must be called after processing ends. */
+#       virtual void deinitCompute ();
+#       /** \brief Abstract surface processing method. */
+#       virtual void performProcessing (pcl::PolygonMesh &output) = 0;
+#       /** \brief Abstract class get name method. */
+#       virtual std::string getClassName () const { return (""); }
+#       /** \brief Input polygonal mesh. */
+#       pcl::PolygonMeshConstPtr input_mesh_;
+###
+
 ###
 # allocator.h
 # namespace pcl 
-# {
-#   namespace poisson 
-#   {
-#     class AllocatorState
-#     {
-#       public:
-#         int index,remains;
-#     };
-# 
-#     /** This templated class assists in memory allocation and is well suited for instances
-#       * when it is known that the sequence of memory allocations is performed in a stack-based
-#       * manner, so that memory allocated last is released first. It also preallocates memory
-#       * in chunks so that multiple requests for small chunks of memory do not require separate
-#       * system calls to the memory manager.
-#       * The allocator is templated off of the class of objects that we would like it to allocate,
-#       * ensuring that appropriate constructors and destructors are called as necessary.
-#       */
-#     template<class T>
-#     class Allocator
-#     {
-#       int blockSize;
-#       int index, remains;
-#       std::vector<T*> memory;
-# 
-#       public:
-#         Allocator () : blockSize (0), index (0), remains (0), memory ()
-#         {
-#         }
-# 
-#         ~Allocator ()
-#         {
-#           reset ();
-#         }
-# 
-#         /** This method is the allocators destructor. It frees up any of the memory that
-#           * it has allocated. 
-#           */
-#         void 
-#         reset ()
-#         {
-#           for (size_t i = 0; i < memory.size (); i++)
-#             delete[] memory[i];
-# 
-#           memory.clear ();
-#           blockSize = index = remains = 0;
-#         }
-# 
-#         /** This method returns the memory state of the allocator. */
-#         AllocatorState 
-#         getState () const
-#         {
-#           AllocatorState s;
-#           s.index = index;
-#           s.remains = remains;
-#           return (s);
-#         }
-# 
-#         /** This method rolls back the allocator so that it makes all of the memory previously
-#           * allocated available for re-allocation. Note that it does it not call the constructor
-#           * again, so after this method has been called, assumptions about the state of the values
-#           * in memory are no longer valid. 
-#           */
-#         void 
-#         rollBack ()
-#         {
-#           if(memory.size ())
-#           {
-#             for (size_t i = 0; i < memory.size (); i++)
-#             {
-#               for (int j = 0; j < blockSize; j++)
-#               {
-#                 memory[i][j].~T();
-#                 new(&memory[i][j]) T();
-#               }
-#             }
-#             index = 0;
-#             remains = blockSize;
-#           }
-#         }
-# 
-#         /** This method rolls back the allocator to the previous memory state and makes all of the memory previously
-#           * allocated available for re-allocation. Note that it does it not call the constructor
-#           * again, so after this method has been called, assumptions about the state of the values
-#           * in memory are no longer valid. 
-#           */
-#         void 
-#         rollBack (const AllocatorState& state)
-#         {
-#           if (state.index < index || (state.index == index && state.remains < remains))
-#           {
-#             if (state.index < index)
-#             {
-#               for (int j = state.remains; j < blockSize; j++)
-#               {
-#                 memory[state.index][j].~T ();
-#                 new (&memory[state.index][j]) T();
-#               }
-# 
-#               for (int i = state.index + 1; i < index - 1; i++)
-#               {
-#                 for (int j = 0; j < blockSize; j++)
-#                 {
-#                   memory[i][j].~T();
-#                   new(&memory[i][j]) T();
-#                 }
-#               }
-#               for (int j = 0; j < remains; j++)
-#               {
-#                 memory[index][j].~T();
-#                 new(&memory[index][j]) T();
-#               }
-#               index = state.index;
-#               remains = state.remains;
-#             }
-#             else
-#             {
-#               for (int j = 0; j < state.remains; j<remains)
-#               {
-#                 memory[index][j].~T();
-#                 new(&memory[index][j]) T();
-#               }
-#               remains = state.remains;
-#             }
-#           }
-#         }
-# 
-#         /** This method initiallizes the constructor and the blockSize variable specifies the
-#           * the number of objects that should be pre-allocated at a time. 
-#           */
-#         void 
-#         set (const int& blockSize)
-#         {
-#           reset ();
-#           this->blockSize = blockSize;
-#           index = -1;
-#           remains = 0;
-#         }
-# 
-#         /** This method returns a pointer to an array of elements objects. If there is left over pre-allocated
-#           * memory, this method simply returns a pointer to the next free piece of memory, otherwise it pre-allocates
-#           * more memory. Note that if the number of objects requested is larger than the value blockSize with which
-#           * the allocator was initialized, the request for memory will fail.
-#           */
-#         T* 
-#         newElements (const int& elements = 1)
-#         {
-#           T* mem;
-#           if (!elements)
-#             return (NULL);
-#          
-#           if (elements>blockSize)
-#           {
-#             fprintf (stderr, "Allocator Error, elements bigger than block-size: %d>%d\n", elements,blockSize);
-#             return (NULL);
-#           }
-#           if (remains<elements)
-#           {
-#             if(index == static_cast<int>(memory.size() - 1))
-#             {
-#               mem = new T[blockSize];
-# 
-#               if (!mem)
-#                 throw "Failed to allocate memory";
-#               memory.push_back (mem);
-#             }
-#             index++;
-#             remains = blockSize;
-#           }
-#           mem = &(memory[index][blockSize-remains]);
-#           remains -= elements;
-#           return (mem);
-#         }
-#     };
-#   }
-# }
-# 
+# namespace poisson 
+# class AllocatorState
+cdef extern from "pcl/surface/allocator.h" namespace "pcl::poisson":
+    cdef cppclass AllocatorState:
+        AllocatorState()
+        # public:
+        # int index,remains;
+
+# template<class T>
+# class Allocator
+cdef extern from "pcl/surface/allocator.h" namespace "pcl::poisson":
+    cdef cppclass Allocator[T]:
+        Allocator()
+        # int blockSize;
+        # int index, remains;
+        # std::vector<T*> memory;
+        # public:
+        # /** This method is the allocators destructor. It frees up any of the memory that
+        #   * it has allocated. 
+        # void reset ()
+        # /** This method returns the memory state of the allocator. */
+        # AllocatorState getState () const
+        # /** This method rolls back the allocator so that it makes all of the memory previously
+        #   * allocated available for re-allocation. Note that it does it not call the constructor
+        #   * again, so after this method has been called, assumptions about the state of the values
+        #   * in memory are no longer valid. 
+        # void rollBack ()
+        # /** This method rolls back the allocator to the previous memory state and makes all of the memory previously
+        #   * allocated available for re-allocation. Note that it does it not call the constructor
+        #   * again, so after this method has been called, assumptions about the state of the values
+        #   * in memory are no longer valid. 
+        # void rollBack (const AllocatorState& state)
+        # /** This method initiallizes the constructor and the blockSize variable specifies the
+        #   * the number of objects that should be pre-allocated at a time. 
+        # void set (const int& blockSize)
+        # /** This method returns a pointer to an array of elements objects. If there is left over pre-allocated
+        #   * memory, this method simply returns a pointer to the next free piece of memory, otherwise it pre-allocates
+        #   * more memory. Note that if the number of objects requested is larger than the value blockSize with which
+        #   * the allocator was initialized, the request for memory will fail.
+        # T* newElements (const int& elements = 1)
 ###
 
 # bilateral_upsampling.h
 # namespace pcl
-# {
-# 
-#   /** \brief Bilateral filtering implementation, based on the following paper:
-#     *   * Kopf, Johannes and Cohen, Michael F. and Lischinski, Dani and Uyttendaele, Matt - Joint Bilateral Upsampling,
-#     *   * ACM Transations in Graphics, July 2007
-#     *
-#     * Takes in a colored organized point cloud (i.e. PointXYZRGB or PointXYZRGBA), that might contain nan values for the
-#     * depth information, and it will returned an upsampled version of this cloud, based on the formula:
-#     * \f[
-#     *    \tilde{S}_p = \frac{1}{k_p} \sum_{q_d \in \Omega} {S_{q_d} f(||p_d - q_d|| g(||\tilde{I}_p-\tilde{I}_q||})
-#     * \f]
-#     *
-#     * where S is the depth image, I is the RGB image and f and g are Gaussian functions centered at 0 and with
-#     * standard deviations \f$\sigma_{color}\f$ and \f$\sigma_{depth}\f$
-#     */
-#   template <typename PointInT, typename PointOutT>
-#   class BilateralUpsampling: public CloudSurfaceProcessing<PointInT, PointOutT>
-#   {
-#     public:
-#       using PCLBase<PointInT>::input_;
-#       using PCLBase<PointInT>::indices_;
-#       using PCLBase<PointInT>::initCompute;
-#       using PCLBase<PointInT>::deinitCompute;
-#       using CloudSurfaceProcessing<PointInT, PointOutT>::process;
-# 
-#       typedef pcl::PointCloud<PointOutT> PointCloudOut;
-# 
-#       Eigen::Matrix3f KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
-# 
-#       /** \brief Constructor. */
-#       BilateralUpsampling () 
-#         : KinectVGAProjectionMatrix ()
-#         , KinectSXGAProjectionMatrix ()
-#         , window_size_ (5)
-#         , sigma_color_ (15.0f)
-#         , sigma_depth_ (0.5f)
-#         , projection_matrix_ ()
-#         , unprojection_matrix_ ()
-#       {
-#         KinectVGAProjectionMatrix << 525.0f, 0.0f, 320.0f,
-#                                      0.0f, 525.0f, 240.0f,
-#                                      0.0f, 0.0f, 1.0f;
-#         KinectSXGAProjectionMatrix << 1050.0f, 0.0f, 640.0f,
-#                                       0.0f, 1050.0f, 480.0f,
-#                                       0.0f, 0.0f, 1.0f;
-#       };
-# 
-#       /** \brief Method that sets the window size for the filter
-#         * \param[in] window_size the given window size
-#         */
-#       inline void
-#       setWindowSize (int window_size) { window_size_ = window_size; }
-# 
-#       /** \brief Returns the filter window size */
-#       inline int
-#       getWindowSize () const { return (window_size_); }
-# 
-#       /** \brief Method that sets the sigma color parameter
-#         * \param[in] sigma_color the new value to be set
-#         */
-#       inline void
-#       setSigmaColor (const float &sigma_color) { sigma_color_ = sigma_color; }
-# 
-#       /** \brief Returns the current sigma color value */
-#       inline float
-#       getSigmaColor () const { return (sigma_color_); }
-# 
-#       /** \brief Method that sets the sigma depth parameter
-#         * \param[in] sigma_depth the new value to be set
-#         */
-#       inline void
-#       setSigmaDepth (const float &sigma_depth) { sigma_depth_ = sigma_depth; }
-# 
-#       /** \brief Returns the current sigma depth value */
-#       inline float
-#       getSigmaDepth () const { return (sigma_depth_); }
-# 
-#       /** \brief Method that sets the projection matrix to be used when unprojecting the points in the depth image
-#         * back to (x,y,z) positions.
-#         * \note There are 2 matrices already set in the class, used for the 2 modes available for the Kinect. They
-#         * are tuned to be the same as the ones in the OpenNiGrabber
-#         * \param[in] projection_matrix the new projection matrix to be set */
-#       inline void
-#       setProjectionMatrix (const Eigen::Matrix3f &projection_matrix) { projection_matrix_ = projection_matrix; }
-# 
-#       /** \brief Returns the current projection matrix */
-#       inline Eigen::Matrix3f
-#       getProjectionMatrix () const { return (projection_matrix_); }
-# 
-#       /** \brief Method that does the actual processing on the input cloud.
-#         * \param[out] output the container of the resulting upsampled cloud */
-#       void
-#       process (pcl::PointCloud<PointOutT> &output);
-# 
-#     protected:
-#       void
-#       performProcessing (pcl::PointCloud<PointOutT> &output);
-# 
-#     private:
-#       int window_size_;
-#       float sigma_color_, sigma_depth_;
-#       Eigen::Matrix3f projection_matrix_, unprojection_matrix_;
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
+# /** \brief Bilateral filtering implementation, based on the following paper:
+#   *   * Kopf, Johannes and Cohen, Michael F. and Lischinski, Dani and Uyttendaele, Matt - Joint Bilateral Upsampling,
+#   *   * ACM Transations in Graphics, July 2007
+#   * Takes in a colored organized point cloud (i.e. PointXYZRGB or PointXYZRGBA), that might contain nan values for the
+#   * depth information, and it will returned an upsampled version of this cloud, based on the formula:
+#   * \f[
+#   *    \tilde{S}_p = \frac{1}{k_p} \sum_{q_d \in \Omega} {S_{q_d} f(||p_d - q_d|| g(||\tilde{I}_p-\tilde{I}_q||})
+#   * \f]
+#   * where S is the depth image, I is the RGB image and f and g are Gaussian functions centered at 0 and with
+#   * standard deviations \f$\sigma_{color}\f$ and \f$\sigma_{depth}\f$
+#   */
+# template <typename PointInT, typename PointOutT>
+# class BilateralUpsampling: public CloudSurfaceProcessing<PointInT, PointOutT>
+cdef extern from "pcl/surface/bilateral_upsampling.h" namespace "pcl":
+    cdef cppclass BilateralUpsampling[In, Out](CloudSurfaceProcessing[In, Out]):
+        BilateralUpsampling()
+        # public:
+        # using PCLBase<PointInT>::input_;
+        # using PCLBase<PointInT>::indices_;
+        # using PCLBase<PointInT>::initCompute;
+        # using PCLBase<PointInT>::deinitCompute;
+        # using CloudSurfaceProcessing<PointInT, PointOutT>::process;
+        # typedef pcl::PointCloud<PointOutT> PointCloudOut;
+        # Eigen::Matrix3f KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
+        # /** \brief Method that sets the window size for the filter
+        #   * \param[in] window_size the given window size
+        # inline void setWindowSize (int window_size)
+        # /** \brief Returns the filter window size */
+        # inline int getWindowSize () const
+        # /** \brief Method that sets the sigma color parameter
+        #   * \param[in] sigma_color the new value to be set
+        # inline void setSigmaColor (const float &sigma_color)
+        # /** \brief Returns the current sigma color value */
+        # inline float getSigmaColor () const
+        # /** \brief Method that sets the sigma depth parameter
+        #   * \param[in] sigma_depth the new value to be set
+        # inline void setSigmaDepth (const float &sigma_depth)
+        # /** \brief Returns the current sigma depth value */
+        # inline float getSigmaDepth () const
+        # /** \brief Method that sets the projection matrix to be used when unprojecting the points in the depth image
+        #   * back to (x,y,z) positions.
+        #   * \note There are 2 matrices already set in the class, used for the 2 modes available for the Kinect. They
+        #   * are tuned to be the same as the ones in the OpenNiGrabber
+        #   * \param[in] projection_matrix the new projection matrix to be set */
+        # inline void setProjectionMatrix (const Eigen::Matrix3f &projection_matrix)
+        # /** \brief Returns the current projection matrix */
+        # inline Eigen::Matrix3f getProjectionMatrix () const
+        # /** \brief Method that does the actual processing on the input cloud.
+        #   * \param[out] output the container of the resulting upsampled cloud */
+        # void process (pcl::PointCloud<PointOutT> &output)
+        # protected:
+        # void performProcessing (pcl::PointCloud<PointOutT> &output);
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 ###
 
 # binary_node.h
-# namespace pcl {
-#   namespace poisson {
+# namespace pcl
+# namespace poisson
 # 
-#     template<class Real>
-#     class BinaryNode
-#     {
-#     public:
-#       static inline int CenterCount (int depth){return 1<<depth;}
-#       static inline int CumulativeCenterCount (int maxDepth){return  (1<< (maxDepth+1))-1;}
-#       static inline int Index (int depth,  int offSet){return  (1<<depth)+offSet-1;}
-#       static inline int CornerIndex (int maxDepth, int depth, int offSet, int forwardCorner)
-#       {return  (offSet+forwardCorner)<< (maxDepth-depth);}
-#       static inline Real CornerIndexPosition (int index, int maxDepth)
-#       {return Real (index)/ (1<<maxDepth);}
-#       static inline Real Width (int depth)
-#       {return Real (1.0/ (1<<depth));}      
-# 
-#       // Fix for Bug #717 with Visual Studio that generates wrong code for this function
-#       // when global optimization is enabled (release mode).
-# #ifdef _MSC_VER
-#       static __declspec(noinline) void CenterAndWidth (int depth, int offset, Real& center, Real& width)
-# #else
-#       static inline void CenterAndWidth (int depth, int offset, Real& center, Real& width)
-# #endif
-#       {
-#         width=Real (1.0/ (1<<depth));
-#         center=Real ( (0.5+offset)*width);
-#       }
-# 
-# #ifdef _MSC_VER
-#       static __declspec(noinline) void CenterAndWidth (int idx, Real& center, Real& width)
-# #else
-#       static inline void CenterAndWidth (int idx, Real& center, Real& width)
-# #endif
-#       {
-#         int depth, offset;
-#         DepthAndOffset (idx, depth, offset);
-#         CenterAndWidth (depth, offset, center, width);
-#       }
-#       static inline void DepthAndOffset (int idx,  int& depth, int& offset)
-#       {
-#         int i = idx+1;
-#         depth = -1;
-#         while (i)
-#         {
-#           i>>=1;
-#           depth++;
-#         }
-#         offset= (idx+1)- (1<<depth);
-#       }
-#     };
-# 
-# 
-#   }
+# template<class Real>
+# class BinaryNode
+cdef extern from "pcl/surface/binary_node.h" namespace "pcl::poisson":
+    cdef cppclass BinaryNode[Real]:
+        BinaryNode()
+        # public:
+        # static inline int CenterCount (int depth){return 1<<depth;}
+        # static inline int CumulativeCenterCount (int maxDepth){return  (1<< (maxDepth+1))-1;}
+        # static inline int Index (int depth,  int offSet){return  (1<<depth)+offSet-1;}
+        # static inline int CornerIndex (int maxDepth, int depth, int offSet, int forwardCorner)
+        # static inline Real CornerIndexPosition (int index, int maxDepth)
+        # static inline Real Width (int depth)
+        # 
+        # // Fix for Bug #717 with Visual Studio that generates wrong code for this function
+        # // when global optimization is enabled (release mode).
+        # #ifdef _MSC_VER
+        #   static __declspec(noinline) void CenterAndWidth (int depth, int offset, Real& center, Real& width)
+        # #else
+        # static inline void CenterAndWidth (int depth, int offset, Real& center, Real& width)
+        # # #endif
+        # 
+        # #ifdef _MSC_VER
+        # static __declspec(noinline) void CenterAndWidth (int idx, Real& center, Real& width)
+        # #else
+        # static inline void CenterAndWidth (int idx, Real& center, Real& width)
+        # #endif
+        # static inline void DepthAndOffset (int idx,  int& depth, int& offset)
 ###
 
 # concave_hull.h
 # namespace pcl
-# {
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief @b ConcaveHull (alpha shapes) using libqhull library.
-#     * \author Aitor Aldoma
-#     * \ingroup surface
-#     */
-#   template<typename PointInT>
-#   class ConcaveHull : public MeshConstruction<PointInT>
-#   {
-#     protected:
-#       using PCLBase<PointInT>::input_;
-#       using PCLBase<PointInT>::indices_;
-#       using PCLBase<PointInT>::initCompute;
-#       using PCLBase<PointInT>::deinitCompute;
-# 
-#     public:
-#       using MeshConstruction<PointInT>::reconstruct;
-# 
-#       typedef pcl::PointCloud<PointInT> PointCloud;
-#       typedef typename PointCloud::Ptr PointCloudPtr;
-#       typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-# 
-#       /** \brief Empty constructor. */
-#       ConcaveHull () : alpha_ (0), keep_information_ (false), voronoi_centers_ (), dim_(0)
-#       {
-#       };
-# 
-#       /** \brief Compute a concave hull for all points given 
-#         *
-#         * \param points the resultant points lying on the concave hull 
-#         * \param polygons the resultant concave hull polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         */
-#       void
-#       reconstruct (PointCloud &points, 
-#                    std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief Compute a concave hull for all points given 
-#        * \param output the resultant concave hull vertices
-#        */
-#       void
-#       reconstruct (PointCloud &output);
-# 
-#       /** \brief Set the alpha value, which limits the size of the resultant
-#         * hull segments (the smaller the more detailed the hull).  
-#         *
-#         * \param alpha positive, non-zero value, defining the maximum length
-#         * from a vertex to the facet center (center of the voronoi cell).
-#         */
-#       inline void
-#       setAlpha (double alpha)
-#       {
-#         alpha_ = alpha;
-#       }
-# 
-#       /** \brief Returns the alpha parameter, see setAlpha(). */
-#       inline double
-#       getAlpha ()
-#       {
-#         return (alpha_);
-#       }
-# 
-#       /** \brief If set, the voronoi cells center will be saved in _voronoi_centers_
-#         * \param voronoi_centers
-#         */
-#       inline void
-#       setVoronoiCenters (PointCloudPtr voronoi_centers)
-#       {
-#         voronoi_centers_ = voronoi_centers;
-#       }
-# 
-#       /** \brief If keep_information_is set to true the convex hull
-#         * points keep other information like rgb, normals, ...
-#         * \param value where to keep the information or not, default is false
-#         */
-#       void
-#       setKeepInformation (bool value)
-#       {
-#         keep_information_ = value;
-#       }
-# 
-#       /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
-#       inline int
-#       getDim () const
-#       {
-#         return dim_;
-#       }
-# 
-#       /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
-#       inline int
-#       getDimension () const
-#       {
-#         return dim_;
-#       }
-# 
-#       /** \brief Sets the dimension on the input data, 2D or 3D.
-#         * \param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
-#         */
-#       void 
-#       setDimension (int dimension)
-#       {
-#         if ((dimension == 2) || (dimension == 3))
-#           dim_ = dimension;
-#         else
-#           PCL_ERROR ("[pcl::%s::setDimension] Invalid input dimension specified!\n", getClassName ().c_str ());
-#       }
-# 
-#     protected:
-#       /** \brief Class get name method. */
-#       std::string
-#       getClassName () const
-#       {
-#         return ("ConcaveHull");
-#       }
-# 
-#     protected:
-#       /** \brief The actual reconstruction method.
-#         * 
-#         * \param points the resultant points lying on the concave hull 
-#         * \param polygons the resultant concave hull polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         */
-#       void
-#       performReconstruction (PointCloud &points, 
-#                              std::vector<pcl::Vertices> &polygons);
-# 
-#       virtual void
-#       performReconstruction (PolygonMesh &output);
-# 
-#       virtual void
-#       performReconstruction (std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief The method accepts facets only if the distance from any vertex to the facet->center 
-#         * (center of the voronoi cell) is smaller than alpha 
-#         */
-#       double alpha_;
-# 
-#       /** \brief If set to true, the reconstructed point cloud describing the hull is obtained from 
-#         * the original input cloud by performing a nearest neighbor search from Qhull output. 
-#         */
-#       bool keep_information_;
-# 
-#       /** \brief the centers of the voronoi cells */
-#       PointCloudPtr voronoi_centers_;
-#       
-#       /** \brief the dimensionality of the concave hull */
-#       int dim_;
-#   };
+# /** \brief @b ConcaveHull (alpha shapes) using libqhull library.
+#   * \author Aitor Aldoma
+#   * \ingroup surface
+# template<typename PointInT>
+# class ConcaveHull : public MeshConstruction<PointInT>
+cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
+    cdef cppclass ConcaveHull[In](MeshConstruction[In]):
+        ConcaveHull()
+        # protected:
+        # using PCLBase<PointInT>::input_;
+        # using PCLBase<PointInT>::indices_;
+        # using PCLBase<PointInT>::initCompute;
+        # using PCLBase<PointInT>::deinitCompute;
+        # public:
+        # using MeshConstruction<PointInT>::reconstruct;
+        # typedef pcl::PointCloud<PointInT> PointCloud;
+        # typedef typename PointCloud::Ptr PointCloudPtr;
+        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # /** \brief Compute a concave hull for all points given 
+        #   * \param points the resultant points lying on the concave hull 
+        #   * \param polygons the resultant concave hull polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        # void reconstruct (PointCloud &points, 
+        #              std::vector<pcl::Vertices> &polygons);
+        # /** \brief Compute a concave hull for all points given 
+        #  * \param output the resultant concave hull vertices
+        # void
+        # reconstruct (PointCloud &output);
+        # /** \brief Set the alpha value, which limits the size of the resultant
+        #   * hull segments (the smaller the more detailed the hull).  
+        #   * \param alpha positive, non-zero value, defining the maximum length
+        #   * from a vertex to the facet center (center of the voronoi cell).
+        # inline void setAlpha (double alpha)
+        # /** \brief Returns the alpha parameter, see setAlpha(). */
+        # inline double getAlpha ()
+        # /** \brief If set, the voronoi cells center will be saved in _voronoi_centers_
+        #   * \param voronoi_centers
+        # inline void setVoronoiCenters (PointCloudPtr voronoi_centers)
+        # /** \brief If keep_information_is set to true the convex hull
+        #   * points keep other information like rgb, normals, ...
+        #   * \param value where to keep the information or not, default is false
+        # void setKeepInformation (bool value)
+        # /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
+        # inline int getDim () const
+        # /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
+        # inline int getDimension () const
+        # /** \brief Sets the dimension on the input data, 2D or 3D.
+        #   * \param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
+        # void setDimension (int dimension)
+        # protected:
+        # /** \brief Class get name method. */
+        # std::string getClassName () const
+        # protected:
+        # /** \brief The actual reconstruction method.
+        #   * \param points the resultant points lying on the concave hull 
+        #   * \param polygons the resultant concave hull polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        #   */
+        # void performReconstruction (PointCloud &points, 
+        #                        std::vector<pcl::Vertices> &polygons);
+        # virtual void performReconstruction (PolygonMesh &output);
+        # virtual void performReconstruction (std::vector<pcl::Vertices> &polygons);
+        # /** \brief The method accepts facets only if the distance from any vertex to the facet->center 
+        #   * (center of the voronoi cell) is smaller than alpha 
+        # double alpha_;
+        # /** \brief If set to true, the reconstructed point cloud describing the hull is obtained from 
+        #   * the original input cloud by performing a nearest neighbor search from Qhull output. 
+        # bool keep_information_;
+        # /** \brief the centers of the voronoi cells */
+        # PointCloudPtr voronoi_centers_;
+        # /** \brief the dimensionality of the concave hull */
+        # int dim_;
 ###
 
 # convex_hull.h
 # namespace pcl
-# {
-#   /** \brief Sort 2D points in a vector structure
-#     * \param p1 the first point
-#     * \param p2 the second point
-#     * \ingroup surface
-#     */
-#   inline bool
-#   comparePoints2D (const std::pair<int, Eigen::Vector4f> & p1, const std::pair<int, Eigen::Vector4f> & p2)
-#   {
-#     double angle1 = atan2 (p1.second[1], p1.second[0]) + M_PI;
-#     double angle2 = atan2 (p2.second[1], p2.second[0]) + M_PI;
-#     return (angle1 > angle2);
-#   }
+# /** \brief Sort 2D points in a vector structure
+#   * \param p1 the first point
+#   * \param p2 the second point
+#   * \ingroup surface
+#   */
+# inline bool
+# comparePoints2D (const std::pair<int, Eigen::Vector4f> & p1, const std::pair<int, Eigen::Vector4f> & p2)
 # 
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief @b ConvexHull using libqhull library.
-#     * \author Aitor Aldoma, Alex Trevor
-#     * \ingroup surface
-#     */
-#   template<typename PointInT>
-#   class ConvexHull : public MeshConstruction<PointInT>
-#   {
-#     protected:
-#       using PCLBase<PointInT>::input_;
-#       using PCLBase<PointInT>::indices_;
-#       using PCLBase<PointInT>::initCompute;
-#       using PCLBase<PointInT>::deinitCompute;
-# 
-#     public:
-#       using MeshConstruction<PointInT>::reconstruct;
-# 
-#       typedef pcl::PointCloud<PointInT> PointCloud;
-#       typedef typename PointCloud::Ptr PointCloudPtr;
-#       typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-# 
-#       /** \brief Empty constructor. */
-#       ConvexHull () : compute_area_ (false), total_area_ (0), total_volume_ (0), dimension_ (0), 
-#                       projection_angle_thresh_ (cos (0.174532925) ), qhull_flags ("qhull "),
-#                       x_axis_ (1.0, 0.0, 0.0), y_axis_ (0.0, 1.0, 0.0), z_axis_ (0.0, 0.0, 1.0)
-#       {
-#       };
-# 
-#       /** \brief Compute a convex hull for all points given 
-#         *
-#         * \param[out] points the resultant points lying on the convex hull 
-#         * \param[out] polygons the resultant convex hull polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         */
-#       void
-#       reconstruct (PointCloud &points, 
-#                    std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief Compute a convex hull for all points given 
-#         * \param[out] output the resultant convex hull vertices
-#         */
-#       void
-#       reconstruct (PointCloud &output);
-# 
-#       /** \brief If set to true, the qhull library is called to compute the total area and volume of the convex hull.
-#         * NOTE: When this option is activated, the qhull library produces output to the console.
-#         * \param[in] value wheter to compute the area and the volume, default is false
-#         */
-#       void
-#       setComputeAreaVolume (bool value)
-#       {
-#         compute_area_ = value;
-#         if (compute_area_)
-#           qhull_flags = std::string ("qhull FA");
-#         else
-#           qhull_flags = std::string ("qhull ");
-#       }
-# 
-#       /** \brief Returns the total area of the convex hull. */
-#       double
-#       getTotalArea () const
-#       {
-#         return (total_area_);
-#       }
-# 
-#       /** \brief Returns the total volume of the convex hull. Only valid for 3-dimensional sets.
-#         *  For 2D-sets volume is zero. 
-#         */
-#       double
-#       getTotalVolume () const
-#       {
-#         return (total_volume_);
-#       }
-# 
-#       /** \brief Sets the dimension on the input data, 2D or 3D.
-#         * \param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
-#         */
-#       void 
-#       setDimension (int dimension)
-#       {
-#         if ((dimension == 2) || (dimension == 3))
-#           dimension_ = dimension;
-#         else
-#           PCL_ERROR ("[pcl::%s::setDimension] Invalid input dimension specified!\n", getClassName ().c_str ());
-#       }
-# 
-#       /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
-#       inline int
-#       getDimension () const
-#       {
-#         return (dimension_);
-#       }
-# 
-#     protected:
-#       /** \brief The actual reconstruction method. 
-#         * 
-#         * \param[out] points the resultant points lying on the convex hull 
-#         * \param[out] polygons the resultant convex hull polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
-#         */
-#       void
-#       performReconstruction (PointCloud &points, 
-#                              std::vector<pcl::Vertices> &polygons, 
-#                              bool fill_polygon_data = false);
-#       
-#       /** \brief The reconstruction method for 2D data.  Does not require dimension to be set. 
-#         * 
-#         * \param[out] points the resultant points lying on the convex hull 
-#         * \param[out] polygons the resultant convex hull polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
-#         */
-#       void
-#       performReconstruction2D (PointCloud &points, 
-#                                std::vector<pcl::Vertices> &polygons, 
-#                                bool fill_polygon_data = false);
-#       
-#       /** \brief The reconstruction method for 3D data.  Does not require dimension to be set. 
-#         * 
-#         * \param[out] points the resultant points lying on the convex hull 
-#         * \param[out] polygons the resultant convex hull polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
-#         */
-#       void
-#       performReconstruction3D (PointCloud &points, 
-#                                std::vector<pcl::Vertices> &polygons, 
-#                                bool fill_polygon_data = false);
-#       
-#       /** \brief A reconstruction method that returns a polygonmesh.
-#         *
-#         * \param[out] output a PolygonMesh representing the convex hull of the input data.
-#         */
-#       virtual void
-#       performReconstruction (PolygonMesh &output);
-#       
-#       /** \brief A reconstruction method that returns the polygon of the convex hull.
-#         *
-#         * \param[out] polygons the polygon(s) representing the convex hull of the input data.
-#         */
-#       virtual void
-#       performReconstruction (std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief Automatically determines the dimension of input data - 2D or 3D. */
-#       void 
-#       calculateInputDimension ();
-# 
-#       /** \brief Class get name method. */
-#       std::string
-#       getClassName () const
-#       {
-#         return ("ConvexHull");
-#       }
-# 
-#       /* \brief True if we should compute the area and volume of the convex hull. */
-#       bool compute_area_;
-# 
-#       /* \brief The area of the convex hull. */
-#       double total_area_;
-# 
-#       /* \brief The volume of the convex hull (only for 3D hulls, zero for 2D). */
-#       double total_volume_;
-#       
-#       /** \brief The dimensionality of the concave hull (2D or 3D). */
-#       int dimension_;
-# 
-#       /** \brief How close can a 2D plane's normal be to an axis to make projection problematic. */
-#       double projection_angle_thresh_;
-# 
-#       /** \brief Option flag string to be used calling qhull. */
-#       std::string qhull_flags;
-# 
-#       /* \brief x-axis - for checking valid projections. */
-#       const Eigen::Vector3f x_axis_;
-# 
-#       /* \brief y-axis - for checking valid projections. */
-#       const Eigen::Vector3f y_axis_;
-# 
-#       /* \brief z-axis - for checking valid projections. */
-#       const Eigen::Vector3f z_axis_;
-# 
-#       public:
-#         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#  };
+# template<typename PointInT>
+# class ConvexHull : public MeshConstruction<PointInT>
+cdef extern from "pcl/surface/convex_hull.h" namespace "pcl":
+    cdef cppclass ConvexHull[In](MeshConstruction[In]):
+        ConvexHull()
+        # protected:
+        # using PCLBase<PointInT>::input_;
+        # using PCLBase<PointInT>::indices_;
+        # using PCLBase<PointInT>::initCompute;
+        # using PCLBase<PointInT>::deinitCompute;
+        # public:
+        # using MeshConstruction<PointInT>::reconstruct;
+        # typedef pcl::PointCloud<PointInT> PointCloud;
+        # typedef typename PointCloud::Ptr PointCloudPtr;
+        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # 
+        # /** \brief Compute a convex hull for all points given 
+        #   * \param[out] points the resultant points lying on the convex hull 
+        #   * \param[out] polygons the resultant convex hull polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        # void reconstruct (PointCloud &points, 
+        #              std::vector<pcl::Vertices> &polygons);
+        # /** \brief Compute a convex hull for all points given 
+        #   * \param[out] output the resultant convex hull vertices
+        # void reconstruct (PointCloud &output);
+        # /** \brief If set to true, the qhull library is called to compute the total area and volume of the convex hull.
+        #   * NOTE: When this option is activated, the qhull library produces output to the console.
+        #   * \param[in] value wheter to compute the area and the volume, default is false
+        # void setComputeAreaVolume (bool value)
+        # /** \brief Returns the total area of the convex hull. */
+        # double getTotalArea () const
+        # /** \brief Returns the total volume of the convex hull. Only valid for 3-dimensional sets.
+        #   *  For 2D-sets volume is zero. 
+        # double getTotalVolume () const
+        # /** \brief Sets the dimension on the input data, 2D or 3D.
+        #   * \param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
+        # void setDimension (int dimension)
+        # /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
+        # inline int getDimension () const
+        # 
+        # protected:
+        # /** \brief The actual reconstruction method. 
+        #   * \param[out] points the resultant points lying on the convex hull 
+        #   * \param[out] polygons the resultant convex hull polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        #   * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
+        #   */
+        # void
+        # performReconstruction (PointCloud &points, 
+        #                        std::vector<pcl::Vertices> &polygons, 
+        #                        bool fill_polygon_data = false);
+        # /** \brief The reconstruction method for 2D data.  Does not require dimension to be set. 
+        #   * \param[out] points the resultant points lying on the convex hull 
+        #   * \param[out] polygons the resultant convex hull polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        #   * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
+        # void
+        # performReconstruction2D (PointCloud &points, 
+        #                          std::vector<pcl::Vertices> &polygons, 
+        #                          bool fill_polygon_data = false);
+        # /** \brief The reconstruction method for 3D data.  Does not require dimension to be set. 
+        #   * \param[out] points the resultant points lying on the convex hull 
+        #   * \param[out] polygons the resultant convex hull polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        #   * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
+        # void
+        # performReconstruction3D (PointCloud &points, 
+        #                          std::vector<pcl::Vertices> &polygons, 
+        #                          bool fill_polygon_data = false);
+        # /** \brief A reconstruction method that returns a polygonmesh.
+        #   *
+        #   * \param[out] output a PolygonMesh representing the convex hull of the input data.
+        #   */
+        # virtual void
+        # performReconstruction (PolygonMesh &output);
+        # 
+        # /** \brief A reconstruction method that returns the polygon of the convex hull.
+        #   *
+        #   * \param[out] polygons the polygon(s) representing the convex hull of the input data.
+        #   */
+        # virtual void
+        # performReconstruction (std::vector<pcl::Vertices> &polygons);
+        # 
+        # /** \brief Automatically determines the dimension of input data - 2D or 3D. */
+        # void 
+        # calculateInputDimension ();
+        # 
+        # /** \brief Class get name method. */
+        # std::string getClassName () const
+        # 
+        # /* \brief True if we should compute the area and volume of the convex hull. */
+        # bool compute_area_;
+        # /* \brief The area of the convex hull. */
+        # double total_area_;
+        # /* \brief The volume of the convex hull (only for 3D hulls, zero for 2D). */
+        # double total_volume_;
+        # /** \brief The dimensionality of the concave hull (2D or 3D). */
+        # int dimension_;
+        # /** \brief How close can a 2D plane's normal be to an axis to make projection problematic. */
+        # double projection_angle_thresh_;
+        # /** \brief Option flag string to be used calling qhull. */
+        # std::string qhull_flags;
+        # /* \brief x-axis - for checking valid projections. */
+        # const Eigen::Vector3f x_axis_;
+        # /* \brief y-axis - for checking valid projections. */
+        # const Eigen::Vector3f y_axis_;
+        # /* \brief z-axis - for checking valid projections. */
+        # const Eigen::Vector3f z_axis_;
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 ###
 
 # ear_clipping.h
 # namespace pcl
-# {
-# 
-#   /** \brief The ear clipping triangulation algorithm.
-#     * The code is inspired by Flavien Brebion implementation, which is
-#     * in n^3 and does not handle holes.
-#     * \author Nicolas Burrus
-#     * \ingroup surface
-#     */
-#   class PCL_EXPORTS EarClipping : public MeshProcessing
-#   {
-#     public:
+# /** \brief The ear clipping triangulation algorithm.
+#   * The code is inspired by Flavien Brebion implementation, which is
+#   * in n^3 and does not handle holes.
+#   * \author Nicolas Burrus
+#   * \ingroup surface
+# class PCL_EXPORTS EarClipping : public MeshProcessing
+#       public:
 #       using MeshProcessing::input_mesh_;
 #       using MeshProcessing::initCompute;
 #       /** \brief Empty constructor */
@@ -742,32 +573,27 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #       { 
 #       };
 # 
-#     protected:
+#       protected:
 #       /** \brief a Pointer to the point cloud data. */
 #       pcl::PointCloud<pcl::PointXYZ>::Ptr points_;
 # 
 #       /** \brief This method should get called before starting the actual computation. */
-#       bool
-#       initCompute ();
-# 
+#       bool initCompute ();
 #       /** \brief The actual surface reconstruction method. 
 #         * \param[out] output the output polygonal mesh 
 #         */
-#       void
-#       performProcessing (pcl::PolygonMesh &output);
+#       void performProcessing (pcl::PolygonMesh &output);
 # 
 #       /** \brief Triangulate one polygon. 
 #         * \param[in] vertices the set of vertices
 #         * \param[out] output the resultant polygonal mesh
 #         */
-#       void
-#       triangulate (const Vertices& vertices, PolygonMesh& output);
+#       void triangulate (const Vertices& vertices, PolygonMesh& output);
 # 
 #       /** \brief Compute the signed area of a polygon. 
 #         * \param[in] vertices the vertices representing the polygon 
 #         */
-#       float
-#       area (const std::vector<uint32_t>& vertices);
+#       float area (const std::vector<uint32_t>& vertices);
 # 
 #       /** \brief Check if the triangle (u,v,w) is an ear. 
 #         * \param[in] u the first triangle vertex 
@@ -775,8 +601,7 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #         * \param[in] w the third triangle vertex 
 #         * \param[in] vertices a set of input vertices
 #         */
-#       bool
-#       isEar (int u, int v, int w, const std::vector<uint32_t>& vertices);
+#       bool isEar (int u, int v, int w, const std::vector<uint32_t>& vertices);
 # 
 #       /** \brief Check if p is inside the triangle (u,v,w). 
 #         * \param[in] u the first triangle vertex 
@@ -784,8 +609,7 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #         * \param[in] w the third triangle vertex 
 #         * \param[in] p the point to check
 #         */
-#       bool
-#       isInsideTriangle (const Eigen::Vector2f& u,
+#       bool isInsideTriangle (const Eigen::Vector2f& u,
 #                         const Eigen::Vector2f& v,
 #                         const Eigen::Vector2f& w,
 #                         const Eigen::Vector2f& p);
@@ -795,17 +619,12 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #        * \param[in] p1 the first 2D vector
 #        * \param[in] p2 the first 2D vector
 #        */
-#       float
-#       crossProduct (const Eigen::Vector2f& p1, const Eigen::Vector2f& p2) const
-#       {
-#         return p1[0]*p2[1] - p1[1]*p2[0];
-#       }
-# 
+#       float crossProduct (const Eigen::Vector2f& p1, const Eigen::Vector2f& p2) const
 ###
 
 # factor.h
-# namespace pcl {
-#   namespace poisson {
+# namespace pcl
+# namespace poisson
 # 
 #     double ArcTan2 (const double& y, const double& x);
 #     double Angle (const double in[2]);
@@ -825,59 +644,45 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 
 # function_data.h
 # namespace pcl 
-# {
-#   namespace poisson 
-#   {
-#    
-#     template<int Degree,class Real>
-#     class FunctionData
-#     {
+# namespace poisson 
+# template<int Degree,class Real>
+# class FunctionData
+cdef extern from "pcl/surface/function_data.h" namespace "pcl::poisson":
+    cdef cppclass FunctionData:
+        FunctionData()
 #       int useDotRatios;
 #       int normalize;
-# 
 #       public:
-#         const static int DOT_FLAG;
+#       const static int DOT_FLAG;
 #         const static int D_DOT_FLAG;
 #         const static int D2_DOT_FLAG;
 #         const static int VALUE_FLAG;
 #         const static int D_VALUE_FLAG;
-# 
 #         int depth, res, res2;
 #         Real *dotTable, *dDotTable, *d2DotTable;
 #         Real *valueTables, *dValueTables;
 #         PPolynomial<Degree> baseFunction;
 #         PPolynomial<Degree-1> dBaseFunction;
 #         PPolynomial<Degree+1>* baseFunctions;
-# 
-#         FunctionData (void);
-#         ~FunctionData (void);
-# 
 #         virtual void setDotTables (const int& flags);
 #         virtual void clearDotTables (const int& flags);
-# 
 #         virtual void setValueTables (const int& flags, const double& smooth = 0);
 #         virtual void setValueTables (const int& flags, const double& valueSmooth, const double& normalSmooth);
 #         virtual void clearValueTables (void);
-# 
 #         void set (const int& maxDepth, const PPolynomial<Degree>& F, const int& normalize, const int& useDotRatios = 1);
-# 
 #         Real dotProduct (const double& center1, const double& width1,
 #                          const double& center2, const double& width2) const;
 #         Real dDotProduct (const double& center1, const double& width1,
 #                           const double& center2, const double& width2) const;
 #         Real d2DotProduct (const double& center1, const double& width1,
 #                            const double& center2, const double& width2) const;
-# 
 #         static inline int SymmetricIndex (const int& i1, const int& i2);
 #         static inline int SymmetricIndex (const int& i1, const int& i2, int& index);
-#     };
-#   }
 ###
 
 # geometry.h
-# namespace pcl 
-# {
-#   namespace poisson 
+# namespace pcl
+# namespace poisson 
 #   {
 #     template<class Real>
 #     Real Random (void);
@@ -1134,7 +939,6 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 
 # gp3.h
 # namespace pcl
-# {
 #   /** \brief Returns if a point X is visible from point R (or the origin)
 #     * when taking into account the segment between the points S1 and S2
 #     * \param X 2D coordinate of the point
@@ -1146,88 +950,27 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #   inline bool 
 #   isVisible (const Eigen::Vector2f &X, const Eigen::Vector2f &S1, const Eigen::Vector2f &S2, 
 #              const Eigen::Vector2f &R = Eigen::Vector2f::Zero ())
-#   {
-#     double a0 = S1[1] - S2[1];
-#     double b0 = S2[0] - S1[0];
-#     double c0 = S1[0]*S2[1] - S2[0]*S1[1];
-#     double a1 = -X[1];
-#     double b1 = X[0];
-#     double c1 = 0;
-#     if (R != Eigen::Vector2f::Zero())
-#     {
-#       a1 += R[1];
-#       b1 -= R[0];
-#       c1 = R[0]*X[1] - X[0]*R[1];
-#     }
-#     double div = a0*b1 - b0*a1;
-#     double x = (b0*c1 - b1*c0) / div;
-#     double y = (a1*c0 - a0*c1) / div;
 # 
-#     bool intersection_outside_XR;
-#     if (R == Eigen::Vector2f::Zero())
-#     {
-#       if (X[0] > 0)
-#         intersection_outside_XR = (x <= 0) || (x >= X[0]);
-#       else if (X[0] < 0)
-#         intersection_outside_XR = (x >= 0) || (x <= X[0]);
-#       else if (X[1] > 0)
-#         intersection_outside_XR = (y <= 0) || (y >= X[1]);
-#       else if (X[1] < 0)
-#         intersection_outside_XR = (y >= 0) || (y <= X[1]);
-#       else
-#         intersection_outside_XR = true;
-#     }
-#     else
-#     {
-#       if (X[0] > R[0])
-#         intersection_outside_XR = (x <= R[0]) || (x >= X[0]);
-#       else if (X[0] < R[0])
-#         intersection_outside_XR = (x >= R[0]) || (x <= X[0]);
-#       else if (X[1] > R[1])
-#         intersection_outside_XR = (y <= R[1]) || (y >= X[1]);
-#       else if (X[1] < R[1])
-#         intersection_outside_XR = (y >= R[1]) || (y <= X[1]);
-#       else
-#         intersection_outside_XR = true;
-#     }
-#     if (intersection_outside_XR)
-#       return true;
-#     else
-#     {
-#       if (S1[0] > S2[0])
-#         return (x <= S2[0]) || (x >= S1[0]);
-#       else if (S1[0] < S2[0])
-#         return (x >= S2[0]) || (x <= S1[0]);
-#       else if (S1[1] > S2[1])
-#         return (y <= S2[1]) || (y >= S1[1]);
-#       else if (S1[1] < S2[1])                                                                                                                     
-#         return (y >= S2[1]) || (y <= S1[1]);
-#       else
-#         return false;
-#     }
-#   }  
-# 
-#   /** \brief GreedyProjectionTriangulation is an implementation of a greedy triangulation algorithm for 3D points
-#     * based on local 2D projections. It assumes locally smooth surfaces and relatively smooth transitions between
-#     * areas with different point densities.
-#     * \author Zoltan Csaba Marton
-#     * \ingroup surface
-#     */
-#   template <typename PointInT>
-#   class GreedyProjectionTriangulation : public MeshConstruction<PointInT>
-#   {
-#     public:
+# /** \brief GreedyProjectionTriangulation is an implementation of a greedy triangulation algorithm for 3D points
+#   * based on local 2D projections. It assumes locally smooth surfaces and relatively smooth transitions between
+#   * areas with different point densities.
+#   * \author Zoltan Csaba Marton
+#   * \ingroup surface
+#   */
+# template <typename PointInT>
+# class GreedyProjectionTriangulation : public MeshConstruction<PointInT>
+cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
+    cdef cppclass GreedyProjectionTriangulation[In](MeshConstruction[In]):
+        GreedyProjectionTriangulation()
+#       public:
 #       using MeshConstruction<PointInT>::tree_;
 #       using MeshConstruction<PointInT>::input_;
 #       using MeshConstruction<PointInT>::indices_;
-# 
 #       typedef typename pcl::KdTree<PointInT> KdTree;
 #       typedef typename pcl::KdTree<PointInT>::Ptr KdTreePtr;
-# 
 #       typedef pcl::PointCloud<PointInT> PointCloudIn;
 #       typedef typename PointCloudIn::Ptr PointCloudInPtr;
 #       typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-# 
 #       // FIXME this enum should have a type.  Not be anonymous. 
 #       // Otherplaces where consts are used probably should be fixed.
 #       enum 
@@ -1238,384 +981,81 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #         BOUNDARY = 2,
 #         COMPLETED = 3
 #       };
-#     
-#       /** \brief Empty constructor. */
-#       GreedyProjectionTriangulation () : 
-#         mu_ (0), 
-#         search_radius_ (0), // must be set by user
-#         nnn_ (100),
-#         minimum_angle_ (M_PI/18), // 10 degrees
-#         maximum_angle_ (2*M_PI/3), // 120 degrees
-#         eps_angle_(M_PI/4), //45 degrees,
-#         consistent_(false), 
-#         consistent_ordering_ (false),
-#         triangle_ (),
-#         coords_ (),
-#         angles_ (),
-#         R_ (),
-#         state_ (),
-#         source_ (),
-#         ffn_ (),
-#         sfn_ (),
-#         part_ (),
-#         fringe_queue_ (),
-#         is_current_free_ (false),
-#         current_index_ (),
-#         prev_is_ffn_ (false),
-#         prev_is_sfn_ (false),
-#         next_is_ffn_ (false),
-#         next_is_sfn_ (false),
-#         changed_1st_fn_ (false),
-#         changed_2nd_fn_ (false),
-#         new2boundary_ (),
-#         already_connected_ (false),
-#         proj_qp_ (),
-#         u_ (),
-#         v_ (),
-#         uvn_ffn_ (),
-#         uvn_sfn_ (),
-#         uvn_next_ffn_ (),
-#         uvn_next_sfn_ (),
-#         tmp_ ()
-#       {};
 # 
 #       /** \brief Set the multiplier of the nearest neighbor distance to obtain the final search radius for each point
 #        *  (this will make the algorithm adapt to different point densities in the cloud).
-#         * \param[in] mu the multiplier
-#         */
-#       inline void 
-#       setMu (double mu) { mu_ = mu; }
-# 
+#        * \param[in] mu the multiplier
+#       inline void setMu (double mu)
 #       /** \brief Get the nearest neighbor distance multiplier. */
-#       inline double 
-#       getMu () { return (mu_); }
-# 
+#       inline double getMu ()
 #       /** \brief Set the maximum number of nearest neighbors to be searched for.
 #         * \param[in] nnn the maximum number of nearest neighbors
-#         */
-#       inline void 
-#       setMaximumNearestNeighbors (int nnn) { nnn_ = nnn; }
-# 
+#       inline void setMaximumNearestNeighbors (int nnn)
 #       /** \brief Get the maximum number of nearest neighbors to be searched for. */
-#       inline int 
-#       getMaximumNearestNeighbors () { return (nnn_); }
-# 
+#       inline int getMaximumNearestNeighbors ()
 #       /** \brief Set the sphere radius that is to be used for determining the k-nearest neighbors used for triangulating.
 #         * \param[in] radius the sphere radius that is to contain all k-nearest neighbors
 #         * \note This distance limits the maximum edge length!
-#         */
-#       inline void 
-#       setSearchRadius (double radius) { search_radius_ = radius; }
-# 
+#       inline void setSearchRadius (double radius)
 #       /** \brief Get the sphere radius used for determining the k-nearest neighbors. */
-#       inline double 
-#       getSearchRadius () { return (search_radius_); }
-# 
+#       inline double getSearchRadius ()
 #       /** \brief Set the minimum angle each triangle should have.
 #         * \param[in] minimum_angle the minimum angle each triangle should have
 #         * \note As this is a greedy approach, this will have to be violated from time to time
-#         */
-#       inline void 
-#       setMinimumAngle (double minimum_angle) { minimum_angle_ = minimum_angle; }
-# 
+#       inline void setMinimumAngle (double minimum_angle)
 #       /** \brief Get the parameter for distance based weighting of neighbors. */
-#       inline double 
-#       getMinimumAngle () { return (minimum_angle_); }
-# 
+#       inline double getMinimumAngle ()
 #       /** \brief Set the maximum angle each triangle can have.
 #         * \param[in] maximum_angle the maximum angle each triangle can have
 #         * \note For best results, its value should be around 120 degrees
-#         */
-#       inline void 
-#       setMaximumAngle (double maximum_angle) { maximum_angle_ = maximum_angle; }
-# 
+#       inline void setMaximumAngle (double maximum_angle)
 #       /** \brief Get the parameter for distance based weighting of neighbors. */
-#       inline double 
-#       getMaximumAngle () { return (maximum_angle_); }
-# 
+#       inline double getMaximumAngle ()
 #       /** \brief Don't consider points for triangulation if their normal deviates more than this value from the query point's normal.
 #         * \param[in] eps_angle maximum surface angle
 #         * \note As normal estimation methods usually give smooth transitions at sharp edges, this ensures correct triangulation
 #         *       by avoiding connecting points from one side to points from the other through forcing the use of the edge points.
-#         */
-#       inline void 
-#       setMaximumSurfaceAngle (double eps_angle) { eps_angle_ = eps_angle; }
-# 
+#       inline void setMaximumSurfaceAngle (double eps_angle)
 #       /** \brief Get the maximum surface angle. */
-#       inline double 
-#       getMaximumSurfaceAngle () { return (eps_angle_); }
-# 
+#       inline double getMaximumSurfaceAngle ()
 #       /** \brief Set the flag if the input normals are oriented consistently.
 #         * \param[in] consistent set it to true if the normals are consistently oriented
-#         */
-#       inline void 
-#       setNormalConsistency (bool consistent) { consistent_ = consistent; }
-# 
+#       inline void setNormalConsistency (bool consistent)
 #       /** \brief Get the flag for consistently oriented normals. */
-#       inline bool 
-#       getNormalConsistency () { return (consistent_); }
-# 
+#       inline bool getNormalConsistency ()
 #       /** \brief Set the flag to order the resulting triangle vertices consistently (positive direction around normal).
 #         * @note Assumes consistently oriented normals (towards the viewpoint) -- see setNormalConsistency ()
 #         * \param[in] consistent_ordering set it to true if triangle vertices should be ordered consistently
-#         */
-#       inline void 
-#       setConsistentVertexOrdering (bool consistent_ordering) { consistent_ordering_ = consistent_ordering; }
-# 
+#       inline void setConsistentVertexOrdering (bool consistent_ordering)
 #       /** \brief Get the flag signaling consistently ordered triangle vertices. */
-#       inline bool 
-#       getConsistentVertexOrdering () { return (consistent_ordering_); }
-# 
+#       inline bool getConsistentVertexOrdering ()
 #       /** \brief Get the state of each point after reconstruction.
 #         * \note Options are defined as constants: FREE, FRINGE, COMPLETED, BOUNDARY and NONE
-#         */
-#       inline std::vector<int> 
-#       getPointStates () { return (state_); }
-# 
+#       inline std::vector<int> getPointStates ()
 #       /** \brief Get the ID of each point after reconstruction.
 #         * \note parts are numbered from 0, a -1 denotes unconnected points
-#         */
-#       inline std::vector<int> 
-#       getPartIDs () { return (part_); }
-# 
-# 
+#       inline std::vector<int> getPartIDs ()
 #       /** \brief Get the sfn list. */
-#       inline std::vector<int>
-#       getSFN () { return (sfn_); }
-# 
+#       inline std::vector<int> getSFN ()
 #       /** \brief Get the ffn list. */
-#       inline std::vector<int>
-#       getFFN () { return (ffn_); }
-# 
-#     protected:
+#       inline std::vector<int> getFFN ()
+#       protected:
 #       /** \brief The nearest neighbor distance multiplier to obtain the final search radius. */
 #       double mu_;
-# 
 #       /** \brief The nearest neighbors search radius for each point and the maximum edge length. */
 #       double search_radius_;
-# 
 #       /** \brief The maximum number of nearest neighbors accepted by searching. */
 #       int nnn_;
-# 
 #       /** \brief The preferred minimum angle for the triangles. */
 #       double minimum_angle_;
-# 
 #       /** \brief The maximum angle for the triangles. */
 #       double maximum_angle_;
-# 
 #       /** \brief Maximum surface angle. */
 #       double eps_angle_;
-# 
 #       /** \brief Set this to true if the normals of the input are consistently oriented. */
 #       bool consistent_;
-#       
 #       /** \brief Set this to true if the output triangle vertices should be consistently oriented. */
 #       bool consistent_ordering_;
-# 
-#      private:
-#       /** \brief Struct for storing the angles to nearest neighbors **/
-#       struct nnAngle
-#       {
-#         double angle;
-#         int index;
-#         int nnIndex;
-#         bool visible;
-#       };
-# 
-#       /** \brief Struct for storing the edges starting from a fringe point **/
-#       struct doubleEdge
-#       {
-#         doubleEdge () : index (0), first (), second () {}
-#         int index;
-#         Eigen::Vector2f first;
-#         Eigen::Vector2f second;
-#       };
-# 
-#       // Variables made global to decrease the number of parameters to helper functions
-# 
-#       /** \brief Temporary variable to store a triangle (as a set of point indices) **/
-#       pcl::Vertices triangle_;
-#       /** \brief Temporary variable to store point coordinates **/
-#       std::vector<Eigen::Vector3f> coords_;
-# 
-#       /** \brief A list of angles to neighbors **/
-#       std::vector<nnAngle> angles_;
-#       /** \brief Index of the current query point **/
-#       int R_;
-#       /** \brief List of point states **/
-#       std::vector<int> state_;
-#       /** \brief List of sources **/
-#       std::vector<int> source_;
-#       /** \brief List of fringe neighbors in one direction **/
-#       std::vector<int> ffn_;
-#       /** \brief List of fringe neighbors in other direction **/
-#       std::vector<int> sfn_;
-#       /** \brief Connected component labels for each point **/
-#       std::vector<int> part_;
-#       /** \brief Points on the outer edge from which the mesh has to be grown **/
-#       std::vector<int> fringe_queue_;
-# 
-#       /** \brief Flag to set if the current point is free **/
-#       bool is_current_free_;
-#       /** \brief Current point's index **/
-#       int current_index_;
-#       /** \brief Flag to set if the previous point is the first fringe neighbor **/
-#       bool prev_is_ffn_;
-#       /** \brief Flag to set if the next point is the second fringe neighbor **/
-#       bool prev_is_sfn_;
-#       /** \brief Flag to set if the next point is the first fringe neighbor **/
-#       bool next_is_ffn_;
-#       /** \brief Flag to set if the next point is the second fringe neighbor **/
-#       bool next_is_sfn_;
-#       /** \brief Flag to set if the first fringe neighbor was changed **/
-#       bool changed_1st_fn_;
-#       /** \brief Flag to set if the second fringe neighbor was changed **/
-#       bool changed_2nd_fn_;
-#       /** \brief New boundary point **/
-#       int new2boundary_;
-#       
-#       /** \brief Flag to set if the next neighbor was already connected in the previous step.
-#         * To avoid inconsistency it should not be connected again.
-#         */
-#       bool already_connected_; 
-# 
-#       /** \brief Point coordinates projected onto the plane defined by the point normal **/
-#       Eigen::Vector3f proj_qp_;
-#       /** \brief First coordinate vector of the 2D coordinate frame **/
-#       Eigen::Vector3f u_;
-#       /** \brief Second coordinate vector of the 2D coordinate frame **/
-#       Eigen::Vector3f v_;
-#       /** \brief 2D coordinates of the first fringe neighbor **/
-#       Eigen::Vector2f uvn_ffn_;
-#       /** \brief 2D coordinates of the second fringe neighbor **/
-#       Eigen::Vector2f uvn_sfn_;
-#       /** \brief 2D coordinates of the first fringe neighbor of the next point **/
-#       Eigen::Vector2f uvn_next_ffn_;
-#       /** \brief 2D coordinates of the second fringe neighbor of the next point **/
-#       Eigen::Vector2f uvn_next_sfn_;
-# 
-#       /** \brief Temporary variable to store 3 coordiantes **/
-#       Eigen::Vector3f tmp_;
-# 
-#       /** \brief The actual surface reconstruction method.
-#         * \param[out] output the resultant polygonal mesh
-#         */
-#       void 
-#       performReconstruction (pcl::PolygonMesh &output);
-# 
-#       /** \brief The actual surface reconstruction method.
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       void 
-#       performReconstruction (std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief The actual surface reconstruction method.
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       bool
-#       reconstructPolygons (std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief Class get name method. */
-#       std::string 
-#       getClassName () const { return ("GreedyProjectionTriangulation"); }
-# 
-#       /** \brief Forms a new triangle by connecting the current neighbor to the query point 
-#         * and the previous neighbor
-#         * \param[out] polygons the polygon mesh to be updated
-#         * \param[in] prev_index index of the previous point
-#         * \param[in] next_index index of the next point
-#         * \param[in] next_next_index index of the point after the next one
-#         * \param[in] uvn_current 2D coordinate of the current point
-#         * \param[in] uvn_prev 2D coordinates of the previous point
-#         * \param[in] uvn_next 2D coordinates of the next point
-#         */
-#       void 
-#       connectPoint (std::vector<pcl::Vertices> &polygons, 
-#                     const int prev_index, 
-#                     const int next_index, 
-#                     const int next_next_index, 
-#                     const Eigen::Vector2f &uvn_current, 
-#                     const Eigen::Vector2f &uvn_prev, 
-#                     const Eigen::Vector2f &uvn_next);
-# 
-#       /** \brief Whenever a query point is part of a boundary loop containing 3 points, that triangle is created
-#         * (called if angle constraints make it possible)
-#         * \param[out] polygons the polygon mesh to be updated
-#         */
-#       void 
-#       closeTriangle (std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief Get the list of containing triangles for each vertex in a PolygonMesh
-#         * \param[in] polygonMesh the input polygon mesh
-#         */
-#       std::vector<std::vector<size_t> >
-#       getTriangleList (const pcl::PolygonMesh &input);
-# 
-#       /** \brief Add a new triangle to the current polygon mesh
-#         * \param[in] a index of the first vertex
-#         * \param[in] b index of the second vertex
-#         * \param[in] c index of the third vertex
-#         * \param[out] polygons the polygon mesh to be updated
-#         */
-#       inline void
-#       addTriangle (int a, int b, int c, std::vector<pcl::Vertices> &polygons)
-#       {
-#         triangle_.vertices.resize (3);
-#         if (consistent_ordering_)
-#         {
-#           const PointInT p = input_->at (indices_->at (a));
-#           const Eigen::Vector3f pv = p.getVector3fMap ();
-#           if (p.getNormalVector3fMap ().dot (
-#                 (pv - input_->at (indices_->at (b)).getVector3fMap ()).cross (
-#                  pv - input_->at (indices_->at (c)).getVector3fMap ()) ) > 0)
-#           {
-#             triangle_.vertices[0] = a;
-#             triangle_.vertices[1] = b;
-#             triangle_.vertices[2] = c;
-#           }
-#           else
-#           {
-#             triangle_.vertices[0] = a;
-#             triangle_.vertices[1] = c;
-#             triangle_.vertices[2] = b;
-#           }
-#         }
-#         else
-#         {
-#           triangle_.vertices[0] = a;
-#           triangle_.vertices[1] = b;
-#           triangle_.vertices[2] = c;
-#         }
-#         polygons.push_back (triangle_);
-#       }
-# 
-#       /** \brief Add a new vertex to the advancing edge front and set its source point
-#         * \param[in] v index of the vertex that was connected
-#         * \param[in] s index of the source point
-#         */
-#       inline void
-#       addFringePoint (int v, int s)
-#       {
-#         source_[v] = s;
-#         part_[v] = part_[s];
-#         fringe_queue_.push_back(v);
-#       }
-# 
-#       /** \brief Function for ascending sort of nnAngle, taking visibility into account
-#         * (angles to visible neighbors will be first, to the invisible ones after).
-#         * \param[in] a1 the first angle
-#         * \param[in] a2 the second angle
-#         */
-#       static inline bool 
-#       nnAngleSortAsc (const nnAngle& a1, const nnAngle& a2)
-#       {
-#         if (a1.visible == a2.visible)
-#           return (a1.angle < a2.angle);
-#         else
-#           return a1.visible;
-#       }
-#   };
-# 
 ###
 
 # grid_projection.h
@@ -2634,7 +2074,7 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #       static int FaceReflectCornerIndex (const int& idx, const int& faceIndex);
 #       static int FaceReflectEdgeIndex (const int& idx, const int& faceIndex);
 #       static int FaceReflectFaceIndex (const int& idx, const int& faceIndex);
-#       static int EdgeReflectCornerIndex	(const int& idx, const int& edgeIndex);
+#       static int EdgeReflectCornerIndex   (const int& idx, const int& edgeIndex);
 #       static int EdgeReflectEdgeIndex (const int& edgeIndex);
 # 
 #       static int FaceAdjacentToEdges (const int& eIndex1, const int& eIndex2);
@@ -3687,7 +3127,7 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #         finalize2 (const int& refineNeighbors=-1);
 # 
 #         //int setTree(char* fileName,const int& maxDepth,const int& binary,const int& kernelDepth,const Real& samplesPerNode,
-#         //	const Real& scaleFactor,Point3D<Real>& center,Real& scale,const int& resetSampleDepths,const int& useConfidence);
+#         //    const Real& scaleFactor,Point3D<Real>& center,Real& scale,const int& resetSampleDepths,const int& useConfidence);
 # 
 #         template<typename PointNT> int
 #         setTree (boost::shared_ptr<const pcl::PointCloud<PointNT> > input_,
@@ -4634,98 +4074,6 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 # }
 ###
 
-# processing.h
-# namespace pcl
-# {
-#   /** \brief @b CloudSurfaceProcessing represents the base class for algorithms that take a point cloud as an input and
-#     * produce a new output cloud that has been modified towards a better surface representation. These types of
-#     * algorithms include surface smoothing, hole filling, cloud upsampling etc.
-#     *
-#     * \author Alexandru E. Ichim
-#     * \ingroup surface
-#     */
-#   template <typename PointInT, typename PointOutT>
-#   class CloudSurfaceProcessing : public PCLBase<PointInT>
-#   {
-#     public:
-#       using PCLBase<PointInT>::input_;
-#       using PCLBase<PointInT>::indices_;
-#       using PCLBase<PointInT>::initCompute;
-#       using PCLBase<PointInT>::deinitCompute;
-# 
-#     public:
-#       /** \brief Constructor. */
-#       CloudSurfaceProcessing () : PCLBase<PointInT> ()
-#       {};
-# 
-#       /** \brief Process the input cloud and store the results
-#         * \param[out] output the cloud where the results will be stored
-#         */
-#       virtual void
-#       process (pcl::PointCloud<PointOutT> &output);
-# 
-#     protected:
-#       /** \brief Abstract cloud processing method */
-#       virtual void
-#       performProcessing (pcl::PointCloud<PointOutT> &output) = 0;
-# 
-#   };
-# 
-# 
-#   /** \brief @b MeshProcessing represents the base class for mesh processing algorithms.
-#     * \author Alexandru E. Ichim
-#     * \ingroup surface
-#     */
-#   class PCL_EXPORTS MeshProcessing
-#   {
-#     public:
-#       typedef PolygonMesh::ConstPtr PolygonMeshConstPtr;
-# 
-#       /** \brief Constructor. */
-#       MeshProcessing () : input_mesh_ () {};
-# 
-#       /** \brief Destructor. */
-#       virtual ~MeshProcessing () {}
-# 
-#       /** \brief Set the input mesh that we want to process
-#         * \param[in] input the input polygonal mesh
-#         */
-#       void 
-#       setInputMesh (const pcl::PolygonMeshConstPtr &input) 
-#       { 
-#         input_mesh_ = input; 
-#       }
-# 
-#       /** \brief Process the input surface mesh and store the results
-#         * \param[out] output the resultant processed surface model
-#         */
-#       void 
-#       process (pcl::PolygonMesh &output);
-# 
-#     protected:
-#       /** \brief Initialize computation. Must be called before processing starts. */
-#       virtual bool 
-#       initCompute ();
-#       
-#       /** \brief UnInitialize computation. Must be called after processing ends. */
-#       virtual void 
-#       deinitCompute ();
-# 
-#       /** \brief Abstract surface processing method. */
-#       virtual void 
-#       performProcessing (pcl::PolygonMesh &output) = 0;
-# 
-#       /** \brief Abstract class get name method. */
-#       virtual std::string 
-#       getClassName () const { return (""); }
-# 
-#       /** \brief Input polygonal mesh. */
-#       pcl::PolygonMeshConstPtr input_mesh_;
-#   };
-# }
-# 
-###
-
 # qhull.h
 # 
 # #if defined __GNUC__
@@ -4753,194 +4101,6 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 # #  include "qhull/io.h"
 # #  include "qhull/stat.h"
 # #endif
-# }
-# 
-###
-
-# reconstruction.h
-# namespace pcl
-# {
-#   /** \brief Pure abstract class. All types of meshing/reconstruction
-#     * algorithms in \b libpcl_surface must inherit from this, in order to make
-#     * sure we have a consistent API. The methods that we care about here are:
-#     *
-#     *  - \b setSearchMethod(&SearchPtr): passes a search locator
-#     *  - \b reconstruct(&PolygonMesh): creates a PolygonMesh object from the input data
-#     *
-#     * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
-#     */
-#   template <typename PointInT>
-#   class PCLSurfaceBase: public PCLBase<PointInT>
-#   {
-#     public:
-#       typedef typename pcl::search::Search<PointInT> KdTree;
-#       typedef typename pcl::search::Search<PointInT>::Ptr KdTreePtr;
-# 
-#       /** \brief Empty constructor. */
-#       PCLSurfaceBase () : tree_ () {}
-# 
-#       /** \brief Provide an optional pointer to a search object.
-#         * \param[in] tree a pointer to the spatial search object.
-#         */
-#       inline void
-#       setSearchMethod (const KdTreePtr &tree)
-#       {
-#         tree_ = tree;
-#       }
-# 
-#       /** \brief Get a pointer to the search method used. */
-#       inline KdTreePtr 
-#       getSearchMethod () { return (tree_); }
-# 
-#       /** \brief Base method for surface reconstruction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] output the resultant reconstructed surface model
-#         */
-#       virtual void 
-#       reconstruct (pcl::PolygonMesh &output) = 0;
-# 
-#     protected:
-#       /** \brief A pointer to the spatial search object. */
-#       KdTreePtr tree_;
-# 
-#       /** \brief Abstract class get name method. */
-#       virtual std::string 
-#       getClassName () const { return (""); }
-#   };
-# 
-#   /** \brief SurfaceReconstruction represents a base surface reconstruction
-#     * class. All \b surface reconstruction methods take in a point cloud and
-#     * generate a new surface from it, by either re-sampling the data or
-#     * generating new data altogether. These methods are thus \b not preserving
-#     * the topology of the original data.
-#     *
-#     * \note Reconstruction methods that always preserve the original input
-#     * point cloud data as the surface vertices and simply construct the mesh on
-#     * top should inherit from \ref MeshConstruction.
-#     *
-#     * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
-#     * \ingroup surface
-#     */
-#   template <typename PointInT>
-#   class SurfaceReconstruction: public PCLSurfaceBase<PointInT>
-#   {
-#     public:
-#       using PCLSurfaceBase<PointInT>::input_;
-#       using PCLSurfaceBase<PointInT>::indices_;
-#       using PCLSurfaceBase<PointInT>::initCompute;
-#       using PCLSurfaceBase<PointInT>::deinitCompute;
-#       using PCLSurfaceBase<PointInT>::tree_;
-#       using PCLSurfaceBase<PointInT>::getClassName;
-# 
-#       /** \brief Constructor. */
-#       SurfaceReconstruction () : check_tree_ (true) {}
-# 
-#       /** \brief Destructor. */
-#       virtual ~SurfaceReconstruction () {}
-# 
-#        /** \brief Base method for surface reconstruction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] output the resultant reconstructed surface model
-#         */
-#       virtual void 
-#       reconstruct (pcl::PolygonMesh &output);
-# 
-#       /** \brief Base method for surface reconstruction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] points the resultant points lying on the new surface
-#         * \param[out] polygons the resultant polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         */
-#       virtual void 
-#       reconstruct (pcl::PointCloud<PointInT> &points,
-#                    std::vector<pcl::Vertices> &polygons);
-# 
-#     protected:
-#       /** \brief A flag specifying whether or not the derived reconstruction
-#         * algorithm needs the search object \a tree.*/
-#       bool check_tree_;
-# 
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] output the output polygonal mesh 
-#         */
-#       virtual void 
-#       performReconstruction (pcl::PolygonMesh &output) = 0;
-# 
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] points the resultant points lying on the surface
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       virtual void 
-#       performReconstruction (pcl::PointCloud<PointInT> &points, 
-#                              std::vector<pcl::Vertices> &polygons) = 0;
-#   };
-# 
-#   /** \brief MeshConstruction represents a base surface reconstruction
-#     * class. All \b mesh constructing methods that take in a point cloud and
-#     * generate a surface that uses the original data as vertices should inherit
-#     * from this class.
-#     *
-#     * \note Reconstruction methods that generate a new surface or create new
-#     * vertices in locations different than the input data should inherit from
-#     * \ref SurfaceReconstruction.
-#     *
-#     * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
-#     * \ingroup surface
-#     */
-#   template <typename PointInT>
-#   class MeshConstruction: public PCLSurfaceBase<PointInT>
-#   {
-#     public:
-#       using PCLSurfaceBase<PointInT>::input_;
-#       using PCLSurfaceBase<PointInT>::indices_;
-#       using PCLSurfaceBase<PointInT>::initCompute;
-#       using PCLSurfaceBase<PointInT>::deinitCompute;
-#       using PCLSurfaceBase<PointInT>::tree_;
-#       using PCLSurfaceBase<PointInT>::getClassName;
-# 
-#       /** \brief Constructor. */
-#       MeshConstruction () : check_tree_ (true) {}
-# 
-#       /** \brief Destructor. */
-#       virtual ~MeshConstruction () {}
-# 
-#       /** \brief Base method for surface reconstruction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] output the resultant reconstructed surface model
-#         *
-#         * \note This method copies the input point cloud data from
-#         * PointCloud<T> to PointCloud2, and is implemented here for backwards
-#         * compatibility only!
-#         *
-#         */
-#       virtual void 
-#       reconstruct (pcl::PolygonMesh &output);
-# 
-#       /** \brief Base method for mesh construction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] polygons the resultant polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         */
-#       virtual void 
-#       reconstruct (std::vector<pcl::Vertices> &polygons);
-# 
-#     protected:
-#       /** \brief A flag specifying whether or not the derived reconstruction
-#         * algorithm needs the search object \a tree.*/
-#       bool check_tree_;
-# 
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] output the output polygonal mesh 
-#         */
-#       virtual void 
-#       performReconstruction (pcl::PolygonMesh &output) = 0;
-# 
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       virtual void 
-#       performReconstruction (std::vector<pcl::Vertices> &polygons) = 0;
-#   };
 # }
 # 
 ###
@@ -5817,15 +4977,13 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 
 # vtk_mesh_smoothing_windowed_sinc.h
 # namespace pcl
-# {
-#   /** \brief PCL mesh smoothing based on the vtkWindowedSincPolyDataFilter algorithm from the VTK library.
-#     * Please check out the original documentation for more details on the inner workings of the algorithm
-#     * Warning: This wrapper does two fairly computationally expensive conversions from the PCL PolygonMesh
-#     * data structure to the vtkPolyData data structure and back.
-#     */
-#   class PCL_EXPORTS MeshSmoothingWindowedSincVTK : public MeshProcessing
-#   {
-#     public:
+# /** \brief PCL mesh smoothing based on the vtkWindowedSincPolyDataFilter algorithm from the VTK library.
+#   * Please check out the original documentation for more details on the inner workings of the algorithm
+#   * Warning: This wrapper does two fairly computationally expensive conversions from the PCL PolygonMesh
+#   * data structure to the vtkPolyData data structure and back.
+#   */
+# class PCL_EXPORTS MeshSmoothingWindowedSincVTK : public MeshProcessing
+#       public:
 #       /** \brief Empty constructor that sets the values of the algorithm parameters to the VTK defaults */
 #       MeshSmoothingWindowedSincVTK ()
 #         : MeshProcessing (),
@@ -5840,190 +4998,84 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 # 
 #       /** \brief Set the number of iterations for the smoothing filter.
 #         * \param[in] num_iter the number of iterations
-#         */
-#       inline void
-#       setNumIter (int num_iter)
-#       {
-#         num_iter_ = num_iter;
-#       };
-# 
+#       inline void setNumIter (int num_iter)
 #       /** \brief Get the number of iterations. */
-#       inline int
-#       getNumIter ()
-#       {
-#         return num_iter_;
-#       };
-# 
+#       inline int getNumIter ()
 #       /** \brief Set the pass band value for windowed sinc filtering.
 #         * \param[in] pass_band value for the pass band.
-#         */
-#       inline void
-#       setPassBand (float pass_band)
-#       {
-#         pass_band_ = pass_band;
-#       };
-# 
+#       inline void setPassBand (float pass_band)
 #       /** \brief Get the pass band value. */
-#       inline float
-#       getPassBand ()
-#       {
-#         return pass_band_;
-#       };
-# 
+#       inline float getPassBand ()
 #       /** \brief Turn on/off coordinate normalization. The positions can be translated and scaled such that they fit
 #        * within a [-1, 1] prior to the smoothing computation. The default is off. The numerical stability of the
 #        * solution can be improved by turning normalization on. If normalization is on, the coordinates will be rescaled
 #        * to the original coordinate system after smoothing has completed.
 #        * \param[in] normalize_coordinates decision whether to normalize coordinates or not
-#        */
-#       inline void
-#       setNormalizeCoordinates (bool normalize_coordinates)
-#       {
-#         normalize_coordinates_ = normalize_coordinates;
-#       }
-# 
+#       inline void setNormalizeCoordinates (bool normalize_coordinates)
 #       /** \brief Get whether the coordinate normalization is active or not */
-#       inline bool
-#       getNormalizeCoordinates ()
-#       {
-#         return normalize_coordinates_;
-#       }
-# 
+#       inline bool getNormalizeCoordinates ()
 #       /** \brief Turn on/off smoothing along sharp interior edges.
 #        * \param[in] status decision whether to enable/disable smoothing along sharp interior edges
-#        */
-#       inline void
-#       setFeatureEdgeSmoothing (bool feature_edge_smoothing)
-#       {
-#         feature_edge_smoothing_ = feature_edge_smoothing;
-#       };
-# 
+#       inline void setFeatureEdgeSmoothing (bool feature_edge_smoothing)
 #       /** \brief Get the status of the feature edge smoothing */
-#       inline bool
-#       getFeatureEdgeSmoothing ()
-#       {
-#         return feature_edge_smoothing_;
-#       };
-# 
+#       inline bool getFeatureEdgeSmoothing ()
 #       /** \brief Specify the feature angle for sharp edge identification.
 #        * \param[in] feature_angle the angle threshold for considering an edge to be sharp
-#        */
-#       inline void
-#       setFeatureAngle (float feature_angle)
-#       {
-#         feature_angle_ = feature_angle;
-#       };
-# 
+#       inline void setFeatureAngle (float feature_angle)
 #       /** \brief Get the angle threshold for considering an edge to be sharp */
-#       inline float
-#       getFeatureAngle ()
-#       {
-#         return feature_angle_;
-#       };
-# 
+#       inline float getFeatureAngle ()
 #       /** \brief Specify the edge angle to control smoothing along edges (either interior or boundary).
 #        * \param[in] edge_angle the angle to control smoothing along edges
-#        */
-#       inline void
-#       setEdgeAngle (float edge_angle)
-#       {
-#         edge_angle_ = edge_angle;
-#       };
-# 
+#       inline void setEdgeAngle (float edge_angle)
 #       /** \brief Get the edge angle to control smoothing along edges */
-#       inline float
-#       getEdgeAngle ()
-#       {
-#         return edge_angle_;
-#       };
-# 
-# 
+#       inline float getEdgeAngle ()
 #       /** \brief Turn on/off the smoothing of vertices on the boundary of the mesh.
 #        * \param[in] boundary_smoothing decision whether boundary smoothing is on or off
-#        */
-#       inline void
-#       setBoundarySmoothing (bool boundary_smoothing)
-#       {
-#         boundary_smoothing_ = boundary_smoothing;
-#       };
-# 
+#       inline void setBoundarySmoothing (bool boundary_smoothing)
 #       /** \brief Get the status of the boundary smoothing */
-#       inline bool
-#       getBoundarySmoothing ()
-#       {
-#         return boundary_smoothing_;
-#       }
-# 
-# 
-#     protected:
-#       void
-#       performProcessing (pcl::PolygonMesh &output);
+#       inline bool getBoundarySmoothing ()
+#       protected:
+#       void performProcessing (pcl::PolygonMesh &output);
 ###
 
 # vtk_mesh_subdivision.h
 # namespace pcl
-# {
-#   /** \brief PCL mesh smoothing based on the vtkLinearSubdivisionFilter, vtkLoopSubdivisionFilter, vtkButterflySubdivisionFilter
-#     * depending on the selected MeshSubdivisionVTKFilterType algorithm from the VTK library.
-#     * Please check out the original documentation for more details on the inner workings of the algorithm
-#     * Warning: This wrapper does two fairly computationally expensive conversions from the PCL PolygonMesh
-#     * data structure to the vtkPolyData data structure and back.
-#     */
-#   class PCL_EXPORTS MeshSubdivisionVTK : public MeshProcessing
-#   {
-#     public:
+# /** \brief PCL mesh smoothing based on the vtkLinearSubdivisionFilter, vtkLoopSubdivisionFilter, vtkButterflySubdivisionFilter
+#   * depending on the selected MeshSubdivisionVTKFilterType algorithm from the VTK library.
+#   * Please check out the original documentation for more details on the inner workings of the algorithm
+#   * Warning: This wrapper does two fairly computationally expensive conversions from the PCL PolygonMesh
+#   * data structure to the vtkPolyData data structure and back.
+#   */
+# class PCL_EXPORTS MeshSubdivisionVTK : public MeshProcessing
+#       public:
 #       /** \brief Empty constructor */
 #       MeshSubdivisionVTK ();
-# 
 #       enum MeshSubdivisionVTKFilterType
 #       { LINEAR, LOOP, BUTTERFLY };
-# 
 #       /** \brief Set the mesh subdivision filter type
 #         * \param[in] type the filter type
-#         */
-#       inline void
-#       setFilterType (MeshSubdivisionVTKFilterType type)
-#       {
-#         filter_type_ = type;
-#       };
-# 
+#       inline void setFilterType (MeshSubdivisionVTKFilterType type)
 #       /** \brief Get the mesh subdivision filter type */
-#       inline MeshSubdivisionVTKFilterType
-#       getFilterType ()
-#       {
-#         return filter_type_;
-#       };
-# 
-#     protected:
+#       inline MeshSubdivisionVTKFilterType getFilterType ()
+#       protected:
 #       void
 #       performProcessing (pcl::PolygonMesh &output);
-# 
-#     private:
-#       MeshSubdivisionVTKFilterType filter_type_;
-# 
-#       vtkSmartPointer<vtkPolyData> vtk_polygons_;
-#   };
-# 
 ###
 
 # vtk_utils.h
 # namespace pcl
-# {
-#   class PCL_EXPORTS VTKUtils
-#   {
-#     public:
+# class PCL_EXPORTS VTKUtils
+#       public:
 #       /** \brief Convert a PCL PolygonMesh to a VTK vtkPolyData.
 #         * \param[in] triangles PolygonMesh to be converted to vtkPolyData, stored in the object.
 #         */
 #       static int
 #       convertToVTK (const pcl::PolygonMesh &triangles, vtkSmartPointer<vtkPolyData> &triangles_out_vtk);
-# 
 #       /** \brief Convert the vtkPolyData object back to PolygonMesh.
 #         * \param[out] triangles the PolygonMesh to store the vtkPolyData in.
 #         */
 #       static void
 #       convertToPCL (vtkSmartPointer<vtkPolyData> &vtk_polygons, pcl::PolygonMesh &triangles);
-# 
 #       /** \brief Convert vtkPolyData object to a PCL PolygonMesh
 #         * \param[in] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
 #         * \param[out] mesh PCL Polygon Mesh to fill
@@ -6031,7 +5083,6 @@ ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquar
 #         */
 #       static int
 #       vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, pcl::PolygonMesh& mesh);
-# 
 #       /** \brief Convert a PCL PolygonMesh to a vtkPolyData object
 #         * \param[in] mesh Reference to PCL Polygon Mesh
 #         * \param[out] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object

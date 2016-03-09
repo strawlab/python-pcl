@@ -313,8 +313,8 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 ### 
 
 ctypedef KdTreeFLANN[cpp.PointXYZ] KdTreeFLANN_t
-ctypedef KdTreeFLANN[cpp.PointXYZI] KdTreeFLANN_XYZI_t
-ctypedef KdTreeFLANN[cpp.PointXYZRGB] KdTreeFLANN_XYZRGB_t
-ctypedef KdTreeFLANN[cpp.PointXYZRGBA] KdTreeFLANN_XYZRGBA_t
+ctypedef KdTreeFLANN[cpp.PointXYZI] KdTreeFLANN_PointXYZI_t
+ctypedef KdTreeFLANN[cpp.PointXYZRGB] KdTreeFLANN_PointXYZRGB_t
+ctypedef KdTreeFLANN[cpp.PointXYZRGBA] KdTreeFLANN_PointXYZRGBA_t
 
 ###

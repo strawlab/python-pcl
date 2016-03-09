@@ -21,15 +21,15 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
     # 1.6.0 NG(No descrription)
     # reg.setInputSource(source.thisptr_shared)
     # PCLBase
-    cdef cpp.PCLBase[cpp.PointXYZ] pclbase
+    # cdef cpp.PCLBase[cpp.PointXYZ] pclbase
     # NG(Convert)
     # pclbase = reg
     # pclbase = <cpp.PCLBase> reg
-    pclbase = <cpp.PCLBase[cpp.PointXYZ]> reg
+    # pclbase = <cpp.PCLBase[cpp.PointXYZ]> reg
     # pclbase.setInputCloud(source.thisptr_shared)
-    pclbase.setInputCloud(<cpp.PointCloudPtr_t> source.thisptr_shared)
+    # pclbase.setInputCloud(<cpp.PointCloudPtr_t> source.thisptr_shared)
     # set PointCloud?
-    # getInputCloud
+    # get InputCloud?
     # reg.setInputCloud(<cpp.PointCloudPtr_t> pclbase.getInputCloud())
     reg.setInputTarget(target.thisptr_shared)
 
@@ -88,7 +88,7 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
-    # icp.setInputCloud(source);
+    icp.setInputCloud(source.thisptr_shared)
     return run(icp, source, target, max_iter)
 
 
@@ -117,7 +117,7 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
-    # gicp.setInputCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> source);
+    gicp.setInputCloud(source.thisptr_shared)
     return run(gicp, source, target, max_iter)
 
 
@@ -147,5 +147,5 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
-    # icp_nl.setInputCloud(source);
+    icp_nl.setInputCloud(source.thisptr_shared)
     return run(icp_nl, source, target, max_iter)

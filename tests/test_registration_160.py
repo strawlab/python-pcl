@@ -31,18 +31,14 @@ class TestICP(unittest.TestCase):
         self.target = pcl.PointCloud(target.astype(np.float32))
 
     def check_algo(self, algo):
-        print("check_algo enter")
         converged, transf, estimate, fitness = algo(self.source, self.target, max_iter=1000)
 
-        print("check_algo 1")
         self.assertTrue(converged is True)
         self.assertLess(fitness, .1)
 
-        print("check_algo 2")
         self.assertTrue(isinstance(transf, np.ndarray))
         self.assertEqual(transf.shape, (4, 4))
 
-        print("check_algo 3")
         self.assertFalse(np.any(transf[:3] == 0))
         assert_equal(transf[3], [0, 0, 0, 1])
 
