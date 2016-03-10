@@ -14,9 +14,8 @@ from boost_shared_ptr cimport shared_ptr
 cdef extern from "sensor_msgs/Header.h" namespace "std_msgs":
     cdef struct Header
         Header ()
-
-        pcl::uint32_t seq
-        pcl::uint64_t stamp
+        # pcl::uint32_t seq
+        # pcl::uint64_t stamp
         string frame_id
 
 ctypedef sharedptr[Header] HeaderPtr;

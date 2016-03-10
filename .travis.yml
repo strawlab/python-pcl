@@ -57,4 +57,5 @@ install:
 
 script:
   - python tests/test.py
+  - python tests/test_registration.py
 

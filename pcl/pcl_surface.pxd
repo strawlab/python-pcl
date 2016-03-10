@@ -223,22 +223,25 @@ cdef extern from "pcl/surface/processing.h" namespace "pcl":
 #       pcl::PolygonMeshConstPtr input_mesh_;
 ###
 
-###
-# allocator.h
+
+# (1.6.0)allocator.h
+# (1.7.2) -> pcl\surface\3rdparty\poisson4 ?
 # namespace pcl 
 # namespace poisson 
 # class AllocatorState
-cdef extern from "pcl/surface/allocator.h" namespace "pcl::poisson":
-    cdef cppclass AllocatorState:
-        AllocatorState()
-        # public:
-        # int index,remains;
-
+# cdef extern from "pcl/surface/allocator.h" namespace "pcl::poisson":
+#     cdef cppclass AllocatorState:
+#         AllocatorState()
+#         # public:
+#         # int index,remains;
+
+# (1.6.0) -> allocator.h
+# (1.7.2) -> pcl\surface\3rdparty\poisson4 ?
 # template<class T>
 # class Allocator
-cdef extern from "pcl/surface/allocator.h" namespace "pcl::poisson":
-    cdef cppclass Allocator[T]:
-        Allocator()
+# cdef extern from "pcl/surface/allocator.h" namespace "pcl::poisson":
+#     cdef cppclass Allocator[T]:
+#         Allocator()
         # int blockSize;
         # int index, remains;
         # std::vector<T*> memory;
