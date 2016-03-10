@@ -60,4 +60,6 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
                   pcl::PointIndices *indices,
                   bool negative);
 
+// Octree
+
 #endif

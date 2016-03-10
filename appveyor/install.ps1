@@ -243,11 +243,11 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     $install_log = $pcl_home + ".log"
     if ($installer_ext -eq '.msi')
     {
-        InstallPCLMSI $installer_path $python_home $install_log
+        InstallPCLMSI $installer_path $pcl_home $install_log
     }
     else
     {
-        InstallPCLEXE $installer_path $python_home $install_log
+        InstallPCLEXE $installer_path $pcl_home $install_log
     }
     
     if (Test-Path $python_home) 
@@ -267,7 +267,9 @@ function main ()
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH "C:\project"
+    # InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH "C:\project"
+    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
+    
 }
 
 main
