@@ -268,7 +268,7 @@ function main ()
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH "C:\project"
-    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
+    # InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
     
 }
 
