@@ -329,15 +329,15 @@ cdef extern from "pcl/surface/bilateral_upsampling.h" namespace "pcl":
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 ###
 
-# binary_node.h
+# binary_node.h (1.6.0)
+# pcl/surface/3rdparty\poisson4\binary_node.h (1.7.2)
 # namespace pcl
 # namespace poisson
-# 
 # template<class Real>
 # class BinaryNode
-cdef extern from "pcl/surface/binary_node.h" namespace "pcl::poisson":
-    cdef cppclass BinaryNode[Real]:
-        BinaryNode()
+# cdef extern from "pcl/surface/binary_node.h" namespace "pcl::poisson":
+#    cdef cppclass BinaryNode[Real]:
+#        BinaryNode()
         # public:
         # static inline int CenterCount (int depth){return 1<<depth;}
         # static inline int CumulativeCenterCount (int maxDepth){return  (1<< (maxDepth+1))-1;}
@@ -625,7 +625,8 @@ cdef extern from "pcl/surface/convex_hull.h" namespace "pcl":
 #       float crossProduct (const Eigen::Vector2f& p1, const Eigen::Vector2f& p2) const
 ###
 
-# factor.h
+# factor.h(1.6.0)
+# pcl/surface/3rdparty/poisson4/factor.h (1.7.2)
 # namespace pcl
 # namespace poisson
 # 
@@ -645,18 +646,19 @@ cdef extern from "pcl/surface/convex_hull.h" namespace "pcl":
 #     int Solve (const double* eqns, const double* values, double* solutions, const int& dim);
 ###
 
-# function_data.h
+# function_data.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/function_data.h (1.7.2)
 # namespace pcl 
 # namespace poisson 
 # template<int Degree,class Real>
 # class FunctionData
-cdef extern from "pcl/surface/function_data.h" namespace "pcl::poisson":
-    cdef cppclass FunctionData:
-        FunctionData()
-#       int useDotRatios;
-#       int normalize;
-#       public:
-#       const static int DOT_FLAG;
+# cdef extern from "pcl/surface/function_data.h" namespace "pcl::poisson":
+#     cdef cppclass FunctionData:
+#         FunctionData()
+#         int useDotRatios;
+#         int normalize;
+#         public:
+#         const static int DOT_FLAG;
 #         const static int D_DOT_FLAG;
 #         const static int D2_DOT_FLAG;
 #         const static int VALUE_FLAG;
@@ -683,7 +685,8 @@ cdef extern from "pcl/surface/function_data.h" namespace "pcl::poisson":
 #         static inline int SymmetricIndex (const int& i1, const int& i2, int& index);
 ###
 
-# geometry.h
+# geometry.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/geometry.h (1.7.2)
 # namespace pcl
 # namespace poisson 
 #   {
@@ -1520,10 +1523,13 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #   };
 ###
 
-# hash.h
+# hash.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/hash.h (1.7.2)
 ###
 
-# marching_cubes.h
+# marching_cubes.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/marching_cubes_poisson.h (1.7.2)
+# 
 # namespace pcl
 # {
 #   /*
@@ -1995,7 +2001,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #   };
 ###
 
-# marching_cubes_hoppe.h
+# marching_cubes_hoppe.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/marching_cubes_poisson.h (1.7.2) ?
 # namespace pcl
 # {
 #    /** \brief The marching cubes surface reconstruction algorithm, using a signed distance function based on the distance
@@ -2040,7 +2047,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #   };
 ###
 
-# marching_cubes_poisson.h
+# marching_cubes_poisson.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/marching_cubes_poisson.h (1.7.2)
 # namespace pcl {
 #   namespace poisson {
 # 
@@ -2146,7 +2154,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 # 
 ###
 
-# marching_cubes_rbf.h
+# marching_cubes_rbf.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/marching_cubes_poisson.h (1.7.2) ?
 # namespace pcl
 # {
 #   /** \brief The marching cubes surface reconstruction algorithm, using a signed distance function based on radial
@@ -2704,6 +2713,7 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 ###
 
 # multi_grid_octree_data.h
+# pcl/surface/3rdparty/poisson4/multi_grid_octree_data.h (1.7.2)
 # namespace pcl 
 # {
 #   namespace poisson 
@@ -3178,7 +3188,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 # 
 ###
 
-# octree_poisson.h
+# octree_poisson.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/octree_poisson.h (1.7.2)
 # namespace pcl 
 # {
 #   namespace poisson 
@@ -3919,13 +3930,13 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 # 
 ###
 
-# polynomial.h
-# namespace pcl {
-#   namespace poisson {
-# 
-#     template<int Degree>
-#     class Polynomial{
-#     public:
+# polynomial.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/polynomial.h (1.7.2)
+# namespace pcl
+# namespace poisson
+# template<int Degree>
+# class Polynomial
+#       public:
 #       double coefficients[Degree+1];
 # 
 #       Polynomial(void);
@@ -3981,7 +3992,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 # }
 ###
 
-# ppolynomial.h
+# ppolynomial.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/ppolynomial.h (1.7.2)
 # namespace pcl
 # {
 #   namespace poisson
@@ -4145,12 +4157,12 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 ###
 
 # sparse_matrix.h
+# pcl/surface/3rdparty/poisson4/sparse_matrix.h (1.7.2)
+# 
 # namespace pcl 
-# {
-#   namespace poisson 
-#   {
-#     template <class T>
-#     struct MatrixEntry
+# namespace poisson 
+# template <class T>
+# struct MatrixEntry
 #     {
 #       MatrixEntry () : N (-1), Value (0) {}
 #       MatrixEntry (int i) : N (i), Value (0) {}
@@ -4704,9 +4716,10 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 # 
 ###
 
-# vector.h
+# vector.h (1.6.0)
+# pcl/surface/3rdparty/poisson4/vector.h (1.7.2)
 # namespace pcl {
-#   namespace poisson {
+# namespace poisson {
 # 
 #     template<class T>
 #     class Vector
@@ -4816,12 +4829,16 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 # }
 ###
 
-# vtk.h
+# vtk.h (1.6.0)
+# pcl\surface\vtk_smoothing\vtk_smoothing.h (1.7.2)
 # #include <vtkPolyData.h>
 # #include <vtkSmartPointer.h>
 ###
 
-# vtk_mesh_smoothing_laplacian.h
+# pcl\surface\vtk_smoothing\vtk_mesh_quadric_decimation.h (1.7.2)
+
+# vtk_mesh_smoothing_laplacian.h (1.6.0)
+# pcl\surface\vtk_smoothing\vtk_mesh_smoothing_laplacian.h (1.7.2)
 # namespace pcl
 # {
 #   /** \brief PCL mesh smoothing based on the vtkSmoothPolyDataFilter algorithm from the VTK library.
@@ -4978,7 +4995,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #   };
 ###
 
-# vtk_mesh_smoothing_windowed_sinc.h
+# vtk_mesh_smoothing_windowed_sinc.h (1.6.0)
+# pcl\surface\vtk_smoothing\vtk_mesh_smoothing_windowed_sinc.h (1.7.2)
 # namespace pcl
 # /** \brief PCL mesh smoothing based on the vtkWindowedSincPolyDataFilter algorithm from the VTK library.
 #   * Please check out the original documentation for more details on the inner workings of the algorithm
@@ -5041,7 +5059,8 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #       void performProcessing (pcl::PolygonMesh &output);
 ###
 
-# vtk_mesh_subdivision.h
+# vtk_mesh_subdivision.h (1.6.0)
+# pcl\surface\vtk_smoothing\vtk_mesh_subdivision.h (1.7.2)
 # namespace pcl
 # /** \brief PCL mesh smoothing based on the vtkLinearSubdivisionFilter, vtkLoopSubdivisionFilter, vtkButterflySubdivisionFilter
 #   * depending on the selected MeshSubdivisionVTKFilterType algorithm from the VTK library.
@@ -5061,11 +5080,11 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #       /** \brief Get the mesh subdivision filter type */
 #       inline MeshSubdivisionVTKFilterType getFilterType ()
 #       protected:
-#       void
-#       performProcessing (pcl::PolygonMesh &output);
+#       void performProcessing (pcl::PolygonMesh &output);
 ###
 
-# vtk_utils.h
+# vtk_utils.h (1.6.0)
+# pcl\surface\vtk_smoothing\vtk_utils.h (1.7.2)
 # namespace pcl
 # class PCL_EXPORTS VTKUtils
 #       public:
