@@ -46,7 +46,7 @@ cdef class PointCloud_PointXYZI:
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
-        cdef PointCloud other
+        cdef PointCloud_PointXYZI other
         
         self._view_count = 0
         
@@ -94,18 +94,18 @@ cdef class PointCloud_PointXYZI:
         if self._view_count == 0:
             self._view_count += 1
             self._shape[0] = npoints
-            self._shape[1] = 3
+            self._shape[1] = 4
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
         buffer.internal = NULL
         buffer.itemsize = sizeof(float)
-        buffer.len = npoints * 3 * sizeof(float)
+        buffer.len = npoints * 4 * sizeof(float)
         buffer.ndim = 2
         buffer.obj = self
         buffer.readonly = 0
         buffer.shape = self._shape
-        buffer.strides = _strides
+        buffer.strides = _strides2
         buffer.suboffsets = NULL
 
     def __releasebuffer__(self, Py_buffer *buffer):
@@ -135,7 +135,7 @@ cdef class PointCloud_PointXYZI:
         """
         Fill this object from a 2D numpy array (float32)
         """
-        assert arr.shape[1] == 3
+        assert arr.shape[1] == 4
         
         cdef cnp.npy_intp npts = arr.shape[0]
         self.resize(npts)
@@ -145,7 +145,7 @@ cdef class PointCloud_PointXYZI:
         cdef cpp.PointXYZI *p
         for i in range(npts):
             p = idx.getptr(self.thisptr(), i)
-            p.x, p.y, p.z = arr[i, 0], arr[i, 1], arr[i, 2]
+            p.x, p.y, p.z, p.intensity = arr[i, 0], arr[i, 1], arr[i, 2], <unsigned long>arr[i, 3]
 
     @cython.boundscheck(False)
     def to_array(self):
@@ -157,30 +157,31 @@ cdef class PointCloud_PointXYZI:
         cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
         cdef cpp.PointXYZI *p
         
-        result = np.empty((n, 3), dtype=np.float32)
+        result = np.empty((n, 4), dtype=np.float32)
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
-        
+        	result[i, 3] = p.intensity
         return result
 
+    @cython.boundscheck(False)
     def from_list(self, _list):
         """
-        Fill this pointcloud from a list of 3-tuples
+        Fill this pointcloud from a list of 4-tuples
         """
         cdef Py_ssize_t npts = len(_list)
+        cdef cpp.PointXYZI* p
         self.resize(npts)
         self.thisptr().width = npts
         self.thisptr().height = 1
-        cdef cpp.PointXYZI* p
         # OK
         # p = idx.getptr(self.thisptr(), 1)
         # enumerate ? -> i -> type unknown
         for i, l in enumerate(_list):
              p = idx.getptr(self.thisptr(), <int> i)
-             p.x, p.y, p.z = l
+             p.x, p.y, p.z p.intensity = l
 
     def to_list(self):
         """
@@ -199,11 +200,11 @@ cdef class PointCloud_PointXYZI:
         Return a point (3-tuple) at the given row/column
         """
         cdef cpp.PointXYZI *p = idx.getptr_at2(self.thisptr(), row, col)
-        return p.x, p.y, p.z
+        return p.x, p.y, p.z, p.intensity
 
     def __getitem__(self, cnp.npy_intp nmidx):
         cdef cpp.PointXYZI *p = idx.getptr_at(self.thisptr(), nmidx)
-        return p.x, p.y, p.z
+        return p.x, p.y, p.z, p.intensity
 
     def from_file(self, char *f):
         """

@@ -3,7 +3,7 @@
 
 #include <pcl/point_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
-
+#include <pcl/Octree/octree_pointcloud.h>
 //
 void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> cloud,
                           int ksearch,
@@ -61,5 +61,9 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
                   bool negative);
 
 // Octree
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZ incloud);
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZI incloud);
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGB incloud);
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGBA incloud);
 
 #endif

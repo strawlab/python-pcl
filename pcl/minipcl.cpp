@@ -2,6 +2,7 @@
 #include <pcl/features/normal_3d.h>
 #include <pcl/search/kdtree.h>
 #include <pcl/filters/extract_indices.h>
+#include <pcl/octree/octree_pointcloud.h>
 
 #include <Eigen/Dense>
 
@@ -157,4 +158,30 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
     ext.setIndices(indicesptr);
     ext.setNegative(negative);
     ext.filter(*outcloud);
+}
+
+/// Octree
+
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZ incloud)
+{
+	pcl::octree::OctreePointCloud<pcl::PointXYZ> octree(0.0);
+    octree.deleteVoxelAtPoint(incloud);
+}
+
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZI incloud)
+{
+    pcl::octree::OctreePointCloud<pcl::PointXYZI> octree(0.0);
+    octree.deleteVoxelAtPoint(incloud);
+}
+
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGB incloud)
+{
+    pcl::octree::OctreePointCloud<pcl::PointXYZRGB> octree(0.0);
+    octree.deleteVoxelAtPoint(incloud);
+}
+
+void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGBA incloud)
+{
+    pcl::octree::OctreePointCloud<pcl::PointXYZRGBA> octree(0.0);
+    octree.deleteVoxelAtPoint(incloud);
 }

@@ -6,6 +6,12 @@ cimport eigen as eig
 
 include "PointXYZtoPointXYZ.pxi"
 
+cdef extern from "minipcl.h":
+    void mpcl_deleteVoxelAtPoint(cpp.PointXYZ) except +
+    void mpcl_deleteVoxelAtPoint(cpp.PointXYZI) except +
+    void mpcl_deleteVoxelAtPoint(cpp.PointXYZRGB) except +
+    void mpcl_deleteVoxelAtPoint(cpp.PointXYZRGBA) except +
+
 cdef class OctreePointCloud:
     """
     Octree pointcloud
@@ -147,6 +153,7 @@ cdef class OctreePointCloud:
 #         """
 #         Delete leaf node / voxel at given point.
 #         """
+#		  # NG (minipcl?)
 #         self.me.deleteVoxelAtPoint(to_point2_t(point))
 # 
 # 
@@ -219,6 +226,7 @@ cdef class OctreePointCloud:
 #         """
 #         Delete leaf node / voxel at given point.
 #         """
+#		  # NG (minipcl?)
 #         self.me.deleteVoxelAtPoint(to_point3_t(point))
 # 
 # 
@@ -291,5 +299,6 @@ cdef class OctreePointCloud:
 #         """
 #         Delete leaf node / voxel at given point.
 #         """
+#		  # NG (minipcl?)
 #         self.me.deleteVoxelAtPoint(to_point4_t(point))
 ###
