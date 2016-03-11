@@ -20,14 +20,14 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
     Search[T]:
         Search()
         # Search (const string& name = "", bool sorted = false)
-        #   public:
-        #   typedef pcl::PointCloud<PointT> PointCloud;
-        #   typedef typename PointCloud::Ptr PointCloudPtr;
-        #   typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-        #   typedef boost::shared_ptr<pcl::search::Search<PointT> > Ptr;
-        #   typedef boost::shared_ptr<const pcl::search::Search<PointT> > ConstPtr;
-        #   typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
-        #   typedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
+        # public:
+        # typedef pcl::PointCloud<PointT> PointCloud;
+        # typedef typename PointCloud::Ptr PointCloudPtr;
+        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<pcl::search::Search<PointT> > Ptr;
+        # typedef boost::shared_ptr<const pcl::search::Search<PointT> > ConstPtr;
+        # typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
+        # typedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
         # /** \brief returns the search method name
         # virtual const std::string& getName () const
         # /** \brief sets whether the results should be sorted (ascending in the distance) or not

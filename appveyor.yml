@@ -99,7 +99,7 @@ install:
 
 build_script:
 - cmd: >-
-    runas /user:Administrator PCL-1.6.0-AllInOne-msvc2010-win64.exe /quiet InstallAllUsers=1 TargetDir="C:\Program Files\PCL 1.6.0"
+    runas /user:Administrator "PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn"
 
     pip install Cython
 

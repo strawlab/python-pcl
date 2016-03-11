@@ -1,4 +1,5 @@
 from libcpp cimport bool
+from libcpp.string cimport string
 
 # main
 cimport pcl_defs as cpp
@@ -23,6 +24,7 @@ from eigen cimport Matrix4f
 #         void setInputSource(cpp.PointCloudPtr_t) except +
 #         void setInputTarget(cpp.PointCloudPtr_t) except +
 #         void setMaximumIterations(int) except +
+###
 
 # template <typename PointSource, typename PointTarget>
 # class Registration : public PCLBase<PointSource>
@@ -75,7 +77,6 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         int getMaximumIterations () 
         # /** \brief Set the number of iterations RANSAC should run for.
         #   * \param ransac_iterations is the number of iterations RANSAC should run for
-        #   */
         void setRANSACIterations (int ransac_iterations)
         # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
         double getRANSACIterations ()
@@ -148,8 +149,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # param guess the initial gross estimation of the transformation
         # void align (PointCloudSource &output, const Eigen::Matrix4f& guess);
         # /** \brief Abstract class get name method. */
-        #  const string& getClassName () const
-
+        const string getClassName ()
 ###
 
 # warp_point_rigid.h
@@ -177,31 +177,22 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
         CorrespondenceRejector()
 #         /** \brief Provide a pointer to the vector of the input correspondences.
 #           * \param[in] correspondences the const boost shared pointer to a correspondence vector
-#           */
-#         virtual inline void 
-#         setInputCorrespondences (const CorrespondencesConstPtr &correspondences) 
-# 
+#         virtual inline void setInputCorrespondences (const CorrespondencesConstPtr &correspondences) 
 #         /** \brief Get a pointer to the vector of the input correspondences.
 #           * \return correspondences the const boost shared pointer to a correspondence vector
-#           */
 #         inline CorrespondencesConstPtr getInputCorrespondences ()
-# 
 #         /** \brief Run correspondence rejection
 #           * \param[out] correspondences Vector of correspondences that have not been rejected.
-#           */
 #         inline void getCorrespondences (pcl::Correspondences &correspondences)
-# 
 #         /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
 #           * Pure virtual. Compared to \a getCorrespondences this function is
 #           * stateless, i.e., input correspondences do not need to be provided beforehand,
 #           * but are directly provided in the function call.
 #           * \param[in] original_correspondences the set of initial correspondences given
 #           * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
-#           */
 #         virtual inline void 
 #         getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
 #                                      pcl::Correspondences& remaining_correspondences) = 0;
-# 
 #         /** \brief Determine the indices of query points of
 #           * correspondences that have been rejected, i.e., the difference
 #           * between the input correspondences (set via \a setInputCorrespondences)
@@ -247,48 +238,37 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
 #        * \param[in] cloud a cloud containing XYZ data
 #        */
 #       inline void setInputCloud (const PointCloudConstPtr &cloud)
-# 
 #       /** \brief Provide a target point cloud dataset (must contain XYZ
 #        * data!), used to compute the correspondence distance.  
 #        * \param[in] target a cloud containing XYZ data
 #        */
 #       inline void setInputTarget (const PointCloudConstPtr &target)
-# 
 #       /** \brief Set the normals computed on the input point cloud
 #         * \param[in] normals the normals computed for the input cloud
 #         */
 #       inline void setInputNormals (const NormalsPtr &normals)
-# 
 #       /** \brief Set the normals computed on the target point cloud
 #         * \param[in] normals the normals computed for the input cloud
 #         */
 #       inline void setTargetNormals (const NormalsPtr &normals)
-#       
 #       /** \brief Get the normals computed on the input point cloud */
 #       inline NormalsPtr getInputNormals ()
-# 
 #       /** \brief Get the normals computed on the target point cloud */
 #       inline NormalsPtr getTargetNormals ()
-# 
 #       /** \brief Get the correspondence score for a point in the input cloud
 #        *  \param[index] index of the point in the input cloud
 #        */
-#       inline double 
-#         getCorrespondenceScore (int index)
-# 
+#       inline double getCorrespondenceScore (int index)
 #       /** \brief Get the correspondence score for a given pair of correspondent points
 #        *  \param[corr] Correspondent points
 #        */
-#       inline double 
-#         getCorrespondenceScore (const pcl::Correspondence &corr)
-#       
+#       inline double getCorrespondenceScore (const pcl::Correspondence &corr)
 #       /** \brief Get the correspondence score for a given pair of correspondent points based on 
 #         * the angle betweeen the normals. The normmals for the in put and target clouds must be 
 #         * set before using this function
 #         * \param[in] corr Correspondent points
 #         */
-#       double
-#       getCorrespondenceScoreFromNormals (const pcl::Correspondence &corr)
+#       double getCorrespondenceScoreFromNormals (const pcl::Correspondence &corr)
 ###
 
 # Inheritance
@@ -298,39 +278,34 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
 # template< typename _Scalar >
 # class PolynomialSolver<_Scalar,2> : public PolynomialSolverBase<_Scalar,2>
 # cdef extern from "pcl/registration/bfgs.h" namespace "Eigen" nogil:
-#     cdef cppclass PolynomialSolver[_Scalar, 2](PolynomialSolverBase[_Scalar, 2]):
-#         PolynomialSolver (int nr_dim)
-#     public:
+#		cdef cppclass PolynomialSolver[_Scalar, 2](PolynomialSolverBase[_Scalar, 2]):
+#       PolynomialSolver (int nr_dim)
+#     	public:
 #       typedef PolynomialSolverBase<_Scalar,2>    PS_Base;
 #       EIGEN_POLYNOMIAL_SOLVER_BASE_INHERITED_TYPES( PS_Base )
-#     public:
+#     	public:
 #       template< typename OtherPolynomial >
 #       inline PolynomialSolver( const OtherPolynomial& poly, bool& hasRealRoot )
-#       {
-#         compute( poly, hasRealRoot );
-#       }
-#       
 #       /** Computes the complex roots of a new polynomial. */
 #       template< typename OtherPolynomial >
 #       void compute( const OtherPolynomial& poly, bool& hasRealRoot)
-#
 #       template< typename OtherPolynomial >
 #       void compute( const OtherPolynomial& poly)
 # 
 # template<typename _Scalar, int NX=Eigen::Dynamic>
 # struct BFGSDummyFunctor
 # cdef extern from "pcl/registration/bfgs.h" nogil:
-#     cdef struct BFGSDummyFunctor[_Scalar, NX]:
-#         BFGSDummyFunctor ()
-#         BFGSDummyFunctor(int inputs)
-#   typedef _Scalar Scalar;
-#   enum { InputsAtCompileTime = NX };
-#   typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> VectorType;
-#   const int m_inputs;
-#   int inputs() const { return m_inputs; }
-#   virtual double operator() (const VectorType &x) = 0;
-#   virtual void  df(const VectorType &x, VectorType &df) = 0;
-#   virtual void fdf(const VectorType &x, Scalar &f, VectorType &df) = 0;
+#   cdef struct BFGSDummyFunctor[_Scalar, NX]:
+#       BFGSDummyFunctor ()
+#       BFGSDummyFunctor(int inputs)
+#   	typedef _Scalar Scalar;
+#   	enum { InputsAtCompileTime = NX };
+#   	typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> VectorType;
+#   	const int m_inputs;
+#   	int inputs() const { return m_inputs; }
+#   	virtual double operator() (const VectorType &x) = 0;
+#   	virtual void  df(const VectorType &x, VectorType &df) = 0;
+#   	virtual void fdf(const VectorType &x, Scalar &f, VectorType &df) = 0;
 # 
 # namespace BFGSSpace {
 #   enum Status {

@@ -344,7 +344,7 @@ cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
 # uniform_sampling.h
 # template <typename PointInT>
 # class UniformSampling: public Keypoint<PointInT, int>
-cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
+cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
     cdef cppclass UniformSampling[In](Keypoint[In, int]):
         UniformSampling ()
         # typedef typename Keypoint<PointInT, int>::PointCloudIn PointCloudIn;
