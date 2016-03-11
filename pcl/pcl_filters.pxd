@@ -1194,6 +1194,8 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 ###
 
 ctypedef VoxelGrid[cpp.PointXYZ] VoxelGrid_t
-ctypedef VoxelGrid[cpp.PointXYZRGBA] VoxelGrid2_t
+ctypedef VoxelGrid[cpp.PointXYZI] VoxelGrid_PointXYZI_t
+ctypedef VoxelGrid[cpp.PointXYZRGB] VoxelGrid_PointXYZRGB_t
+ctypedef VoxelGrid[cpp.PointXYZRGBA] VoxelGrid_PointXYZRGBA_t
 
 ###

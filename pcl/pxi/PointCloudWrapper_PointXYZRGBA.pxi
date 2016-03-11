@@ -276,58 +276,58 @@ cdef class PointCloud_PointXYZRGBA:
         cseg.setInputNormals (normals.makeShared());
         return seg
 
-#    def make_statistical_outlier_filter(self):
-#        """
-#        Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
-#        """
-#        fil = StatisticalOutlierRemovalFilter()
-#        cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
-#        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#        return fil
-#
-#    def make_voxel_grid_filter(self):
-#        """
-#        Return a pcl.VoxelGridFilter object with this object set as the input-cloud
-#        """
-#        fil = VoxelGridFilter()
-#        cdef pclfil.VoxelGrid_t *cfil = <pclfil.VoxelGrid_t *>fil.me
-#        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#        return fil
-#
-#    def make_passthrough_filter(self):
-#        """
-#        Return a pcl.PassThroughFilter object with this object set as the input-cloud
-#        """
-#        fil = PassThroughFilter()
-#        cdef pclfil.PassThrough_t *cfil = <pclfil.PassThrough_t *>fil.me
-#        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#        return fil
-#
-#    def make_moving_least_squares(self):
-#        """
-#        Return a pcl.MovingLeastSquares object with this object as input cloud.
-#        """
-#        mls = MovingLeastSquares()
-#        cdef pclsf.MovingLeastSquares_t *cmls = <pclsf.MovingLeastSquares_t *>mls.me
-#        cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#        return mls
-#
-#    def make_kdtree_flann(self):
-#        """
-#        Return a pcl.kdTreeFLANN object with this object set as the input-cloud
-#
-#        Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
-#        """
-#        return KdTreeFLANN(self)
-#
-#    def make_octree(self, double resolution):
-#        """
-#        Return a pcl.octree object with this object set as the input-cloud
-#        """
-#        octree = OctreePointCloud(resolution)
-#        octree.set_input_cloud(self)
-#        return octree
-#
+    def make_statistical_outlier_filter(self):
+         """
+         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
+         """
+         fil = StatisticalOutlierRemovalFilter_PointXYZRGBA()
+         cdef pclfil.StatisticalOutlierRemoval_PointXYZRGBA_t *cfil = <pclfil.StatisticalOutlierRemoval_PointXYZRGBA_t *>fil.me
+         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr_shared)
+         return fil
+
+    def make_voxel_grid_filter(self):
+        """
+        Return a pcl.VoxelGridFilter object with this object set as the input-cloud
+        """
+        fil = VoxelGridFilter()
+        cdef pclfil.VoxelGrid_PointXYZRGBA_t *cfil = <pclfil.VoxelGrid_PointXYZRGBA_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr_shared)
+        return fil
+
+    def make_passthrough_filter(self):
+        """
+        Return a pcl.PassThroughFilter object with this object set as the input-cloud
+        """
+        fil = PassThroughFilter()
+        cdef pclfil.PassThrough_PointXYZRGBA_t *cfil = <pclfil.PassThrough_PointXYZRGBA_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr_shared)
+        return fil
+
+    def make_moving_least_squares(self):
+        """
+        Return a pcl.MovingLeastSquares object with this object as input cloud.
+        """
+        mls = MovingLeastSquares_PointXYZRGBA()
+        cdef pclsf.MovingLeastSquares_PointXYZRGBA_t *cmls = <pclsf.MovingLeastSquares_PointXYZRGBA_t *>mls.me
+        cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr_shared)
+        return mls
+
+    def make_kdtree_flann(self):
+        """
+        Return a pcl.kdTreeFLANN object with this object set as the input-cloud
+
+        Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
+        """
+        return KdTreeFLANN_PointXYZRGBA(self)
+
+#     def make_octree(self, double resolution):
+#         """
+#         Return a pcl.octree object with this object set as the input-cloud
+#         """
+#         octree = OctreePointCloud_PointXYZRGBA(resolution)
+#         octree.set_input_cloud(self)
+#         return octree
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
