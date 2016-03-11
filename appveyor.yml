@@ -99,7 +99,11 @@ install:
 
 build_script:
 - cmd: >-
-    runas /user:Administrator "PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn"
+    schtasks /create /tn pclinstall /RL HIGHEST /ru test /rp test /tr "PCL-1.6.0-AllInOne-msvc2010-win64.exe" /sc once /st 00:00
+
+    schtasks /run /tn pclinstall
+
+    schtasks /delete /tn pclinstall /f
 
     pip install Cython
 

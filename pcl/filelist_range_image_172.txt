@@ -1,4 +1,0 @@
-bearing_angle_image.h
-range_image.h
-range_image_planar.h
-range_image_spherical.h
