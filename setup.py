@@ -150,9 +150,9 @@ if platform.system() == "Windows":
     # ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
     # define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
-    debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')]
-    for debug in debugs:
-        ext_args['define_macros'].append(debug)
+    defines = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')]
+    for define in defines:
+        ext_args['define_macros'].append(define)
 
     ext_args['extra_compile_args'].append('/EHsc')
 
@@ -187,6 +187,8 @@ if platform.system() == "Windows":
                                      language="c++", **ext_args),
                            Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
                                      language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
+                           #           language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],
@@ -206,6 +208,8 @@ if platform.system() == "Windows":
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #         language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
@@ -295,6 +299,10 @@ else:
                            # 1.6.0 NG
                            Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx"],
                                      language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #         language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
+                           #         language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],
@@ -313,6 +321,10 @@ else:
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #         language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
+                           #         language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],

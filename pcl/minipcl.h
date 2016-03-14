@@ -4,6 +4,8 @@
 #include <pcl/point_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
 #include <pcl/octree/octree_pointcloud.h>
+
+#include <vector>
 //
 void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> cloud,
                           int ksearch,
@@ -60,10 +62,15 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
                   pcl::PointIndices *indices,
                   bool negative);
 
-// Octree
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZ incloud);
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZI incloud);
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGB incloud);
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGBA incloud);
+// Octree(OctreePointCloud)
+// void mpcl_deleteVoxelAtPoint(pcl::octree::OctreePointCloud<pcl::PointXYZ>& inOctree, pcl::PointXYZ incloud);
+// void mpcl_deleteVoxelAtPoint_PointXYZI(pcl::octree::OctreePointCloud<pcl::PointXYZI>& inOctree, pcl::PointXYZI incloud);
+// void mpcl_deleteVoxelAtPoint_PointXYZRGB(pcl::octree::OctreePointCloud<pcl::PointXYZRGB>& inOctree, pcl::PointXYZRGB incloud);
+// void mpcl_deleteVoxelAtPoint_PointXYZRGBA(pcl::octree::OctreePointCloud<pcl::PointXYZRGBA>& inOctree, pcl::PointXYZRGBA incloud);
+
+// int mpcl_getOccupiedVoxelCenters(pcl::octree::OctreePointCloud<pcl::PointXYZ>& inOctree, std::vector<pcl::PointXYZ, Eigen::aligned_allocator<pcl::PointXYZ> > alignPoint);
+// int mpcl_getOccupiedVoxelCenters_PointXYZI(pcl::octree::OctreePointCloud<pcl::PointXYZI>& inOctree, std::vector<pcl::PointXYZI, Eigen::aligned_allocator<pcl::PointXYZI> > alignPoint);
+// int mpcl_getOccupiedVoxelCenters_PointXYZRGB(pcl::octree::OctreePointCloud<pcl::PointXYZRGB>& inOctree, std::vector<pcl::PointXYZRGB, Eigen::aligned_allocator<pcl::PointXYZRGB> > alignPoint);
+// int mpcl_getOccupiedVoxelCenters_PointXYZRGBA(pcl::octree::OctreePointCloud<pcl::PointXYZRGBA>& inOctree, std::vector<pcl::PointXYZRGBA, Eigen::aligned_allocator<pcl::PointXYZRGBA> > alignPoint);
 
 #endif

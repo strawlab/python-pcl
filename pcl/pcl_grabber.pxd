@@ -1,6 +1,7 @@
 from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
+from libcpp.pair cimport pair
 
 # main
 cimport pcl_defs as cpp
@@ -99,21 +100,21 @@ cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
         #
         # /** \brief For devices that are streaming, the streams are started by calling this method.
         #   *        Trigger-based devices, just trigger the device once for each call of start.
-        virtual void start ()
+        void start ()
         # /** \brief For devices that are streaming, the streams are stopped.
         #  *        This method has no effect for triggered devices.
         #  */
-        virtual void stop ()
+        void stop ()
         # /** \brief returns the name of the concrete subclass.
         #  * \return the name of the concrete driver.
         #  */
-        virtual string getName ()
+        string getName ()
         # /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
         #  * \return true if grabber is running / streaming. False otherwise.
         #  */
-        virtual bool isRunning ()
+        bool isRunning ()
         # /** \brief returns the frames pre second. 0 if it is trigger based. */
-        virtual float getFramesPerSecond ()
+        float getFramesPerSecond ()
         # 
         # protected:
         # /** \brief internal OpenNI (openni_wrapper) callback that handles image streams */
@@ -220,23 +221,22 @@ cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
         # typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
         # typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
         # typedef void (sig_cb_openni_point_cloud_eigen) (const boost::shared_ptr<const pcl::PointCloud<Eigen::MatrixXf> >&);
-        # 
         # public:
         # /** \brief Start the data acquisition. */
-        virtual void start ()
+        void start ()
         # /** \brief Stop the data acquisition. */
-        virtual void stop ()
+        void stop ()
         # /** \brief Check if the data acquisition is still running. */
-        virtual bool isRunning () const
-        virtual string getName () const
+        bool isRunning ()
+        string getName ()
         # /** \brief Obtain the number of frames per second (FPS). */
-        virtual float getFramesPerSecond () const
+        float getFramesPerSecond () const
         # /** \brief Get a boost shared pointer to the \ref OpenNIDevice object. */
-        # inline boost::shared_ptr<openni_wrapper::OpenNIDevice> getDevice () const;
+        # inline shared_ptr[openni_wrapper::OpenNIDevice] getDevice () const;
         # /** \brief Obtain a list of the available depth modes that this device supports. */
-        # std::vector<std::pair<int, XnMapOutputMode> > getAvailableDepthModes () const;
+        # vector[pair[int, XnMapOutputMode] ] getAvailableDepthModes ()
         # /** \brief Obtain a list of the available image modes that this device supports. */
-        # std::vector<std::pair<int, XnMapOutputMode> > getAvailableImageModes () const;
+        # vector[pair[int, XnMapOutputMode] ] getAvailableImageModes ()
         # public:
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 # 

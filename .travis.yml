@@ -34,7 +34,7 @@ before_install:
       brew outdated pyenv || brew upgrade --quiet pyenv;
       brew install homebrew/boneyard/pyenv-pip-rehash;
       brew tap homebrew/science;
-      brew install pcl;
+      brew install pcl --without-apps --without-tools --without-vtk --without-qt;
 
       pyenv install -ks $PYTHON_VERSION;
       pyenv global $PYTHON_VERSION;

@@ -404,7 +404,7 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 
     def setUp(self):
         self.t = pcl.OctreePointCloudSearch_PointXYZI(0.1)
-        pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load_XYZI("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()

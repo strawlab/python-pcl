@@ -161,27 +161,44 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
 }
 
 /// Octree
-
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZ incloud)
-{
-	pcl::octree::OctreePointCloud<pcl::PointXYZ> octree(0.0);
-    octree.deleteVoxelAtPoint(incloud);
-}
-
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZI incloud)
-{
-    pcl::octree::OctreePointCloud<pcl::PointXYZI> octree(0.0);
-    octree.deleteVoxelAtPoint(incloud);
-}
-
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGB incloud)
-{
-    pcl::octree::OctreePointCloud<pcl::PointXYZRGB> octree(0.0);
-    octree.deleteVoxelAtPoint(incloud);
-}
-
-void mpcl_deleteVoxelAtPoint(pcl::PointXYZRGBA incloud)
-{
-    pcl::octree::OctreePointCloud<pcl::PointXYZRGBA> octree(0.0);
-    octree.deleteVoxelAtPoint(incloud);
-}
+// void mpcl_deleteVoxelAtPoint(pcl::octree::OctreePointCloud<pcl::PointXYZ>& inOctree, pcl::PointXYZ incloud)
+// {
+//     inOctree.deleteVoxelAtPoint(incloud);
+// }
+// 
+// void mpcl_deleteVoxelAtPoint(pcl::octree::OctreePointCloud<pcl::PointXYZI>& inOctree, pcl::PointXYZI incloud)
+// {
+//     inOctree.deleteVoxelAtPoint(incloud);
+// }
+// 
+// void mpcl_deleteVoxelAtPoint(pcl::octree::OctreePointCloud<pcl::PointXYZRGB>& inOctree, pcl::PointXYZRGB incloud)
+// {
+//     inOctree.deleteVoxelAtPoint(incloud);
+// }
+// 
+// void mpcl_deleteVoxelAtPoint(pcl::octree::OctreePointCloud<pcl::PointXYZRGBA>& inOctree, pcl::PointXYZRGBA incloud)
+// {
+//     inOctree.deleteVoxelAtPoint(incloud);
+// }
+// 
+// 
+// int mpcl_getOccupiedVoxelCenters(pcl::octree::OctreePointCloud<pcl::PointXYZ>& inOctree, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud, vector<pcl::PointXYZ, Eigen::aligned_allocator<pcl::PointXYZ> > alignPoint)
+// {
+//     return inOctree.getOccupiedVoxelCenters(alignPoint);
+// }
+// 
+// int mpcl_getOccupiedVoxelCenters(pcl::octree::OctreePointCloud<pcl::PointXYZI>& inOctree, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud, vector<pcl::PointXYZI, Eigen::aligned_allocator<pcl::PointXYZI> > alignPoint)
+// {
+//     return inOctree.getOccupiedVoxelCenters(alignPoint);
+// }
+// 
+// int mpcl_getOccupiedVoxelCenters(pcl::octree::OctreePointCloud<pcl::PointXYZRGB>& inOctree, pcl::PointCloud<pcl::PointXYZRGB>::Ptr &incloud, vector<pcl::PointXYZRGB, Eigen::aligned_allocator<pcl::PointXYZRGB> > alignPoint)
+// {
+//     return inOctree.getOccupiedVoxelCenters(alignPoint);
+// }
+// 
+// int mpcl_getOccupiedVoxelCenters(pcl::octree::OctreePointCloud<pcl::PointXYZRGBA>& inOctree, pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud, vector<pcl::PointXYZRGBA, Eigen::aligned_allocator<pcl::PointXYZRGBA> > alignPoint)
+// {
+//     return inOctree.getOccupiedVoxelCenters(alignPoint);
+// }
+// 

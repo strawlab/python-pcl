@@ -36,10 +36,13 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
 # VectorXf
 
 ctypedef aligned_allocator[cpp.PointXYZ] aligned_allocator_t 
+ctypedef aligned_allocator[cpp.PointXYZI] aligned_allocator_PointXYZI_t 
+ctypedef aligned_allocator[cpp.PointXYZRGB] aligned_allocator_PointXYZRGB_t 
+ctypedef aligned_allocator[cpp.PointXYZRGBA] aligned_allocator_PointXYZRGBA_t 
 ctypedef vector2[cpp.PointXYZ, aligned_allocator_t] AlignedPointTVector_t
-ctypedef vector2[cpp.PointXYZI, aligned_allocator_t] AlignedPointTVector_PointXYZI_t
-ctypedef vector2[cpp.PointXYZRGB, aligned_allocator_t] AlignedPointTVector_PointXYZRGB_t
-ctypedef vector2[cpp.PointXYZRGBA, aligned_allocator_t] AlignedPointTVector_PointXYZRGBA_t
+ctypedef vector2[cpp.PointXYZI, aligned_allocator_PointXYZI_t] AlignedPointTVector_PointXYZI_t
+ctypedef vector2[cpp.PointXYZRGB, aligned_allocator_PointXYZRGB_t] AlignedPointTVector_PointXYZRGB_t
+ctypedef vector2[cpp.PointXYZRGBA, aligned_allocator_PointXYZRGBA_t] AlignedPointTVector_PointXYZRGBA_t
 
 # http://stackoverflow.com/questions/29913524/set-coefficient-element-of-eigenmatrix3d-in-cython
 # cdef extern from "eigen3/Eigen/Dense" namespace "Eigen":

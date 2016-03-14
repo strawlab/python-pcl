@@ -695,17 +695,17 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void deleteTree()
         bool isVoxelOccupiedAtPoint(double, double, double)
         # convert cpp code 
-        int getOccupiedVoxelCenters(eig.AlignedPointTVector_t)
+        # int getOccupiedVoxelCenters(eig.AlignedPointTVector_t)
         # int getOccupiedVoxelCenters(eig.AlignedPointTVector_PointXYZI_t)
         # int getOccupiedVoxelCenters(eig.AlignedPointTVector_PointXYZRGB_t)
         # int getOccupiedVoxelCenters(eig.AlignedPointTVector_PointXYZRGBA_t)
-        ## int getOccupiedVoxelCenters(vector2[T, eig.aligned_allocator_t])
+        int getOccupiedVoxelCenters(vector2[T, eig.aligned_allocator[T]])
         # convert cpp code 
-        void deleteVoxelAtPoint(cpp.PointXYZ)
+        # void deleteVoxelAtPoint(cpp.PointXYZ)
         # void deleteVoxelAtPoint(cpp.PointXYZI)
         # void deleteVoxelAtPoint(cpp.PointXYZRGB)
         # void deleteVoxelAtPoint(cpp.PointXYZRGBA)
-        ## void deleteVoxelAtPoint(T)
+        void deleteVoxelAtPoint(T)
 
 ctypedef OctreePointCloud[cpp.PointXYZ] OctreePointCloud_t
 ctypedef OctreePointCloud[cpp.PointXYZI] OctreePointCloud_PointXYZI_t
