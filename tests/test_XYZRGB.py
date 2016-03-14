@@ -20,7 +20,7 @@ _DATA = """0.0, 0.0, 0.2, 16777215;
 
 class TestListIO(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.PointCloud_PointXYZRGBA(_data)
+        self.p = pcl.PointCloud_PointXYZRGB(_data)
 
     def testFromList(self):
         for i, d in enumerate(_data):
@@ -35,7 +35,7 @@ class TestListIO(unittest.TestCase):
 class TestNumpyIO(unittest.TestCase):
     def setUp(self):
         self.a = np.array(np.mat(_DATA, dtype=np.float32))
-        self.p = pcl.PointCloud_PointXYZRGBA(self.a)
+        self.p = pcl.PointCloud_PointXYZRGB(self.a)
 
     def testFromNumpy(self):
         for i, d in enumerate(_data):
@@ -47,10 +47,10 @@ class TestNumpyIO(unittest.TestCase):
         self.assertTrue(np.alltrue(a == self.a))
 
     def test_asarray(self):
-        p = pcl.PointCloud_PointXYZRGBA(self.p)      # copy
+        p = pcl.PointCloud_PointXYZRGB(self.p)      # copy
         # old0 = p[0]
         a = np.asarray(p)               # view
-        a[:] += 6
+        a[:] += 0
         assert_array_almost_equal(p[0], a[0])
 
     def test_pickle(self):
@@ -97,7 +97,7 @@ SEGCOEFF = [0.0, 0.0, 1.0, -1.0]
 class TestSegmentPlane(unittest.TestCase):
     def setUp(self):
         self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
-        self.p = pcl.PointCloud_PointXYZRGBA()
+        self.p = pcl.PointCloud_PointXYZRGB()
         self.p.from_array(self.a)
 
     def testLoad(self):
@@ -156,8 +156,8 @@ DATA ascii
 
 def test_copy():
     a = np.random.randn(100, 4).astype(np.float32)
-    p1 = pcl.PointCloud_PointXYZRGBA(a)
-    p2 = pcl.PointCloud_PointXYZRGBA(p1)
+    p1 = pcl.PointCloud_PointXYZRGB(a)
+    p2 = pcl.PointCloud_PointXYZRGB(p1)
     assert_array_equal(p2.to_array(), a)
 
 
@@ -247,7 +247,7 @@ class TestExtract(unittest.TestCase):
 class TestExceptions(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.PointCloud_PointXYZRGBA(np.arange(12, dtype=np.float32).reshape(3, 4))
+        self.p = pcl.PointCloud_PointXYZRGB(np.arange(12, dtype=np.float32).reshape(3, 4))
 
     def testIndex(self):
         self.assertRaises(IndexError, self.p.__getitem__, self.p.size)
@@ -352,11 +352,11 @@ class TestKdTree(unittest.TestCase):
         a = rng.randn(100, 4).astype(np.float32)
         a[:30] -= 42
 
-        self.pc = pcl.PointCloud_PointXYZRGBA(a)
-        self.kd = pcl.KdTreeFLANN_PointXYZRGBA(self.pc)
+        self.pc = pcl.PointCloud_PointXYZRGB(a)
+        self.kd = pcl.KdTreeFLANN_PointXYZRGB(self.pc)
 
     def testException(self):
-        self.assertRaises(TypeError, pcl.KdTreeFLANN_PointXYZRGBA)
+        self.assertRaises(TypeError, pcl.KdTreeFLANN_PointXYZRGB)
         self.assertRaises(TypeError, self.kd.nearest_k_search_for_cloud, None)
 
     def testKNN(self):
@@ -380,10 +380,10 @@ class TestKdTree(unittest.TestCase):
 class TestOctreePointCloud(unittest.TestCase):
 
     def setUp(self):
-        self.t = pcl.OctreePointCloud_PointXYZRGBA(0.1)
+        self.t = pcl.OctreePointCloud_PointXYZRGB(0.1)
 
     def testLoad(self):
-        pc = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load_XYZRGB("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
@@ -403,14 +403,14 @@ class TestOctreePointCloud(unittest.TestCase):
 class TestOctreePointCloudSearch(unittest.TestCase):
 
     def setUp(self):
-        self.t = pcl.OctreePointCloudSearch_PointXYZRGBA(0.1)
+        self.t = pcl.OctreePointCloudSearch_XYZRGB(0.1)
         pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
 
     def testConstructor(self):
-        self.assertRaises(ValueError, pcl.OctreePointCloudSearch_PointXYZRGBA, 0.)
+        self.assertRaises(ValueError, pcl.OctreePointCloudSearch_XYZRGB, 0.)
 
     def testRadiusSearch(self):
         good_point = (0.035296999, -0.074322999, 1.2074)

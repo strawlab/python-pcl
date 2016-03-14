@@ -168,17 +168,17 @@ cdef class PointCloud_PointXYZRGB:
 
     @cython.boundscheck(False)
     def from_list(self, _list):
-       """
-       Fill this pointcloud from a list of 4-tuples
-       """
-       cdef Py_ssize_t npts = len(_list)
-       cdef cpp.PointXYZRGB *p
-       self.resize(npts)
-       self.thisptr().width = npts
-       self.thisptr().height = 1
-       for i, l in enumerate(_list):
-           p = idx.getptr(self.thisptr(), <int> i)
-           p.x, p.y, p.z, p.rgb = l
+        """
+        Fill this pointcloud from a list of 4-tuples
+        """
+        cdef Py_ssize_t npts = len(_list)
+        cdef cpp.PointXYZRGB *p
+        self.resize(npts)
+        self.thisptr().width = npts
+        self.thisptr().height = 1
+        for i, l in enumerate(_list):
+            p = idx.getptr(self.thisptr(), <int> i)
+            p.x, p.y, p.z, p.rgb = l
 
     def to_list(self):
         """

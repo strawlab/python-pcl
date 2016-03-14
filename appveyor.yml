@@ -99,7 +99,7 @@ install:
 
 build_script:
 - cmd: >-
-    schtasks /create /tn pclinstall /RL HIGHEST /ru test /rp test /tr "PCL-1.6.0-AllInOne-msvc2010-win64.exe" /sc once /st 00:00
+    schtasks /create /tn pclinstall /RL HIGHEST /ru test /rp test /tr "PCL-1.6.0-AllInOne-msvc2010-win64.exe" /sc once /st 23:59
 
     schtasks /run /tn pclinstall
 

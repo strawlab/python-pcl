@@ -3,7 +3,7 @@
 
 #include <pcl/point_types.h>
 #include <pcl/segmentation/sac_segmentation.h>
-#include <pcl/Octree/octree_pointcloud.h>
+#include <pcl/octree/octree_pointcloud.h>
 //
 void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> cloud,
                           int ksearch,
