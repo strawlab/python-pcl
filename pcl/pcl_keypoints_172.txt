@@ -1,9 +1,0 @@
-agast_2d.h
-harris_3d.h
-harris_6d.h
-iss_3d.h
-# keypoint.h
-# narf_keypoint.h
-# sift_keypoint.h
-# smoothed_surfaces_keypoint.h
-susan.h

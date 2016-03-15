@@ -3,7 +3,7 @@ from collections import defaultdict
 from Cython.Distutils import build_ext
 from distutils.core import setup
 from distutils.extension import Extension
-# from Cython.Build import cythonize    # MacOS Error
+from Cython.Build import cythonize
 import subprocess
 import numpy
 import sys
@@ -95,7 +95,7 @@ if platform.system() == "Windows":
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', pcl_root + '\\3rdParty\\FLANN\include']
     elif pcl_version == '-1.7':
         # 1.7.2
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_57', pcl_root + '\\3rdParty\\FLANN\include']
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_57', pcl_root + '\\3rdParty\\FLANN\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-6.2']
     else:
         inc_dirs = []
 
@@ -205,10 +205,10 @@ if platform.system() == "Windows":
               packages=["pcl"],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
                                      language = "c++", **ext_args),
-                           Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
-                                     language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           # Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                            #         language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                                     language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug

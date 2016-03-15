@@ -94,73 +94,74 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # virtual void detectKeypoints (PointCloudOut &output) = 0;
 ###
 
-# harris_keypoint3D.h
+# harris_keypoint3D.h (1.6.0)
+# harris_3d.h (1.7.2)
 # template <typename PointInT, typename PointOutT, typename NormalT = pcl::Normal>
 # class HarrisKeypoint3D : public Keypoint<PointInT, PointOutT>
-cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
-    cdef cppclass HarrisKeypoint3D[In, Out, NormalT](Keypoint[In, Out]):
-        HarrisKeypoint3D ()
-        # HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
-        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
-        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        # typedef typename Keypoint<PointInT, PointOutT>::KdTree KdTree;
-        # typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-        # typedef typename pcl::PointCloud<NormalT> PointCloudN;
-        # typedef typename PointCloudN::Ptr PointCloudNPtr;
-        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-        # using Keypoint<PointInT, PointOutT>::name_;
-        # using Keypoint<PointInT, PointOutT>::input_;
-        # using Keypoint<PointInT, PointOutT>::indices_;
-        # using Keypoint<PointInT, PointOutT>::surface_;
-        # using Keypoint<PointInT, PointOutT>::tree_;
-        # using Keypoint<PointInT, PointOutT>::k_;
-        # using Keypoint<PointInT, PointOutT>::search_radius_;
-        # using Keypoint<PointInT, PointOutT>::search_parameter_;
-        # using Keypoint<PointInT, PointOutT>::initCompute;
-        # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
-        # * \brief Set the method of the response to be calculated.
-        # * \param[in] type
-        # void setMethod (ResponseMethod type)
-        # * \brief Set the radius for normal estimation and non maxima supression.
-        # * \param[in] radius
-        void setRadius (float radius)
-        # * \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
-        # * \brief note non maxima suppression needs to be activated in order to use this feature.
-        # * \param[in] threshold
-        void setThreshold (float threshold)
-        # * \brief Whether non maxima suppression should be applied or the response for each point should be returned
-        # * \note this value needs to be turned on in order to apply thresholding and refinement
-        # * \param[in] nonmax default is false
-        void setNonMaxSupression (bool = false)
-        # * \brief Whether the detected key points should be refined or not. If turned of, the key points are a subset of the original point cloud. Otherwise the key points may be arbitrary.
-        # * \brief note non maxima supression needs to be on in order to use this feature.
-        # * \param[in] do_refine
-        void setRefine (bool do_refine)
-        # * \brief Set normals if precalculated normals are available.
-        # * \param normals
-        # void setNormals (const PointCloudNPtr &normals)
-        # * \brief Provide a pointer to a dataset to add additional information
-        # * to estimate the features for every point in the input dataset.  This
-        # * is optional, if this is not set, it will only use the data in the
-        # * input cloud to estimate the features.  This is useful when you only
-        # * need to compute the features for a downsampled cloud.
-        # * \param[in] cloud a pointer to a PointCloud message
-        # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
-        # * \brief Initialize the scheduler and set the number of threads to use.
-        # * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
-        inline void setNumberOfThreads (int nr_threads)
-        # protected:
-        # bool initCompute ();
-        # void detectKeypoints (PointCloudOut &output);
-        # /** \brief gets the corner response for valid input points*/
-        # void responseHarris (PointCloudOut &output) const;
-        # void responseNoble (PointCloudOut &output) const;
-        # void responseLowe (PointCloudOut &output) const;
-        # void responseTomasi (PointCloudOut &output) const;
-        # void responseCurvature (PointCloudOut &output) const;
-        # void refineCorners (PointCloudOut &corners) const;
-        # /** \brief calculates the upper triangular part of unnormalized covariance matrix over the normals given by the indices.*/
-        # void calculateNormalCovar (const std::vector<int>& neighbors, float* coefficients) const;
+# cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
+#     cdef cppclass HarrisKeypoint3D[In, Out, NormalT](Keypoint[In, Out]):
+#         HarrisKeypoint3D ()
+#         # HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
+#         # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
+#         # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+#         # typedef typename Keypoint<PointInT, PointOutT>::KdTree KdTree;
+#         # typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
+#         # typedef typename pcl::PointCloud<NormalT> PointCloudN;
+#         # typedef typename PointCloudN::Ptr PointCloudNPtr;
+#         # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+#         # using Keypoint<PointInT, PointOutT>::name_;
+#         # using Keypoint<PointInT, PointOutT>::input_;
+#         # using Keypoint<PointInT, PointOutT>::indices_;
+#         # using Keypoint<PointInT, PointOutT>::surface_;
+#         # using Keypoint<PointInT, PointOutT>::tree_;
+#         # using Keypoint<PointInT, PointOutT>::k_;
+#         # using Keypoint<PointInT, PointOutT>::search_radius_;
+#         # using Keypoint<PointInT, PointOutT>::search_parameter_;
+#         # using Keypoint<PointInT, PointOutT>::initCompute;
+#         # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
+#         # * \brief Set the method of the response to be calculated.
+#         # * \param[in] type
+#         # void setMethod (ResponseMethod type)
+#         # * \brief Set the radius for normal estimation and non maxima supression.
+#         # * \param[in] radius
+#         void setRadius (float radius)
+#         # * \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
+#         # * \brief note non maxima suppression needs to be activated in order to use this feature.
+#         # * \param[in] threshold
+#         void setThreshold (float threshold)
+#         # * \brief Whether non maxima suppression should be applied or the response for each point should be returned
+#         # * \note this value needs to be turned on in order to apply thresholding and refinement
+#         # * \param[in] nonmax default is false
+#         void setNonMaxSupression (bool = false)
+#         # * \brief Whether the detected key points should be refined or not. If turned of, the key points are a subset of the original point cloud. Otherwise the key points may be arbitrary.
+#         # * \brief note non maxima supression needs to be on in order to use this feature.
+#         # * \param[in] do_refine
+#         void setRefine (bool do_refine)
+#         # * \brief Set normals if precalculated normals are available.
+#         # * \param normals
+#         # void setNormals (const PointCloudNPtr &normals)
+#         # * \brief Provide a pointer to a dataset to add additional information
+#         # * to estimate the features for every point in the input dataset.  This
+#         # * is optional, if this is not set, it will only use the data in the
+#         # * input cloud to estimate the features.  This is useful when you only
+#         # * need to compute the features for a downsampled cloud.
+#         # * \param[in] cloud a pointer to a PointCloud message
+#         # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
+#         # * \brief Initialize the scheduler and set the number of threads to use.
+#         # * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
+#         inline void setNumberOfThreads (int nr_threads)
+#         # protected:
+#         # bool initCompute ();
+#         # void detectKeypoints (PointCloudOut &output);
+#         # /** \brief gets the corner response for valid input points*/
+#         # void responseHarris (PointCloudOut &output) const;
+#         # void responseNoble (PointCloudOut &output) const;
+#         # void responseLowe (PointCloudOut &output) const;
+#         # void responseTomasi (PointCloudOut &output) const;
+#         # void responseCurvature (PointCloudOut &output) const;
+#         # void refineCorners (PointCloudOut &corners) const;
+#         # /** \brief calculates the upper triangular part of unnormalized covariance matrix over the normals given by the indices.*/
+#         # void calculateNormalCovar (const std::vector<int>& neighbors, float* coefficients) const;
 ###
 
 # narf_keypoint.h
@@ -290,7 +291,7 @@ cdef extern from "pcl/keypoints/sift_keypoint.h" namespace "pcl":
         # using Keypoint<PointInT, PointOutT>::surface_;
         # using Keypoint<PointInT, PointOutT>::tree_;
         # using Keypoint<PointInT, PointOutT>::initCompute; 
-		# 
+        # 
         # /** \brief Specify the range of scales over which to search for keypoints
         # * \param min_scale the standard deviation of the smallest scale in the scale space
         # * \param nr_octaves the number of octaves (i.e. doublings of scale) to compute 

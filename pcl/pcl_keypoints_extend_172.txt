@@ -933,3 +933,16 @@ class SUSANKeypoint : public Keypoint<PointInT, PointOutT>
         #                        const PointInT& point) const;
 ###
 
+
+# harris_3d.h
+###
+
+# harris_6d.h
+###
+
+# iss_3d.h
+###
+
+# susan.h
+###
+
