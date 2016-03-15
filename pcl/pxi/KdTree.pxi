@@ -32,6 +32,8 @@ cdef class KdTree_PointXYZI:
 
         self.me.setInputCloud(pc.thisptr_shared)
 
+    def __dealloc__(self):
+        del self.me
 
 cdef class KdTree_PointXYZRGB:
     """
@@ -48,6 +50,8 @@ cdef class KdTree_PointXYZRGB:
 
         self.me.setInputCloud(pc.thisptr_shared)
 
+    def __dealloc__(self):
+        del self.me
 
 cdef class KdTree_PointXYZRGBA:
     """
@@ -63,5 +67,8 @@ cdef class KdTree_PointXYZRGBA:
         self.me = new cpp.KdTree_PointXYZRGBA_t()
 
         self.me.setInputCloud(pc.thisptr_shared)
+
+    def __dealloc__(self):
+        del self.me
 
 

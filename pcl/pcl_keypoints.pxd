@@ -20,7 +20,7 @@ from boost_shared_ptr cimport shared_ptr
 # template <typename PointInT, typename PointOutT>
 # class Keypoint : public PCLBase<PointInT>
 cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
-    cdef cppclass Feature[In, Out](cpp.PCLBase[In]):
+    cdef cppclass Keypoint[In, Out](cpp.PCLBase[In]):
         Keypoint ()
         # public:
         # using PCLBase<PointInT>::indices_;
@@ -37,7 +37,6 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # public:
         # /** \brief Provide a pointer to the input dataset that we need to estimate features at every point for.
         # * \param cloud the const boost shared pointer to a PointCloud message
-        # */
         # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
         # /** \brief Get a pointer to the surface point cloud dataset. */
         # inline PointCloudInConstPtr getSearchSurface ()
@@ -53,12 +52,11 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         inline void setKSearch (int k)
         # * \brief get the number of k nearest neighbors used for the feature estimation. */
         inline int getKSearch ()
-        # * \brief Set the sphere radius that is to be used for determining the nearest neighbors used for the
-        #          key point detection
+        # * \brief Set the sphere radius that is to be used for determining the nearest neighbors used for the key point detection
         # * \param radius the sphere radius used as the maximum distance to consider a point a neighbor
-        # inline void setRadiusSearch (double radius)
+        inline void setRadiusSearch (double radius)
         # /** \brief Get the sphere radius used for determining the neighbors. */
-        # inline double getRadiusSearch ()
+        inline double getRadiusSearch ()
         # * \brief Base method for key point detection for all points given in <setInputCloud (), setIndices ()> using
         # * the surface in setSearchSurface () and the spatial locator in setSearchMethod ()
         # * \param output the resultant point cloud model dataset containing the estimated features
@@ -70,7 +68,7 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # * \param indices the resultant vector of indices representing the k-nearest neighbors
         # * \param distances the resultant vector of distances representing the distances from the query point to the
         # * k-nearest neighbors
-        # inline int searchForNeighbors (int index, double parameter, std::vector<int> &indices, std::vector<float> &distances) const
+        inline int searchForNeighbors (int index, double parameter, vector[int] &indices, vector[float] &distances)
         # protected:
         # using PCLBase<PointInT>::deinitCompute;
         # virtual bool initCompute ();
@@ -129,7 +127,6 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # * \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
         # * \brief note non maxima suppression needs to be activated in order to use this feature.
         # * \param[in] threshold
-        # */
         void setThreshold (float threshold)
         # * \brief Whether non maxima suppression should be applied or the response for each point should be returned
         # * \note this value needs to be turned on in order to apply thresholding and refinement
@@ -151,7 +148,7 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
         # * \brief Initialize the scheduler and set the number of threads to use.
         # * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
-        # inline void setNumberOfThreads (int nr_threads)
+        inline void setNumberOfThreads (int nr_threads)
         # protected:
         # bool initCompute ();
         # void detectKeypoints (PointCloudOut &output);
@@ -331,7 +328,7 @@ cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
         #                      const PointCloudNTConstPtr &normals,
         #                      KdTreePtr &kdtree,
         #                      float &scale);
-        # void resetClouds ();
+        void resetClouds ()
         # inline void setNeighborhoodConstant (float neighborhood_constant)
         # inline float getNeighborhoodConstant ()
         # inline void setInputNormals (const PointCloudNTConstPtr &normals)
@@ -357,8 +354,7 @@ cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
         # public:
         # /** \brief Set the 3D grid leaf size.
         # * \param radius the 3D grid leaf size
-        # */
-        # virtual inline void setRadiusSearch (double radius) 
+        void setRadiusSearch (double radius)
         # protected:
         # /** \brief Simple structure to hold an nD centroid and the number of points in a leaf. */
         # struct Leaf
@@ -378,4 +374,14 @@ cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
         # * \param output the resultant point cloud message
         # */
         # void detectKeypoints (PointCloudOut &output);
+
+ctypedef UniformSampling[cpp.PointXYZ] UniformSampling_t
+ctypedef UniformSampling[cpp.PointXYZI] UniformSampling_PointXYZI_t
+ctypedef UniformSampling[cpp.PointXYZRGB] UniformSampling_PointXYZRGB_t
+ctypedef UniformSampling[cpp.PointXYZRGBA] UniformSampling_PointXYZRGBA_t
+ctypedef shared_ptr[UniformSampling[cpp.PointXYZ]] UniformSamplingPtr_t
+ctypedef shared_ptr[UniformSampling[cpp.PointXYZI]] UniformSampling_PointXYZI_Ptr_t
+ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGB]] UniformSampling_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZRGBA_Ptr_t
+###
 
