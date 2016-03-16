@@ -1,311 +1,199 @@
-# http://pointclouds.org/documentation/tutorials/template_alignment.php#template-alignment
+# Detecting people on a ground plane with RGB-D data
+# http://pointclouds.org/documentation/tutorials/ground_based_rgbd_people_detection.php#ground-based-rgbd-people-detection
 
-#include <limits>
-#include <fstream>
-#include <vector>
-#include <Eigen/Core>
+
+#include <pcl/console/parse.h>
 #include <pcl/point_types.h>
-#include <pcl/point_cloud.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/filters/passthrough.h>
-#include <pcl/filters/voxel_grid.h>
-#include <pcl/features/normal_3d.h>
-#include <pcl/features/fpfh.h>
-#include <pcl/registration/ia_ransac.h>
+#include <pcl/visualization/pcl_visualizer.h>    
+#include <pcl/io/openni_grabber.h>
+#include <pcl/sample_consensus/sac_model_plane.h>
+#include <pcl/people/ground_based_people_detection_app.h>
 
-class FeatureCloud
+typedef pcl::PointXYZRGBA PointT;
+typedef pcl::PointCloud<PointT> PointCloudT;
+
+// PCL viewer //
+pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+
+// Mutex: //
+boost::mutex cloud_mutex;
+
+enum { COLS = 640, ROWS = 480 };
+
+int print_help()
 {
-  public:
-    // A bit of shorthand
-    typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
-    typedef pcl::PointCloud<pcl::Normal> SurfaceNormals;
-    typedef pcl::PointCloud<pcl::FPFHSignature33> LocalFeatures;
-    typedef pcl::search::KdTree<pcl::PointXYZ> SearchMethod;
+  cout << "*******************************************************" << std::endl;
+  cout << "Ground based people detection app options:" << std::endl;
+  cout << "   --help    <show_this_help>" << std::endl;
+  cout << "   --svm     <path_to_svm_file>" << std::endl;
+  cout << "   --conf    <minimum_HOG_confidence (default = -1.5)>" << std::endl;
+  cout << "   --min_h   <minimum_person_height (default = 1.3)>" << std::endl;
+  cout << "   --max_h   <maximum_person_height (default = 2.3)>" << std::endl;
+  cout << "*******************************************************" << std::endl;
+  return 0;
+}
 
-    FeatureCloud () :
-      search_method_xyz_ (new SearchMethod),
-      normal_radius_ (0.02f),
-      feature_radius_ (0.02f)
-    {}
+void cloud_cb_ (const PointCloudT::ConstPtr &callback_cloud, PointCloudT::Ptr& cloud,
+    bool* new_cloud_available_flag)
+{
+  cloud_mutex.lock ();    // for not overwriting the point cloud from another thread
+  *cloud = *callback_cloud;
+  *new_cloud_available_flag = true;
+  cloud_mutex.unlock ();
+}
 
-    ~FeatureCloud () {}
-
-    // Process the given cloud
-    void
-    setInputCloud (PointCloud::Ptr xyz)
-    {
-      xyz_ = xyz;
-      processInput ();
-    }
-
-    // Load and process the cloud in the given PCD file
-    void
-    loadInputCloud (const std::string &pcd_file)
-    {
-      xyz_ = PointCloud::Ptr (new PointCloud);
-      pcl::io::loadPCDFile (pcd_file, *xyz_);
-      processInput ();
-    }
-
-    // Get a pointer to the cloud 3D points
-    PointCloud::Ptr
-    getPointCloud () const
-    {
-      return (xyz_);
-    }
-
-    // Get a pointer to the cloud of 3D surface normals
-    SurfaceNormals::Ptr
-    getSurfaceNormals () const
-    {
-      return (normals_);
-    }
-
-    // Get a pointer to the cloud of feature descriptors
-    LocalFeatures::Ptr
-    getLocalFeatures () const
-    {
-      return (features_);
-    }
-
-  protected:
-    // Compute the surface normals and local features
-    void
-    processInput ()
-    {
-      computeSurfaceNormals ();
-      computeLocalFeatures ();
-    }
-
-    // Compute the surface normals
-    void
-    computeSurfaceNormals ()
-    {
-      normals_ = SurfaceNormals::Ptr (new SurfaceNormals);
-
-      pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> norm_est;
-      norm_est.setInputCloud (xyz_);
-      norm_est.setSearchMethod (search_method_xyz_);
-      norm_est.setRadiusSearch (normal_radius_);
-      norm_est.compute (*normals_);
-    }
-
-    // Compute the local feature descriptors
-    void
-    computeLocalFeatures ()
-    {
-      features_ = LocalFeatures::Ptr (new LocalFeatures);
-
-      pcl::FPFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::FPFHSignature33> fpfh_est;
-      fpfh_est.setInputCloud (xyz_);
-      fpfh_est.setInputNormals (normals_);
-      fpfh_est.setSearchMethod (search_method_xyz_);
-      fpfh_est.setRadiusSearch (feature_radius_);
-      fpfh_est.compute (*features_);
-    }
-
-  private:
-    // Point cloud data
-    PointCloud::Ptr xyz_;
-    SurfaceNormals::Ptr normals_;
-    LocalFeatures::Ptr features_;
-    SearchMethod::Ptr search_method_xyz_;
-
-    // Parameters
-    float normal_radius_;
-    float feature_radius_;
+struct callback_args{
+  // structure used to pass arguments to the callback function
+  PointCloudT::Ptr clicked_points_3d;
+  pcl::visualization::PCLVisualizer::Ptr viewerPtr;
 };
-
-class TemplateAlignment
+  
+void
+pp_callback (const pcl::visualization::PointPickingEvent& event, void* args)
 {
-  public:
+  struct callback_args* data = (struct callback_args *)args;
+  if (event.getPointIndex () == -1)
+    return;
+  PointT current_point;
+  event.getPoint(current_point.x, current_point.y, current_point.z);
+  data->clicked_points_3d->points.push_back(current_point);
+  // Draw clicked points in red:
+  pcl::visualization::PointCloudColorHandlerCustom<PointT> red (data->clicked_points_3d, 255, 0, 0);
+  data->viewerPtr->removePointCloud("clicked_points");
+  data->viewerPtr->addPointCloud(data->clicked_points_3d, red, "clicked_points");
+  data->viewerPtr->setPointCloudRenderingProperties(pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 10, "clicked_points");
+  std::cout << current_point.x << " " << current_point.y << " " << current_point.z << std::endl;
+}
 
-    // A struct for storing alignment results
-    struct Result
+int main (int argc, char** argv)
+{
+  if(pcl::console::find_switch (argc, argv, "--help") || pcl::console::find_switch (argc, argv, "-h"))
+        return print_help();
+
+  // Algorithm parameters:
+  std::string svm_filename = "../../people/data/trainedLinearSVMForPeopleDetectionWithHOG.yaml";
+  float min_confidence = -1.5;
+  float min_height = 1.3;
+  float max_height = 2.3;
+  float voxel_size = 0.06;
+  Eigen::Matrix3f rgb_intrinsics_matrix;
+  rgb_intrinsics_matrix << 525, 0.0, 319.5, 0.0, 525, 239.5, 0.0, 0.0, 1.0; // Kinect RGB camera intrinsics
+
+  // Read if some parameters are passed from command line:
+  pcl::console::parse_argument (argc, argv, "--svm", svm_filename);
+  pcl::console::parse_argument (argc, argv, "--conf", min_confidence);
+  pcl::console::parse_argument (argc, argv, "--min_h", min_height);
+  pcl::console::parse_argument (argc, argv, "--max_h", max_height);
+
+  // Read Kinect live stream:
+  PointCloudT::Ptr cloud (new PointCloudT);
+  bool new_cloud_available_flag = false;
+  pcl::Grabber* interface = new pcl::OpenNIGrabber();
+  boost::function<void (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr&)> f =
+      boost::bind (&cloud_cb_, _1, cloud, &new_cloud_available_flag);
+  interface->registerCallback (f);
+  interface->start ();
+
+  // Wait for the first frame:
+  while(!new_cloud_available_flag) 
+    boost::this_thread::sleep(boost::posix_time::milliseconds(1));
+  new_cloud_available_flag = false;
+
+  cloud_mutex.lock ();    // for not overwriting the point cloud
+
+  // Display pointcloud:
+  pcl::visualization::PointCloudColorHandlerRGBField<PointT> rgb(cloud);
+  viewer.addPointCloud<PointT> (cloud, rgb, "input_cloud");
+  viewer.setCameraPosition(0,0,-2,0,-1,0,0);
+
+  // Add point picking callback to viewer:
+  struct callback_args cb_args;
+  PointCloudT::Ptr clicked_points_3d (new PointCloudT);
+  cb_args.clicked_points_3d = clicked_points_3d;
+  cb_args.viewerPtr = pcl::visualization::PCLVisualizer::Ptr(&viewer);
+  viewer.registerPointPickingCallback (pp_callback, (void*)&cb_args);
+  std::cout << "Shift+click on three floor points, then press 'Q'..." << std::endl;
+
+  // Spin until 'Q' is pressed:
+  viewer.spin();
+  std::cout << "done." << std::endl;
+  
+  cloud_mutex.unlock ();    
+
+  // Ground plane estimation:
+  Eigen::VectorXf ground_coeffs;
+  ground_coeffs.resize(4);
+  std::vector<int> clicked_points_indices;
+  for (unsigned int i = 0; i < clicked_points_3d->points.size(); i++)
+    clicked_points_indices.push_back(i);
+  pcl::SampleConsensusModelPlane<PointT> model_plane(clicked_points_3d);
+  model_plane.computeModelCoefficients(clicked_points_indices,ground_coeffs);
+  std::cout << "Ground plane: " << ground_coeffs(0) << " " << ground_coeffs(1) << " " << ground_coeffs(2) << " " << ground_coeffs(3) << std::endl;
+
+  // Initialize new viewer:
+  pcl::visualization::PCLVisualizer viewer("PCL Viewer");          // viewer initialization
+  viewer.setCameraPosition(0,0,-2,0,-1,0,0);
+
+  // Create classifier for people detection:  
+  pcl::people::PersonClassifier<pcl::RGB> person_classifier;
+  person_classifier.loadSVMFromFile(svm_filename);   // load trained SVM
+
+  // People detection app initialization:
+  pcl::people::GroundBasedPeopleDetectionApp<PointT> people_detector;    // people detection object
+  people_detector.setVoxelSize(voxel_size);                        // set the voxel size
+  people_detector.setIntrinsics(rgb_intrinsics_matrix);            // set RGB camera intrinsic parameters
+  people_detector.setClassifier(person_classifier);                // set person classifier
+  people_detector.setHeightLimits(min_height, max_height);         // set person classifier
+//  people_detector.setSensorPortraitOrientation(true);             // set sensor orientation to vertical
+
+  // For timing:
+  static unsigned count = 0;
+  static double last = pcl::getTime ();
+
+  // Main loop:
+  while (!viewer.wasStopped())
+  {
+    if (new_cloud_available_flag && cloud_mutex.try_lock ())    // if a new cloud is available
     {
-      float fitness_score;
-      Eigen::Matrix4f final_transformation;
-      EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    };
+      new_cloud_available_flag = false;
 
-    TemplateAlignment () :
-      min_sample_distance_ (0.05f),
-      max_correspondence_distance_ (0.01f*0.01f),
-      nr_iterations_ (500)
-    {
-      // Intialize the parameters in the Sample Consensus Intial Alignment (SAC-IA) algorithm
-      sac_ia_.setMinSampleDistance (min_sample_distance_);
-      sac_ia_.setMaxCorrespondenceDistance (max_correspondence_distance_);
-      sac_ia_.setMaximumIterations (nr_iterations_);
-    }
+      // Perform people detection on the new cloud:
+      std::vector<pcl::people::PersonCluster<PointT> > clusters;   // vector containing persons clusters
+      people_detector.setInputCloud(cloud);
+      people_detector.setGround(ground_coeffs);                    // set floor coefficients
+      people_detector.compute(clusters);                           // perform people detection
 
-    ~TemplateAlignment () {}
+      ground_coeffs = people_detector.getGround();                 // get updated floor coefficients
 
-    // Set the given cloud as the target to which the templates will be aligned
-    void
-    setTargetCloud (FeatureCloud &target_cloud)
-    {
-      target_ = target_cloud;
-      sac_ia_.setInputTarget (target_cloud.getPointCloud ());
-      sac_ia_.setTargetFeatures (target_cloud.getLocalFeatures ());
-    }
-
-    // Add the given cloud to the list of template clouds
-    void
-    addTemplateCloud (FeatureCloud &template_cloud)
-    {
-      templates_.push_back (template_cloud);
-    }
-
-    // Align the given template cloud to the target specified by setTargetCloud ()
-    void
-    align (FeatureCloud &template_cloud, TemplateAlignment::Result &result)
-    {
-      sac_ia_.setInputCloud (template_cloud.getPointCloud ());
-      sac_ia_.setSourceFeatures (template_cloud.getLocalFeatures ());
-
-      pcl::PointCloud<pcl::PointXYZ> registration_output;
-      sac_ia_.align (registration_output);
-
-      result.fitness_score = (float) sac_ia_.getFitnessScore (max_correspondence_distance_);
-      result.final_transformation = sac_ia_.getFinalTransformation ();
-    }
-
-    // Align all of template clouds set by addTemplateCloud to the target specified by setTargetCloud ()
-    void
-    alignAll (std::vector<TemplateAlignment::Result, Eigen::aligned_allocator<Result> > &results)
-    {
-      results.resize (templates_.size ());
-      for (size_t i = 0; i < templates_.size (); ++i)
+      // Draw cloud and people bounding boxes in the viewer:
+      viewer.removeAllPointClouds();
+      viewer.removeAllShapes();
+      pcl::visualization::PointCloudColorHandlerRGBField<PointT> rgb(cloud);
+      viewer.addPointCloud<PointT> (cloud, rgb, "input_cloud");
+      unsigned int k = 0;
+      for(std::vector<pcl::people::PersonCluster<PointT> >::iterator it = clusters.begin(); it != clusters.end(); ++it)
       {
-        align (templates_[i], results[i]);
-      }
-    }
-
-    // Align all of template clouds to the target cloud to find the one with best alignment score
-    int
-    findBestAlignment (TemplateAlignment::Result &result)
-    {
-      // Align all of the templates to the target cloud
-      std::vector<Result, Eigen::aligned_allocator<Result> > results;
-      alignAll (results);
-
-      // Find the template with the best (lowest) fitness score
-      float lowest_score = std::numeric_limits<float>::infinity ();
-      int best_template = 0;
-      for (size_t i = 0; i < results.size (); ++i)
-      {
-        const Result &r = results[i];
-        if (r.fitness_score < lowest_score)
+        if(it->getPersonConfidence() > min_confidence)             // draw only people with confidence above a threshold
         {
-          lowest_score = r.fitness_score;
-          best_template = (int) i;
+          // draw theoretical person bounding box in the PCL viewer:
+          it->drawTBoundingBox(viewer, k);
+          k++;
         }
       }
+      std::cout << k << " people found" << std::endl;
+      viewer.spinOnce();
 
-      // Output the best alignment
-      result = results[best_template];
-      return (best_template);
+      // Display average framerate:
+      if (++count == 30)
+      {
+        double now = pcl::getTime ();
+        std::cout << "Average framerate: " << double(count)/double(now - last) << " Hz" <<  std::endl;
+        count = 0;
+        last = now;
+      }
+      cloud_mutex.unlock ();
     }
-
-  private:
-    // A list of template clouds and the target to which they will be aligned
-    std::vector<FeatureCloud> templates_;
-    FeatureCloud target_;
-
-    // The Sample Consensus Initial Alignment (SAC-IA) registration routine and its parameters
-    pcl::SampleConsensusInitialAlignment<pcl::PointXYZ, pcl::PointXYZ, pcl::FPFHSignature33> sac_ia_;
-    float min_sample_distance_;
-    float max_correspondence_distance_;
-    int nr_iterations_;
-};
-
-// Align a collection of object templates to a sample point cloud
-int
-main (int argc, char **argv)
-{
-  if (argc < 3)
-  {
-    printf ("No target PCD file given!\n");
-    return (-1);
   }
 
-  // Load the object templates specified in the object_templates.txt file
-  std::vector<FeatureCloud> object_templates;
-  std::ifstream input_stream (argv[1]);
-  object_templates.resize (0);
-  std::string pcd_filename;
-  while (input_stream.good ())
-  {
-    std::getline (input_stream, pcd_filename);
-    if (pcd_filename.empty () || pcd_filename.at (0) == '#') // Skip blank lines or comments
-      continue;
-
-    FeatureCloud template_cloud;
-    template_cloud.loadInputCloud (pcd_filename);
-    object_templates.push_back (template_cloud);
-  }
-  input_stream.close ();
-
-  // Load the target cloud PCD file
-  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  pcl::io::loadPCDFile (argv[2], *cloud);
-
-  // Preprocess the cloud by...
-  // ...removing distant points
-  const float depth_limit = 1.0;
-  pcl::PassThrough<pcl::PointXYZ> pass;
-  pass.setInputCloud (cloud);
-  pass.setFilterFieldName ("z");
-  pass.setFilterLimits (0, depth_limit);
-  pass.filter (*cloud);
-
-  // ... and downsampling the point cloud
-  const float voxel_grid_size = 0.005f;
-  pcl::VoxelGrid<pcl::PointXYZ> vox_grid;
-  vox_grid.setInputCloud (cloud);
-  vox_grid.setLeafSize (voxel_grid_size, voxel_grid_size, voxel_grid_size);
-  //vox_grid.filter (*cloud); // Please see this http://www.pcl-developers.org/Possible-problem-in-new-VoxelGrid-implementation-from-PCL-1-5-0-td5490361.html
-  pcl::PointCloud<pcl::PointXYZ>::Ptr tempCloud (new pcl::PointCloud<pcl::PointXYZ>); 
-  vox_grid.filter (*tempCloud);
-  cloud = tempCloud; 
-
-  // Assign to the target FeatureCloud
-  FeatureCloud target_cloud;
-  target_cloud.setInputCloud (cloud);
-
-  // Set the TemplateAlignment inputs
-  TemplateAlignment template_align;
-  for (size_t i = 0; i < object_templates.size (); ++i)
-  {
-    template_align.addTemplateCloud (object_templates[i]);
-  }
-  template_align.setTargetCloud (target_cloud);
-
-  // Find the best template alignment
-  TemplateAlignment::Result best_alignment;
-  int best_index = template_align.findBestAlignment (best_alignment);
-  const FeatureCloud &best_template = object_templates[best_index];
-
-  // Print the alignment fitness score (values less than 0.00002 are good)
-  printf ("Best fitness score: %f\n", best_alignment.fitness_score);
-
-  // Print the rotation matrix and translation vector
-  Eigen::Matrix3f rotation = best_alignment.final_transformation.block<3,3>(0, 0);
-  Eigen::Vector3f translation = best_alignment.final_transformation.block<3,1>(0, 3);
-
-  printf ("\n");
-  printf ("    | %6.3f %6.3f %6.3f | \n", rotation (0,0), rotation (0,1), rotation (0,2));
-  printf ("R = | %6.3f %6.3f %6.3f | \n", rotation (1,0), rotation (1,1), rotation (1,2));
-  printf ("    | %6.3f %6.3f %6.3f | \n", rotation (2,0), rotation (2,1), rotation (2,2));
-  printf ("\n");
-  printf ("t = < %0.3f, %0.3f, %0.3f >\n", translation (0), translation (1), translation (2));
-
-  // Save the aligned template for visualization
-  pcl::PointCloud<pcl::PointXYZ> transformed_cloud;
-  pcl::transformPointCloud (*best_template.getPointCloud (), transformed_cloud, best_alignment.final_transformation);
-  pcl::io::savePCDFileBinary ("output.pcd", transformed_cloud);
-
-  return (0);
+  return 0;
 }
