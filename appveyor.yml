@@ -107,7 +107,7 @@ build_script:
 
     sleep 60
 
-    cd "C:/Program Files/PCL 1.6.0"
+    ls "C:/Program Files"
 
     pip install Cython
 

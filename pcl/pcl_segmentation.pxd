@@ -2221,6 +2221,18 @@ cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" nam
 # Enum
 ###############################################################################
 
+# method_types.h
+cdef extern from "pcl/sample_consensus/method_types.h" namespace "pcl":
+    cdef enum:
+        SAC_RANSAC = 0
+        SAC_LMEDS = 1
+        SAC_MSAC = 2
+        SAC_RRANSAC = 3
+        SAC_RMSAC = 4
+        SAC_MLESAC = 5
+        SAC_PROSAC = 6
+###
+
 ###############################################################################
 # Activation
 ###############################################################################

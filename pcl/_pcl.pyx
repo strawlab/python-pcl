@@ -9,6 +9,7 @@ cimport numpy as cnp
 cimport pcl_defs as cpp
 cimport pcl_features as features
 cimport pcl_sample_consensus as pcl_sc
+cimport pcl_features as pcl_ftr
 # cimport pcl_segmentation as segmentation
 
 cimport cython
@@ -51,6 +52,12 @@ SACMODEL_PARALLEL_PLANE = pcl_sc.SACMODEL_PARALLEL_PLANE
 SACMODEL_NORMAL_PARALLEL_PLANE = pcl_sc.SACMODEL_NORMAL_PARALLEL_PLANE
 SACMODEL_STICK = pcl_sc.SACMODEL_STICK
 
+# BORDER_POLICY_IGNORE = pcl_ftr.BORDER_POLICY_IGNORE
+# BORDER_POLICY_MIRROR = pcl_ftr.BORDER_POLICY_MIRROR
+# COVARIANCE_MATRIX = pcl_ftr.COVARIANCE_MATRIX
+# AVERAGE_3D_GRADIENT = pcl_ftr.AVERAGE_3D_GRADIENT
+# AVERAGE_DEPTH_CHANGE = pcl_ftr.AVERAGE_DEPTH_CHANGE
+# SIMPLE_3D_GRADIENT = pcl_ftr.SIMPLE_3D_GRADIENT
 cnp.import_array()
 
 include "pxi/PointCloudWrapper_PointXYZ.pxi"

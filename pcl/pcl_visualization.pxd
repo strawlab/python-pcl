@@ -43,7 +43,7 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         #  * \return true if the user signaled the gui to stop
         bool wasStopped (int millis_to_wait)
         # /** Visualization callable function, may be used for running things on the UI thread.
-        # typedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
+        # ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
         # /** \brief Run a callbable object on the UI thread. Will persist until removed
         #  * @param x Use boost::ref(x) for a function object that you would like to not copy
         #  * \param key The key for the callable -- use the same key to overwrite.
@@ -53,7 +53,7 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         # void runOnVisualizationThreadOnce (VizCallable x);
         # /** \brief Remove a previously added callable object, NOP if it doesn't exist.
         #  * @param key the key that was registered with the callable object.
-        # void removeVisualizationCallable (const std::string& key = "callable");
+        void removeVisualizationCallable (string& key = "callable");
         # /** \brief Register a callback function for keyboard events
         #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
         #   * \param[in] cookie    user data that is passed to the callback
@@ -90,6 +90,8 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
 
 # ctypedef CloudViewer CloudViewer_t
 ctypedef shared_ptr[CloudViewer] CloudViewerPtr_t
+# ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
+# ctypedef function1[void, PCLVisualizer] VizCallable;
 ###
 
 # histogram_visualizer.h
@@ -97,12 +99,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
     cdef cppclass PCLHistogramVisualizer:
         PCLHistogramVisualizer ()
         # /** \brief Spin once method. Calls the interactor and updates the screen once. 
-        #   *  \param[in] time - How long (in ms) should the visualization loop be allowed to run.
-        # #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 4))
-        # void spinOnce (int time = 1, bool force_redraw = false);
-        # #else
-        # void spinOnce (int time = 1);
-        # #endif
+        void spinOnce (int time = 1, bool force_redraw = false)
         # /** \brief Spin method. Calls the interactor and runs an internal loop. */
         void spin ()
         # /** \brief Set the viewport's background color.
@@ -110,7 +107,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] g the green component of the RGB color
         #   * \param[in] b the blue component of the RGB color
         #   * \param[in] viewport the view port (default: all)
-        # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0);
+        void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0)
         # /** \brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] hsize the length of the histogram
@@ -227,14 +224,9 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
 
 # image_viewer.h
 # class PCL_EXPORTS ImageViewer
-        # public:
-        # /** \brief Constructor.
-        #   * \param[in] window_title the title of the window
-        #   */
+        # ImageViewer()
         # ImageViewer (const std::string& window_title = "");
-        # /** \brief Destructor. */
-        # virtual ~ImageViewer ();
-        # 
+        # public:
         # /** \brief Show a monochrome 2D image on screen.
         #   * \param[in] data the input data representing the image
         #   * \param[in] width the width of the image
@@ -245,7 +237,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # void 
         # showMonoImage (const unsigned char* data, unsigned width, unsigned height,
         #                const std::string &layer_id = "mono_image", double opacity = 1.0);
-        # 
         # /** \brief Add a monochrome 2D image layer, but do not render it (use spin/spinOnce to update).
         #   * \param[in] data the input data representing the image
         #   * \param[in] width the width of the image
@@ -256,7 +247,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # void 
         # addMonoImage (const unsigned char* data, unsigned width, unsigned height,
         #               const std::string &layer_id = "mono_image", double opacity = 1.0);
-        # 
         # /** \brief Show a 2D RGB image on screen.
         #   * \param[in] data the input data representing the image
         #   * \param[in] width the width of the image
@@ -267,7 +257,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # void 
         # showRGBImage (const unsigned char* data, unsigned width, unsigned height, 
         #               const std::string &layer_id = "rgb_image", double opacity = 1.0);
-        # 
         # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
         #   * \param[in] data the input data representing the image
         #   * \param[in] width the width of the image
@@ -278,7 +267,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # void 
         # addRGBImage (const unsigned char* data, unsigned width, unsigned height, 
         #              const std::string &layer_id = "rgb_image", double opacity = 1.0);
-        # 
         # /** \brief Show a 2D image on screen, obtained from the RGB channel of a point cloud.
         #   * \param[in] data the input data representing the RGB point cloud 
         #   * \param[in] layer_id the name of the layer (default: "image")
@@ -287,7 +275,6 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # template <typename T> inline void 
         # showRGBImage (const typename pcl::PointCloud<T>::ConstPtr &cloud,
         #               const std::string &layer_id = "rgb_image", double opacity = 1.0)
-        # 
         # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
         #   * \param[in] data the input data representing the RGB point cloud 
         #   * \param[in] layer_id the name of the layer (default: "image")
@@ -793,6 +780,9 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
 
 # pcl_visualizer.h
 # class PCL_EXPORTS PCLVisualizer
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PCLVisualizer:
+        PCLVisualizer()
         # public:
         # typedef PointCloudGeometryHandler<sensor_msgs::PointCloud2> GeometryHandler;
         # typedef GeometryHandler::Ptr GeometryHandlerPtr;

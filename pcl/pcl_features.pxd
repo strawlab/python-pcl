@@ -10,6 +10,23 @@ from boost_shared_ptr cimport shared_ptr
 cimport pcl_defs as cpp
 
 ###############################################################################
+# Enum
+###############################################################################
+
+# integral_image_normal.h
+cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
+        cdef enum BorderPolicy:
+            BORDER_POLICY_IGNORE
+            BORDER_POLICY_MIRROR
+
+cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
+        cdef enum NormalEstimationMethod:
+            COVARIANCE_MATRIX
+            AVERAGE_3D_GRADIENT
+            AVERAGE_DEPTH_CHANGE
+            SIMPLE_3D_GRADIENT
+
+###############################################################################
 # Types
 ###############################################################################
 
@@ -106,9 +123,9 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
         # inline PointCloudNConstPtr getInputNormals ()
         # protected:
-        # /** \brief A pointer to the input dataset that contains the point normals of the XYZ
-        # * dataset.
-        # */
+        # /** \brief A pointer to the input dataset that contains the point normals of the XYZ dataset.
+        #  *
+        #  */
         # PointCloudNConstPtr normals_;
         # /** \brief This method should get called before starting the actual computation. */
         # virtual bool initCompute ();
@@ -603,25 +620,7 @@ cdef extern from "pcl/features/fpfh_omp.h" namespace "pcl":
 cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
     cdef cppclass IntegralImageNormalEstimation[In, Out](Feature[In, Out]):
         IntegralImageNormalEstimation ()
-        # using Feature<PointInT, PointOutT>::input_;
-        # using Feature<PointInT, PointOutT>::feature_name_;
-        # using Feature<PointInT, PointOutT>::tree_;
-        # using Feature<PointInT, PointOutT>::k_;
         # public:
-        # \brief Different types of border handling.
-        # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
-        #     cdef enum BorderPolicy:
-        #         BORDER_POLICY_IGNORE
-        #         BORDER_POLICY_MIRROR
-        ##
-        # * \brief Different normal estimation methods.
-        # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
-        #     cdef enum NormalEstimationMethod:
-        #         COVARIANCE_MATRIX
-        #         AVERAGE_3D_GRADIENT
-        #         AVERAGE_DEPTH_CHANGE
-        #         SIMPLE_3D_GRADIENT
-        ##
         # ctypedef typename Feature<PointInT, PointOutT>::PointCloudIn  PointCloudIn;
         # ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
         ##
@@ -631,19 +630,19 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         void setRectSize (const int width, const int height);
         # * \brief Sets the policy for handling borders.
         # * \param[in] border_policy the border policy.
-        # void setBorderPolicy (const BorderPolicy border_policy)
+        void setBorderPolicy (BorderPolicy border_policy)
         # * \brief Computes the normal at the specified position.
         # * \param[in] pos_x x position (pixel)
         # * \param[in] pos_y y position (pixel)
         # * \param[in] point_index the position index of the point
         # * \param[out] normal the output estimated normal
-        void computePointNormal (const int pos_x, const int pos_y, const unsigned point_index, Out &normal);
+        void computePointNormal (const int pos_x, const int pos_y, const unsigned point_index, Out &normal)
         # * \brief Computes the normal at the specified position with mirroring for border handling.
         # * \param[in] pos_x x position (pixel)
         # * \param[in] pos_y y position (pixel)
         # * \param[in] point_index the position index of the point
         # * \param[out] normal the output estimated normal
-        void computePointNormalMirror (const int pos_x, const int pos_y, const unsigned point_index, Out &normal);
+        void computePointNormalMirror (const int pos_x, const int pos_y, const unsigned point_index, Out &normal)
         # * \brief The depth change threshold for computing object borders
         # * \param[in] max_depth_change_factor the depth change threshold for computing object borders based on
         # * depth changes
@@ -663,13 +662,14 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # *   from the average depth changes.
         # * </ul>
         # * \param[in] normal_estimation_method the method used for normal estimation
-        # void setNormalEstimationMethod (NormalEstimationMethod normal_estimation_method)
+        void setNormalEstimationMethod (NormalEstimationMethod normal_estimation_method)
         # brief Set whether to use depth depending smoothing or not
         # param[in] use_depth_dependent_smoothing decides whether the smoothing is depth dependent
         void setDepthDependentSmoothing (bool use_depth_dependent_smoothing)
         # brief Provide a pointer to the input dataset (overwrites the PCLBase::setInputCloud method)
         # \param[in] cloud the const boost shared pointer to a PointCloud message
-        # virtual inline void setInputCloud (const typename PointCloudIn::ConstPtr &cloud)
+        # void setInputCloud (const typename PointCloudIn::ConstPtr &cloud)
+        void setInputCloud (In cloud)
         # \brief Returns a pointer to the distance map which was computed internally
         inline float* getDistanceMap ()
         # * \brief Set the viewpoint.
@@ -689,13 +689,15 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * normal estimation method uses the sensor origin of the input cloud.
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
+        ##
         # protected:
-        # * \brief Computes the normal for the complete cloud.
-        # * \param[out] output the resultant normals
-        # */
         # void computeFeature (PointCloudOut &output);
-        # * \brief Initialize the data structures, based on the normal estimation method chosen. */
         # void initData ()
+
+ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
+ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
+ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
+ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGBA_t
 ###
 
 # integral_image2D.h
@@ -1590,11 +1592,11 @@ cdef extern from "pcl/features/principal_curvatures.h" namespace "pcl":
 
 # range_image_border_extractor.h
 # namespace pcl
-#   class RangeImage;
-#   template <typename PointType>
-#   class PointCloud;
-#   class PCL_EXPORTS RangeImageBorderExtractor : public Feature<PointWithRange,BorderDescription>
-#     public:
+# class RangeImage;
+# template <typename PointType>
+# class PointCloud;
+# class PCL_EXPORTS RangeImageBorderExtractor : public Feature<PointWithRange,BorderDescription>
+#       public:
 #       // =====TYPEDEFS=====
 #       typedef Feature<PointWithRange,BorderDescription> BaseClass;
 #       
@@ -1715,8 +1717,7 @@ cdef extern from "pcl/features/principal_curvatures.h" namespace "pcl":
 #       Eigen::Vector3f*
 #       getSurfaceChangeDirections () { calculateSurfaceChanges (); return surface_change_directions_; }
 #       
-#       
-#     protected:
+#       protected:
 #       // =====PROTECTED MEMBER VARIABLES=====
 #       Parameters parameters_;
 #       const RangeImage* range_image_;
@@ -1828,14 +1829,12 @@ cdef extern from "pcl/features/principal_curvatures.h" namespace "pcl":
 #       /** \brief Get images representing the probability that the corresponding pixels are borders in that direction 
 #         * (see getBorderScores... ())
 #         */
-#       void
-#       extractBorderScoreImages ();
+#       void extractBorderScoreImages ();
 #       
 #       /** \brief Classify the pixels in the range image according to the different classes defined below in 
 #         * enum BorderClass. minImpactAngle (in radians) defines how flat the angle at which a surface was seen can be. 
 #         */
-#       void
-#       classifyBorders ();
+#       void classifyBorders ();
 #       
 #       /** \brief Calculate the 3D direction of the border just using the border traits at this position (facing away from 
 #         * the obstacle)
@@ -2662,15 +2661,11 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
         #       /** \brief Feature estimation method.
         #         * \param[out] output the resultant features
         #         */
-        #       virtual void
-        #       computeFeature (PointCloudOut &output);
-        # 
+        #       virtual void computeFeature (PointCloudOut &output);
         #       /** \brief Feature estimation method.
         #         * \param[out] output the resultant features
         #         */
-        #       virtual void
-        #       computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-        # 
+        #       virtual void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
         #       /** \brief The number of threads the scheduler should use. */
         #       int threads_;
 ###
@@ -2707,18 +2702,15 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
         # /** \brief Initialize the scheduler and set the number of threads to use.
         #  * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         inline void setNumberOfThreads (unsigned int nr_threads)
-        #     protected:
+        #       protected:
         #       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
         #         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
         #         * setSearchMethod ()
         #         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
         #         */
-        #       void
-        #       computeFeature (PointCloudOut &output);
+        #       void computeFeature (PointCloudOut &output);
         #       /** \brief This method should get called before starting the actual computation. */
-        #       bool
-        #       initCompute ();
-        # 
+        #       bool initCompute ();
         #       /** \brief The number of threads the scheduler should use. */
         #       int threads_;
 ###
@@ -2754,36 +2746,21 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
 #       SHOTColorEstimationOMP (bool describe_shape = true,
 #                               bool describe_color = true,
 #                               unsigned int nr_threads = - 1)
-#         : SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT> (describe_shape, describe_color), threads_ ()
-#       {
-#         setNumberOfThreads (nr_threads);
-#       }
 # 
 #       /** \brief Initialize the scheduler and set the number of threads to use.
 #         * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
 #         */
-#       inline void
-#       setNumberOfThreads (unsigned int nr_threads)
-#       {
-#         if (nr_threads == 0)
-#           nr_threads = 1;
-#         threads_ = nr_threads;
-#       }
+#       inline void setNumberOfThreads (unsigned int nr_threads)
 # 
-#     protected:
-# 
+#       protected:
 #       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
 #         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
 #         * setSearchMethod ()
 #         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
 #         */
-#       void
-#       computeFeature (PointCloudOut &output);
-# 
+#       void computeFeature (PointCloudOut &output);
 #       /** \brief This method should get called before starting the actual computation. */
-#       bool
-#       initCompute ();
-# 
+#       bool initCompute ();
 #       /** \brief The number of threads the scheduler should use. */
 #       int threads_;
 ###
@@ -2820,22 +2797,16 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
 #       /** \brief Initialize the scheduler and set the number of threads to use.
 #         * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
 #         */
-#       inline void
-#       setNumberOfThreads (unsigned int nr_threads)
+#       inline void setNumberOfThreads (unsigned int nr_threads)
 # 
-#     protected:
+#       protected:
 #       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
 #         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
 #         * setSearchMethod ()
 #         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void
-#       computeFeature (PointCloudOut &output);
-# 
+#       void computeFeature (PointCloudOut &output);
 #       /** \brief This method should get called before starting the actual computation. */
-#       bool
-#       initCompute ();
-# 
+#       bool initCompute ();
 #       /** \brief The number of threads the scheduler should use. */
 #       int threads_;
 ###
@@ -2844,7 +2815,7 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
 # class PCL_DEPRECATED_CLASS (SHOTEstimationOMP, "SHOTEstimationOMP<pcl::PointXYZRGBA,...,pcl::SHOT,...> IS DEPRECATED, USE SHOTEstimationOMP<pcl::PointXYZRGBA,...,pcl::SHOT352,...> FOR SHAPE AND SHOTColorEstimationOMP<pcl::PointXYZRGBA,...,pcl::SHOT1344,...> FOR SHAPE+COLOR INSTEAD")
 # <pcl::PointXYZRGBA, PointNT, pcl::SHOT, PointRFT>
 # : public SHOTEstimation<pcl::PointXYZRGBA, PointNT, pcl::SHOT, PointRFT>
-#     public:
+#       public:
 #       using SHOTEstimation<pcl::PointXYZRGBA, PointNT, pcl::SHOT, PointRFT>::feature_name_;
 #       using SHOTEstimation<pcl::PointXYZRGBA, PointNT, pcl::SHOT, PointRFT>::getClassName;
 #       using SHOTEstimation<pcl::PointXYZRGBA, PointNT, pcl::SHOT, PointRFT>::input_;
@@ -2913,7 +2884,6 @@ cdef extern from "pcl/features/spin_image.h" namespace "pcl":
         # typedef typename boost::shared_ptr<const SpinImageEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
         # /** \brief Sets spin-image resolution.
         #  * \param[in] bin_count spin-image resolution, number of bins along one dimension
-        # */
         void setImageWidth (unsigned int bin_count)
         # /** \brief Sets the maximum angle for the point normal to get to support region.
         #   * \param[in] support_angle_cos minimal allowed cosine of the angle between 
@@ -2938,11 +2908,9 @@ cdef extern from "pcl/features/spin_image.h" namespace "pcl":
         #   * \param[in] axis unit-length vector that serves as rotation axis for reference frame
         # void setRotationAxis (const PointNT& axis)
         # /** \brief Sets array of vectors as rotation axes for input points.
-        #  * 
         #  * Useful e.g. when one wants to use tangents instead of normals as rotation axes
         #  * \param[in] axes unit-length vectors that serves as rotation axes for 
         #  *   the corresponding input points' reference frames
-        #  */
         # void setInputRotationAxes (const PointCloudNConstPtr& axes)
         # /** \brief Sets input normals as rotation axes (default setting). */
         void useNormalsAsRotationAxis () 
@@ -2985,9 +2953,9 @@ cdef extern from "pcl/features/spin_image.h" namespace "pcl":
 # template <typename PointInT, typename PointNT>
 # class SpinImageEstimation<PointInT, PointNT, Eigen::MatrixXf> : public SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >
 # cdef extern from "pcl/features/spin_image.h" namespace "pcl":
-#     cdef cppclass SpinImageEstimation[In, NT](SpinImageEstimation[In, NT]):
-#         SpinImageEstimation ()
-#     public:
+#    cdef cppclass SpinImageEstimation[In, NT, Eigen::MatrixXf](SpinImageEstimation[In, NT, pcl::Histogram<153>]):
+#        SpinImageEstimation ()
+#       public:
 #       using SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >::indices_;
 #       using SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >::search_radius_;
 #       using SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >::k_;
@@ -3022,11 +2990,9 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
         # typedef typename boost::shared_ptr<const StatisticalMultiscaleInterestRegionExtraction<PointT> > ConstPtr;
         # * \brief Method that generates the underlying nearest neighbor graph based on the
         # * input point cloud
-        # */
         void generateCloudGraph ()
         # * \brief The method to be called in order to run the algorithm and produce the resulting
         # * set of regions of interest
-        # */
         # void computeRegionsOfInterest (list[IndicesPtr_t]& rois)
         # * \brief Method for setting the scale parameters for the algorithm
         # * \param scale_values vector of scales to determine the size of each scaling step
@@ -3042,7 +3008,7 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
 # cdef extern from "pcl/features/usc.h" namespace "pcl":
 #     cdef cppclass UniqueShapeContext[In, Out, RFT](Feature[In, Out], FeatureWithLocalReferenceFrames[In, RFT]):
 #        VFHEstimation ()
-#     public:
+#        public:
 #        using Feature<PointInT, PointOutT>::feature_name_;
 #        using Feature<PointInT, PointOutT>::getClassName;
 #        using Feature<PointInT, PointOutT>::indices_;
@@ -3089,22 +3055,19 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
 #       inline double getPointDensityRadius () const
 #       /** Set the local RF radius value
 #         * \param[in] radius the desired local RF radius
-#         */
 #       inline void setLocalRadius (double radius)
 #       /** \return The local RF radius. */
 #       inline double getLocalRadius () const
 # 
-#     protected:
+#       protected:
 #       /** Compute 3D shape context feature descriptor
 #         * \param[in] index point index in input_
 #         * \param[out] desc descriptor to compute
-#         */
 #       void computePointDescriptor (size_t index, std::vector<float> &desc);
 #       /** \brief Initialize computation by allocating all the intervals and the volume lookup table. */
 #       virtual bool initCompute ();
 #       /** \brief The actual feature computation.
 #         * \param[out] output the resultant features
-#         */
 #       virtual void computeFeature (PointCloudOut &output);
 #       /** \brief values of the radii interval. */
 #       std::vector<float> radii_interval_;
@@ -3134,8 +3097,8 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
 # class UniqueShapeContext<PointInT, Eigen::MatrixXf, PointRFT> : public UniqueShapeContext<PointInT, pcl::SHOT, PointRFT>
 # cdef extern from "pcl/features/vfh.h" namespace "pcl":
 #     cdef cppclass UniqueShapeContext[In, Eigen::MatrixXf, RET](UniqueShapeContext[In, pcl::SHOT, RET]):
-#         UniqueShapeContext ()
-#     public:
+#       UniqueShapeContext ()
+#       public:
 #       using FeatureWithLocalReferenceFrames<PointInT, PointRFT>::frames_;
 #       using UniqueShapeContext<PointInT, pcl::SHOT, PointRFT>::indices_;
 #       using UniqueShapeContext<PointInT, pcl::SHOT, PointRFT>::descriptor_length_;
@@ -3149,7 +3112,7 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
 cdef extern from "pcl/features/vfh.h" namespace "pcl":
     cdef cppclass VFHEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
         VFHEstimation ()
-#     public:
+#       public:
 #       using Feature<PointInT, PointOutT>::feature_name_;
 #       using Feature<PointInT, PointOutT>::getClassName;
 #       using Feature<PointInT, PointOutT>::indices_;
@@ -3169,49 +3132,38 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
 #         * \param[in] cloud the dataset containing the XYZ Cartesian coordinates of the two points
 #         * \param[in] normals the dataset containing the surface normals at each point in \a cloud
 #         * \param[in] indices the k-neighborhood point indices in the dataset
-#         */
 #       void computePointSPFHSignature (const Eigen::Vector4f &centroid_p, const Eigen::Vector4f &centroid_n,
 #                                  const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
 #                                  const std::vector<int> &indices);
-# 
 #       /** \brief Set the viewpoint.
 #         * \param[in] vpx the X coordinate of the viewpoint
 #         * \param[in] vpy the Y coordinate of the viewpoint
 #         * \param[in] vpz the Z coordinate of the viewpoint
-#         */
 #       inline void setViewPoint (float vpx, float vpy, float vpz)
-# 
 #       /** \brief Get the viewpoint. */
 #       inline void getViewPoint (float &vpx, float &vpy, float &vpz)
-# 
 #       /** \brief Set use_given_normal_
 #         * \param[in] use Set to true if you want to use the normal passed to setNormalUse(normal)
 #         */
 #       inline void setUseGivenNormal (bool use)
-# 
 #       /** \brief Set the normal to use
 #         * \param[in] normal Sets the normal to be used in the VFH computation. It is is used
 #         * to build the Darboux Coordinate system.
 #         */
 #       inline void setNormalToUse (const Eigen::Vector3f &normal)
-# 
 #       /** \brief Set use_given_centroid_
 #         * \param[in] use Set to true if you want to use the centroid passed through setCentroidToUse(centroid)
 #         */
-#       inline void
-#       setUseGivenCentroid (bool use)
-# 
+#       inline void setUseGivenCentroid (bool use)
 #       /** \brief Set centroid_to_use_
 #         * \param[in] centroid Centroid to be used in the VFH computation. It is used to compute the distances
 #         * from all points to this centroid.
 #         */
 #       inline void setCentroidToUse (const Eigen::Vector3f &centroid)
-# 
 #       /** \brief set normalize_bins_
 #         * \param[in] normalize If true, the VFH bins are normalized using the total number of points
 #         */
 #       inline void setNormalizeBins (bool normalize)
-# 
 #       /** \brief set normalize_distances_
 #         * \param[in] normalize If true, the 4th component of VFH (shape distribution component) get normalized
 #         * by the maximum size between the centroid and the point cloud
@@ -3227,7 +3179,7 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
 #         */
 #       void compute (PointCloudOut &output);
 # 
-#     protected:
+#       protected:
 #       /** \brief This method should get called before starting the actual computation. */
 #       bool initCompute ();
 #       /** \brief Placeholder for the f1 histogram. */
@@ -3244,7 +3196,6 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
 #       Eigen::Vector4f normal_to_use_;
 #       /** \brief Centroid to be used to computed VFH. Default, the centroid of the whole point cloud */
 #       Eigen::Vector4f centr
-# 
 #       // VFH configuration parameters because CVFH instantiates it. See constructor for default values.
 #       /** \brief Use the normal_to_use_ */
 #       bool use_given_normal_;
@@ -3259,9 +3210,6 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
 ###
 
 ###############################################################################
-# Enum
-###############################################################################
-
-###############################################################################
 # Activation
 ###############################################################################
+
