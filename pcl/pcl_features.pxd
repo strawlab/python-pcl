@@ -14,17 +14,17 @@ cimport pcl_defs as cpp
 ###############################################################################
 
 # integral_image_normal.h
-cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
-        cdef enum BorderPolicy:
-            BORDER_POLICY_IGNORE
-            BORDER_POLICY_MIRROR
-
-cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
-        cdef enum NormalEstimationMethod:
-            COVARIANCE_MATRIX
-            AVERAGE_3D_GRADIENT
-            AVERAGE_DEPTH_CHANGE
-            SIMPLE_3D_GRADIENT
+# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
+#         cdef enum BorderPolicy:
+#             BORDER_POLICY_IGNORE
+#             BORDER_POLICY_MIRROR
+# 
+# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
+#         cdef enum NormalEstimationMethod:
+#             COVARIANCE_MATRIX
+#             AVERAGE_3D_GRADIENT
+#             AVERAGE_DEPTH_CHANGE
+#             SIMPLE_3D_GRADIENT
 
 ###############################################################################
 # Types
@@ -85,8 +85,7 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # /** \brief If no surface is given, we use the input PointCloud as the surface. */
         # bool fake_surface_;
         # inline int searchForNeighbors (size_t index, double parameter, vector[int] &indices, vector[float] &distances) const
-        # inline int
-        # searchForNeighbors (const PointCloudIn &cloud, size_t index, double parameter,
+        # inline int searchForNeighbors (const PointCloudIn &cloud, size_t index, double parameter,
         #                     std::vector<int> &indices, std::vector<float> &distances) const
         # public:
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
@@ -630,7 +629,8 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         void setRectSize (const int width, const int height);
         # * \brief Sets the policy for handling borders.
         # * \param[in] border_policy the border policy.
-        void setBorderPolicy (BorderPolicy border_policy)
+        # minipcl
+        # void setBorderPolicy (BorderPolicy border_policy)
         # * \brief Computes the normal at the specified position.
         # * \param[in] pos_x x position (pixel)
         # * \param[in] pos_y y position (pixel)
@@ -662,7 +662,8 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # *   from the average depth changes.
         # * </ul>
         # * \param[in] normal_estimation_method the method used for normal estimation
-        void setNormalEstimationMethod (NormalEstimationMethod normal_estimation_method)
+        # minipcl
+        # void setNormalEstimationMethod (NormalEstimationMethod normal_estimation_method)
         # brief Set whether to use depth depending smoothing or not
         # param[in] use_depth_dependent_smoothing decides whether the smoothing is depth dependent
         void setDepthDependentSmoothing (bool use_depth_dependent_smoothing)
@@ -670,7 +671,7 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # \param[in] cloud the const boost shared pointer to a PointCloud message
         # void setInputCloud (const typename PointCloudIn::ConstPtr &cloud)
         void setInputCloud (In cloud)
-        # \brief Returns a pointer to the distance map which was computed internally
+        # brief Returns a pointer to the distance map which was computed internally
         inline float* getDistanceMap ()
         # * \brief Set the viewpoint.
         # * \param vpx the X coordinate of the viewpoint
@@ -698,6 +699,11 @@ ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNo
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGBA_t
+
+# ctypedef NormalEstimationMethod[cpp.PointXYZ, cpp.Normal] NormalEstimationMethod_t
+# ctypedef NormalEstimationMethod[cpp.PointXYZI, cpp.Normal] NormalEstimationMethod_PointXYZI_t
+# ctypedef NormalEstimationMethod[cpp.PointXYZRGB, cpp.Normal] NormalEstimationMethod_PointXYZRGB_t
+# ctypedef NormalEstimationMethod[cpp.PointXYZRGBA, cpp.Normal] NormalEstimationMethod_PointXYZRGBA_t
 ###
 
 # integral_image2D.h
@@ -840,7 +846,6 @@ cdef extern from "pcl/features/intensity_gradient.h" namespace "pcl":
         # /** \brief Estimate the intensity gradients for a set of points given in <setInputCloud (), setIndices ()> using
         #  *  the surface in setSearchSurface () and the spatial locator in setSearchMethod ().
         #  *  \param output the resultant point cloud that contains the intensity gradient vectors
-        # */
         # void computeFeature (PointCloudOut &output)
         # /** \brief Estimate the intensity gradient around a given point based on its spatial neighborhood of points
         #   * \param cloud a point cloud dataset containing XYZI coordinates (Cartesian coordinates + intensity)
@@ -848,7 +853,6 @@ cdef extern from "pcl/features/intensity_gradient.h" namespace "pcl":
         #   * \param point the 3D Cartesian coordinates of the point at which to estimate the gradient
         #   * \param normal the 3D surface normal of the given point
         #   * \param gradient the resultant 3D gradient vector
-        #   */
         # void computePointIntensityGradient (const pcl::PointCloud<PointInT> &cloud,
         #                                const std::vector<int> &indices,
         #                                const Eigen::Vector3f &point, 
@@ -879,12 +883,10 @@ cdef extern from "pcl/features/intensity_gradient.h" namespace "pcl":
 #         # /** \brief Estimate the intensity gradients for a set of points given in <setInputCloud (), setIndices ()> using
 #         #  *  the surface in setSearchSurface () and the spatial locator in setSearchMethod ().
 #         #  *  \param output the resultant point cloud that contains the intensity gradient vectors
-#         #  */
 #         # void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
 #         # /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
 #         #  * \param[out] output the output point cloud
-#         #  */
-#         # void compute (pcl::PointCloud<pcl::Normal> &) {}
+#         # void compute (pcl::PointCloud<pcl::Normal> &)
 ###
 
 # intensity_spin.h
