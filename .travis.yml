@@ -29,6 +29,8 @@ matrix:
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
 
 before_install:
+  - travis_wait make build
+
   - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
       brew update >/dev/null;
       brew outdated pyenv || brew upgrade --quiet pyenv;
