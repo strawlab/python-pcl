@@ -1,8 +1,7 @@
-﻿﻿# XXX do a more specific import!
+﻿# XXX do a more specific import!
 from ._pcl import *
 
 import sys
-
 
 def load(path, format=None):
     """Load pointcloud from path.
