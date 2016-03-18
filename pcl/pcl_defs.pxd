@@ -477,7 +477,8 @@ ctypedef PointCloud[Normal] PointNormalCloud_t
 # definitions used everywhere
 ctypedef shared_ptr[vector[int]] IndicesPtr_t;
 # ctypedef shared_ptr[vector[int]] IndicesPtrConst_t;
-
+
+
 # pcl_base.h
 # template <typename PointT>
 # class PCLBase
@@ -496,7 +497,8 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
         # # const PointT& operator[] (size_t pos)
         # # public:
         # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-###
+
+###
 
 # PolygonMesh.h
 # namespace pcl
@@ -528,7 +530,8 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
         float tex_d
         float tex_Ns
         int tex_illum
-###
+
+###
 
 cdef extern from "pcl/TextureMesh.h" namespace "pcl":
     cdef cppclass TextureMesh:
@@ -541,7 +544,8 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
 
 # ctypedef shared_ptr[TextureMesh] TextureMeshPtr_t
 # ctypedef shared_ptr[TextureMesh const] TextureMeshConstPtr_t
-###
+
+###
 
 # Vertices.h
 # namespace pcl

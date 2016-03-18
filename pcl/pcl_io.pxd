@@ -20,7 +20,8 @@ cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
                      cpp.PointCloud[cpp.PointXYZ] &cloud,
                      vector[int] &indices, 
                      bool binary_mode) nogil except +
-
+
+
     # XYZI
     int load(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
     int loadPCDFile(string file_name,

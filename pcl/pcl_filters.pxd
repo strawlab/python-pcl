@@ -162,7 +162,8 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 # NG ###
 # template <typename PointT>
 # struct xNdCopyEigenPointFunctor
-# cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
+
+# cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
 #     cdef struct xNdCopyEigenPointFunctor[T]:
 #         xNdCopyEigenPointFunctor()
 #         # ctypedef typename traits::POD<PointT>::type Pod;
@@ -296,7 +297,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 # GT, GE, LT, LE, EQ
 # }
 # CompareOp;
-
+
+
 # NG ###
 # no define constructor
 # 
@@ -306,7 +308,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 #     cdef cppclass PointDataAtOffset[T]:
 #         # PointDataAtOffset (uint8_t datatype, uint32_t offset)
 #         # int compare (const T& p, const double& val);
-###
+
+###
 # template<typename PointT>
 # class FieldComparison : public ComparisonBase<PointT>
 # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
@@ -325,7 +328,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 
 # template<typename PointT>
 # class PackedRGBComparison : public ComparisonBase<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
 #     cdef cppclass PackedRGBComparison[T](ComparisonBase[T]):
 #         # PackedRGBComparison (string component_name, CompareOp op, double compare_val)
 #         # using ComparisonBase<PointT>::capable_;
@@ -368,7 +372,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 #         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW     //needed whenever there is a fixed size Eigen:: vector or matrix in a class
 #         # ctypedef boost::shared_ptr<TfQuadraticXYZComparison<PointT> > Ptr;
 #         # typedef boost::shared_ptr<const TfQuadraticXYZComparison<PointT> > ConstPtr;
-#         # void setComparisonOperator (const pcl::ComparisonOps::CompareOp op)
+
+#         # void setComparisonOperator (const pcl::ComparisonOps::CompareOp op)
 #         # * \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
 #         #  */
 #         # void setComparisonMatrix (const Eigen::Matrix3f &matrix)
@@ -403,7 +408,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 # ###
 # NG end ###
 
-# template<typename PointT>
+
+# template<typename PointT>
 # class ConditionAnd : public ConditionBase<PointT>
 cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
     cdef cppclass ConditionAnd[T](ConditionBase[T]):
@@ -559,7 +565,8 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         # pcl::ConcaveHull classes.
         # param[in] dim Dimensionailty of the hull used to filter points.
         void setDim (int dim)
-        # \brief Remove points outside the hull (default), or those inside the hull.
+
+        # \brief Remove points outside the hull (default), or those inside the hull.
         # \param[in] crop_outside If true, the filter will remove points
         # outside the hull. If false, those inside will be removed.
         void setCropOutside(bool crop_outside)
@@ -609,7 +616,8 @@ cdef extern from "pcl/filters/extract_indices.h" namespace "pcl":
 #       /** \brief Extract point indices
 #         * \param indices the resultant indices
 #       void applyFilter (std::vector<int> &indices);
-###
+
+###
 
 # normal_space.h
 # template<typename PointT, typename NormalT>
@@ -754,7 +762,8 @@ cdef extern from "pcl/filters/project_inliers.h" namespace "pcl":
         # ctypedef typename PointCloud::Ptr PointCloudPtr;
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # ctypedef typename SampleConsensusModel<PointT>::Ptr SampleConsensusModelPtr;
-        # public:
+
+        # public:
         # \brief The type of model to use (user given parameter).
         # \param model the model type (check \a model_types.h)
         void setModelType (int model)
@@ -770,7 +779,8 @@ cdef extern from "pcl/filters/project_inliers.h" namespace "pcl":
         void setCopyAllData (bool val)
         # \brief Get whether all data is being copied (true), or only the projected inliers (false). */
         bool getCopyAllData ()
-###
+
+###
 
 # template<>
 # class PCL_EXPORTS ProjectInliers<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
@@ -1054,7 +1064,8 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
         #   * Default: false.
         #   * \param[in] limit_negative return data inside the interval (false) or outside (true)
         # void setFilterLimitsNegative (const bool limit_negative)
-        # /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
+
+        # /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
         #   * \param[out] limit_negative true if data \b outside the interval [min; max] is to be returned, false otherwise
         # void getFilterLimitsNegative (bool &limit_negative)
         # /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 

@@ -2,6 +2,7 @@ os:
 - Visual Studio 2015
 - Windows Server 2012 R2
 
+
 environment:
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
@@ -45,6 +46,7 @@ environment:
   #    PCL_ROOT: '"C:\Program Files\PCL 1.8.0"'
   #    PCL_VERSION: "1.8.0"
 
+
 branches: 
   only: 
     - master 
@@ -72,6 +74,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "SET PCL_ROOT=%PCL_ROOT%;
   
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -97,6 +100,7 @@ install:
   # @powershell -NoProfile -ExecutionPolicy unrestricted -Command "Start-Process -Verb runas /user:administrator PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn"
   - ps : appveyor\install.ps1
 
+
 build_script:
 - cmd: >-
     schtasks /create /tn pclinstall /RL HIGHEST /tr "C:\projects\python-pcl\PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn" /sc once /st 23:59
@@ -117,10 +121,12 @@ build_script:
 
     python setup.py install
 
+
 test_script:
   # Run the project tests
   # - "%CMD_IN_ENV% python setup.py nosetests"
   python tests\test.py
+
 
 #after_test:
 #  # If tests are successful, create binary packages for the project.
@@ -129,9 +135,11 @@ test_script:
 #  # - "%CMD_IN_ENV% python setup.py bdist_msi"
 #  # - ps: "ls dist"
 
+
 #artifacts:
 #  # Archive the generated packages in the ci.appveyor.com build report.
 #  # - path: dist\*
+
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse

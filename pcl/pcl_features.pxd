@@ -191,7 +191,8 @@ cdef extern from "pcl/features/3dsc.h" namespace "pcl":
         # brief Estimate the actual feature. 
         # param[out] output the resultant feature 
         # void computeFeature (PointCloudOut &output);
-        # brief Values of the radii interval
+
+        # brief Values of the radii interval
         # vector<float> radii_interval_
         # brief Theta divisions interval
         # std::vector<float> theta_divisions_;
@@ -294,7 +295,8 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
         # protected:
         # void computeFeature (PointCloudOut &output);
         # float angle_threshold_;
-###
+
+###
 
 # class CVFHEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
 # cdef extern from "pcl/features/cvfh.h" namespace "pcl":
@@ -364,7 +366,8 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
 #         # std::vector<Eigen::Vector3f> centroids_dominant_orientations_;
 #         # /** \brief Normal centroids that were used to compute different CVFH descriptors */
 #         # std::vector<Eigen::Vector3f> dominant_normals_;
-###
+
+###
 
 # esf.h
 # class ESFEstimation: public Feature<PointInT, PointOutT>
@@ -582,7 +585,8 @@ cdef extern from "pcl/features/fpfh.h" namespace "pcl":
 #         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::input_;
 #         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::compute;
 #         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::fpfh_histogram_;
-###
+
+###
 
 # fpfh_omp
 # template <typename PointInT, typename PointNT, typename PointOutT>
@@ -611,7 +615,8 @@ cdef extern from "pcl/features/fpfh_omp.h" namespace "pcl":
         # public:
         # * \brief The number of subdivisions for each angular feature interval. */
         # int nr_bins_f1_, nr_bins_f2_, nr_bins_f3_;
-###
+
+###
 
 # integral_image_normal.h
 # template <typename PointInT, typename PointOutT>
@@ -822,7 +827,8 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
 #         #   * \param[in] end_y x position of the end of the rectangle
 #         #   */
 #         inline unsigned getFiniteElementsCountSE (unsigned start_x, unsigned start_y, unsigned end_x, unsigned end_y) const;
-###
+
+###
 
 # intensity_gradient.h
 # template <typename PointInT, typename PointNT, typename PointOutT, typename IntensitySelectorT = pcl::common::IntensityFieldAccessor<PointInT> >
@@ -887,7 +893,8 @@ cdef extern from "pcl/features/intensity_gradient.h" namespace "pcl":
 #         # /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
 #         #  * \param[out] output the output point cloud
 #         # void compute (pcl::PointCloud<pcl::Normal> &)
-###
+
+###
 
 # intensity_spin.h
 # template <typename PointInT, typename PointOutT>
@@ -921,7 +928,8 @@ cdef extern from "pcl/features/intensity_spin.h" namespace "pcl":
         #                            const std::vector<int> &indices, 
         #                            const std::vector<float> &squared_distances, 
         #                            Eigen::MatrixXf &intensity_spin_image);
-        # /** \brief Set the number of bins to use in the distance dimension of the spin image
+
+        # /** \brief Set the number of bins to use in the distance dimension of the spin image
         #   * \param[in] nr_distance_bins the number of bins to use in the distance dimension of the spin image
         #   */
         # inline void setNrDistanceBins (size_t nr_distance_bins) { nr_distance_bins_ = static_cast<int> (nr_distance_bins); };
@@ -948,7 +956,8 @@ cdef extern from "pcl/features/intensity_spin.h" namespace "pcl":
         # int nr_intensity_bins_;
         # /** \brief The standard deviation of the Gaussian smoothing kernel used to construct the spin images. */
         # float sigma_;
-###
+
+###
 
 # template <typename PointInT>
 # class IntensitySpinEstimation<PointInT, Eigen::MatrixXf>: public IntensitySpinEstimation<PointInT, pcl::Histogram<20> >
@@ -1035,7 +1044,8 @@ cdef extern from "pcl/features/moment_invariants.h" namespace "pcl":
 #       void 
 #       compute (pcl::PointCloud<pcl::Normal> &) {}
 #   };
-###
+
+###
 
 # multiscale_feature_persistence.h
 # template <typename PointSource, typename PointFeature>
@@ -1311,7 +1321,8 @@ cdef extern from "pcl/features/normal_3d_omp.h" namespace "pcl":
 #       void 
 #       compute (pcl::PointCloud<pcl::Normal> &) {}
 #     };
-###
+
+###
 
 # normal_based_signature.h
 # template <typename PointT, typename PointNT, typename PointFeature>
@@ -1463,7 +1474,8 @@ cdef extern from "pcl/features/pfh.h" namespace "pcl":
 #       using PFHEstimation<PointInT, PointNT, pcl::PFHSignature125>::compute;
 #       using PFHEstimation<PointInT, PointNT, pcl::PFHSignature125>::feature_map_;
 #       using PFHEstimation<PointInT, PointNT, pcl::PFHSignature125>::key_list_;
-###
+
+###
 
 # pfhrgb.h
 # template <typename PointInT, typename PointNT, typename PointOutT = pcl::PFHRGBSignature250>
@@ -2248,7 +2260,8 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #       void
 #       compute (pcl::PointCloud<pcl::SHOT352> &) { assert(0); }
 #   };
-###
+
+###
 
 # template <typename PointInT, typename PointNT, typename PointOutT = pcl::SHOT1344, typename PointRFT = pcl::ReferenceFrame>
 # class SHOTColorEstimation : public SHOTEstimationBase<PointInT, PointNT, PointOutT, PointRFT>
@@ -2528,7 +2541,8 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #       static float sRGB_LUT[256];
 #       static float sXYZ_LUT[4000];
 #   };
-###
+
+###
 
 # template <typename PointNT, typename PointRFT>
 # class PCL_DEPRECATED_CLASS (SHOTEstimation, "SHOTEstimation<pcl::PointXYZRGBA,...,Eigen::MatrixXf,...> IS DEPRECATED, USE SHOTColorEstimation<pcl::PointXYZRGBA,...,Eigen::MatrixXf,...> FOR SHAPE AND SHAPE+COLOR INSTEAD")
@@ -2670,7 +2684,8 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
         #       virtual void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
         #       /** \brief The number of threads the scheduler should use. */
         #       int threads_;
-###
+
+###
 
 # shot_omp.h
 # template <typename PointInT, typename PointNT, typename PointOutT = pcl::SHOT352, typename PointRFT = pcl::ReferenceFrame>
@@ -2715,7 +2730,8 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
         #       bool initCompute ();
         #       /** \brief The number of threads the scheduler should use. */
         #       int threads_;
-###
+
+###
 
 # template <typename PointInT, typename PointNT, typename PointOutT = pcl::SHOT1344, typename PointRFT = pcl::ReferenceFrame>
 # class SHOTColorEstimationOMP : public SHOTColorEstimation<PointInT, PointNT, PointOutT, PointRFT>
@@ -3209,7 +3225,8 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
 #       bool normalize_distances_;
 #       /** \brief Activate or deactivate the size component of VFH */
 #       bool size_component_;
-###
+
+###
 
 ###############################################################################
 # Activation

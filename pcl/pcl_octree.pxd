@@ -495,7 +495,8 @@ cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
 #         # /** Stack structure. */
 #         # std::vector<std::pair<OctreeNode*, unsigned char> > stack_;
 # 
-# 
+
+# 
 # # template<typename DataT, typename OctreeT>
 # # class OctreeBreadthFirstIterator : public OctreeIteratorBase<DataT, OctreeT>
 # cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":

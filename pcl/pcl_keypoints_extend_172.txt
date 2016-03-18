@@ -384,7 +384,8 @@
         # using Keypoint<PointInT, PointOutT>::input_;
         # using Keypoint<PointInT, PointOutT>::indices_;
         # using Keypoint<PointInT, PointOutT>::k_;
-        # 
+
+        # 
         # /** \brief Sets the threshold for corner detection.
         # * \param[in] threshold the threshold used for corner detection.
         # */
@@ -690,7 +691,7 @@
 # * Tombari and Samuele Salti and it has been explicitly adapted to PCL.
 # * For more information about the original ISS detector, see:
 # *\par
-# * Yu Zhong, �gIntrinsic shape signatures: A shape descriptor for 3D object recognition,�h
+# * Yu Zhong, “Intrinsic shape signatures: A shape descriptor for 3D object recognition,”
 # * Computer Vision Workshops (ICCV Workshops), 2009 IEEE 12th International Conference on ,
 # * vol., no., pp.689-696, Sept. 27 2009-Oct. 4 2009
 # * Code example:
@@ -843,7 +844,7 @@ namespace pcl
 /** \brief SUSANKeypoint implements a RGB-D extension of the SUSAN detector inluding normal 
  * directions variation in top of intensity variation. 
  * It is different from Harris in that it exploits normals directly so it is faster.  
- * Original paper "SUSAN — A New Approach to Low Level Image Processing", Smith,
+ * Original paper "SUSAN 窶A New Approach to Low Level Image Processing", Smith,
  * Stephen M. and Brady, J. Michael 
  *
  * \author Nizar Sallem 

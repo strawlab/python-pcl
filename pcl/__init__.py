@@ -1,4 +1,4 @@
-# XXX do a more specific import!
+﻿﻿# XXX do a more specific import!
 from ._pcl import *
 
 import sys

@@ -733,7 +733,8 @@ from boost_shared_ptr cimport shared_ptr
 # #         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCone<PointT, PointNT> *model) : 
 # #         int operator() (const Eigen::VectorXf &x, Eigen::VectorXf &fvec) const
 # #         pcl::SampleConsensusModelCone<PointT, PointNT> *model_;
-# ###
+
+# ###
 # 
 # # sac_model_cylinder.h
 # # namespace pcl

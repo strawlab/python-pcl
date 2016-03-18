@@ -353,7 +353,8 @@ cdef extern from "pcl/registration/warp_point_rigid.h" namespace "pcl" nogil:
         # protected:
         # int nr_dim_;
         # Eigen::Matrix4f transform_matrix_;
-###
+
+###
 
 # correspondence_rejection.h
 # class CorrespondenceRejector
@@ -623,7 +624,8 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 #         void compute( const OtherPolynomial& poly, bool& hasRealRoot)
 #         template< typename OtherPolynomial > void compute( const OtherPolynomial& poly)
 # 
-# template<typename _Scalar, int NX=Eigen::Dynamic>
+
+# template<typename _Scalar, int NX=Eigen::Dynamic>
 # struct BFGSDummyFunctor
 # cdef extern from "pcl/registration/bfgs.h" nogil:
 #     cdef struct BFGSDummyFunctor[_Scalar, NX]:
@@ -968,7 +970,8 @@ cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::
 #         using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::target_;
 #         /** \brief Internal computation initalization. */
 #         bool initCompute ();
-###
+
+###
 
 
 # # correspondence_estimation_normal_shooting.h
@@ -1346,7 +1349,8 @@ cdef extern from "pcl/registration/correspondence_rejection_one_to_one.h" namesp
 #           getRemainingCorrespondences (*input_correspondences_, correspondences);
 #         }
 #     };
-# 
+
+# 
 ###
 
 # correspondence_rejection_organized_boundary.h
@@ -1710,7 +1714,8 @@ cdef extern from "pcl/registration/correspondence_rejection_sample_consensus.h" 
 #         Eigen::Matrix3f projection_matrix_;
 #         public:
 #         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-###
+
+###
 
 # correspondence_rejection_surface_normal.h
 # class CorrespondenceRejectorSurfaceNormal : public CorrespondenceRejector
@@ -2017,7 +2022,8 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 #         return (false);
 #       }
 #     };
-# 
+
+# 
 ###
 
 # correspondence_types.h
@@ -2045,7 +2051,8 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 #       */
 #     inline void 
 #     getMatchIndices (const pcl::Correspondences& correspondences, std::vector<int>& indices);
-# 
+
+# 
 ###
 
 # default_convergence_criteria.h
@@ -2370,7 +2377,8 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 #     {
 #       return ((p_src - p_tgt).squaredNorm ());
 #     }
-# 
+
+# 
 # ###
 
 # eigen.h
@@ -3965,7 +3973,8 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
         # static float
         # comparePyramidFeatureHistograms (const PyramidFeatureHistogramPtr &pyramid_a,
         #                                  const PyramidFeatureHistogramPtr &pyramid_b);
-###
+
+###
 
 # sample_consensus_prerejective.h
 # namespace pcl
@@ -4998,7 +5007,8 @@ cdef extern from "pcl/registration/transformation_estimation_point_to_plane.h" n
 # transformation_estimation_point_to_plane_lls.h
 # template <typename PointSource, typename PointTarget>
 # class TransformationEstimationPointToPlaneLLS : public TransformationEstimation<PointSource, PointTarget>
-cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls.h" namespace "pcl" nogil:
+
+cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls.h" namespace "pcl" nogil:
     cdef cppclass TransformationEstimationPointToPlaneLLS[Source, Target](TransformationEstimation[Source, Target]):
         TransformationEstimationPointToPlaneLLS ()
         # inline void
@@ -5623,5 +5633,6 @@ cdef extern from "pcl/registration/warp_point_rigid_6d.h" namespace "pcl" nogil:
         WarpPointRigid6D ()
         # public:
         # virtual void setParam (const Eigen::VectorXf & p)
-###
+
+###
 

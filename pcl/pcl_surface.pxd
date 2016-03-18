@@ -234,7 +234,8 @@ cdef extern from "pcl/surface/processing.h" namespace "pcl":
 #         AllocatorState()
 #         # public:
 #         # int index,remains;
-
+
+
 # (1.6.0) -> allocator.h
 # (1.7.2) -> pcl\surface\3rdparty\poisson4 ?
 # template<class T>

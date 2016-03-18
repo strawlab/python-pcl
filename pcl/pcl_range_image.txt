@@ -20,7 +20,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # ctypedef std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > VectorOfEigenVector3f;
         # ctypedef boost::shared_ptr<RangeImage> Ptr;
         # ctypedef boost::shared_ptr<const RangeImage> ConstPtr;
-        # enum CoordinateFrame
+
+        # enum CoordinateFrame
         #   CAMERA_FRAME = 0,
         #   LASER_FRAME  = 1
         # // =====STATIC VARIABLES=====
@@ -52,7 +53,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # * \param far_ranges the resulting cloud containing those points with far ranges
         # PCL_EXPORTS static void
         # extractFarRanges (const sensor_msgs::PointCloud2& point_cloud_data, PointCloud<PointWithViewpoint>& far_ranges);
-        # // =====METHODS=====
+
+        # // =====METHODS=====
         # /** \brief Get a boost shared pointer of a copy of this */
         # inline Ptr 
         # makeShared () { return Ptr (new RangeImage (*this)); } 
@@ -101,7 +103,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #   const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
         #   CoordinateFrame coordinate_frame=CAMERA_FRAME,
         #   float noise_level=0.0f, float min_range=0.0f, int border_size=0);
-        # * \brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
+
+        # * \brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
         # * faster calculation.
         # * \param point_cloud the input point cloud
         # * \param angular_resolution the angle (in radians) between each sample in the depth image
@@ -237,11 +240,13 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # * \param left if positive, this value overrides the position of the left edge (defaults to -1)
         # PCL_EXPORTS void
         # cropImage (int border_size=0, int top=-1, int right=-1, int bottom=-1, int left=-1);
-        # * \brief Get all the range values in one float array of size width*height  
+
+        # * \brief Get all the range values in one float array of size width*height  
         # * \return a pointer to a new float array containing the range values
         # * \note This method allocates a new float array; the caller is responsible for freeing this memory.
         # PCL_EXPORTS float* getRangesArray () const;
-        # /** Getter for the transformation from the world system into the range image system
+
+        # /** Getter for the transformation from the world system into the range image system
         #  *  (the sensor coordinate frame) */
         # inline const Eigen::Affine3f&
         # getTransformationToRangeImageSystem () const { return (to_range_image_system_); }
@@ -451,7 +456,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         
         # /** Uses the above function for every point in the image */
         # PCL_EXPORTS void getSurfaceAngleChangeImages (int radius, float*& angle_change_image_x, float*& angle_change_image_y) const;
-        
+
+        
         # /** Calculates the curvature in a point using pca */
         # inline float getCurvature (int x, int y, int radius, int step_size) const;
         
@@ -471,7 +477,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # inline void setImageOffsets (int offset_x, int offset_y)
         # /** Get a sub part of the complete image as a new range image.
         #   * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #   *                         This is always according to absolute 0,0 meaning -180Â°,-90Â°
+        #   *                         This is always according to absolute 0,0 meaning -180å±ž,-90å±ž
         #   *                         and it is already in the system of the new image, so the
         #   *                         actual pixel used in the original image is
         #   *                         combine_pixels* (image_offset_x-image_offset_x_)
@@ -703,7 +709,7 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         # 
         # /** Get a sub part of the complete image as a new range image.
         #   * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #   *                         This is always according to absolute 0,0 meaning -180‘®,-90‘®
+        #   *                         This is always according to absolute 0,0 meaning -180å±ž,-90å±ž
         #   *                         and it is already in the system of the new image, so the
         #   *                         actual pixel used in the original image is
         #   *                         combine_pixels* (image_offset_x-image_offset_x_)

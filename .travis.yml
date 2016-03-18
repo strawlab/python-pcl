@@ -1,5 +1,6 @@
 language: python 
 
+
 matrix:
   include:
     - os: linux
@@ -28,6 +29,7 @@ matrix:
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
 
+
 before_install:
   - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
       brew update >/dev/null;
@@ -48,12 +50,14 @@ before_install:
       sudo apt-get install libpcl-all -y;
     fi
 
+
 install:
   - pip install --upgrade pip
   - pip install cython
   - pip install numpy
   - python setup.py build_ext -i
   - python setup.py install
+
 
 script:
   - python tests/test.py
