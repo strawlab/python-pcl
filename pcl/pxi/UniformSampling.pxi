@@ -1,5 +1,3 @@
-
-# main
 cimport pcl_defs as cpp
 cimport pcl_keypoints as pclkp
 

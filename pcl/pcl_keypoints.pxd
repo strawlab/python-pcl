@@ -357,7 +357,7 @@ cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
         # * \param radius the 3D grid leaf size
         void setRadiusSearch (double radius)
         # protected:
-        # /** \brief Simple structure to hold an nD centroid and the number of points in a leaf. */
+        # brief Simple structure to hold an nD centroid and the number of points in a leaf.
         # struct Leaf
         # {
         #   Leaf () : idx (-1) { }

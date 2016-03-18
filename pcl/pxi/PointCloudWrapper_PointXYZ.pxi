@@ -397,5 +397,6 @@ include "OctreePointCloud.pxi"
 include "Vertices.pxi"
 include "CropHull.pxi"
 include "CropBox.pxi"
-include "UniformSampling.pxi"
+# Ubuntu/Mac NG
+# include "UniformSampling.pxi"
 # include "IntegralImageNormalEstimation.pxi"
