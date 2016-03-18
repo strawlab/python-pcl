@@ -351,13 +351,13 @@ cdef class PointCloud:
         """
         return CropBox(self)
 
-    def make_IntegralImageNormalEstimation(self):
-        """
-        Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
-
-        Deprecated: use the pcl.Vertices constructor on this cloud.
-        """
-        return IntegralImageNormalEstimation(self)
+#     def make_IntegralImageNormalEstimation(self):
+#         """
+#         Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
+# 
+#         Deprecated: use the pcl.Vertices constructor on this cloud.
+#         """
+#         return IntegralImageNormalEstimation(self)
 
     def extract(self, pyindices, bool negative=False):
         """
@@ -390,4 +390,4 @@ include "Vertices.pxi"
 include "CropHull.pxi"
 include "CropBox.pxi"
 include "UniformSampling.pxi"
-include "IntegralImageNormalEstimation.pxi"
+# include "IntegralImageNormalEstimation.pxi"
