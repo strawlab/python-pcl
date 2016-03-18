@@ -67,7 +67,3 @@ include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 
 include "pxi/OctreePointCloudSearch.pxi"
 
-IF UNAME_SYSNAME == "Windows":
-    include "pxi/PointCloudWrapper_PointXYZ.pxi"
-ELSE:
-    include "other_definitions.pxi"

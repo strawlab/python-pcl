@@ -1,5 +1,4 @@
-﻿﻿
-from libcpp.vector cimport vector
+﻿from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp

@@ -319,13 +319,13 @@ cdef class PointCloud:
         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return mls
 
-    def make_kdtree(self):
-        """
-        Return a pcl.kdTree object with this object set as the input-cloud
-
-        Deprecated: use the pcl.KdTree constructor on this cloud.
-        """
-        return KdTree(self)
+#     def make_kdtree(self):
+#         """
+#         Return a pcl.kdTree object with this object set as the input-cloud
+# 
+#         Deprecated: use the pcl.KdTree constructor on this cloud.
+#         """
+#         return KdTree(self)
 
     def make_kdtree_flann(self):
         """
