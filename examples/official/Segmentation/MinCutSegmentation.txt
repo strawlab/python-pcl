@@ -22,6 +22,7 @@ indices = pass.filter()
 # pcl::MinCutSegmentation<pcl::PointXYZ> seg;
 # seg.setInputCloud (cloud);
 # seg.setIndices (indices);
+# seg = cloud.make_MinCutSegmentation()
 
 # pcl::PointCloud<pcl::PointXYZ>::Ptr foreground_points(new pcl::PointCloud<pcl::PointXYZ> ());
 foreground_points = pcl.PointCloud()
