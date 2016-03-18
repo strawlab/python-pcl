@@ -6,162 +6,358 @@ from libcpp cimport bool
 
 # main
 cimport pcl_defs as cpp
+cimport eigen as eigen3
 
 # boost
 from boost_shared_ptr cimport shared_ptr
 
+### base class ###
+
+# person_classifier.h
+# namespace pcl
+# namespace people
+# template <typename PointT> class PersonClassifier;
+# template <typename PointT>
+# class PersonClassifier
+cdef extern from "pcl/people/person_classifier.h" namespace "pcl::people":
+    cdef cppclass PersonClassifier:
+        PersonClassifier()
+        # protected:
+        # /** \brief Height of the image patch to classify. */
+        # int window_height_;          
+        # /** \brief Width of the image patch to classify. */
+        # int window_width_;          
+        # /** \brief SVM offset. */
+        # float SVM_offset_;          
+        # /** \brief SVM weights vector. */
+        # std::vector<float> SVM_weights_;  
+        # public:
+        # typedef pcl::PointCloud<PointT> PointCloud;
+        # typedef boost::shared_ptr<PointCloud> PointCloudPtr;
+        # /** \brief Load SVM parameters from a text file. 
+        # * \param[in] svm_filename Filename containing SVM parameters.
+        # * \return true if SVM has been correctly set, false otherwise.
+        bool loadSVMFromFile (string svm_filename)
+        # * \brief Set trained SVM for person confidence estimation.
+        # * \param[in] window_height Detection window height.
+        # * \param[in] window_width Detection window width.
+        # * \param[in] SVM_weights SVM weights vector.
+        # * \param[in] SVM_offset SVM offset.
+        void setSVM (int window_height, int window_width, vector[float] SVM_weights, float SVM_offset)
+        # * \brief Get trained SVM for person confidence estimation.
+        # * \param[out] window_height Detection window height.
+        # * \param[out] window_width Detection window width.
+        # * \param[out] SVM_weights SVM weights vector.
+        # * \param[out] SVM_offset SVM offset.
+        # void getSVM (int& window_height, int& window_width, vector[float]& SVM_weights, float& SVM_offset);
+        # * \brief Resize an image represented by a pointcloud containing RGB information.
+        # * \param[in] input_image A pointer to a pointcloud containing RGB information.
+        # * \param[out] output_image A pointer to the output pointcloud.
+        # * \param[in] width Output width.
+        # * \param[in] height Output height.
+        # void resize (PointCloudPtr& input_image, PointCloudPtr& output_image, int width, int height)
+        # * \brief Copies an image and makes a black border around it, where the source image is not present.
+        # * \param[in] input_image A pointer to a pointcloud containing RGB information.
+        # * \param[out] output_image A pointer to the output pointcloud.
+        # * \param[in] xmin x coordinate of the top-left point of the bbox to copy from the input image.
+        # * \param[in] ymin y coordinate of the top-left point of the bbox to copy from the input image.
+        # * \param[in] width Output width.
+        # * \param[in] height Output height.
+        # void copyMakeBorder (PointCloudPtr& input_image, PointCloudPtr& output_image, int xmin, int ymin, int width, int height)
+        # * \brief Classify the given portion of image.
+        # * \param[in] height The height of the image patch to classify, in pixels.
+        # * \param[in] xc The x-coordinate of the center of the image patch to classify, in pixels.
+        # * \param[in] yc The y-coordinate of the center of the image patch to classify, in pixels.
+        # * \param[in] image The whole image (pointer to a point cloud containing RGB information) containing the object to classify.
+        # * \return The classification score given by the SVM.
+        # double evaluate (float height, float xc, float yc, PointCloudPtr& image)
+        # * \brief Compute person confidence for a given PersonCluster.
+        # * \param[in] image The input image (pointer to a point cloud containing RGB information).
+        # * \param[in] bottom Theoretical bottom point of the cluster projected to the image.
+        # * \param[in] top Theoretical top point of the cluster projected to the image.
+        # * \param[in] centroid Theoretical centroid point of the cluster projected to the image.
+        # * \param[in] vertical If true, the sensor is considered to be vertically placed (portrait mode).
+        # * \return The person confidence.
+        # double evaluate (PointCloudPtr& image, Eigen::Vector3f& bottom, Eigen::Vector3f& top, Eigen::Vector3f& centroid, bool vertical)
+###
+
+
+# person_cluster.h
+# namespace pcl
+# namespace people
+# /** \brief @b PersonCluster represents a class for representing information about a cluster containing a person.
+#  * \author Filippo Basso, Matteo Munaro
+#  * \ingroup people
+#  */
+# template <typename PointT> class PersonCluster;
+# template <typename PointT> bool operator<(const PersonCluster<PointT>& c1, const PersonCluster<PointT>& c2);
+# 
+# template <typename PointT>
+# class PersonCluster
+cdef extern from "pcl/people/person_cluster.h" namespace "pcl::people":
+    cdef cppclass PersonCluster:
+        PersonClassifier()
+        # PersonCluster (
+        # const PointCloudPtr& input_cloud,
+        # const pcl::PointIndices& indices,
+        # const Eigen::VectorXf& ground_coeffs,
+        # float sqrt_ground_coeffs,
+        # bool head_centroid,
+        # bool vertical = false);
+        # protected:
+        # bool head_centroid_;
+        # /** \brief Minimum x coordinate of the cluster points. */
+        # float min_x_;
+        # /** \brief Minimum y coordinate of the cluster points. */
+        # float min_y_;
+        # /** \brief Minimum z coordinate of the cluster points. */
+        # float min_z_;
+        # /** \brief Maximum x coordinate of the cluster points. */
+        # float max_x_;
+        # /** \brief Maximum y coordinate of the cluster points. */
+        # float max_y_;
+        # /** \brief Maximum z coordinate of the cluster points. */
+        # float max_z_;
+        # /** \brief Sum of x coordinates of the cluster points. */
+        # float sum_x_;
+        # /** \brief Sum of y coordinates of the cluster points. */
+        # float sum_y_;
+        # /** \brief Sum of z coordinates of the cluster points. */
+        # float sum_z_;
+        # /** \brief Number of cluster points. */
+        # int n_;
+        # /** \brief x coordinate of the cluster centroid. */
+        # float c_x_;
+        # /** \brief y coordinate of the cluster centroid. */
+        # float c_y_;
+        # /** \brief z coordinate of the cluster centroid. */
+        # float c_z_;
+        # /** \brief Cluster height from the ground plane. */
+        # float height_;
+        # /** \brief Cluster distance from the sensor. */
+        # float distance_;
+        # /** \brief Cluster centroid horizontal angle with respect to z axis. */
+        # float angle_;
+        # /** \brief Maximum angle of the cluster points. */
+        # float angle_max_;
+        # /** \brief Minimum angle of the cluster points. */
+        # float angle_min_;
+        # /** \brief Cluster top point. */
+        # Eigen::Vector3f top_;
+        # /** \brief Cluster bottom point. */
+        # Eigen::Vector3f bottom_;
+        # /** \brief Cluster centroid. */
+        # Eigen::Vector3f center_;
+        # /** \brief Theoretical cluster top. */
+        # Eigen::Vector3f ttop_;
+        # /** \brief Theoretical cluster bottom (lying on the ground plane). */
+        # Eigen::Vector3f tbottom_;
+        # /** \brief Theoretical cluster center (between ttop_ and tbottom_). */
+        # Eigen::Vector3f tcenter_;
+        # /** \brief Vector containing the minimum coordinates of the cluster. */
+        # Eigen::Vector3f min_;
+        # /** \brief Vector containing the maximum coordinates of the cluster. */
+        # Eigen::Vector3f max_;
+        # /** \brief Point cloud indices of the cluster points. */
+        # pcl::PointIndices points_indices_;
+        # /** \brief If true, the sensor is considered to be vertically placed (portrait mode). */
+        # bool vertical_;
+        # /** \brief PersonCluster HOG confidence. */
+        # float person_confidence_;
+        # public:
+        # typedef pcl::PointCloud<PointT> PointCloud;
+        # typedef boost::shared_ptr<PointCloud> PointCloudPtr;
+        # typedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
+        # * \brief Returns the height of the cluster.
+        # * \return the height of the cluster.
+        float getHeight ();
+        # * \brief Update the height of the cluster.
+        # * \param[in] ground_coeffs The coefficients of the ground plane.
+        # * \return the height of the cluster.
+        # float updateHeight (const Eigen::VectorXf& ground_coeffs);
+        # * \brief Update the height of the cluster.
+        # * \param[in] ground_coeffs The coefficients of the ground plane.
+        # * \param[in] sqrt_ground_coeffs The norm of the vector [a, b, c] where a, b and c are the first
+        # * three coefficients of the ground plane (ax + by + cz + d = 0).
+        # * \return the height of the cluster.
+        # float updateHeight (const Eigen::VectorXf& ground_coeffs, float sqrt_ground_coeffs);
+        # * \brief Returns the distance of the cluster from the sensor.
+        # * \return the distance of the cluster (its centroid) from the sensor without considering the
+        # * y dimension.
+        float getDistance ()
+        # * \brief Returns the angle formed by the cluster's centroid with respect to the sensor (in radians).
+        # * \return the angle formed by the cluster's centroid with respect to the sensor (in radians).
+        float getAngle ()
+        # * \brief Returns the minimum angle formed by the cluster with respect to the sensor (in radians).
+        # * \return the minimum angle formed by the cluster with respect to the sensor (in radians).
+        float getAngleMin ()
+        # * \brief Returns the maximum angle formed by the cluster with respect to the sensor (in radians).
+        # * \return the maximum angle formed by the cluster with respect to the sensor (in radians).
+        float getAngleMax ()
+        # * \brief Returns the indices of the point cloud points corresponding to the cluster.
+        # * \return the indices of the point cloud points corresponding to the cluster.
+        # pcl::PointIndices& getIndices ();
+        # * \brief Returns the theoretical top point.
+        # * \return the theoretical top point.
+        # Eigen::Vector3f& getTTop ();
+        # * \brief Returns the theoretical bottom point.
+        # * \return the theoretical bottom point.
+        # Eigen::Vector3f& getTBottom ();
+        # * \brief Returns the theoretical centroid (at half height).
+        # * \return the theoretical centroid (at half height).
+        # Eigen::Vector3f& getTCenter ();
+        # * \brief Returns the top point.
+        # * \return the top point.
+        # Eigen::Vector3f& getTop ();
+        # * \brief Returns the bottom point.
+        # * \return the bottom point.
+        # Eigen::Vector3f& getBottom ();
+        # * \brief Returns the centroid.
+        # * \return the centroid.
+        # Eigen::Vector3f& getCenter ();  
+        # //Eigen::Vector3f& getTMax();
+        # * \brief Returns the point formed by min x, min y and min z.
+        # * \return the point formed by min x, min y and min z.
+        # Eigen::Vector3f& getMin ();
+        # * \brief Returns the point formed by max x, max y and max z.
+        # * \return the point formed by max x, max y and max z.
+        # Eigen::Vector3f& getMax ();
+        # /**
+        # * \brief Returns the HOG confidence.
+        # * \return the HOG confidence.
+        # */
+        # float
+        # getPersonConfidence ();
+        # /**
+        # * \brief Returns the number of points of the cluster.
+        # * \return the number of points of the cluster.
+        # */
+        # int getNumberPoints ();
+        # /**
+        # * \brief Sets the cluster height.
+        # * \param[in] height
+        # */
+        # void setHeight (float height);
+        # /**
+        # * \brief Sets the HOG confidence.
+        # * \param[in] confidence
+        # */
+        # void setPersonConfidence (float confidence);
+        # /**
+        # * \brief Draws the theoretical 3D bounding box of the cluster in the PCL visualizer.
+        # * \param[in] viewer PCL visualizer.
+        # * \param[in] person_number progressive number representing the person.
+        # */
+        # void drawTBoundingBox (pcl::visualization::PCLVisualizer& viewer, int person_number);
+        # /**
+        # * \brief For sorting purpose: sort by distance.
+        # */
+        # friend bool operator< <>(const PersonCluster<PointT>& c1, const PersonCluster<PointT>& c2);
+        # protected:
+        # /**
+        # * \brief PersonCluster initialization.
+        # */
+        # void init(
+        #   const PointCloudPtr& input_cloud,
+        #   const pcl::PointIndices& indices,
+        #   const Eigen::VectorXf& ground_coeffs,
+        #   float sqrt_ground_coeffs,
+        #   bool head_centroid,
+        #   bool vertical);
+###
+
+
 # ground_based_people_detection_app.h
 # namespace pcl
 # namespace people
-# /** \brief GroundBasedPeopleDetectionApp performs people detection on RGB-D data having as input the ground plane coefficients.
-#  * It implements the people detection algorithm described here:
-#  * M. Munaro, F. Basso and E. Menegatti,
-#  * Tracking people within groups with RGB-D data,
-#  * In Proceedings of the International Conference on Intelligent Robots and Systems (IROS) 2012, Vilamoura (Portugal), 2012.
-#  * \author Matteo Munaro
-#  * \ingroup people
-#  */
 # template <typename PointT>
 # class GroundBasedPeopleDetectionApp
 # public:
 cdef extern from "pcl/people/ground_based_people_detection_app.h" namespace "pcl::people":
-    cdef cppclass GroundBasedPeopleDetectionApp:
+    cdef cppclass GroundBasedPeopleDetectionApp[PointT]:
         GroundBasedPeopleDetectionApp()
         # typedef pcl::PointCloud<PointT> PointCloud;
         # typedef boost::shared_ptr<PointCloud> PointCloudPtr;
         # typedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
-        # /**
-        #  * \brief Set the pointer to the input cloud.
-        #  * \param[in] cloud A pointer to the input cloud.
-        #  */
+        # * \brief Set the pointer to the input cloud.
+        # * \param[in] cloud A pointer to the input cloud.
         # void setInputCloud (PointCloudPtr& cloud);
-        # /**
+        void setInputCloud (sharedPtr[cpp.PointCloud[PointT]] cloud)
         #  * \brief Set the ground coefficients.
         #  * \param[in] ground_coeffs Vector containing the four plane coefficients.
-        #  */
         # void setGround (Eigen::VectorXf& ground_coeffs);
-        # /**
         #  * \brief Set the transformation matrix, which is used in order to transform the given point cloud, the ground plane and the intrinsics matrix to the internal coordinate frame.
         #  * \param[in] cloud A pointer to the input cloud.
-        # */
-        # void setTransformation (const Eigen::Matrix3f& transformation);
-        # /**
+        void setTransformation (eigen3.Matrix3f& transformation);
         #  * \brief Set sampling factor. 
         #  * \param[in] sampling_factor Value of the downsampling factor (in each dimension) which is applied to the raw point cloud (default = 1.).
-        #  */
-        # void setSamplingFactor (int sampling_factor);
-        # /**
+        void setSamplingFactor (int sampling_factor);
         #  * \brief Set voxel size. 
         #  * \param[in] voxel_size Value of the voxel dimension (default = 0.06m.).
-        #  */
-        # void setVoxelSize (float voxel_size);
-        # /**
+        void setVoxelSize (float voxel_size);
         #  * \brief Set intrinsic parameters of the RGB camera.
         #  * \param[in] intrinsics_matrix RGB camera intrinsic parameters matrix.
-        #  */
-        # void setIntrinsics (Eigen::Matrix3f intrinsics_matrix);
-        # /**
+        void setIntrinsics (eigen3.Matrix3f intrinsics_matrix);
         #  * \brief Set SVM-based person classifier.
         #  * \param[in] person_classifier Needed for people detection on RGB data.
-        #  */
         # void setClassifier (pcl::people::PersonClassifier<pcl::RGB> person_classifier);
-        # /**
         #  * \brief Set the field of view of the point cloud in z direction.
         #  * \param[in] min The beginning of the field of view in z-direction, should be usually set to zero.
         #  * \param[in] max The end of the field of view in z-direction.
-        #  */
-        # void setFOV (float min, float max);
-        # /**
+        void setFOV (float min, float max)
         #  * \brief Set sensor orientation (vertical = true means portrait mode, vertical = false means landscape mode).
         #  * \param[in] vertical Set landscape/portait camera orientation (default = false).
-        #  */
-        # void setSensorPortraitOrientation (bool vertical);
-        # /**
+        void setSensorPortraitOrientation (bool vertical)
         #  * \brief Set head_centroid_ to true (person centroid is in the head) or false (person centroid is the whole body centroid).
         #  * \param[in] head_centroid Set the location of the person centroid (head or body center) (default = true).
-        #  */
-        # void setHeadCentroid (bool head_centroid);
-        # /**
+        void setHeadCentroid (bool head_centroid)
         #  * \brief Set minimum and maximum allowed height and width for a person cluster.
         #  * \param[in] min_height Minimum allowed height for a person cluster (default = 1.3).
         #  * \param[in] max_height Maximum allowed height for a person cluster (default = 2.3).
         #  * \param[in] min_width Minimum width for a person cluster (default = 0.1).
         #  * \param[in] max_width Maximum width for a person cluster (default = 8.0).
-        #  */
-        # void setPersonClusterLimits (float min_height, float max_height, float min_width, float max_width);
-        # /**
+        void setPersonClusterLimits (float min_height, float max_height, float min_width, float max_width)
         #  * \brief Set minimum distance between persons' heads.
         #  * \param[in] heads_minimum_distance Minimum allowed distance between persons' heads (default = 0.3).
-        #  */
-        # void setMinimumDistanceBetweenHeads (float heads_minimum_distance);
-        # /**
+        void setMinimumDistanceBetweenHeads (float heads_minimum_distance)
         #  * \brief Get the minimum and maximum allowed height and width for a person cluster.
         #  * \param[out] min_height Minimum allowed height for a person cluster.
         #  * \param[out] max_height Maximum allowed height for a person cluster.
         #  * \param[out] min_width Minimum width for a person cluster.
         #  * \param[out] max_width Maximum width for a person cluster.
-        #  */
-        # void getPersonClusterLimits (float& min_height, float& max_height, float& min_width, float& max_width);
-        # /**
+        void getPersonClusterLimits (float& min_height, float& max_height, float& min_width, float& max_width);
         #   * \brief Get minimum and maximum allowed number of points for a person cluster.
         #   * \param[out] min_points Minimum allowed number of points for a person cluster.
         #   * \param[out] max_points Maximum allowed number of points for a person cluster.
-        #   */
-        # void getDimensionLimits (int& min_points, int& max_points);
-        # /**
+        void getDimensionLimits (int& min_points, int& max_points)
         #   * \brief Get minimum distance between persons' heads.
-        #   */
-        # float getMinimumDistanceBetweenHeads ();
-        # /**
+        float getMinimumDistanceBetweenHeads ()
         #   * \brief Get floor coefficients.
-        #   */
         # Eigen::VectorXf getGround ();
-        # /**
         #   * \brief Get the filtered point cloud.
-        #   */
         # PointCloudPtr getFilteredCloud ();
-        # /**
         #   * \brief Get pointcloud after voxel grid filtering and ground removal.
-        #   */
         # PointCloudPtr getNoGroundCloud ();
-        # /**
         #   * \brief Extract RGB information from a point cloud and output the corresponding RGB point cloud.
-        #   *
         #   * \param[in] input_cloud A pointer to a point cloud containing also RGB information.
         #   * \param[out] output_cloud A pointer to a RGB point cloud.
-        #   */
         # void extractRGBFromPointCloud (PointCloudPtr input_cloud, pcl::PointCloud<pcl::RGB>::Ptr& output_cloud);
-        # /**
         #   * \brief Swap rows/cols dimensions of a RGB point cloud (90 degrees counterclockwise rotation).
-        #   *
         #   * \param[in,out] cloud A pointer to a RGB point cloud.
-        #   */
         # void swapDimensions (pcl::PointCloud<pcl::RGB>::Ptr& cloud);
-        # /**
         #   * \brief Estimates min_points_ and max_points_ based on the minimal and maximal cluster size and the voxel size.
-        #   */
-        # void updateMinMaxPoints ();
-        # /**
+        void updateMinMaxPoints ()
         #   * \brief Applies the transformation to the input point cloud.
-        #   */
-        # void applyTransformationPointCloud ();
-        # /**
+        void applyTransformationPointCloud ()
         #   * \brief Applies the transformation to the ground plane.
-        #   */
-        # void applyTransformationGround ();
-        # /**
+        void applyTransformationGround ()
         #   * \brief Applies the transformation to the intrinsics matrix.
-        #   */
-        # void applyTransformationIntrinsics ();
-        # /**
+        void applyTransformationIntrinsics ()
         #   * \brief Reduces the input cloud to one point per voxel and limits the field of view.
-        #   */
-        # void filter ();
-        # /**
+        void filter ()
         #   * \brief Perform people detection on the input data and return people clusters information.
         #   * \param[out] clusters Vector of PersonCluster.
         #   * \return true if the compute operation is successful, false otherwise.
-        #   */
         # bool compute (std::vector<pcl::people::PersonCluster<PointT> >& clusters);
         # protected:
         # /** \brief sampling factor used to downsample the point cloud */
@@ -236,16 +432,14 @@ cdef extern from "pcl/people/ground_based_people_detection_app.h" namespace "pcl
 # template <typename PointT>
 # class HeadBasedSubclustering
 cdef extern from "pcl/people/head_based_subcluster.h" namespace "pcl::people":
-    cdef cppclass HeadBasedSubclustering:
+    cdef cppclass HeadBasedSubclustering[PointT]:
         HeadBasedSubclustering()
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
         # typedef boost::shared_ptr<PointCloud> PointCloudPtr;
         # typedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
-        # /**
         #  * \brief Compute subclusters and return them into a vector of PersonCluster.
         #  * \param[in] clusters Vector of PersonCluster.
-        #  */
         # void subcluster (std::vector<pcl::people::PersonCluster<PointT> >& clusters);
         # /**
         # * \brief Merge clusters close in floor coordinates.
@@ -573,322 +767,6 @@ cdef extern from "pcl/people/hog.h" namespace "pcl::people":
         # bool soft_bin_;   
         # /** \brief value at which to clip histogram bins (default = 0.2) */
         # float clip_; 
-###
-
-# person_classifier.h
-# namespace pcl
-# namespace people
-# template <typename PointT> class PersonClassifier;
-# template <typename PointT>
-# class PersonClassifier
-cdef extern from "pcl/people/person_classifier.h" namespace "pcl::people":
-    cdef cppclass PersonClassifier:
-        PersonClassifier()
-        # protected:
-        # /** \brief Height of the image patch to classify. */
-        # int window_height_;          
-        # /** \brief Width of the image patch to classify. */
-        # int window_width_;          
-        # /** \brief SVM offset. */
-        # float SVM_offset_;          
-        # /** \brief SVM weights vector. */
-        # std::vector<float> SVM_weights_;  
-        # public:
-        # typedef pcl::PointCloud<PointT> PointCloud;
-        # typedef boost::shared_ptr<PointCloud> PointCloudPtr;
-        # /** \brief Load SVM parameters from a text file. 
-        # * \param[in] svm_filename Filename containing SVM parameters.
-        # * \return true if SVM has been correctly set, false otherwise.
-        # */
-        # bool
-        # loadSVMFromFile (std::string svm_filename);
-        # /**
-        # * \brief Set trained SVM for person confidence estimation.
-        # * \param[in] window_height Detection window height.
-        # * \param[in] window_width Detection window width.
-        # * \param[in] SVM_weights SVM weights vector.
-        # * \param[in] SVM_offset SVM offset.
-        # */
-        # void
-        # setSVM (int window_height, int window_width, std::vector<float> SVM_weights, float SVM_offset);
-        # /**
-        # * \brief Get trained SVM for person confidence estimation.
-        # * \param[out] window_height Detection window height.
-        # * \param[out] window_width Detection window width.
-        # * \param[out] SVM_weights SVM weights vector.
-        # * \param[out] SVM_offset SVM offset.
-        # */
-        # void
-        # getSVM (int& window_height, int& window_width, std::vector<float>& SVM_weights, float& SVM_offset);
-        # /**
-        # * \brief Resize an image represented by a pointcloud containing RGB information.
-        # * \param[in] input_image A pointer to a pointcloud containing RGB information.
-        # * \param[out] output_image A pointer to the output pointcloud.
-        # * \param[in] width Output width.
-        # * \param[in] height Output height.
-        # */
-        # void
-        # resize (PointCloudPtr& input_image, PointCloudPtr& output_image,
-        #       int width, int height);
-        # /**
-        # * \brief Copies an image and makes a black border around it, where the source image is not present.
-        # * \param[in] input_image A pointer to a pointcloud containing RGB information.
-        # * \param[out] output_image A pointer to the output pointcloud.
-        # * \param[in] xmin x coordinate of the top-left point of the bbox to copy from the input image.
-        # * \param[in] ymin y coordinate of the top-left point of the bbox to copy from the input image.
-        # * \param[in] width Output width.
-        # * \param[in] height Output height.
-        # */
-        # void
-        # copyMakeBorder (PointCloudPtr& input_image, PointCloudPtr& output_image,
-        #   int xmin, int ymin, int width, int height);
-        # /**
-        # * \brief Classify the given portion of image.
-        # * \param[in] height The height of the image patch to classify, in pixels.
-        # * \param[in] xc The x-coordinate of the center of the image patch to classify, in pixels.
-        # * \param[in] yc The y-coordinate of the center of the image patch to classify, in pixels.
-        # * \param[in] image The whole image (pointer to a point cloud containing RGB information) containing the object to classify.
-        # * \return The classification score given by the SVM.
-        # */
-        # double evaluate (float height, float xc, float yc, PointCloudPtr& image);
-        # /**
-        # * \brief Compute person confidence for a given PersonCluster.
-        # * \param[in] image The input image (pointer to a point cloud containing RGB information).
-        # * \param[in] bottom Theoretical bottom point of the cluster projected to the image.
-        # * \param[in] top Theoretical top point of the cluster projected to the image.
-        # * \param[in] centroid Theoretical centroid point of the cluster projected to the image.
-        # * \param[in] vertical If true, the sensor is considered to be vertically placed (portrait mode).
-        # * \return The person confidence.
-        # */
-        # double
-        # evaluate (PointCloudPtr& image, Eigen::Vector3f& bottom, Eigen::Vector3f& top, Eigen::Vector3f& centroid,
-        #  bool vertical);
-###
-
-# person_cluster.h
-# namespace pcl
-# namespace people
-# /** \brief @b PersonCluster represents a class for representing information about a cluster containing a person.
-#  * \author Filippo Basso, Matteo Munaro
-#  * \ingroup people
-#  */
-# template <typename PointT> class PersonCluster;
-# template <typename PointT> bool operator<(const PersonCluster<PointT>& c1, const PersonCluster<PointT>& c2);
-# 
-# template <typename PointT>
-# class PersonCluster
-cdef extern from "pcl/people/person_cluster.h" namespace "pcl::people":
-    cdef cppclass PersonCluster:
-        PersonClassifier()
-        # PersonCluster (
-        #   const PointCloudPtr& input_cloud,
-        #   const pcl::PointIndices& indices,
-        #   const Eigen::VectorXf& ground_coeffs,
-        #   float sqrt_ground_coeffs,
-        #   bool head_centroid,
-        #   bool vertical = false);
-        # protected:
-        # bool head_centroid_;
-        # /** \brief Minimum x coordinate of the cluster points. */
-        # float min_x_;
-        # /** \brief Minimum y coordinate of the cluster points. */
-        # float min_y_;
-        # /** \brief Minimum z coordinate of the cluster points. */
-        # float min_z_;
-        # /** \brief Maximum x coordinate of the cluster points. */
-        # float max_x_;
-        # /** \brief Maximum y coordinate of the cluster points. */
-        # float max_y_;
-        # /** \brief Maximum z coordinate of the cluster points. */
-        # float max_z_;
-        # /** \brief Sum of x coordinates of the cluster points. */
-        # float sum_x_;
-        # /** \brief Sum of y coordinates of the cluster points. */
-        # float sum_y_;
-        # /** \brief Sum of z coordinates of the cluster points. */
-        # float sum_z_;
-        # /** \brief Number of cluster points. */
-        # int n_;
-        # /** \brief x coordinate of the cluster centroid. */
-        # float c_x_;
-        # /** \brief y coordinate of the cluster centroid. */
-        # float c_y_;
-        # /** \brief z coordinate of the cluster centroid. */
-        # float c_z_;
-        # /** \brief Cluster height from the ground plane. */
-        # float height_;
-        # /** \brief Cluster distance from the sensor. */
-        # float distance_;
-        # /** \brief Cluster centroid horizontal angle with respect to z axis. */
-        # float angle_;
-        # /** \brief Maximum angle of the cluster points. */
-        # float angle_max_;
-        # /** \brief Minimum angle of the cluster points. */
-        # float angle_min_;
-        # /** \brief Cluster top point. */
-        # Eigen::Vector3f top_;
-        # /** \brief Cluster bottom point. */
-        # Eigen::Vector3f bottom_;
-        # /** \brief Cluster centroid. */
-        # Eigen::Vector3f center_;
-        # /** \brief Theoretical cluster top. */
-        # Eigen::Vector3f ttop_;
-        # /** \brief Theoretical cluster bottom (lying on the ground plane). */
-        # Eigen::Vector3f tbottom_;
-        # /** \brief Theoretical cluster center (between ttop_ and tbottom_). */
-        # Eigen::Vector3f tcenter_;
-        # /** \brief Vector containing the minimum coordinates of the cluster. */
-        # Eigen::Vector3f min_;
-        # /** \brief Vector containing the maximum coordinates of the cluster. */
-        # Eigen::Vector3f max_;
-        # /** \brief Point cloud indices of the cluster points. */
-        # pcl::PointIndices points_indices_;
-        # /** \brief If true, the sensor is considered to be vertically placed (portrait mode). */
-        # bool vertical_;
-        # /** \brief PersonCluster HOG confidence. */
-        # float person_confidence_;
-        # public:
-        # typedef pcl::PointCloud<PointT> PointCloud;
-        # typedef boost::shared_ptr<PointCloud> PointCloudPtr;
-        # typedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
-        # /** \brief Constructor. */
-        # PersonCluster (
-        # const PointCloudPtr& input_cloud,
-        # const pcl::PointIndices& indices,
-        # const Eigen::VectorXf& ground_coeffs,
-        # float sqrt_ground_coeffs,
-        # bool head_centroid,
-        # bool vertical = false);
-        # /** \brief Destructor. */
-        # virtual ~PersonCluster ();
-        # /**
-        # * \brief Returns the height of the cluster.
-        # * \return the height of the cluster.
-        # */
-        # float getHeight ();
-        # /**
-        # * \brief Update the height of the cluster.
-        # * \param[in] ground_coeffs The coefficients of the ground plane.
-        # * \return the height of the cluster.
-        # */
-        # float updateHeight (const Eigen::VectorXf& ground_coeffs);
-        # /**
-        # * \brief Update the height of the cluster.
-        # * \param[in] ground_coeffs The coefficients of the ground plane.
-        # * \param[in] sqrt_ground_coeffs The norm of the vector [a, b, c] where a, b and c are the first
-        # * three coefficients of the ground plane (ax + by + cz + d = 0).
-        # * \return the height of the cluster.
-        # */
-        # float updateHeight (const Eigen::VectorXf& ground_coeffs, float sqrt_ground_coeffs);
-        # /**
-        # * \brief Returns the distance of the cluster from the sensor.
-        # * \return the distance of the cluster (its centroid) from the sensor without considering the
-        # * y dimension.
-        # */
-        # float getDistance ();
-        # /**
-        # * \brief Returns the angle formed by the cluster's centroid with respect to the sensor (in radians).
-        # * \return the angle formed by the cluster's centroid with respect to the sensor (in radians).
-        # */
-        # float getAngle ();
-        # /**
-        # * \brief Returns the minimum angle formed by the cluster with respect to the sensor (in radians).
-        # * \return the minimum angle formed by the cluster with respect to the sensor (in radians).
-        # */
-        # float getAngleMin ();
-        # /**
-        # * \brief Returns the maximum angle formed by the cluster with respect to the sensor (in radians).
-        # * \return the maximum angle formed by the cluster with respect to the sensor (in radians).
-        # */
-        # float getAngleMax ();
-        # /**
-        # * \brief Returns the indices of the point cloud points corresponding to the cluster.
-        # * \return the indices of the point cloud points corresponding to the cluster.
-        # */
-        # pcl::PointIndices& getIndices ();
-        # /**
-        # * \brief Returns the theoretical top point.
-        # * \return the theoretical top point.
-        # */
-        # Eigen::Vector3f& getTTop ();
-        # /**
-        # * \brief Returns the theoretical bottom point.
-        # * \return the theoretical bottom point.
-        # */
-        # Eigen::Vector3f& getTBottom ();
-        # /**
-        # * \brief Returns the theoretical centroid (at half height).
-        # * \return the theoretical centroid (at half height).
-        # */
-        # Eigen::Vector3f& getTCenter ();
-        # /**
-        # * \brief Returns the top point.
-        # * \return the top point.
-        # */
-        # Eigen::Vector3f& getTop ();
-        # /**
-        # * \brief Returns the bottom point.
-        # * \return the bottom point.
-        # */
-        # Eigen::Vector3f& getBottom ();
-        # /**
-        # * \brief Returns the centroid.
-        # * \return the centroid.
-        # */
-        # Eigen::Vector3f& getCenter ();  
-        # //Eigen::Vector3f& getTMax();
-        # /**
-        # * \brief Returns the point formed by min x, min y and min z.
-        # * \return the point formed by min x, min y and min z.
-        # */
-        # Eigen::Vector3f& getMin ();
-        # /**
-        # * \brief Returns the point formed by max x, max y and max z.
-        # * \return the point formed by max x, max y and max z.
-        # */
-        # Eigen::Vector3f& getMax ();
-        # /**
-        # * \brief Returns the HOG confidence.
-        # * \return the HOG confidence.
-        # */
-        # float
-        # getPersonConfidence ();
-        # /**
-        # * \brief Returns the number of points of the cluster.
-        # * \return the number of points of the cluster.
-        # */
-        # int getNumberPoints ();
-        # /**
-        # * \brief Sets the cluster height.
-        # * \param[in] height
-        # */
-        # void setHeight (float height);
-        # /**
-        # * \brief Sets the HOG confidence.
-        # * \param[in] confidence
-        # */
-        # void setPersonConfidence (float confidence);
-        # /**
-        # * \brief Draws the theoretical 3D bounding box of the cluster in the PCL visualizer.
-        # * \param[in] viewer PCL visualizer.
-        # * \param[in] person_number progressive number representing the person.
-        # */
-        # void drawTBoundingBox (pcl::visualization::PCLVisualizer& viewer, int person_number);
-        # /**
-        # * \brief For sorting purpose: sort by distance.
-        # */
-        # friend bool operator< <>(const PersonCluster<PointT>& c1, const PersonCluster<PointT>& c2);
-        # protected:
-        # /**
-        # * \brief PersonCluster initialization.
-        # */
-        # void init(
-        #   const PointCloudPtr& input_cloud,
-        #   const pcl::PointIndices& indices,
-        #   const Eigen::VectorXf& ground_coeffs,
-        #   float sqrt_ground_coeffs,
-        #   bool head_centroid,
-        #   bool vertical);
 ###
 
 

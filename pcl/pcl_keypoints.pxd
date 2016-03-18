@@ -23,28 +23,16 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
     cdef cppclass Keypoint[In, Out](cpp.PCLBase[In]):
         Keypoint ()
         # public:
-        # using PCLBase<PointInT>::indices_;
-        # using PCLBase<PointInT>::input_;
-        # typedef PCLBase<PointInT> BaseClass;
-        # typedef typename pcl::search::Search<PointInT> KdTree;
-        # typedef typename pcl::search::Search<PointInT>::Ptr KdTreePtr;
-        # typedef pcl::PointCloud<PointInT> PointCloudIn;
-        # typedef typename PointCloudIn::Ptr PointCloudInPtr;
-        # typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-        # typedef pcl::PointCloud<PointOutT> PointCloudOut;
-        # typedef boost::function<int (int, double, std::vector<int> &, std::vector<float> &)> SearchMethod;
-        # typedef boost::function<int (const PointCloudIn &cloud, int index, double, std::vector<int> &, std::vector<float> &)> SearchMethodSurface;
-        # public:
-        # /** \brief Provide a pointer to the input dataset that we need to estimate features at every point for.
-        # * \param cloud the const boost shared pointer to a PointCloud message
-        # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
-        # /** \brief Get a pointer to the surface point cloud dataset. */
-        # inline PointCloudInConstPtr getSearchSurface ()
-        # * \brief Provide a pointer to the search object.
-        # * \param tree a pointer to the spatial search object.
-        # inline void setSearchMethod (const KdTreePtr &tree)
-        # * \brief Get a pointer to the search method used.
-        # inline KdTreePtr getSearchMethod ()
+        # brief Provide a pointer to the input dataset that we need to estimate features at every point for.
+        # param cloud the const boost shared pointer to a PointCloud message
+        # void setSearchSurface (const PointCloudInConstPtr &cloud)
+        # brief Get a pointer to the surface point cloud dataset.
+        # PointCloudInConstPtr getSearchSurface ()
+        # brief Provide a pointer to the search object.
+        # \param tree a pointer to the spatial search object.
+        # void setSearchMethod (const KdTreePtr &tree)
+        # \brief Get a pointer to the search method used.
+        # KdTreePtr getSearchMethod ()
         # * \brief Get the internal search parameter.
         inline double getSearchParameter ()
         # * \brief Set the number of k nearest neighbors to use for the feature estimation.
@@ -89,7 +77,7 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # /** \brief The number of K nearest neighbors to use for each point. */
         # int k_;
         # /** \brief Get a string representation of the name of this class. */
-        # inline const std::string& getClassName () const { return (name_); }
+        # string getClassName ()
         # /** \brief Abstract key point detection method. */
         # virtual void detectKeypoints (PointCloudOut &output) = 0;
 ###
@@ -166,16 +154,18 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
 
 # narf_keypoint.h
 # class PCL_EXPORTS NarfKeypoint : public Keypoint<PointWithRange, int>
-#   public:
-#     // =====TYPEDEFS=====
-#     typedef Keypoint<PointWithRange, int> BaseClass;
-#     typedef Keypoint<PointWithRange, int>::PointCloudOut PointCloudOut;
-# 
-#     // =====PUBLIC STRUCTS=====
-#     //! Parameters used in this class
-#     struct Parameters
-#     {
-#       Parameters() : support_size(-1.0f), max_no_of_interest_points(-1), min_distance_between_interest_points(0.25f),
+# cdef extern from "pcl/keypoints/narf_keypoint.h" namespace "pcl":
+#        cdef cppclass NarfKeypoint(Keypoint[PointWithRange, int]):
+#           NarfKeypoint ()
+#           # NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, float support_size=-1.0f);
+#           public:
+#           // =====TYPEDEFS=====
+#           typedef Keypoint<PointWithRange, int> BaseClass;
+#           typedef Keypoint<PointWithRange, int>::PointCloudOut PointCloudOut;
+#           // =====PUBLIC STRUCTS=====
+#           //! Parameters used in this class
+#           cdef struct Parameters
+#               Parameters() : support_size(-1.0f), max_no_of_interest_points(-1), min_distance_between_interest_points(0.25f),
 #                      optimal_distance_to_high_surface_change(0.25), min_interest_value(0.45f),
 #                      min_surface_change_score(0.2f), optimal_range_image_patch_size(10),
 #                      distance_for_additional_points(0.0f), add_points_on_straight_edges(false),
@@ -183,94 +173,81 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
 #                      max_no_of_threads(1), use_recursive_scale_reduction(false),
 #                      calculate_sparse_interest_image(true) {}
 #       
-#       float support_size;  //!< This defines the area 'covered' by an interest point (in meters)
-#       int max_no_of_interest_points;  //!< The maximum number of interest points that will be returned
-#       float min_distance_between_interest_points;  /**< Minimum distance between maximas
+#               float support_size;  //!< This defines the area 'covered' by an interest point (in meters)
+#               int max_no_of_interest_points;  //!< The maximum number of interest points that will be returned
+#               float min_distance_between_interest_points;  /**< Minimum distance between maximas
 #                                                      *  (this is a factor for support_size, i.e. the distance is
 #                                                      *  min_distance_between_interest_points*support_size) */
-#       float optimal_distance_to_high_surface_change;  /**< The distance we want keep between keypoints and areas
+#               float optimal_distance_to_high_surface_change;  /**< The distance we want keep between keypoints and areas
 #                                                         *  of high surface change
 #                                                         *  (this is a factor for support_size, i.e., the distance is
 #                                                         *  optimal_distance_to_high_surface_change*support_size) */
-#       float min_interest_value;  //!< The minimum value to consider a point as an interest point
-#       float min_surface_change_score;  //!< The minimum value  of the surface change score to consider a point
-#       int optimal_range_image_patch_size;  /**< The size (in pixels) of the image patches from which the interest value
+#               float min_interest_value;  //!< The minimum value to consider a point as an interest point
+#               float min_surface_change_score;  //!< The minimum value  of the surface change score to consider a point
+#               int optimal_range_image_patch_size;  /**< The size (in pixels) of the image patches from which the interest value
 #                                              *  should be computed. This influences, which range image is selected from
 #                                              *  the scale space to compute the interest value of a pixel at a certain
 #                                              *  distance. */
-#       // TODO:
-#       float distance_for_additional_points;  /**< All points in this distance to a found maximum, that
+#               // TODO:
+#               float distance_for_additional_points;  /**< All points in this distance to a found maximum, that
 #                                                *  are above min_interest_value are also added as interest points
 #                                                *  (this is a factor for support_size, i.e. the distance is
 #                                                *  distance_for_additional_points*support_size) */
-#       bool add_points_on_straight_edges;  /**< If this is set to true, there will also be interest points on
+#               bool add_points_on_straight_edges;  /**< If this is set to true, there will also be interest points on
 #                                             *   straight edges, e.g., just indicating an area of high surface change */
-#       bool do_non_maximum_suppression;  /**< If this is set to false there will be much more points
+#               bool do_non_maximum_suppression;  /**< If this is set to false there will be much more points
 #                                           *  (can be used to spread points over the whole scene
 #                                           *  (combined with a low min_interest_value)) */
-#       bool no_of_polynomial_approximations_per_point; /**< If this is >0, the exact position of the interest point is
+#               bool no_of_polynomial_approximations_per_point; /**< If this is >0, the exact position of the interest point is
 #                                                            determined using bivariate polynomial approximations of the
 #                                                            interest values of the area. */
-#       int max_no_of_threads;  //!< The maximum number of threads this code is allowed to use with OPNEMP
-#       bool use_recursive_scale_reduction;  /**< Try to decrease runtime by extracting interest points at lower reolution
+#               int max_no_of_threads;  //!< The maximum number of threads this code is allowed to use with OPNEMP
+#               bool use_recursive_scale_reduction;  /**< Try to decrease runtime by extracting interest points at lower reolution
 #                                              *  in areas that contain enough points, i.e., have lower range. */
-#       bool calculate_sparse_interest_image;  /**< Use some heuristics to decide which areas of the interest image
+#               bool calculate_sparse_interest_image;  /**< Use some heuristics to decide which areas of the interest image
 #                                                   can be left out to improve the runtime. */
-#     };
-#     
-#     // =====CONSTRUCTOR & DESTRUCTOR=====
-#     NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, float support_size=-1.0f);
-#     ~NarfKeypoint ();
-#     
-#     // =====PUBLIC METHODS=====
-#     //! Erase all data calculated for the current range image
-#     void clearData ();
-#     //! Set the RangeImageBorderExtractor member (required)
-#     void setRangeImageBorderExtractor (RangeImageBorderExtractor* range_image_border_extractor);
-#     //! Get the RangeImageBorderExtractor member
-#     RangeImageBorderExtractor* getRangeImageBorderExtractor ()
-#     //! Set the RangeImage member of the RangeImageBorderExtractor
-#     void setRangeImage (const RangeImage* range_image)
-#     /** Extract interest value per image point */
-#     float* getInterestImage () { calculateInterestImage(); return interest_image_;}
-#     //! Extract maxima from an interest image
-#     const ::pcl::PointCloud<InterestPoint>& getInterestPoints () { calculateInterestPoints(); return *interest_points_;}
-#     //! Set all points in the image that are interest points to true, the rest to false
-#     const std::vector<bool>& getIsInterestPointImage ()
-#     //! Getter for the parameter struct
-#     Parameters& getParameters ()
-#     //! Getter for the range image of range_image_border_extractor_
-#     const RangeImage& getRangeImage ();
-#     //! Overwrite the compute function of the base class
-#     void compute (PointCloudOut& output);
-#     
-#     protected:
-#     // =====PROTECTED METHODS=====
-#     void calculateScaleSpace ();
-#     void calculateInterestImage ();
-#     void calculateCompleteInterestImage ();
-#     void calculateSparseInterestImage ();
-#     void calculateInterestPoints ();
-#     //void
-#       //blurInterestImage ();
-#     //! Detect key points
-#     virtual void detectKeypoints (PointCloudOut& output);
-#     
-#     // =====PROTECTED MEMBER VARIABLES=====
-#     using BaseClass::name_;
-#     RangeImageBorderExtractor* range_image_border_extractor_;
-#     Parameters parameters_;
-#     float* interest_image_;
-#     ::pcl::PointCloud<InterestPoint>* interest_points_;
-#     std::vector<bool> is_interest_point_image_;
-#     std::vector<RangeImage*> range_image_scale_space_;
-#     std::vector<RangeImageBorderExtractor*> border_extractor_scale_space_;
-#     std::vector<float*> interest_image_scale_space_;
-# };
+#           };
+# 
+#     		// =====PUBLIC METHODS=====
+#     		//! Erase all data calculated for the current range image
+#     		void clearData ();
+#     		//! Set the RangeImageBorderExtractor member (required)
+#     		void setRangeImageBorderExtractor (RangeImageBorderExtractor* range_image_border_extractor);
+#     		//! Get the RangeImageBorderExtractor member
+#     		RangeImageBorderExtractor* getRangeImageBorderExtractor ()
+#     		//! Set the RangeImage member of the RangeImageBorderExtractor
+#     		void setRangeImage (const RangeImage* range_image)
+#     		/** Extract interest value per image point */
+#     		float* getInterestImage () { calculateInterestImage(); return interest_image_;}
+#     		//! Extract maxima from an interest image
+#     		const ::pcl::PointCloud<InterestPoint>& getInterestPoints () { calculateInterestPoints(); return *interest_points_;}
+#     		//! Set all points in the image that are interest points to true, the rest to false
+#     		const std::vector<bool>& getIsInterestPointImage ()
+#     		//! Getter for the parameter struct
+#     		Parameters& getParameters ()
+#     		//! Getter for the range image of range_image_border_extractor_
+#     		const RangeImage& getRangeImage ();
+#     		//! Overwrite the compute function of the base class
+#     		void compute (PointCloudOut& output);
+#			
+#     		protected:
+#     		void calculateScaleSpace ();
+#     		void calculateInterestImage ();
+#     		void calculateCompleteInterestImage ();
+#     		void calculateSparseInterestImage ();
+#     		void calculateInterestPoints ();
+#     		virtual void detectKeypoints (PointCloudOut& output);
+#     		using BaseClass::name_;
+#     		RangeImageBorderExtractor* range_image_border_extractor_;
+#     		Parameters parameters_;
+#     		float* interest_image_;
+#     		::pcl::PointCloud<InterestPoint>* interest_points_;
+#     		std::vector<bool> is_interest_point_image_;
+#     		std::vector<RangeImage*> range_image_scale_space_;
+#     		std::vector<RangeImageBorderExtractor*> border_extractor_scale_space_;
+#     		std::vector<float*> interest_image_scale_space_;
 #
-# /** 
-#   * \ingroup keypoints
-#   */
+# ingroup keypoints
 # inline std::ostream& operator << (std::ostream& os, const NarfKeypoint::Parameters& p)
 # 
 ###
@@ -282,16 +259,6 @@ cdef extern from "pcl/keypoints/sift_keypoint.h" namespace "pcl":
     cdef cppclass SIFTKeypoint[In, Out](Keypoint[In, Out]):
         SIFTKeypoint ()
         # public:
-        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
-        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        # typedef typename Keypoint<PointInT, PointOutT>::KdTree KdTree;
-        # using Keypoint<PointInT, PointOutT>::name_;
-        # using Keypoint<PointInT, PointOutT>::input_;
-        # using Keypoint<PointInT, PointOutT>::indices_;
-        # using Keypoint<PointInT, PointOutT>::surface_;
-        # using Keypoint<PointInT, PointOutT>::tree_;
-        # using Keypoint<PointInT, PointOutT>::initCompute; 
-        # 
         # /** \brief Specify the range of scales over which to search for keypoints
         # * \param min_scale the standard deviation of the smallest scale in the scale space
         # * \param nr_octaves the number of octaves (i.e. doublings of scale) to compute 
@@ -315,16 +282,6 @@ cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
     cdef cppclass SmoothedSurfacesKeypoint[In, Out](Keypoint[In, Out]):
         SmoothedSurfacesKeypoint ()
         # public:
-        # using PCLBase<PointT>::input_;
-        # using Keypoint<PointT, PointT>::name_;
-        # using Keypoint<PointT, PointT>::tree_;
-        # using Keypoint<PointT, PointT>::initCompute;
-        # typedef pcl::PointCloud<PointT> PointCloudT;
-        # typedef typename PointCloudT::ConstPtr PointCloudTConstPtr;
-        # typedef pcl::PointCloud<PointNT> PointCloudNT;
-        # typedef typename PointCloudNT::ConstPtr PointCloudNTConstPtr;
-        # typedef typename PointCloudT::Ptr PointCloudTPtr;
-        # typedef typename Keypoint<PointT, PointT>::KdTreePtr KdTreePtr;
         # void addSmoothedPointCloud (const PointCloudTConstPtr &cloud,
         #                      const PointCloudNTConstPtr &normals,
         #                      KdTreePtr &kdtree,
@@ -345,13 +302,6 @@ cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
 cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
     cdef cppclass UniformSampling[In](Keypoint[In, int]):
         UniformSampling ()
-        # typedef typename Keypoint<PointInT, int>::PointCloudIn PointCloudIn;
-        # typedef typename Keypoint<PointInT, int>::PointCloudOut PointCloudOut;
-        # using Keypoint<PointInT, int>::name_;
-        # using Keypoint<PointInT, int>::input_;
-        # using Keypoint<PointInT, int>::indices_;
-        # using Keypoint<PointInT, int>::search_radius_;
-        # using Keypoint<PointInT, int>::getClassName;
         # public:
         # /** \brief Set the 3D grid leaf size.
         # * \param radius the 3D grid leaf size
