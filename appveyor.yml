@@ -2,7 +2,6 @@ os:
 - Visual Studio 2015
 - Windows Server 2012 R2
 
-
 environment:
   global:
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
@@ -74,7 +73,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "SET PCL_ROOT=%PCL_ROOT%"
+  - "SET PCL_ROOT"
   
   # Check that we have the expected version and architecture for Python
   - "python --version"

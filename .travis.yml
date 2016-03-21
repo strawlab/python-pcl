@@ -36,12 +36,12 @@ before_install:
       brew outdated pyenv || brew upgrade --quiet pyenv;
       brew install homebrew/boneyard/pyenv-pip-rehash;
       brew tap homebrew/science;
-      travis_wait 60 brew install pcl;
 
       pyenv install -ks $PYTHON_VERSION;
       pyenv global $PYTHON_VERSION;
       python --version;
 
+      travis_wait 60 brew install pcl;
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then

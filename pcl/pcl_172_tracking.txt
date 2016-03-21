@@ -34,7 +34,6 @@ cdef extern from "pcl/tracking/tracker.h" namespace "pcl::tracking":
         # ctypedef pcl::PointCloud<StateT> PointCloudState;
         # ctypedef typename PointCloudState::Ptr PointCloudStatePtr;
         # ctypedef typename PointCloudState::ConstPtr PointCloudStateConstPtr;
-
         # public:
         # brief Base method for tracking for all points given in 
         # <setInputCloud (), setIndices ()> using the indices in setIndices () 
@@ -59,13 +58,6 @@ cdef extern from "pcl/tracking/tracker.h" namespace "pcl::tracking":
         # inline SearchPtr getSearchMethod ()
         # brief Get an instance of the result of tracking.
         # virtual StateT getResult () const = 0;
-
-        # private:
-        # brief Abstract tracking method.
-        # virtual void computeTracking () = 0;
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-
 ###
 
 cdef extern from "pcl/tracking/coherence.h" namespace "pcl::tracking":
@@ -94,11 +86,11 @@ cdef extern from "pcl/tracking/coherence.h" namespace "pcl::tracking":
         # ctypedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
         # ctypedef typename PointCoherence<PointInT>::Ptr PointCoherencePtr;
         cdef void compute (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, float &w_i);
-        # cdef std::vector<PointCoherencePtr> getPointCoherences () { return point_coherences_; }
-        cdef void setPointCoherences (std::vector<PointCoherencePtr> coherences) { point_coherences_ = coherences; }
-        cdef bool initCompute ();
-        cdef void addPointCoherence (PointCoherencePtr coherence) { point_coherences_.push_back (coherence); }
-        cdef void setTargetCloud (const PointCloudInConstPtr &cloud)  { target_input_ = cloud; }
+        # cdef vector[PointCoherencePtr] getPointCoherences ()
+        cdef void setPointCoherences (std::vector<PointCoherencePtr> coherences)
+        cdef bool initCompute ()
+        cdef void addPointCoherence (PointCoherencePtr coherence)
+        cdef void setTargetCloud (const PointCloudInConstPtr &cloud)
         # protected:
         # cdef void computeCoherence (const PointCloudInConstPtr &cloud, const IndicesConstPtr &indices, float &w_j) = 0;
         # cdef double calcPointCoherence (PointInT &source, PointInT &target);
@@ -106,7 +98,6 @@ cdef extern from "pcl/tracking/coherence.h" namespace "pcl::tracking":
         # std::string coherence_name_;
         # PointCloudInConstPtr target_input_;
         # std::vector<PointCoherencePtr> point_coherences_;
-
 ###
 
 # class NearestPairPointCloudCoherence: public PointCloudCoherence<PointInT>
@@ -117,7 +108,6 @@ cdef extern from "pcl/tracking/nearest_pair_point_cloud_coherence.h" namespace "
         # using PointCloudCoherence<PointInT>::getClassName;
         # using PointCloudCoherence<PointInT>::coherence_name_;
         # using PointCloudCoherence<PointInT>::target_input_;
-
         # ctypedef typename PointCloudCoherence<PointInT>::PointCoherencePtr PointCoherencePtr;
         # ctypedef typename PointCloudCoherence<PointInT>::PointCloudInConstPtr PointCloudInConstPtr;
         # ctypedef PointCloudCoherence<PointInT> BaseClass;
@@ -137,16 +127,13 @@ cdef extern from "pcl/tracking/nearest_pair_point_cloud_coherence.h" namespace "
         # brief add a PointCoherence to the PointCloudCoherence.
         # param coherence a pointer to PointCoherence.
         cdef void setTargetCloud (const PointCloudInConstPtr &cloud)
-
         # brief set maximum distance to be taken into account.
         # param maximum distance.
         cdef void setMaximumDistance (double )
         # protected:
         # using PointCloudCoherence<PointInT>::point_coherences_;
-
         # brief This method should get called before starting the actual computation.
         # virtual bool initCompute ();
-
         # brief A flag which is true if target_input_ is updated
         # bool new_target_;
         # brief A pointer to the spatial search object.
@@ -170,7 +157,6 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         # using Tracker<PointInT, StateT>::input_;
         # using Tracker<PointInT, StateT>::indices_;
         # using Tracker<PointInT, StateT>::getClassName;
-
         # ctypedef Tracker<PointInT, StateT> BaseClass;
         # ctypedef typename Tracker<PointInT, StateT>::PointCloudIn PointCloudIn;
         # ctypedef typename PointCloudIn::Ptr PointCloudInPtr;
@@ -184,7 +170,6 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         # ctypedef PointCloudCoherence<PointInT> CloudCoherence;
         # ctypedef boost::shared_ptr< CloudCoherence > CloudCoherencePtr;
         # ctypedef boost::shared_ptr< const CloudCoherence > CloudCoherenceConstPtr;
-
         # brief set the number of iteration.
         # param iteration_num the number of iteration.
         cdef void setIterationNum (int )
@@ -216,17 +201,14 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         # it will be used when initializing the particles.
         # param initial_noise_mean the mean values of initial noise.
         cdef void setInitialNoiseMean (const std::vector<double> &initial_noise_mean)
-
         # brief set the threshold to re-initialize the particles.
         # param resample_likelihood_thr threshold to re-initialize.
         cdef void setResampleLikelihoodThr (const double resample_likelihood_thr)
-
         # brief set the threshold of angle to be considered occlusion (default: pi/2).
         # ParticleFilterTracker does not take the occluded points into account according to the angle
         # between the normal and the position. 
         # param occlusion_angle_thr threshold of angle to be considered occlusion.
         cdef void setOcclusionAngleThe (const double occlusion_angle_thr)
-
         # brief set the minimum number of indices (default: 1).
         # ParticleFilterTracker does not take into account the hypothesis
         # whose the number of points is smaller than the minimum indices.
@@ -284,15 +266,12 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         cdef void setResolutionOfChangeDetection (double )
         # brief get the resolution of change detection.
         cdef double getResolutionOfChangeDetection ()
-
         # brief get the minimum amount of points required within leaf node to become serialized in change detection
         cdef unsigned int getMinPointsOfChangeDetection ()
-
         # brief get the adjustment ratio.
         cdef double getFitRatio()
         # brief reset the particles to restart tracking
         cdef void resetTracking ()
-
         ###
         # protected:
         # brief compute the parameters for the bounding box of 
@@ -354,7 +333,6 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         # brief initialize the particles. initial_noise_covariance_ and initial_noise_mean_ are
         # used for gausiaan sampling.
         cdef void initParticles (bool reset)
-
         # brief track the pointcloud using particle filter method.
         cdef void computeTracking ()
         # brief implementation of "sample with replacement" using Walker's alias method.
@@ -424,7 +402,6 @@ cdef extern from "pcl/tracking/particle_filter.h" namespace "pcl::tracking":
         bool changed_;
         # brief a counter to skip change detection
         unsigned int change_counter_;
-
         # brief minimum points in a leaf when calling change detector. defaults to 10
         unsigned int change_detector_filter_;
         # brief the number of interval frame to run change detection. defaults to 10.
@@ -467,7 +444,6 @@ cdef extern from "pcl/tracking/distance_coherence.h" namespace "pcl::tracking":
         # protected:
         # cdef double computeCoherence (PointInT &source, PointInT &target);
         # double weight_;
-
 ###
 
 cdef extern from "pcl/tracking/hsv_color_coherence.h" namespace "pcl::tracking":
@@ -549,11 +525,9 @@ cdef extern from "pcl/tracking/kld_adaptive_particle_filter.h" namespace "pcl::t
         # brief return upper quantile of standard normal distribution.
         # param[in] u ratio of quantile.
         # double normalQuantile (double u)
-
         # brief calculate K-L boundary. K-L boundary follows 1/2e*chi(k-1, 1-d)^2.
         # param[in] k the number of bins and the first parameter of chi distribution.
         # cdef double calcKLBound (int k)
-
         # brief insert a bin into the set of the bins. if that bin is already registered,
         #   return false. if not, return true.
         # param bin a bin to be inserted.
@@ -620,16 +594,13 @@ cdef extern from "pcl/tracking/kld_adaptive_particle_filter_omp.h" namespace "pc
         # ctypedef boost::shared_ptr< const CloudCoherence > CloudCoherenceConstPtr;
         # brief Initialize the scheduler and set the number of threads to use.
         # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
-        #
-        cdef void setNumberOfThreads (unsigned int nr_threads)
+        void setNumberOfThreads (unsigned int nr_threads)
         # protected:
         # brief The number of threads the scheduler should use.
         # unsigned int threads_;
         # brief weighting phase of particle filter method.
         # calculate the likelihood of all of the particles and set the weights.
-        #
-        # cdef void weight ();
-
+        void weight ();
 ###
 
 # class NormalCoherence: public PointCoherence<PointInT>
@@ -658,7 +629,6 @@ cdef extern from "pcl/tracking/particle_filter_omp.h" namespace "pcl::tracking":
         # brief Initialize the scheduler and set the number of threads to use.
         # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         ParticleFilterOMPTracker (unsigned int )
-
         # public:
         # using Tracker<PointInT, StateT>::tracker_name_;
         # using Tracker<PointInT, StateT>::search_;
@@ -696,13 +666,13 @@ cdef extern from "pcl/tracking/particle_filter_omp.h" namespace "pcl::tracking":
         # ctypedef boost::shared_ptr< const CloudCoherence > CloudCoherenceConstPtr;
         # brief Initialize the scheduler and set the number of threads to use.
         # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
-        cdef void setNumberOfThreads (unsigned int nr_threads)
+        void setNumberOfThreads (unsigned int nr_threads)
         # protected:
         # brief The number of threads the scheduler should use.
         # unsigned int threads_;
         # brief weighting phase of particle filter method.
         # calculate the likelihood of all of the particles and set the weights.
-        cdef void weight ();
+        void weight ();
 
 ###
 

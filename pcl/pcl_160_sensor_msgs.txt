@@ -15,15 +15,13 @@ cimport pcl_160_std_msgs as std_msgs
 cdef extern from "sensor_msgs/Image.h" namespace "sensor_msgs":
     cdef struct Image:
         Image ()
-        
         std_msgs.Header  header
         pcl::uint32_t height;
         pcl::uint32_t width;
         string encoding;
         pcl::uint8_t is_bigendian;
         pcl::uint32_t step;
-        
-        vector<pcl::uint8_t> data;
+        vector[pcl::uint8_t] data;
 
 ctypedef shared_ptr[Image] ImagePtr;
 ctypedef shared_ptr[Image*] ImageConstPtr;
