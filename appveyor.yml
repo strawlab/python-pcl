@@ -11,16 +11,16 @@ environment:
 
   matrix:
   # Version 1.6.0 Check
-  - PYTHON: '"C:\\Python34"'
+  - PYTHON: '"C:\Python34"'
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "32"
-    PCL_ROOT: '"C:\\Program Files\\PCL 1.6.0"'
+    PCL_ROOT: '"C:\Program Files\PCL 1.6.0"'
     PCL_VERSION: "1.6.0"
 
-  - PYTHON: '"C:\\Python34-x64"'
+  - PYTHON: '"C:\Python34-x64"'
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "64"
-    PCL_ROOT: '"C:\\Program Files\\PCL 1.6.0"'
+    PCL_ROOT: '"C:\Program Files\PCL 1.6.0"'
     PCL_VERSION: "1.6.0"
 
   # Version 1.7.2, 1.8.0 Check

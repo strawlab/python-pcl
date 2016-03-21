@@ -42,6 +42,15 @@ before_install:
       python --version;
 
       travis_wait 60 brew install pcl;
+
+      if [[ $PYTHON_VERSION = "2.7.10" ]]; then
+        # Travis CI Python 2.7 error(numpy)
+        # http://d.hatena.ne.jp/aremokoremo/20140507/1399475248
+        ls /Library/Python/2.7/site-packages
+        # sudo mv /Library/Python/2.7/site-packages/numpy* /Library/Python/2.7/site-packages/temp_bkup/
+
+        travis_wait 60 brew install pcl;
+      fi
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
