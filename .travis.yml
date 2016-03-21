@@ -43,7 +43,6 @@ before_install:
       pyenv global $PYTHON_VERSION;
       python --version;
 
-      # travis_wait 40 brew install pcl;
       travis_wait 40 brew install pcl --without-vtk --without-qt;
     fi
 
