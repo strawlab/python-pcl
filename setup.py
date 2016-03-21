@@ -3,7 +3,7 @@ from collections import defaultdict
 from Cython.Distutils import build_ext
 from distutils.core import setup
 from distutils.extension import Extension
-# from Cython.Build import cythonize	# MacOS NG
+# from Cython.Build import cythonize    # MacOS NG
 import subprocess
 import numpy
 import sys
@@ -24,6 +24,10 @@ if platform.system() == "Windows":
         if k == "PCL_ROOT":
             pcl_root = v
             print(pcl_root)
+            break
+    else:
+        print("%s: cannot find environment PCL_ROOT" % sys.argv[0], file=sys.stderr)
+        sys.exit(1)
 
     # Add environment Value
     os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;'
