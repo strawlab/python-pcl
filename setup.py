@@ -32,8 +32,13 @@ if platform.system() == "Windows":
         sys.exit(1)
 
     # Add environment Value
-    os.environ["PKG_CONFIG_PATH"] = pcl_root + '\lib\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;'
+    # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\lib\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;'
+    # os.environ['PKG_CONFIG_PATH'] = str(pcl_root + '\lib\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;')
     # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\lib\\pkgconfig
+    # pkgconfigstr = str(os.environ.get('PKG_CONFIG_PATH', -1))
+    # pkgconfigstr = os.environ['PKG_CONFIG_PATH']
+    # print "%s" % (pkgconfigstr)
+    # print pkgconfigstr
 
     # Try to find PCL. XXX we should only do this when trying to build or install.
     PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference

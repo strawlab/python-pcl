@@ -27,7 +27,7 @@ matrix:
     - os: osx
       language: generic
       env:
-      - PYTHON_VERSION=3.5.0
+      - PYTHON_VERSION=3.5.1
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
 
@@ -43,7 +43,8 @@ before_install:
       pyenv global $PYTHON_VERSION;
       python --version;
 
-      travis_wait 60 brew install pcl;
+      # travis_wait 40 brew install pcl;
+      travis_wait 40 brew install pcl --without-vtk --without-qt;
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
