@@ -16,14 +16,14 @@ environment:
     PYTHON_ARCH: "32"
     PCL_ROOT: '"C:\Program Files\PCL 1.6.0"'
     PCL_VERSION: "1.6.0"
-    PKG_CONFIG_PATH: '"C:\Program Files\PCL 1.6.0\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\Eigen\lib\pkgconfig"'
+    PKG_CONFIG_PATH: '"C:\Program Files\PCL 1.6.0\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib\pkgconfig"'
 
   - PYTHON: '"C:\Python34-x64"'
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "64"
     PCL_ROOT: '"C:\Program Files\PCL 1.6.0"'
     PCL_VERSION: "1.6.0"
-    PKG_CONFIG_PATH: '"C:\Program Files\PCL 1.6.0\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\Eigen\lib\pkgconfig"'
+    PKG_CONFIG_PATH: '"C:\Program Files\PCL 1.6.0\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib\pkgconfig"'
 
   # Version 1.7.2, 1.8.0 Check
   #  - PYTHON: "C:\\Python35"
@@ -75,7 +75,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "SET PCL_ROOT"
+  # - "SET PCL_ROOT"
   
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -111,7 +111,9 @@ build_script:
 
     schtasks /delete /tn pclinstall /f
 
-    sleep 300
+    sleep 600
+
+	ls "C:/Program Files/PCL 1.6.0"
 
     pip install Cython
 

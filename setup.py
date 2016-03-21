@@ -25,12 +25,14 @@ if platform.system() == "Windows":
             pcl_root = v
             print(pcl_root)
             break
+        # elseif k == "PKG_CONFIG_PATH"
+        #   
     else:
         print("%s: cannot find environment PCL_ROOT" % sys.argv[0], file=sys.stderr)
         sys.exit(1)
 
     # Add environment Value
-    os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;'
+    os.environ["PKG_CONFIG_PATH"] = pcl_root + '\lib\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;'
     # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\lib\\pkgconfig
 
     # Try to find PCL. XXX we should only do this when trying to build or install.

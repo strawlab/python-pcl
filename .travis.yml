@@ -42,10 +42,6 @@ before_install:
       python --version;
 
       travis_wait 60 brew install pcl;
-
-      - if [ "$PYTHON_VERSION" = "2.7.10" ]]; then
-        ls /Library/Python/2.7/site-packages;
-      fi
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
