@@ -23,12 +23,13 @@ if platform.system() == "Windows":
         # print("{key} : {value}".format(key=k, value=v))
         if k == "PCL_ROOT":
             pcl_root = v
-            print(pcl_root)
+            # print(pcl_root)
+            print("%s: find environment PCL_ROOT" % pcl_root, file=sys.stderr)
             break
         # elseif k == "PKG_CONFIG_PATH"
         #   
     else:
-        print("%s: cannot find environment PCL_ROOT" % sys.argv[0], file=sys.stderr)
+        print("cannot find environment PCL_ROOT", file=sys.stderr)
         sys.exit(1)
 
     # Add environment Value
