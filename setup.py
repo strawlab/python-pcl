@@ -27,41 +27,40 @@ if platform.system() == "Windows":
             # print(pcl_root)
             print("%s: find environment PCL_ROOT" % pcl_root)
             break
-        elif k == "PCL_VERSION":
-            pcl_verison_env = v
-            if pcl_verison_env == "1.6.0":
-                pcl_version = "-1.6"
-            elif pcl_verison_env == "1.7.2":
-                pcl_version = "-1.7"
-            else:
-                pass
+        # elif k == "PCL_VERSION":
+        #     pcl_verison_env = v
+        #     if pcl_verison_env == "1.6.0":
+        #         pcl_version = "-1.6"
+        #     elif pcl_verison_env == "1.7.2":
+        #         pcl_version = "-1.7"
+        #     else:
+        #         pass
     else:
         print("cannot find environment PCL_ROOT", file=sys.stderr)
         sys.exit(1)
 
     # Add environment Value
-    # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\lib\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;'
-    # os.environ['PKG_CONFIG_PATH'] = str(pcl_root + '\lib\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;')
-    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\3rdParty\FLANN\lib\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\lib\\pkgconfig
+    os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
+    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig
     # pkgconfigstr = str(os.environ.get('PKG_CONFIG_PATH', -1))
     # pkgconfigstr = os.environ['PKG_CONFIG_PATH']
     # print "%s" % (pkgconfigstr)
     # print pkgconfigstr
 
-    # pkgconfigPath = pcl_root + 'pkg-config\pkg-config.exe'
+    # pkgconfigPath = pcl_root + 'pkg-config\\pkg-config.exe'
     # print pkgconfigPath
     # Try to find PCL. XXX we should only do this when trying to build or install.
-    # PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
-    # 
-    # for pcl_version in PCL_SUPPORTED:
-    #     if subprocess.call(['pkg-config\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
-    #         break
-    # else:
-    #     print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
-    #     for version in PCL_SUPPORTED:
-    #         print('    pkg-config pcl_common%s' % version, file=sys.stderr)
-    #     # sys.exit(1)
-    # print(pcl_version)
+    PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
+    
+    for pcl_version in PCL_SUPPORTED:
+        if subprocess.call(['pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
+            break
+    else:
+        print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
+        for version in PCL_SUPPORTED:
+            print('    pkg-config pcl_common%s' % version, file=sys.stderr)
+        sys.exit(1)
+    print(pcl_version)
 
     # Python Version Check
     info = sys.version_info
@@ -106,16 +105,16 @@ if platform.system() == "Windows":
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include']
         # external Boost (G:\\boost\\boost_1_55_0)
         # NG
-        # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\FLANN\include']
+        # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\FLANN\\include']
         # 3rdParty
-        # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include']
+        # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\\include']
         # + add VTK
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-5.8']
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-5.8']
         # extern
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', 'G:\\boost\\boost_1_55_0', pcl_root + '\\3rdParty\\FLANN\include']
     elif pcl_version == '-1.7':
         # 1.7.2
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_57', pcl_root + '\\3rdParty\\FLANN\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-6.2']
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_57', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-6.2']
     else:
         inc_dirs = []
 
@@ -124,9 +123,9 @@ if platform.system() == "Windows":
 
     # set library path
     # 3rdParty(+Boost)
-    # lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
+    # lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib']
     # 3rdParty(+Boost, +VTK)
-    lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
+    lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
     # extern -> NG?
     # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
     # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib64-msvc-10.0', pcl_root + '\\3rdParty\\FLANN\lib']
@@ -184,7 +183,7 @@ if platform.system() == "Windows":
     # ext_args['extra_compile_args'].append('/MT')
 
     # include_dirs=[pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include', 'C:\\Anaconda2\\envs\\my_env\\Lib\\site-packages\\numpy\\core\\include'],
-    # library_dirs=[pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\lib'],
+    # library_dirs=[pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib'],
     # libraries=["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd", "boost_chrono-vc100-mt-1_49", "boost_date_time-vc100-mt-1_49", "boost_filesystem-vc100-mt-1_49", "boost_graph-vc100-mt-1_49", "boost_graph_parallel-vc100-mt-1_49", "boost_iostreams-vc100-mt-1_49", "boost_locale-vc100-mt-1_49", "boost_math_c99-vc100-mt-1_49", "boost_math_c99f-vc100-mt-1_49", "boost_math_tr1-vc100-mt-1_49", "boost_math_tr1f-vc100-mt-1_49", "boost_mpi-vc100-mt-1_49", "boost_prg_exec_monitor-vc100-mt-1_49", "boost_program_options-vc100-mt-1_49", "boost_random-vc100-mt-1_49", "boost_regex-vc100-mt-1_49", "boost_serialization-vc100-mt-1_49", "boost_signals-vc100-mt-1_49", "boost_system-vc100-mt-1_49", "boost_thread-vc100-mt-1_49", "boost_timer-vc100-mt-1_49", "boost_unit_test_framework-vc100-mt-1_49", "boost_wave-vc100-mt-1_49", "boost_wserialization-vc100-mt-1_49", "libboost_chrono-vc100-mt-1_49", "libboost_date_time-vc100-mt-1_49", "libboost_filesystem-vc100-mt-1_49", "libboost_graph_parallel-vc100-mt-1_49", "libboost_iostreams-vc100-mt-1_49", "libboost_locale-vc100-mt-1_49", "libboost_math_c99-vc100-mt-1_49", "libboost_math_c99f-vc100-mt-1_49", "libboost_math_tr1-vc100-mt-1_49", "libboost_math_tr1f-vc100-mt-1_49", "libboost_mpi-vc100-mt-1_49", "libboost_prg_exec_monitor-vc100-mt-1_49", "libboost_program_options-vc100-mt-1_49", "libboost_random-vc100-mt-1_49", "libboost_regex-vc100-mt-1_49", "libboost_serialization-vc100-mt-1_49", "libboost_signals-vc100-mt-1_49", "libboost_system-vc100-mt-1_49", "libboost_test_exec_monitor-vc100-mt-1_49", "libboost_thread-vc100-mt-1_49", "libboost_timer-vc100-mt-1_49", "libboost_unit_test_framework-vc100-mt-1_49", "libboost_wave-vc100-mt-1_49", "libboost_wserialization-vc100-mt-1_49"],
     ## define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # define_macros=[('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')],
