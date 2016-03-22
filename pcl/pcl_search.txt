@@ -210,6 +210,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
 # cdef extern from "pcl/Search/brute_force.h" namespace "pcl::search":
 #     cdef cppclass BruteForce[T]:
 #         BruteForce()
+#         # BruteForce (bool sorted_results = false)
 #         # ctypedef typename Search<PointT>::PointCloud PointCloud;
 #         # ctypedef typename Search<PointT>::PointCloudConstPtr PointCloudConstPtr;
 #         # ctypedef shared_ptr[vector[int]] IndicesPtr;
@@ -222,20 +223,14 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
 #         #     Entry ()
 #         #     unsigned index;
 #         #     float distance;
-
 #         
 #         # replace by some metric functor
 #         float getDistSqr (const PointT& point1, const PointT& point2) const;
-
-#         # BruteForce (bool sorted_results = false)
-#         # : Search<PointT> ("BruteForce", sorted_results)
-#         # {
-#         # }
-#         # cdef int nearestKSearch (
+#         # int nearestKSearch (
 #         #                         const PointT &point, int k, 
 #         #                         std::vector<int> &k_indices, 
 #         #                         std::vector<float> &k_distances) const;
-#         # cdef int radiusSearch (
+#         # int radiusSearch (
 #         #                         const PointT& point, double radius,
 #         #                         std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
 #         #                         unsigned int max_nn = 0) const;
