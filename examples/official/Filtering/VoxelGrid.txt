@@ -1,12 +1,7 @@
 # http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid
+# PCLPointCloud2 is 1.7.2
 
-#include <iostream>
-#include <pcl/io/pcd_io.h>
-#include <pcl/point_types.h>
-#include <pcl/filters/voxel_grid.h>
-
-int
-main (int argc, char** argv)
+# int main (int argc, char** argv)
 {
   pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2 ());
   pcl::PCLPointCloud2::Ptr cloud_filtered (new pcl::PCLPointCloud2 ());

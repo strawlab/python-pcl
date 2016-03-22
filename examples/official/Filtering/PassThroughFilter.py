@@ -9,7 +9,7 @@ import random
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 cloud = pcl.PointCloud()
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
-cloud_filtered = pcl.PointCloud()
+# cloud_filtered = pcl.PointCloud()
 
 # // Fill in the cloud data
 # cloud->width  = 5;
@@ -19,9 +19,11 @@ points = np.zeros((5, 3), dtype=np.float32)
 RAND_MAX = 1.0
 
 for i in range(0, 5):
-	points[i].x = 1024 * random.random () / RAND_MAX
-	points[i].y = 1024 * random.random () / RAND_MAX
-	points[i].z = 1024 * random.random () / RAND_MAX
+    points[i][0] = 1024 * random.random () / RAND_MAX
+    points[i][1] = 1024 * random.random () / RAND_MAX
+    points[i][2] = 1024 * random.random () / RAND_MAX
+
+cloud.from_array(points)
 
 # std::cerr << "Cloud before filtering: " << std::endl;
 # for (size_t i = 0; i < cloud->points.size (); ++i)
@@ -33,15 +35,16 @@ for i in range(0, 5):
 # Create the filtering object
 # pcl::PassThrough<pcl::PointXYZ> pass;
 # pass.setInputCloud (cloud);
-pass = cloud.makePassThroughFilter()
-pass.setFilterFieldName ("z");
-pass.setFilterLimits (0.0, 1.0);
-//pass.setFilterLimitsNegative (true);
-pass.filter (*cloud_filtered);
+# define pass , NG
+passthrough = cloud.make_passthrough_filter()
+passthrough.set_filter_field_name ("z")
+passthrough.set_filter_limits (0.0, 1.0)
+# //pass.setFilterLimitsNegative (true)
+cloud_filtered = passthrough.filter ()
 
 # std::cerr << "Cloud after filtering: " << std::endl;
-for (size_t i = 0; i < cloud_filtered->points.size (); ++i)
-std::cerr << "    " << cloud_filtered->points[i].x << " " 
-                    << cloud_filtered->points[i].y << " " 
-                    << cloud_filtered->points[i].z << std::endl;
+# for (size_t i = 0; i < cloud_filtered->points.size (); ++i)
+# std::cerr << "    " << cloud_filtered->points[i].x << " " 
+#                     << cloud_filtered->points[i].y << " " 
+#                     << cloud_filtered->points[i].z << std::endl;
 

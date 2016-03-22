@@ -18,16 +18,23 @@ if platform.system() == "Windows":
     # is_64bits = sys.maxsize > 2**32
     # if is_64bits == True
 
+    pcl_version = "-1.6"
     # environment Value
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
         if k == "PCL_ROOT":
             pcl_root = v
             # print(pcl_root)
-            print("%s: find environment PCL_ROOT" % pcl_root, file=sys.stderr)
+            print("%s: find environment PCL_ROOT" % pcl_root)
             break
-        # elseif k == "PKG_CONFIG_PATH"
-        #   
+        elif k == "PCL_VERSION":
+            pcl_verison_env = v
+            if pcl_verison_env == "1.6.0":
+                pcl_version = "-1.6"
+            elif pcl_verison_env == "1.7.2":
+                pcl_version = "-1.7"
+            else:
+                pass
     else:
         print("cannot find environment PCL_ROOT", file=sys.stderr)
         sys.exit(1)
@@ -41,18 +48,19 @@ if platform.system() == "Windows":
     # print "%s" % (pkgconfigstr)
     # print pkgconfigstr
 
+    # pkgconfigPath = pcl_root + 'pkg-config\pkg-config.exe'
+    # print pkgconfigPath
     # Try to find PCL. XXX we should only do this when trying to build or install.
-    PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
-
-    for pcl_version in PCL_SUPPORTED:
-        if subprocess.call(['pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
-            break
-    else:
-        print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
-        for version in PCL_SUPPORTED:
-            print('    pkg-config pcl_common%s' % version, file=sys.stderr)
-        sys.exit(1)
-
+    # PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
+    # 
+    # for pcl_version in PCL_SUPPORTED:
+    #     if subprocess.call(['pkg-config\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
+    #         break
+    # else:
+    #     print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
+    #     for version in PCL_SUPPORTED:
+    #         print('    pkg-config pcl_common%s' % version, file=sys.stderr)
+    #     # sys.exit(1)
     # print(pcl_version)
 
     # Python Version Check
@@ -64,16 +72,16 @@ if platform.system() == "Windows":
             pass
         else:
             print('no building Python Version')
-            exit(1)
+            sys.exit(1)
     elif pcl_version == '-1.7':
         # PCL 1.7.2 python Version >= 3.5
         if info.major == 3 and info.minor >= 5:
             pass
         else:
             print('no building Python Version')
-            exit(1)
+            sys.exit(1)
     else:
-        pass
+        sys.exit(1)
 
     # Add environment Value
     # os.environ["VS90COMNTOOLS"] = '%VS100COMNTOOLS%'
