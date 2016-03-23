@@ -1,11 +1,9 @@
 # author Bastian Steder 
 # http://pointclouds.org/documentation/tutorials/narf_keypoint_extraction.php#narf-keypoint-extraction
 
-typedef pclPointXYZ PointType;
+# typedef pclPointXYZ PointType;
 
-# 
 # Parameters
-##
 float angular_resolution = 0.5f
 float support_size = 0.2f
 pclRangeImageCoordinateFrame coordinate_frame = pclRangeImageCAMERA_FRAME
@@ -45,12 +43,10 @@ parser.add_argument('--UnseenToMaxRange', '-m', default=true, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
 parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
                     help='Using coordinate frame = ')
-parser.add_argument('--SupportSize', '-s', default=20, type=int,
+parser.add_argument('--SupportSize', '-s', default=0, type=int,
                     help='Setting support size to = ')
-parser.add_argument('--AngularResolution', '-r', default=1000, type=int,
+parser.add_argument('--AngularResolution', '-r', default=0, type=int,
                     help='Setting angular resolution to ')
-parser.add_argument('--batchsize', '-b', type=int, default=100,
-                    help='learning minibatch size')
 args = parser.parse_args()
 
 setUnseenToMaxRange = args.UnseenToMaxRange;
@@ -58,25 +54,22 @@ coordinate_frame = pclRangeImageCoordinateFrame (args.CoordinateFrame);
 angular_resolution = pcldeg2rad (args.AngularResolution);
 
 # -----Read pcd file or create example point cloud if not given-----
-pclPointCloudPointTypePtr point_cloud_ptr (new pclPointCloudPointType);
-pclPointCloudPointType& point_cloud = point_cloud_ptr
-pclPointCloudpclPointWithViewpoint far_ranges
+# pclPointCloudPointTypePtr point_cloud_ptr (new pclPointCloudPointType);
+# pclPointCloudPointType& point_cloud = point_cloud_ptr
+# point_cloud = pcl.PointCloud()
+
+# pcl::PointCloud<pcl::PointWithViewpoint> far_ranges
 EigenAffine3f scene_sensor_pose (EigenAffine3fIdentity ())
-stdvectorint pcd_filename_indices = pclconsoleparse_file_extension_argument (argc, argv, pcd)
+vector[int] pcd_filename_indices = pclconsoleparse_file_extension_argument (argc, argv, pcd)
 if (!pcd_filename_indices.empty ())
 {
-    stdstring filename = argv[pcd_filename_indices[0]];
-    if (pclioloadPCDFile (filename, point_cloud) == -1)
-    {
-        cerr  Was not able to open file filename.n;
-        printUsage (argv[0]);
-        return 0;
-    }
+    string filename = argv[pcd_filename_indices[0]]
+    point_cloud = pcl.load(argv[0])
 
-    scene_sensor_pose = EigenAffine3f (EigenTranslation3f (point_cloud.sensor_origin_[0],
-                                                           point_cloud.sensor_origin_[1],
-                                                           point_cloud.sensor_origin_[2])) 
-                        EigenAffine3f (point_cloud.sensor_orientation_);
+    scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
+                                                           		point_cloud.sensor_origin_[1],
+                                                           		point_cloud.sensor_origin_[2])) *
+                        Eigen::Affine3f (point_cloud.sensor_orientation_);
 
     stdstring far_ranges_filename = pclgetFilenameWithoutExtension (filename)+_far_ranges.pcd;
 
@@ -154,10 +147,11 @@ viewer.addPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoin
 viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
 
 # -----Main loop-----
-while (!viewer.wasStopped ())
-# process GUI events
-range_image_widget.spinOnce ()
-viewer.spinOnce ()
-pcl_sleep(0.01);
+# while (!viewer.wasStopped ())
+while True
+	# process GUI events
+	range_image_widget.spinOnce ()
+	viewer.spinOnce ()
+	# pcl_sleep(0.01);
 end
 
