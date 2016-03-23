@@ -40,7 +40,7 @@ if platform.system() == "Windows":
         sys.exit(1)
 
     # Add environment Value
-    os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
+    # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
     # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig
     # pkgconfigstr = str(os.environ.get('PKG_CONFIG_PATH', -1))
     # pkgconfigstr = os.environ['PKG_CONFIG_PATH']
@@ -80,6 +80,7 @@ if platform.system() == "Windows":
             print('no building Python Version')
             sys.exit(1)
     else:
+        print('pcl_version Unknown')
         sys.exit(1)
 
     # Add environment Value
@@ -224,8 +225,8 @@ if platform.system() == "Windows":
               packages=["pcl"],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
                                      language = "c++", **ext_args),
-                           # Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
-                           #         language="c++", **ext_args),
+                           Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
+                                     language="c++", **ext_args),
                            Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
                                      language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
