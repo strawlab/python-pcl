@@ -111,7 +111,7 @@ build_script:
 
     schtasks /delete /tn pclinstall /f
 
-    sleep 300
+    sleep 600
 
     pip install Cython
 
