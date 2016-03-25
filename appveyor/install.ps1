@@ -93,11 +93,11 @@ function ParsePCLVersion ($pcl_version)
 
 function InstallPCLEXE ($exepath, $pcl_home, $install_log)
 {
-	# old
+    # old
     # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     # RunCommand $exepath $install_args
 
-    $install_args = "/S /v/norestart /v/qn
+    $install_args = "\/S \/v\/norestart \/v\/qn"
     RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59
     RunCommand schtasks /run /tn pclinstall
     RunCommand schtasks /delete /tn pclinstall /f
@@ -106,8 +106,8 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
 {
-    $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$pcl_home"
-    $uninstall_args = "/qn /x $msipath"
+    $install_args = "\/qn \/log $install_log \/i $msipath TARGETDIR=$pcl_home"
+    $uninstall_args = "\/qn \/x $msipath"
     RunCommand "msiexec.exe" $install_args
     if (-not(Test-Path $python_home)) 
     {
