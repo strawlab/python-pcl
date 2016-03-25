@@ -93,8 +93,15 @@ function ParsePCLVersion ($pcl_version)
 
 function InstallPCLEXE ($exepath, $pcl_home, $install_log)
 {
-    $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
-    RunCommand $exepath $install_args
+	# old
+    # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
+    # RunCommand $exepath $install_args
+
+    $install_args = "/S /v/norestart /v/qn"
+    RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr "$exepath $install_args" /sc once /st 23:59
+    RunCommand schtasks /run /tn pclinstall
+    RunCommand schtasks /delete /tn pclinstall /f
+    RunCommand sleep 600
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
@@ -267,7 +274,7 @@ function main ()
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    # InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
+    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
     
 }
 
