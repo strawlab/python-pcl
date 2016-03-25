@@ -98,10 +98,10 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # RunCommand $exepath $install_args
 
     $install_args = "/S /v/norestart /v/qn"
-    RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr "$exepath $install_args" /sc once /st 23:59
-    RunCommand schtasks /run /tn pclinstall
-    RunCommand schtasks /delete /tn pclinstall /f
-    RunCommand sleep 600
+    RunCommand "schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
+    RunCommand "schtasks /run /tn pclinstall"
+    RunCommand "schtasks /delete /tn pclinstall /f"
+    RunCommand "sleep 600"
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
@@ -259,11 +259,11 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     
     if (Test-Path $python_home) 
     {
-        Write-Host "Python $python_version ($architecture) installation complete"
+        Write-Host "PointCloudLibrary $pcl_version ($architecture) installation complete"
     }
     else 
     {
-        Write-Host "Failed to install Python in $python_home"
+        Write-Host "Failed to install PointCloudLibrary in $pcl_home"
         Get-Content -Path $install_log
         Exit 1
     }
@@ -273,7 +273,7 @@ function main ()
 {
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
-    InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
+    # InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
     
 }
