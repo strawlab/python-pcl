@@ -92,27 +92,20 @@ install:
   # - "%CMD_IN_ENV% pip install -r dev-requirements.txt"
   
   # PCL Install
-  - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe"
+  # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe"
   # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe"
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
+  - ps : appveyor\install.ps1
   
   # Module Install
   # Import-Module ".\appveyor\PS-Zip\PS-Zip.psm1" -Force
   
+  # NG
   # @powershell -NoProfile -ExecutionPolicy unrestricted -Command "Start-Process -Verb runas /user:administrator PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn"
-  # - ps : appveyor\install.ps1
 
 
 build_script:
 - cmd: >-
-    schtasks /create /tn pclinstall /RL HIGHEST /tr "C:\projects\python-pcl\PCL-1.6.0-AllInOne-msvc2010-win32.exe /S /v/norestart /v/qn" /sc once /st 23:59
-
-    schtasks /run /tn pclinstall
-
-    schtasks /delete /tn pclinstall /f
-
-    sleep 600
-
     pip install Cython
 
     pip install numpy
