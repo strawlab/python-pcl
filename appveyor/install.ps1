@@ -97,11 +97,11 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     # RunCommand $exepath $install_args
 
-    $install_args = "/S /v/norestart /v/qn"
-    RunCommand "schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
-    RunCommand "schtasks /run /tn pclinstall"
-    RunCommand "schtasks /delete /tn pclinstall /f"
-    RunCommand "sleep 600"
+    $install_args = "/S /v/norestart /v/qn
+    RunCommand schtasks "/create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
+    RunCommand schtasks "/run /tn pclinstall"
+    RunCommand schtasks "/delete /tn pclinstall /f"
+    RunCommand sleep "600"
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
