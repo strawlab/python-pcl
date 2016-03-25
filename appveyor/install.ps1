@@ -257,7 +257,7 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
         InstallPCLEXE $installer_path $pcl_home $install_log
     }
     
-    if (Test-Path $python_home) 
+    if (Test-Path $pcl_home) 
     {
         Write-Host "PointCloudLibrary $pcl_version ($architecture) installation complete"
     }
