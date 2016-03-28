@@ -97,7 +97,7 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # old
     # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     # RunCommand $exepath $install_args
-
+    
     $install_args = "/S /v/norestart /v/qn"
     # RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
     # RunCommand schtasks /run /tn pclinstall
@@ -106,15 +106,15 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
     RunCommand "schtasks" "/run /tn pclinstall"
     RunCommand "schtasks" "/delete /tn pclinstall /f"
-    RunCommand "sleep" "600"
+    RunCommand "sleep" "300"
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
 {
-    $install_args = "\/qn \/log $install_log \/i $msipath TARGETDIR=$pcl_home"
-    $uninstall_args = "\/qn \/x $msipath"
+    $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$pcl_home"
+    $uninstall_args = "/qn /x $msipath"
     RunCommand "msiexec.exe" $install_args
-    if (-not(Test-Path $python_home)) 
+    if (-not(Test-Path $pcl_home)) 
     {
         Write-Host "PointCloudLibrary seems to be installed else-where, reinstalling."
         RunCommand "msiexec.exe" $uninstall_args

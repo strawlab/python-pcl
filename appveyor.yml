@@ -106,13 +106,13 @@ install:
 
 build_script:
 - cmd: >-
-    "%CMD_IN_ENV% pip install Cython"
+    %CMD_IN_ENV% pip install Cython
 
-    "%CMD_IN_ENV% pip install numpy"
+    %CMD_IN_ENV% pip install numpy
 
-    "%CMD_IN_ENV% python setup.py build_ext -i"
+    %CMD_IN_ENV% python setup.py build_ext -i
 
-    "%CMD_IN_ENV% python setup.py install"
+    %CMD_IN_ENV% python setup.py install
 
 
 test_script:
