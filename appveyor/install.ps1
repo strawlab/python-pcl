@@ -103,10 +103,10 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # RunCommand schtasks /run /tn pclinstall
     # RunCommand schtasks /delete /tn pclinstall /f
     # RunCommand sleep 600
-    RunCommand schtasks "/create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
-    RunCommand schtasks "/run /tn pclinstall"
-    RunCommand schtasks "/delete /tn pclinstall /f"
-    RunCommand sleep 600
+    RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
+    RunCommand "schtasks" "/run /tn pclinstall"
+    RunCommand "schtasks" "/delete /tn pclinstall /f"
+    RunCommand "sleep" "600"
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
@@ -238,8 +238,6 @@ function InstallNumpy ($python_version, $architecture, $python_home)
 
 function InstallPCL ($pcl_version, $architecture, $pcl_home) 
 {
-    # $pcl_path = $python_home + "\Scripts\pip.exe"
-    
     if ($architecture -eq "32")
     {
         $platform_suffix = "win32"
@@ -270,7 +268,7 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     {
         Write-Host "Failed to install PointCloudLibrary in $pcl_home"
         # Get-Content -Path $install_log
-        Exit 1
+        # Exit 1
     }
 }
 
