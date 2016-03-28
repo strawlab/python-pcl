@@ -98,15 +98,15 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     # RunCommand $exepath $install_args
 
-    # $install_args = "\/S \/v\/norestart \/v\/qn"
-    RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
-    RunCommand schtasks /run /tn pclinstall
-    RunCommand schtasks /delete /tn pclinstall /f
+    $install_args = "/S /v/norestart /v/qn"
+    # RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
+    # RunCommand schtasks /run /tn pclinstall
+    # RunCommand schtasks /delete /tn pclinstall /f
+    # RunCommand sleep 600
+    RunCommand schtasks "/create /tn pclinstall /RL HIGHEST /tr $exepath $install_args /sc once /st 23:59"
+    RunCommand schtasks "/run /tn pclinstall"
+    RunCommand schtasks "/delete /tn pclinstall /f"
     RunCommand sleep 600
-    # RunCommand schtasks "\/create \/tn pclinstall \/RL HIGHEST \/tr $exepath $install_args \/sc once \/st 23:59"
-    # RunCommand schtasks "\/run \/tn pclinstall"
-    # RunCommand schtasks "\/delete \/tn pclinstall \/f"
-    # RunCommand sleep "600"
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
@@ -252,7 +252,7 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     $installer_path = DownloadPCL $pcl_version $platform_suffix
     $installer_ext = [System.IO.Path]::GetExtension($installer_path)
     Write-Host "Installing $installer_path to $pcl_home"
-    $install_log = $pcl_home + ".log"
+    $install_log = $pcl_home + "install.log"
     if ($installer_ext -eq '.msi')
     {
         InstallPCLMSI $installer_path $pcl_home $install_log
@@ -269,7 +269,7 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     else 
     {
         Write-Host "Failed to install PointCloudLibrary in $pcl_home"
-        Get-Content -Path $install_log
+        # Get-Content -Path $install_log
         Exit 1
     }
 }
