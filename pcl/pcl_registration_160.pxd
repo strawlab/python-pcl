@@ -1546,9 +1546,9 @@ cdef extern from "pcl/registration/elch.h" namespace "pcl::registration" nogil:
 # ###
 
 # gicp.h
-cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
-    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](Registration[Source, Target]):
-        GeneralizedIterativeClosestPoint() except +
+# cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
+#     cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](Registration[Source, Target]):
+#         GeneralizedIterativeClosestPoint() except +
 #     using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
 #     using IterativeClosestPoint<PointSource, PointTarget>::getClassName;
 #     using IterativeClosestPoint<PointSource, PointTarget>::indices_;
