@@ -143,14 +143,14 @@ function DownloadPCL ($pcl_version, $platform_suffix)
     }
     elseif ($major -le 1 -and $minor -eq 7)
     {
-        # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2015-win64.exe
+        # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.7.2/PCL-1.7.2-AllInOne-msvc2015-win64.exe
         # $dir = "$major.$minor.$micro"
         $dir = "$major.$minor.2"
         $msvcver = "msvc2015"
     }
     elseif ($major -le 1 -and $minor -eq 8)
     {
-        # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2015-win64.exe
+        # $url = http://jaist.dl.sourceforge.net/project/pointclouds/1.8.0/PCL-1.8.0-AllInOne-msvc2015-win64.exe
         # $dir = "$major.$minor.$micro"
         $dir = "$major.$minor.0"
         $msvcver = "msvc2015"
