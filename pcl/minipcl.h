@@ -7,25 +7,25 @@
 
 #include <vector>
 //
-void mpcl_compute_normals(pcl::PointCloud<pcl::PointXYZ> cloud,
+void mpcl_compute_normals(const pcl::PointCloud<pcl::PointXYZ> &cloud,
                           int ksearch,
                           double searchRadius,
-                          const pcl::PointCloud<pcl::Normal> &out);
+                          pcl::PointCloud<pcl::Normal> &out);
 
-void mpcl_compute_normals_PointXYZI(pcl::PointCloud<pcl::PointXYZI> cloud,
+void mpcl_compute_normals_PointXYZI(const pcl::PointCloud<pcl::PointXYZI> &cloud,
                           int ksearch,
                           double searchRadius,
-                          const pcl::PointCloud<pcl::Normal> &out);
+                          pcl::PointCloud<pcl::Normal> &out);
 
-void mpcl_compute_normals_PointXYZRGB(pcl::PointCloud<pcl::PointXYZRGB> cloud,
+void mpcl_compute_normals_PointXYZRGB(const pcl::PointCloud<pcl::PointXYZRGB> &cloud,
                           int ksearch,
                           double searchRadius,
-                          const pcl::PointCloud<pcl::Normal> &out);
+                          pcl::PointCloud<pcl::Normal> &out);
 
-void mpcl_compute_normals_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA> cloud,
+void mpcl_compute_normals_PointXYZRGBA(const pcl::PointCloud<pcl::PointXYZRGBA> &cloud,
                           int ksearch,
                           double searchRadius,
-                          const pcl::PointCloud<pcl::Normal> &out);
+                          pcl::PointCloud<pcl::Normal> &out);
 
 // 
 void mpcl_sacnormal_set_axis(pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> &sac,
