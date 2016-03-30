@@ -109,8 +109,6 @@ install:
 
 build_script:
 - cmd: >-
-    ls "C:\Program Files (x86)\PCL 1.6.0\include\pcl-1.6\pcl\registration"
-
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy

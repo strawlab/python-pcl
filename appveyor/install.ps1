@@ -106,7 +106,7 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
     RunCommand "schtasks" "/run /tn pclinstall"
     RunCommand "schtasks" "/delete /tn pclinstall /f"
-    RunCommand "sleep" "120"
+    RunCommand "sleep" "900"
 }
 
 function InstallPCLMSI ($msipath, $pcl_home, $install_log)
