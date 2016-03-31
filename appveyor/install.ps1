@@ -98,7 +98,8 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
     # RunCommand $exepath $install_args
     
-    $install_args = "/S /v/norestart /v/qn"
+    # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
+    $install_args = "/S /v`"/qn norestart`""
     # RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
     # RunCommand schtasks /run /tn pclinstall
     # RunCommand schtasks /delete /tn pclinstall /f
