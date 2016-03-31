@@ -99,14 +99,15 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     # RunCommand $exepath $install_args
     
     # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
-    $install_args = "/S /v`"/qn norestart`""
+    $install_args = "/S /v/qn /v/norestart"
     # RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
     # RunCommand schtasks /run /tn pclinstall
     # RunCommand schtasks /delete /tn pclinstall /f
     # RunCommand sleep 600
-    RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr `"$exepath`" $install_args /sc once /st 23:59"
+    RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
+    RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn pclinstall"
-    RunCommand "sleep" "600"
+    RunCommand "sleep" "300"
     RunCommand "schtasks" "/delete /tn pclinstall /f"
 }
 
