@@ -141,35 +141,37 @@ function DownloadPCL ($pcl_version, $platform_suffix)
         # $dir = "$major.$minor.$micro"
         $dir = "$major.$minor.0"
         $msvcver = "msvc2010"
-        # $url = "$dir/PCL-$dir-AllInOne-msvc2010-$platform_suffix.exe"
         
         $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
         $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
     }
     elseif ($major -le 1 -and $minor -eq 7)
     {
-        # $url = https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe
-        # $url = https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe
+        # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
+        # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
         # $dir = "$major.$minor.$micro"
         $dir = "$major.$minor.2"
         $msvcver = "msvc2015"
         
-        if ($platform_suffix -eq "win32") {
+        if ($platform_suffix -eq "win32") 
+        {
             $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
-        } else {
+        }
+        else 
+        {
             $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
         }
-
+        
         $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
     }
     elseif ($major -le 1 -and $minor -eq 8)
     {
-        # $url = https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe
+        # $url = "https://onedrive.live.com/hogehoge"
         # $dir = "$major.$minor.$micro"
         $dir = "$major.$minor.0"
         $msvcver = "msvc2015"
-    } 
-    else 
+    }
+    else
     {
         $dir = "$major.$minor.$micro"
         $msvcver = "msvc2015"
@@ -177,6 +179,7 @@ function DownloadPCL ($pcl_version, $platform_suffix)
 
     # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
     # $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+
     # (plan modified function)
     $filepath = Download $filename $url
     return $filepath
