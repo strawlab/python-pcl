@@ -80,7 +80,7 @@ install:
   # the parent CMD process).
   # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # Add PCLPath
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PCL_ROOT%\bin;%PCL_ROOT%\3rdParty\VTK\bin;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
   
   # Check that we have the expected version and architecture for Python
   - "python --version"
