@@ -110,8 +110,10 @@ install:
 
 build_script:
 - cmd: >-
-    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-1.6\pcl\registration\bfgs.h"
-    
+    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
+
+    copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
