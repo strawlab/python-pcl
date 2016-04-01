@@ -78,8 +78,9 @@ install:
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  # - "SET PCL_ROOT"
+  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  # Add PCLPath
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PCL_ROOT%\bin;%PCL_ROOT%\3rdParty\VTK\bin;%PATH%"
   
   # Check that we have the expected version and architecture for Python
   - "python --version"
