@@ -118,6 +118,10 @@ build_script:
 
     copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
 
+    ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
+
+    ls "%PCL_ROOT%\bin"
+
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
