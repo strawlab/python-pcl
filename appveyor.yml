@@ -133,10 +133,11 @@ build_script:
 
 test_script:
   # Run the project tests
+  # Path Check
+  - pcd_viewer_release.exe
   # - "%CMD_IN_ENV% python setup.py nosetests"
   - "%CMD_IN_ENV% python tests\\test.py"
   # - python .\tests\test.py
-
 
 #after_test:
 #  # If tests are successful, create binary packages for the project.
