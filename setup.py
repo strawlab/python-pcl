@@ -203,7 +203,7 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp"],
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx"],
                                      language="c++", **ext_args),

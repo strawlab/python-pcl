@@ -64,9 +64,8 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # /** \brief Get the point indices being removed */
         cpp.IndicesPtr_t getRemovedIndices ()
-        # /** \brief Calls the filtering method and returns the filtered dataset in output.
-        #   * \param[out] output the resultant filtered point cloud dataset
-        #   */
+        # \brief Calls the filtering method and returns the filtered dataset in output.
+        # \param[out] output the resultant filtered point cloud dataset
         void filter (cpp.PointCloud[T] &output)
 
 # template<>
@@ -764,22 +763,30 @@ cdef extern from "pcl/filters/project_inliers.h" namespace "pcl":
         # ctypedef typename SampleConsensusModel<PointT>::Ptr SampleConsensusModelPtr;
 
         # public:
-        # \brief The type of model to use (user given parameter).
-        # \param model the model type (check \a model_types.h)
+        # brief The type of model to use (user given parameter).
+        # param model the model type (check \a model_types.h)
         void setModelType (int model)
-        # \brief Get the type of SAC model used. */
+        # brief Get the type of SAC model used. */
         int getModelType ()
-        # \brief Provide a pointer to the model coefficients.
-        # \param model a pointer to the model coefficients
-        # void setModelCoefficients (const ModelCoefficientsConstPtr &model)
-        # \brief Get a pointer to the model coefficients. */
-        # ModelCoefficientsConstPtr getModelCoefficients ()
-        # \brief Set whether all data will be returned, or only the projected inliers.
-        # \param val true if all data should be returned, false if only the projected inliers
+        # brief Provide a pointer to the model coefficients.
+        # param model a pointer to the model coefficients
+        void setModelCoefficients (cpp.ModelCoefficients * model)
+        # brief Get a pointer to the model coefficients. */
+        cpp.ModelCoefficients * getModelCoefficients ()
+        # brief Set whether all data will be returned, or only the projected inliers.
+        # param val true if all data should be returned, false if only the projected inliers
         void setCopyAllData (bool val)
-        # \brief Get whether all data is being copied (true), or only the projected inliers (false). */
+        # brief Get whether all data is being copied (true), or only the projected inliers (false). */
         bool getCopyAllData ()
 
+ctypedef ProjectInliers[cpp.PointXYZ] ProjectInliers_t
+ctypedef ProjectInliers[cpp.PointXYZI] ProjectInliers_PointXYZI_t
+ctypedef ProjectInliers[cpp.PointXYZRGB] ProjectInliers_PointXYZRGB_t
+ctypedef ProjectInliers[cpp.PointXYZRGBA] ProjectInliers_PointXYZRGBA_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZ]] ProjectInliersPtr_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZI]] ProjectInliers_PointXYZI_Ptr_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZRGB]] ProjectInliers_PointXYZRGB_Ptr_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZRGBA]] ProjectInliers_PointXYZRGBA_Ptr_t
 ###
 
 # template<>

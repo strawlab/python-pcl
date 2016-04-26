@@ -445,6 +445,9 @@ cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
     cdef struct ModelCoefficients:
         vector[float] values
 
+ctypedef ModelCoefficients ModelCoefficients_t
+ctypedef shared_ptr[ModelCoefficients] ModelCoefficientsPtr_t
+
 ###
 
 # PointIndices.h

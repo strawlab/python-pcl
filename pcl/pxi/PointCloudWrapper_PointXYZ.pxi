@@ -26,6 +26,9 @@ cdef extern from "minipcl.h":
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
 
+cdef extern from "ProjectInliers.h":
+    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t);
+
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
 cdef Py_ssize_t _strides[2]
@@ -384,6 +387,24 @@ cdef class PointCloud:
         # XXX are we leaking memory here? del ind causes a double free...
         
         return result
+
+    def make_ProjectInliers(self):
+        """
+        Return a pcl.Segmentation object with this object set as the input-cloud
+        """
+        # proj = ProjectInliers()
+        # cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
+        # cproj.setInputCloud(self.thisptr_shared)
+        # return proj
+        
+        cdef pclfil.ProjectInliers_t projInliers
+        mpcl_ProjectInliers_setModelCoefficients(projInliers)
+        # mpcl_ProjectInliers_setModelCoefficients(deref(projInliers))
+        proj = ProjectInliers()
+        cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
+        cproj.setInputCloud(self.thisptr_shared)
+        return proj
+
 ###
 
 include "Segmentation.pxi"
@@ -397,6 +418,7 @@ include "OctreePointCloud.pxi"
 include "Vertices.pxi"
 include "CropHull.pxi"
 include "CropBox.pxi"
+include "ProjectInliers.pxi"
 # Ubuntu/Mac NG
 # include "UniformSampling.pxi"
 # include "IntegralImageNormalEstimation.pxi"
