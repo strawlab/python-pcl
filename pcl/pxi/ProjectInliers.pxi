@@ -5,7 +5,7 @@ cimport pcl_defs as cpp
 
 cdef class ProjectInliers:
     """
-    ProjectInliers class for Sample Consensus methods and models
+    ProjectInliers class for ...
     """
     cdef pclfil.ProjectInliers_t *me
     def __cinit__(self):
@@ -14,11 +14,12 @@ cdef class ProjectInliers:
         del self.me
 
     def filter(self):
-        # cdef cpp.PointCloud_t pc
+        """
+        Apply the filter according to the previously set parameters and return
+        a new pointcloud
+        """
         cdef PointCloud pc = PointCloud()
-        self.me.filter (pc.thisptr()[0])
-        # return [ind.indices[i] for i in range(ind.indices.size())], \
-        #        [coeffs.values[i] for i in range(coeffs.values.size())]
+        self.me.filter(pc.thisptr()[0])
         return pc
 
     # def set_Model_Coefficients(self, cpp.ModelCoefficients coeffs):

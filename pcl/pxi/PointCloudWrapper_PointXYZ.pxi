@@ -404,6 +404,15 @@ cdef class PointCloud:
         cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
         cproj.setInputCloud(self.thisptr_shared)
         return proj
+    
+    def make_RadiusOutlierRemoval(self):
+        """
+        Return a pcl.Segmentation object with this object set as the input-cloud
+        """
+        fil = RadiusOutlierRemoval()
+        cdef pclfil.RadiusOutlierRemoval_t *cfil = <pclfil.RadiusOutlierRemoval_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return fil
 
 ###
 
@@ -419,6 +428,7 @@ include "Vertices.pxi"
 include "CropHull.pxi"
 include "CropBox.pxi"
 include "ProjectInliers.pxi"
+include "RadiusOutlierRemoval.pxi"
 # Ubuntu/Mac NG
 # include "UniformSampling.pxi"
 # include "IntegralImageNormalEstimation.pxi"

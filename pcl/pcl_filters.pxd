@@ -828,31 +828,38 @@ ctypedef ProjectInliers[cpp.PointXYZRGBA] ProjectInliers_PointXYZRGBA_t
 cdef extern from "pcl/filters/radius_outlier_removal.h" namespace "pcl":
     cdef cppclass RadiusOutlierRemoval[T](FilterIndices[T]):
         RadiusOutlierRemoval ()
-        # protected:
-        # ctypedef typename FilterIndices<PointT>::PointCloud PointCloud;
-        # ctypedef typename PointCloud::Ptr PointCloudPtr;
-        # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
-        # ctypedef typename pcl::search::Search<PointT>::Ptr SearcherPtr;
-        # * \brief Set the radius of the sphere that will determine which points are neighbors.
-        # * \details The number of points within this distance from the query point will need to be equal or greater
-        # * than setMinNeighborsInRadius() in order to be classified as an inlier point (i.e. will not be filtered).
-        # * \param[in] radius The radius of the sphere for nearest neighbor searching.
+        # brief Set the radius of the sphere that will determine which points are neighbors.
+        # details The number of points within this distance from the query point will need to be equal or greater
+        # than setMinNeighborsInRadius() in order to be classified as an inlier point (i.e. will not be filtered).
+        # param[in] radius The radius of the sphere for nearest neighbor searching.
         void setRadiusSearch (double radius)
-        # * \brief Get the radius of the sphere that will determine which points are neighbors.
-        # * \details The number of points within this distance from the query point will need to be equal or greater
-        # * than setMinNeighborsInRadius() in order to be classified as an inlier point (i.e. will not be filtered).
-        # * \return The radius of the sphere for nearest neighbor searching.
+        # brief Get the radius of the sphere that will determine which points are neighbors.
+        # details The number of points within this distance from the query point will need to be equal or greater
+        # than setMinNeighborsInRadius() in order to be classified as an inlier point (i.e. will not be filtered).
+        # return The radius of the sphere for nearest neighbor searching.
         double getRadiusSearch ()
-        # * \brief Set the number of neighbors that need to be present in order to be classified as an inlier.
-        # * \details The number of points within setRadiusSearch() from the query point will need to be equal or greater
-        # * than this number in order to be classified as an inlier point (i.e. will not be filtered).
-        # * \param min_pts The minimum number of neighbors (default = 1).
+        # brief Set the number of neighbors that need to be present in order to be classified as an inlier.
+        # details The number of points within setRadiusSearch() from the query point will need to be equal or greater
+        # than this number in order to be classified as an inlier point (i.e. will not be filtered).
+        # param min_pts The minimum number of neighbors (default = 1).
         void setMinNeighborsInRadius (int min_pts)
-        # * \brief Get the number of neighbors that need to be present in order to be classified as an inlier.
-        # * \details The number of points within setRadiusSearch() from the query point will need to be equal or greater
-        # * than this number in order to be classified as an inlier point (i.e. will not be filtered).
-        # * \param min_pts The minimum number of neighbors (default = 1).
+        # brief Get the number of neighbors that need to be present in order to be classified as an inlier.
+        # details The number of points within setRadiusSearch() from the query point will need to be equal or greater
+        # than this number in order to be classified as an inlier point (i.e. will not be filtered).
+        # param min_pts The minimum number of neighbors (default = 1).
         int getMinNeighborsInRadius ()
+
+ctypedef RadiusOutlierRemoval[cpp.PointXYZ] RadiusOutlierRemoval_t
+ctypedef RadiusOutlierRemoval[cpp.PointXYZI] RadiusOutlierRemoval_PointXYZI_t
+ctypedef RadiusOutlierRemoval[cpp.PointXYZRGB] RadiusOutlierRemoval_PointXYZRGB_t
+ctypedef RadiusOutlierRemoval[cpp.PointXYZRGBA] RadiusOutlierRemoval_PointXYZRGBA_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZ]] RadiusOutlierRemovalPtr_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZI]] RadiusOutlierRemoval_PointXYZI_Ptr_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZRGB]] RadiusOutlierRemoval_PointXYZRGB_Ptr_t
+# ctypedef shared_ptr[cpp.ProjectInliers[cpp.PointXYZRGBA]] RadiusOutlierRemoval_PointXYZRGBA_Ptr_t
+###
+
+
 
 # template<>
 # class PCL_EXPORTS RadiusOutlierRemoval<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
