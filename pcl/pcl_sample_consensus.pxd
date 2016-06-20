@@ -2,6 +2,8 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
+# import
+cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
 ###############################################################################
@@ -10,278 +12,311 @@ from boost_shared_ptr cimport shared_ptr
 
 ### base class ###
 
-# # sac_model.h
-# # namespace pcl
-# # template<class T> class ProgressiveSampleConsensus;
-# # 
-# # namespace pcl
-# # template <typename PointT>
-# # class SampleConsensusModel
-# cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
-#     cdef cppclass SampleConsensusModel[T]:
-#         SampleConsensusModel()
-#         # SampleConsensusModel (bool random = false) 
-#         # SampleConsensusModel (const PointCloudConstPtr &cloud, bool random = false)
-#         # SampleConsensusModel (const PointCloudConstPtr &cloud, const std::vector<int> &indices, bool random = false)
-#         # public:
-#         # typedef typename pcl::PointCloud<PointT> PointCloud;
-#         # typedef typename pcl::PointCloud<PointT>::ConstPtr PointCloudConstPtr;
-#         # typedef typename pcl::PointCloud<PointT>::Ptr PointCloudPtr;
-#         # typedef typename pcl::search::Search<PointT>::Ptr SearchPtr;
-#         # typedef boost::shared_ptr<SampleConsensusModel> Ptr;
-#         # typedef boost::shared_ptr<const SampleConsensusModel> ConstPtr;
-#         # protected:
-#         # public:
-#         # /** \brief Get a set of random data samples and return them as point
-#         # * indices. Pure virtual.  
-#         # * \param[out] iterations the internal number of iterations used by SAC methods
-#         # * \param[out] samples the resultant model samples
-#         # */
-#         # void getSamples (int &iterations, std::vector<int> &samples)
-#         # /** \brief Check whether the given index samples can form a valid model,
-#         # * compute the model coefficients from these samples and store them
-#         # * in model_coefficients. Pure virtual.
-#         # * \param[in] samples the point indices found as possible good candidates
-#         # * for creating a valid model 
-#         # * \param[out] model_coefficients the computed model coefficients
-#         # */
-#         # virtual bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients) = 0;
-#         # /** \brief Recompute the model coefficients using the given inlier set
-#         # * and return them to the user. Pure virtual.
-#         # * @note: these are the coefficients of the model after refinement
-#         # * (e.g., after a least-squares optimization)
-#         # * \param[in] inliers the data inliers supporting the model
-#         # * \param[in] model_coefficients the initial guess for the model coefficients
-#         # * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
-#         # */
-#         # virtual void optimizeModelCoefficients (const std::vector<int> &inliers, 
-#         #                          const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients) = 0;
-#         # /** \brief Compute all distances from the cloud data to a given model. Pure virtual.
-#         # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to 
-#         # * \param[out] distances the resultant estimated distances
-#         # virtual void  getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances) = 0;
-#         # /** \brief Select all the points which respect the given model
-#         # * coefficients as inliers. Pure virtual.
-#         # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from 
-#         # * the outliers
-#         # * \param[out] inliers the resultant model inliers
-#         # virtual void selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#         #                     const double threshold, std::vector<int> &inliers) = 0;
-#         # /** \brief Count all the points which respect the given model
-#         # * coefficients as inliers. Pure virtual.
-#         # * \param[in] model_coefficients the coefficients of a model that we need to
-#         # * compute distances to
-#         # * \param[in] threshold a maximum admissible distance threshold for
-#         # * determining the inliers from the outliers
-#         # * \return the resultant number of inliers
-#         # */
-#         # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold) = 0;
-#         # /** \brief Create a new point cloud with inliers projected onto the model. Pure virtual.
-#         # * \param[in] inliers the data inliers that we want to project on the model
-#         # * \param[in] model_coefficients the coefficients of a model
-#         # * \param[out] projected_points the resultant projected points
-#         # * \param[in] copy_data_fields set to true (default) if we want the \a
-#         # * projected_points cloud to be an exact copy of the input dataset minus
-#         # * the point projections on the plane model
-#         # virtual void projectPoints (const std::vector<int> &inliers, 
-#         #              const Eigen::VectorXf &model_coefficients,
-#         #              PointCloud &projected_points, 
-#         #              bool copy_data_fields = true) = 0;
-#         # /** \brief Verify whether a subset of indices verifies a given set of
-#         # * model coefficients. Pure virtual.
-#         # * \param[in] indices the data indices that need to be tested against the model
-#         # * \param[in] model_coefficients the set of model coefficients
-#         # * \param[in] threshold a maximum admissible distance threshold for
-#         # * determining the inliers from the outliers
-#         # virtual bool doSamplesVerifyModel (const std::set<int> &indices, 
-#         #                     const Eigen::VectorXf &model_coefficients, 
-#         #                     const double threshold) = 0;
-#         # /** \brief Provide a pointer to the input dataset
-#         # * \param[in] cloud the const boost shared pointer to a PointCloud message
-#         # inline virtual void setInputCloud (const PointCloudConstPtr &cloud)
-#         # /** \brief Get a pointer to the input point cloud dataset. */
-#         # inline PointCloudConstPtr getInputCloud () const
-#         # /** \brief Provide a pointer to the vector of indices that represents the input data.
-#         # * \param[in] indices a pointer to the vector of indices that represents the input data.
-#         # inline void setIndices (const boost::shared_ptr <std::vector<int> > &indices) 
-#         # /** \brief Provide the vector of indices that represents the input data.
-#         # * \param[out] indices the vector of indices that represents the input data.
-#         # inline void setIndices (const std::vector<int> &indices) 
-#         # /** \brief Get a pointer to the vector of indices used. */
-#         # inline boost::shared_ptr <std::vector<int> > getIndices () const
-#         # /** \brief Return an unique id for each type of model employed. */
-#         # virtual SacModel getModelType () const = 0;
-#         # /** \brief Return the size of a sample from which a model is computed */
-#         # inline unsigned int getSampleSize () const 
-#         # /** \brief Set the minimum and maximum allowable radius limits for the
-#         # * model (applicable to models that estimate a radius)
-#         # * \param[in] min_radius the minimum radius model
-#         # * \param[in] max_radius the maximum radius model
-#         # * \todo change this to set limits on the entire model
-#         # inline void setRadiusLimits (const double &min_radius, const double &max_radius)
-#         # /** \brief Get the minimum and maximum allowable radius limits for the
-#         # * model as set by the user.
-#         # * \param[out] min_radius the resultant minimum radius model
-#         # * \param[out] max_radius the resultant maximum radius model
-#         # inline void getRadiusLimits (double &min_radius, double &max_radius)
-#         # /** \brief Set the maximum distance allowed when drawing random samples
-#         # * \param[in] radius the maximum distance (L2 norm)
-#         # inline void setSamplesMaxDist (const double &radius, SearchPtr search)
-#         # /** \brief Get maximum distance allowed when drawing random samples
-#         # * \param[out] radius the maximum distance (L2 norm)
-#         # inline void getSamplesMaxDist (double &radius)
-#         # friend class ProgressiveSampleConsensus<PointT>;
-#         # protected:
-#         # /** \brief Fills a sample array with random samples from the indices_ vector
-#         # * \param[out] sample the set of indices of target_ to analyze
-#         # inline void drawIndexSample (std::vector<int> &sample)
-#         # /** \brief Fills a sample array with one random sample from the indices_ vector
-#         # *        and other random samples that are closer than samples_radius_
-#         # * \param[out] sample the set of indices of target_ to analyze
-#         # inline void drawIndexSampleRadius (std::vector<int> &sample)
-#         # /** \brief Check whether a model is valid given the user constraints.
-#         # * \param[in] model_coefficients the set of model coefficients
-#         # virtual inline bool isModelValid (const Eigen::VectorXf &model_coefficients) = 0;
-#         # /** \brief Check if a sample of indices results in a good sample of points
-#         # * indices. Pure virtual.
-#         # * \param[in] samples the resultant index samples
-#         # virtual bool isSampleGood (const std::vector<int> &samples) const = 0;
-#         # /** \brief A boost shared pointer to the point cloud data array. */
-#         # PointCloudConstPtr input_;
-#         # /** \brief A pointer to the vector of point indices to use. */
-#         # boost::shared_ptr <std::vector<int> > indices_;
-#         # /** The maximum number of samples to try until we get a good one */
-#         # static const unsigned int max_sample_checks_ = 1000;
-#         # /** \brief The minimum and maximum radius limits for the model.
-#         # * Applicable to all models that estimate a radius. 
-#         # double radius_min_, radius_max_;
-#         # /** \brief The maximum distance of subsequent samples from the first (radius search) */
-#         # double samples_radius_;
-#         # /** \brief The search object for picking subsequent samples using radius search */
-#         # SearchPtr samples_radius_search_;
-#         # /** Data containing a shuffled version of the indices. This is used and modified when drawing samples. */
-#         # std::vector<int> shuffled_indices_;
-#         # /** \brief Boost-based random number generator algorithm. */
-#         # boost::mt19937 rng_alg_;
-#         # /** \brief Boost-based random number generator distribution. */
-#         # boost::shared_ptr<boost::uniform_int<> > rng_dist_;
-#         # /** \brief Boost-based random number generator. */
-#         # boost::shared_ptr<boost::variate_generator< boost::mt19937&, boost::uniform_int<> > > rng_gen_;
-#         # /** \brief Boost-based random number generator. */
-#         # inline int rnd ()
-#         # public:
-#         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-# ###
+# sac_model.h
+# namespace pcl
+# template<class T> class ProgressiveSampleConsensus;
 # 
-# # template <typename PointT, typename PointNT>
-# # class SampleConsensusModelFromNormals
-# cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
-#     cdef cppclass SampleConsensusModelFromNormals[T, NT]:
-#         SampleConsensusModelFromNormals ()
-#         # public:
-#         # typedef typename pcl::PointCloud<PointNT>::ConstPtr PointCloudNConstPtr;
-#         # typedef typename pcl::PointCloud<PointNT>::Ptr PointCloudNPtr;
-#         # typedef boost::shared_ptr<SampleConsensusModelFromNormals> Ptr;
-#         # typedef boost::shared_ptr<const SampleConsensusModelFromNormals> ConstPtr;
-#         # /** \brief Empty constructor for base SampleConsensusModelFromNormals. */
-#         # /** \brief Set the normal angular distance weight.
-#         # * \param[in] w the relative weight (between 0 and 1) to give to the angular
-#         # * distance (0 to pi/2) between point normals and the plane normal.
-#         # * (The Euclidean distance will have weight 1-w.)
-#         # */
-#         # inline void setNormalDistanceWeight (const double w) 
-#         # /** \brief Get the normal angular distance weight. */
-#         # inline double getNormalDistanceWeight ()
-#         # /** \brief Provide a pointer to the input dataset that contains the point
-#         # * normals of the XYZ dataset.
-#         # * \param[in] normals the const boost shared pointer to a PointCloud message
-#         # inline void setInputNormals (const PointCloudNConstPtr &normals) 
-#         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
-#         # inline PointCloudNConstPtr getInputNormals ()
-#         # protected:
-#         # /** \brief The relative weight (between 0 and 1) to give to the angular
-#         # * distance (0 to pi/2) between point normals and the plane normal. 
-#         # double normal_distance_weight_;
-#         # /** \brief A pointer to the input dataset that contains the point normals
-#         # * of the XYZ dataset. 
-#         # PointCloudNConstPtr normals_;
+# namespace pcl
+# template <typename PointT>
+# class SampleConsensusModel
+cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
+    cdef cppclass SampleConsensusModel[T]:
+        SampleConsensusModel()
+        # SampleConsensusModel (bool random = false) 
+        # SampleConsensusModel (const PointCloudConstPtr &cloud, bool random = false)
+        # SampleConsensusModel (const PointCloudConstPtr &cloud, const std::vector<int> &indices, bool random = false)
+        # public:
+        # typedef typename pcl::PointCloud<PointT> PointCloud;
+        # typedef typename pcl::PointCloud<PointT>::ConstPtr PointCloudConstPtr;
+        # typedef typename pcl::PointCloud<PointT>::Ptr PointCloudPtr;
+        # typedef typename pcl::search::Search<PointT>::Ptr SearchPtr;
+        # typedef boost::shared_ptr<SampleConsensusModel> Ptr;
+        # typedef boost::shared_ptr<const SampleConsensusModel> ConstPtr;
+        # protected:
+        # public:
+        # /** \brief Get a set of random data samples and return them as point
+        # * indices. Pure virtual.  
+        # * \param[out] iterations the internal number of iterations used by SAC methods
+        # * \param[out] samples the resultant model samples
+        # */
+        # void getSamples (int &iterations, std::vector<int> &samples)
+        # /** \brief Check whether the given index samples can form a valid model,
+        # * compute the model coefficients from these samples and store them
+        # * in model_coefficients. Pure virtual.
+        # * \param[in] samples the point indices found as possible good candidates
+        # * for creating a valid model 
+        # * \param[out] model_coefficients the computed model coefficients
+        # */
+        # virtual bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients) = 0;
+        # /** \brief Recompute the model coefficients using the given inlier set
+        # * and return them to the user. Pure virtual.
+        # * @note: these are the coefficients of the model after refinement
+        # * (e.g., after a least-squares optimization)
+        # * \param[in] inliers the data inliers supporting the model
+        # * \param[in] model_coefficients the initial guess for the model coefficients
+        # * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
+        # */
+        # virtual void optimizeModelCoefficients (const std::vector<int> &inliers, 
+        #                          const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients) = 0;
+        # /** \brief Compute all distances from the cloud data to a given model. Pure virtual.
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to 
+        # * \param[out] distances the resultant estimated distances
+        # virtual void  getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances) = 0;
+        # /** \brief Select all the points which respect the given model
+        # * coefficients as inliers. Pure virtual.
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from 
+        # * the outliers
+        # * \param[out] inliers the resultant model inliers
+        # virtual void selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
+        #                     const double threshold, std::vector<int> &inliers) = 0;
+        # /** \brief Count all the points which respect the given model
+        # * coefficients as inliers. Pure virtual.
+        # * \param[in] model_coefficients the coefficients of a model that we need to
+        # * compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for
+        # * determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold) = 0;
+        # /** \brief Create a new point cloud with inliers projected onto the model. Pure virtual.
+        # * \param[in] inliers the data inliers that we want to project on the model
+        # * \param[in] model_coefficients the coefficients of a model
+        # * \param[out] projected_points the resultant projected points
+        # * \param[in] copy_data_fields set to true (default) if we want the \a
+        # * projected_points cloud to be an exact copy of the input dataset minus
+        # * the point projections on the plane model
+        # virtual void projectPoints (const std::vector<int> &inliers, 
+        #              const Eigen::VectorXf &model_coefficients,
+        #              PointCloud &projected_points, 
+        #              bool copy_data_fields = true) = 0;
+        # /** \brief Verify whether a subset of indices verifies a given set of
+        # * model coefficients. Pure virtual.
+        # * \param[in] indices the data indices that need to be tested against the model
+        # * \param[in] model_coefficients the set of model coefficients
+        # * \param[in] threshold a maximum admissible distance threshold for
+        # * determining the inliers from the outliers
+        # virtual bool doSamplesVerifyModel (const std::set<int> &indices, 
+        #                     const Eigen::VectorXf &model_coefficients, 
+        #                     const double threshold) = 0;
+        # /** \brief Provide a pointer to the input dataset
+        # * \param[in] cloud the const boost shared pointer to a PointCloud message
+        # inline virtual void setInputCloud (const PointCloudConstPtr &cloud)
+        # /** \brief Get a pointer to the input point cloud dataset. */
+        # inline PointCloudConstPtr getInputCloud () const
+        # /** \brief Provide a pointer to the vector of indices that represents the input data.
+        # * \param[in] indices a pointer to the vector of indices that represents the input data.
+        # inline void setIndices (const boost::shared_ptr <std::vector<int> > &indices) 
+        # /** \brief Provide the vector of indices that represents the input data.
+        # * \param[out] indices the vector of indices that represents the input data.
+        # inline void setIndices (const std::vector<int> &indices) 
+        # /** \brief Get a pointer to the vector of indices used. */
+        # inline boost::shared_ptr <std::vector<int> > getIndices () const
+        # /** \brief Return an unique id for each type of model employed. */
+        # virtual SacModel getModelType () const = 0;
+        # /** \brief Return the size of a sample from which a model is computed */
+        # inline unsigned int getSampleSize () const 
+        # /** \brief Set the minimum and maximum allowable radius limits for the
+        # * model (applicable to models that estimate a radius)
+        # * \param[in] min_radius the minimum radius model
+        # * \param[in] max_radius the maximum radius model
+        # * \todo change this to set limits on the entire model
+        # inline void setRadiusLimits (const double &min_radius, const double &max_radius)
+        # /** \brief Get the minimum and maximum allowable radius limits for the
+        # * model as set by the user.
+        # * \param[out] min_radius the resultant minimum radius model
+        # * \param[out] max_radius the resultant maximum radius model
+        # inline void getRadiusLimits (double &min_radius, double &max_radius)
+        # /** \brief Set the maximum distance allowed when drawing random samples
+        # * \param[in] radius the maximum distance (L2 norm)
+        # inline void setSamplesMaxDist (const double &radius, SearchPtr search)
+        # /** \brief Get maximum distance allowed when drawing random samples
+        # * \param[out] radius the maximum distance (L2 norm)
+        # inline void getSamplesMaxDist (double &radius)
+        # friend class ProgressiveSampleConsensus<PointT>;
+        # protected:
+        # /** \brief Fills a sample array with random samples from the indices_ vector
+        # * \param[out] sample the set of indices of target_ to analyze
+        # inline void drawIndexSample (std::vector<int> &sample)
+        # /** \brief Fills a sample array with one random sample from the indices_ vector
+        # *        and other random samples that are closer than samples_radius_
+        # * \param[out] sample the set of indices of target_ to analyze
+        # inline void drawIndexSampleRadius (std::vector<int> &sample)
+        # /** \brief Check whether a model is valid given the user constraints.
+        # * \param[in] model_coefficients the set of model coefficients
+        # virtual inline bool isModelValid (const Eigen::VectorXf &model_coefficients) = 0;
+        # /** \brief Check if a sample of indices results in a good sample of points
+        # * indices. Pure virtual.
+        # * \param[in] samples the resultant index samples
+        # virtual bool isSampleGood (const std::vector<int> &samples) const = 0;
+        # /** \brief A boost shared pointer to the point cloud data array. */
+        # PointCloudConstPtr input_;
+        # /** \brief A pointer to the vector of point indices to use. */
+        # boost::shared_ptr <std::vector<int> > indices_;
+        # /** The maximum number of samples to try until we get a good one */
+        # static const unsigned int max_sample_checks_ = 1000;
+        # /** \brief The minimum and maximum radius limits for the model.
+        # * Applicable to all models that estimate a radius. 
+        # double radius_min_, radius_max_;
+        # /** \brief The maximum distance of subsequent samples from the first (radius search) */
+        # double samples_radius_;
+        # /** \brief The search object for picking subsequent samples using radius search */
+        # SearchPtr samples_radius_search_;
+        # /** Data containing a shuffled version of the indices. This is used and modified when drawing samples. */
+        # std::vector<int> shuffled_indices_;
+        # /** \brief Boost-based random number generator algorithm. */
+        # boost::mt19937 rng_alg_;
+        # /** \brief Boost-based random number generator distribution. */
+        # boost::shared_ptr<boost::uniform_int<> > rng_dist_;
+        # /** \brief Boost-based random number generator. */
+        # boost::shared_ptr<boost::variate_generator< boost::mt19937&, boost::uniform_int<> > > rng_gen_;
+        # /** \brief Boost-based random number generator. */
+        # inline int rnd ()
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+ctypedef SampleConsensusModel[cpp.PointXYZ] SampleConsensusModel_t
+ctypedef SampleConsensusModel[cpp.PointXYZI] SampleConsensusModel_PointXYZI_t
+ctypedef SampleConsensusModel[cpp.PointXYZRGB] SampleConsensusModel_PointXYZRGB_t
+ctypedef SampleConsensusModel[cpp.PointXYZRGBA] SampleConsensusModel_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModel[cpp.PointXYZ]] SampleConsensusModelPtr_t
+ctypedef shared_ptr[SampleConsensusModel[cpp.PointXYZI]] SampleConsensusModel_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModel[cpp.PointXYZRGB]] SampleConsensusModel_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModel[cpp.PointXYZRGBA]] SampleConsensusModel_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModel[cpp.PointXYZ]] SampleConsensusModelConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModel[cpp.PointXYZI]] SampleConsensusModel_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModel[cpp.PointXYZRGB]] SampleConsensusModel_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModel[cpp.PointXYZRGBA]] SampleConsensusModel_PointXYZRGBA_ConstPtr_t
+###
+
+# template <typename PointT, typename PointNT>
+# class SampleConsensusModelFromNormals
+cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelFromNormals[T, NT]:
+        SampleConsensusModelFromNormals ()
+        # public:
+        # typedef typename pcl::PointCloud<PointNT>::ConstPtr PointCloudNConstPtr;
+        # typedef typename pcl::PointCloud<PointNT>::Ptr PointCloudNPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelFromNormals> Ptr;
+        # typedef boost::shared_ptr<const SampleConsensusModelFromNormals> ConstPtr;
+        # /** \brief Set the normal angular distance weight.
+        # * \param[in] w the relative weight (between 0 and 1) to give to the angular
+        # * distance (0 to pi/2) between point normals and the plane normal.
+        # * (The Euclidean distance will have weight 1-w.)
+        # */
+        inline void setNormalDistanceWeight (const double w) 
+        # /** \brief Get the normal angular distance weight. */
+        inline double getNormalDistanceWeight ()
+        # /** \brief Provide a pointer to the input dataset that contains the point
+        # * normals of the XYZ dataset.
+        # * \param[in] normals the const boost shared pointer to a PointCloud message
+        # inline void setInputNormals (const PointCloudNConstPtr &normals) 
+        # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
+        # inline PointCloudNConstPtr getInputNormals ()
+        ##
+        # protected:
+        # double normal_distance_weight_;
+        # PointCloudNConstPtr normals_;
+
+# ctypedef SampleConsensusModelFromNormals[cpp.PointXYZ, cpp.Normal] SampleConsensusModelFromNormals_t
+# ctypedef SampleConsensusModelFromNormals[cpp.PointXYZI, cpp.Normal] SampleConsensusModelFromNormals_PointXYZI_t
+# ctypedef SampleConsensusModelFromNormals[cpp.PointXYZRGB, cpp.Normal] SampleConsensusModelFromNormals_PointXYZRGB_t
+# ctypedef SampleConsensusModelFromNormals[cpp.PointXYZRGBA, cpp.Normal] SampleConsensusModelFromNormals_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelFromNormals[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelFromNormalsPtr_t
+ctypedef shared_ptr[SampleConsensusModelFromNormals[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelFromNormals_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelFromNormals[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelFromNormals_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelFromNormals[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelFromNormals_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelFromNormals[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelFromNormalsConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelFromNormals[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelFromNormals_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelFromNormals[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelFromNormals_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelFromNormals[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelFromNormals_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac.h
 # namespace pcl
 # template <typename T>
 # class SampleConsensus
-# cdef extern from "pcl/sample_consensus/sac.h" namespace "pcl":
-#     cdef cppclass SampleConsensus[T]:
-#         # private:
-#         # SampleConsensus ()
-#         # typedef typename SampleConsensusModel<T>::Ptr SampleConsensusModelPtr;
-#         # public:
-#         # SampleConsensus (const SampleConsensusModelPtr &model, bool random = false)
-#         # SampleConsensus (const SampleConsensusModelPtr &model, double threshold, bool random = false) : 
-#         # typedef boost::shared_ptr<SampleConsensus> Ptr;
-#         # typedef boost::shared_ptr<const SampleConsensus> ConstPtr;
-#         # /** \brief Constructor for base SAC.
-#         # * \param[in] model a Sample Consensus model
-#         # * \param[in] random if true set the random seed to the current time, else set to 12345 (default: false)
-#         # /** \brief Set the distance to model threshold.
-#         # * \param[in] threshold distance to model threshold
-#         # inline void setDistanceThreshold (double threshold)
-#         # /** \brief Get the distance to model threshold, as set by the user. */
-#         # inline double getDistanceThreshold ()
-#         # /** \brief Set the maximum number of iterations.
-#         # * \param[in] max_iterations maximum number of iterations
-#         # inline void setMaxIterations (int max_iterations)
-#         # /** \brief Get the maximum number of iterations, as set by the user. */
-#         # inline int getMaxIterations ()
-#         # /** \brief Set the desired probability of choosing at least one sample free from outliers.
-#         # * \param[in] probability the desired probability of choosing at least one sample free from outliers
-#         # * \note internally, the probability is set to 99% (0.99) by default.
-#         # inline void setProbability (double probability)
-#         # /** \brief Obtain the probability of choosing at least one sample free from outliers, as set by the user. */
-#         # inline double getProbability ()
-#         # /** \brief Compute the actual model. Pure virtual. */
-#         # virtual bool computeModel (int debug_verbosity_level = 0) = 0;
-#         # /** \brief Get a set of randomly selected indices.
-#         # * \param[in] indices the input indices vector
-#         # * \param[in] nr_samples the desired number of point indices to randomly select
-#         # * \param[out] indices_subset the resultant output set of randomly selected indices
-#         # inline void getRandomSamples (const boost::shared_ptr <std::vector<int> > &indices, 
-#         #                 size_t nr_samples, std::set<int> &indices_subset)
-#         # /** \brief Return the best model found so far. 
-#         # * \param[out] model the resultant model
-#         # inline void getModel (std::vector<int> &model)
-#         # /** \brief Return the best set of inliers found so far for this model. 
-#         # * \param[out] inliers the resultant set of inliers
-#         # inline void getInliers (std::vector<int> &inliers)
-#         # /** \brief Return the model coefficients of the best model found so far. 
-#         # * \param[out] model_coefficients the resultant model coefficients
-#         # inline void  getModelCoefficients (Eigen::VectorXf &model_coefficients)
-#         # protected:
-#         # /** \brief The underlying data model used (i.e. what is it that we attempt to search for). */
-#         # SampleConsensusModelPtr sac_model_;
-#         # /** \brief The model found after the last computeModel () as point cloud indices. */
-#         # std::vector<int> model_;
-#         # /** \brief The indices of the points that were chosen as inliers after the last computeModel () call. */
-#         # std::vector<int> inliers_;
-#         # /** \brief The coefficients of our model computed directly from the model found. */
-#         # Eigen::VectorXf model_coefficients_;
-#         # /** \brief Desired probability of choosing at least one sample free from outliers. */
-#         # double probability_;
-#         # /** \brief Total number of internal loop iterations that we've done so far. */
-#         # int iterations_;
-#         # /** \brief Distance to model threshold. */
-#         # double threshold_;
-#         # /** \brief Maximum number of iterations before giving up. */
-#         # int max_iterations_;
-#         # /** \brief Boost-based random number generator algorithm. */
-#         # boost::mt19937 rng_alg_;
-#         # /** \brief Boost-based random number generator distribution. */
-#         # boost::shared_ptr<boost::uniform_01<boost::mt19937> > rng_;
-#         # /** \brief Boost-based random number generator. */
-#         # inline double rnd ()
-# ###
+cdef extern from "pcl/sample_consensus/sac.h" namespace "pcl":
+    cdef cppclass SampleConsensus[T]:
+        # SampleConsensus (const SampleConsensusModelPtr &model, bool random = false)
+        # SampleConsensus (const SampleConsensusModelPtr &model, double threshold, bool random = false) : 
+        SampleConsensus (const SampleConsensusModelPtr_t &model)
+        SampleConsensus (const SampleConsensusModel_PointXYZI_Ptr_t &model)
+        SampleConsensus (const SampleConsensusModel_PointXYZRGB_Ptr_t &model)
+        SampleConsensus (const SampleConsensusModel_PointXYZRGBA_Ptr_t &model)
+
+        # private:
+        # SampleConsensus ()
+        # typedef typename SampleConsensusModel<T>::Ptr SampleConsensusModelPtr;
+        ##
+        # public:
+        # typedef boost::shared_ptr<SampleConsensus> Ptr;
+        # typedef boost::shared_ptr<const SampleConsensus> ConstPtr;
+        # /** \brief Constructor for base SAC.
+        # * \param[in] model a Sample Consensus model
+        # * \param[in] random if true set the random seed to the current time, else set to 12345 (default: false)
+        # 
+        # \brief Set the distance to model threshold.
+        # \param[in] threshold distance to model threshold
+        inline void setDistanceThreshold (double threshold)
+        # /** \brief Get the distance to model threshold, as set by the user. */
+        inline double getDistanceThreshold ()
+        # /** \brief Set the maximum number of iterations.
+        # * \param[in] max_iterations maximum number of iterations
+        inline void setMaxIterations (int max_iterations)
+        # /** \brief Get the maximum number of iterations, as set by the user. */
+        inline int getMaxIterations ()
+        # /** \brief Set the desired probability of choosing at least one sample free from outliers.
+        # * \param[in] probability the desired probability of choosing at least one sample free from outliers
+        # * \note internally, the probability is set to 99% (0.99) by default.
+        inline void setProbability (double probability)
+        # /** \brief Obtain the probability of choosing at least one sample free from outliers, as set by the user. */
+        inline double getProbability ()
+        # /** \brief Compute the actual model. Pure virtual. */
+        # virtual bool computeModel (int debug_verbosity_level = 0) = 0;
+        # /** \brief Get a set of randomly selected indices.
+        # * \param[in] indices the input indices vector
+        # * \param[in] nr_samples the desired number of point indices to randomly select
+        # * \param[out] indices_subset the resultant output set of randomly selected indices
+        # inline void getRandomSamples (const boost::shared_ptr <std::vector<int> > &indices, 
+        #                 size_t nr_samples, std::set<int> &indices_subset)
+        # /** \brief Return the best model found so far. 
+        # * \param[out] model the resultant model
+        # inline void getModel (std::vector<int> &model)
+        # /** \brief Return the best set of inliers found so far for this model. 
+        # * \param[out] inliers the resultant set of inliers
+        # inline void getInliers (std::vector<int> &inliers)
+        # /** \brief Return the model coefficients of the best model found so far. 
+        # * \param[out] model_coefficients the resultant model coefficients
+        # inline void  getModelCoefficients (Eigen::VectorXf &model_coefficients)
+        ##
+        # protected:
+        # SampleConsensusModelPtr sac_model_;
+        # std::vector<int> model_;
+        # std::vector<int> inliers_;
+        # Eigen::VectorXf model_coefficients_;
+        # double probability_;
+        # int iterations_;
+        # double threshold_;
+        # int max_iterations_;
+        # boost::mt19937 rng_alg_;
+        # boost::shared_ptr<boost::uniform_01<boost::mt19937> > rng_;
+        # inline double rnd ()
+
+# ctypedef SampleConsensus[cpp.PointXYZ] SampleConsensus_t
+# ctypedef SampleConsensus[cpp.PointXYZI] SampleConsensus_PointXYZI_t
+# ctypedef SampleConsensus[cpp.PointXYZRGB] SampleConsensus_PointXYZRGB_t
+# ctypedef SampleConsensus[cpp.PointXYZRGBA] SampleConsensus_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensus[cpp.PointXYZ]] SampleConsensusPtr_t
+ctypedef shared_ptr[SampleConsensus[cpp.PointXYZI]] SampleConsensus_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensus[cpp.PointXYZRGB]] SampleConsensus_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensus[cpp.PointXYZRGBA]] SampleConsensus_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensus[cpp.PointXYZ]] SampleConsensusConstPtr_t
+ctypedef shared_ptr[const SampleConsensus[cpp.PointXYZI]] SampleConsensus_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensus[cpp.PointXYZRGB]] SampleConsensus_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensus[cpp.PointXYZRGBA]] SampleConsensus_PointXYZRGBA_ConstPtr_t
+###
+
 
 # template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
 # struct Functor

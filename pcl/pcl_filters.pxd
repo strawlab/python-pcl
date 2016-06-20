@@ -2,9 +2,8 @@ from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-# main
+# import
 cimport pcl_defs as cpp
-
 from boost_shared_ptr cimport shared_ptr
 
 cimport eigen as eigen3
@@ -30,6 +29,19 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # /** \brief Evaluate function. */
         # virtual bool evaluate (const PointT &point) const = 0;
 ###
+# ctypedef ComparisonBase[cpp.PointXYZ] ComparisonBase_t
+# ctypedef ComparisonBase[cpp.PointXYZI] ComparisonBase_PointXYZI_t
+# ctypedef ComparisonBase[cpp.PointXYZRGB] ComparisonBase_PointXYZRGB_t
+# ctypedef ComparisonBase[cpp.PointXYZRGBA] ComparisonBase_PointXYZRGBA_t
+ctypedef shared_ptr[ComparisonBase[cpp.PointXYZ]] ComparisonBasePtr_t
+ctypedef shared_ptr[ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_Ptr_t
+ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZ]] ComparisonBaseConstPtr_t
+ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_ConstPtr_t
+
 
 # conditional_removal.h
 # template<typename PointT>
@@ -44,9 +56,28 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # ctypedef boost::shared_ptr<ConditionBase<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionBase<PointT> > ConstPtr;
         # void addComparison (ComparisonBaseConstPtr comparison);
+        void addComparison (ComparisonBaseConstPtr_t comparison);
+        void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison);
+        void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison);
+        void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison);
         # void addCondition (Ptr condition);
+        # void addCondition (ConditionBasePtr_t condition);
+        # void addCondition (ConditionBase_PointXYZI_Ptr_t condition);
+        # void addCondition (ConditionBase_PointXYZRGB_Ptr_t condition);
+        # void addCondition (ConditionBase_PointXYZRGBA_Ptr_t condition);
         bool isCapable ()
+
+ctypedef shared_ptr[ConditionBase[cpp.PointXYZ]] ConditionBasePtr_t
+ctypedef shared_ptr[ConditionBase[cpp.PointXYZI]] ConditionBase_PointXYZI_Ptr_t
+ctypedef shared_ptr[ConditionBase[cpp.PointXYZRGB]] ConditionBase_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[ConditionBase[cpp.PointXYZRGBA]] ConditionBase_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const ConditionBase[cpp.PointXYZ]] ConditionBaseConstPtr_t
+ctypedef shared_ptr[const ConditionBase[cpp.PointXYZI]] ConditionBase_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const ConditionBase[cpp.PointXYZRGB]] ConditionBase_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const ConditionBase[cpp.PointXYZRGBA]] ConditionBase_PointXYZRGBA_ConstPtr_t
 ###
+
+
 
 # filter.h
 # template<typename PointT>
@@ -67,6 +98,20 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         # \brief Calls the filtering method and returns the filtered dataset in output.
         # \param[out] output the resultant filtered point cloud dataset
         void filter (cpp.PointCloud[T] &output)
+
+#
+
+ctypedef shared_ptr[Filter[cpp.PointXYZ]] FilterPtr_t
+ctypedef shared_ptr[Filter[cpp.PointXYZI]] Filter_PointXYZI_Ptr_t
+ctypedef shared_ptr[Filter[cpp.PointXYZRGB]] Filter_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[Filter[cpp.PointXYZRGBA]] Filter_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const Filter[cpp.PointXYZ]] FilterConstPtr_t
+ctypedef shared_ptr[const Filter[cpp.PointXYZI]] Filter_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const Filter[cpp.PointXYZRGB]] Filter_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const Filter[cpp.PointXYZRGBA]] Filter_PointXYZRGBA_ConstPtr_t
+###
+
+
 
 # template<>
 # class PCL_EXPORTS Filter<sensor_msgs::PointCloud2> : public PCLBase<sensor_msgs::PointCloud2>
@@ -252,51 +297,42 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 # Override class
 # template<typename PointT>
 # class Clipper3D
-#     public:
-#         * \brief virtual destructor. Never throws an exception.
-#       virtual ~Clipper3D () throw () {}
-# 
-#         * \brief interface to clip a single point
-#         * \param[in] point the point to check against
-#         * \return true, it point still exists, false if its clipped
-#       virtual bool clipPoint3D (const PointT& point) const = 0;
-# 
-#         * \brief interface to clip a line segment given by two end points. The order of the end points is unimportant and will sty the same after clipping.
-#         * This means basically, that the direction of the line will not flip after clipping.
-#         * \param[in,out] pt1 start point of the line
-#         * \param[in,out] pt2 end point of the line
-#         * \return true if the clipped line is not empty, thus the parameters are still valid, false if line completely outside clipping space
-#       virtual bool clipLineSegment3D (PointT& pt1, PointT& pt2) const = 0;
-# 
-#         * \brief interface to clip a planar polygon given by an ordered list of points
-#         * \param[in,out] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
-#       virtual void clipPlanarPolygon3D (std::vector<PointT>& polygon) const = 0;
-# 
-#         * \brief interface to clip a planar polygon given by an ordered list of points
-#         * \param[in] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
-#         * \param[out] clipped_polygon the clipped polygon
-#       virtual void clipPlanarPolygon3D (const std::vector<PointT>& polygon, std::vector<PointT>& clipped_polygon) const = 0;
-# 
-#         * \brief interface to clip a point cloud
-#         * \param[in] cloud_in input point cloud
-#         * \param[out] clipped indices of points that remain after clipping the input cloud
-#         * \param[in] indices the indices of points in the point cloud to be clipped.
-#         * \return list of indices of remaining points after clipping.
-#       virtual void clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const = 0;
-# 
-#         * \brief polymorphic method to clone the underlying clipper with its parameters.
-#         * \return the new clipper object from the specific subclass with all its parameters.
-#       virtual Clipper3D<PointT>* clone () const = 0;
+cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
+    cdef cppclass Clipper3D[T]:
+        Clipper3D()
+        # public:
+        # \brief interface to clip a single point
+        # \param[in] point the point to check against
+        # * \return true, it point still exists, false if its clipped
+        # virtual bool clipPoint3D (const PointT& point) const = 0;
+        # 
+        #   * \brief interface to clip a line segment given by two end points. The order of the end points is unimportant and will sty the same after clipping.
+        #   * This means basically, that the direction of the line will not flip after clipping.
+        #   * \param[in,out] pt1 start point of the line
+        #   * \param[in,out] pt2 end point of the line
+        #   * \return true if the clipped line is not empty, thus the parameters are still valid, false if line completely outside clipping space
+        # virtual bool clipLineSegment3D (PointT& pt1, PointT& pt2) const = 0;
+        # 
+        #   * \brief interface to clip a planar polygon given by an ordered list of points
+        #   * \param[in,out] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
+        # virtual void clipPlanarPolygon3D (std::vector<PointT>& polygon) const = 0;
+        # 
+        #   * \brief interface to clip a planar polygon given by an ordered list of points
+        #   * \param[in] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
+        #   * \param[out] clipped_polygon the clipped polygon
+        # virtual void clipPlanarPolygon3D (vector[PointT]& polygon, vector[PointT]& clipped_polygon) const = 0;
+        # 
+        #   * \brief interface to clip a point cloud
+        #   * \param[in] cloud_in input point cloud
+        #   * \param[out] clipped indices of points that remain after clipping the input cloud
+        #   * \param[in] indices the indices of points in the point cloud to be clipped.
+        #   * \return list of indices of remaining points after clipping.
+        # virtual void clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const = 0;
+        # 
+        # * \brief polymorphic method to clone the underlying clipper with its parameters.
+        # * \return the new clipper object from the specific subclass with all its parameters.
+        # virtual Clipper3D<PointT>* clone () const = 0;
 ###
-
-# conditional_removal.h
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
-# typedef enum 
-# {
-# GT, GE, LT, LE, EQ
-# }
-# CompareOp;
-
 
 # NG ###
 # no define constructor
@@ -311,19 +347,29 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 ###
 # template<typename PointT>
 # class FieldComparison : public ComparisonBase<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass FieldComparison[T](ComparisonBase[T]):
-#       FieldComparison (string field_name, CompareOp op, double compare_val)
-#         # FieldComparison (string field_name, CompareOp op, double compare_val)
-#         # FieldComparison (const FieldComparison &src) :
-#         # FieldComparison& operator = (const FieldComparison &src)
-#         # using ComparisonBase<PointT>::field_name_;
-#         # using ComparisonBase<PointT>::op_;
-#         # using ComparisonBase<PointT>::capable_;
-#         # public:
-#         #   typedef boost::shared_ptr<FieldComparison<PointT> > Ptr;
-#         #   typedef boost::shared_ptr<const FieldComparison<PointT> > ConstPtr;
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass FieldComparison[T](ComparisonBase[T]):
+        FieldComparison (string field_name, CompareOp op, double compare_val)
+        FieldComparison (string field_name, CompareOp op, double compare_val)
+        # FieldComparison (const FieldComparison &src) :
+        # FieldComparison& operator = (const FieldComparison &src)
+        # using ComparisonBase<PointT>::field_name_;
+        # using ComparisonBase<PointT>::op_;
+        # using ComparisonBase<PointT>::capable_;
+        # public:
+        # ctypedef boost::shared_ptr<FieldComparison<PointT> > Ptr;
+        # ctypedef boost::shared_ptr<const FieldComparison<PointT> > ConstPtr;
+
+ctypedef shared_ptr[FieldComparison[cpp.PointXYZ]] FieldComparisonPtr_t
+ctypedef shared_ptr[FieldComparison[cpp.PointXYZI]] FieldComparison_PointXYZI_Ptr_t
+ctypedef shared_ptr[FieldComparison[cpp.PointXYZRGB]] FieldComparison_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[FieldComparison[cpp.PointXYZRGBA]] FieldComparison_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const FieldComparison[cpp.PointXYZ]] FieldComparisonConstPtr_t
+ctypedef shared_ptr[const FieldComparison[cpp.PointXYZI]] FieldComparison_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const FieldComparison[cpp.PointXYZRGB]] FieldComparison_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const FieldComparison[cpp.PointXYZRGBA]] FieldComparison_PointXYZRGBA_ConstPtr_t
 ###
+
 
 # template<typename PointT>
 # class PackedRGBComparison : public ComparisonBase<PointT>
@@ -418,6 +464,19 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<ConditionAnd<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionAnd<PointT> > ConstPtr;
+
+# ctypedef ConditionAnd[cpp.PointXYZ] ConditionAnd_t
+# ctypedef ConditionAnd[cpp.PointXYZI] ConditionAnd_PointXYZI_t
+# ctypedef ConditionAnd[cpp.PointXYZRGB] ConditionAnd_PointXYZRGB_t
+# ctypedef ConditionAnd[cpp.PointXYZRGBA] ConditionAnd_PointXYZRGBA_t
+ctypedef shared_ptr[ConditionAnd[cpp.PointXYZ]] ConditionAndPtr_t
+ctypedef shared_ptr[ConditionAnd[cpp.PointXYZI]] ConditionAnd_PointXYZI_Ptr_t
+ctypedef shared_ptr[ConditionAnd[cpp.PointXYZRGB]] ConditionAnd_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[ConditionAnd[cpp.PointXYZRGBA]] ConditionAnd_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const ConditionAnd[cpp.PointXYZ]] ConditionAndConstPtr_t
+ctypedef shared_ptr[const ConditionAnd[cpp.PointXYZI]] ConditionAnd_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const ConditionAnd[cpp.PointXYZRGB]] ConditionAnd_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const ConditionAnd[cpp.PointXYZRGBA]] ConditionAnd_PointXYZRGBA_ConstPtr_t
 ###
 
 # template<typename PointT>
@@ -430,6 +489,15 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<ConditionOr<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionOr<PointT> > ConstPtr;
+
+ctypedef shared_ptr[ConditionOr[cpp.PointXYZ]] ConditionOrPtr_t
+ctypedef shared_ptr[ConditionOr[cpp.PointXYZI]] ConditionOr_PointXYZI_Ptr_t
+ctypedef shared_ptr[ConditionOr[cpp.PointXYZRGB]] ConditionOr_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[ConditionOr[cpp.PointXYZRGBA]] ConditionOr_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const ConditionOr[cpp.PointXYZ]] ConditionOrConstPtr_t
+ctypedef shared_ptr[const ConditionOr[cpp.PointXYZI]] ConditionOr_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const ConditionOr[cpp.PointXYZRGB]] ConditionOr_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const ConditionOr[cpp.PointXYZRGBA]] ConditionOr_PointXYZRGBA_ConstPtr_t
 ###
 
 # template<typename PointT>
@@ -437,8 +505,14 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
 cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
     cdef cppclass ConditionalRemoval[T](Filter[T]):
         ConditionalRemoval()
-        # ConditionalRemoval(int)
+        ConditionalRemoval(int)
         # ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false) :
+        # python invalid default param ?
+        # ConditionalRemoval (ConditionBasePtr_t condition, bool extract_removed_indices = false) :
+        # ConditionalRemoval (ConditionBase_PointXYZI_Ptr_t condition, bool extract_removed_indices = false) :
+        # ConditionalRemoval (ConditionBase_PointXYZRGB_Ptr_t condition, bool extract_removed_indices = false) :
+        # ConditionalRemoval (ConditionBase_PointXYZRGBA_Ptr_t condition, bool extract_removed_indices = false) :
+
         # using Filter<PointT>::input_;
         # using Filter<PointT>::filter_name_;
         # using Filter<PointT>::getClassName;
@@ -455,6 +529,12 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         bool getKeepOrganized ()
         void setUserFilterValue (float val)
         # void setCondition (ConditionBasePtr condition);
+        void setCondition (ConditionBasePtr_t condition);
+        void setCondition (ConditionBase_PointXYZI_Ptr_t condition);
+        void setCondition (ConditionBase_PointXYZRGB_Ptr_t condition);
+        void setCondition (ConditionBase_PointXYZRGBA_Ptr_t condition);
+
+
 ###
 
 # crop_box.h
@@ -493,6 +573,8 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         void setTransform (const eigen3.Affine3f &transform)
         # \brief Get the value of the transformation parameter, as set by the user. */
         eigen3.Affine3f getTransform () const
+
+###
 
 # template<>
 # class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
@@ -533,6 +615,10 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
 #      Eigen::Affine3f getTransform () const
 
 ctypedef CropBox[cpp.PointXYZ] CropBox_t
+ctypedef CropBox[cpp.PointXYZI] CropBox_PointXYZI_t
+ctypedef CropBox[cpp.PointXYZRGB] CropBox_PointXYZRGB_t
+ctypedef CropBox[cpp.PointXYZRGBA] CropBox_PointXYZRGBA_t
+
 ###
 
 # crop_hull.h
@@ -571,6 +657,10 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         void setCropOutside(bool crop_outside)
 
 ctypedef CropHull[cpp.PointXYZ] CropHull_t
+ctypedef CropHull[cpp.PointXYZI] CropHull_PointXYZI_t
+ctypedef CropHull[cpp.PointXYZRGB] CropHull_PointXYZRGB_t
+ctypedef CropHull[cpp.PointXYZRGBA] CropHull_PointXYZRGBA_t
+
 ###
 
 # extract_indices.h
@@ -591,6 +681,8 @@ cdef extern from "pcl/filters/extract_indices.h" namespace "pcl":
         # * It does not alter the value of the internal keep organized boolean as set by setKeepOrganized().
         # * \param[in/out] cloud The point cloud used for input and output.
         void filterDirectly (cpp.PointCloudPtr_t &cloud);
+
+###
 
 # template<>
 # class PCL_EXPORTS ExtractIndices<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
@@ -729,22 +821,24 @@ ctypedef PassThrough[cpp.PointXYZRGBA] PassThrough_PointXYZRGBA_t
 # plane_clipper3D.h
 # template<typename PointT>
 # class PlaneClipper3D : public Clipper3D<PointT>
-# cdef extern from "pcl/filters/plane_clipper3D.h" namespace "pcl":
-#     cdef cppclass PlaneClipper3D[T](Clipper3D[T]):
-#         # PlaneClipper3D (const Eigen::Vector4f& plane_params);
-#         #   * \brief Set new plane parameters
-#         #   * \param plane_params
-#         # void setPlaneParameters (const Eigen::Vector4f& plane_params);
-#         #   * \brief return the current plane parameters
-#         #   * \return the current plane parameters
-#         # const Eigen::Vector4f& getPlaneParameters () const;
-#         # virtual bool clipPoint3D (const PointT& point) const;
-#         # virtual bool clipLineSegment3D (PointT& from, PointT& to) const;
-#         # virtual void clipPlanarPolygon3D (const std::vector<PointT>& polygon, std::vector<PointT>& clipped_polygon) const;
-#         # virtual void
-#         # clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const;
-#         # virtual Clipper3D<PointT>*
-#         # clone () const;
+cdef extern from "pcl/filters/plane_clipper3D.h" namespace "pcl":
+    cdef cppclass PlaneClipper3D[T](Clipper3D[T]):
+        PlaneClipper3D (eigen3.Vector4f plane_params)
+        # PlaneClipper3D (const Eigen::Vector4f& plane_params);
+        # * \brief Set new plane parameters
+        # * \param plane_params
+        # void setPlaneParameters (const Eigen::Vector4f& plane_params);
+        void setPlaneParameters (const eigen3.Vector4f plane_params);
+        
+        # * \brief return the current plane parameters
+        # * \return the current plane parameters
+        # const Eigen::Vector4f& getPlaneParameters () const;
+        eigen3.Vector4f getPlaneParameters ()
+        # virtual bool clipPoint3D (const PointT& point) const;
+        # virtual bool clipLineSegment3D (PointT& from, PointT& to) const;
+        # virtual void clipPlanarPolygon3D (const std::vector<PointT>& polygon, std::vector<PointT>& clipped_polygon) const;
+        # virtual void clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const;
+        # virtual Clipper3D<PointT>* clone () const;
 ###
 
 # project_inliers.h
@@ -1222,5 +1316,26 @@ ctypedef VoxelGrid[cpp.PointXYZ] VoxelGrid_t
 ctypedef VoxelGrid[cpp.PointXYZI] VoxelGrid_PointXYZI_t
 ctypedef VoxelGrid[cpp.PointXYZRGB] VoxelGrid_PointXYZRGB_t
 ctypedef VoxelGrid[cpp.PointXYZRGBA] VoxelGrid_PointXYZRGBA_t
+
+###
+
+###############################################################################
+# Enum
+###############################################################################
+
+# conditional_removal.h
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+# typedef enum 
+# {
+# GT, GE, LT, LE, EQ
+# }
+# CompareOp;
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+    cdef enum CompareOp:
+        GT
+        GE
+        LT
+        LE
+        EQ
 
 ###

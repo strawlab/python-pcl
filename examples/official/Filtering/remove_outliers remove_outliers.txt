@@ -33,42 +33,43 @@ for i in range(0, 5):
 
 cloud.from_array(points)
 
-if (strcmp(argv[1], "-r") == 0)
-{
-	# pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
-	# // build the filter
-	# outrem.setInputCloud(cloud);
-	# outrem.setRadiusSearch(0.8);
-	# outrem.setMinNeighborsInRadius (2);
-	# // apply filter
-	# outrem.filter (*cloud_filtered);
-	outrem = cloud.make_RadiusOutlierRemoval()
-	outrem.set_radius_search(0.8)
-	outrem.set_MinNeighborsInRadius(2)
-	cloud_filtered = outrem.filter ()
-}
-else if (strcmp(argv[1], "-c") == 0)
-{
-	// build the condition
-	pcl::ConditionAnd<pcl::PointXYZ>::Ptr range_cond (new pcl::ConditionAnd<pcl::PointXYZ> ());
-	range_cond->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (
-		new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::GT, 0.0)));
-	
-	range_cond->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (
-		new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::LT, 0.8)));
 
-	// build the filter
-	pcl::ConditionalRemoval<pcl::PointXYZ> condrem (range_cond);
-	condrem.setInputCloud (cloud);
-	condrem.setKeepOrganized(true);
-	// apply filter
-	condrem.filter (*cloud_filtered);
-}
-else
-{
-	std::cerr << "please specify command line arg '-r' or '-c'" << std::endl;
-	exit(0);
-}
+# if (strcmp(argv[1], "-r") == 0)
+# {
+    # pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
+    # // build the filter
+    # outrem.setInputCloud(cloud);
+    # outrem.setRadiusSearch(0.8);
+    # outrem.setMinNeighborsInRadius (2);
+    # // apply filter
+    # outrem.filter (*cloud_filtered);
+    outrem = cloud.make_RadiusOutlierRemoval()
+    outrem.set_radius_search(0.8)
+    outrem.set_MinNeighborsInRadius(2)
+    cloud_filtered = outrem.filter ()
+# }
+# else if (strcmp(argv[1], "-c") == 0)
+# {
+    #   // build the condition
+    #   pcl::ConditionAnd<pcl::PointXYZ>::Ptr range_cond (new pcl::ConditionAnd<pcl::PointXYZ> ());
+    #   range_cond->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (
+    #       new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::GT, 0.0)));
+    # 
+    #   range_cond->addComparison (pcl::FieldComparison<pcl::PointXYZ>::ConstPtr (
+    #       new pcl::FieldComparison<pcl::PointXYZ> ("z", pcl::ComparisonOps::LT, 0.8)));
+    # 
+    #   // build the filter
+    #   pcl::ConditionalRemoval<pcl::PointXYZ> condrem (range_cond);
+    #   condrem.setInputCloud (cloud);
+    #   condrem.setKeepOrganized(true);
+    #   // apply filter
+    #   condrem.filter (*cloud_filtered);
+# }
+# else
+# {
+#   std::cerr << "please specify command line arg '-r' or '-c'" << std::endl;
+#   exit(0);
+# }
 
 # std::cerr << "Cloud before filtering: " << std::endl;
 # for (size_t i = 0; i < cloud->points.size (); ++i)

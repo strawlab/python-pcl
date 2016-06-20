@@ -16,6 +16,11 @@ environment:
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig"
+	# BOOST_ROOT C:\Program Files\Boost
+	# EIGEN_ROOT C:\Program Files\Eigen
+	# FLANN_ROOT C:\Program Files\flann
+	# QHULL_ROOT C:\Program Files\qfull
+	# VTK_DIR C:\Program Files\VTK
 
   - PYTHON: "C:\\Python34-x64"
     PYTHON_VERSION: "3.4.3"
@@ -23,6 +28,11 @@ environment:
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig"
+	# BOOST_ROOT C:\Program Files\Boost
+	# EIGEN_ROOT C:\Program Files\Eigen
+	# FLANN_ROOT C:\Program Files\flann
+	# QHULL_ROOT C:\Program Files\qfull
+	# VTK_DIR C:\Program Files\VTK
 
   # Version 1.7.2
   # - PYTHON: "C:\\Python35"
@@ -31,6 +41,12 @@ environment:
   #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
   #   PCL_VERSION: "1.7"
   #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig"
+  # BOOST_ROOT C:\Program Files\Boost
+  # EIGEN_ROOT C:\Program Files\Eigen
+  # FLANN_ROOT C:\Program Files\flann
+  # QHULL_ROOT C:\Program Files\qfull
+  # VTK_DIR C:\Program Files\VTK
+
   # 
   # - PYTHON: "C:\\Python35-x64"
   #   PYTHON_VERSION: "3.5.1"
@@ -38,7 +54,12 @@ environment:
   #   PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
   #   PCL_VERSION: "1.7"
   #   PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.7.2\\lib\\pkgconfig"
-  
+  # BOOST_ROOT C:\Program Files\Boost
+  # EIGEN_ROOT C:\Program Files\Eigen
+  # FLANN_ROOT C:\Program Files\flann
+  # QHULL_ROOT C:\Program Files\qfull
+  # VTK_DIR C:\Program Files\VTK
+
   # Version 1.8.0 Check
   # - PYTHON: "C:\\Python35"
   #   PYTHON_VERSION: "3.5.0"
@@ -51,6 +72,11 @@ environment:
   #   PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
   #   PCL_VERSION: "1.8.0"
   #   PKG_CONFIG_PATH: C:\Program Files\PCL 1.6.0\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\Eigen\lib\pkgconfig
+  # BOOST_ROOT C:\Program Files\Boost
+  # EIGEN_ROOT C:\Program Files\Eigen
+  # FLANN_ROOT C:\Program Files\flann
+  # QHULL_ROOT C:\Program Files\qfull
+  # VTK_DIR C:\Program Files\VTK
 
 branches: 
   only: 
