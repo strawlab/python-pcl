@@ -249,7 +249,7 @@ else:
         os.environ['ARCHFLAGS'] = ''
 
     # Try to find PCL. XXX we should only do this when trying to build or install.
-    PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
+    PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
 
     for pcl_version in PCL_SUPPORTED:
         if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
@@ -331,6 +331,28 @@ else:
               cmdclass={'build_ext': build_ext}
               )
     elif pcl_version == '-1.7':
+        setup(name='python-pcl',
+              description='pcl wrapper',
+              url='http://github.com/strawlab/python-pcl',
+              version='0.2',
+              author='John Stowers',
+              author_email='john.stowers@gmail.com',
+              license='BSD',
+              packages=["pcl"],
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
+                                     language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
+                                     language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #         language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
+                           #         language="c++", **ext_args),
+                           # debug
+                           # gdb_debug=True,
+                          ],
+              cmdclass={'build_ext': build_ext}
+              )
+    elif pcl_version == '-1.8':
         setup(name='python-pcl',
               description='pcl wrapper',
               url='http://github.com/strawlab/python-pcl',
