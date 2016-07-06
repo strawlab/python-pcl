@@ -37,6 +37,9 @@ cloud.from_array(points)
 # std::cerr << "    " << cloud->points[i].x << " " 
 #                     << cloud->points[i].y << " " 
 #                     << cloud->points[i].z << std::endl;
+print ('Cloud before projection: ')
+for i in range(0, cloud.size):
+    print ('x: '  + str(cloud[i][0]) + ', y : ' + str(cloud[i][1])  + ', z : ' + str(cloud[i][2]))
 
 # segment parts
 # // Create a set of planar coefficients with X=Y=0, Z=1
@@ -56,14 +59,14 @@ cloud.from_array(points)
 # Python 
 proj = cloud.make_ProjectInliers()
 proj.set_model_type (pcl.SACMODEL_PLANE)
-# print('Test1')
-# point ‚ðÝ’è‚µ‚½ó‘Ô‚ÅŒÄ‚Ño‚·‚Æ‚È‚º‚©NG
 cloud_projected = proj.filter()
-# print('Test2')
 
 # std::cerr << "Cloud after projection: " << std::endl;
 # for (size_t i = 0; i < cloud_projected->points.size (); ++i)
 # std::cerr << "    " << cloud_projected->points[i].x << " " 
 #                     << cloud_projected->points[i].y << " " 
 #                     << cloud_projected->points[i].z << std::endl;
+print ('Cloud after projection: ')
+for i in range(0, cloud_projected.size):
+    print ('x: '  + str(cloud_projected[i][0]) + ', y : ' + str(cloud_projected[i][1])  + ', z : ' + str(cloud_projected[i][2]))
 

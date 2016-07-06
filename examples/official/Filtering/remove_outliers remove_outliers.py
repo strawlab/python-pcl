@@ -77,9 +77,15 @@ cloud.from_array(points)
 #                     << cloud->points[i].y << " "
 #                     << cloud->points[i].z << std::endl;
 # // display pointcloud after filtering
+print ('Cloud before filtering: ')
+for i in range(0, cloud.size):
+    print ('x: '  + str(cloud[i][0]) + ', y : ' + str(cloud[i][1])  + ', z : ' + str(cloud[i][2]))
 
 # std::cerr << "Cloud after filtering: " << std::endl;
 # for (size_t i = 0; i < cloud_filtered->points.size (); ++i)
 # std::cerr << "    " << cloud_filtered->points[i].x << " "
 #                     << cloud_filtered->points[i].y << " "
 #                     << cloud_filtered->points[i].z << std::endl;
+print ('Cloud after filtering: ')
+for i in range(0, cloud_filtered.size):
+    print ('x: '  + str(cloud_filtered[i][0]) + ', y : ' + str(cloud_filtered[i][1])  + ', z : ' + str(cloud_filtered[i][2]))

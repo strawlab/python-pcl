@@ -389,3 +389,22 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
 # #endif
 ###
 
+###############################################################################
+# Enum
+###############################################################################
+
+cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
+    cdef cppclass OpenNIGrabber(Grabber):
+        # public:
+        # typedef enum
+        #   OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
+        #   OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
+        #   OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
+        #   OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
+        #   OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
+        #   OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
+        #   OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
+        #   OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        #   OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        #   OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        # } Mode;

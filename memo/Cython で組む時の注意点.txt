@@ -163,3 +163,7 @@ http://d.hatena.ne.jp/ousttrue/20081119/1227064302
 ÅEhttp://stackoverflow.com/questions/14038002/opencv-how-to-calculate-distance-between-camera-and-object-using-image
 
 
+---
+
+Cython  cppclass enum
+
