@@ -407,12 +407,31 @@ cdef class PointCloud:
     
     def make_RadiusOutlierRemoval(self):
         """
-        Return a pcl.Segmentation object with this object set as the input-cloud
+        Return a pcl.RadiusOutlierRemoval object with this object set as the input-cloud
         """
         fil = RadiusOutlierRemoval()
         cdef pclfil.RadiusOutlierRemoval_t *cfil = <pclfil.RadiusOutlierRemoval_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
+
+    def make_ConditionAnd(self):
+        """
+        Return a pcl.ConditionAnd object with this object set as the input-cloud
+        """
+        condAnd = ConditionAnd()
+        cdef pclfil.ConditionAnd_t *cCondAnd = <pclfil.ConditionAnd_t *>condAnd.me
+        return condAnd
+
+    def make_ConditionalRemoval(self, range_conf):
+        """
+        Return a pcl.ConditionalRemoval object with this object set as the input-cloud
+        """
+        condRemoval = ConditionalRemoval()
+        cdef pclfil.ConditionalRemoval_t *cCondRemoval = <pclfil.ConditionalRemoval_t *>condRemoval.me
+        # cCondRemoval.set_ConditionAdd(range_conf)
+        cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return condRemoval
+
 
 ###
 
@@ -429,6 +448,8 @@ include "CropHull.pxi"
 include "CropBox.pxi"
 include "ProjectInliers.pxi"
 include "RadiusOutlierRemoval.pxi"
-# Ubuntu/Mac NG
+include "ConditionAnd.pxi"
+include "ConditionalRemoval.pxi"
+# Ubuntu/Mac NG(1.7? 1.8?)
 # include "UniformSampling.pxi"
 # include "IntegralImageNormalEstimation.pxi"

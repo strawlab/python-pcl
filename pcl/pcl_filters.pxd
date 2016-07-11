@@ -55,7 +55,7 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # ctypedef typename ComparisonBase::ConstPtr ComparisonBaseConstPtr;
         # ctypedef boost::shared_ptr<ConditionBase<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionBase<PointT> > ConstPtr;
-        # void addComparison (ComparisonBaseConstPtr comparison);
+        # void addComparison (ConditionBasePtr_t comparison);
         void addComparison (ComparisonBaseConstPtr_t comparison);
         void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison);
         void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison);
@@ -465,10 +465,10 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # ctypedef boost::shared_ptr<ConditionAnd<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionAnd<PointT> > ConstPtr;
 
-# ctypedef ConditionAnd[cpp.PointXYZ] ConditionAnd_t
-# ctypedef ConditionAnd[cpp.PointXYZI] ConditionAnd_PointXYZI_t
-# ctypedef ConditionAnd[cpp.PointXYZRGB] ConditionAnd_PointXYZRGB_t
-# ctypedef ConditionAnd[cpp.PointXYZRGBA] ConditionAnd_PointXYZRGBA_t
+ctypedef ConditionAnd[cpp.PointXYZ] ConditionAnd_t
+ctypedef ConditionAnd[cpp.PointXYZI] ConditionAnd_PointXYZI_t
+ctypedef ConditionAnd[cpp.PointXYZRGB] ConditionAnd_PointXYZRGB_t
+ctypedef ConditionAnd[cpp.PointXYZRGBA] ConditionAnd_PointXYZRGBA_t
 ctypedef shared_ptr[ConditionAnd[cpp.PointXYZ]] ConditionAndPtr_t
 ctypedef shared_ptr[ConditionAnd[cpp.PointXYZI]] ConditionAnd_PointXYZI_Ptr_t
 ctypedef shared_ptr[ConditionAnd[cpp.PointXYZRGB]] ConditionAnd_PointXYZRGB_Ptr_t
@@ -534,6 +534,20 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         void setCondition (ConditionBase_PointXYZRGB_Ptr_t condition);
         void setCondition (ConditionBase_PointXYZRGBA_Ptr_t condition);
 
+
+
+ctypedef ConditionalRemoval[cpp.PointXYZ] ConditionalRemoval_t
+ctypedef ConditionalRemoval[cpp.PointXYZI] ConditionalRemoval_PointXYZI_t
+ctypedef ConditionalRemoval[cpp.PointXYZRGB] ConditionalRemoval_PointXYZRGB_t
+ctypedef ConditionalRemoval[cpp.PointXYZRGBA] ConditionalRemoval_PointXYZRGBA_t
+ctypedef shared_ptr[ConditionalRemoval[cpp.PointXYZ]] ConditionalRemovalPtr_t
+ctypedef shared_ptr[ConditionalRemoval[cpp.PointXYZI]] ConditionalRemoval_PointXYZI_Ptr_t
+ctypedef shared_ptr[ConditionalRemoval[cpp.PointXYZRGB]] ConditionalRemoval_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[ConditionalRemoval[cpp.PointXYZRGBA]] ConditionalRemoval_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZ]] ConditionalRemovalConstPtr_t
+ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZI]] ConditionalRemoval_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZRGB]] ConditionalRemoval_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZRGBA]] ConditionalRemoval_PointXYZRGBA_ConstPtr_t
 
 ###
 

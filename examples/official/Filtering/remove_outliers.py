@@ -5,6 +5,14 @@ import pcl
 import numpy as np
 import random
 
+import argparse
+
+parser = argparse.ArgumentParser(description='Chainer example: MNIST')
+parser.add_argument('--Removal', '-r', choices=('Radius', 'Condition'), default='',
+                    help='RadiusOutlier/Condition Removal')
+args = parser.parse_args()
+
+
 # int main (int argc, char** argv)
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
@@ -25,7 +33,7 @@ cloud_filtered = pcl.PointCloud()
 # 
 # x,y,z
 points = np.zeros((5, 3), dtype=np.float32)
-RAND_MAX = 1.0
+RAND_MAX = 1024.0
 for i in range(0, 5):
     points[i][0] = 1024 * random.random () / RAND_MAX
     points[i][1] = 1024 * random.random () / RAND_MAX
@@ -36,17 +44,13 @@ cloud.from_array(points)
 
 # if (strcmp(argv[1], "-r") == 0)
 # {
-    # pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
+# pcl::RadiusOutlierRemoval<pcl::PointXYZ> outrem;
     # // build the filter
     # outrem.setInputCloud(cloud);
     # outrem.setRadiusSearch(0.8);
     # outrem.setMinNeighborsInRadius (2);
     # // apply filter
     # outrem.filter (*cloud_filtered);
-    outrem = cloud.make_RadiusOutlierRemoval()
-    outrem.set_radius_search(0.8)
-    outrem.set_MinNeighborsInRadius(2)
-    cloud_filtered = outrem.filter ()
 # }
 # else if (strcmp(argv[1], "-c") == 0)
 # {
@@ -70,6 +74,26 @@ cloud.from_array(points)
 #   std::cerr << "please specify command line arg '-r' or '-c'" << std::endl;
 #   exit(0);
 # }
+if args.Removal == 'Radius':
+    outrem = cloud.make_RadiusOutlierRemoval()
+    outrem.set_radius_search(0.8)
+    outrem.set_MinNeighborsInRadius(2)
+    cloud_filtered = outrem.filter ()
+elif args.Removal == 'Condition':
+    range_cond = cloud.make_ConditionAnd()
+    range_cond.add_Comparison("z", CompareOp.GT, 0.0)
+    range_cond.add_Comparison("z", CompareOp.LT, 0.8)
+	# // build the filter
+	# pcl::ConditionalRemoval<pcl::PointXYZ> condrem (range_cond);
+	# condrem.setInputCloud (cloud);
+	# condrem.setKeepOrganized(true);
+	# // apply filter
+	# condrem.filter (*cloud_filtered);
+
+else:
+    print("please specify command line arg paramter 'Radius' or 'Condition'")
+
+
 
 # std::cerr << "Cloud before filtering: " << std::endl;
 # for (size_t i = 0; i < cloud->points.size (); ++i)

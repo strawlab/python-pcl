@@ -15,24 +15,15 @@ cdef class ConditionalRemoval:
     """
     cdef pclfil.ConditionalRemoval_t *me
 
-    def __cinit__(self, PointCloud pc not None):
-        self.me = new pclfil.ConditionalRemoval_t()
+    def __cinit__(self, PointCloud pc not None, ConditionAnd cond):
+        self.me = new pclfil.ConditionalRemoval_t(cond)
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me
 
-	def set_KeepOrganized(flag):
-		self.me.setKeepOrganized(flag)
-
-    def set_ConditionAdd(condAdd):
-        # Convert Eigen::Vector3f
-        cdef eigen3.Vector3f origin
-        cdef float *data = origin.data()
-        data[0] = tx
-        data[1] = ty
-        data[2] = tz
-        self.me.setTranslation(origin)
+    def set_KeepOrganized(self, flag):
+        self.me.setKeepOrganized(flag)
 
     def filter(self):
         """
