@@ -7,9 +7,9 @@ import numpy as np
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
-cimport pcl_features as features
 cimport pcl_sample_consensus as pcl_sc
 cimport pcl_features as pcl_ftr
+cimport pcl_filters as pcl_fil
 # cimport pcl_segmentation as segmentation
 
 cimport cython
@@ -59,6 +59,25 @@ SACMODEL_STICK = pcl_sc.SACMODEL_STICK
 # AVERAGE_DEPTH_CHANGE = pcl_ftr.AVERAGE_DEPTH_CHANGE
 # SIMPLE_3D_GRADIENT = pcl_ftr.SIMPLE_3D_GRADIENT
 cnp.import_array()
+
+# CythonCompareOp
+@cython.internal
+cdef class _CythonCompareOp_Type:
+    cdef:
+        readonly int GT
+        readonly int GE
+        readonly int LT
+        readonly int LE
+        readonly int EQ
+
+    def __cinit__(self):
+        self.GT = pcl_fil.COMPAREOP_GT
+        self.GE = pcl_fil.COMPAREOP_GE
+        self.LT = pcl_fil.COMPAREOP_LT
+        self.LE = pcl_fil.COMPAREOP_LE
+        self.EQ = pcl_fil.COMPAREOP_EQ
+
+CythonCompareOp_Type = _CythonCompareOp_Type()
 
 include "pxi/PointCloudWrapper_PointXYZ.pxi"
 include "pxi/PointCloudWrapper_PointXYZI.pxi"

@@ -81,14 +81,22 @@ if args.Removal == 'Radius':
     cloud_filtered = outrem.filter ()
 elif args.Removal == 'Condition':
     range_cond = cloud.make_ConditionAnd()
-    range_cond.add_Comparison("z", CompareOp.GT, 0.0)
-    range_cond.add_Comparison("z", CompareOp.LT, 0.8)
-	# // build the filter
-	# pcl::ConditionalRemoval<pcl::PointXYZ> condrem (range_cond);
-	# condrem.setInputCloud (cloud);
-	# condrem.setKeepOrganized(true);
-	# // apply filter
-	# condrem.filter (*cloud_filtered);
+    # range_cond.add_Comparison('z', pcl.CompareOp.GT, 0.0)
+    # range_cond.add_Comparison('z', pcl.CompareOp.LT, 0.8)
+    # range_cond.add_Comparison('z', pcl.CythonCompareOp_Type.GT, 0.0)
+    # range_cond.add_Comparison('z', pcl.CythonCompareOp_Type.LT, 0.8)
+    # range_cond.add_Comparison("z", 0.0)
+    # range_cond.add_Comparison("z", 0.8)
+    range_cond.add_Comparison( pcl.FieldComparison('z', pcl.CythonCompareOp_Type.GT, 0.0) )
+    range_cond.add_Comparison( pcl.FieldComparison('z', pcl.CythonCompareOp_Type.LT, 0.8) )
+    # // build the filter
+    # pcl::ConditionalRemoval<pcl::PointXYZ> condrem (range_cond);
+    # condrem.setInputCloud (cloud);
+    condrem = cloud.make_ConditionalRemoval(range_cond)
+    condrem.set_KeepOrganized(true)
+    # // apply filter
+    # condrem.filter (*cloud_filtered);
+    cloud_filtered = condrem.filter ()
 
 else:
     print("please specify command line arg paramter 'Radius' or 'Condition'")

@@ -58,3 +58,16 @@ def __getitem__(self, cnp.npy_intp idx):
 // 型変換
 http://omake.accense.com/static/doc-ja/cython/src/userguide/extension_types.html#readonly
 
+---
+
+7/12
+
+Re: class with nested enum - reference in vector template  
+https://groups.google.com/forum/#!topic/cython-users/71CMYN03kVc
+
+※ enum 値で複数の namespace や namespace + struct 構造体 などの組み合わせでの対応
+
+上位 からの 文字列渡しについて
+PathThroughFilter.pxi が参考になる。
+
+

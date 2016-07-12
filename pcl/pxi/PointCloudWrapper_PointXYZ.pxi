@@ -422,7 +422,7 @@ cdef class PointCloud:
         cdef pclfil.ConditionAnd_t *cCondAnd = <pclfil.ConditionAnd_t *>condAnd.me
         return condAnd
 
-    def make_ConditionalRemoval(self, range_conf):
+    def make_ConditionalRemoval(self, ConditionAnd range_conf):
         """
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """

@@ -29,10 +29,10 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # /** \brief Evaluate function. */
         # virtual bool evaluate (const PointT &point) const = 0;
 ###
-# ctypedef ComparisonBase[cpp.PointXYZ] ComparisonBase_t
-# ctypedef ComparisonBase[cpp.PointXYZI] ComparisonBase_PointXYZI_t
-# ctypedef ComparisonBase[cpp.PointXYZRGB] ComparisonBase_PointXYZRGB_t
-# ctypedef ComparisonBase[cpp.PointXYZRGBA] ComparisonBase_PointXYZRGBA_t
+ctypedef ComparisonBase[cpp.PointXYZ] ComparisonBase_t
+ctypedef ComparisonBase[cpp.PointXYZI] ComparisonBase_PointXYZI_t
+ctypedef ComparisonBase[cpp.PointXYZRGB] ComparisonBase_PointXYZRGB_t
+ctypedef ComparisonBase[cpp.PointXYZRGBA] ComparisonBase_PointXYZRGBA_t
 ctypedef shared_ptr[ComparisonBase[cpp.PointXYZ]] ComparisonBasePtr_t
 ctypedef shared_ptr[ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_Ptr_t
 ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_Ptr_t
@@ -67,6 +67,10 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # void addCondition (ConditionBase_PointXYZRGBA_Ptr_t condition);
         bool isCapable ()
 
+ctypedef ConditionBase[cpp.PointXYZ] ConditionBase_t
+ctypedef ConditionBase[cpp.PointXYZI] ConditionBase_PointXYZI_t
+ctypedef ConditionBase[cpp.PointXYZRGB] ConditionBase_PointXYZRGB_t
+ctypedef ConditionBase[cpp.PointXYZRGBA] ConditionBase_PointXYZRGBA_t
 ctypedef shared_ptr[ConditionBase[cpp.PointXYZ]] ConditionBasePtr_t
 ctypedef shared_ptr[ConditionBase[cpp.PointXYZI]] ConditionBase_PointXYZI_Ptr_t
 ctypedef shared_ptr[ConditionBase[cpp.PointXYZRGB]] ConditionBase_PointXYZRGB_Ptr_t
@@ -349,8 +353,7 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 # class FieldComparison : public ComparisonBase<PointT>
 cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
     cdef cppclass FieldComparison[T](ComparisonBase[T]):
-        FieldComparison (string field_name, CompareOp op, double compare_val)
-        FieldComparison (string field_name, CompareOp op, double compare_val)
+        FieldComparison (string field_name, CompareOp2 op, double compare_val)
         # FieldComparison (const FieldComparison &src) :
         # FieldComparison& operator = (const FieldComparison &src)
         # using ComparisonBase<PointT>::field_name_;
@@ -360,6 +363,10 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # ctypedef boost::shared_ptr<FieldComparison<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const FieldComparison<PointT> > ConstPtr;
 
+ctypedef FieldComparison[cpp.PointXYZ] FieldComparison_t
+ctypedef FieldComparison[cpp.PointXYZI] FieldComparison_PointXYZI_t
+ctypedef FieldComparison[cpp.PointXYZRGB] FieldComparison_PointXYZRGB_t
+ctypedef FieldComparison[cpp.PointXYZRGBA] FieldComparison_PointXYZRGBA_t
 ctypedef shared_ptr[FieldComparison[cpp.PointXYZ]] FieldComparisonPtr_t
 ctypedef shared_ptr[FieldComparison[cpp.PointXYZI]] FieldComparison_PointXYZI_Ptr_t
 ctypedef shared_ptr[FieldComparison[cpp.PointXYZRGB]] FieldComparison_PointXYZRGB_Ptr_t
@@ -1344,12 +1351,27 @@ ctypedef VoxelGrid[cpp.PointXYZRGBA] VoxelGrid_PointXYZRGBA_t
 # GT, GE, LT, LE, EQ
 # }
 # CompareOp;
+
+# NG
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+#     cdef enum CompareOp:
+#         GT
+#         GE
+#         LT
+#         LE
+#         EQ
+# 
+
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+#     cdef enum CompareOp:
+#cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl"
+#   ctypedef enum CythonCompareOp "pcl::ComparisonOps::CompareOp":
 cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
-    cdef enum CompareOp:
-        GT
-        GE
-        LT
-        LE
-        EQ
+    ctypedef enum CompareOp2 "pcl::ComparisonOps::CompareOp":
+        COMPAREOP_GT "pcl::ComparisonOps::GT"
+        COMPAREOP_GE "pcl::ComparisonOps::GE"
+        COMPAREOP_LT "pcl::ComparisonOps::LT"
+        COMPAREOP_LE "pcl::ComparisonOps::LE"
+        COMPAREOP_EQ "pcl::ComparisonOps::EQ"
 
 ###

@@ -1,10 +1,10 @@
 ﻿from libcpp.vector cimport vector
 from libcpp cimport bool
+from libcpp.string cimport string
 
 cimport pcl_defs as cpp
 cimport pcl_filters as pclfil
 
-from pcl_filters cimport CompareOp
 from boost_shared_ptr cimport shared_ptr
 
 cdef class FieldComparison:
@@ -14,8 +14,8 @@ cdef class FieldComparison:
     """
     cdef pclfil.FieldComparison_t *me
 
-    def __cinit__(self, string axis, CompareOp op, double param):
-        self.me = new pclfil.FieldComparison_t(axis, op, param)
+    def __cinit__(self, string field_name, CompareOp2 op, double thresh):
+        self.me = new pclfil.FieldComparison_t(field_name, op, thresh)
 
     def __dealloc__(self):
         del self.me
