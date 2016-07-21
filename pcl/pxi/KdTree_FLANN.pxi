@@ -65,6 +65,39 @@ cdef class KdTreeFLANN:
             sqdist[i] = k_sqr_distances[i]
             ind[i] = k_indices[i]
 
+#    def radius_search_for_cloud(self, PointCloud pc not None, double radius):
+#        """
+#        Find the radius and squared distances for all points
+#        in the pointcloud. Results are in ndarrays, size (pc.size, k)
+#        Returns: (radius_indices, radius_distances)
+#        """
+#        k = 10
+#        cdef cnp.npy_intp n_points = pc.size
+#        cdef cnp.ndarray[float, ndim=2] sqdist = np.zeros((n_points, k),
+#                                                          dtype=np.float32)
+#        cdef cnp.ndarray[int, ndim=2] ind = np.zeros((n_points, k),
+#                                                     dtype=np.int32)
+#
+#        for i in range(n_points):
+#            self._search_radius(pc, i, k, radius, ind[i], sqdist[i])
+#        return ind, sqdist
+#
+#    @cython.boundscheck(False)
+#    cdef void _search_radius(self, PointCloud pc, int index, int k, double radius,
+#                         cnp.ndarray[ndim=1, dtype=int, mode='c'] ind,
+#                         cnp.ndarray[ndim=1, dtype=float, mode='c'] sqdist
+#                        ) except +:
+#        # radius query for a single point.
+#        cdef vector[int] radius_indices
+#        cdef vector[float] radius_distances
+#        radius_indices.resize(k)
+#        radius_distances.resize(k)
+#        self.me.radiusSearch(pc.thisptr()[0], index, radius, radius_indices,
+#                               radius_distances)
+#
+#        for i in range(k):
+#            sqdist[i] = radius_distances[i]
+#            ind[i] = radius_indices[i]
 
 cdef class KdTreeFLANN_PointXYZI:
     """

@@ -215,7 +215,37 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
         # KdTreeFLANN (const KdTreeFLANN<PointT> &k) : 
         #       inline KdTreeFLANN<PointT>& operator = (const KdTreeFLANN<PointT>& k)
         void setInputCloud (shared_ptr[cpp.PointCloud[T]])
+        
+        # /** \brief Search for k-nearest neighbors for the given query point.
+        #   * \attention This method does not do any bounds checking for the input index
+        #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
+        #   * \param[in] point a given \a valid (i.e., finite) query point
+        #   * \param[in] k the number of neighbors to search for
+        #   * \param[out] k_indices the resultant indices of the neighboring points (must be resized to \a k a priori!)
+        #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points (must be resized to \a k 
+        #   * a priori!)
+        #   * \return number of neighbors found
+        #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
+        #   */
         int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
+        # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
+        
+        # /** \brief Search for all the nearest neighbors of the query point in a given radius.
+        #   * \attention This method does not do any bounds checking for the input index
+        #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
+        #   * \param[in] point a given \a valid (i.e., finite) query point
+        #   * \param[in] radius the radius of the sphere bounding all of p_q's neighbors
+        #   * \param[out] k_indices the resultant indices of the neighboring points
+        #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points
+        #   * \param[in] max_nn if given, bounds the maximum returned neighbors to this value. If \a max_nn is set to
+        #   * 0 or to a number higher than the number of points in the input cloud, all neighbors in \a radius will be
+        #   * returned.
+        #   * \return number of neighbors found in radius
+        #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
+        #   */
+        # int radiusSearch (cpp.PointCloud[T], double, vector[int], vector[float])
+        # int radiusSearch (const PointT &point, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const;
+
         # using KdTree<PointT>::input_;
         # using KdTree<PointT>::indices_;
         # using KdTree<PointT>::epsilon_;
@@ -237,41 +267,11 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
         # inline void setEpsilon (float eps)
         # inline void setSortedResults (bool sorted)
         # inline Ptr makeShared ()
-        # void setInputCloud (const PointCloudConstPtr &cloud, const IndicesConstPtr &indices = IndicesConstPtr ());
-        # /** \brief Search for k-nearest neighbors for the given query point.
-        #   * \attention This method does not do any bounds checking for the input index
-        #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
-        #   * \param[in] point a given \a valid (i.e., finite) query point
-        #   * \param[in] k the number of neighbors to search for
-        #   * \param[out] k_indices the resultant indices of the neighboring points (must be resized to \a k a priori!)
-        #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points (must be resized to \a k 
-        #   * a priori!)
-        #   * \return number of neighbors found
-        #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
-        #   */
-        # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
-        # /** \brief Search for all the nearest neighbors of the query point in a given radius.
-        #   * 
-        #   * \attention This method does not do any bounds checking for the input index
-        #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
-        #   * 
-        #   * \param[in] point a given \a valid (i.e., finite) query point
-        #   * \param[in] radius the radius of the sphere bounding all of p_q's neighbors
-        #   * \param[out] k_indices the resultant indices of the neighboring points
-        #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points
-        #   * \param[in] max_nn if given, bounds the maximum returned neighbors to this value. If \a max_nn is set to
-        #   * 0 or to a number higher than the number of points in the input cloud, all neighbors in \a radius will be
-        #   * returned.
-        #   * \return number of neighbors found in radius
-        #   *
-        #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
-        #   */
-        # int radiusSearch (const PointT &point, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const;
 ###
 
 # template <>
 # class KdTreeFLANN <Eigen::MatrixXf>
-#     	public:
+#       public:
 #       typedef pcl::PointCloud<Eigen::MatrixXf> PointCloud;
 #       typedef PointCloud::ConstPtr PointCloudConstPtr;
 #       typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
@@ -301,7 +301,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 #       inline int radiusSearch (int index, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
 #       /** \brief Get the search epsilon precision (error bound) for nearest neighbors searches. */
 #       inline float getEpsilon () const
-#     	protected:
+#       protected:
 #       /** \brief The input point cloud dataset containing the points we need to use. */
 #       PointCloudConstPtr input_;
 #       /** \brief A pointer to the vector of point indices to use. */

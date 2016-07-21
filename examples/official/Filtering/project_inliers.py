@@ -55,10 +55,9 @@ for i in range(0, cloud.size):
 # proj.setInputCloud (cloud);
 # proj.setModelCoefficients (coefficients);
 # proj.filter (*cloud_projected);
-
-# Python 
 proj = cloud.make_ProjectInliers()
 proj.set_model_type (pcl.SACMODEL_PLANE)
+# proj.setModelCoefficients (coefficients);
 cloud_projected = proj.filter()
 
 # std::cerr << "Cloud after projection: " << std::endl;

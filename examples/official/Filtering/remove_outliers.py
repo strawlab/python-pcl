@@ -83,12 +83,12 @@ elif args.Removal == 'Condition':
     range_cond = cloud.make_ConditionAnd()
     # range_cond.add_Comparison('z', pcl.CompareOp.GT, 0.0)
     # range_cond.add_Comparison('z', pcl.CompareOp.LT, 0.8)
-    # range_cond.add_Comparison('z', pcl.CythonCompareOp_Type.GT, 0.0)
-    # range_cond.add_Comparison('z', pcl.CythonCompareOp_Type.LT, 0.8)
+    range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.GT, 0.0)
+    range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.LT, 0.8)
     # range_cond.add_Comparison("z", 0.0)
     # range_cond.add_Comparison("z", 0.8)
-    range_cond.add_Comparison( pcl.FieldComparison('z', pcl.CythonCompareOp_Type.GT, 0.0) )
-    range_cond.add_Comparison( pcl.FieldComparison('z', pcl.CythonCompareOp_Type.LT, 0.8) )
+    # range_cond.add_Comparison( pcl.FieldComparison('z', pcl.CythonCompareOp_Type.GT, 0.0) )
+    # range_cond.add_Comparison( pcl.FieldComparison('z', pcl.CythonCompareOp_Type.LT, 0.8) )
     # // build the filter
     # pcl::ConditionalRemoval<pcl::PointXYZ> condrem (range_cond);
     # condrem.setInputCloud (cloud);

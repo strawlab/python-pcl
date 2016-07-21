@@ -39,7 +39,7 @@ cdef class ConditionAnd:
         del self.me
 
     # def add_Comparison(self, comparison):
-    #    self.me.addComparison(comparison.this_ptr())
+    #     self.me.addComparison(comparison.this_ptr())
 
     def add_Comparison2(self, field_name, CompareOp2 compOp, double thresh):
         cdef bytes fname_ascii

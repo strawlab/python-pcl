@@ -22,8 +22,15 @@ cdef class ProjectInliers:
         self.me.filter(pc.thisptr()[0])
         return pc
 
-    # def set_Model_Coefficients(self, cpp.ModelCoefficients coeffs):
+    # def set_Model_Coefficients(self):
+    #     cdef cpp.ModelCoefficients *coeffs
+    #     coeffs.values.resize(4)
+    #     coeffs.values[0] = 0
+    #     coeffs.values[1] = 0
+    #     coeffs.values[2] = 1.0
+    #     coeffs.values[3] = 0
     #     self.me.setModelCoefficients(coeffs)
+    #     
     # def get_Model_Coefficients(self):
     #     self.me.getModelCoefficients()
     def set_model_type(self, pclseg.SacModel m):

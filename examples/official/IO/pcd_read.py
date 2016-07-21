@@ -23,8 +23,10 @@
 #   return (0);
 # }
 
+import pcl
+
 cloud = pcl.load("test_pcd.pcd")
 
 print ('Loaded ' + str(cloud.width * cloud.height) + ' data points from test_pcd.pcd with the following fields: ')
-for i in range(0, cloud_filtered.size):
-    print ('x: '  + str(cloud_filtered[i][0]) + ', y : ' + str(cloud_filtered[i][1])  + ', z : ' + str(cloud_filtered[i][2]))
+for i in range(0, cloud.size):
+    print ('x: '  + str(cloud[i][0]) + ', y : ' + str(cloud[i][1])  + ', z : ' + str(cloud[i][2]))

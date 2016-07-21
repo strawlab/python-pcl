@@ -390,24 +390,37 @@ cdef class PointCloud:
 
     def make_ProjectInliers(self):
         """
-        Return a pcl.Segmentation object with this object set as the input-cloud
+        Return a pclfil.ProjectInliers object with this object set as the input-cloud
         """
         # proj = ProjectInliers()
         # cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
         # cproj.setInputCloud(self.thisptr_shared)
         # return proj
-        
-        cdef pclfil.ProjectInliers_t projInliers
-        mpcl_ProjectInliers_setModelCoefficients(projInliers)
+        # # cdef pclfil.ProjectInliers_t* projInliers
+        # # mpcl_ProjectInliers_setModelCoefficients(projInliers)
         # mpcl_ProjectInliers_setModelCoefficients(deref(projInliers))
+        # # proj = ProjectInliers()
+        # cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>projInliers
+        # cproj.setInputCloud(self.thisptr_shared)
+        # return proj
+        # # NG
+        # cdef pclfil.ProjectInliers_t* projInliers
+        # # mpcl_ProjectInliers_setModelCoefficients(projInliers)
+        # mpcl_ProjectInliers_setModelCoefficients(deref(projInliers))
+        # projInliers.setInputCloud(self.thisptr_shared)
+        # proj = ProjectInliers()
+        # proj.me = projInliers
+        # return proj
         proj = ProjectInliers()
         cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
-        cproj.setInputCloud(self.thisptr_shared)
+        # mpcl_ProjectInliers_setModelCoefficients(cproj)
+        mpcl_ProjectInliers_setModelCoefficients(deref(cproj))
+        cproj.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return proj
-    
+
     def make_RadiusOutlierRemoval(self):
         """
-        Return a pcl.RadiusOutlierRemoval object with this object set as the input-cloud
+        Return a pclfil.RadiusOutlierRemoval object with this object set as the input-cloud
         """
         fil = RadiusOutlierRemoval()
         cdef pclfil.RadiusOutlierRemoval_t *cfil = <pclfil.RadiusOutlierRemoval_t *>fil.me
@@ -453,3 +466,4 @@ include "ConditionalRemoval.pxi"
 # Ubuntu/Mac NG(1.7? 1.8?)
 # include "UniformSampling.pxi"
 # include "IntegralImageNormalEstimation.pxi"
+
