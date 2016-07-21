@@ -227,6 +227,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
         #   * \return number of neighbors found
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
         #   */
+        # inline define
         int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
         
@@ -244,6 +245,8 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
         #   */
         # int radiusSearch (cpp.PointCloud[T], double, vector[int], vector[float])
+        # inline define
+        int radiusSearch (cpp.PointCloud[T], int, double, vector[int], vector[float])
         # int radiusSearch (const PointT &point, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const;
 
         # using KdTree<PointT>::input_;
