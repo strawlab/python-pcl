@@ -7,7 +7,7 @@ Ubuntu へのInstall(githubからビルドして利用)
 http://larrylisky.com/2014/03/03/installing-pcl-on-ubuntu/
 
 テストする際のファイル
-TravisCI(Linux/Mac OS)
+Travis - CI(Linux/Mac OS)
 
 AppVoyer(Windows)
 http://qiita.com/dalance/items/a0d0a3f6a82a9e2a569e
@@ -70,4 +70,53 @@ https://groups.google.com/forum/#!topic/cython-users/71CMYN03kVc
 上位 からの 文字列渡しについて
 PathThroughFilter.pxi が参考になる。
 
+pxd ファイル
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+#     cdef enum CompareOp:
+#cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl"
+#   ctypedef enum CythonCompareOp "pcl::ComparisonOps::CompareOp":
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+    ctypedef enum CompareOp2 "pcl::ComparisonOps::CompareOp":
+        COMPAREOP_GT "pcl::ComparisonOps::GT"
+        COMPAREOP_GE "pcl::ComparisonOps::GE"
+        COMPAREOP_LT "pcl::ComparisonOps::LT"
+        COMPAREOP_LE "pcl::ComparisonOps::LE"
+        COMPAREOP_EQ "pcl::ComparisonOps::EQ"
+
+###
+
+pyx ファイル
+
+# CythonCompareOp
+@cython.internal
+cdef class _CythonCompareOp_Type:
+    cdef:
+        readonly int GT
+        readonly int GE
+        readonly int LT
+        readonly int LE
+        readonly int EQ
+
+    def __cinit__(self):
+        self.GT = pcl_fil.COMPAREOP_GT
+        self.GE = pcl_fil.COMPAREOP_GE
+        self.LT = pcl_fil.COMPAREOP_LT
+        self.LE = pcl_fil.COMPAREOP_LE
+        self.EQ = pcl_fil.COMPAREOP_EQ
+
+CythonCompareOp_Type = _CythonCompareOp_Type()
+
+---
+
+2016/07/22
+
+ModelCofficient の書き方について(中身はともかくI/F部分について)
+https://github.com/PointCloudLibrary/pcl/issues/1653
+
+bool addPlane (const pcl::ModelCoefficients &coefficients, 
+               double x = 0,
+               double y = 0,
+               double z = 0,
+               const std::string &id = "plane",
+               int viewport = 0);
 

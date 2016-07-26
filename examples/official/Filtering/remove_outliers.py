@@ -7,7 +7,7 @@ import random
 
 import argparse
 
-parser = argparse.ArgumentParser(description='Chainer example: MNIST')
+parser = argparse.ArgumentParser(description='PointCloudLibrary example: Remove outliers')
 parser.add_argument('--Removal', '-r', choices=('Radius', 'Condition'), default='',
                     help='RadiusOutlier/Condition Removal')
 args = parser.parse_args()
@@ -102,7 +102,6 @@ else:
     print("please specify command line arg paramter 'Radius' or 'Condition'")
 
 
-
 # std::cerr << "Cloud before filtering: " << std::endl;
 # for (size_t i = 0; i < cloud->points.size (); ++i)
 # std::cerr << "    " << cloud->points[i].x << " "
@@ -121,3 +120,5 @@ for i in range(0, cloud.size):
 print ('Cloud after filtering: ')
 for i in range(0, cloud_filtered.size):
     print ('x: '  + str(cloud_filtered[i][0]) + ', y : ' + str(cloud_filtered[i][1])  + ', z : ' + str(cloud_filtered[i][2]))
+
+

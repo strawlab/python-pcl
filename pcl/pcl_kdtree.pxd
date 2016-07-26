@@ -180,21 +180,6 @@ cdef extern from "pcl/kdtree/kdtree.h" namespace "pcl::search":
         # inline void setMinPts (int min_pts)
         # * \brief Get the minimum allowed number of k nearest neighbors points that a viable result must contain. */
         # inline int getMinPts () const
-        # protected:
-        # /** \brief The input point cloud dataset containing the points we need to use. */
-        # PointCloudConstPtr input_;
-        # /** \brief A pointer to the vector of point indices to use. */
-        # IndicesConstPtr indices_;
-        # /** \brief Epsilon precision (error bound) for nearest neighbors searches. */
-        # float epsilon_;
-        # /** \brief Minimum allowed number of k nearest neighbors points that a viable result must contain. */
-        # int min_pts_;
-        # /** \brief Return the radius search neighbours sorted **/
-        # bool sorted_;
-        # /** \brief For converting different point structures into k-dimensional vectors for nearest-neighbor search. */
-        # PointRepresentationConstPtr point_representation_;
-        # /** \brief Class getName method. */
-        # virtual std::string  getName () const = 0;
 
 ctypedef KdTree[cpp.PointXYZ] KdTree_t
 ctypedef KdTree[cpp.PointXYZI] KdTree_PointXYZI_t
@@ -227,6 +212,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
         #   * \return number of neighbors found
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
         #   */
+        # int nearestKSearch (cpp.PointCloud[T], int, vector[int], vector[float])
         # inline define
         int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
@@ -245,6 +231,7 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
         #   */
         # int radiusSearch (cpp.PointCloud[T], double, vector[int], vector[float])
+        # int radiusSearch (cpp.PointCloud[T], double, vector[int], vector[float], unsigned int)
         # inline define
         int radiusSearch (cpp.PointCloud[T], int, double, vector[int], vector[float])
         # int radiusSearch (const PointT &point, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const;

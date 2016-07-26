@@ -729,3 +729,24 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         # getHalfImage (RangeImage& half_image) const;
 ###
 
+
+###############################################################################
+# Enum
+###############################################################################
+
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
+#     ctypedef enum CompareOp2 "pcl::ComparisonOps::CompareOp":
+#         COMPAREOP_GT "pcl::ComparisonOps::GT"
+#         COMPAREOP_GE "pcl::ComparisonOps::GE"
+#         COMPAREOP_LT "pcl::ComparisonOps::LT"
+#         COMPAREOP_LE "pcl::ComparisonOps::LE"
+#         COMPAREOP_EQ "pcl::ComparisonOps::EQ"
+
+# enum CoordinateFrame
+# CAMERA_FRAME = 0,
+# LASER_FRAME = 1
+cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
+    ctypedef enum CoordinateFrame2 "pcl::RangeImage::CoordinateFrame":
+        COORDINATEFRAME_CAMERA "pcl::RangeImage::CAMERA_FRAME"
+        COORDINATEFRAME_LASER "pcl::RangeImage::LASER_FRAME"
+

@@ -80,13 +80,11 @@ for i in range(0, ind.size):
 # std::vector<int> pointIdxRadiusSearch;
 # std::vector<float> pointRadiusSquaredDistance;
 # float radius = 256.0f * rand () / (RAND_MAX + 1.0f);
-# 
 # std::cout << "Neighbors within radius search at (" << searchPoint.x 
 #         << " " << searchPoint.y 
 #       << " " << searchPoint.z
 #        << ") with radius=" << radius << std::endl;
-#
-radius = 256.0 * random.random () / (RAND_MAX + 1.0);
+radius = 256.0 * random.random () / (RAND_MAX + 1.0)
 print ('Neighbors within radius search at (' + str(searchPoint[0][0]) + ' ' + str(searchPoint[0][1]) + ' ' + str(searchPoint[0][2]) + ') with radius=' + str(radius))
 
 # if ( kdtree.radiusSearch (searchPoint, radius, pointIdxRadiusSearch, pointRadiusSquaredDistance) > 0 )

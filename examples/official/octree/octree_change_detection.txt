@@ -1,22 +1,15 @@
 # Spatial change detection on unorganized point cloud data
 # http://pointclouds.org/documentation/tutorials/octree_change.php#octree-change-detection
 
-#include <pcl/point_cloud.h>
-#include <pcl/octree/octree.h>
-#include <iostream>
-#include <vector>
-#include <ctime>
+import pcl
+import numpy as np
+import random
 
-int
-main (int argc, char** argv)
-{
-  srand ((unsigned int) time (NULL));
+# // Octree resolution - side length of octree voxels
+resolution = 32.0
 
-  // Octree resolution - side length of octree voxels
-  float resolution = 32.0f;
-
-  // Instantiate octree-based point cloud change detection class
-  pcl::octree::OctreePointCloudChangeDetector<pcl::PointXYZ> octree (resolution);
+#  // Instantiate octree-based point cloud change detection class
+#  pcl::octree::OctreePointCloudChangeDetector<pcl::PointXYZ> octree (resolution);
 
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloudA (new pcl::PointCloud<pcl::PointXYZ> );
 

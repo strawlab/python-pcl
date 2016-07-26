@@ -82,7 +82,6 @@ cdef class OctreePointCloud:
         # mpcl_deleteVoxelAtPoint(self.me, to_point_t(point))
         # mpcl_deleteVoxelAtPoint(deref(self.me), to_point_t(point))
 
-
 cdef class OctreePointCloud_PointXYZI:
     """
     Octree pointcloud

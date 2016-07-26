@@ -346,6 +346,14 @@ cdef class PointCloud:
         octree.set_input_cloud(self)
         return octree
 
+    def make_octreeSearch(self, double resolution):
+        """
+        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+        """
+        octreeSearch = OctreePointCloudSearch(resolution)
+        octreeSearch.set_input_cloud(self)
+        return octreeSearch
+
     def make_crophull(self):
         """
         Return a pcl.CropHull object with this object set as the input-cloud

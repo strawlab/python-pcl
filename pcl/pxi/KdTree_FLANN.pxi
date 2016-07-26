@@ -65,13 +65,13 @@ cdef class KdTreeFLANN:
             sqdist[i] = k_sqr_distances[i]
             ind[i] = k_indices[i]
 
-    def radius_search_for_cloud(self, PointCloud pc not None, double radius):
+    def radius_search_for_cloud(self, PointCloud pc not None, double radius, unsigned int max_nn = 0):
         """
         Find the radius and squared distances for all points
         in the pointcloud. Results are in ndarrays, size (pc.size, k)
         Returns: (radius_indices, radius_distances)
         """
-        k = 10
+        k = max_nn
         cdef cnp.npy_intp n_points = pc.size
         cdef cnp.ndarray[float, ndim=2] sqdist = np.zeros((n_points, k),
                                                           dtype=np.float32)

@@ -6,10 +6,12 @@ import numpy as np
 
 cimport numpy as cnp
 
+cimport pcl_common as pcl_cmn
 cimport pcl_defs as cpp
 cimport pcl_sample_consensus as pcl_sc
 cimport pcl_features as pcl_ftr
 cimport pcl_filters as pcl_fil
+cimport pcl_range_image as pcl_r_img
 # cimport pcl_segmentation as segmentation
 
 cimport cython
@@ -78,6 +80,21 @@ cdef class _CythonCompareOp_Type:
         self.EQ = pcl_fil.COMPAREOP_EQ
 
 CythonCompareOp_Type = _CythonCompareOp_Type()
+
+# RangeImage 
+# CythonCompareOp
+@cython.internal
+cdef class _CythonCoordinateFrame_Type:
+    cdef:
+        readonly int CAMERA_FRAME
+        readonly int LASER_FRAME
+
+    def __cinit__(self):
+        self.CAMERA_FRAME = pcl_r_img.COORDINATEFRAME_CAMERA
+        self.LASER_FRAME = pcl_r_img.COORDINATEFRAME_LASER
+
+CythonCoordinateFrame_Type = _CythonCompareOp_Type()
+
 
 include "pxi/PointCloudWrapper_PointXYZ.pxi"
 include "pxi/PointCloudWrapper_PointXYZI.pxi"

@@ -1062,12 +1062,18 @@ ctypedef OctreePointCloud[cpp.PointXYZRGBA] OctreePointCloud_PointXYZRGBA_t
 
 # octree_search.h
 cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudSearch[T]:
+    cdef cppclass OctreePointCloudSearch[T](OctreePointCloud[T]):
         OctreePointCloudSearch(double)
         int radiusSearch (cpp.PointXYZ, double, vector[int], vector[float], unsigned int)
         int radiusSearch (cpp.PointXYZI, double, vector[int], vector[float], unsigned int)
         int radiusSearch (cpp.PointXYZRGB, double, vector[int], vector[float], unsigned int)
         int radiusSearch (cpp.PointXYZRGBA, double, vector[int], vector[float], unsigned int)
+        # Add index(inline?)
+        int radiusSearch (cpp.PointCloud[T], int, double, vector[int], vector[float], unsigned int)
+        # inline define
+        # int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
+        int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
+        # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
 
 ctypedef OctreePointCloudSearch[cpp.PointXYZ] OctreePointCloudSearch_t
 ctypedef OctreePointCloudSearch[cpp.PointXYZI] OctreePointCloudSearch_PointXYZI_t
