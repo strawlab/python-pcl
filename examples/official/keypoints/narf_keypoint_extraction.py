@@ -18,16 +18,16 @@ setUnseenToMaxRange = false
 import argparse
 
 # void setViewerPose (pclvisualizationPCLVisualizer& viewer, const EigenAffine3f& viewer_pose)
-#	EigenVector3f pos_vector = viewer_pose  EigenVector3f (0, 0, 0);
-#	EigenVector3f look_at_vector = viewer_pose.rotation ()  EigenVector3f (0, 0, 1) + pos_vector;
-#	EigenVector3f up_vector = viewer_pose.rotation ()  EigenVector3f (0, -1, 0);
-#	viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],
+#   EigenVector3f pos_vector = viewer_pose  EigenVector3f (0, 0, 0);
+#   EigenVector3f look_at_vector = viewer_pose.rotation ()  EigenVector3f (0, 0, 1) + pos_vector;
+#   EigenVector3f up_vector = viewer_pose.rotation ()  EigenVector3f (0, -1, 0);
+#   viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],
 #                             look_at_vector[0], look_at_vector[1], look_at_vector[2],
 #                             up_vector[0], up_vector[1], up_vector[2]);
 
 # -----Main-----
 # -----Parse Command Line Arguments-----
-parser = argparse.ArgumentParser(description='StrawPCL example: narf keyPoint')
+parser = argparse.ArgumentParser(description='StrawPCL example: narf keyPoint extraction')
 parser.add_argument('--UnseenToMaxRange', '-m', default=true, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
 parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
@@ -35,6 +35,8 @@ parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
 parser.add_argument('--SupportSize', '-s', default=0, type=int,
                     help='Setting support size to = ')
 parser.add_argument('--AngularResolution', '-r', default=0, type=int,
+                    help='Setting angular resolution to = ')
+parser.add_argument('--Help', '-h',
                     help='Usage: narf_keypoint_extraction.py [options] <scene.pcd>nn'
                     'Options:n'
                     '-------------------------------------------n'
@@ -87,7 +89,7 @@ else:
             points[0][2] = 2.0f - y
         end
     end
-	point_cloud.points.push_back (point);
+    point_cloud.points.push_back (point);
 
     
     point_cloud.width  = (int) point_cloud.points.size ()

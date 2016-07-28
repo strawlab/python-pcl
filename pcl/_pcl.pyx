@@ -101,5 +101,5 @@ include "pxi/PointCloudWrapper_PointXYZI.pxi"
 include "pxi/PointCloudWrapper_PointXYZRGB.pxi"
 include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 
-include "pxi/OctreePointCloudSearch.pxi"
-
+# include "pxi/OctreePointCloudSearch.pxi"
+# include "pxi/OctreePointCloudChangeDetector.pxi"

@@ -467,6 +467,33 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #                 self.assertGreaterEqual(d, 0)
 # 
 
+# Add ProjectInlier
+# class TestProjectInlier(unittest.TestCase):
+# 
+#     def setUp(self):
+#         # TestData
+#         self.pc = pcl.PointCloud(a)
+#         self.kd = pcl.CropBox(self.pc)
+# 
+#     def testException(self):
+#         self.assertRaises(TypeError, pcl.CropHull)
+#         self.assertRaises(TypeError, self.kd.nearest_k_search_for_cloud, None)
+# 
+#     def testCrop(self):
+#         # Big cluster
+#         for ref, k in ((80, 1), (59, 3), (60, 10)):
+#             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
+#             for i in ind:
+#                 self.assertGreaterEqual(i, 30)
+#             for d in sqdist:
+#                 self.assertGreaterEqual(d, 0)
+# 
+
+# Add RadiusOutlierRemoval
+
+# Add ConditionAnd
+
+# 
 
 if __name__ == '__main__':
     unittest.main()

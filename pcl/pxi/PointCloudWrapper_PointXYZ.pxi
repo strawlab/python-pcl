@@ -354,6 +354,15 @@ cdef class PointCloud:
         octreeSearch.set_input_cloud(self)
         return octreeSearch
 
+    def make_octreeChangeDetector(self, double resolution):
+        """
+        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+        """
+        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+        octreeChangeDetector.set_input_cloud(self)
+        return octreeChangeDetector
+
+
     def make_crophull(self):
         """
         Return a pcl.CropHull object with this object set as the input-cloud
@@ -454,6 +463,15 @@ cdef class PointCloud:
         return condRemoval
 
 
+    def make_ConcaveHull(self):
+        """
+        Return a pcl.ConditionalRemoval object with this object set as the input-cloud
+        """
+        concaveHull = ConcaveHull()
+        cdef pclsf.ConcaveHull_t *cConcaveHull = <pclsf.ConcaveHull_t *>concaveHull.me
+        cConcaveHull.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return concaveHull
+
 ###
 
 include "Segmentation.pxi"
@@ -464,6 +482,7 @@ include "PassThroughFilter.pxi"
 include "MovingLeastSquares.pxi"
 include "KdTree_FLANN.pxi"
 include "OctreePointCloud.pxi"
+include "OctreePointCloudSearch.pxi"
 include "Vertices.pxi"
 include "CropHull.pxi"
 include "CropBox.pxi"
@@ -471,6 +490,13 @@ include "ProjectInliers.pxi"
 include "RadiusOutlierRemoval.pxi"
 include "ConditionAnd.pxi"
 include "ConditionalRemoval.pxi"
+
+# Surface
+include "ConcaveHull.pxi"
+
+# 1.7?
+include "OctreePointCloudChangeDetector.pxi"
+
 # Ubuntu/Mac NG(1.7? 1.8?)
 # include "UniformSampling.pxi"
 # include "IntegralImageNormalEstimation.pxi"

@@ -5,20 +5,9 @@ from libcpp.vector cimport vector
 cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
-cdef extern from "pcl/surface/mls.h" namespace "pcl":
-    cdef cppclass MovingLeastSquares[I,O]:
-        MovingLeastSquares()
-        void setInputCloud (shared_ptr[cpp.PointCloud[I]])
-        void setSearchRadius (double)
-        void setPolynomialOrder(bool)
-        void setPolynomialFit(int)
-        void process(cpp.PointCloud[O] &) except +
-
-ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointXYZ] MovingLeastSquares_t
-ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_PointXYZI_t
-ctypedef MovingLeastSquares[cpp.PointXYZRGB, cpp.PointXYZRGB] MovingLeastSquares_PointXYZRGB_t
-ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquares_PointXYZRGBA_t
-
+###############################################################################
+# Types
+###############################################################################
 
 ### base class ###
 
@@ -365,58 +354,53 @@ cdef extern from "pcl/surface/bilateral_upsampling.h" namespace "pcl":
 
 # concave_hull.h
 # namespace pcl
-# /** \brief @b ConcaveHull (alpha shapes) using libqhull library.
-#   * \author Aitor Aldoma
-#   * \ingroup surface
 # template<typename PointInT>
 # class ConcaveHull : public MeshConstruction<PointInT>
 cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
     cdef cppclass ConcaveHull[In](MeshConstruction[In]):
         ConcaveHull()
-        # protected:
-        # using PCLBase<PointInT>::input_;
-        # using PCLBase<PointInT>::indices_;
-        # using PCLBase<PointInT>::initCompute;
-        # using PCLBase<PointInT>::deinitCompute;
         # public:
-        # using MeshConstruction<PointInT>::reconstruct;
-        # typedef pcl::PointCloud<PointInT> PointCloud;
-        # typedef typename PointCloud::Ptr PointCloudPtr;
-        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-        # /** \brief Compute a concave hull for all points given 
-        #   * \param points the resultant points lying on the concave hull 
-        #   * \param polygons the resultant concave hull polygons, as a set of
-        #   * vertices. The Vertices structure contains an array of point indices.
-        # void reconstruct (PointCloud &points, 
-        #              std::vector<pcl::Vertices> &polygons);
+        # \brief Compute a concave hull for all points given 
+        # \param points the resultant points lying on the concave hull 
+        # \param polygons the resultant concave hull polygons, as a set of
+        # vertices. The Vertices structure contains an array of point indices.
+        # void reconstruct (PointCloud &points, std::vector<pcl::Vertices> &polygons);
+        
         # /** \brief Compute a concave hull for all points given 
         #  * \param output the resultant concave hull vertices
-        # void
-        # reconstruct (PointCloud &output);
+        # void reconstruct (PointCloud &output);
+        void reconstruct (cpp.PointCloud_t output)
+        void reconstruct (cpp.PointCloud_PointXYZI_t output)
+        void reconstruct (cpp.PointCloud_PointXYZRGB_t output)
+        void reconstruct (cpp.PointCloud_PointXYZRGBA_t output)
+        
         # /** \brief Set the alpha value, which limits the size of the resultant
         #   * hull segments (the smaller the more detailed the hull).  
         #   * \param alpha positive, non-zero value, defining the maximum length
         #   * from a vertex to the facet center (center of the voronoi cell).
         # inline void setAlpha (double alpha)
-        # /** \brief Returns the alpha parameter, see setAlpha(). */
+        void setAlpha (double alpha)
+        # Returns the alpha parameter, see setAlpha().
         # inline double getAlpha ()
-        # /** \brief If set, the voronoi cells center will be saved in _voronoi_centers_
-        #   * \param voronoi_centers
+        double getAlpha ()
+        
+        # If set, the voronoi cells center will be saved in _voronoi_centers_
+        # voronoi_centers
         # inline void setVoronoiCenters (PointCloudPtr voronoi_centers)
-        # /** \brief If keep_information_is set to true the convex hull
-        #   * points keep other information like rgb, normals, ...
-        #   * \param value where to keep the information or not, default is false
+        
+        # \brief If keep_information_is set to true the convex hull
+        # points keep other information like rgb, normals, ...
+        # \param value where to keep the information or not, default is false
         # void setKeepInformation (bool value)
-        # /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
+        
+        # brief Returns the dimensionality (2 or 3) of the calculated hull.
         # inline int getDim () const
-        # /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
+        # brief Returns the dimensionality (2 or 3) of the calculated hull.
         # inline int getDimension () const
-        # /** \brief Sets the dimension on the input data, 2D or 3D.
-        #   * \param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
+        # brief Sets the dimension on the input data, 2D or 3D.
+        # param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
         # void setDimension (int dimension)
-        # protected:
-        # /** \brief Class get name method. */
-        # std::string getClassName () const
+        
         # protected:
         # /** \brief The actual reconstruction method.
         #   * \param points the resultant points lying on the concave hull 
@@ -437,6 +421,14 @@ cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
         # PointCloudPtr voronoi_centers_;
         # /** \brief the dimensionality of the concave hull */
         # int dim_;
+        
+
+
+ctypedef ConcaveHull[cpp.PointXYZ] ConcaveHull_t
+ctypedef ConcaveHull[cpp.PointXYZI] ConcaveHull_PointXYZI_t
+ctypedef ConcaveHull[cpp.PointXYZRGB] ConcaveHull_PointXYZRGB_t
+ctypedef ConcaveHull[cpp.PointXYZRGBA] ConcaveHull_PointXYZRGBA_t
+
 ###
 
 # convex_hull.h
@@ -2226,6 +2218,20 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 ###
 
 # mls.h
+cdef extern from "pcl/surface/mls.h" namespace "pcl":
+    cdef cppclass MovingLeastSquares[I,O]:
+        MovingLeastSquares()
+        void setInputCloud (shared_ptr[cpp.PointCloud[I]])
+        void setSearchRadius (double)
+        void setPolynomialOrder(bool)
+        void setPolynomialFit(int)
+        void process(cpp.PointCloud[O] &) except +
+
+ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointXYZ] MovingLeastSquares_t
+ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_PointXYZI_t
+ctypedef MovingLeastSquares[cpp.PointXYZRGB, cpp.PointXYZRGB] MovingLeastSquares_PointXYZRGB_t
+ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquares_PointXYZRGBA_t
+
 # namespace pcl
 # {
 #   /** \brief MovingLeastSquares represent an implementation of the MLS (Moving Least Squares) algorithm 
@@ -2639,16 +2645,6 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #                                 int num_neighbors,
 #                                 PointOutT &result_point,
 #                                 pcl::Normal &result_normal);
-# 
-#     private:
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] output the result of the reconstruction 
-#         */
-#       virtual void performProcessing (PointCloudOut &output);
-# 
-#       /** \brief Abstract class get name method. */
-#       std::string getClassName () const { return ("MovingLeastSquares"); }
-#       
 #     public:
 #         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #   };
@@ -5115,3 +5111,6 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #       mesh2vtk (const pcl::PolygonMesh& mesh, vtkSmartPointer<vtkPolyData> &poly_data);
 ###
 
+###############################################################################
+# Enum
+###############################################################################

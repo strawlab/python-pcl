@@ -35,6 +35,8 @@ if platform.system() == "Windows":
         #         pcl_version = "-1.6"
         #     elif pcl_verison_env == "1.7.2":
         #         pcl_version = "-1.7"
+        #     elif pcl_verison_env == "1.8.0":
+        #         pcl_version = "-1.8"
         #     else:
         #         pass
     else:
@@ -69,6 +71,7 @@ if platform.system() == "Windows":
 
     if pcl_version == '-1.6':
         # PCL 1.6.0 python Version == 3.4(>= 3.4?, 2.7 -> NG)
+        # Visual Studio 2010
         if info.major == 3 and info.minor == 4:
             pass
         else:
@@ -76,6 +79,15 @@ if platform.system() == "Windows":
             sys.exit(1)
     elif pcl_version == '-1.7':
         # PCL 1.7.2 python Version >= 3.5
+        # Visual Studio 2015
+        if info.major == 3 and info.minor >= 5:
+            pass
+        else:
+            print('no building Python Version')
+            sys.exit(1)
+    elif pcl_version == '-1.8':
+        # PCL 1.8.0 python Version >= 3.5
+        # Visual Studio 2015
         if info.major == 3 and info.minor >= 5:
             pass
         else:
@@ -118,6 +130,9 @@ if platform.system() == "Windows":
     elif pcl_version == '-1.7':
         # 1.7.2
         inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_57', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-6.2']
+    elif pcl_version == '-1.8':
+        # 1.8.0
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_60', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-7.0']
     else:
         inc_dirs = []
 
@@ -125,13 +140,23 @@ if platform.system() == "Windows":
         ext_args['include_dirs'].append(inc_dir)
 
     # set library path
-    # 3rdParty(+Boost)
-    # lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib']
-    # 3rdParty(+Boost, +VTK)
-    lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
-    # extern -> NG?
-    # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
-    # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib64-msvc-10.0', pcl_root + '\\3rdParty\\FLANN\lib']
+    if pcl_version == '-1.6':
+        # 3rdParty(+Boost)
+        # lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib']
+        # 3rdParty(+Boost, +VTK)
+        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
+        # extern -> NG?
+        # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
+        # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib64-msvc-10.0', pcl_root + '\\3rdParty\\FLANN\lib']
+    elif pcl_version == '-1.7':
+        # 1.7.2
+        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-6.2']
+    elif pcl_version == '-1.8':
+        # 1.8.0
+        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-7.0']
+    else:
+        lib_dir = []
+    
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
 
@@ -163,6 +188,14 @@ if platform.system() == "Windows":
     elif pcl_version == '-1.7':
         # release
         libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+    elif pcl_version == '-1.8':
+        # release
+        libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # add boost
+        # dynamic lib
+        # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
+        # static lib
+        # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
     else:
         libreleases = []
 
@@ -217,6 +250,28 @@ if platform.system() == "Windows":
               cmdclass={'build_ext': build_ext}
               )
     elif pcl_version == '-1.7':
+        setup(name='python-pcl',
+              description='pcl wrapper',
+              url='http://github.com/strawlab/python-pcl',
+              version='0.2',
+              author='John Stowers',
+              author_email='john.stowers@gmail.com',
+              license='BSD',
+              packages=["pcl"],
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
+                                     language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
+                                     language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                                     language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
+                           #         language="c++", **ext_args),
+                           # debug
+                           # gdb_debug=True,
+                          ],
+              cmdclass={'build_ext': build_ext}
+              )
+    elif pcl_version == '-1.8':
         setup(name='python-pcl',
               description='pcl wrapper',
               url='http://github.com/strawlab/python-pcl',
