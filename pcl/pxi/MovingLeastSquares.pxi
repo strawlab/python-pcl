@@ -32,6 +32,12 @@ cdef class MovingLeastSquares:
         """
         self.me.setPolynomialFit(fit)
 
+    def set_Compute_Normals(self, bool flag):
+        self.me.setComputeNormals(flag)
+
+    # def set_Search_Method(self, KdTree kdtree):
+    #    self.me.setSearchMethod(kdtree.thisptr())
+
     def process(self):
         """
         Apply the smoothing according to the previously set values and return
@@ -120,7 +126,6 @@ cdef class MovingLeastSquares_PointXYZRGB:
         cdef PointCloud_PointXYZRGB pc = PointCloud_PointXYZRGB()
         self.me.process(pc.thisptr()[0])
         return pc
-
 
 cdef class MovingLeastSquares_PointXYZRGBA:
     """
