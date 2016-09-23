@@ -779,3 +779,12 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
+
+cdef class CloudViewer:
+    cdef cpp.CloudViewer* c_viewer
+    def __cinit__(self, title):
+        self.c_viewer = new cpp.CloudViewer(title)
+    def get_area(self):
+        print("OK")
+    def __dealloc__(self):
+        del self.c_viewer

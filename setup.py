@@ -27,11 +27,13 @@ else:
 # Find build/link options for PCL using pkg-config.
 pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
             "registration", "sample_consensus", "search", "segmentation",
-            "surface"]
+            "surface", "visualization"]
 pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
+print("LIBS", pcl_libs)
 
 ext_args = defaultdict(list)
 ext_args['include_dirs'].append(numpy.get_include())
+ext_args['include_dirs'].append("/usr/include/vtk-6.2/")
 
 
 def pkgconfig(flag):
