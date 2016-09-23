@@ -89,6 +89,7 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void setInputCloud (shared_ptr[PointCloud[I]])
         void setSearchRadius (double)
         void setPolynomialOrder(bool)
+        void setComputeNormals(bool)
         void setPolynomialFit(int)
         void process(PointCloud[O] &) except +
 

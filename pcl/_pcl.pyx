@@ -536,6 +536,12 @@ cdef class MovingLeastSquares:
         """
         self.me.setPolynomialFit(fit)
 
+    def set_compute_normals(self, bool compute):
+        """
+        Set whether the algorithm should also store the normals computed.
+        """
+        self.me.setComputeNormals(compute)
+
     def process(self):
         """
         Apply the smoothing according to the previously set values and return
