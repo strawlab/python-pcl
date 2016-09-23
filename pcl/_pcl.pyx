@@ -781,10 +781,14 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
 
 
 cdef class CloudViewer:
+
     cdef cpp.CloudViewer* c_viewer
+
     def __cinit__(self, title):
         self.c_viewer = new cpp.CloudViewer(title)
-    def get_area(self):
-        print("OK")
+
+    def show_cloud(self, PointCloud pc not None):
+        self.c_viewer.showCloud(pc.thisptr_shared)
+
     def __dealloc__(self):
         del self.c_viewer

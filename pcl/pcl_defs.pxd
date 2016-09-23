@@ -238,4 +238,5 @@ ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
 cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization":
     cdef cppclass CloudViewer:
         CloudViewer(string) except +
+        void showCloud(PointCloudPtr_t)
 
