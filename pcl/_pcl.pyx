@@ -790,5 +790,19 @@ cdef class CloudViewer:
     def show_cloud(self, PointCloud pc not None):
         self.c_viewer.showCloud(pc.thisptr_shared)
 
+    def was_stopped(self, millis_to_wait):
+        return self.c_viewer.wasStopped(millis_to_wait)
+
     def __dealloc__(self):
+        print("deallocating")
         del self.c_viewer
+
+def planeWithPlaneIntersetion(plane1, plane2, angular_tolerance=0.11):
+    cdef cpp.VectorXf line
+    v1 = new cpp.Vector4f(plane1[0], plane1[1], plane1[2], plane1[3])
+    v2 = new cpp.Vector4f(plane2[0], plane2[1], plane2[2], plane2[3])
+    cpp.planeWithPlaneIntersection(v1[0], v2[0], line, angular_tolerance) 
+    del(v1)
+    del(v2)
+    return [line.data()[i] for i in range(6)]
+

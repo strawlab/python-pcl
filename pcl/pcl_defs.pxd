@@ -9,6 +9,10 @@ from vector cimport vector as vector2
 
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Vector4f:
+        Vector4f()
+        Vector4f(float, float, float, float)
+        float *data()
+    cdef cppclass VectorXf:
         float *data()
     cdef cppclass Quaternionf:
         float w()
@@ -239,4 +243,10 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
     cdef cppclass CloudViewer:
         CloudViewer(string) except +
         void showCloud(PointCloudPtr_t)
+        bool wasStopped(int)
 
+cdef extern from "pcl/common/intersections.h" namespace "pcl":
+    bool planeWithPlaneIntersection (const Vector4f& plane_a,
+                            const Vector4f &plane_b,
+                            VectorXf &line,
+                            double angular_tolerance)
