@@ -354,13 +354,15 @@ cdef class PointCloud:
         octreeSearch.set_input_cloud(self)
         return octreeSearch
 
-    def make_octreeChangeDetector(self, double resolution):
-        """
-        Return a pcl.make_octreeSearch object with this object set as the input-cloud
-        """
-        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
-        octreeChangeDetector.set_input_cloud(self)
-        return octreeChangeDetector
+# pcl 1.6.0 use ok
+# cpl 1.7.2, 1.8.0 use ng(octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
+#    def make_octreeChangeDetector(self, double resolution):
+#        """
+#        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+#        """
+#        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+#        octreeChangeDetector.set_input_cloud(self)
+#        return octreeChangeDetector
 
 
     def make_crophull(self):
@@ -495,10 +497,22 @@ include "ConditionalRemoval.pxi"
 # Surface
 include "ConcaveHull.pxi"
 
-# 1.7?
-include "OctreePointCloudChangeDetector.pxi"
-
-# Ubuntu/Mac NG(1.7? 1.8?)
-# include "UniformSampling.pxi"
-# include "IntegralImageNormalEstimation.pxi"
+# PCL_VERSION = "1.6.0"
+# # Ubuntu/Mac NG(1.7? 1.8?)
+# IF PCL_VERSION == "1.6.0":
+#     include "OctreePointCloudChangeDetector.pxi"
+#     # include "UniformSampling.pxi"
+#     # include "IntegralImageNormalEstimation.pxi"
+# ELIF PCL_VERSION == "1.7.2":
+#     include "OctreePointCloudChangeDetector.pxi"
+#     # include "UniformSampling.pxi"
+#     # include "IntegralImageNormalEstimation.pxi"
+# ELIF PCL_VERSION == "1.8.0":
+#     include "OctreePointCloudChangeDetector.pxi"
+#     # include "UniformSampling.pxi"
+#     # include "IntegralImageNormalEstimation.pxi"
+# ELSE:
+#     include "OctreePointCloudChangeDetector.pxi"
+#     include "UniformSampling.pxi"
+#     include "IntegralImageNormalEstimation.pxi"
 

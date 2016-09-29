@@ -246,6 +246,10 @@ if platform.system() == "Windows":
                            #           language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
+                           # Cython debug ex.
+                           # http://omake.accense.com/static/doc-ja/cython/src/userguide/debugging.html
+                           # Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx", "pyrex_gdb=True"],
+                           #          language="c++", **ext_args),
                           ],
               cmdclass={'build_ext': build_ext}
               )
