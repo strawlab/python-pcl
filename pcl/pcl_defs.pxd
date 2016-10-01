@@ -21,6 +21,8 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float z()
     cdef cppclass aligned_allocator[T]:
         pass
+    cdef cppclass Matrix3f:
+        Matrix3f()
 
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
@@ -250,3 +252,20 @@ cdef extern from "pcl/common/intersections.h" namespace "pcl":
                             const Vector4f &plane_b,
                             VectorXf &line,
                             double angular_tolerance)
+
+
+cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
+    cdef cppclass MomentOfInertiaEstimation[T]:
+        MomentOfInertiaEstimation() except +
+        void setAngleStep(float)
+        float getAngleStep()
+        void setPointMass(float)
+        float getPointMass()
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void compute()
+        #bool getOBB(PointXYZ, PointXYZ, PointXYZ, Matrix3f)
+        #bool getAABB (shared_ptr[PointXYZ[T]], shared_ptr[PointXYZ[T]])
+        bool getAABB (PointXYZ&, PointXYZ&)
+        #bool getAABB(T&, T&)
+
+ctypedef MomentOfInertiaEstimation[PointXYZ] MomentOfInertiaEstimation_t

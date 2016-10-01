@@ -434,6 +434,16 @@ cdef class PointCloud:
         octree.set_input_cloud(self)
         return octree
 
+    def make_moment_of_inertia_estimator(self):
+        """
+        Return a pcl.MomentOfInertiaEstimation object with this object set as the input-cloud
+        """
+
+        seg = MomentOfInertiaEstimation()
+        cdef cpp.MomentOfInertiaEstimation_t *cseg = <cpp.MomentOfInertiaEstimation_t *>seg.me
+        cseg.setInputCloud(self.thisptr_shared)
+        return seg
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
@@ -806,3 +816,37 @@ def planeWithPlaneIntersetion(plane1, plane2, angular_tolerance=0.11):
     del(v2)
     return [line.data()[i] for i in range(6)]
 
+cdef class MomentOfInertiaEstimation:
+
+    cdef cpp.MomentOfInertiaEstimation_t* me
+
+    def __init__(self):
+        self.me = new cpp.MomentOfInertiaEstimation_t()
+
+    #def set_input_cloud(self, PointCloud pc):
+        #"""
+        #Provide a pointer to the input data set.
+        #"""
+        #self.me.setInputCloud(pc.thisptr_shared)
+
+    def compute(self):
+        self.me.compute()
+
+    def getAABB(self):
+        """
+        brief This method gives access to the computed oriented bounding box. It returns true
+        * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        * Note that in order to get the OBB, each vertex of the given AABB (specified with min_point and max_point)
+        * must be rotated with the given rotational matrix (rotation transform) and then positioned.
+        * Also pay attention to the fact that this is not the minimal possible bounding box. This is the bounding box
+        * which is oriented in accordance with the eigen vectors.
+        """
+        cdef cpp.PointXYZ min_point
+        cdef cpp.PointXYZ max_point
+        self.me.getAABB(min_point, max_point)
+        return (min_point.x, min_point.y, min_point.z), (max_point.x, max_point.y, max_point.z)
+
+    #def getOBB(self):
+
+    def __dealloc__(self):
+        del self.me
