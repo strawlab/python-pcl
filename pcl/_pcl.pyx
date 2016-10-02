@@ -829,24 +829,88 @@ cdef class MomentOfInertiaEstimation:
         #"""
         #self.me.setInputCloud(pc.thisptr_shared)
 
+    def set_angle_step(self, val):
+        self.me.setAngleStep(val)
+
+    def get_angle_step(self):
+        return self.me.getAngleStep()
+
+    def set_point_mass(self, val):
+        self.me.setPointMass(val)
+
+    def get_point_mass(self):
+        return self.me.getPointMass()
+
+    def set_normalize_point_mass_flag(self, val):
+        self.me.setNormalizePointMassFlag(val)
+
+    def get_normalize_point_mass_flag(self):
+        return self.me.getNormalizePointMassFlag()
+
     def compute(self):
+        """
+        Compute Values, must be called before most other methods
+        """
         self.me.compute()
 
-    def getAABB(self):
+    def get_bounding_box(self):
         """
-        brief This method gives access to the computed oriented bounding box. It returns true
-        * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
-        * Note that in order to get the OBB, each vertex of the given AABB (specified with min_point and max_point)
-        * must be rotated with the given rotational matrix (rotation transform) and then positioned.
-        * Also pay attention to the fact that this is not the minimal possible bounding box. This is the bounding box
-        * which is oriented in accordance with the eigen vectors.
+        This method gives access to the computed axis aligned bounding box. 
         """
         cdef cpp.PointXYZ min_point
         cdef cpp.PointXYZ max_point
-        self.me.getAABB(min_point, max_point)
+        ret = self.me.getAABB(min_point, max_point)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
         return (min_point.x, min_point.y, min_point.z), (max_point.x, max_point.y, max_point.z)
 
-    #def getOBB(self):
+    def get_oriented_bounding_box(self):
+        """
+        This method gives access to the computed oriented bounding box. 
+        """
+        cdef cpp.PointXYZ min_point
+        cdef cpp.PointXYZ max_point
+        cdef cpp.PointXYZ position
+        cdef cpp.Matrix3f rot_matrix
+        ret = self.me.getOBB(min_point, max_point, position, rot_matrix)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return (min_point.x, min_point.y, min_point.z), (max_point.x, max_point.y, max_point.z)
+
+    def get_moment_of_inertia(self):
+        cdef vector[float] moment
+        ret = self.me.getMomentOfInertia(moment)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return [moment[i] for i in range(moment.size())]
+
+    def get_eigen_vectors(self):
+        cdef cpp.Vector3f major, middle, minor
+        ret = self.me.getEigenVectors(major, middle, minor)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return (major.data()[0], major.data()[1], major.data()[2]), (middle.data()[0], middle.data()[1], middle.data()[2]), (minor.data()[0], minor.data()[1], minor.data()[2])
+
+    def get_eigen_values(self):
+        cdef float major, middle, minor
+        ret = self.me.getEigenValues(major, middle, minor)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return major, middle, minor
+
+    def get_eccentricity(self):
+        cdef vector[float] ec
+        ret = self.me.getEccentricity(ec)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return [ec[i] for i in range(ec.size())]
+    
+    def get_mass_center(self):
+        cdef cpp.Vector3f v
+        ret = self.me.getMassCenter(v)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return v.data()[0], v.data()[1], v.data()[2] 
 
     def __dealloc__(self):
         del self.me

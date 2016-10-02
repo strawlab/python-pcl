@@ -8,6 +8,10 @@ from shared_ptr cimport shared_ptr
 from vector cimport vector as vector2
 
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
+    cdef cppclass Vector3f:
+        Vector3f()
+        Vector3f(float, float, float)
+        float *data()
     cdef cppclass Vector4f:
         Vector4f()
         Vector4f(float, float, float, float)
@@ -261,11 +265,16 @@ cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
         float getAngleStep()
         void setPointMass(float)
         float getPointMass()
-        void setInputCloud (shared_ptr[PointCloud[T]])
+        void setInputCloud(shared_ptr[PointCloud[T]])
+        void setNormalizePointMassFlag(bool)
+        bool getNormalizePointMassFlag()
         void compute()
-        #bool getOBB(PointXYZ, PointXYZ, PointXYZ, Matrix3f)
-        #bool getAABB (shared_ptr[PointXYZ[T]], shared_ptr[PointXYZ[T]])
-        bool getAABB (PointXYZ&, PointXYZ&)
-        #bool getAABB(T&, T&)
+        bool getOBB(PointXYZ&, PointXYZ&, PointXYZ&, Matrix3f&)
+        bool getAABB(PointXYZ&, PointXYZ&)
+        bool getMomentOfInertia(vector[float]&)
+        bool getMassCenter(Vector3f &)
+        bool getEigenVectors(Vector3f &, Vector3f &, Vector3f&) 
+        bool getEigenValues(float &major, float &middle, float &minor)
+        bool getEccentricity (vector[float]&)
 
 ctypedef MomentOfInertiaEstimation[PointXYZ] MomentOfInertiaEstimation_t
