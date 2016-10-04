@@ -974,26 +974,27 @@ ctypedef OctreePointCloud[cpp.PointXYZRGBA] OctreePointCloud_PointXYZRGBA_t
         #     AlignedPointTVector &voxelCenterList_arg) const;
 ###
 
-# namespace pcl
-# namespace octree
-# template<typename PointT, typename LeafT = OctreeContainerDataTVector<int>,
-# typename BranchT = OctreeContainerEmpty<int> >
-#     class OctreePointCloudChangeDetector : public OctreePointCloud<PointT, LeafT, BranchT, Octree2BufBase<int, LeafT, BranchT> >
-cdef extern from "pcl/octree/octree_pointcloud_changedetector.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudChangeDetector[T](OctreePointCloud[T]):
-#     cdef cppclass OctreePointCloudChangeDetector[T, LeafT, BranchT](OctreePointCloud[T, LeafT, BranchT]):
-        OctreePointCloudChangeDetector (const double resolution_arg)
-        #  public:
-        #/** \brief Get a indices from all leaf nodes that did not exist in previous buffer.
-        # * \param indicesVector_arg: results are written to this vector of int indices
-        # * \param minPointsPerLeaf_arg: minimum amount of points required within leaf node to become serialized.
-        # * \return number of point indices
-        #int getPointIndicesFromNewVoxels (std::vector<int> &indicesVector_arg, const int minPointsPerLeaf_arg = 0)
-
-ctypedef OctreePointCloudChangeDetector[cpp.PointXYZ] OctreePointCloudChangeDetector_t
-ctypedef OctreePointCloudChangeDetector[cpp.PointXYZI] OctreePointCloudChangeDetector_PointXYZI_t
-ctypedef OctreePointCloudChangeDetector[cpp.PointXYZRGB] OctreePointCloudChangeDetector_PointXYZRGB_t
-ctypedef OctreePointCloudChangeDetector[cpp.PointXYZRGBA] OctreePointCloudChangeDetector_PointXYZRGBA_t
+# Version 1.7.2, 1.8.0 NG
+# # namespace pcl
+# # namespace octree
+# # template<typename PointT, typename LeafT = OctreeContainerDataTVector<int>,
+# # typename BranchT = OctreeContainerEmpty<int> >
+# #     class OctreePointCloudChangeDetector : public OctreePointCloud<PointT, LeafT, BranchT, Octree2BufBase<int, LeafT, BranchT> >
+# cdef extern from "pcl/octree/octree_pointcloud_changedetector.h" namespace "pcl::octree":
+#     cdef cppclass OctreePointCloudChangeDetector[T](OctreePointCloud[T]):
+# #     cdef cppclass OctreePointCloudChangeDetector[T, LeafT, BranchT](OctreePointCloud[T, LeafT, BranchT]):
+#         OctreePointCloudChangeDetector (const double resolution_arg)
+#         #  public:
+#         #/** \brief Get a indices from all leaf nodes that did not exist in previous buffer.
+#         # * \param indicesVector_arg: results are written to this vector of int indices
+#         # * \param minPointsPerLeaf_arg: minimum amount of points required within leaf node to become serialized.
+#         # * \return number of point indices
+#         #int getPointIndicesFromNewVoxels (std::vector<int> &indicesVector_arg, const int minPointsPerLeaf_arg = 0)
+# 
+# ctypedef OctreePointCloudChangeDetector[cpp.PointXYZ] OctreePointCloudChangeDetector_t
+# ctypedef OctreePointCloudChangeDetector[cpp.PointXYZI] OctreePointCloudChangeDetector_PointXYZI_t
+# ctypedef OctreePointCloudChangeDetector[cpp.PointXYZRGB] OctreePointCloudChangeDetector_PointXYZRGB_t
+# ctypedef OctreePointCloudChangeDetector[cpp.PointXYZRGBA] OctreePointCloudChangeDetector_PointXYZRGBA_t
 ###
 
 # octree_pointcloud_density.h
