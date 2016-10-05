@@ -66,7 +66,8 @@ pcd_filename_indices = [0, 0, 0]
 # if pcd_filename_indices.empty() == False
 
 if len(pcd_filename_indices) != 0:
-    string filename = argv[pcd_filename_indices[0]]
+    # string filename = argv[pcd_filename_indices[0]]
+    filename = argv[pcd_filename_indices[0]]
     point_cloud = pcl.load(argv[0])
 
     scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
@@ -74,10 +75,13 @@ if len(pcd_filename_indices) != 0:
                                                                point_cloud.sensor_origin_[2])) *
                         Eigen::Affine3f (point_cloud.sensor_orientation_);
 
-    stdstring far_ranges_filename = pclgetFilenameWithoutExtension (filename)+_far_ranges.pcd;
+    # std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+_far_ranges.pcd;
+    far_ranges_filename = pcl::getFilenameWithoutExtension (filename) + "_far_ranges.pcd";
 
-    if (pclioloadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
-        stdcout  Far ranges file far_ranges_filename does not exists.n;
+    # if (pclioloadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
+    #     stdcout  Far ranges file far_ranges_filename does not exists.n;
+    far_ranges = pcl.load(far_ranges_filename)
+
 else:
     setUnseenToMaxRange = true
     print ('nNo *.pcd file given = Genarating example point cloud.nn')
@@ -91,16 +95,15 @@ else:
     end
     point_cloud.points.push_back (point);
 
-    
     point_cloud.width  = (int) point_cloud.points.size ()
     point_cloud.height = 1;
 
-# # -----Create RangeImage from the PointCloud-----
-# noise_level = 0.0
-# min_range = 0.0f
-# 
+# -----Create RangeImage from the PointCloud-----
+noise_level = 0.0
+min_range = 0.0f
+
 # int border_size = 1
-# boostshared_ptrpclRangeImage range_image_ptr (new pclRangeImage);
+# boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pclRangeImage);
 # pclRangeImage& range_image = range_image_ptr;
 # range_image.createFromPointCloud (
 #                             point_cloud, angular_resolution, pcldeg2rad (360.0f), pcldeg2rad (180.0f),

@@ -164,7 +164,7 @@ def test_copy():
 SEGCYLMOD = [0.0552167, 0.0547035, 0.757707,
              -0.0270852, -4.41026, -2.88995, 0.0387603]
 # 1.6
-# SEGCYLIN = 11461
+SEGCYLIN = 11461
 # 1.7.2
 # SEGCYLIN = 11462
 
@@ -185,7 +185,7 @@ class TestSegmentCylinder(unittest.TestCase):
 
         indices, model = seg.segment()
 
-        # self.assertEqual(len(indices), SEGCYLIN)
+        self.assertEqual(len(indices), SEGCYLIN)
 
         # npexp = np.array(SEGCYLMOD)
         # npmod = np.array(model)
@@ -255,7 +255,7 @@ class TestExceptions(unittest.TestCase):
         self.assertRaises(IndexError, self.p.__getitem__, self.p.size)
         self.assertRaises(Exception, self.p.get_point, self.p.size, 1)
 
-	# Mac resize method NG
+    # Mac resize method NG
     # def testResize(self):
     #    # XXX MemoryError isn't actually the prettiest exception for a
     #    # negative argument. Don't hesitate to change this test to reflect
@@ -424,48 +424,120 @@ class TestOctreePointCloudSearch(unittest.TestCase):
         self.assertEqual(len(rs[0]), 19730)
         self.assertEqual(len(rs[1]), 19730)
 
-# Add
 # class TestCropHull(unittest.TestCase):
 # 
 #     def setUp(self):
-#         # TestData
-#         self.pc = pcl.PointCloud(a)
-#         self.kd = pcl.CropHull(self.pc)
+#         self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
 # 
 #     def testException(self):
 #         self.assertRaises(TypeError, pcl.CropHull)
-#         self.assertRaises(TypeError, self.)
 # 
-#     def testCrop(self):
-#         # Big cluster
-#         for ref, k in ((80, 1), (59, 3), (60, 10)):
-#             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
-#             for i in ind:
-#                 self.assertGreaterEqual(i, 30)
-#             for d in sqdist:
-#                 self.assertGreaterEqual(d, 0)
+#     def testCropHull(self):
+#         filterCloud = pcl.PointCloud()
+#         vt = pcl.Vertices()
+#         # // inside point
+#         # cloud->push_back(pcl::PointXYZ(M_PI * 0.3, M_PI * 0.3, 0));
+#         # // hull points
+#         # cloud->push_back(pcl::PointXYZ(0,0,0));
+#         # cloud->push_back(pcl::PointXYZ(M_PI,0,0));
+#         # cloud->push_back(pcl::PointXYZ(M_PI,M_PI*0.5,0));
+#         # cloud->push_back(pcl::PointXYZ(0,M_PI*0.5,0));
+#         # cloud->push_back(pcl::PointXYZ(0,0,0));
+#         # // outside point
+#         # cloud->push_back(pcl::PointXYZ(-M_PI * 0.3, -M_PI * 0.3, 0));
+#         points_2 = np.array([
+#                         [1 * 0.3, 1 * 0.3, 0],
+#                         [0, 0, 0],
+#                         [1, 0, 0],
+#                         [1, 1 * 0.5, 0],
+#                         [0, 1 * 0.5, 0],
+#                         [0, 0, 0],
+#                         # [-1 * 0.3 , -1 * 0.3, 0]
+#                     ], dtype=np.float32)
+#         filterCloud.from_array(points_2)
+#         # print(filterCloud)
 # 
+#         vertices_point_1 = np.array([1, 2, 3, 4, 5], dtype=np.int)
+#         vt.from_array(vertices_point_1)
+#         # print(vt)
+#         # vt.vertices.push_back(1)
+#         # vt.vertices.push_back(2)
+#         # vt.vertices.push_back(3)
+#         # vt.vertices.push_back(4)
+#         # vt.vertices.push_back(5)
+#         # vertices = vector[pcl.Vertices]
+#         # vertices.push_back(vt)
+# 
+#         outputCloud = pcl.PointCloud()
+#         # crophull = pcl.CropHull()
+#         # crophull.setInputCloud(self.pc)
+#         crophull = self.pc.make_crophull()
+#         # crophull.setHullIndices(vertices)
+#         # crophull.setHullIndices(vt)
+#         # crophull.setHullCloud(filterCloud)
+#         # crophull.setDim(2)
+#         # crophull.setCropOutside(false)
+#         crophull.SetParameter(filterCloud, vt)
+#         # indices = vector[int]
+#         # cropHull.filter(indices);
+#         # outputCloud = cropHull.filter();
+#         # print("before: " + outputCloud)
+#         crophull.Filtering(outputCloud)
+#         # print(outputCloud)
 
-# class TestCropBox(unittest.TestCase):
-# 
-#     def setUp(self):
-#         # TestData
-#         self.pc = pcl.PointCloud(a)
-#         self.kd = pcl.CropBox(self.pc)
-# 
-#     def testException(self):
-#         self.assertRaises(TypeError, pcl.CropHull)
-#         self.assertRaises(TypeError, self.kd.nearest_k_search_for_cloud, None)
-# 
-#     def testCrop(self):
-#         # Big cluster
-#         for ref, k in ((80, 1), (59, 3), (60, 10)):
-#             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
-#             for i in ind:
-#                 self.assertGreaterEqual(i, 30)
-#             for d in sqdist:
-#                 self.assertGreaterEqual(d, 0)
-# 
+
+# Viewer
+# // pcl::visualization::CloudViewer viewer ("Cluster viewer");
+# // viewer.showCloud(colored_cloud);
+
+# Write Point
+# pcl::PCDWriter writer;
+# std::stringstream ss;
+# ss << "min_cut_seg" << ".pcd";
+# // writer.write<pcl::PointXYZRGB> (ss.str (), *cloud, false);
+# pcl::io::savePCDFile(ss.str(), *outputCloud, false);
+
+
+class TestCropBox(unittest.TestCase):
+
+    def setUp(self):
+        self.pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        # self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
+
+    def testException(self):
+        self.assertRaises(TypeError, pcl.CropHull)
+
+    def testCrop(self):
+        # pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
+        clipper = self.pc.make_cropbox()
+        outcloud = pcl.PointCloud()
+        self.assertEqual(outcloud.size, 0)
+        
+        # clipper.setTranslation(Eigen::Vector3f(pose->tx, pose->ty, pose->tz));
+        # clipper.setRotation(Eigen::Vector3f(pose->rx, pose->ry, pose->rz));
+        # clipper.setMin(-Eigen::Vector4f(tracklet->l/2, tracklet->w/2, 0, 0));
+        # clipper.setMax(Eigen::Vector4f(tracklet->l/2, tracklet->w/2, tracklet->h, 0));
+        # clipper.filter(*outcloud);
+        tx = 0
+        ty = 0
+        tz = 0
+        clipper.set_Translation(tx, ty, tz)
+        rx = 0
+        ry = 0
+        rz = 0
+        clipper.set_Rotation(rx, ry, rz)
+        minx = -1.5
+        miny = -1.5
+        minz = 2
+        mins = 0
+        maxx = 3.5
+        maxy = 3.5
+        maxz = 3
+        maxs = 0
+        clipper.set_MinMax(minx, miny, minz, mins, maxx, maxy, maxz, maxs)
+        clipper.Filtering(outcloud)
+        self.assertNotEqual(outcloud.size, 0)
+        self.assertNotEqual(outcloud.size, self.pc.size)
 
 # Add ProjectInlier
 # class TestProjectInlier(unittest.TestCase):

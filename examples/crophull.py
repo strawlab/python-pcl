@@ -75,3 +75,4 @@ print(outputCloud)
 # ss << "min_cut_seg" << ".pcd";
 # // writer.write<pcl::PointXYZRGB> (ss.str (), *cloud, false);
 # pcl::io::savePCDFile(ss.str(), *outputCloud, false);
+

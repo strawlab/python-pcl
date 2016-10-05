@@ -13,58 +13,45 @@ import platform
 import os
 
 if platform.system() == "Windows":
-    # sys.path.append('./src')
-    # sys.path.append('./tests')
 
-    # Check 32bit or 64bit
-    # is_64bits = sys.maxsize > 2**32
-    # if is_64bits == True
-
-    pcl_version = "-1.6"
     # environment Value
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
         if k == "PCL_ROOT":
             pcl_root = v
             # print(pcl_root)
-            print("%s: find environment PCL_ROOT" % pcl_root)
+            # print("%s: find environment PCL_ROOT" % pcl_root)
             break
-        # elif k == "PCL_VERSION":
-        #     pcl_verison_env = v
-        #     if pcl_verison_env == "1.6.0":
-        #         pcl_version = "-1.6"
-        #     elif pcl_verison_env == "1.7.2":
-        #         pcl_version = "-1.7"
-        #     elif pcl_verison_env == "1.8.0":
-        #         pcl_version = "-1.8"
-        #     else:
-        #         pass
     else:
         print("cannot find environment PCL_ROOT", file=sys.stderr)
         sys.exit(1)
 
     # Add environment Value
     # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
-    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig
+    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig;'
+    # Get Windows Environment Value
     # pkgconfigstr = str(os.environ.get('PKG_CONFIG_PATH', -1))
-    # pkgconfigstr = os.environ['PKG_CONFIG_PATH']
-    # print "%s" % (pkgconfigstr)
-    # print pkgconfigstr
+    pkgconfigstr = os.environ['PKG_CONFIG_PATH']
+    # print("%s" % (pkgconfigstr))
+    # print("check start")
+    print(pkgconfigstr)
+    # print("check end")
 
-    # pkgconfigPath = pcl_root + 'pkg-config\\pkg-config.exe'
-    # print pkgconfigPath
+	# 
+    pkgconfigPath = pcl_root + '\\pkg-config\\pkg-config.exe'
+    print(pkgconfigPath)
     # Try to find PCL. XXX we should only do this when trying to build or install.
-    # PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
-    # 
-    # for pcl_version in PCL_SUPPORTED:
-    #     if subprocess.call(['pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
-    #         break
-    # else:
-    #     print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
-    #     for version in PCL_SUPPORTED:
-    #         print('    pkg-config pcl_common%s' % version, file=sys.stderr)
-    #     sys.exit(1)
-    # print(pcl_version)
+    PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
+    
+    for pcl_version in PCL_SUPPORTED:
+        if subprocess.call(['pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
+            break
+    else:
+        print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
+        for version in PCL_SUPPORTED:
+            print('    pkg-config pcl_common%s' % version, file=sys.stderr)
+        sys.exit(1)
+    print(pcl_version)
 
     # Python Version Check
     info = sys.version_info
