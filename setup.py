@@ -29,6 +29,8 @@ if platform.system() == "Windows":
     # Add environment Value
     # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
     # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig;'
+    # use [:] -> NG
+    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig:' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig:' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig:'
     # Get Windows Environment Value
     # pkgconfigstr = str(os.environ.get('PKG_CONFIG_PATH', -1))
     pkgconfigstr = os.environ['PKG_CONFIG_PATH']
@@ -37,7 +39,6 @@ if platform.system() == "Windows":
     print(pkgconfigstr)
     # print("check end")
 
-	# 
     pkgconfigPath = pcl_root + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
     # Try to find PCL. XXX we should only do this when trying to build or install.
@@ -97,10 +98,31 @@ if platform.system() == "Windows":
     # print(pcl_libs)
 
     ext_args = defaultdict(list)
-
     # set include path
     ext_args['include_dirs'].append(numpy.get_include())
 
+    def pkgconfig(flag, cut):
+        # Equivalent in Python 2.7 (but not 2.6):
+        # subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
+        p = subprocess.Popen(['pkg-config', flag] + pcl_libs, stdout=subprocess.PIPE)
+        stdout, _ = p.communicate()
+        # Assume no evil spaces in filenames; unsure how pkg-config would
+        # handle those, anyway.
+        # decode() is required in Python 3. TODO how do know the encoding?
+        # return stdout.decode().split()
+        # Windows
+        # return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
+        return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
+
+    # Get setting pkg-config
+    # use pkg-config
+    # # start
+    # for flag in pkgconfig('--cflags-only-I', '-I'):
+    #     print(flag.lstrip().rstrip())
+    #     ext_args['include_dirs'].append(flag.lstrip().rstrip())
+    # 
+    # end
+    # no use pkg-config
     if pcl_version == '-1.6':
         # 1.6.0
         # ext_args['include_dirs'].append([pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include'])
@@ -122,9 +144,19 @@ if platform.system() == "Windows":
         inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-1_60', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-7.0']
     else:
         inc_dirs = []
-
+    
     for inc_dir in inc_dirs:
         ext_args['include_dirs'].append(inc_dir)
+    
+    # end
+
+    # for flag in pkgconfig('--libs-only-L'):
+    #     ext_args['library_dirs'].append(flag[2:])
+    #
+    # for flag in pkgconfig('--libs-only-other'):
+    #     ext_args['extra_link_args'].append(flag)
+    #
+    # end
 
     # set library path
     if pcl_version == '-1.6':
@@ -161,6 +193,20 @@ if platform.system() == "Windows":
     # libdebugs = ["pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"]
     # for libdebug in libdebugs:
     #     ext_args['libraries'].append(libdebug)
+
+
+    # for flag in pkgconfig('--cflags-only-other'):
+    #     if flag.startswith('-D'):
+    #         macro, value = flag[2:].split('=', 1)
+    #         ext_args['define_macros'].append((macro, value))
+    #     else:
+    #         ext_args['extra_compile_args'].append(flag)
+    #
+    # for flag in pkgconfig('--libs-only-l', '-l'):
+    #     if flag == "-lflann_cpp-gd":
+    #         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
+    #         continue
+    #     ext_args['libraries'].append(flag.lstrip().rstrip())
 
     if pcl_version == '-1.6':
         # release
