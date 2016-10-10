@@ -80,7 +80,9 @@ install:
   # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   # Add PCLPath
   # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
+  # setParameter
+  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
   # debug(ParameterCheck)
   - "SET PATH"
 

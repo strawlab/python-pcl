@@ -501,8 +501,8 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 class TestCropBox(unittest.TestCase):
 
     def setUp(self):
-        self.pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
-        # self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
+        # self.pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
 
     def testException(self):
         self.assertRaises(TypeError, pcl.CropHull)
