@@ -86,6 +86,17 @@ and CentOS 6.5 with
  * pcl 1.6.0
  * Cython 0.21
 
+and Windows with
+ * Python 3.4
+ * pcl 1.6.0
+ * Cython 0.23
+
+and Windows with
+ * Python 3.5
+ * pcl 1.7.2
+ * Cython 0.23
+
+
 A note about types
 ------------------
 

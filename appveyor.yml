@@ -10,14 +10,14 @@ environment:
 
   matrix:
   # Version 1.6.0 Check
-  - PYTHON: "C:\\Miniconda"
+  - PYTHON: "C:\\Miniconda3"
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "32"
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig"
 
-  - PYTHON: "C:\\Miniconda-x64"
+  - PYTHON: "C:\\Miniconda3-x64"
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
