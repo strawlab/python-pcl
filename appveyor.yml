@@ -125,7 +125,7 @@ build_script:
 
     copy .\\appveyor\\msvcr100.dll "%PYTHON%\Library\bin\msvcr100.dll"
 
-    copy .\\appveyor\\msvcr100.dll "%PYTHON%\Library\bin\msvcr100.dll"
+    copy .\\appveyor\\msvcp100.dll "%PYTHON%\Library\bin\msvcp100.dll"
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
@@ -133,7 +133,7 @@ build_script:
 
     ls "%PYTHON%"
 
-	ls "%PYTHON%\Library"
+    ls "%PYTHON%\Library"
 
     ls "%PYTHON%\Library\bin"
 
