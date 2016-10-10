@@ -119,6 +119,10 @@ build_script:
 
     copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
 
+    copy .\\appveyor\\msvcr100.dll "%PYTHON%\msvcr100.dll"
+
+    copy .\\appveyor\\msvcp100.dll "%PYTHON%\\msvcp100.dll"
+
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
     ls "%PCL_ROOT%\bin"
