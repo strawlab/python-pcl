@@ -163,12 +163,10 @@ def test_copy():
 
 SEGCYLMOD = [0.0552167, 0.0547035, 0.757707,
              -0.0270852, -4.41026, -2.88995, 0.0387603]
-# 1.6 - (Only Mac), other
-SEGCYLIN = 11461
-# 1.7.2 - (Only Mac)
+# 1.7.2
 # SEGCYLIN = 11462
-# 1.8 - (Only Mac)
-# SEGCYLIN = 11450
+# 1.8
+SEGCYLIN = 11450
 
 class TestSegmentCylinder(unittest.TestCase):
 
@@ -187,8 +185,7 @@ class TestSegmentCylinder(unittest.TestCase):
 
         indices, model = seg.segment()
 
-		# MAC NG
-        # self.assertEqual(len(indices), SEGCYLIN)
+        self.assertEqual(len(indices), SEGCYLIN)
 
         # npexp = np.array(SEGCYLMOD)
         # npmod = np.array(model)
@@ -206,9 +203,7 @@ class TestSave(unittest.TestCase):
         shutil.rmtree(self.tmpdir)
 
     def testSave(self):
-        # for ext in ["pcd", "ply"]:
-        # Mac ply read/write NG
-        for ext in ["pcd"]:
+        for ext in ["pcd", "ply"]:
             d = os.path.join(self.tmpdir, "foo." + ext)
             pcl.save(self.p, d)
             p = pcl.load(d)
@@ -258,12 +253,11 @@ class TestExceptions(unittest.TestCase):
         self.assertRaises(IndexError, self.p.__getitem__, self.p.size)
         self.assertRaises(Exception, self.p.get_point, self.p.size, 1)
 
-    # Mac resize method NG
-    # def testResize(self):
-    #    # XXX MemoryError isn't actually the prettiest exception for a
-    #    # negative argument. Don't hesitate to change this test to reflect
-    #    # better exceptions.
-    #    self.assertRaises(MemoryError, self.p.resize, -1)
+    def testResize(self):
+        # XXX MemoryError isn't actually the prettiest exception for a
+        # negative argument. Don't hesitate to change this test to reflect
+        # better exceptions.
+        self.assertRaises(MemoryError, self.p.resize, -1)
 
 
 class TestSegmenterNormal(unittest.TestCase):

@@ -123,6 +123,8 @@ build_script:
 
     ls "%PCL_ROOT%\bin"
 
+    ls "%PYTHON%"
+
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
