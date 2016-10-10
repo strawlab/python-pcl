@@ -39,7 +39,7 @@ if platform.system() == "Windows":
     print(pkgconfigstr)
     # print("check end")
 
-    pkgconfigPath = pcl_root + '\\pkg-config\\pkg-config.exe'
+    pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
     # Try to find PCL. XXX we should only do this when trying to build or install.
     PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
