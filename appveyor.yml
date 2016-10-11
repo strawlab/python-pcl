@@ -124,29 +124,15 @@ build_script:
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
-    ls "%PCL_ROOT%\bin"
-
-    ls "%PYTHON%"
-
-    ls "%VS100COMNTOOLS%"
-
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
-
-    copy "%PCL_ROOT%\bin" "C:\projects\python-pcl"
-
-    copy "%PCL_ROOT%\bin" "%WIN_SDK_ROOT%"
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%"
 
     %CMD_IN_ENV% python setup.py build_ext -i
 
     %CMD_IN_ENV% python setup.py install
 
     %CMD_IN_ENV% python setup.py bdist_wheel
-
-    where python
 
 test_script:
   # Run the project tests
