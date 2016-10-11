@@ -144,6 +144,8 @@ build_script:
 
     %CMD_IN_ENV% python setup.py install
 
+    %CMD_IN_ENV% python setup.py bdist_wheel
+
     where python
 
 test_script:
@@ -153,7 +155,7 @@ test_script:
   # Path Check(ErrorLog)
   # - pcd_viewer_release2.exe
   # - "%CMD_IN_ENV% python setup.py nosetests"
-  - "%CMD_IN_ENV% python tests\\test.py"
+  # - "%CMD_IN_ENV% python tests\\test.py"
   # - python .\tests\test.py
 
 #after_test:
@@ -164,10 +166,10 @@ test_script:
 #  # - ps: "ls dist"
 
 
-#artifacts:
-#  # Archive the generated packages in the ci.appveyor.com build report.
-#  # - path: dist\*
-
+artifacts:
+# Archive the generated packages in the ci.appveyor.com build report.
+  - path: dist\*
+  - name: pcl_package
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
