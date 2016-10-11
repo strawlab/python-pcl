@@ -16,6 +16,7 @@ environment:
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig"
+    VS100COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\Tools"
 
   - PYTHON: "C:\\Miniconda3-x64"
     PYTHON_VERSION: "3.4.3"
@@ -23,6 +24,8 @@ environment:
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig"
+    VS100COMNTOOLS: "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Common7\\Tools"
+
 
   # Version 1.7.2
   # - PYTHON: "C:\\Python35"
@@ -135,8 +138,6 @@ build_script:
     %CMD_IN_ENV% python setup.py build_ext -i
 
     %CMD_IN_ENV% python setup.py install
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%"
 
 
 test_script:
