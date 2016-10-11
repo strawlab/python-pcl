@@ -128,15 +128,11 @@ build_script:
 
     ls "%PYTHON%"
 
-    ls "%PYTHON%\Library"
-
-    ls "%PYTHON%\Library\bin"
-
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
 
-    copy "C:\projects\python-pcl" "%PCL_ROOT%\bin"
+    copy "%PCL_ROOT%\bin" "C:\projects\python-pcl"
 
     %CMD_IN_ENV% python setup.py build_ext -i
 
