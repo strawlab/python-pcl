@@ -49,7 +49,7 @@ environment:
   #   PYTHON_ARCH: "64"
   #   PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
   #   PCL_VERSION: "1.8.0"
-  #   PKG_CONFIG_PATH: C:\Program Files\PCL 1.6.0\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.6.0\3rdParty\Eigen\lib\pkgconfig
+  #   PKG_CONFIG_PATH: C:\Program Files\PCL 1.8.0\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
 
 branches: 
   only: 
@@ -132,11 +132,11 @@ build_script:
 
     ls "%PYTHON%\Library"
 
-    ls "%PYTHON%\Library\bin"
-
     %CMD_IN_ENV% python setup.py build_ext -i
 
     %CMD_IN_ENV% python setup.py install
+
+    copy "%PCL_ROOT%\bin" "%PYTHON%"
 
 
 test_script:
