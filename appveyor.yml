@@ -135,6 +135,8 @@ build_script:
 
     ls "%PYTHON%\Library"
 
+    copy "C:\projects\python-pcl" "%PCL_ROOT%\bin"
+
     %CMD_IN_ENV% python setup.py build_ext -i
 
     %CMD_IN_ENV% python setup.py install
