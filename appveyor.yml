@@ -112,6 +112,10 @@ install:
 
 build_script:
 - cmd: >-
+    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
+
+    copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
     %CMD_IN_ENV% pip install Cython
