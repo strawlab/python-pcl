@@ -112,9 +112,14 @@ install:
 
 build_script:
 - cmd: >-
+    copy .\\appveyor\\shared_ptr.hpp "%PCL_ROOT%\include\pcl3rdParty\Boost\include\boost-1_57\boost\shared_ptr.hpp"
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
+
+    ls "%PCL_ROOT%\3rdParty\Boost\include"
+
+    ls "%PCL_ROOT%\3rdParty\Boost\include\boost-1_57"
 
     %CMD_IN_ENV% python setup.py build_ext -i
 
