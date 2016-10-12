@@ -15,14 +15,14 @@ environment:
     PYTHON_ARCH: "32"
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   - PYTHON: "C:\\Python34-x64"
     PYTHON_VERSION: "3.4.3"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
     PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   # Version 1.7.2
   - PYTHON: "C:\\Python35"
@@ -30,7 +30,7 @@ environment:
     PYTHON_ARCH: "32"
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
     PCL_VERSION: "1.7"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   - PYTHON: "C:\\Python35-x64"
     PYTHON_VERSION: "3.5.1"
@@ -109,22 +109,9 @@ install:
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - ps : appveyor\install.ps1
   
-  - ps : Start-FileDownload "http://www.lfd.uci.edu/~gohlke/pythonlibs/dp2ng7en/numpy-1.11.2+mkl-cp34-cp34m-win32.whl"
-  # - ps : Start-FileDownload "http://www.lfd.uci.edu/~gohlke/pythonlibs/dp2ng7en/numpy-1.11.2+mkl-cp34-cp34m-win_amd64.whl"
-  
-  # Module Install
-  # Import-Module ".\appveyor\PS-Zip\PS-Zip.psm1" -Force
-  
-  # NG
-  # @powershell -NoProfile -ExecutionPolicy unrestricted -Command "Start-Process -Verb runas /user:administrator PCL-1.6.0-AllInOne-msvc2010-win64.exe /S /v/norestart /v/qn"
-
 
 build_script:
 - cmd: >-
-    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
-
-    copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
-
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
     %CMD_IN_ENV% pip install Cython
