@@ -1,5 +1,5 @@
 os:
-- Windows Server 2012 R2
+- Visual Studio 2015
 
 environment:
   global:
@@ -10,34 +10,34 @@ environment:
 
   matrix:
   # Version 1.6.0 Check
-  - PYTHON: "C:\\Python34"
-    PYTHON_VERSION: "3.4.3"
-    PYTHON_ARCH: "32"
-    PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
-    PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
+  # - PYTHON: "C:\\Python34"
+  #   PYTHON_VERSION: "3.4.3"
+  #   PYTHON_ARCH: "32"
+  #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
+  #   PCL_VERSION: "1.6"
+  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
-  - PYTHON: "C:\\Python34-x64"
-    PYTHON_VERSION: "3.4.3"
-    PYTHON_ARCH: "64"
-    PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
-    PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
+  # - PYTHON: "C:\\Python34-x64"
+  #   PYTHON_VERSION: "3.4.3"
+  #   PYTHON_ARCH: "64"
+  #   PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
+  #   PCL_VERSION: "1.6"
+  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   # Version 1.7.2
-  # - PYTHON: "C:\\Python35"
-  #   PYTHON_VERSION: "3.5.1"
-  #   PYTHON_ARCH: "32"
-  #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
-  #   PCL_VERSION: "1.7"
-  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\Eigen\\lib\\pkgconfig;"
+  - PYTHON: "C:\\Python35"
+    PYTHON_VERSION: "3.5.1"
+    PYTHON_ARCH: "32"
+    PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
+    PCL_VERSION: "1.7"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
-  # - PYTHON: "C:\\Python35-x64"
-  #   PYTHON_VERSION: "3.5.1"
-  #   PYTHON_ARCH: "64"
-  #   PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
-  #   PCL_VERSION: "1.7"
-  #   PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.7.2\\lib\\pkgconfig"
+  - PYTHON: "C:\\Python35-x64"
+    PYTHON_VERSION: "3.5.1"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
+    PCL_VERSION: "1.7"
+    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.7.2\\lib\\pkgconfig"
 
   # Version 1.8.0 Check
   # - PYTHON: "C:\\Python35"
@@ -112,12 +112,6 @@ install:
 
 build_script:
 - cmd: >-
-    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
-
-    copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
-
-    ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
-
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
