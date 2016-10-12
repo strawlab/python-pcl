@@ -134,8 +134,6 @@ build_script:
 
     %CMD_IN_ENV% python -m pip list
 
-    copy "C:\projects\python-pcl"
-
     copy "%PYTHON%" "%PCL_ROOT%\bin"
 
     copy "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl" "%PCL_ROOT%\bin"
