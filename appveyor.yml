@@ -118,6 +118,8 @@ build_script:
 
     ls "%PCL_ROOT%\3rdParty\Boost\include"
 
+    ls "%PCL_ROOT%\3rdParty\Boost\include\boost-1_57"
+
     %CMD_IN_ENV% python setup.py build_ext -i
 
     %CMD_IN_ENV% python setup.py install
