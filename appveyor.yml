@@ -122,10 +122,6 @@ build_script:
 
     ls "%PYTHON%"
 
-    ls "%PYTHON%\Library"
-
-    ls "%PYTHON%\Library\bin"
-
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
