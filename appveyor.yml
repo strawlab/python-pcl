@@ -136,11 +136,9 @@ build_script:
 
     copy "C:\projects\python-pcl"
 
-    copy "%PCL_ROOT%\bin" "%PYTHON%"
+    copy "%PYTHON%" "%PCL_ROOT%\bin"
 
-    copy "%PCL_ROOT%\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
-
-    copy "%PYTHON%Script" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+    copy "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl" "%PCL_ROOT%\bin"
 
 test_script:
   # Run the project tests
