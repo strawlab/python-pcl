@@ -14,6 +14,8 @@
       })();
     </script>
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ixcgmjb1x1713fde?svg=true)](https://ci.appveyor.com/project/Sirokujira/python-pcl)
+
 Introduction
 ============
 
@@ -87,14 +89,19 @@ and CentOS 6.5 with
  * Cython 0.21
 
 and Windows with
- * Python 3.4
- * pcl 1.6.0
- * Cython 0.23
+ * (Miniconda/Anaconda) - Python 3.4
+ * pcl 1.6.0(VS2010)
+ * Cython 0.24
 
 and Windows with
- * Python 3.5
- * pcl 1.7.2
- * Cython 0.23
+ * (Miniconda/Anaconda) - Python 3.5
+ * pcl 1.7.2(VS2015)
+ * Cython 0.24
+
+and Windows with
+ * (Miniconda/Anaconda) - Python 3.5
+ * pcl 1.8.0(VS2015)
+ * Cython 0.24
 
 
 A note about types
