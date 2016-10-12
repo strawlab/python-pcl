@@ -54,7 +54,7 @@ if platform.system() == "Windows":
     #         print('    pkg-config pcl_common%s' % version, file=sys.stderr)
     #     sys.exit(1)
     # print(pcl_version)
-    pcl_version = '-1.6'
+    # pcl_version = '-1.6'
 
     # Python Version Check
     info = sys.version_info

@@ -16,7 +16,6 @@ environment:
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig"
-    VS100COMNTOOLS: "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\Tools"
 
   - PYTHON: "C:\\Python34-x64"
     PYTHON_VERSION: "3.4.3"
@@ -24,22 +23,21 @@ environment:
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig"
-    VS100COMNTOOLS: "C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Common7\\Tools"
-
 
   # Version 1.7.2
-  # - PYTHON: "C:\\Python35"
-  #   PYTHON_VERSION: "3.5.1"
-  #   PYTHON_ARCH: "32"
-  #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
-  #   PCL_VERSION: "1.7"
-  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig"
-  # - PYTHON: "C:\\Python35-x64"
-  #   PYTHON_VERSION: "3.5.1"
-  #   PYTHON_ARCH: "64"
-  #   PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
-  #   PCL_VERSION: "1.7"
-  #   PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.7.2\\lib\\pkgconfig"
+  - PYTHON: "C:\\Python35"
+    PYTHON_VERSION: "3.5.1"
+    PYTHON_ARCH: "32"
+    PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
+    PCL_VERSION: "1.7"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig"
+
+  - PYTHON: "C:\\Python35-x64"
+    PYTHON_VERSION: "3.5.1"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
+    PCL_VERSION: "1.7"
+    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.7.2\\lib\\pkgconfig"
 
   # Version 1.8.0 Check
   # - PYTHON: "C:\\Python35"
@@ -103,13 +101,16 @@ install:
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
-  - "%CMD_IN_ENV% pip install -r dev-requirements.txt"
+  - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
   
   # PCL Install
   # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe"
   # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe"
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - ps : appveyor\install.ps1
+  
+  - ps : Start-FileDownload "http://www.lfd.uci.edu/~gohlke/pythonlibs/dp2ng7en/numpy-1.11.2+mkl-cp34-cp34m-win32.whl"
+  # - ps : Start-FileDownload "http://www.lfd.uci.edu/~gohlke/pythonlibs/dp2ng7en/numpy-1.11.2+mkl-cp34-cp34m-win_amd64.whl"
   
   # Module Install
   # Import-Module ".\appveyor\PS-Zip\PS-Zip.psm1" -Force
@@ -135,6 +136,8 @@ build_script:
     %CMD_IN_ENV% python setup.py install
 
     %CMD_IN_ENV% python setup.py bdist_wheel
+
+    %CMD_IN_ENV% python -m pip list
 
 test_script:
   # Run the project tests
