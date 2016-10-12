@@ -1,5 +1,5 @@
 os:
-- Visual Studio 2015
+- Windows Server 2012 R2
 
 environment:
   global:
@@ -112,13 +112,23 @@ install:
 
 build_script:
 - cmd: >-
+    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
+
+    copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+
+    ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
+
+    ls "%PCL_ROOT%\bin"
+
+    ls "%PYTHON%"
+
+    ls "%PYTHON%\Library"
+
+    ls "%PYTHON%\Library\bin"
+
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
-
-    ls "%PCL_ROOT%\3rdParty\Boost\include"
-
-    ls "%PCL_ROOT%\3rdParty\Boost\include\boost-1_57"
 
     %CMD_IN_ENV% python setup.py build_ext -i
 
