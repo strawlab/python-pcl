@@ -289,13 +289,80 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     }
 }
 
+function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home) 
+{
+    if ($architecture -eq "32")
+    {
+        $platform_suffix = "win32"
+    }
+    else
+    {
+        $platform_suffix = "win64"
+    }
+    
+    $installer_path = $pcl_home + "\\3rdParty\\OpenNI\\OpenNI-$platform_suffix-$openni_version-Dev.msi"
+    $installer_ext = [System.IO.Path]::GetExtension($installer_path)
+    Write-Host "Installing $installer_path to $openni_home"
+    $install_log = $openni_home + "install.log"
+    if ($installer_ext -eq '.msi')
+    {
+        InstallOpenNIMSI $installer_path $openni_home $install_log
+    }
+    else
+    {
+        InstallOpenNIEXE $installer_path $openni_home $install_log
+    }
+    
+    if (Test-Path $installer_path) 
+    {
+        Write-Host "PointCloudLibrary $openni_version ($architecture) installation complete"
+    }
+    else 
+    {
+        Write-Host "Failed to install PointCloudLibrary in $openni_home"
+        # Get-Content -Path $install_log
+        # Exit 1
+    }
+}
+
+
+function InstallOpenNIMSI ($exepath, $openni_home, $install_log)
+{
+    # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
+    $install_args = "/S /v/qn /v/norestart"
+    # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
+    # RunCommand schtasks /run /tn openni_install
+    # RunCommand schtasks /delete /tn openni_install /f
+    # RunCommand sleep 600
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
+    RunCommand "sleep" "10"
+    RunCommand "schtasks" "/run /tn openni_install"
+    RunCommand "sleep" "300"
+    RunCommand "schtasks" "/delete /tn openni_install /f"
+}
+
+function InstallOpenNIEXE ($exepath, $openni_home, $install_log)
+{
+    # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
+    $install_args = "/S /v/qn /v/norestart"
+    # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
+    # RunCommand schtasks /run /tn openni_install
+    # RunCommand schtasks /delete /tn openni_install /f
+    # RunCommand sleep 600
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
+    RunCommand "sleep" "10"
+    RunCommand "schtasks" "/run /tn openni_install"
+    RunCommand "sleep" "300"
+    RunCommand "schtasks" "/delete /tn openni_install /f"
+}
+
 function main () 
 {
     # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     # InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
-    
+    # InstallOpenNI $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
 }
 
 main
