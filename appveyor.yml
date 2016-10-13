@@ -134,13 +134,19 @@ build_script:
 
     %CMD_IN_ENV% python -m pip list
 
+    copy "%PCL_ROOT%\bin" .
+
     copy "%PCL_ROOT%\bin" "%PYTHON%"
 
     copy "%PCL_ROOT%\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" .
+
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
 
