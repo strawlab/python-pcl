@@ -138,6 +138,14 @@ build_script:
 
     copy "%PCL_ROOT%\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
+
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
+
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+
 test_script:
   # Run the project tests
   # Path Check(NG)
