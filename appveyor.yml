@@ -147,11 +147,15 @@ build_script:
     copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
     copy .\\appveyor\\python34.dll "%PYTHON%"
+
     copy .\\appveyor\\xlwings32.dll "%PYTHON%"
+
     copy .\\appveyor\\xlwings64.dll "%PYTHON%"
 
     copy .\\appveyor\\python34.dll "%PYTHON%\DLLs"
+
     copy .\\appveyor\\xlwings32.dll "%PYTHON%\DLLs"
+
     copy .\\appveyor\\xlwings64.dll "%PYTHON%\DLLs"
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" .
