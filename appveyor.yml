@@ -134,9 +134,9 @@ build_script:
 
     %CMD_IN_ENV% python -m pip list
 
-    copy "%PYTHON%" "%PCL_ROOT%\bin"
+    copy "%PCL_ROOT%\bin" "%PYTHON%"
 
-    copy "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl" "%PCL_ROOT%\bin"
+    copy "%PCL_ROOT%\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
 test_script:
   # Run the project tests
