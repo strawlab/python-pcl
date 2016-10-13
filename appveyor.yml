@@ -192,8 +192,6 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "C:\\Windows\\System32"
 
-    dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\*.pyd" /b /a-d /s
-
 test_script:
   # Run the project tests
   # Path Check(NG)
