@@ -86,8 +86,9 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
   # debug(ParameterCheck)
   - "SET PATH"
+  - "SET PYTHONPATH"
   - "SET PYTHONPATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;"
-
+  - "SET PYTHONPATH"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
