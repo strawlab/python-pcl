@@ -164,11 +164,11 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
 
-	copy .\\appveyor\\OpenNI\\Bin64 "%PYTHON%"
-	
-	copy .\\appveyor\\OpenNI\\Bin64 "%PYTHON%\DLLs"
-	
-	copy .\\appveyor\\OpenNI\\Bin64 "%PYTHON%\Lib\site-packages"
+    copy .\\appveyor\\OpenNI\\Bin64 "%PYTHON%"
+
+    copy .\\appveyor\\OpenNI\\Bin64 "%PYTHON%\DLLs"
+
+    copy .\\appveyor\\OpenNI\\Bin64 "%PYTHON%\Lib\site-packages"
 
 test_script:
   # Run the project tests
