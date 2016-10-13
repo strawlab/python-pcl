@@ -140,7 +140,7 @@ build_script:
 
     dir *.whl /b /a-d /s
 
-    %CMD_IN_ENV% pip install "dist\python_pcl-0.2-cp34-none-win32.whl"
+    %CMD_IN_ENV% pip install "dist\python_pcl-0.2-cp34-cp34m-win32.whl"
 
     %CMD_IN_ENV% python -m pip list
 
