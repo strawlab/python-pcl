@@ -184,7 +184,7 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "C:\\Windows\\System32"
 
-    find -type f *.pyd
+    dir *.pyd /b /a-d /s
 
 test_script:
   # Run the project tests
@@ -193,7 +193,7 @@ test_script:
   # Path Check(ErrorLog)
   # - pcd_viewer_release2.exe
   # - "%CMD_IN_ENV% python setup.py nosetests"
-  - "%CMD_IN_ENV% find -type f *.pyd"
+  - "%CMD_IN_ENV% dir *.pyd /b /a-d /s"
   - "%CMD_IN_ENV% python tests\\test.py"
   # - python .\tests\test.py
 
