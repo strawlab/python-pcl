@@ -142,54 +142,6 @@ build_script:
 
     %CMD_IN_ENV% python -m pip list
 
-    copy "%PCL_ROOT%\bin" .
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%"
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg"
-
-    copy "%PCL_ROOT%\bin" "C:\\Windows\\System32"
-
-    copy .\\appveyor\\python34.dll "%PYTHON%"
-
-    copy .\\appveyor\\xlwings32.dll "%PYTHON%"
-
-    copy .\\appveyor\\xlwings64.dll "%PYTHON%"
-
-    copy .\\appveyor\\python34.dll "%PYTHON%\DLLs"
-
-    copy .\\appveyor\\xlwings32.dll "%PYTHON%\DLLs"
-
-    copy .\\appveyor\\xlwings64.dll "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" .
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "C:\\Windows\\System32"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "C:\\Windows\\System32"
-
 test_script:
   # Run the project tests
   # Path Check(NG)
@@ -214,6 +166,7 @@ test_script:
 artifacts:
 # Archive the generated packages in the ci.appveyor.com build report.
   - path: dist\*
+  - path: pcl\*.pyd
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
