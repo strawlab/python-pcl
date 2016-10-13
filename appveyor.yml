@@ -138,7 +138,9 @@ build_script:
 
     %CMD_IN_ENV% pip uninstall python-pcl -y
 
-    %CMD_IN_ENV% pip install ".\dist\python_pcl-0.2-cp34-none-win32.whl"
+    dir *.whl /b /a-d /s
+
+    %CMD_IN_ENV% pip install "dist\python_pcl-0.2-cp34-none-win32.whl"
 
     %CMD_IN_ENV% python -m pip list
 
