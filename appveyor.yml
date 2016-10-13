@@ -86,7 +86,6 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
   # debug(ParameterCheck)
   - "SET PATH"
-  - "SET PYTHONPATH"
   - "SET PYTHONPATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;"
   - "SET PYTHONPATH"
 
@@ -147,6 +146,8 @@ build_script:
 
     copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
+    copy "%PCL_ROOT%\bin" "C:\\Windows\\System32"
+
     copy .\\appveyor\\python34.dll "%PYTHON%"
 
     copy .\\appveyor\\xlwings32.dll "%PYTHON%"
@@ -169,6 +170,8 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "C:\\Windows\\System32"
+
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
@@ -179,6 +182,10 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "C:\\Windows\\System32"
+
+    find -type f *.pyd
+
 test_script:
   # Run the project tests
   # Path Check(NG)
@@ -186,6 +193,7 @@ test_script:
   # Path Check(ErrorLog)
   # - pcd_viewer_release2.exe
   # - "%CMD_IN_ENV% python setup.py nosetests"
+  - "%CMD_IN_ENV% find -type f *.pyd
   - "%CMD_IN_ENV% python tests\\test.py"
   # - python .\tests\test.py
 
