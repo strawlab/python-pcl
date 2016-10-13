@@ -144,6 +144,8 @@ build_script:
 
     copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
 
+    copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg"
+
     copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
     copy "%PCL_ROOT%\bin" "C:\\Windows\\System32"
@@ -168,6 +170,8 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
 
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg"
+
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "C:\\Windows\\System32"
@@ -180,9 +184,13 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
 
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg"
+
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "C:\\Windows\\System32"
+
+    copy ".\\pcl\\_pcl.pyd" .
 
     dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl\*.pyd" /b /a-d /s
 
@@ -196,6 +204,7 @@ test_script:
   # - dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl\*.pyd" /b /a-d /s
   # - "%CMD_IN_ENV% python tests\\test.py"
   - python sys_path_check.py
+  - python tests\test2.py
   - python tests\test.py
 
 #after_test:
