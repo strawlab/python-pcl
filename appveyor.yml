@@ -11,14 +11,14 @@ environment:
   matrix:
   # Version 1.6.0 Check
   - PYTHON: "C:\\Python34"
-    PYTHON_VERSION: "3.4.3"
+    PYTHON_VERSION: "3.4.x"
     PYTHON_ARCH: "32"
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   - PYTHON: "C:\\Python34-x64"
-    PYTHON_VERSION: "3.4.3"
+    PYTHON_VERSION: "3.4.x"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
     PCL_VERSION: "1.6"
@@ -26,14 +26,14 @@ environment:
 
   # Version 1.7.2
   # - PYTHON: "C:\\Python35"
-  #   PYTHON_VERSION: "3.5.2"
+  #   PYTHON_VERSION: "3.5.x"
   #   PYTHON_ARCH: "32"
   #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
   #   PCL_VERSION: "1.7"
   #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   # - PYTHON: "C:\\Python35-x64"
-  #   PYTHON_VERSION: "3.5.2"
+  #   PYTHON_VERSION: "3.5.x"
   #   PYTHON_ARCH: "64"
   #   PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
   #   PCL_VERSION: "1.7"
@@ -41,12 +41,12 @@ environment:
 
   # Version 1.8.0 Check
   # - PYTHON: "C:\\Python35"
-  #   PYTHON_VERSION: "3.5.0"
+  #   PYTHON_VERSION: "3.5.x"
   #   PYTHON_ARCH: "32"
   #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
   #   PCL_VERSION: "1.8.0"
   # - PYTHON: "C:\\Python35-x64"
-  #   PYTHON_VERSION: "3.5.0"
+  #   PYTHON_VERSION: "3.5.x"
   #   PYTHON_ARCH: "64"
   #   PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
   #   PCL_VERSION: "1.8.0"
@@ -133,6 +133,12 @@ build_script:
     %CMD_IN_ENV% python setup.py install
 
     %CMD_IN_ENV% python setup.py bdist_wheel
+
+    %CMD_IN_ENV% python -m pip list
+
+    %CMD_IN_ENV% pip uninstall python-pcl -y
+
+    %CMD_IN_ENV% pip install ".\\dist\\python_pcl-0.2-cp34-none-win32.whl"
 
     %CMD_IN_ENV% python -m pip list
 
