@@ -17,12 +17,12 @@ environment:
     PCL_VERSION: "1.6"
     PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
-  - PYTHON: "C:\\Python34-x64"
-    PYTHON_VERSION: "3.4.x"
-    PYTHON_ARCH: "64"
-    PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
-    PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
+  # - PYTHON: "C:\\Python34-x64"
+  #   PYTHON_VERSION: "3.4.x"
+  #   PYTHON_ARCH: "64"
+  #   PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
+  #   PCL_VERSION: "1.6"
+  #   PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
 
   # Version 1.7.2
   # - PYTHON: "C:\\Python35"
@@ -136,8 +136,6 @@ build_script:
 
     %CMD_IN_ENV% python -m pip list
 
-    %CMD_IN_ENV% pip uninstall python-pcl -y
-
     dir *.whl /b /a-d /s
 
     %CMD_IN_ENV% pip install "dist\python_pcl-0.2-cp34-cp34m-win32.whl"
@@ -202,8 +200,8 @@ test_script:
   # - dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\*.pyd" /b /a-d /s
   # - "%CMD_IN_ENV% python tests\\test.py"
   - python sys_path_check.py
-  - python tests\test2.py
-  - python tests\test.py
+  # - python tests\test2.py
+  # - python tests\test.py
 
 #after_test:
 #  # If tests are successful, create binary packages for the project.
