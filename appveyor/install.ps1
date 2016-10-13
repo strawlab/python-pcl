@@ -300,10 +300,11 @@ function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home)
         $platform_suffix = "win64"
     }
     
-    $installer_path = $pcl_home + "\\3rdParty\\OpenNI\\OpenNI-$platform_suffix-$openni_version-Dev.msi"
+    # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+    $installer_path = $pcl_home + "\3rdParty\OpenNI\OpenNI-" + "$platform_suffix" + "-" + "$openni_version-Dev.msi"
     $installer_ext = [System.IO.Path]::GetExtension($installer_path)
     Write-Host "Installing $installer_path to $openni_home"
-    $install_log = $openni_home + "install.log"
+    $install_log = $openni_home + "\install.log"
     if ($installer_ext -eq '.msi')
     {
         InstallOpenNIMSI $installer_path $openni_home $install_log
@@ -362,7 +363,7 @@ function main ()
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     # InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
-    # InstallOpenNI $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
+    InstallOpenNI $env:PCL_ROOT $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
 }
 
 main
