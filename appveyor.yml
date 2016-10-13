@@ -122,6 +122,8 @@ build_script:
 
     ls "%PYTHON%"
 
+    ls "%PYTHON%\DLLs"
+
     %CMD_IN_ENV% pip install Cython
 
     %CMD_IN_ENV% pip install numpy
@@ -138,19 +140,39 @@ build_script:
 
     copy "%PCL_ROOT%\bin" "%PYTHON%"
 
-    copy "%PCL_ROOT%\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+    copy "%PCL_ROOT%\bin" "%PYTHON%\DLLs"
+
+    copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
+
+    copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+
+    copy .\\appveyor\\python34.dll "%PYTHON%"
+    copy .\\appveyor\\xlwings32.dll "%PYTHON%"
+    copy .\\appveyor\\xlwings64.dll "%PYTHON%"
+
+    copy .\\appveyor\\python34.dll "%PYTHON%\DLLs"
+    copy .\\appveyor\\xlwings32.dll "%PYTHON%\DLLs"
+    copy .\\appveyor\\xlwings64.dll "%PYTHON%\DLLs"
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" .
 
     copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
 
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\DLLs"
+
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
+
+    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
 
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\DLLs"
+
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
+
+    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\pcl"
 
 test_script:
   # Run the project tests
