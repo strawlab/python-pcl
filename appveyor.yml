@@ -73,6 +73,11 @@ install:
         https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
+
+  - dir "C:\" /x
+  - dir "C:\Program Files" /x
+  - dir "C:\Program Files (x86)" /x
+
   # - ECHO "Filesystem root:"
   # - ps: "ls \"C:/\""
   # - ECHO "Installed SDKs:"
@@ -80,7 +85,7 @@ install:
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
   # - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
-  
+
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
@@ -114,7 +119,10 @@ install:
   # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe"
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - ps : appveyor\install.ps1
-  
+
+  - dir "C:\" /x
+  - dir "C:\Program Files" /x
+  - dir "C:\Program Files (x86)" /x
 
 build_script:
 - cmd: >-
