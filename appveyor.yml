@@ -166,6 +166,14 @@ build_script:
 
     copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
 
+    copy "%OPENNI_ROOT%" .
+
+    copy "%OPENNI_ROOT%" "%PYTHON%"
+
+    copy "%OPENNI_ROOT%" "%PYTHON%\DLLs"
+
+    copy "%OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
+
 test_script:
   # Run the project tests
   # Path Check(NG)
