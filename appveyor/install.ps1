@@ -301,7 +301,7 @@ function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home)
     }
     
     # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-    $installer_path = $pcl_home + "\3rdParty\OpenNI\OpenNI-" + "$platform_suffix" + "-" + "$openni_version-Dev.msi"
+    $installer_path = $pcl_home + "\3rdParty\OpenNI\OpenNI-" + "$platform_suffix" + "-" + "$openni_version" + "-Dev.msi"
     $installer_ext = [System.IO.Path]::GetExtension($installer_path)
     Write-Host "Installing $installer_path to $openni_home"
     $install_log = $openni_home + "\install.log"
@@ -314,32 +314,42 @@ function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home)
         InstallOpenNIEXE $installer_path $openni_home $install_log
     }
     
-    if (Test-Path $installer_path) 
+    if (Test-Path $openni_home) 
     {
-        Write-Host "PointCloudLibrary $openni_version ($architecture) installation complete"
+        Write-Host "OpenNI $openni_version ($architecture) installation complete"
     }
     else 
     {
-        Write-Host "Failed to install PointCloudLibrary in $openni_home"
+        Write-Host "Failed to install OpenNI in $openni_home"
         # Get-Content -Path $install_log
         # Exit 1
     }
 }
 
 
-function InstallOpenNIMSI ($exepath, $openni_home, $install_log)
+function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
 {
-    # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
-    $install_args = "/S /v/qn /v/norestart"
-    # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
-    # RunCommand schtasks /run /tn openni_install
-    # RunCommand schtasks /delete /tn openni_install /f
-    # RunCommand sleep 600
-    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
-    RunCommand "sleep" "10"
-    RunCommand "schtasks" "/run /tn openni_install"
-    RunCommand "sleep" "300"
-    RunCommand "schtasks" "/delete /tn openni_install /f"
+    # # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
+    # $install_args = "/S /v/qn /v/norestart"
+    # # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
+    # # RunCommand schtasks /run /tn openni_install
+    # # RunCommand schtasks /delete /tn openni_install /f
+    # # RunCommand sleep 600
+    # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
+    # RunCommand "sleep" "10"
+    # RunCommand "schtasks" "/run /tn openni_install"
+    # RunCommand "sleep" "300"
+    # RunCommand "schtasks" "/delete /tn openni_install /f"
+
+    $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$openni_home"
+    $uninstall_args = "/qn /x $msipath"
+    RunCommand "msiexec.exe" $install_args
+    if (-not(Test-Path $openni_home)) 
+    {
+        Write-Host "OpenNI seems to be installed else-where, reinstalling."
+        RunCommand "msiexec.exe" $uninstall_args
+        RunCommand "msiexec.exe" $install_args
+    }
 }
 
 function InstallOpenNIEXE ($exepath, $openni_home, $install_log)
