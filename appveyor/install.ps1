@@ -382,8 +382,11 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     # RunCommand "schtasks" "/delete /tn openni_install /f"
 
     # $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$openni_home"
-    $install_args = "/qn /i `\`"$msipath`\`""
-    $uninstall_args = "/qn /x `\`"$msipath`\`""
+    # $install_args = "/qn /i `\`"$msipath`\`""
+    # $uninstall_args = "/qn /x `\`"$msipath`\`""
+    $install_args = "/qn /i `"$msipath`""
+    $uninstall_args = "/qn /x `"$msipath`""
+
     # RunCommand "msiexec.exe" $install_args
     # task use
     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe $install_args`" /sc once /st 23:59"
