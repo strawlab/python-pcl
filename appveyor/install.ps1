@@ -351,12 +351,23 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     RunCommand "schtasks" "/run /tn openni_install"
     RunCommand "sleep" "300"
     RunCommand "schtasks" "/delete /tn openni_install /f"
-    if (-not(Test-Path $openni_home)) 
-    {
-        Write-Host "OpenNI seems to be installed else-where, reinstalling."
-        RunCommand "msiexec.exe" $uninstall_args
-        RunCommand "msiexec.exe" $install_args
-    }
+    # if (-not(Test-Path $openni_home)) 
+    # {
+    #     Write-Host "OpenNI seems to be installed else-where, reinstalling."
+    #     # RunCommand "msiexec.exe" $uninstall_args
+    #     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
+    #     RunCommand "sleep" "10"
+    #     RunCommand "schtasks" "/run /tn openni_install"
+    #     RunCommand "sleep" "300"
+    #     RunCommand "schtasks" "/delete /tn openni_install /f"
+    # 
+    #     # RunCommand "msiexec.exe" $install_args
+    #     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
+    #     RunCommand "sleep" "10"
+    #     RunCommand "schtasks" "/run /tn openni_install"
+    #     RunCommand "sleep" "300"
+    #     RunCommand "schtasks" "/delete /tn openni_install /f"
+    # }
 }
 
 function InstallOpenNIEXE ($exepath, $openni_home, $install_log)
