@@ -289,6 +289,46 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
     }
 }
 
+# function DownloadOpenNI ($openni_version, $platform_suffix) 
+# {
+#     # $major, $minor, $micro, $prerelease = ParsePCLVersion $openni_version
+#     $major, $minor, $micro = ParsePCLVersion $openni_version
+# 
+#     if ($major -eq 1 -and $minor -eq 5 and $minor -eq 7)
+#     {
+#         if ($platform_suffix -eq "win32") 
+#         {
+#             $url = "https://6qjmvg.bn1304.livefilestore.com/y3mi0KDkRbdIuOAXcGR3CNpXQZpmrSWltVYkTeL2qYl3Ag0fmxgTgtlxqOziG_Y55DoM7I8bLuVPxMYiZ94vCEZxBgQzCpWFaGS61rB9iP1trpLEStK8OH8VQ_v7HVrLQaQE2UgpunA3tZGEcxclHvD6g/OpenNI-Win32-1.5.7.10-Dev.zip?download&psid=1"
+#         }
+#         else
+#         {
+#             $url = "https://6qjmvg.bn1303.livefilestore.com/y3mEZfnt7ecywLJeAFqeZC0CdqIegwWqae5CHypCheKcyQv00BB4qMGhUW03FAJlubPymQz1hFHKLgRdE-2TO8b6VAZ4s_pe-FL-FY6I2RqCi8vcwOvEx1REMcZo_8Iz_bxNwEREtNH9M5TX8uo1yl9ZA/OpenNI-Win64-1.5.7.10-Dev.zip?download&psid=1"
+#         }
+#         
+#         # OpenNI-Win32-1.5.7.10-Dev.zip
+#         # OpenNI-Win64-1.5.7.10-Dev.zip
+#         $filename = "OpenNI-" + "$platform_suffix" + "$major" + "." + "$minor" + "." + "$micro" + "." + "$msvcver" + "-" + "Dev.exe"
+#     }
+#     elseif ($major -eq 2 -and $minor -eq 8)
+#     {
+#         # $url = "https://onedrive.live.com/hogehoge"
+#         # $dir = "$major.$minor.$micro"
+#         $dir = "$major.$minor.0"
+#         $msvcver = "msvc2015"
+#     }
+#     else
+#     {
+#         $dir = "$major.$minor.$micro"
+#     }
+# 
+#     # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+#     # $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+# 
+#     # (plan modified function)
+#     $filepath = Download $filename $url
+#     return $filepath
+# }
+
 function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home) 
 {
     if ($architecture -eq "32")

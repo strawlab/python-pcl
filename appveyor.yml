@@ -124,6 +124,10 @@ build_script:
 
     ls "%PCL_ROOT%\bin"
 
+    ls "%PCL_ROOT%\3rdParty"
+
+    dir "%PCL_ROOT%\3rdParty\*.msi" /b /a-d /s
+
     ls "%PYTHON%"
 
     ls "%PYTHON%\DLLs"
@@ -139,8 +143,6 @@ build_script:
     %CMD_IN_ENV% python setup.py bdist_wheel
 
     %CMD_IN_ENV% python -m pip list
-
-    dir *.whl /b /a-d /s
 
     copy "%PCL_ROOT%\bin" .
 
