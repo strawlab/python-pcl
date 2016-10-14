@@ -385,7 +385,7 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     # $uninstall_args = "/qn /x `\`"$msipath`\`""
     # $install_args = "/qn /i `"$msipath`""
     # $uninstall_args = "/qn /x `"$msipath`""
-    $install_args = "`&`"$msipath`" /qn"
+    $install_args = "$msipath /qn"
     $uninstall_args = "`&`"$msipath`" /qn /x"
 
     # RunCommand "msiexec.exe" $install_args
@@ -436,7 +436,7 @@ function main ()
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     # InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
-    InstallOpenNI $env:PCL_ROOT $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
+    InstallOpenNI $env:PCL_ROOT_83 $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
 }
 
 main
