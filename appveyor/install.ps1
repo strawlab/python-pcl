@@ -346,7 +346,7 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     $uninstall_args = "/qn /x $msipath"
     # RunCommand "msiexec.exe" $install_args
     # task use
-    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe $install_args`" /sc once /st 23:59"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn openni_install"
     RunCommand "sleep" "300"
