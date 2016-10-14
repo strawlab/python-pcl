@@ -340,7 +340,6 @@ function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home)
         $platform_suffix = "win64"
     }
     
-    # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
     $installer_path = $pcl_home + "\3rdParty\OpenNI\OpenNI-" + "$platform_suffix" + "-" + "$openni_version" + "-Dev.msi"
     $installer_ext = [System.IO.Path]::GetExtension($installer_path)
     Write-Host "Installing $installer_path to $openni_home"
@@ -386,8 +385,8 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     # $uninstall_args = "/qn /x `\`"$msipath`\`""
     # $install_args = "/qn /i `"$msipath`""
     # $uninstall_args = "/qn /x `"$msipath`""
-    $install_args = "`"$msipath`" /qn"
-    $uninstall_args = "`"$msipath`" /qn /x"
+    $install_args = "`&`"$msipath`" /qn"
+    $uninstall_args = "`&`"$msipath`" /qn /x"
 
     # RunCommand "msiexec.exe" $install_args
     # task use
