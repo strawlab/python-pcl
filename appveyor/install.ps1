@@ -384,12 +384,15 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     # $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$openni_home"
     # $install_args = "/qn /i `\`"$msipath`\`""
     # $uninstall_args = "/qn /x `\`"$msipath`\`""
-    $install_args = "/qn /i `"$msipath`""
-    $uninstall_args = "/qn /x `"$msipath`""
+    # $install_args = "/qn /i `"$msipath`""
+    # $uninstall_args = "/qn /x `"$msipath`""
+    $install_args = "`"$msipath`" /qn"
+    $uninstall_args = "`"$msipath`" /qn /x"
 
     # RunCommand "msiexec.exe" $install_args
     # task use
-    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe $install_args`" /sc once /st 23:59"
+    # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe $install_args`" /sc once /st 23:59"
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr $install_args /sc once /st 23:59"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn openni_install"
     RunCommand "sleep" "30"
