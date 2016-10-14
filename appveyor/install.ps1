@@ -373,11 +373,11 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     # # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
     # # RunCommand schtasks /run /tn openni_install
     # # RunCommand schtasks /delete /tn openni_install /f
-    # # RunCommand sleep 30
+    # # RunCommand sleep 90
     # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
     # RunCommand "sleep" "10"
     # RunCommand "schtasks" "/run /tn openni_install"
-    # RunCommand "sleep" "30"
+    # RunCommand "sleep" "90"
     # RunCommand "schtasks" "/delete /tn openni_install /f"
 
     # $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$openni_home"
@@ -385,16 +385,16 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     # $uninstall_args = "/qn /x `\`"$msipath`\`""
     # $install_args = "/qn /i `"$msipath`""
     # $uninstall_args = "/qn /x `"$msipath`""
-    $install_args = "$msipath /qn"
-    $uninstall_args = "`&`"$msipath`" /qn /x"
+    $install_args = "/qn /norestart"
+    $uninstall_args = "$msipath /qn /x"
 
     # RunCommand "msiexec.exe" $install_args
     # task use
     # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe $install_args`" /sc once /st 23:59"
-    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$msipath $install_args`" /sc once /st 23:59"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn openni_install"
-    RunCommand "sleep" "30"
+    RunCommand "sleep" "90"
     RunCommand "schtasks" "/delete /tn openni_install /f"
     # if (-not(Test-Path $openni_home)) 
     # {
@@ -403,14 +403,14 @@ function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
     #     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
     #     RunCommand "sleep" "10"
     #     RunCommand "schtasks" "/run /tn openni_install"
-    #     RunCommand "sleep" "30"
+    #     RunCommand "sleep" "90"
     #     RunCommand "schtasks" "/delete /tn openni_install /f"
     # 
     #     # RunCommand "msiexec.exe" $install_args
     #     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
     #     RunCommand "sleep" "10"
     #     RunCommand "schtasks" "/run /tn openni_install"
-    #     RunCommand "sleep" "30"
+    #     RunCommand "sleep" "90"
     #     RunCommand "schtasks" "/delete /tn openni_install /f"
     # }
 }
@@ -422,11 +422,11 @@ function InstallOpenNIEXE ($exepath, $openni_home, $install_log)
     # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
     # RunCommand schtasks /run /tn openni_install
     # RunCommand schtasks /delete /tn openni_install /f
-    # RunCommand sleep 30
+    # RunCommand sleep 90
     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn openni_install"
-    RunCommand "sleep" "30"
+    RunCommand "sleep" "90"
     RunCommand "schtasks" "/delete /tn openni_install /f"
 }
 
