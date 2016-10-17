@@ -139,11 +139,11 @@ build_script:
 
     copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
 
-    xcopy .\\pkg-config "%PYTHON%\pkg-config"
+    copy .\\pkg-config "%PYTHON%\pkg-config"
 
-    xcopy .\\pkg-config "%PYTHON%\DLLs\pkg-config"
+    copy .\\pkg-config "%PYTHON%\DLLs\pkg-config"
 
-    xcopy .\\pkg-config "%PYTHON%\Lib\site-packages\pkg-config"
+    copy .\\pkg-config "%PYTHON%\Lib\site-packages\pkg-config"
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
