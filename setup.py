@@ -45,18 +45,26 @@ if platform.system() == "Windows":
     pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
 
-    # Try to find PCL. XXX we should only do this when trying to build or install.
-    PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
-    
-    for pcl_version in PCL_SUPPORTED:
-        if subprocess.call(['.\\pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
-        # if subprocess.call([pkgconfigPath, 'pcl_common%s' % pcl_version]) == 0:
+    # AppVeyor Check
+    for k, v in os.environ.items():
+        # print("{key} : {value}".format(key=k, value=v))
+        if k == "PCL_VERSION":
+            pcl_version = '-' + v
             break
     else:
-        print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
-        for version in PCL_SUPPORTED:
-            print('    pkg-config pcl_common%s' % version, file=sys.stderr)
-        sys.exit(1)
+        # Try to find PCL. XXX we should only do this when trying to build or install.
+        PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
+        
+        for pcl_version in PCL_SUPPORTED:
+            if subprocess.call(['.\\pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
+            # if subprocess.call([pkgconfigPath, 'pcl_common%s' % pcl_version]) == 0:
+                break
+        else:
+            print("%s: error: cannot find PCL, tried" % sys.argv[0], file=sys.stderr)
+            for version in PCL_SUPPORTED:
+                print('    pkg-config pcl_common%s' % version, file=sys.stderr)
+            sys.exit(1)
+
     print(pcl_version)
     # pcl_version = '-1.6'
 
