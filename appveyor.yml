@@ -197,9 +197,8 @@ test_script:
   # - "%CMD_IN_ENV% python setup.py nosetests"
   # - dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\*.pyd" /b /a-d /s
   # - "%CMD_IN_ENV% python tests\\test.py"
-  - python sys_path_check.py
-  - python tests\test2.py
-  # - python tests\test.py
+  # - python sys_path_check.py
+  - python tests\test.py
 
 #after_test:
 #  # If tests are successful, create binary packages for the project.
