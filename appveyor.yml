@@ -16,7 +16,7 @@ environment:
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_ROOT_83: "C:\\PROGRA~2\\PCL16~1.0"
     PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
@@ -38,7 +38,7 @@ environment:
   #   PYTHON_ARCH: "32"
   #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
   #   PCL_VERSION: "1.7"
-  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.7.2\\3rdParty\\Eigen\\lib\\pkgconfig;"
+  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.7.2\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.7.2\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.7.2\\3rdParty\\Eigen\\lib\\pkgconfig;"
   #   OPENNI_VERSION: "1.3.2"
   #   OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
   #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
@@ -59,12 +59,20 @@ environment:
   #   PYTHON_ARCH: "32"
   #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
   #   PCL_VERSION: "1.8.0"
+  #   PKG_CONFIG_PATH: C:\Program Files (x86)\PCL 1.8.0\lib\pkgconfig;C:\Program Files (x86)\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files (x86)\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
+  #   OPENNI_VERSION: "1.3.2"
+  #   OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
+  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
+
   # - PYTHON: "C:\\Python35-x64"
   #   PYTHON_VERSION: "3.5.x"
   #   PYTHON_ARCH: "64"
   #   PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
   #   PCL_VERSION: "1.8.0"
   #   PKG_CONFIG_PATH: C:\Program Files\PCL 1.8.0\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
+  #   OPENNI_VERSION: "1.3.2"
+  #   OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
+  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
 
 branches: 
   only: 
@@ -82,9 +90,10 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-  - dir "C:\" /x
-  - dir "C:\Program Files" /x
-  - dir "C:\Program Files (x86)" /x
+  # Check ShortPath
+  # - dir "C:\" /x
+  # - dir "C:\Program Files" /x
+  # - dir "C:\Program Files (x86)" /x
 
   # - ECHO "Filesystem root:"
   # - ps: "ls \"C:/\""
@@ -128,8 +137,7 @@ install:
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - ps : appveyor\install.ps1
 
-  # Check ShortPath
-  # - dir "C:\" /x
+  # Check OpenNI Install
   # - dir "C:\Program Files" /x
   # - dir "C:\Program Files (x86)" /x
 
@@ -139,11 +147,11 @@ build_script:
 
     copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
 
-    copy .\\pkg-config "%PYTHON%\pkg-config"
+    xcopy kg-config "%PYTHON%\pkg-config\" /E
 
-    copy .\\pkg-config "%PYTHON%\DLLs\pkg-config"
+    xcopy pkg-config "%PYTHON%\DLLs\pkg-config\" /E
 
-    copy .\\pkg-config "%PYTHON%\Lib\site-packages\pkg-config"
+    xcopy pkg-config "%PYTHON%\Lib\site-packages\pkg-config\" /E
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
