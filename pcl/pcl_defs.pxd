@@ -245,11 +245,6 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
 
 ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
 
-cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization":
-    cdef cppclass CloudViewer:
-        CloudViewer(string) except +
-        void showCloud(PointCloudPtr_t)
-        bool wasStopped(int)
 
 cdef extern from "pcl/common/intersections.h" namespace "pcl":
     bool planeWithPlaneIntersection (const Vector4f& plane_a,

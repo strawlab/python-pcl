@@ -10,10 +10,10 @@ import platform
 import os
 
 if platform.system() == "Darwin":
-	os.environ['ARCHFLAGS'] = ''
+    os.environ['ARCHFLAGS'] = ''
 
 # Try to find PCL. XXX we should only do this when trying to build or install.
-PCL_SUPPORTED = ["-1.7", "-1.6", ""]    # in order of preference
+PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
 
 for pcl_version in PCL_SUPPORTED:
     if subprocess.call(['pkg-config', 'pcl_common%s' % pcl_version]) == 0:
@@ -27,7 +27,7 @@ else:
 # Find build/link options for PCL using pkg-config.
 pcl_libs = ["common", "features", "filters", "io", "kdtree", "octree",
             "registration", "sample_consensus", "search", "segmentation",
-            "surface", "visualization"]
+            "surface"]
 pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
 print("LIBS", pcl_libs)
 

@@ -790,23 +790,6 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         return np_k_indices, np_k_sqr_distances
 
 
-cdef class CloudViewer:
-
-    cdef cpp.CloudViewer* c_viewer
-
-    def __cinit__(self, title):
-        self.c_viewer = new cpp.CloudViewer(title)
-
-    def show_cloud(self, PointCloud pc not None):
-        self.c_viewer.showCloud(pc.thisptr_shared)
-
-    def was_stopped(self, millis_to_wait):
-        return self.c_viewer.wasStopped(millis_to_wait)
-
-    def __dealloc__(self):
-        print("deallocating")
-        del self.c_viewer
-
 def planeWithPlaneIntersetion(plane1, plane2, angular_tolerance=0.11):
     cdef cpp.VectorXf line
     v1 = new cpp.Vector4f(plane1[0], plane1[1], plane1[2], plane1[3])
