@@ -16,7 +16,7 @@ environment:
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
     PCL_ROOT_83: "C:\\PROGRA~2\\PCL16~1.0"
     PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig"
+    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
@@ -27,7 +27,7 @@ environment:
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
     PCL_ROOT_83: "C:\\PROGRA~1\\PCL16~1.0"
     PCL_VERSION: "1.6"
-    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig"
+    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
@@ -117,6 +117,7 @@ install:
   - "SET PATH"
   # - "SET PYTHONPATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;"
   # - "SET PYTHONPATH"
+  - "SET PKG_CONFIG_PATH"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -154,13 +155,7 @@ build_script:
 
     xcopy .\\pkg-config "%PYTHON%\Lib\site-packages\pkg-config\" /E
 
-    xcopy .\\pkg-config "%PYTHON%"
-
-    xcopy .\\pkg-config "%PYTHON%\DLLs"
-
-    xcopy .\\pkg-config "%PYTHON%\Lib\site-packages"
-    
-    xcopy .\\pkg-config .
+    .\pkg-config\pkg-config.exe --list-all
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
