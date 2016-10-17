@@ -13,6 +13,7 @@ import numpy
 import sys
 import platform
 import os
+import time
 
 if platform.system() == "Windows":
 
@@ -43,6 +44,9 @@ if platform.system() == "Windows":
 
     pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
+    
+    time.sleep(1)
+    
     # Try to find PCL. XXX we should only do this when trying to build or install.
     PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
     
