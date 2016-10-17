@@ -111,7 +111,7 @@ install:
   # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
   # setParameter
   # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
-  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%;.\\pkg-config"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%;"
 
   # debug(ParameterCheck)
   - "SET PATH"
@@ -148,14 +148,6 @@ build_script:
     copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
 
     copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
-
-    xcopy .\\pkg-config "%PYTHON%\pkg-config\" /E
-
-    xcopy .\\pkg-config "%PYTHON%\DLLs\pkg-config\" /E
-
-    xcopy .\\pkg-config "%PYTHON%\Lib\site-packages\pkg-config\" /E
-
-    .\\pkg-config\\pkg-config.exe --list-all
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
