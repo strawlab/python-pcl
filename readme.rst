@@ -14,7 +14,12 @@
       })();
     </script>
 
-[![Build status](https://ci.appveyor.com/api/projects/status/ixcgmjb1x1713fde?svg=true)](https://ci.appveyor.com/project/Sirokujira/python-pcl)
+
+.. image:: https://travis-ci.org/Sirokujira/python-pcl.png?branch=master
+        :target: https://travis-ci.org/Sirokujira/python-pcl
+
+.. image:: https://ci.appveyor.com/api/projects/status/ixcgmjb1x1713fde
+        :target: https://ci.appveyor.com/project/Sirokujira/python-pcl
 
 Introduction
 ============
