@@ -155,7 +155,7 @@ build_script:
 
     xcopy .\\pkg-config "%PYTHON%\Lib\site-packages\pkg-config\" /E
 
-    .\pkg-config\pkg-config.exe --list-all
+    .\\pkg-config\\pkg-config.exe --list-all
 
     ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
 
