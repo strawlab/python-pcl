@@ -436,7 +436,7 @@ function main ()
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     # InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
-    InstallOpenNI $env:PCL_ROOT_83 $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
+    # InstallOpenNI $env:PCL_ROOT_83 $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
 }
 
 main
