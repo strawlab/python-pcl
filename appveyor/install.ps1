@@ -56,6 +56,7 @@ function Download ($filename, $url)
     if (Test-Path $filepath) 
     {
         Write-Host "File saved at" $filepath
+        Write-Host $(Get-ChildItem $filepath).Length
     }
     else 
     {
@@ -107,7 +108,7 @@ function InstallPCLEXE ($exepath, $pcl_home, $install_log)
     RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn pclinstall"
-    RunCommand "sleep" "300"
+    RunCommand "sleep" "600"
     RunCommand "schtasks" "/delete /tn pclinstall /f"
 }
 
