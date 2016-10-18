@@ -155,8 +155,6 @@ build_script:
 
     ls "%PCL_ROOT%\3rdParty"
 
-    dir "%PCL_ROOT%\3rdParty\*.msi" /b /a-d /s
-
     ls "%PYTHON%"
 
     ls "%PYTHON%\DLLs"
