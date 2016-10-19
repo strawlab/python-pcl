@@ -186,7 +186,7 @@ function DownloadPCL ($pcl_version, $platform_suffix)
             # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
             # 直接リンクを設定しても一定時間超えるとNG
             # Note : 外部サービスにインストーラを置いて Download する?(チェック用に)
-            $url = "https://6gipdw-ch3302.files.1drv.com/y3m5qfxeEc2hnUpDv-rUckSWZ3Ec6SvrQqfZnkdNJo59jAsLx5DMJrU9nhKhPrWntUvsDvkHpwMllo6CXy7Wkgyvl7g7zxU82EFrxRnGjLRqDoqzdUZeVY93EjVmJmZEAQ54sw11yUUoCnEMCUD1wljHA/PCL-1.8.0rc2-AllInOne-msvc2015-win32.exe?download&psid=1"
+            $url = "https://6gjgdw-ch3302.files.1drv.com/y3mN-EyP8T02A_vP9-6bJ6iB6rUEgbSCg4OF2iySKpgy8ruZj8lIIDDOK7Hl7UXqZibQuwISPjCuwJwNJdWu8q_VTvXWt6ntZ2K556ltdhYTiHdJaXKWP3i4H54t3B5QJFlA2mY8bTOUapv3294t0aQVw/PCL-1.8.0-AllInOne-msvc2015-win32.exe?download&psid=1"
         }
         else 
         {
@@ -194,7 +194,7 @@ function DownloadPCL ($pcl_version, $platform_suffix)
             # $url = "https://onedrive.live.com/?authkey=%21AINUVKSzTRdWdS4&id=EC9EBB2646FF189A%2151744&cid=EC9EBB2646FF189A"
             # 直接リンクを設定しても一定時間超えるとNG
             # Note : 外部サービスにインストーラを置いて Download する?(チェック用に)
-            $url = "https://6gjadw-ch3302.files.1drv.com/y3mt4n3kbNChbArELO2rT7lSeu7QSnkgQoZqGFS48IOk886ZS8ri4FP_J0CPU9NsRXP74djU2welWAYt72QNqlTTmOjgFsQJQUo0L1xIAbek-QEN_ZrwZ0CNip0O1sjXTYQbVY77Xy9YDEGhb57f_pR48YPdpT2dNcOMqX3LqPXnZ4/PCL-1.8.0rc2-AllInOne-msvc2015-win64.exe?download&psid=1"
+            $url = "https://6gi8dw-ch3302.files.1drv.com/y3mFpVbTQB9we7pcb9E4AbaonRFHe9JJIHHkdDMrwsQ27fRPBmJ53HwGTIuo9cVRLZyHzYYUHyeQLXDAx6cndGI-So8-KWzeLKPjNM5eWopVH4wCDe4RgmCr2wzrZPXxfwVs18yQkJREqzI-TD7QwdyKPZlFWZCAjB87-MRAYt5Yhs/PCL-1.8.0-AllInOne-msvc2015-win64.exe?download&psid=1"
         }
         
         $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
