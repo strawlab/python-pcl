@@ -236,6 +236,11 @@ cdef class PointCloud:
             cdef float *data = origin.data()
             return np.array([data[0], data[1], data[2], data[3]],
                             dtype=np.float32)
+        def __set__(self, cnp.ndarray[cnp.float32_t, ndim=1] new_origin):
+            self.thisptr().sensor_origin_ = cpp.Vector4f(new_origin[0],
+                                                         new_origin[1],
+                                                         new_origin[2],
+                                                         0.0)
 
     property sensor_orientation:
         def __get__(self):
@@ -434,6 +439,16 @@ cdef class PointCloud:
         octree.set_input_cloud(self)
         return octree
 
+    def make_moment_of_inertia_estimator(self):
+        """
+        Return a pcl.MomentOfInertiaEstimation object with this object set as the input-cloud
+        """
+
+        seg = MomentOfInertiaEstimation()
+        cdef cpp.MomentOfInertiaEstimation_t *cseg = <cpp.MomentOfInertiaEstimation_t *>seg.me
+        cseg.setInputCloud(self.thisptr_shared)
+        return seg
+
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
@@ -535,6 +550,12 @@ cdef class MovingLeastSquares:
         or only via tangent estimation.
         """
         self.me.setPolynomialFit(fit)
+
+    def set_compute_normals(self, bool compute):
+        """
+        Set whether the algorithm should also store the normals computed.
+        """
+        self.me.setComputeNormals(compute)
 
     def process(self):
         """
@@ -773,3 +794,111 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
+
+def planeWithPlaneIntersetion(plane1, plane2, angular_tolerance=0.11):
+    cdef cpp.VectorXf line
+    v1 = new cpp.Vector4f(plane1[0], plane1[1], plane1[2], plane1[3])
+    v2 = new cpp.Vector4f(plane2[0], plane2[1], plane2[2], plane2[3])
+    cpp.planeWithPlaneIntersection(v1[0], v2[0], line, angular_tolerance) 
+    del(v1)
+    del(v2)
+    return [line.data()[i] for i in range(6)]
+
+cdef class MomentOfInertiaEstimation:
+
+    cdef cpp.MomentOfInertiaEstimation_t* me
+
+    def __init__(self):
+        self.me = new cpp.MomentOfInertiaEstimation_t()
+
+    #def set_input_cloud(self, PointCloud pc):
+        #"""
+        #Provide a pointer to the input data set.
+        #"""
+        #self.me.setInputCloud(pc.thisptr_shared)
+
+    def set_angle_step(self, val):
+        self.me.setAngleStep(val)
+
+    def get_angle_step(self):
+        return self.me.getAngleStep()
+
+    def set_point_mass(self, val):
+        self.me.setPointMass(val)
+
+    def get_point_mass(self):
+        return self.me.getPointMass()
+
+    def set_normalize_point_mass_flag(self, val):
+        self.me.setNormalizePointMassFlag(val)
+
+    def get_normalize_point_mass_flag(self):
+        return self.me.getNormalizePointMassFlag()
+
+    def compute(self):
+        """
+        Compute Values, must be called before most other methods
+        """
+        self.me.compute()
+
+    def get_bounding_box(self):
+        """
+        This method gives access to the computed axis aligned bounding box. 
+        """
+        cdef cpp.PointXYZ min_point
+        cdef cpp.PointXYZ max_point
+        ret = self.me.getAABB(min_point, max_point)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return (min_point.x, min_point.y, min_point.z), (max_point.x, max_point.y, max_point.z)
+
+    def get_oriented_bounding_box(self):
+        """
+        This method gives access to the computed oriented bounding box. 
+        """
+        cdef cpp.PointXYZ min_point
+        cdef cpp.PointXYZ max_point
+        cdef cpp.PointXYZ position
+        cdef cpp.Matrix3f rot_matrix
+        ret = self.me.getOBB(min_point, max_point, position, rot_matrix)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return (min_point.x, min_point.y, min_point.z), (max_point.x, max_point.y, max_point.z)
+
+    def get_moment_of_inertia(self):
+        cdef vector[float] moment
+        ret = self.me.getMomentOfInertia(moment)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return [moment[i] for i in range(moment.size())]
+
+    def get_eigen_vectors(self):
+        cdef cpp.Vector3f major, middle, minor
+        ret = self.me.getEigenVectors(major, middle, minor)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return (major.data()[0], major.data()[1], major.data()[2]), (middle.data()[0], middle.data()[1], middle.data()[2]), (minor.data()[0], minor.data()[1], minor.data()[2])
+
+    def get_eigen_values(self):
+        cdef float major, middle, minor
+        ret = self.me.getEigenValues(major, middle, minor)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return major, middle, minor
+
+    def get_eccentricity(self):
+        cdef vector[float] ec
+        ret = self.me.getEccentricity(ec)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return [ec[i] for i in range(ec.size())]
+    
+    def get_mass_center(self):
+        cdef cpp.Vector3f v
+        ret = self.me.getMassCenter(v)
+        if not ret:
+            raise RuntimeError("Current values are invalid")
+        return v.data()[0], v.data()[1], v.data()[2] 
+
+    def __dealloc__(self):
+        del self.me

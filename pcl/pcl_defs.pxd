@@ -8,7 +8,15 @@ from shared_ptr cimport shared_ptr
 from vector cimport vector as vector2
 
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
+    cdef cppclass Vector3f:
+        Vector3f()
+        Vector3f(float, float, float)
+        float *data()
     cdef cppclass Vector4f:
+        Vector4f()
+        Vector4f(float, float, float, float)
+        float *data()
+    cdef cppclass VectorXf:
         float *data()
     cdef cppclass Quaternionf:
         float w()
@@ -17,6 +25,8 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float z()
     cdef cppclass aligned_allocator[T]:
         pass
+    cdef cppclass Matrix3f:
+        Matrix3f()
 
 cdef extern from "pcl/point_cloud.h" namespace "pcl":
     cdef cppclass PointCloud[T]:
@@ -89,6 +99,7 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void setInputCloud (shared_ptr[PointCloud[I]])
         void setSearchRadius (double)
         void setPolynomialOrder(bool)
+        void setComputeNormals(bool)
         void setPolynomialFit(int)
         void process(PointCloud[O] &) except +
 
@@ -233,3 +244,32 @@ cdef extern from "pcl/kdtree/kdtree_flann.h" namespace "pcl":
           int, int, vector[int], vector[float])
 
 ctypedef KdTreeFLANN[PointXYZ] KdTreeFLANN_t
+
+
+cdef extern from "pcl/common/intersections.h" namespace "pcl":
+    bool planeWithPlaneIntersection (const Vector4f& plane_a,
+                            const Vector4f &plane_b,
+                            VectorXf &line,
+                            double angular_tolerance)
+
+
+cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
+    cdef cppclass MomentOfInertiaEstimation[T]:
+        MomentOfInertiaEstimation() except +
+        void setAngleStep(float)
+        float getAngleStep()
+        void setPointMass(float)
+        float getPointMass()
+        void setInputCloud(shared_ptr[PointCloud[T]])
+        void setNormalizePointMassFlag(bool)
+        bool getNormalizePointMassFlag()
+        void compute()
+        bool getOBB(PointXYZ&, PointXYZ&, PointXYZ&, Matrix3f&)
+        bool getAABB(PointXYZ&, PointXYZ&)
+        bool getMomentOfInertia(vector[float]&)
+        bool getMassCenter(Vector3f &)
+        bool getEigenVectors(Vector3f &, Vector3f &, Vector3f&) 
+        bool getEigenValues(float &major, float &middle, float &minor)
+        bool getEccentricity (vector[float]&)
+
+ctypedef MomentOfInertiaEstimation[PointXYZ] MomentOfInertiaEstimation_t
