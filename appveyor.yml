@@ -63,7 +63,8 @@ environment:
     OPENNI_VERSION: "2.1.0"
     OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI2\\Redist"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\Win32\\Redist"
-    UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\ucrt"
+    UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
+    UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\ucrt"
 
   - PYTHON: "C:\\Python35-x64"
     PYTHON_VERSION: "3.5.x"
@@ -74,7 +75,8 @@ environment:
     OPENNI_VERSION: "2.1.0"
     OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
-    UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\ucrt"
+    UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
+    UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\ucrt"
 
 branches: 
   only: 
