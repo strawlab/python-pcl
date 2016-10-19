@@ -3856,6 +3856,11 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
 #   };
 ###
 
+# NG : PCL1.7.2 AppVeyor
+# ErrorLog
+# C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE\xhash(29): error C2440: 'type cast': cannot convert from 'const pcl::PPFHashMapSearch::HashKeyStruct' to 'std::size_t'
+# C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE\xhash(29): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
+# 
 # ppf_registration.h
 # template <typename PointSource, typename PointTarget>
 # class PPFRegistration : public Registration<PointSource, PointTarget>

@@ -158,14 +158,15 @@ function DownloadPCL ($pcl_version, $platform_suffix)
         {
             # NG : バイナリの Download まではいかない
             # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
+            # 直接リンクを設定しても一定時間超えるとNG
             # Note : 外部サービスに exeを置いて Download する?(チェック用に)
             $url = "https://6gjmvg-ch3302.files.1drv.com/y3mINszazs-p2iitS2ZEzuvPRAqgqppQIAvM17aMB-S2y4iQ_jTyq0HVmZYBXZ1FAAl9VHzYCoQ6g_fRWaZMkA8AgvrfDvK5AZLy0s-guH9DPAYAlaTJo9-Hnr1xOeeA2t6u0uw9SHvO8CSZWnS5VwC-g/PCL-1.7.2-AllInOne-msvc2015-win32.exe?download&psid=1"
         }
         else 
         {
             # NG : バイナリの Download まではいかない
-            # 直接リンクを設定しても一定時間超えるとNG
             # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
+            # 直接リンクを設定しても一定時間超えるとNG
             # Note : 外部サービスに exeを置いて Download する?(チェック用に)
             $url = "https://6gjnvg-ch3302.files.1drv.com/y3mY7SSNjvbvx74d4JIAMAob0A87UF5PNGI6sqJJVR7_QQ453NyhBlvXDpjHW49fHJl4D6nCKJ8CWHS7J_D734Mr2zQS32uT7kUqn6vE0cbNj_ISISKJZ28CPvOpbgKfRSMvCqrpQAXR3yBddzAY3kvSg/PCL-1.7.2-AllInOne-msvc2015-win64.exe?download&psid=1"
         }
@@ -178,6 +179,25 @@ function DownloadPCL ($pcl_version, $platform_suffix)
         # $dir = "$major.$minor.$micro"
         $dir = "$major.$minor.0"
         $msvcver = "msvc2015"
+        
+        if ($platform_suffix -eq "win32") 
+        {
+            # NG : バイナリの Download まではいかない
+            # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
+            # 直接リンクを設定しても一定時間超えるとNG
+            # Note : 外部サービスにインストーラを置いて Download する?(チェック用に)
+            $url = "https://6gjgdw-ch3302.files.1drv.com/y3m4ukWAMg5vmvZoo8oUpwphvO-o3VVcFbacts0dYFJcaWmzRq_wKSsCXNBCpbbWVT1SGcO6uTk0RQdiKVWD-xM5LpnQx0iBQaD2dIlcvawDpKkuyJae-JfKAk7KoV3F9rcyU7AivjnKWl-BywOHMAuVA/PCL-1.8.0-AllInOne-msvc2015-win32.exe?download&psid=1"
+        }
+        else 
+        {
+            # NG : バイナリの Download まではいかない
+            # $url = "https://onedrive.live.com/?authkey=%21AINUVKSzTRdWdS4&id=EC9EBB2646FF189A%2151744&cid=EC9EBB2646FF189A"
+            # 直接リンクを設定しても一定時間超えるとNG
+            # Note : 外部サービスにインストーラを置いて Download する?(チェック用に)
+            $url = "https://6gi8dw-ch3302.files.1drv.com/y3mX8z-6F9obMYWt-klytJfrV0TUYqubcMiZY23xoYKWYs54ZSjpHIFaTa3wSdyX4Ad_bd3d8yIqaIoTZbHuQd_iykc9nAIh6gL7zKESolkhr4NKDERUIJG2A8hqe4MIaTJcTgrfu2GgAUpU1Ku9NWREd_U3beNpyqY_xsNkZaZKno/PCL-1.8.0-AllInOne-msvc2015-win64.exe?download&psid=1"
+        }
+        
+        $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
     }
     else
     {
