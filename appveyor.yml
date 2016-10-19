@@ -60,9 +60,9 @@ environment:
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
     PCL_VERSION: "1.8"
     PKG_CONFIG_PATH: C:\Program Files (x86)\PCL 1.8.0\lib\pkgconfig;C:\Program Files (x86)\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files (x86)\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
-    OPENNI_VERSION: "1.3.2"
-    OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
-    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
+    OPENNI_VERSION: "2.1.0"
+    OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI2\\Redist"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\Win32\\Redist"
 
   - PYTHON: "C:\\Python35-x64"
     PYTHON_VERSION: "3.5.x"
@@ -70,9 +70,9 @@ environment:
     PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
     PCL_VERSION: "1.8"
     PKG_CONFIG_PATH: C:\Program Files\PCL 1.8.0\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
-    OPENNI_VERSION: "1.3.2"
-    OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
-    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
+    OPENNI_VERSION: "2.1.0"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
 
 branches: 
   only: 
