@@ -58,7 +58,7 @@ environment:
     PYTHON_VERSION: "3.5.x"
     PYTHON_ARCH: "32"
     PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
-    PCL_VERSION: "1.8.0"
+    PCL_VERSION: "1.8"
     PKG_CONFIG_PATH: C:\Program Files (x86)\PCL 1.8.0\lib\pkgconfig;C:\Program Files (x86)\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files (x86)\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
@@ -68,7 +68,7 @@ environment:
     PYTHON_VERSION: "3.5.x"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
-    PCL_VERSION: "1.8.0"
+    PCL_VERSION: "1.8"
     PKG_CONFIG_PATH: C:\Program Files\PCL 1.8.0\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\FLANN\lib\pkgconfig;C:\Program Files\PCL 1.8.0\3rdParty\Eigen\lib\pkgconfig
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
