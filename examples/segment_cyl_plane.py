@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # port of
 # http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php
 # you need to download

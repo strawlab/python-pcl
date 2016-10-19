@@ -1,7 +1,8 @@
-#port of
-#http://pointclouds.org/documentation/tutorials/statistical_outlier.php
-#you need to download
-#http://svn.pointclouds.org/data/tutorials/table_scene_lms400.pcd
+# -*- coding: utf-8 -*-
+# port of
+# http://pointclouds.org/documentation/tutorials/statistical_outlier.php
+# you need to download
+# http://svn.pointclouds.org/data/tutorials/table_scene_lms400.pcd
 
 import pcl
 p = pcl.load("table_scene_lms400.pcd")

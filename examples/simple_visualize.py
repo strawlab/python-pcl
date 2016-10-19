@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 # // Point cloud library 
 #include <pcl/point_cloud.h>
 #include <pcl/io/pcd_io.h>

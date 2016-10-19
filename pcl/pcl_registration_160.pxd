@@ -1871,14 +1871,14 @@ cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
         # ctypedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
         # ctypedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
         # /** \brief Method for setting the position difference clustering parameter
-        #    * \param clustering_position_diff_threshold distance threshold below which two poses are
+        #  * \param clustering_position_diff_threshold distance threshold below which two poses are
         #  * considered close enough to be in the same cluster (for the clustering phase of the algorithm)
         #  */
         #   inline void
         # setPositionClusteringThreshold (float clustering_position_diff_threshold)
         # /** \brief Returns the parameter defining the position difference clustering parameter -
         #  * distance threshold below which two poses are considered close enough to be in the same cluster
-        #    * (for the clustering phase of the algorithm)
+        #  * (for the clustering phase of the algorithm)
         #  */
         # inline float
         # getPositionClusteringThreshold ()

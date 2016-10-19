@@ -3859,9 +3859,9 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
 # ppf_registration.h
 # template <typename PointSource, typename PointTarget>
 # class PPFRegistration : public Registration<PointSource, PointTarget>
-cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
-    cdef cppclass PPFRegistration[Source, Target](Registration[Source, Target]):
-        PPFRegistration() except +
+# cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
+#     cdef cppclass PPFRegistration[Source, Target](Registration[Source, Target]):
+#         PPFRegistration() except +
         # public:
         # cdef struct PoseWithVotes
         #   PoseWithVotes(Eigen::Affine3f &a_pose, unsigned int &a_votes)

@@ -98,7 +98,7 @@ else:
     point_cloud.width  = (int) point_cloud.points.size ()
     point_cloud.height = 1;
 
-# -----Create RangeImage from the PointCloud-----
+# ----- Create RangeImage from the PointCloud -----
 noise_level = 0.0
 min_range = 0.0f
 
