@@ -1,5 +1,5 @@
 os:
-- Visual Studio 2015
+- Windows Server 2012 R2
 
 environment:
   global:
@@ -10,27 +10,27 @@ environment:
 
   matrix:
   # Version 1.6.0 Check
-  # - PYTHON: "C:\\Python34"
-  #  PYTHON_VERSION: "3.4.x"
-  #  PYTHON_ARCH: "32"
-  #  PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
-  #  PCL_ROOT_83: "C:\\PROGRA~2\\PCL16~1.0"
-  #  PCL_VERSION: "1.6"
-  #  PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
-  #  OPENNI_VERSION: "1.3.2"
-  #  OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
-  #  APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
+  - PYTHON: "C:\\Python34"
+   PYTHON_VERSION: "3.4.x"
+   PYTHON_ARCH: "32"
+   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
+   PCL_ROOT_83: "C:\\PROGRA~2\\PCL16~1.0"
+   PCL_VERSION: "1.6"
+   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
+   OPENNI_VERSION: "1.3.2"
+   OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
+   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
 
-  #- PYTHON: "C:\\Python34-x64"
-  #  PYTHON_VERSION: "3.4.x"
-  #  PYTHON_ARCH: "64"
-  #  PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
-  #  PCL_ROOT_83: "C:\\PROGRA~1\\PCL16~1.0"
-  #  PCL_VERSION: "1.6"
-  #  PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
-  #  OPENNI_VERSION: "1.3.2"
-  #  OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
-  #  APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
+  - PYTHON: "C:\\Python34-x64"
+    PYTHON_VERSION: "3.4.x"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
+    PCL_ROOT_83: "C:\\PROGRA~1\\PCL16~1.0"
+    PCL_VERSION: "1.6"
+    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.6.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.6.0\\3rdParty\\Eigen\\lib\\pkgconfig;"
+    OPENNI_VERSION: "1.3.2"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
 
   # Version 1.7.2 Check
   #- PYTHON: "C:\\Python35"
@@ -54,29 +54,29 @@ environment:
   #  APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
 
   # Version 1.8.0 Check
-  - PYTHON: "C:\\Python35"
-    PYTHON_VERSION: "3.5.x"
-    PYTHON_ARCH: "32"
-    PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
-    PCL_VERSION: "1.8"
-    PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.8.0\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.8.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.8.0\\3rdParty\\Eigen\\lib\\pkgconfig"
-    OPENNI_VERSION: "2.1.0"
-    OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI2\\Redist"
-    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\Win32\\Redist"
-    UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
-    UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\ucrt"
+  # - PYTHON: "C:\\Python35"
+  #   PYTHON_VERSION: "3.5.x"
+  #   PYTHON_ARCH: "32"
+  #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
+  #   PCL_VERSION: "1.8"
+  #   PKG_CONFIG_PATH: "C:\\Program Files (x86)\\PCL 1.8.0\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.8.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files (x86)\\PCL 1.8.0\\3rdParty\\Eigen\\lib\\pkgconfig"
+  #   OPENNI_VERSION: "2.1.0"
+  #   OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI2\\Redist"
+  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\Win32\\Redist"
+  #   UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
+  #   UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\ucrt"
 
-  - PYTHON: "C:\\Python35-x64"
-    PYTHON_VERSION: "3.5.x"
-    PYTHON_ARCH: "64"
-    PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
-    PCL_VERSION: "1.8"
-    PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.8.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.8.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.8.0\\3rdParty\\Eigen\\lib\\pkgconfig"
-    OPENNI_VERSION: "2.1.0"
-    OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist"
-    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
-    UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
-    UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\ucrt"
+  # - PYTHON: "C:\\Python35-x64"
+  #   PYTHON_VERSION: "3.5.x"
+  #   PYTHON_ARCH: "64"
+  #   PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
+  #   PCL_VERSION: "1.8"
+  #   PKG_CONFIG_PATH: "C:\\Program Files\\PCL 1.8.0\\lib\\pkgconfig;C:\\Program Files\\PCL 1.8.0\\3rdParty\\FLANN\\lib\\pkgconfig;C:\\Program Files\\PCL 1.8.0\\3rdParty\\Eigen\\lib\\pkgconfig"
+  #   OPENNI_VERSION: "2.1.0"
+  #   OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist"
+  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
+  #   UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
+  #   UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\ucrt"
 
 branches: 
   only: 
@@ -148,74 +148,40 @@ install:
   # - dir "C:\Program Files (x86)" /x
 
 build_script:
-- cmd: >-
-    copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
-
-    copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
-
-    ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
-
-    ls "%PCL_ROOT%\bin"
-
-    ls "%PCL_ROOT%\3rdParty"
-
-    ls "%PYTHON%"
-
-    ls "%PYTHON%\DLLs"
-
-    %CMD_IN_ENV% pip install Cython
-
-    %CMD_IN_ENV% pip install numpy
-
-    %CMD_IN_ENV% python sys_path_check.py
-
-    %CMD_IN_ENV% python setup.py build_ext -i
-
-    %CMD_IN_ENV% python setup.py install
-
-    %CMD_IN_ENV% python setup.py bdist_wheel
-
-    %CMD_IN_ENV% python -m pip list
-
-    copy "%PCL_ROOT%\bin" .
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%"
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" .
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\DLLs"
-
-    copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
-
-    copy "%APPVEYOR_OPENNI_ROOT%" .
-
-    copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%"
-
-    copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\DLLs"
-
-    copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
-
-    copy "%UCRT_PATH%" .
-
-    copy "%UCRT_PATH%" "%PYTHON%"
-
-    copy "%UCRT_PATH%" "%PYTHON%\DLLs"
-
-    copy "%UCRT_PATH%" "%PYTHON%\Lib\site-packages"
+  - copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
+  - copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+  - ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
+  - ls "%PCL_ROOT%\bin"
+  - ls "%PCL_ROOT%\3rdParty"
+  - ls "%PYTHON%"
+  - ls "%PYTHON%\DLLs"
+  - %CMD_IN_ENV% pip install Cython
+  - %CMD_IN_ENV% pip install numpy
+  - %CMD_IN_ENV% python sys_path_check.py
+  - %CMD_IN_ENV% python setup.py build_ext -i
+  - %CMD_IN_ENV% python setup.py install
+  - %CMD_IN_ENV% python setup.py bdist_wheel
+  - %CMD_IN_ENV% python -m pip list
+  - copy "%PCL_ROOT%\bin" .
+  - copy "%PCL_ROOT%\bin" "%PYTHON%"
+  - copy "%PCL_ROOT%\bin" "%PYTHON%\DLLs"
+  - copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
+  - copy "%PCL_ROOT%\3rdParty\Boost\lib" .
+  - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
+  - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\DLLs"
+  - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
+  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
+  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
+  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\DLLs"
+  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
+  - copy "%APPVEYOR_OPENNI_ROOT%" .
+  - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%"
+  - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\DLLs"
+  - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
+  # - copy "%UCRT_PATH%" .
+  # - copy "%UCRT_PATH%" "%PYTHON%"
+  # - copy "%UCRT_PATH%" "%PYTHON%\DLLs"
+  # - copy "%UCRT_PATH%" "%PYTHON%\Lib\site-packages"
 
 test_script:
   # Run the project tests
