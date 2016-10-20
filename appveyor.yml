@@ -150,34 +150,42 @@ install:
 build_script:
   - copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
   - copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+  
   - ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
   - ls "%PCL_ROOT%\bin"
   - ls "%PCL_ROOT%\3rdParty"
   - ls "%PYTHON%"
   - ls "%PYTHON%\DLLs"
+  
   - %CMD_IN_ENV% pip install Cython
   - %CMD_IN_ENV% pip install numpy
+  
   - %CMD_IN_ENV% python sys_path_check.py
   - %CMD_IN_ENV% python setup.py build_ext -i
   - %CMD_IN_ENV% python setup.py install
   - %CMD_IN_ENV% python setup.py bdist_wheel
   - %CMD_IN_ENV% python -m pip list
+  
   - copy "%PCL_ROOT%\bin" .
   - copy "%PCL_ROOT%\bin" "%PYTHON%"
   - copy "%PCL_ROOT%\bin" "%PYTHON%\DLLs"
   - copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
+  
   - copy "%PCL_ROOT%\3rdParty\Boost\lib" .
   - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
   - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\DLLs"
   - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
+  
   - copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
   - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
   - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\DLLs"
   - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
+  
   - copy "%APPVEYOR_OPENNI_ROOT%" .
   - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%"
   - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\DLLs"
   - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
+  
   # - copy "%UCRT_PATH%" .
   # - copy "%UCRT_PATH%" "%PYTHON%"
   # - copy "%UCRT_PATH%" "%PYTHON%\DLLs"
