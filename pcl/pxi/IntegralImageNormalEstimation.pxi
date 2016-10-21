@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from libcpp.vector cimport vector
 from libcpp cimport bool
 

@@ -1,5 +1,4 @@
-#cython: embedsignature=True
-#
+# cython: embedsignature=True
 # Copyright 2014 Netherlands eScience Center
 
 from libcpp cimport bool
@@ -11,7 +10,10 @@ cimport pcl_defs as cpp
 cimport pcl_visualization as pcl_vis
 from boost_shared_ptr cimport shared_ptr
 
-include "pxi/Visualization.pxi"
+include "pxi/Visualization/Visualization.pxi"
+include "pxi/Visualization/PCLHistogramViewing.pxi"
+include "pxi/Visualization/PCLVisualizering.pxi"
+
 
 # def SetColorACloud(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 #     """Align source to target using iterative closest point (ICP).

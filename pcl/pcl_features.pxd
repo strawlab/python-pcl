@@ -3131,18 +3131,6 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
     cdef cppclass VFHEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
         VFHEstimation ()
 #       public:
-#       using Feature<PointInT, PointOutT>::feature_name_;
-#       using Feature<PointInT, PointOutT>::getClassName;
-#       using Feature<PointInT, PointOutT>::indices_;
-#       using Feature<PointInT, PointOutT>::k_;
-#       using Feature<PointInT, PointOutT>::search_radius_;
-#       using Feature<PointInT, PointOutT>::input_;
-#       using Feature<PointInT, PointOutT>::surface_;
-#       using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
-#       typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-#       typedef typename boost::shared_ptr<VFHEstimation<PointInT, PointNT, PointOutT> > Ptr;
-#       typedef typename boost::shared_ptr<const VFHEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
-# 
 #       /** \brief Estimate the SPFH (Simple Point Feature Histograms) signatures of the angular
 #         * (f1, f2, f3) and distance (f4) features for a given point from its neighborhood
 #         * \param[in] centroid_p the centroid point
@@ -3153,79 +3141,64 @@ cdef extern from "pcl/features/vfh.h" namespace "pcl":
 #       void computePointSPFHSignature (const Eigen::Vector4f &centroid_p, const Eigen::Vector4f &centroid_n,
 #                                  const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
 #                                  const std::vector<int> &indices);
+#
+
 #       /** \brief Set the viewpoint.
 #         * \param[in] vpx the X coordinate of the viewpoint
 #         * \param[in] vpy the Y coordinate of the viewpoint
 #         * \param[in] vpz the Z coordinate of the viewpoint
 #       inline void setViewPoint (float vpx, float vpy, float vpz)
+# 
+
 #       /** \brief Get the viewpoint. */
 #       inline void getViewPoint (float &vpx, float &vpy, float &vpz)
 #       /** \brief Set use_given_normal_
 #         * \param[in] use Set to true if you want to use the normal passed to setNormalUse(normal)
 #         */
+
 #       inline void setUseGivenNormal (bool use)
 #       /** \brief Set the normal to use
 #         * \param[in] normal Sets the normal to be used in the VFH computation. It is is used
 #         * to build the Darboux Coordinate system.
 #         */
 #       inline void setNormalToUse (const Eigen::Vector3f &normal)
+
 #       /** \brief Set use_given_centroid_
 #         * \param[in] use Set to true if you want to use the centroid passed through setCentroidToUse(centroid)
 #         */
 #       inline void setUseGivenCentroid (bool use)
+
 #       /** \brief Set centroid_to_use_
 #         * \param[in] centroid Centroid to be used in the VFH computation. It is used to compute the distances
 #         * from all points to this centroid.
 #         */
 #       inline void setCentroidToUse (const Eigen::Vector3f &centroid)
+
 #       /** \brief set normalize_bins_
 #         * \param[in] normalize If true, the VFH bins are normalized using the total number of points
 #         */
 #       inline void setNormalizeBins (bool normalize)
+
 #       /** \brief set normalize_distances_
 #         * \param[in] normalize If true, the 4th component of VFH (shape distribution component) get normalized
 #         * by the maximum size between the centroid and the point cloud
 #         */
 #       inline void setNormalizeDistance (bool normalize)
-#       /** \brief set size_component_
-#         * \param[in] fill_size True if the 4th component of VFH (shape distribution component) needs to be filled.
-#         * Otherwise, it is set to zero.
-#         */
+
+#       \brief set size_component_
+#       \param[in] fill_size True if the 4th component of VFH (shape distribution component) needs to be filled.
+#       Otherwise, it is set to zero.
 #       inline void setFillSizeComponent (bool fill_size)
-#       /** \brief Overloaded computed method from pcl::Feature.
-#         * \param[out] output the resultant point cloud model dataset containing the estimated features
-#         */
+
+#       \brief Overloaded computed method from pcl::Feature.
+#       \param[out] output the resultant point cloud model dataset containing the estimated features
 #       void compute (PointCloudOut &output);
 # 
-#       protected:
-#       /** \brief This method should get called before starting the actual computation. */
-#       bool initCompute ();
-#       /** \brief Placeholder for the f1 histogram. */
-#       Eigen::VectorXf hist_f1_;
-#       /** \brief Placeholder for the f2 histogram. */
-#       Eigen::VectorXf hist_f2_;
-#       /** \brief Placeholder for the f3 histogram. */
-#       Eigen::VectorXf hist_f3_;
-#       /** \brief Placeholder for the f4 histogram. */
-#       Eigen::VectorXf hist_f4_;
-#       /** \brief Placeholder for the vp histogram. */
-#       Eigen::VectorXf hist_vp_;
-#       /** \brief Normal to be used to computed VFH. Default, the average normal of the whole point cloud */
-#       Eigen::Vector4f normal_to_use_;
-#       /** \brief Centroid to be used to computed VFH. Default, the centroid of the whole point cloud */
-#       Eigen::Vector4f centr
-#       // VFH configuration parameters because CVFH instantiates it. See constructor for default values.
-#       /** \brief Use the normal_to_use_ */
-#       bool use_given_normal_;
-#       /** \brief Use the centroid_to_use_ */
-#       bool use_given_centroid_;
-#       /** \brief Normalize bins by the number the total number of points. */
-#       bool normalize_bins_;
-#       /** \brief Normalize the shape distribution component of VFH */
-#       bool normalize_distances_;
-#       /** \brief Activate or deactivate the size component of VFH */
-#       bool size_component_;
 
+ctypedef VFHEstimation[cpp.PointXYZ, cpp.Normal, cpp.VFHSignature308] VFHEstimation_t
+ctypedef VFHEstimation[cpp.PointXYZI, cpp.Normal, cpp.VFHSignature308] VFHEstimation_PointXYZI_t
+ctypedef VFHEstimation[cpp.PointXYZRGB, cpp.Normal, cpp.VFHSignature308] VFHEstimation_PointXYZRGB_t
+ctypedef VFHEstimation[cpp.PointXYZRGBA, cpp.Normal, cpp.VFHSignature308] VFHEstimation_PointXYZRGBA_t
 ###
 
 ###############################################################################

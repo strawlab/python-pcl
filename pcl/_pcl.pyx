@@ -1,4 +1,5 @@
-#cython: embedsignature=True
+# -*- coding: utf-8 -*-
+# cython: embedsignature=True
 
 from collections import Sequence
 import numbers

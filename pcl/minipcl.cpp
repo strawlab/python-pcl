@@ -4,6 +4,9 @@
 #include <pcl/filters/extract_indices.h>
 #include <pcl/octree/octree_pointcloud.h>
 
+#include <pcl/features/vfh.h>
+#include <pcl/io/pcd_io.h>
+
 #include <Eigen/Dense>
 
 #include "minipcl.h"
@@ -202,3 +205,42 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
 //     return inOctree.getOccupiedVoxelCenters(alignPoint);
 // }
 // 
+
+void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+{
+	// http://virtuemarket-lab.blogspot.jp/2015/03/viewpoint-feature-histogram.html
+	// pcl::PointCloud<pcl::VFHSignature308>::Ptr Extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
+    pcl::VFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::VFHSignature308> vfh;
+    pcl::PointCloud<pcl::VFHSignature308>::Ptr vfhs (new pcl::PointCloud<pcl::VFHSignature308> ());
+    
+    // cloud_normals = surface_normals(cloud);
+    
+    vfh.setInputCloud (cloud);
+    vfh.setInputNormals (cloud_normals);
+    
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+    vfh.setSearchMethod (tree);
+    
+    vfh.compute (*vfhs);
+    // return vfhs;
+}
+
+// pcl::PointCloud<pcl::Normal>::Ptr surface_normals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+// {
+//     pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+//     ne.setInputCloud (cloud);//法線の計算を行いたい点群を指定する
+// 
+//     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());//KDTREEを作る
+//     ne.setSearchMethod (tree);//検索方法にKDTREEを指定する
+// 
+//     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);//法線情報を入れる変数
+// 
+//     ne.setRadiusSearch (0.005);//検索する半径を指定する
+// 
+//     ne.compute (*cloud_normals);//法線情報の出力先を指定する
+// 
+//     return cloud_normals;
+// }
+
+

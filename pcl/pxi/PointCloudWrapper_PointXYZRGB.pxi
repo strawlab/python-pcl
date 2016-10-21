@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
 # parts
 cimport pcl_features as pclftr

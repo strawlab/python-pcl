@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 cimport pcl_filters as pclfil
 cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp

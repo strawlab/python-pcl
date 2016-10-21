@@ -291,8 +291,8 @@ if platform.system() == "Windows":
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx"],
                                      language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #           language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                                     language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #           language="c++", **ext_args),
                            # debug

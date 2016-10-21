@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 cimport pcl_surface as pclsf
 cimport pcl_defs as cpp
 

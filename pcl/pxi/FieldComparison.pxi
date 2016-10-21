@@ -1,4 +1,5 @@
-﻿from libcpp.vector cimport vector
+﻿# -*- coding: utf-8 -*-
+from libcpp.vector cimport vector
 from libcpp cimport bool
 from libcpp.string cimport string
 

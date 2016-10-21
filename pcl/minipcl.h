@@ -73,4 +73,7 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
 // int mpcl_getOccupiedVoxelCenters_PointXYZRGB(pcl::octree::OctreePointCloud<pcl::PointXYZRGB>& inOctree, std::vector<pcl::PointXYZRGB, Eigen::aligned_allocator<pcl::PointXYZRGB> > alignPoint);
 // int mpcl_getOccupiedVoxelCenters_PointXYZRGBA(pcl::octree::OctreePointCloud<pcl::PointXYZRGBA>& inOctree, std::vector<pcl::PointXYZRGBA, Eigen::aligned_allocator<pcl::PointXYZRGBA> > alignPoint);
 
+// VFH
+void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+
 #endif

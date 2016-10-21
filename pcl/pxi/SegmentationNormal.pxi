@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
 cimport pcl_sample_consensus as pcl_sc

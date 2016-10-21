@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Header for _pcl.pyx functionality that needs sharing with other
 # modules.
 

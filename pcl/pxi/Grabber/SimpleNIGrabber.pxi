@@ -1,5 +1,7 @@
-﻿# http://ros-robot.blogspot.jp/2011/08/point-cloud-librarykinect.html
-
+﻿
+# -*- coding: utf-8 -*-
+# 
+# http://ros-robot.blogspot.jp/2011/08/point-cloud-librarykinect.html
 from libcpp.vector cimport vector
 from libcpp cimport bool
 

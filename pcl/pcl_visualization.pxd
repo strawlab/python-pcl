@@ -25,23 +25,28 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         # * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
         # void showCloud (const ColorCloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
         void showCloud (cpp.PointCloud_PointXYZRGB_Ptr_t cloud, const string cloudname)
+        
         # /** \brief Show a cloud, with an optional key for multiple clouds.
         #  * \param[in] cloud RGBA point cloud
         #  * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
         # void showCloud (const ColorACloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
         void showCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, const string cloudname)
+        
         # /** \brief Show a cloud, with an optional key for multiple clouds.
         #   * \param[in] cloud XYZI point cloud
         #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        void showCloud (cpp.PointCloud_PointXYZI_Ptr_t cloud, string cloudname);
+        void showCloud (cpp.PointCloud_PointXYZI_Ptr_t cloud, string cloudname)
+        
         # /** \brief Show a cloud, with an optional key for multiple clouds.
         #   * \param[in] cloud XYZ point cloud
         #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
         void showCloud (cpp.PointCloudPtr_t cloud, string cloudname)
+        
         # /** \brief Check if the gui was quit, you should quit also
         #  * \param millis_to_wait This will request to "spin" for the number of milliseconds, before exiting.
         #  * \return true if the user signaled the gui to stop
         bool wasStopped (int millis_to_wait)
+        
         # /** Visualization callable function, may be used for running things on the UI thread.
         # ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
         # /** \brief Run a callbable object on the UI thread. Will persist until removed
@@ -98,36 +103,46 @@ ctypedef shared_ptr[CloudViewer] CloudViewerPtr_t
 cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visualization":
     cdef cppclass PCLHistogramVisualizer:
         PCLHistogramVisualizer ()
-        # /** \brief Spin once method. Calls the interactor and updates the screen once. 
+        
+        # brief Spin once method. Calls the interactor and updates the screen once. 
         void spinOnce (int time = 1, bool force_redraw = false)
-        # /** \brief Spin method. Calls the interactor and runs an internal loop. */
+        
+        # brief Spin method. Calls the interactor and runs an internal loop. */
         void spin ()
-        # /** \brief Set the viewport's background color.
-        #   * \param[in] r the red component of the RGB color
-        #   * \param[in] g the green component of the RGB color
-        #   * \param[in] b the blue component of the RGB color
-        #   * \param[in] viewport the view port (default: all)
-        void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0)
-        # /** \brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] hsize the length of the histogram
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] win_width the width of the window
-        #   * \param[in] win_height the height of the window
+        
+        # brief Set the viewport's background color.
+        # param[in] r the red component of the RGB color
+        # param[in] g the green component of the RGB color
+        # param[in] b the blue component of the RGB color
+        # param[in] viewport the view port (default: all)
+        # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0)
+        
+        # brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
+        # param[in] cloud the PointCloud dataset containing the histogram
+        # param[in] hsize the length of the histogram
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] win_width the width of the window
+        # param[in] win_height the height of the window
         # template <typename PointT> bool 
         # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
         #                      int hsize, 
         #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        # /** \brief Add a histogram feature to screen as a separate window from a cloud containing a single histogram.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] field_name the field name containing the histogram
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] win_width the width of the window
-        #   * \param[in] win_height the height of the window
+        bool addFeatureHistogram (cpp.PointCloudPtr_t cloud,               int hsize, const string cloudname, int win_width, int win_height)
+        # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGB_Ptr_t cloud,  int hsize, const string cloudname, int win_width, int win_height)
+        # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, int hsize, const string cloudname, int win_width, int win_height)
+        # bool addFeatureHistogram (cpp.PointCloud_PointXYZI_Ptr_t cloud,    int hsize, const string cloudname, int win_width, int win_height)
+        
+        # brief Add a histogram feature to screen as a separate window from a cloud containing a single histogram.
+        # param[in] cloud the PointCloud dataset containing the histogram
+        # param[in] field_name the field name containing the histogram
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] win_width the width of the window
+        # param[in] win_height the height of the window
         # bool 
         # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
         #                      const std::string &field_name, 
         #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        
         # /** \brief Add a histogram feature to screen as a separate window.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
@@ -140,6 +155,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #                      const std::string &field_name, 
         #                      const int index,
         #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        
         # /** \brief Add a histogram feature to screen as a separate window.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
@@ -152,14 +168,14 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #                      const std::string &field_name, 
         #                      const int index,
         #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        # 
+        
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] hsize the length of the histogram
         #   * \param[in] id the point cloud object id (default: cloud)
         # template <typename PointT> bool 
         # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, int hsize, const std::string &id = "cloud");
-        # 
+        
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
@@ -169,6 +185,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #                         const std::string &field_name, 
         #                         const std::string &id = "cloud");
         # 
+        
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
@@ -178,6 +195,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, const std::string &field_name,
         #                              const int index, const std::string &id = "cloud");
         # 
+        
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
         #   * \param[in] field_name the field name containing the histogram
@@ -187,6 +205,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
         #                         const std::string &field_name, const int index,
         #                         const std::string &id = "cloud");         
+        
         # /** \brief Set the Y range to minp-maxp for all histograms.
         #    * \param[in] minp the minimum Y range
         #    * \param[in] maxp the maximum Y range
@@ -200,26 +219,9 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # /** \brief Set the stopped flag back to false */
         # void resetStoppedFlag ();
         # #endif
-        # protected:
-        # /** \brief Create a 2D actor from the given vtkDoubleArray histogram and add it to the screen.
-        #   * \param[in] xy_array the input vtkDoubleArray holding the histogram data
-        #   * \param[out] renwinint the resultant render window interactor holding the rendered object
-        #   * \param[in] id the point cloud object id
-        #   * \param[in] win_width the width of the window
-        #   * \param[in] win_height the height of the window
-        #   */
-        # void
-        # createActor (const vtkSmartPointer<vtkDoubleArray> &xy_array, 
-        #              RenWinInteract &renwinint,
-        #              const std::string &id, const int win_width, const int win_height);
-        # 
-        # /** \brief Remove the current 2d actor and create a new 2D actor from the given vtkDoubleArray histogram and add it to the screen.
-        #   * \param[in] xy_array the input vtkDoubleArray holding the histogram data
-        #   * \param[out] renwinint the resultant render window interactor holding the rendered object
-        #   * \param[in] id the point cloud object id
-        #   */             
-        # void reCreateActor (const vtkSmartPointer<vtkDoubleArray> &xy_array, 
-        #                RenWinInteract* renwinupd, const int hsize);
+
+# ctypedef CloudViewer CloudViewer_t
+ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 ###
 
 # image_viewer.h
@@ -784,17 +786,11 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
     cdef cppclass PCLVisualizer:
         PCLVisualizer()
         # public:
-        # typedef PointCloudGeometryHandler<sensor_msgs::PointCloud2> GeometryHandler;
-        # typedef GeometryHandler::Ptr GeometryHandlerPtr;
-        # typedef GeometryHandler::ConstPtr GeometryHandlerConstPtr;
-        # typedef PointCloudColorHandler<sensor_msgs::PointCloud2> ColorHandler;
-        # typedef ColorHandler::Ptr ColorHandlerPtr;
-        # typedef ColorHandler::ConstPtr ColorHandlerConstPtr;
-        # /** \brief PCL Visualizer constructor.
-        #   * \param[in] name the window name (empty by default)
-        #   * \param[in] create_interactor if true (default), create an interactor, false otherwise
-        #   */
+        # brief PCL Visualizer constructor.
+        # param[in] name the window name (empty by default)
+        # param[in] create_interactor if true (default), create an interactor, false otherwise
         # PCLVisualizer (const std::string &name = "", const bool create_interactor = true);
+        
         # /** \brief PCL Visualizer constructor.
         #   * \param[in] argc
         #   * \param[in] argv
@@ -804,6 +800,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # PCLVisualizer (int &argc, char **argv, const std::string &name = "",
         #     PCLVisualizerInteractorStyle* style = PCLVisualizerInteractorStyle::New (), const bool create_interactor = true);
+        
         # /** \brief PCL Visualizer destructor. */
         # virtual ~PCLVisualizer ();
         # /** \brief Enables/Disabled the underlying window mode to full screen.
@@ -812,18 +809,21 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] mode true for full screen, false otherwise
         #   */
         # inline void setFullScreen (bool mode)
+        
         # /** \brief Enables or disable the underlying window borders.
         #   * \note This might or might not work, depending on your window manager.
         #   * See the VTK documentation for additional details.
         #   * \param[in] mode true for borders, false otherwise
         #   */
         # inline void setWindowBorders (bool mode)
+        
         # /** \brief Register a callback boost::function for keyboard events
         #   * \param[in] cb a boost function that will be registered as a callback for a keyboard event
         #   * \return a connection object that allows to disconnect the callback function.
         #   */
         # boost::signals2::connection
         # registerKeyboardCallback (boost::function<void (const pcl::visualization::KeyboardEvent&)> cb);
+        
         # /** \brief Register a callback function for keyboard events
         #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
         #   * \param[in] cookie    user data that is passed to the callback
@@ -831,6 +831,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # inline boost::signals2::connection
         # registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), void* cookie = NULL)
+        
         # /** \brief Register a callback function for keyboard events
         #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
         #   * \param[in] instance  instance to the class that implements the callback function
@@ -839,12 +840,14 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # template<typename T> inline boost::signals2::connection
         # registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), T& instance, void* cookie = NULL)
+        
         # /** \brief Register a callback function for mouse events
         #   * \param[in] cb a boost function that will be registered as a callback for a mouse event
         #   * \return a connection object that allows to disconnect the callback function.
         #   */
         # boost::signals2::connection
         # registerMouseCallback (boost::function<void (const pcl::visualization::MouseEvent&)> cb);
+        
         # /** \brief Register a callback function for mouse events
         #   * \param[in] callback  the function that will be registered as a callback for a mouse event
         #   * \param[in] cookie    user data that is passed to the callback
@@ -852,6 +855,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # inline boost::signals2::connection
         # registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), void* cookie = NULL)
+        
         # /** \brief Register a callback function for mouse events
         #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
         #   * \param[in] instance  instance to the class that implements the callback function
@@ -860,12 +864,14 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # template<typename T> inline boost::signals2::connection
         # registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), T& instance, void* cookie = NULL)
+        
         # /** \brief Register a callback function for point picking events
         #   * \param[in] cb a boost function that will be registered as a callback for a point picking event
         #   * \return a connection object that allows to disconnect the callback function.
         #   */
         # boost::signals2::connection
         # registerPointPickingCallback (boost::function<void (const pcl::visualization::PointPickingEvent&)> cb);
+        
         # /** \brief Register a callback function for point picking events
         #   * \param[in] callback  the function that will be registered as a callback for a point picking event
         #   * \param[in] cookie    user data that is passed to the callback
@@ -873,6 +879,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # inline boost::signals2::connection
         # registerPointPickingCallback (void (*callback) (const pcl::visualization::PointPickingEvent&, void*), void* cookie = NULL)
+        
         # /** \brief Register a callback function for point picking events
         #   * \param[in] callback  the member function that will be registered as a callback for a point picking event
         #   * \param[in] instance  instance to the class that implements the callback function
@@ -881,14 +888,17 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # template<typename T> inline boost::signals2::connection
         # registerPointPickingCallback (void (T::*callback) (const pcl::visualization::PointPickingEvent&, void*), T& instance, void* cookie = NULL)
+        
         # /** \brief Spin method. Calls the interactor and runs an internal loop. */
-        # void spin ();
+        void spin ()
+        
         # /** \brief Spin once method. Calls the interactor and updates the screen once.
         #   *  \param[in] time - How long (in ms) should the visualization loop be allowed to run.
         #   *  \param[in] force_redraw - if false it might return without doing anything if the
         #   *  interactor's framerate does not require a redraw yet.
         #   */
-        # void spinOnce (int time = 1, bool force_redraw = false);
+        void spinOnce (int time = 1, bool force_redraw = false)
+        
         # /** \brief Adds 3D axes describing a coordinate system to screen at 0,0,0.
         #   * \param[in] scale the scale of the axes (default: 1)
         #   * \param[in] viewport the view port where the 3D axes should be added (default: all)
@@ -1074,19 +1084,18 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] pose the new pose
         #   * \return false if no shape or cloud with the specified ID was found
         #   */
-        # bool
-        # updateShapePose (const std::string &id, const Eigen::Affine3f& pose);
+        # bool updateShapePose (const std::string &id, const Eigen::Affine3f& pose);
         # 
-        # /** \brief Add a 3d text to the scene
-        #   * \param[in] text the text to add
-        #   * \param[in] position the world position where the text should be added
-        #   * \param[in] textScale the scale of the text to render
-        #   * \param[in] r the red color value
-        #   * \param[in] g the green color value
-        #   * \param[in] b the blue color value
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   * \param[in] viewport the view port (default: all)
-        #   */
+        # brief Add a 3d text to the scene
+        # param[in] text the text to add
+        # param[in] position the world position where the text should be added
+        # param[in] textScale the scale of the text to render
+        # param[in] r the red color value
+        # param[in] g the green color value
+        # param[in] b the blue color value
+        # param[in] id the text object id (default: equal to the "text" parameter)
+        # param[in] viewport the view port (default: all)
+        # 
         # template <typename PointT> bool
         # addText3D (const std::string &text,
         #            const PointT &position,
@@ -1094,26 +1103,27 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #            double r = 1.0, double g = 1.0, double b = 1.0,
         #            const std::string &id = "", int viewport = 0);
         # 
-        # /** \brief Add the estimated surface normals of a Point Cloud to screen.
-        #   * \param[in] cloud the input point cloud dataset containing XYZ data and normals
-        #   * \param[in] level display only every level'th point (default: 100)
-        #   * \param[in] scale the normal arrow scale (default: 0.02m)
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        # brief Add the estimated surface normals of a Point Cloud to screen.
+        # param[in] cloud the input point cloud dataset containing XYZ data and normals
+        # param[in] level display only every level'th point (default: 100)
+        # param[in] scale the normal arrow scale (default: 0.02m)
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # 
         # template <typename PointNT> bool
         # addPointCloudNormals (const typename pcl::PointCloud<PointNT>::ConstPtr &cloud,
         #                       int level = 100, double scale = 0.02,
         #                       const std::string &id = "cloud", int viewport = 0);
+        addPointCloudNormals(cpp.PointNormalCloud_t cloud, int level, double scale, string id, int viewport)
+        
+        # brief Add the estimated surface normals of a Point Cloud to screen.
+        # param[in] cloud the input point cloud dataset containing the XYZ data
+        # param[in] normals the input point cloud dataset containing the normal data
+        # param[in] level display only every level'th point (default: 100)
+        # param[in] scale the normal arrow scale (default: 0.02m)
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # 
-        # /** \brief Add the estimated surface normals of a Point Cloud to screen.
-        #   * \param[in] cloud the input point cloud dataset containing the XYZ data
-        #   * \param[in] normals the input point cloud dataset containing the normal data
-        #   * \param[in] level display only every level'th point (default: 100)
-        #   * \param[in] scale the normal arrow scale (default: 0.02m)
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
         # template <typename PointT, typename PointNT> bool
         # addPointCloudNormals (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                       const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
@@ -1155,23 +1165,23 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                   const std::string &id = "cloud");
         # 
-        #  /** \brief Updates the XYZ data for an existing cloud object id on screen.
-        #    * \param[in] cloud the input point cloud dataset
-        #    * \param[in] geometry_handler the geometry handler to use
-        #    * \param[in] id the point cloud object id to update (default: cloud)
-        #    * \return false if no cloud with the specified ID was found
-        #    */
+        # brief Updates the XYZ data for an existing cloud object id on screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] geometry_handler the geometry handler to use
+        # param[in] id the point cloud object id to update (default: cloud)
+        # return false if no cloud with the specified ID was found
+        # 
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                   const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                   const std::string &id = "cloud");
         # 
-        #  /** \brief Updates the XYZ data for an existing cloud object id on screen.
-        #    * \param[in] cloud the input point cloud dataset
-        #    * \param[in] color_handler the color handler to use
-        #    * \param[in] id the point cloud object id to update (default: cloud)
-        #    * \return false if no cloud with the specified ID was found
-        #    */
+        # brief Updates the XYZ data for an existing cloud object id on screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] color_handler the color handler to use
+        # param[in] id the point cloud object id to update (default: cloud)
+        # return false if no cloud with the specified ID was found
+        # 
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                   const PointCloudColorHandler<PointT> &color_handler,
@@ -1181,29 +1191,29 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # //        updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
         # //                          const PointCloudColorHandlerRGBField<pcl::PointXYZRGB> &color_handler,
         # //                          const std::string &id = "cloud");
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] geometry_handler use a geometry handler object to extract the XYZ data
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        # 
+        # brief Add a Point Cloud (templated) to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] geometry_handler use a geometry handler object to extract the XYZ data
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # 
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
         # 
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   *
-        #   * Because the geometry handler is given as a pointer, it will be pushed back to the list of available
-        #   * handlers, rather than replacing the current active geometric handler. This makes it possible to
-        #   * switch between different geometric handlers 'on-the-fly' at runtime, from the PCLVisualizer
-        #   * interactor interface (using Alt+0..9).
-        #   *
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] geometry_handler use a geometry handler object to extract the XYZ data
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        # \brief Add a Point Cloud (templated) to screen.
+        # Because the geometry handler is given as a pointer, it will be pushed back to the list of available
+        # handlers, rather than replacing the current active geometric handler. This makes it possible to
+        # switch between different geometric handlers 'on-the-fly' at runtime, from the PCLVisualizer
+        # interactor interface (using Alt+0..9).
+        # 
+        # \param[in] cloud the input point cloud dataset
+        # \param[in] geometry_handler use a geometry handler object to extract the XYZ data
+        # \param[in] id the point cloud object id (default: cloud)
+        # \param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # 
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
@@ -1995,6 +2005,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # #else
         #         vtkSmartPointer<vtkRenderWindowInteractor> interactor_;
         # #endif
+
+ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
 ###
 
 # point_cloud_handlers.h

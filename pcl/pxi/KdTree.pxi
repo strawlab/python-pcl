@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
 
 cdef class KdTree:

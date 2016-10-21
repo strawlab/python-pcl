@@ -476,6 +476,7 @@ ctypedef shared_ptr[PointCloud[PointXYZI]] PointCloud_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGB]] PointCloud_PointXYZRGB_Ptr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloud_PointXYZRGBA_Ptr_t
 ctypedef PointCloud[Normal] PointNormalCloud_t
+ctypedef shared_ptr[PointCloud[Normal]] PointNormalCloudPtr_t
 
 # definitions used everywhere
 ctypedef shared_ptr[vector[int]] IndicesPtr_t;
