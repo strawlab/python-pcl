@@ -25,6 +25,9 @@ cdef extern from "minipcl.h":
                               double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
+    void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
+                              cpp.PointIndices_t *) except +
+
 
 cdef extern from "ProjectInliers.h":
     void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t);
@@ -464,7 +467,6 @@ cdef class PointCloud:
         cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return condRemoval
 
-
     def make_ConcaveHull(self):
         """
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
@@ -473,6 +475,23 @@ cdef class PointCloud:
         cdef pclsf.ConcaveHull_t *cConcaveHull = <pclsf.ConcaveHull_t *>concaveHull.me
         cConcaveHull.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return concaveHull
+
+
+    def make_HarrisKeypoint3D(self, int ksearch=-1, double searchRadius=-1.0):
+        """
+        Return a pcl.PointCloud object with this object set as the input-cloud
+        """
+        cdef PointCloud result
+
+        harris = HarrisKeypoint3D()
+        cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
+        charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        charris.setNonMaxSupression (true)
+        charris.setRadius (1.0)
+        charris.setRadiusSearch (searchRadius)
+        charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
+
+        return result
 
 ###
 
