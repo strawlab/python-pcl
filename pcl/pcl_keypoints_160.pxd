@@ -24,27 +24,34 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         HarrisKeypoint3D ()
         # HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
         # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
+        
         # * \brief Set the method of the response to be calculated.
         # * \param[in] type
         # void setMethod (ResponseMethod type)
+        
         # * \brief Set the radius for normal estimation and non maxima supression.
         # * \param[in] radius
         void setRadius (float radius)
+        
         # * \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
         # * \brief note non maxima suppression needs to be activated in order to use this feature.
         # * \param[in] threshold
         void setThreshold (float threshold)
+        
         # * \brief Whether non maxima suppression should be applied or the response for each point should be returned
         # * \note this value needs to be turned on in order to apply thresholding and refinement
         # * \param[in] nonmax default is false
         void setNonMaxSupression (bool = false)
+        
         # * \brief Whether the detected key points should be refined or not. If turned of, the key points are a subset of the original point cloud. Otherwise the key points may be arbitrary.
         # * \brief note non maxima supression needs to be on in order to use this feature.
         # * \param[in] do_refine
         void setRefine (bool do_refine)
+        
         # * \brief Set normals if precalculated normals are available.
         # * \param normals
         void setNormals (PointCloud_Notmal_Ptr_t normals)
+        
         # * \brief Provide a pointer to a dataset to add additional information
         # * to estimate the features for every point in the input dataset.  This
         # * is optional, if this is not set, it will only use the data in the
@@ -67,6 +74,13 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # void refineCorners (PointCloudOut &corners) const;
         # /** \brief calculates the upper triangular part of unnormalized covariance matrix over the normals given by the indices.*/
         # void calculateNormalCovar (const std::vector<int>& neighbors, float* coefficients) const;
+
+
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZI]] HarrisKeypoint3DPtr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI]] HarrisKeypoint3D_PointXYZI_Ptr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZI]] HarrisKeypoint3D_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZI]] HarrisKeypoint3D_PointXYZRGBA_Ptr_t
+
 ###
 
 # sift_keypoint.h
@@ -76,15 +90,6 @@ cdef extern from "pcl/keypoints/sift_keypoint.h" namespace "pcl":
     cdef cppclass SIFTKeypoint[In, Out](Keypoint[In, Out]):
         SIFTKeypoint ()
         # public:
-        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
-        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        # typedef typename Keypoint<PointInT, PointOutT>::KdTree KdTree;
-        # using Keypoint<PointInT, PointOutT>::name_;
-        # using Keypoint<PointInT, PointOutT>::input_;
-        # using Keypoint<PointInT, PointOutT>::indices_;
-        # using Keypoint<PointInT, PointOutT>::surface_;
-        # using Keypoint<PointInT, PointOutT>::tree_;
-        # using Keypoint<PointInT, PointOutT>::initCompute; 
         # 
         # /** \brief Specify the range of scales over which to search for keypoints
         # * \param min_scale the standard deviation of the smallest scale in the scale space
@@ -100,6 +105,12 @@ cdef extern from "pcl/keypoints/sift_keypoint.h" namespace "pcl":
         # * setSearchMethod ().
         # * \param output the resultant cloud of keypoints
         # void detectKeypoints (PointCloudOut &output);
+
+ctypedef shared_ptr[SIFTKeypoint[cpp.PointXYZ, cpp.PointXYZI]] SIFTKeypointPtr_t
+ctypedef shared_ptr[SIFTKeypoint[cpp.PointXYZI, cpp.PointXYZI]] SIFTKeypoint_PointXYZI_Ptr_t
+ctypedef shared_ptr[SIFTKeypoint[cpp.PointXYZRGB, cpp.PointXYZI]] SIFTKeypoint_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SIFTKeypoint[cpp.PointXYZRGBA, cpp.PointXYZI]] SIFTKeypoint_PointXYZRGBA_Ptr_t
+
 ###
 
 # smoothed_surfaces_keypoint.h

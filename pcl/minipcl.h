@@ -76,4 +76,7 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
 // VFH
 void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
+// HarrisKeypoint3D
+void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+
 #endif

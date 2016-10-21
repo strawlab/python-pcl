@@ -208,9 +208,9 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
 
 void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
-	// http://virtuemarket-lab.blogspot.jp/2015/03/viewpoint-feature-histogram.html
-	// pcl::PointCloud<pcl::VFHSignature308>::Ptr Extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
-	pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
+    // http://virtuemarket-lab.blogspot.jp/2015/03/viewpoint-feature-histogram.html
+    // pcl::PointCloud<pcl::VFHSignature308>::Ptr Extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal> ());
     pcl::VFHEstimation<pcl::PointXYZ, pcl::Normal, pcl::VFHSignature308> vfh;
     pcl::PointCloud<pcl::VFHSignature308>::Ptr vfhs (new pcl::PointCloud<pcl::VFHSignature308> ());
     
@@ -225,6 +225,25 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
     vfh.compute (*vfhs);
     // return vfhs;
 }
+
+#include <pcl/keypoints/harris_keypoint3D.h>
+
+// HarrisKeypoint3D
+void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
+                                   pcl::PointCloud<pcl::PointXYZ> *outcloud)
+{
+    pcl::HarrisKeypoint3D<pcl::PointXYZ,pcl::PointXYZI> detector;
+
+    detector.setInputCloud(incloud);
+
+    detector.setNonMaxSupression (true);
+    detector.setRadius (0.01);
+    //detector.setRadiusSearch (100);
+
+    detector.setIndices(indicesptr);
+    detector.filter(*outcloud);
+}
+
 
 // pcl::PointCloud<pcl::Normal>::Ptr surface_normals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 // {
