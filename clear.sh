@@ -9,4 +9,6 @@ rm pcl/pcl_visualization.pyd
 rm pcl/pcl_grabber.cpp
 rm pcl/pcl_grabber.pyd
 rm -rf build
+rm -rf python_pcl.egg-info
+
 pip uninstall python-pcl -y

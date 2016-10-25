@@ -1522,6 +1522,9 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 
 # image_viewer.h
 # class PCL_EXPORTS ImageViewer
+# cdef extern from "pcl/visualization/image_viewer.h" namespace "pcl::visualization" nogil:
+#   cdef cppclass ImageViewer:
+#   ImageViewer()
         # ImageViewer()
         # ImageViewer (const std::string& window_title = "");
         # public:
@@ -2081,6 +2084,9 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 
 # template <typename PointT>
 # class PointCloudGeometryHandlerXYZ : public PointCloudGeometryHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudGeometryHandlerXYZ[PointT]:
+        PointCloudGeometryHandlerXYZ()
         # public:
         # typedef typename PointCloudGeometryHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -2102,6 +2108,9 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 
 # template <typename PointT>
 # class PointCloudGeometryHandlerSurfaceNormal : public PointCloudGeometryHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudGeometryHandlerSurfaceNormal[PointT]:
+        PointCloudGeometryHandlerSurfaceNormal()
         # public:
         # typedef typename PointCloudGeometryHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -2121,6 +2130,9 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 
 # template <typename PointT>
 # class PointCloudGeometryHandlerCustom : public PointCloudGeometryHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudGeometryHandlerCustom[PointT]:
+        PointCloudGeometryHandlerCustom()
         # public:
         # typedef typename PointCloudGeometryHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -2234,6 +2246,10 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 
 # template <typename PointT>
 # class PointCloudColorHandlerRandom : public PointCloudColorHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudColorHandlerRandom[PointT]:
+        PointCloudColorHandlerRandom()
+
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2258,8 +2274,9 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 # template <typename PointT>
 # class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
 cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
-    cdef cppclass PointCloudColorHandlerCustom[T]:
-        # PointCloudColorHandlerCustom ()
+    cdef cppclass PointCloudColorHandlerCustom[PointT]:
+        PointCloudColorHandlerCustom ()
+
         # /** \brief Constructor. */
         # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud, double r, double g, double b)
         PointCloudColorHandlerCustom (const cpp.PointCloudPtr_t &cloud, double r, double g, double b)
@@ -2297,6 +2314,10 @@ ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudCo
 
 # template <typename PointT>
 # class PointCloudColorHandlerRGBField : public PointCloudColorHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+    cdef cppclass PointCloudColorHandlerRGBField[PointT]:
+        PointCloudColorHandlerRGBField ()
+
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2315,10 +2336,24 @@ ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudCo
         # protected:
         # /** \brief Class getName method. */
         # virtual inline std::string getName () const
+
+ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZ] PointCloudColorHandlerRGBField_t
+ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZI] PointCloudColorHandlerRGBField_PointXYZI_t
+ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZRGB] PointCloudColorHandlerRGBField_PointXYZRGB_t
+ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZRGBA] PointCloudColorHandlerRGBField_PointXYZRGBA_t
+
+ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZ]] PointCloudColorHandlerRGBField_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZI]] PointCloudColorHandlerRGBField_PointXYZI_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZRGB]] PointCloudColorHandlerRGBField_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZRGBA]] PointCloudColorHandlerRGBField_PointXYZRGBA_Ptr_t
 ###
 
 # template <typename PointT>
 # class PointCloudColorHandlerHSVField : public PointCloudColorHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+    cdef cppclass PointCloudColorHandlerHSVField[PointT]:
+        PointCloudColorHandlerHSVField ()
+        
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2343,10 +2378,25 @@ ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudCo
         # int s_field_idx_;
         # /** \brief The field index for "V". */
         # int v_field_idx_;
+
+ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZ] PointCloudColorHandlerHSVField_t
+ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZI] PointCloudColorHandlerHSVField_PointXYZI_t
+ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZRGB] PointCloudColorHandlerHSVField_PointXYZRGB_t
+ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZRGBA] PointCloudColorHandlerHSVField_PointXYZRGBA_t
+
+ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZ]] PointCloudColorHandlerHSVField_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZI]] PointCloudColorHandlerHSVField_PointXYZI_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGB]] PointCloudColorHandlerHSVField_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGBA]] PointCloudColorHandlerHSVField_PointXYZRGBA_Ptr_t
+
 ###
 
 # template <typename PointT>
 # class PointCloudColorHandlerGenericField : public PointCloudColorHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+    cdef cppclass PointCloudColorHandlerGenericField[PointT]:
+        PointCloudColorHandlerGenericField ()
+
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2368,6 +2418,16 @@ ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudCo
         # /** \brief Class getName method. */
         # virtual inline std::string
         # getName () const { return ("PointCloudColorHandlerGenericField"); }
+
+ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZ] PointCloudColorHandlerGenericField_t
+ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZI] PointCloudColorHandlerGenericField_PointXYZI_t
+ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZRGB] PointCloudColorHandlerGenericField_PointXYZRGB_t
+ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZRGBA] PointCloudColorHandlerGenericField_PointXYZRGBA_t
+
+ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZ]] PointCloudColorHandlerGenericField_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZI]] PointCloudColorHandlerGenericField_PointXYZI_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGB]] PointCloudColorHandlerGenericField_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGBA]] PointCloudColorHandlerGenericField_PointXYZRGBA_Ptr_t
 ###
 
 # template <>

@@ -106,7 +106,7 @@ if platform.system() == "Windows":
     # Find build/link options for PCL using pkg-config.
     pcl_libs = ["common", "features", "filters", "kdtree", "octree",
                 "registration", "sample_consensus", "search", "segmentation",
-                "surface"]
+                "surface", "tracking", "visualization"]
     pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
     # pcl_libs += ['Eigen3']
     # print(pcl_libs)
@@ -173,7 +173,6 @@ if platform.system() == "Windows":
     #
     # for flag in pkgconfig('--libs-only-other'):
     #     ext_args['extra_link_args'].append(flag)
-    #
     # end
 
     # set library path
@@ -197,22 +196,7 @@ if platform.system() == "Windows":
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
 
-    # no use
-    # debug
-    # ext_args['libraries'].append(["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"])
-    # 1.6.0
-    # libdebugs = ["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"]
-    # add boost
-    # dynamic lib -> NG
-    # libdebugs = ['pcl_apps_debug', 'pcl_common_debug', 'pcl_features_debug', 'pcl_filters_debug', 'pcl_io_debug', 'pcl_io_ply_debug', 'pcl_kdtree_debug', 'pcl_keypoints_debug', 'pcl_octree_debug', 'pcl_registration_debug', 'pcl_sample_consensus_debug', 'pcl_segmentation_debug', 'pcl_search_debug', 'pcl_surface_debug', 'pcl_tracking_debug', 'pcl_visualization_debug', 'flann-gd', 'flann_s-gd', 'boost_date_time-vc100-mt-gd-1_49', 'boost_filesystem-vc100-mt-gd-1_49', 'boost_graph-vc100-mt-gd-1_49', 'boost_graph_parallel-vc100-mt-gd-1_49', 'boost_iostreams-vc100-mt-gd-1_49', 'boost_locale-vc100-mt-gd-1_49', 'boost_math_c99-vc100-mt-gd-1_49', 'boost_math_c99f-vc100-mt-gd-1_49', 'boost_math_tr1-vc100-mt-gd-1_49', 'boost_math_tr1f-vc100-mt-gd-1_49', 'boost_mpi-vc100-mt-gd-1_49', 'boost_prg_exec_monitor-vc100-mt-gd-1_49', 'boost_program_options-vc100-mt-gd-1_49', 'boost_random-vc100-mt-gd-1_49', 'boost_regex-vc100-mt-gd-1_49', 'boost_serialization-vc100-mt-gd-1_49', 'boost_signals-vc100-mt-gd-1_49', 'boost_system-vc100-mt-gd-1_49', 'boost_thread-vc100-mt-gd-1_49', 'boost_timer-vc100-mt-gd-1_49', 'boost_unit_test_framework-vc100-mt-gd-1_49', 'boost_wave-vc100-mt-gd-1_49', 'boost_wserialization-vc100-mt-gd-1_49']
-    # static lib
-    # libdebugs = ['pcl_apps_debug', 'pcl_common_debug', 'pcl_features_debug', 'pcl_filters_debug', 'pcl_io_debug', 'pcl_io_ply_debug', 'pcl_kdtree_debug', 'pcl_keypoints_debug', 'pcl_octree_debug', 'pcl_registration_debug', 'pcl_sample_consensus_debug', 'pcl_segmentation_debug', 'pcl_search_debug', 'pcl_surface_debug', 'pcl_tracking_debug', 'pcl_visualization_debug', 'flann-gd', 'flann_s-gd', 'libboost_chrono-vc100-mt-gd-1_49', 'libboost_date_time-vc100-mt-gd-1_49', 'libboost_filesystem-vc100-mt-gd-1_49', 'libboost_graph_parallel-vc100-mt-gd-1_49', 'libboost_iostreams-vc100-mt-gd-1_49', 'libboost_locale-vc100-mt-gd-1_49', 'libboost_math_c99-vc100-mt-gd-1_49', 'libboost_math_c99f-vc100-mt-gd-1_49', 'libboost_math_tr1-vc100-mt-gd-1_49', 'libboost_math_tr1f-vc100-mt-gd-1_49', 'libboost_mpi-vc100-mt-gd-1_49', 'libboost_prg_exec_monitor-vc100-mt-gd-1_49', 'libboost_program_options-vc100-mt-gd-1_49', 'libboost_random-vc100-mt-gd-1_49', 'libboost_regex-vc100-mt-gd-1_49', 'libboost_serialization-vc100-mt-gd-1_49', 'libboost_signals-vc100-mt-gd-1_49', 'libboost_system-vc100-mt-gd-1_49', 'libboost_test_exec_monitor-vc100-mt-gd-1_49', 'libboost_thread-vc100-mt-gd-1_49', 'libboost_timer-vc100-mt-gd-1_49', 'libboost_unit_test_framework-vc100-mt-gd-1_49', 'libboost_wave-vc100-mt-gd-1_49', 'libboost_wserialization-vc100-mt-gd-1_49']
-    # 1.7.2
-    # libdebugs = ["pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd"]
-    # for libdebug in libdebugs:
-    #     ext_args['libraries'].append(libdebug)
-
-
+    # set library files
     # for flag in pkgconfig('--cflags-only-other'):
     #     if flag.startswith('-D'):
     #         macro, value = flag[2:].split('=', 1)
@@ -228,7 +212,10 @@ if platform.system() == "Windows":
 
     if pcl_version == '-1.6':
         # release
-        libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # release + vtk
+        libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
+
         # add boost
         # dynamic lib
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
@@ -236,12 +223,14 @@ if platform.system() == "Windows":
         # boost_chrono-vc100-mt-1_49 -> NG(1.47/1.49)
         # boost_date_time-vc100-mt-1_49.lib -> NG
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
+        # 'MapReduceMPI-gd.lib', 'vtkNetCDF-gd.lib', 'QVTK-gd.lib', 'vtkNetCDF_cxx-gd.lib', 'vtkRendering-gd.lib', 'vtkViews-gd.lib', 'vtkVolumeRendering-gd.lib', 'vtkWidgets-gd.lib', 'mpistubs-gd.lib', 'vtkalglib-gd.lib', 'vtkCharts-gd.lib', 'vtkexoIIc-gd.lib', 'vtkexpat-gd.lib', 'vtkCommon-gd.lib', 'vtkfreetype-gd.lib', 'vtkDICOMParser-gd.lib', 'vtkftgl-gd.lib', 'vtkFiltering-gd.lib', 'vtkhdf5-gd.lib', 'vtkjpeg-gd.lib', 'vtkGenericFiltering-gd.lib', 'vtklibxml2-gd.lib', 'vtkGeovis-gd.lib', 'vtkmetaio-gd.lib', 'vtkpng-gd.lib', 'vtkGraphics-gd.lib', 'vtkproj4-gd.lib', 'vtkHybrid-gd.lib', 'vtksqlite-gd.lib', 'vtksys-gd.lib', 'vtkIO-gd.lib', 'vtktiff-gd.lib', 'vtkImaging-gd.lib', 'vtkverdict-gd.lib', 'vtkzlib-gd.lib', 'vtkInfovis-gd.lib', 
     elif pcl_version == '-1.7':
         # release
         libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
     elif pcl_version == '-1.8':
         # release
         libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        
         # add boost
         # dynamic lib
         # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
@@ -431,8 +420,8 @@ else:
                            # 1.6.0 NG
                            Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx"],
                                      language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #         language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                                     language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
@@ -453,8 +442,8 @@ else:
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #         language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                                     language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
@@ -475,8 +464,8 @@ else:
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #         language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                                     language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
