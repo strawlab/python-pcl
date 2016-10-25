@@ -226,7 +226,11 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
     // return vfhs;
 }
 
+/*
+// pcl1.6 
 #include <pcl/keypoints/harris_keypoint3D.h>
+// not use 1.7Å`
+#include <pcl/keypoints/harris_3d.h>
 
 // HarrisKeypoint3D
 // NG 
@@ -268,5 +272,4 @@ void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
     // detector.compute(*outcloud);
     detector.compute(*outcloud);
 }
-
-
+*/

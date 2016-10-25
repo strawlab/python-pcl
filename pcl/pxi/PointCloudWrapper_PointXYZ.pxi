@@ -25,8 +25,8 @@ cdef extern from "minipcl.h":
                               double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
-    # void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_PointXYZ *) except +
-    void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *) except +
+    ## void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_PointXYZ *) except +
+    # void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *) except +
 
 
 cdef extern from "ProjectInliers.h":
@@ -485,18 +485,17 @@ cdef class PointCloud:
         cdef PointCloud result
 
         result = PointCloud_PointXYZI()
-        # harris = HarrisKeypoint3D()
-        mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
-        # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr_shared)
-        # cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
-        # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # charris.setNonMaxSupression (true)
-        # charris.setRadius (1.0)
-        # charris.setRadiusSearch (searchRadius)
-        # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
+        # # harris = HarrisKeypoint3D()
+        # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
+        # # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr_shared)
+        # # cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
+        # # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # # charris.setNonMaxSupression (true)
+        # # charris.setRadius (1.0)
+        # # charris.setRadiusSearch (searchRadius)
+        # # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
 
         return result
-
 ###
 
 include "Segmentation.pxi"
