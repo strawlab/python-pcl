@@ -26,15 +26,15 @@ cdef extern from "minipcl.h":
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
-cdef Py_ssize_t _strides3[2]
-cdef PointCloud_PointXYZRGB _pc_tmp3 = PointCloud_PointXYZRGB(np.array([[1, 2, 3, 0],
+cdef Py_ssize_t _strides_xyzrgb_3[2]
+cdef PointCloud_PointXYZRGB _pc_xyzrgb_tmp3 = PointCloud_PointXYZRGB(np.array([[1, 2, 3, 0],
                                                                           [4, 5, 6, 0]], dtype=np.float32))
-cdef cpp.PointCloud[cpp.PointXYZRGB] *p3 = _pc_tmp3.thisptr()
-_strides3[0] = (  <Py_ssize_t><void *>idx.getptr(p3, 1)
-               - <Py_ssize_t><void *>idx.getptr(p3, 0))
-_strides3[1] = (  <Py_ssize_t><void *>&(idx.getptr(p3, 0).y)
-               - <Py_ssize_t><void *>&(idx.getptr(p3, 0).x))
-_pc_tmp3 = None
+cdef cpp.PointCloud[cpp.PointXYZRGB] *p_xyzrgb_3 = _pc_xyzrgb_tmp3.thisptr()
+_strides_xyzrgb_3[0] = (  <Py_ssize_t><void *>idx.getptr(p_xyzrgb_3, 1)
+               - <Py_ssize_t><void *>idx.getptr(p_xyzrgb_3, 0))
+_strides_xyzrgb_3[1] = (  <Py_ssize_t><void *>&(idx.getptr(p_xyzrgb_3, 0).y)
+               - <Py_ssize_t><void *>&(idx.getptr(p_xyzrgb_3, 0).x))
+_pc_xyzrgb_tmp3 = None
 
 cdef class PointCloud_PointXYZRGB:
     """Represents a cloud of points in 3-d space.
@@ -104,7 +104,7 @@ cdef class PointCloud_PointXYZRGB:
         buffer.obj = self
         buffer.readonly = 0
         buffer.shape = self._shape
-        buffer.strides = _strides3
+        buffer.strides = _strides_xyzrgb_3
         buffer.suboffsets = NULL
 
     def __releasebuffer__(self, Py_buffer *buffer):

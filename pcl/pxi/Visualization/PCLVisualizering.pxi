@@ -32,6 +32,9 @@ cdef class PCLVisualizering:
         return self.thisptr_shared.get()
 
     # def AddPointCloud (self, _pcl.PointCloud cloud):
+    #    self.thisptr().addPointCloud(cloud.thisptr_shared)
+
+    # def AddPointCloud (self, _pcl.PointCloud cloud, PointCloudColorHandlerCustom):
     #     self.thisptr().addPointCloud(cloud.thisptr_shared)
 
     # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointNormalCloud normal):

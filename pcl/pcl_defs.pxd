@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from libc.stddef cimport size_t
 
 from libcpp.vector cimport vector

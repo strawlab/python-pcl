@@ -25,8 +25,8 @@ cdef extern from "minipcl.h":
                               double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
-    void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
-                              cpp.PointIndices_t *) except +
+    # void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_PointXYZ *) except +
+    void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *) except +
 
 
 cdef extern from "ProjectInliers.h":
@@ -37,6 +37,7 @@ cdef extern from "ProjectInliers.h":
 cdef Py_ssize_t _strides[2]
 cdef PointCloud _pc_tmp = PointCloud(np.array([[1, 2, 3],
                                                [4, 5, 6]], dtype=np.float32))
+
 cdef cpp.PointCloud[cpp.PointXYZ] *p = _pc_tmp.thisptr()
 _strides[0] = (  <Py_ssize_t><void *>idx.getptr(p, 1)
                - <Py_ssize_t><void *>idx.getptr(p, 0))
@@ -483,13 +484,16 @@ cdef class PointCloud:
         """
         cdef PointCloud result
 
-        harris = HarrisKeypoint3D()
-        cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
-        charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        charris.setNonMaxSupression (true)
-        charris.setRadius (1.0)
-        charris.setRadiusSearch (searchRadius)
-        charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
+        result = PointCloud_PointXYZI()
+        # harris = HarrisKeypoint3D()
+        mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
+        # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr_shared)
+        # cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
+        # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # charris.setNonMaxSupression (true)
+        # charris.setRadius (1.0)
+        # charris.setRadiusSearch (searchRadius)
+        # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
 
         return result
 
@@ -515,6 +519,11 @@ include "ConditionalRemoval.pxi"
 
 # Surface
 include "ConcaveHull.pxi"
+
+# harris3D
+# include "HarrisKeypoint3D.pxi"
+# include "PointCloudWrapper_PointXYZI.pxi"
+
 
 # PCL_VERSION = "1.6.0"
 # # Ubuntu/Mac NG(1.7? 1.8?)

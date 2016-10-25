@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from libc.stddef cimport size_t
 
 from libcpp.vector cimport vector
@@ -14,770 +15,76 @@ from boost_shared_ptr cimport shared_ptr
 # Types
 ###############################################################################
 
-# cloud_viewer.h
-cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization" nogil:
-    cdef cppclass CloudViewer:
-        # CloudViewer ()
-        CloudViewer (string& window_name)
+### base class ###
+
+# template <typename PointT>
+# class PointCloudColorHandler
         # public:
-        # /** \brief Show a cloud, with an optional key for multiple clouds.
-        # * \param[in] cloud RGB point cloud
-        # * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        # void showCloud (const ColorCloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
-        void showCloud (cpp.PointCloud_PointXYZRGB_Ptr_t cloud, const string cloudname)
-        
-        # /** \brief Show a cloud, with an optional key for multiple clouds.
-        #  * \param[in] cloud RGBA point cloud
-        #  * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        # void showCloud (const ColorACloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
-        void showCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, const string cloudname)
-        
-        # /** \brief Show a cloud, with an optional key for multiple clouds.
-        #   * \param[in] cloud XYZI point cloud
-        #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        void showCloud (cpp.PointCloud_PointXYZI_Ptr_t cloud, string cloudname)
-        
-        # /** \brief Show a cloud, with an optional key for multiple clouds.
-        #   * \param[in] cloud XYZ point cloud
-        #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
-        void showCloud (cpp.PointCloudPtr_t cloud, string cloudname)
-        
-        # /** \brief Check if the gui was quit, you should quit also
-        #  * \param millis_to_wait This will request to "spin" for the number of milliseconds, before exiting.
-        #  * \return true if the user signaled the gui to stop
-        bool wasStopped (int millis_to_wait)
-        
-        # /** Visualization callable function, may be used for running things on the UI thread.
-        # ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
-        # /** \brief Run a callbable object on the UI thread. Will persist until removed
-        #  * @param x Use boost::ref(x) for a function object that you would like to not copy
-        #  * \param key The key for the callable -- use the same key to overwrite.
-        # void runOnVisualizationThread (VizCallable x, const std::string& key = "callable");
-        # /** \brief Run a callbable object on the UI thread. This will run once and be removed
-        #  * @param x Use boost::ref(x) for a function object that you would like to not copy
-        # void runOnVisualizationThreadOnce (VizCallable x);
-        # /** \brief Remove a previously added callable object, NOP if it doesn't exist.
-        #  * @param key the key that was registered with the callable object.
-        void removeVisualizationCallable (string& key = "callable");
-        # /** \brief Register a callback function for keyboard events
-        #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return              connection object that allows to disconnect the callback function.
-        # inline boost::signals2::connection registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), void* cookie = NULL)
-        # /** \brief Register a callback function for keyboard events
-        #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return              connection object that allows to disconnect the callback function.
-        # template<typename T> inline boost::signals2::connection registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), T& instance, void* cookie = NULL)
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] callback  the function that will be registered as a callback for a mouse event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return              connection object that allows to disconnect the callback function.
-        # inline boost::signals2::connection registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), void* cookie = NULL)
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return              connection object that allows to disconnect the callback function.
-        # template<typename T> inline boost::signals2::connection registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), T& instance, void* cookie = NULL)
-        # /** \brief Register a callback function for point picking events
-        #   * \param[in] callback  the function that will be registered as a callback for a point picking event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return              connection object that allows to disconnect the callback function.
-        # inline boost::signals2::connection  registerPointPickingCallback (void (*callback) (const pcl::visualization::PointPickingEvent&, void*), void* cookie = NULL)
-        # /** \brief Register a callback function for point picking events
-        #   * \param[in] callback  the member function that will be registered as a callback for a point picking event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return              connection object that allows to disconnect the callback function.
-        # template<typename T> inline boost::signals2::connection  registerPointPickingCallback (void (T::*callback) (const pcl::visualization::PointPickingEvent&, void*), T& instance, void* cookie = NULL)
-
-# ctypedef CloudViewer CloudViewer_t
-ctypedef shared_ptr[CloudViewer] CloudViewerPtr_t
-# ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
-# ctypedef function1[void, PCLVisualizer] VizCallable;
-###
-
-# histogram_visualizer.h
-cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visualization":
-    cdef cppclass PCLHistogramVisualizer:
-        PCLHistogramVisualizer ()
-        
-        # brief Spin once method. Calls the interactor and updates the screen once. 
-        void spinOnce (int time = 1, bool force_redraw = false)
-        
-        # brief Spin method. Calls the interactor and runs an internal loop. */
-        void spin ()
-        
-        # brief Set the viewport's background color.
-        # param[in] r the red component of the RGB color
-        # param[in] g the green component of the RGB color
-        # param[in] b the blue component of the RGB color
-        # param[in] viewport the view port (default: all)
-        # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0)
-        
-        # brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
-        # param[in] cloud the PointCloud dataset containing the histogram
-        # param[in] hsize the length of the histogram
-        # param[in] id the point cloud object id (default: cloud)
-        # param[in] win_width the width of the window
-        # param[in] win_height the height of the window
-        # template <typename PointT> bool 
-        # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
-        #                      int hsize, 
-        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        bool addFeatureHistogram (cpp.PointCloudPtr_t cloud,               int hsize, const string cloudname, int win_width, int win_height)
-        # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGB_Ptr_t cloud,  int hsize, const string cloudname, int win_width, int win_height)
-        # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, int hsize, const string cloudname, int win_width, int win_height)
-        # bool addFeatureHistogram (cpp.PointCloud_PointXYZI_Ptr_t cloud,    int hsize, const string cloudname, int win_width, int win_height)
-        
-        # brief Add a histogram feature to screen as a separate window from a cloud containing a single histogram.
-        # param[in] cloud the PointCloud dataset containing the histogram
-        # param[in] field_name the field name containing the histogram
-        # param[in] id the point cloud object id (default: cloud)
-        # param[in] win_width the width of the window
-        # param[in] win_height the height of the window
-        # bool 
-        # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
-        #                      const std::string &field_name, 
-        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        
-        # /** \brief Add a histogram feature to screen as a separate window.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] field_name the field name containing the histogram
-        #   * \param[in] index the point index to extract the histogram from
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] win_width the width of the window
-        #   * \param[in] win_height the height of the window 
-        # template <typename PointT> bool 
-        # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
-        #                      const std::string &field_name, 
-        #                      const int index,
-        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        
-        # /** \brief Add a histogram feature to screen as a separate window.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] field_name the field name containing the histogram
-        #   * \param[in] index the point index to extract the histogram from
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] win_width the width of the window
-        #   * \param[in] win_height the height of the window
-        # bool 
-        # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
-        #                      const std::string &field_name, 
-        #                      const int index,
-        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        
-        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] hsize the length of the histogram
-        #   * \param[in] id the point cloud object id (default: cloud)
-        # template <typename PointT> bool 
-        # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, int hsize, const std::string &id = "cloud");
-        
-        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] field_name the field name containing the histogram
-        #   * \param[in] id the point cloud object id (default: cloud)
-        # bool 
-        # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
-        #                         const std::string &field_name, 
-        #                         const std::string &id = "cloud");
-        # 
-        
-        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] field_name the field name containing the histogram
-        #   * \param[in] index the point index to extract the histogram from
-        #   * \param[in] id the point cloud object id (default: cloud)
-        # template <typename PointT> bool 
-        # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, const std::string &field_name,
-        #                              const int index, const std::string &id = "cloud");
-        # 
-        
-        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
-        #   * \param[in] cloud the PointCloud dataset containing the histogram
-        #   * \param[in] field_name the field name containing the histogram
-        #   * \param[in] index the point index to extract the histogram from
-        #   * \param[in] id the point cloud object id (default: cloud)
-        # bool 
-        # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
-        #                         const std::string &field_name, const int index,
-        #                         const std::string &id = "cloud");         
-        
-        # /** \brief Set the Y range to minp-maxp for all histograms.
-        #    * \param[in] minp the minimum Y range
-        #    * \param[in] maxp the maximum Y range
-        # void 
-        # setGlobalYRange (float minp, float maxp);
-        # /** \brief Update all window positions on screen so that they fit. */
-        # void updateWindowPositions ();
-        # #if ((VTK_MAJOR_VERSION) == 5 && (VTK_MINOR_VERSION <= 4))
-        # /** \brief Returns true when the user tried to close the window */
-        # bool wasStopped ();
-        # /** \brief Set the stopped flag back to false */
-        # void resetStoppedFlag ();
-        # #endif
-
-# ctypedef CloudViewer CloudViewer_t
-ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
-###
-
-# image_viewer.h
-# class PCL_EXPORTS ImageViewer
-        # ImageViewer()
-        # ImageViewer (const std::string& window_title = "");
-        # public:
-        # /** \brief Show a monochrome 2D image on screen.
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # showMonoImage (const unsigned char* data, unsigned width, unsigned height,
-        #                const std::string &layer_id = "mono_image", double opacity = 1.0);
-        # /** \brief Add a monochrome 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # addMonoImage (const unsigned char* data, unsigned width, unsigned height,
-        #               const std::string &layer_id = "mono_image", double opacity = 1.0);
-        # /** \brief Show a 2D RGB image on screen.
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # showRGBImage (const unsigned char* data, unsigned width, unsigned height, 
-        #               const std::string &layer_id = "rgb_image", double opacity = 1.0);
-        # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # addRGBImage (const unsigned char* data, unsigned width, unsigned height, 
-        #              const std::string &layer_id = "rgb_image", double opacity = 1.0);
-        # /** \brief Show a 2D image on screen, obtained from the RGB channel of a point cloud.
-        #   * \param[in] data the input data representing the RGB point cloud 
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # template <typename T> inline void 
-        # showRGBImage (const typename pcl::PointCloud<T>::ConstPtr &cloud,
-        #               const std::string &layer_id = "rgb_image", double opacity = 1.0)
-        # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the RGB point cloud 
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # template <typename T> inline void 
-        # addRGBImage (const typename pcl::PointCloud<T>::ConstPtr &cloud,
-        #               const std::string &layer_id = "rgb_image", double opacity = 1.0)
-        # /** \brief Show a 2D image on screen, obtained from the RGB channel of a point cloud.
-        #   * \param[in] data the input data representing the RGB point cloud 
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # template <typename T> void 
-        # showRGBImage (const pcl::PointCloud<T> &cloud,
-        #               const std::string &layer_id = "rgb_image", double opacity = 1.0);
-        # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the RGB point cloud 
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # template <typename T> void 
-        # addRGBImage (const pcl::PointCloud<T> &cloud,
-        #              const std::string &layer_id = "rgb_image", double opacity = 1.0);
-        # /** \brief Show a 2D image (float) on screen.
-        #   * \param[in] data the input data representing the image in float format
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
-        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
-        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # showFloatImage (const float* data, unsigned int width, unsigned int height, 
-        #                 float min_value = std::numeric_limits<float>::min (), 
-        #                 float max_value = std::numeric_limits<float>::max (), bool grayscale = false,
-        #                 const std::string &layer_id = "float_image", double opacity = 1.0);
-        # 
-        # /** \brief Add a float 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the image in float format
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
-        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
-        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # addFloatImage (const float* data, unsigned int width, unsigned int height, 
-        #                float min_value = std::numeric_limits<float>::min (), 
-        #                float max_value = std::numeric_limits<float>::max (), bool grayscale = false,
-        #                const std::string &layer_id = "float_image", double opacity = 1.0);
-        # 
-        # /** \brief Show a 2D image (unsigned short) on screen.
-        #   * \param[in] short_image the input data representing the image in unsigned short format
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
-        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
-        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void
-        # showShortImage (const unsigned short* short_image, unsigned int width, unsigned int height, 
-        #                 unsigned short min_value = std::numeric_limits<unsigned short>::min (), 
-        #                 unsigned short max_value = std::numeric_limits<unsigned short>::max (), bool grayscale = false,
-        #                 const std::string &layer_id = "short_image", double opacity = 1.0);
-        # 
-        # /** \brief Add a short 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] short_image the input data representing the image in unsigned short format
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
-        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
-        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void
-        # addShortImage (const unsigned short* short_image, unsigned int width, unsigned int height, 
-        #                unsigned short min_value = std::numeric_limits<unsigned short>::min (), 
-        #                unsigned short max_value = std::numeric_limits<unsigned short>::max (), bool grayscale = false,
-        #                const std::string &layer_id = "short_image", double opacity = 1.0);
-        # 
-        # /** \brief Show a 2D image on screen representing angle data.
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # showAngleImage (const float* data, unsigned width, unsigned height,
-        #                 const std::string &layer_id = "angle_image", double opacity = 1.0);
-        # 
-        # /** \brief Add an angle 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # addAngleImage (const float* data, unsigned width, unsigned height,
-        #                const std::string &layer_id = "angle_image", double opacity = 1.0);
-        # 
-        # /** \brief Show a 2D image on screen representing half angle data.
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # showHalfAngleImage (const float* data, unsigned width, unsigned height,
-        #                     const std::string &layer_id = "half_angle_image", double opacity = 1.0);
-        # 
-        # /** \brief Add a half angle 2D image layer, but do not render it (use spin/spinOnce to update).
-        #   * \param[in] data the input data representing the image
-        #   * \param[in] width the width of the image
-        #   * \param[in] height the height of the image
-        #   * \param[in] layer_id the name of the layer (default: "image")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void 
-        # addHalfAngleImage (const float* data, unsigned width, unsigned height,
-        #                    const std::string &layer_id = "half_angle_image", double opacity = 1.0);
-        # /** \brief Sets the pixel at coordinates(u,v) to color while setting the neighborhood to another
-        #   * \param[in] u the u/x coordinate of the pixel
-        #   * \param[in] v the v/y coordinate of the pixel
-        #   * \param[in] fg_color the pixel color
-        #   * \param[in] bg_color the neighborhood color
-        #   * \param[in] radius the circle radius around the pixel
-        #   * \param[in] layer_id the name of the layer (default: "points")
-        #   * \param[in] opacity the opacity of the layer (default: 1.0)
-        #   */
-        # void
-        # markPoint (size_t u, size_t v, Vector3ub fg_color, Vector3ub bg_color = red_color, double radius = 3.0,
-        #            const std::string &layer_id = "points", double opacity = 1.0);
-        # /** \brief Set the window title name
-        #   * \param[in] name the window title
-        #   */
-        # void setWindowTitle (const std::string& name)
-        # /** \brief Spin method. Calls the interactor and runs an internal loop. */
-        # void spin ();
-        # 
-        # /** \brief Spin once method. Calls the interactor and updates the screen once. 
-        #   * \param[in] time - How long (in ms) should the visualization loop be allowed to run.
-        #   * \param[in] force_redraw - if false it might return without doing anything if the 
-        #   * interactor's framerate does not require a redraw yet.
-        #   */
-        # void spinOnce (int time = 1, bool force_redraw = true);
-        # 
-        # /** \brief Register a callback function for keyboard events
-        #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
-        # boost::signals2::connection 
-        # registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), 
-        #                           void* cookie = NULL)
-        # /** \brief Register a callback function for keyboard events
-        #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
-        # template<typename T> boost::signals2::connection 
-        # registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), 
-        #                           T& instance, void* cookie = NULL)
-        # /** \brief Register a callback boost::function for keyboard events
-        #   * \param[in] cb the boost function that will be registered as a callback for a keyboard event
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
-        # boost::signals2::connection 
-        # registerKeyboardCallback (boost::function<void (const pcl::visualization::KeyboardEvent&)> cb);
-        # /** \brief Register a callback boost::function for mouse events
-        #   * \param[in] callback  the function that will be registered as a callback for a mouse event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
-        # boost::signals2::connection 
-        # registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), 
-        #                        void* cookie = NULL)
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
-        # template<typename T> boost::signals2::connection 
-        # registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), 
-        #                        T& instance, void* cookie = NULL)
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] cb the boost function that will be registered as a callback for a mouse event
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */        
-        # boost::signals2::connection 
-        # registerMouseCallback (boost::function<void (const pcl::visualization::MouseEvent&)> cb);
-        # 
-        # /** \brief Set the position in screen coordinates.
-        #   * \param[in] x where to move the window to (X)
-        #   * \param[in] y where to move the window to (Y)
-        #   */
-        # void setPosition (int x, int y)
-        # /** \brief Set the window size in screen coordinates.
-        #   * \param[in] xw window size in horizontal (pixels)
-        #   * \param[in] yw window size in vertical (pixels)
-        #   */
-        # void setSize (int xw, int yw)
-        # 
-        # /** \brief Returns true when the user tried to close the window */
-        # bool wasStopped () const
-        # /** \brief Add a circle shape from a point and a radius
-        #   * \param[in] x the x coordinate of the circle center
-        #   * \param[in] y the y coordinate of the circle center
-        #   * \param[in] radius the radius of the circle
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addCircle (unsigned int x, unsigned int y, double radius, 
-        #            const std::string &layer_id = "circles", double opacity = 1.0);
-        # /** \brief Add a circle shape from a point and a radius
-        #   * \param[in] x the x coordinate of the circle center
-        #   * \param[in] y the y coordinate of the circle center
-        #   * \param[in] radius the radius of the circle
-        #   * \param[in] r the red channel of the color that the sphere should be rendered with (0.0 -> 1.0)
-        #   * \param[in] g the green channel of the color that the sphere should be rendered with (0.0 -> 1.0)
-        #   * \param[in] b the blue channel of the color that the sphere should be rendered with (0.0 -> 1.0)
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addCircle (unsigned int x, unsigned int y, double radius, 
-        #            double r, double g, double b,
-        #            const std::string &layer_id = "circles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box and color its edges with a given color
-        #   * \param[in] min_pt the X,Y min coordinate
-        #   * \param[in] max_pt the X,Y max coordinate
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addRectangle (const pcl::PointXY &min_pt, const pcl::PointXY &max_pt,
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box and color its edges with a given color
-        #   * \param[in] min_pt the X,Y min coordinate
-        #   * \param[in] max_pt the X,Y max coordinate
-        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addRectangle (const pcl::PointXY &min_pt, const pcl::PointXY &max_pt,
-        #               double r, double g, double b,
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box and color its edges with a given color
-        #   * \param[in] x_min the X min coordinate
-        #   * \param[in] x_max the X max coordinate
-        #   * \param[in] y_min the Y min coordinate
-        #   * \param[in] y_max the Y max coordinate 
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box and color its edges with a given color
-        #   * \param[in] x_min the X min coordinate
-        #   * \param[in] x_max the X max coordinate
-        #   * \param[in] y_min the Y min coordinate
-        #   * \param[in] y_max the Y max coordinate 
-        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
-        #               double r, double g, double b,
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box and color its edges with a given color
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] min_pt the X,Y min coordinate
-        #   * \param[in] max_pt the X,Y max coordinate
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # template <typename T> bool
-        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, 
-        #               const T &min_pt, const T &max_pt,
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box and color its edges with a given color
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] min_pt the X,Y min coordinate
-        #   * \param[in] max_pt the X,Y max coordinate
-        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # template <typename T> bool
-        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, 
-        #               const T &min_pt, const T &max_pt,
-        #               double r, double g, double b,
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box that contains a given image mask and color its edges
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] mask the point data representing the mask that we want to draw
-        #   * \param[in] r the red channel of the color that the mask should be rendered with 
-        #   * \param[in] g the green channel of the color that the mask should be rendered with
-        #   * \param[in] b the blue channel of the color that the mask should be rendered with
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # template <typename T> bool
-        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
-        #               double r, double g, double b, 
-        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
-        # 
-        # /** \brief Add a 2D box that contains a given image mask and color its edges in red
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] mask the point data representing the mask that we want to draw
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # template <typename T> bool
-        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
-        #               const std::string &layer_id = "image_mask", double opacity = 1.0);
-        # /** \brief Add a 2D box and fill it in with a given color
-        #   * \param[in] x_min the X min coordinate
-        #   * \param[in] x_max the X max coordinate
-        #   * \param[in] y_min the Y min coordinate
-        #   * \param[in] y_max the Y max coordinate 
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
-        #   */
-        # bool
-        # addFilledRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
-        #                     const std::string &layer_id = "boxes", double opacity = 0.5);
-        # /** \brief Add a 2D box and fill it in with a given color
-        #   * \param[in] x_min the X min coordinate
-        #   * \param[in] x_max the X max coordinate
-        #   * \param[in] y_min the Y min coordinate
-        #   * \param[in] y_max the Y max coordinate 
-        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
-        #   */
-        # bool
-        # addFilledRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
-        #                     double r, double g, double b,
-        #                     const std::string &layer_id = "boxes", double opacity = 0.5);
-        # /** \brief Add a 2D line with a given color
-        #   * \param[in] x_min the X min coordinate
-        #   * \param[in] y_min the Y min coordinate
-        #   * \param[in] x_max the X max coordinate
-        #   * \param[in] y_max the Y max coordinate 
-        #   * \param[in] r the red channel of the color that the line should be rendered with (0.0 -> 1.0)
-        #   * \param[in] g the green channel of the color that the line should be rendered with (0.0 -> 1.0)
-        #   * \param[in] b the blue channel of the color that the line should be rendered with (0.0 -> 1.0)
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addLine (unsigned int x_min, unsigned int y_min, unsigned int x_max, unsigned int y_max,
-        #          double r, double g, double b, 
-        #          const std::string &layer_id = "line", double opacity = 1.0);
-        # /** \brief Add a 2D line with a given color
-        #   * \param[in] x_min the X min coordinate
-        #   * \param[in] y_min the Y min coordinate
-        #   * \param[in] x_max the X max coordinate
-        #   * \param[in] y_max the Y max coordinate 
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # bool
-        # addLine (unsigned int x_min, unsigned int y_min, unsigned int x_max, unsigned int y_max,
-        #          const std::string &layer_id = "line", double opacity = 1.0);
-        # /** \brief Add a generic 2D mask to an image 
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] mask the point data representing the mask that we want to draw
-        #   * \param[in] r the red channel of the color that the mask should be rendered with 
-        #   * \param[in] g the green channel of the color that the mask should be rendered with
-        #   * \param[in] b the blue channel of the color that the mask should be rendered with
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
-        #   */
-        # template <typename T> bool
-        # addMask (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
-        #          double r, double g, double b, 
-        #          const std::string &layer_id = "image_mask", double opacity = 0.5);
-        # /** \brief Add a generic 2D mask to an image (colored in red)
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] mask the point data representing the mask that we want to draw
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
-        #   */
-        # template <typename T> bool
-        # addMask (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
-        #          const std::string &layer_id = "image_mask", double opacity = 0.5);
-        # /** \brief Add a generic 2D planar polygon to an image 
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] polygon the point data representing the polygon that we want to draw. 
-        #   * A line will be drawn from each point to the next in the dataset.
-        #   * \param[in] r the red channel of the color that the polygon should be rendered with 
-        #   * \param[in] g the green channel of the color that the polygon should be rendered with
-        #   * \param[in] b the blue channel of the color that the polygon should be rendered with
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # template <typename T> bool
-        # addPlanarPolygon (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PlanarPolygon<T> &polygon, 
-        #                   double r, double g, double b, 
-        #                   const std::string &layer_id = "planar_polygon", double opacity = 1.0);
-        # /** \brief Add a generic 2D planar polygon to an image 
-        #   * \param[in] image the organized point cloud dataset containing the image data
-        #   * \param[in] polygon the point data representing the polygon that we want to draw. 
-        #   * A line will be drawn from each point to the next in the dataset.
-        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
-        #   */
-        # template <typename T> bool
-        # addPlanarPolygon (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PlanarPolygon<T> &polygon, 
-        #                   const std::string &layer_id = "planar_polygon", double opacity = 1.0);
-        # /** \brief Add a new 2D rendering layer to the viewer. 
-        #   * \param[in] layer_id the name of the layer
-        #   * \param[in] width the width of the layer
-        #   * \param[in] height the height of the layer
-        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
-        #   */
-        # bool
-        # addLayer (const std::string &layer_id, int width, int height, double opacity = 0.5);
-        # 
-        # /** \brief Remove a 2D layer given by its ID.
-        #   * \param[in] layer_id the name of the layer
-        #   */
-        # void
-        # removeLayer (const std::string &layer_id);
+        # typedef pcl::PointCloud<PointT> PointCloud;
+        # typedef typename PointCloud::Ptr PointCloudPtr;
+        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<PointCloudColorHandler<PointT> > Ptr;
+        # typedef boost::shared_ptr<const PointCloudColorHandler<PointT> > ConstPtr;
+        # /** \brief Constructor. */
+        # PointCloudColorHandler (const PointCloudConstPtr &cloud)
+        # /** \brief Destructor. */
+        # virtual ~PointCloudColorHandler () {}
+        # /** \brief Check if this handler is capable of handling the input data or not. */
+        # inline bool isCapable () const
+        # /** \brief Abstract getName method. */
+        # virtual std::string getName () const = 0;
+        # /** \brief Abstract getFieldName method. */
+        # virtual std::string getFieldName () const = 0;
+        # /** \brief Obtain the actual color for the input dataset as vtk scalars.
+        #   * \param[out] scalars the output scalars containing the color for the dataset
+        # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const = 0;
         # protected:
-        # /** \brief Set the stopped flag back to false */
-        # void resetStoppedFlag ()
-        # /** \brief Fire up a mouse event with a specified event ID
-        #   * \param[int] event_id the id of the event
-        #   */
-        # void emitMouseEvent (unsigned long event_id);
-        # /** \brief Fire up a keyboard event with a specified event ID
-        #   * \param[int] event_id the id of the event
-        #   */
-        # void emitKeyboardEvent (unsigned long event_id);
-        # // Callbacks used to register for vtk command
-        # static void  MouseCallback (vtkObject*, unsigned long eid, void* clientdata, void *calldata);
-        # static void 
-        # KeyboardCallback (vtkObject*, unsigned long eid, void* clientdata, void *calldata);
-        
-        # protected: // types
-        # struct ExitMainLoopTimerCallback : public vtkCommand
-        # {
-        #   ExitMainLoopTimerCallback ()
-        #   static ExitMainLoopTimerCallback* New ()
-        #   virtual void Execute (vtkObject* vtkNotUsed (caller), unsigned long event_id, void* call_data)
-        #   int right_timer_id;
-        #   ImageViewer* window;
-        # };
-        # struct ExitCallback : public vtkCommand
-        # {
-        #   ExitCallback ()
-        #   static ExitCallback* New ()
-        #   virtual void Execute (vtkObject*, unsigned long event_id, void*)
-        #   ImageViewer* window;
-        # };
+        # /** \brief A pointer to the input dataset. */
+        # PointCloudConstPtr cloud_;
+        # /** \brief True if this handler is capable of handling the input data, false
+        #   * otherwise.
+        # bool capable_;
+        # /** \brief The index of the field holding the data that represents the color. */
+        # int field_idx_;
+        # /** \brief The list of fields available for this PointCloud. */
+        # std::vector<sensor_msgs::PointField> fields_;
 ###
 
-# interactor.h
-###
-
-# interactor_style.h
-###
-
-# keyboard_event.h
-###
-
-# mouse_event.h
+# point_cloud_handlers.h
+# template <typename PointT>
+# class PointCloudGeometryHandler
+        # public:
+        # typedef pcl::PointCloud<PointT> PointCloud;
+        # typedef typename PointCloud::Ptr PointCloudPtr;
+        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # typedef typename boost::shared_ptr<PointCloudGeometryHandler<PointT> > Ptr;
+        # typedef typename boost::shared_ptr<const PointCloudGeometryHandler<PointT> > ConstPtr;
+        # /** \brief Constructor. */
+        # PointCloudGeometryHandler (const PointCloudConstPtr &cloud) :
+        # /** \brief Abstract getName method.
+        #   * \return the name of the class/object.
+        # virtual std::string getName () const = 0;
+        # /** \brief Abstract getFieldName method. */
+        # virtual std::string getFieldName () const  = 0;
+        # /** \brief Checl if this handler is capable of handling the input data or not. */
+        # inline bool isCapable () const
+        # /** \brief Obtain the actual point geometry for the input dataset in VTK format.
+        #   * \param[out] points the resultant geometry
+        # virtual void getGeometry (vtkSmartPointer<vtkPoints> &points) const = 0;
+        # protected:
+        # /** \brief A pointer to the input dataset. */
+        # PointCloudConstPtr cloud_;
+        # /** \brief True if this handler is capable of handling the input data, false
+        #   * otherwise.
+        # bool capable_;
+        # /** \brief The index of the field holding the X data. */
+        # int field_x_idx_;
+        # /** \brief The index of the field holding the Y data. */
+        # int field_y_idx_;
+        # /** \brief The index of the field holding the Z data. */
+        # int field_z_idx_;
+        # /** \brief The list of fields available for this PointCloud. */
+        # std::vector<sensor_msgs::PointField> fields_;
 ###
 
 # pcl_visualizer.h
@@ -832,12 +139,12 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # inline boost::signals2::connection
         # registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), void* cookie = NULL)
         
-        # /** \brief Register a callback function for keyboard events
-        #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for keyboard events
+        # param[in] callback the member function that will be registered as a callback for a keyboard event
+        # param[in] instance instance to the class that implements the callback function
+        # param[in] cookie   user data that is passed to the callback
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # template<typename T> inline boost::signals2::connection
         # registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), T& instance, void* cookie = NULL)
         
@@ -1998,53 +1305,779 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # /** \brief Get a pointer to the current interactor style used. */
         # inline vtkSmartPointer<PCLVisualizerInteractorStyle>
         # getInteractorStyle ()
-        # protected:
-        # /** \brief The render window interactor. */
-        # #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 4))
-        #         vtkSmartPointer<PCLVisualizerInteractor> interactor_;
-        # #else
-        #         vtkSmartPointer<vtkRenderWindowInteractor> interactor_;
-        # #endif
 
 ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
 ###
 
-# point_cloud_handlers.h
-# template <typename PointT>
-# class PointCloudGeometryHandler
+# cloud_viewer.h
+cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass CloudViewer:
+        # CloudViewer ()
+        CloudViewer (string& window_name)
         # public:
-        # typedef pcl::PointCloud<PointT> PointCloud;
-        # typedef typename PointCloud::Ptr PointCloudPtr;
-        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-        # typedef typename boost::shared_ptr<PointCloudGeometryHandler<PointT> > Ptr;
-        # typedef typename boost::shared_ptr<const PointCloudGeometryHandler<PointT> > ConstPtr;
-        # /** \brief Constructor. */
-        # PointCloudGeometryHandler (const PointCloudConstPtr &cloud) :
-        # /** \brief Abstract getName method.
-        #   * \return the name of the class/object.
-        # virtual std::string getName () const = 0;
-        # /** \brief Abstract getFieldName method. */
-        # virtual std::string getFieldName () const  = 0;
-        # /** \brief Checl if this handler is capable of handling the input data or not. */
-        # inline bool isCapable () const
-        # /** \brief Obtain the actual point geometry for the input dataset in VTK format.
-        #   * \param[out] points the resultant geometry
-        # virtual void getGeometry (vtkSmartPointer<vtkPoints> &points) const = 0;
-        # protected:
-        # /** \brief A pointer to the input dataset. */
-        # PointCloudConstPtr cloud_;
-        # /** \brief True if this handler is capable of handling the input data, false
-        #   * otherwise.
-        # bool capable_;
-        # /** \brief The index of the field holding the X data. */
-        # int field_x_idx_;
-        # /** \brief The index of the field holding the Y data. */
-        # int field_y_idx_;
-        # /** \brief The index of the field holding the Z data. */
-        # int field_z_idx_;
-        # /** \brief The list of fields available for this PointCloud. */
-        # std::vector<sensor_msgs::PointField> fields_;
+        # /** \brief Show a cloud, with an optional key for multiple clouds.
+        # * \param[in] cloud RGB point cloud
+        # * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
+        # void showCloud (const ColorCloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
+        void showCloud (cpp.PointCloud_PointXYZRGB_Ptr_t cloud, const string cloudname)
+        
+        # /** \brief Show a cloud, with an optional key for multiple clouds.
+        #  * \param[in] cloud RGBA point cloud
+        #  * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
+        # void showCloud (const ColorACloud::ConstPtr &cloud, const std::string& cloudname = "cloud");
+        void showCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, const string cloudname)
+        
+        # /** \brief Show a cloud, with an optional key for multiple clouds.
+        #   * \param[in] cloud XYZI point cloud
+        #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
+        void showCloud (cpp.PointCloud_PointXYZI_Ptr_t cloud, string cloudname)
+        
+        # /** \brief Show a cloud, with an optional key for multiple clouds.
+        #   * \param[in] cloud XYZ point cloud
+        #   * \param[in] cloudname a key for the point cloud, use the same name if you would like to overwrite the existing cloud.
+        void showCloud (cpp.PointCloudPtr_t cloud, string cloudname)
+        
+        # /** \brief Check if the gui was quit, you should quit also
+        #  * \param millis_to_wait This will request to "spin" for the number of milliseconds, before exiting.
+        #  * \return true if the user signaled the gui to stop
+        bool wasStopped (int millis_to_wait)
+        
+        # /** Visualization callable function, may be used for running things on the UI thread.
+        # ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
+        # /** \brief Run a callbable object on the UI thread. Will persist until removed
+        #  * @param x Use boost::ref(x) for a function object that you would like to not copy
+        #  * \param key The key for the callable -- use the same key to overwrite.
+        # void runOnVisualizationThread (VizCallable x, const std::string& key = "callable");
+        # /** \brief Run a callbable object on the UI thread. This will run once and be removed
+        #  * @param x Use boost::ref(x) for a function object that you would like to not copy
+        # void runOnVisualizationThreadOnce (VizCallable x);
+        # /** \brief Remove a previously added callable object, NOP if it doesn't exist.
+        #  * @param key the key that was registered with the callable object.
+        # void removeVisualizationCallable (string& key = "callable")
+        
+        # /** \brief Register a callback function for keyboard events
+        #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return              connection object that allows to disconnect the callback function.
+        # inline boost::signals2::connection registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), void* cookie = NULL)
+        # /** \brief Register a callback function for keyboard events
+        #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
+        #   * \param[in] instance  instance to the class that implements the callback function
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return              connection object that allows to disconnect the callback function.
+        # template<typename T> inline boost::signals2::connection registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), T& instance, void* cookie = NULL)
+        # /** \brief Register a callback function for mouse events
+        #   * \param[in] callback  the function that will be registered as a callback for a mouse event
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return              connection object that allows to disconnect the callback function.
+        # inline boost::signals2::connection registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), void* cookie = NULL)
+        # /** \brief Register a callback function for mouse events
+        #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
+        #   * \param[in] instance  instance to the class that implements the callback function
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return              connection object that allows to disconnect the callback function.
+        # template<typename T> inline boost::signals2::connection registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), T& instance, void* cookie = NULL)
+        # /** \brief Register a callback function for point picking events
+        #   * \param[in] callback  the function that will be registered as a callback for a point picking event
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return              connection object that allows to disconnect the callback function.
+        # inline boost::signals2::connection  registerPointPickingCallback (void (*callback) (const pcl::visualization::PointPickingEvent&, void*), void* cookie = NULL)
+        # /** \brief Register a callback function for point picking events
+        #   * \param[in] callback  the member function that will be registered as a callback for a point picking event
+        #   * \param[in] instance  instance to the class that implements the callback function
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return              connection object that allows to disconnect the callback function.
+        # template<typename T> inline boost::signals2::connection  registerPointPickingCallback (void (T::*callback) (const pcl::visualization::PointPickingEvent&, void*), T& instance, void* cookie = NULL)
+
+# ctypedef CloudViewer CloudViewer_t
+ctypedef shared_ptr[CloudViewer] CloudViewerPtr_t
+# ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
+# ctypedef function1[void, PCLVisualizer] VizCallable;
 ###
+
+# histogram_visualizer.h
+cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visualization":
+    cdef cppclass PCLHistogramVisualizer:
+        PCLHistogramVisualizer ()
+        
+        # brief Spin once method. Calls the interactor and updates the screen once. 
+        void spinOnce (int time = 1, bool force_redraw = false)
+        
+        # brief Spin method. Calls the interactor and runs an internal loop. */
+        void spin ()
+        
+        # brief Set the viewport's background color.
+        # param[in] r the red component of the RGB color
+        # param[in] g the green component of the RGB color
+        # param[in] b the blue component of the RGB color
+        # param[in] viewport the view port (default: all)
+        # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0)
+        
+        # brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
+        # param[in] cloud the PointCloud dataset containing the histogram
+        # param[in] hsize the length of the histogram
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] win_width the width of the window
+        # param[in] win_height the height of the window
+        # template <typename PointT> bool 
+        # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
+        #                      int hsize, 
+        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        bool addFeatureHistogram (cpp.PointCloudPtr_t cloud,               int hsize, const string cloudname, int win_width, int win_height)
+        # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGB_Ptr_t cloud,  int hsize, const string cloudname, int win_width, int win_height)
+        # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, int hsize, const string cloudname, int win_width, int win_height)
+        # bool addFeatureHistogram (cpp.PointCloud_PointXYZI_Ptr_t cloud,    int hsize, const string cloudname, int win_width, int win_height)
+        
+        # brief Add a histogram feature to screen as a separate window from a cloud containing a single histogram.
+        # param[in] cloud the PointCloud dataset containing the histogram
+        # param[in] field_name the field name containing the histogram
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] win_width the width of the window
+        # param[in] win_height the height of the window
+        # bool 
+        # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
+        #                      const std::string &field_name, 
+        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        
+        # /** \brief Add a histogram feature to screen as a separate window.
+        #   * \param[in] cloud the PointCloud dataset containing the histogram
+        #   * \param[in] field_name the field name containing the histogram
+        #   * \param[in] index the point index to extract the histogram from
+        #   * \param[in] id the point cloud object id (default: cloud)
+        #   * \param[in] win_width the width of the window
+        #   * \param[in] win_height the height of the window 
+        # template <typename PointT> bool 
+        # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
+        #                      const std::string &field_name, 
+        #                      const int index,
+        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        
+        # /** \brief Add a histogram feature to screen as a separate window.
+        #   * \param[in] cloud the PointCloud dataset containing the histogram
+        #   * \param[in] field_name the field name containing the histogram
+        #   * \param[in] index the point index to extract the histogram from
+        #   * \param[in] id the point cloud object id (default: cloud)
+        #   * \param[in] win_width the width of the window
+        #   * \param[in] win_height the height of the window
+        # bool 
+        # addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
+        #                      const std::string &field_name, 
+        #                      const int index,
+        #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        
+        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
+        #   * \param[in] cloud the PointCloud dataset containing the histogram
+        #   * \param[in] hsize the length of the histogram
+        #   * \param[in] id the point cloud object id (default: cloud)
+        # template <typename PointT> bool 
+        # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, int hsize, const std::string &id = "cloud");
+        
+        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
+        #   * \param[in] cloud the PointCloud dataset containing the histogram
+        #   * \param[in] field_name the field name containing the histogram
+        #   * \param[in] id the point cloud object id (default: cloud)
+        # bool 
+        # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
+        #                         const std::string &field_name, 
+        #                         const std::string &id = "cloud");
+        # 
+        
+        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
+        #   * \param[in] cloud the PointCloud dataset containing the histogram
+        #   * \param[in] field_name the field name containing the histogram
+        #   * \param[in] index the point index to extract the histogram from
+        #   * \param[in] id the point cloud object id (default: cloud)
+        # template <typename PointT> bool 
+        # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, const std::string &field_name,
+        #                              const int index, const std::string &id = "cloud");
+        # 
+        
+        # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
+        #   * \param[in] cloud the PointCloud dataset containing the histogram
+        #   * \param[in] field_name the field name containing the histogram
+        #   * \param[in] index the point index to extract the histogram from
+        #   * \param[in] id the point cloud object id (default: cloud)
+        # bool 
+        # updateFeatureHistogram (const sensor_msgs::PointCloud2 &cloud, 
+        #                         const std::string &field_name, const int index,
+        #                         const std::string &id = "cloud");         
+        
+        # /** \brief Set the Y range to minp-maxp for all histograms.
+        #    * \param[in] minp the minimum Y range
+        #    * \param[in] maxp the maximum Y range
+        # void 
+        # setGlobalYRange (float minp, float maxp);
+        # /** \brief Update all window positions on screen so that they fit. */
+        # void updateWindowPositions ();
+        # #if ((VTK_MAJOR_VERSION) == 5 && (VTK_MINOR_VERSION <= 4))
+        # /** \brief Returns true when the user tried to close the window */
+        # bool wasStopped ();
+        # /** \brief Set the stopped flag back to false */
+        # void resetStoppedFlag ();
+        # #endif
+
+# ctypedef CloudViewer CloudViewer_t
+ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
+###
+
+# image_viewer.h
+# class PCL_EXPORTS ImageViewer
+        # ImageViewer()
+        # ImageViewer (const std::string& window_title = "");
+        # public:
+        # /** \brief Show a monochrome 2D image on screen.
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # showMonoImage (const unsigned char* data, unsigned width, unsigned height,
+        #                const std::string &layer_id = "mono_image", double opacity = 1.0);
+        # /** \brief Add a monochrome 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # addMonoImage (const unsigned char* data, unsigned width, unsigned height,
+        #               const std::string &layer_id = "mono_image", double opacity = 1.0);
+        # /** \brief Show a 2D RGB image on screen.
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # showRGBImage (const unsigned char* data, unsigned width, unsigned height, 
+        #               const std::string &layer_id = "rgb_image", double opacity = 1.0);
+        # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # addRGBImage (const unsigned char* data, unsigned width, unsigned height, 
+        #              const std::string &layer_id = "rgb_image", double opacity = 1.0);
+        # /** \brief Show a 2D image on screen, obtained from the RGB channel of a point cloud.
+        #   * \param[in] data the input data representing the RGB point cloud 
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # template <typename T> inline void 
+        # showRGBImage (const typename pcl::PointCloud<T>::ConstPtr &cloud,
+        #               const std::string &layer_id = "rgb_image", double opacity = 1.0)
+        # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the RGB point cloud 
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # template <typename T> inline void 
+        # addRGBImage (const typename pcl::PointCloud<T>::ConstPtr &cloud,
+        #               const std::string &layer_id = "rgb_image", double opacity = 1.0)
+        # /** \brief Show a 2D image on screen, obtained from the RGB channel of a point cloud.
+        #   * \param[in] data the input data representing the RGB point cloud 
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # template <typename T> void 
+        # showRGBImage (const pcl::PointCloud<T> &cloud,
+        #               const std::string &layer_id = "rgb_image", double opacity = 1.0);
+        # /** \brief Add an RGB 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the RGB point cloud 
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # template <typename T> void 
+        # addRGBImage (const pcl::PointCloud<T> &cloud,
+        #              const std::string &layer_id = "rgb_image", double opacity = 1.0);
+        # /** \brief Show a 2D image (float) on screen.
+        #   * \param[in] data the input data representing the image in float format
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
+        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
+        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # showFloatImage (const float* data, unsigned int width, unsigned int height, 
+        #                 float min_value = std::numeric_limits<float>::min (), 
+        #                 float max_value = std::numeric_limits<float>::max (), bool grayscale = false,
+        #                 const std::string &layer_id = "float_image", double opacity = 1.0);
+        # 
+        # /** \brief Add a float 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the image in float format
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
+        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
+        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # addFloatImage (const float* data, unsigned int width, unsigned int height, 
+        #                float min_value = std::numeric_limits<float>::min (), 
+        #                float max_value = std::numeric_limits<float>::max (), bool grayscale = false,
+        #                const std::string &layer_id = "float_image", double opacity = 1.0);
+        # 
+        # /** \brief Show a 2D image (unsigned short) on screen.
+        #   * \param[in] short_image the input data representing the image in unsigned short format
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
+        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
+        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void
+        # showShortImage (const unsigned short* short_image, unsigned int width, unsigned int height, 
+        #                 unsigned short min_value = std::numeric_limits<unsigned short>::min (), 
+        #                 unsigned short max_value = std::numeric_limits<unsigned short>::max (), bool grayscale = false,
+        #                 const std::string &layer_id = "short_image", double opacity = 1.0);
+        # 
+        # /** \brief Add a short 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] short_image the input data representing the image in unsigned short format
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] min_value filter all values in the image to be larger than this minimum value
+        #   * \param[in] max_value filter all values in the image to be smaller than this maximum value
+        #   * \param[in] grayscale show data as grayscale (true) or not (false). Default: false
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void
+        # addShortImage (const unsigned short* short_image, unsigned int width, unsigned int height, 
+        #                unsigned short min_value = std::numeric_limits<unsigned short>::min (), 
+        #                unsigned short max_value = std::numeric_limits<unsigned short>::max (), bool grayscale = false,
+        #                const std::string &layer_id = "short_image", double opacity = 1.0);
+        # 
+        # /** \brief Show a 2D image on screen representing angle data.
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # showAngleImage (const float* data, unsigned width, unsigned height,
+        #                 const std::string &layer_id = "angle_image", double opacity = 1.0);
+        # 
+        # /** \brief Add an angle 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # addAngleImage (const float* data, unsigned width, unsigned height,
+        #                const std::string &layer_id = "angle_image", double opacity = 1.0);
+        # 
+        # /** \brief Show a 2D image on screen representing half angle data.
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # showHalfAngleImage (const float* data, unsigned width, unsigned height,
+        #                     const std::string &layer_id = "half_angle_image", double opacity = 1.0);
+        # 
+        # /** \brief Add a half angle 2D image layer, but do not render it (use spin/spinOnce to update).
+        #   * \param[in] data the input data representing the image
+        #   * \param[in] width the width of the image
+        #   * \param[in] height the height of the image
+        #   * \param[in] layer_id the name of the layer (default: "image")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void 
+        # addHalfAngleImage (const float* data, unsigned width, unsigned height,
+        #                    const std::string &layer_id = "half_angle_image", double opacity = 1.0);
+        # /** \brief Sets the pixel at coordinates(u,v) to color while setting the neighborhood to another
+        #   * \param[in] u the u/x coordinate of the pixel
+        #   * \param[in] v the v/y coordinate of the pixel
+        #   * \param[in] fg_color the pixel color
+        #   * \param[in] bg_color the neighborhood color
+        #   * \param[in] radius the circle radius around the pixel
+        #   * \param[in] layer_id the name of the layer (default: "points")
+        #   * \param[in] opacity the opacity of the layer (default: 1.0)
+        #   */
+        # void
+        # markPoint (size_t u, size_t v, Vector3ub fg_color, Vector3ub bg_color = red_color, double radius = 3.0,
+        #            const std::string &layer_id = "points", double opacity = 1.0);
+        # /** \brief Set the window title name
+        #   * \param[in] name the window title
+        #   */
+        # void setWindowTitle (const std::string& name)
+        # /** \brief Spin method. Calls the interactor and runs an internal loop. */
+        # void spin ();
+        # 
+        # /** \brief Spin once method. Calls the interactor and updates the screen once. 
+        #   * \param[in] time - How long (in ms) should the visualization loop be allowed to run.
+        #   * \param[in] force_redraw - if false it might return without doing anything if the 
+        #   * interactor's framerate does not require a redraw yet.
+        #   */
+        # void spinOnce (int time = 1, bool force_redraw = true);
+        # 
+        # /** \brief Register a callback function for keyboard events
+        #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return a connection object that allows to disconnect the callback function.
+        #   */
+        # boost::signals2::connection 
+        # registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), 
+        #                           void* cookie = NULL)
+        # /** \brief Register a callback function for keyboard events
+        #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
+        #   * \param[in] instance  instance to the class that implements the callback function
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return a connection object that allows to disconnect the callback function.
+        #   */
+        # template<typename T> boost::signals2::connection 
+        # registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), 
+        #                           T& instance, void* cookie = NULL)
+        # /** \brief Register a callback boost::function for keyboard events
+        #   * \param[in] cb the boost function that will be registered as a callback for a keyboard event
+        #   * \return a connection object that allows to disconnect the callback function.
+        #   */
+        # boost::signals2::connection 
+        # registerKeyboardCallback (boost::function<void (const pcl::visualization::KeyboardEvent&)> cb);
+        # /** \brief Register a callback boost::function for mouse events
+        #   * \param[in] callback  the function that will be registered as a callback for a mouse event
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return a connection object that allows to disconnect the callback function.
+        #   */
+        # boost::signals2::connection 
+        # registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), 
+        #                        void* cookie = NULL)
+        # /** \brief Register a callback function for mouse events
+        #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
+        #   * \param[in] instance  instance to the class that implements the callback function
+        #   * \param[in] cookie    user data that is passed to the callback
+        #   * \return a connection object that allows to disconnect the callback function.
+        #   */
+        # template<typename T> boost::signals2::connection 
+        # registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), 
+        #                        T& instance, void* cookie = NULL)
+        # /** \brief Register a callback function for mouse events
+        #   * \param[in] cb the boost function that will be registered as a callback for a mouse event
+        #   * \return a connection object that allows to disconnect the callback function.
+        #   */        
+        # boost::signals2::connection 
+        # registerMouseCallback (boost::function<void (const pcl::visualization::MouseEvent&)> cb);
+        # 
+        # /** \brief Set the position in screen coordinates.
+        #   * \param[in] x where to move the window to (X)
+        #   * \param[in] y where to move the window to (Y)
+        #   */
+        # void setPosition (int x, int y)
+        # /** \brief Set the window size in screen coordinates.
+        #   * \param[in] xw window size in horizontal (pixels)
+        #   * \param[in] yw window size in vertical (pixels)
+        #   */
+        # void setSize (int xw, int yw)
+        # 
+        # /** \brief Returns true when the user tried to close the window */
+        # bool wasStopped () const
+        # /** \brief Add a circle shape from a point and a radius
+        #   * \param[in] x the x coordinate of the circle center
+        #   * \param[in] y the y coordinate of the circle center
+        #   * \param[in] radius the radius of the circle
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addCircle (unsigned int x, unsigned int y, double radius, 
+        #            const std::string &layer_id = "circles", double opacity = 1.0);
+        # /** \brief Add a circle shape from a point and a radius
+        #   * \param[in] x the x coordinate of the circle center
+        #   * \param[in] y the y coordinate of the circle center
+        #   * \param[in] radius the radius of the circle
+        #   * \param[in] r the red channel of the color that the sphere should be rendered with (0.0 -> 1.0)
+        #   * \param[in] g the green channel of the color that the sphere should be rendered with (0.0 -> 1.0)
+        #   * \param[in] b the blue channel of the color that the sphere should be rendered with (0.0 -> 1.0)
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addCircle (unsigned int x, unsigned int y, double radius, 
+        #            double r, double g, double b,
+        #            const std::string &layer_id = "circles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box and color its edges with a given color
+        #   * \param[in] min_pt the X,Y min coordinate
+        #   * \param[in] max_pt the X,Y max coordinate
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addRectangle (const pcl::PointXY &min_pt, const pcl::PointXY &max_pt,
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box and color its edges with a given color
+        #   * \param[in] min_pt the X,Y min coordinate
+        #   * \param[in] max_pt the X,Y max coordinate
+        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addRectangle (const pcl::PointXY &min_pt, const pcl::PointXY &max_pt,
+        #               double r, double g, double b,
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box and color its edges with a given color
+        #   * \param[in] x_min the X min coordinate
+        #   * \param[in] x_max the X max coordinate
+        #   * \param[in] y_min the Y min coordinate
+        #   * \param[in] y_max the Y max coordinate 
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box and color its edges with a given color
+        #   * \param[in] x_min the X min coordinate
+        #   * \param[in] x_max the X max coordinate
+        #   * \param[in] y_min the Y min coordinate
+        #   * \param[in] y_max the Y max coordinate 
+        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
+        #               double r, double g, double b,
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box and color its edges with a given color
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] min_pt the X,Y min coordinate
+        #   * \param[in] max_pt the X,Y max coordinate
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # template <typename T> bool
+        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, 
+        #               const T &min_pt, const T &max_pt,
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box and color its edges with a given color
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] min_pt the X,Y min coordinate
+        #   * \param[in] max_pt the X,Y max coordinate
+        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # template <typename T> bool
+        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, 
+        #               const T &min_pt, const T &max_pt,
+        #               double r, double g, double b,
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box that contains a given image mask and color its edges
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] mask the point data representing the mask that we want to draw
+        #   * \param[in] r the red channel of the color that the mask should be rendered with 
+        #   * \param[in] g the green channel of the color that the mask should be rendered with
+        #   * \param[in] b the blue channel of the color that the mask should be rendered with
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # template <typename T> bool
+        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
+        #               double r, double g, double b, 
+        #               const std::string &layer_id = "rectangles", double opacity = 1.0);
+        # 
+        # /** \brief Add a 2D box that contains a given image mask and color its edges in red
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] mask the point data representing the mask that we want to draw
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # template <typename T> bool
+        # addRectangle (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
+        #               const std::string &layer_id = "image_mask", double opacity = 1.0);
+        # /** \brief Add a 2D box and fill it in with a given color
+        #   * \param[in] x_min the X min coordinate
+        #   * \param[in] x_max the X max coordinate
+        #   * \param[in] y_min the Y min coordinate
+        #   * \param[in] y_max the Y max coordinate 
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
+        #   */
+        # bool
+        # addFilledRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
+        #                     const std::string &layer_id = "boxes", double opacity = 0.5);
+        # /** \brief Add a 2D box and fill it in with a given color
+        #   * \param[in] x_min the X min coordinate
+        #   * \param[in] x_max the X max coordinate
+        #   * \param[in] y_min the Y min coordinate
+        #   * \param[in] y_max the Y max coordinate 
+        #   * \param[in] r the red channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] g the green channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] b the blue channel of the color that the box should be rendered with (0.0 -> 1.0)
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
+        #   */
+        # bool
+        # addFilledRectangle (unsigned int x_min, unsigned int x_max, unsigned int y_min, unsigned int y_max,  
+        #                     double r, double g, double b,
+        #                     const std::string &layer_id = "boxes", double opacity = 0.5);
+        # /** \brief Add a 2D line with a given color
+        #   * \param[in] x_min the X min coordinate
+        #   * \param[in] y_min the Y min coordinate
+        #   * \param[in] x_max the X max coordinate
+        #   * \param[in] y_max the Y max coordinate 
+        #   * \param[in] r the red channel of the color that the line should be rendered with (0.0 -> 1.0)
+        #   * \param[in] g the green channel of the color that the line should be rendered with (0.0 -> 1.0)
+        #   * \param[in] b the blue channel of the color that the line should be rendered with (0.0 -> 1.0)
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addLine (unsigned int x_min, unsigned int y_min, unsigned int x_max, unsigned int y_max,
+        #          double r, double g, double b, 
+        #          const std::string &layer_id = "line", double opacity = 1.0);
+        # /** \brief Add a 2D line with a given color
+        #   * \param[in] x_min the X min coordinate
+        #   * \param[in] y_min the Y min coordinate
+        #   * \param[in] x_max the X max coordinate
+        #   * \param[in] y_max the Y max coordinate 
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn. 
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # bool
+        # addLine (unsigned int x_min, unsigned int y_min, unsigned int x_max, unsigned int y_max,
+        #          const std::string &layer_id = "line", double opacity = 1.0);
+        # /** \brief Add a generic 2D mask to an image 
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] mask the point data representing the mask that we want to draw
+        #   * \param[in] r the red channel of the color that the mask should be rendered with 
+        #   * \param[in] g the green channel of the color that the mask should be rendered with
+        #   * \param[in] b the blue channel of the color that the mask should be rendered with
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
+        #   */
+        # template <typename T> bool
+        # addMask (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
+        #          double r, double g, double b, 
+        #          const std::string &layer_id = "image_mask", double opacity = 0.5);
+        # /** \brief Add a generic 2D mask to an image (colored in red)
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] mask the point data representing the mask that we want to draw
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
+        #   */
+        # template <typename T> bool
+        # addMask (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PointCloud<T> &mask, 
+        #          const std::string &layer_id = "image_mask", double opacity = 0.5);
+        # /** \brief Add a generic 2D planar polygon to an image 
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] polygon the point data representing the polygon that we want to draw. 
+        #   * A line will be drawn from each point to the next in the dataset.
+        #   * \param[in] r the red channel of the color that the polygon should be rendered with 
+        #   * \param[in] g the green channel of the color that the polygon should be rendered with
+        #   * \param[in] b the blue channel of the color that the polygon should be rendered with
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # template <typename T> bool
+        # addPlanarPolygon (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PlanarPolygon<T> &polygon, 
+        #                   double r, double g, double b, 
+        #                   const std::string &layer_id = "planar_polygon", double opacity = 1.0);
+        # /** \brief Add a generic 2D planar polygon to an image 
+        #   * \param[in] image the organized point cloud dataset containing the image data
+        #   * \param[in] polygon the point data representing the polygon that we want to draw. 
+        #   * A line will be drawn from each point to the next in the dataset.
+        #   * \param[in] layer_id the 2D layer ID where we want the extra information to be drawn.
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 1.0)
+        #   */
+        # template <typename T> bool
+        # addPlanarPolygon (const typename pcl::PointCloud<T>::ConstPtr &image, const pcl::PlanarPolygon<T> &polygon, 
+        #                   const std::string &layer_id = "planar_polygon", double opacity = 1.0);
+        # /** \brief Add a new 2D rendering layer to the viewer. 
+        #   * \param[in] layer_id the name of the layer
+        #   * \param[in] width the width of the layer
+        #   * \param[in] height the height of the layer
+        #   * \param[in] opacity the opacity of the layer: 0 for invisible, 1 for opaque. (default: 0.5)
+        #   */
+        # bool
+        # addLayer (const std::string &layer_id, int width, int height, double opacity = 0.5);
+        # 
+        # /** \brief Remove a 2D layer given by its ID.
+        #   * \param[in] layer_id the name of the layer
+        #   */
+        # void
+        # removeLayer (const std::string &layer_id);
+        # protected:
+        # /** \brief Set the stopped flag back to false */
+        # void resetStoppedFlag ()
+        # /** \brief Fire up a mouse event with a specified event ID
+        #   * \param[int] event_id the id of the event
+        #   */
+        # void emitMouseEvent (unsigned long event_id);
+        # /** \brief Fire up a keyboard event with a specified event ID
+        #   * \param[int] event_id the id of the event
+        #   */
+        # void emitKeyboardEvent (unsigned long event_id);
+        # // Callbacks used to register for vtk command
+        # static void  MouseCallback (vtkObject*, unsigned long eid, void* clientdata, void *calldata);
+        # static void 
+        # KeyboardCallback (vtkObject*, unsigned long eid, void* clientdata, void *calldata);
+        
+        # protected: // types
+        # struct ExitMainLoopTimerCallback : public vtkCommand
+        # {
+        #   ExitMainLoopTimerCallback ()
+        #   static ExitMainLoopTimerCallback* New ()
+        #   virtual void Execute (vtkObject* vtkNotUsed (caller), unsigned long event_id, void* call_data)
+        #   int right_timer_id;
+        #   ImageViewer* window;
+        # };
+        # struct ExitCallback : public vtkCommand
+        # {
+        #   ExitCallback ()
+        #   static ExitCallback* New ()
+        #   virtual void Execute (vtkObject*, unsigned long event_id, void*)
+        #   ImageViewer* window;
+        # };
+###
+
+# interactor.h
+###
+
+# interactor_style.h
+###
+
+# keyboard_event.h
+###
+
+# mouse_event.h
+###
+
+### Inheritance class ###
+
 
 # template <typename PointT>
 # class PointCloudGeometryHandlerXYZ : public PointCloudGeometryHandler<PointT>
@@ -2200,39 +2233,6 @@ ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
 ###
 
 # template <typename PointT>
-# class PointCloudColorHandler
-        # public:
-        # typedef pcl::PointCloud<PointT> PointCloud;
-        # typedef typename PointCloud::Ptr PointCloudPtr;
-        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-        # typedef boost::shared_ptr<PointCloudColorHandler<PointT> > Ptr;
-        # typedef boost::shared_ptr<const PointCloudColorHandler<PointT> > ConstPtr;
-        # /** \brief Constructor. */
-        # PointCloudColorHandler (const PointCloudConstPtr &cloud)
-        # /** \brief Destructor. */
-        # virtual ~PointCloudColorHandler () {}
-        # /** \brief Check if this handler is capable of handling the input data or not. */
-        # inline bool isCapable () const
-        # /** \brief Abstract getName method. */
-        # virtual std::string getName () const = 0;
-        # /** \brief Abstract getFieldName method. */
-        # virtual std::string getFieldName () const = 0;
-        # /** \brief Obtain the actual color for the input dataset as vtk scalars.
-        #   * \param[out] scalars the output scalars containing the color for the dataset
-        # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const = 0;
-        # protected:
-        # /** \brief A pointer to the input dataset. */
-        # PointCloudConstPtr cloud_;
-        # /** \brief True if this handler is capable of handling the input data, false
-        #   * otherwise.
-        # bool capable_;
-        # /** \brief The index of the field holding the data that represents the color. */
-        # int field_idx_;
-        # /** \brief The list of fields available for this PointCloud. */
-        # std::vector<sensor_msgs::PointField> fields_;
-###
-
-# template <typename PointT>
 # class PointCloudColorHandlerRandom : public PointCloudColorHandler<PointT>
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -2257,6 +2257,10 @@ ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
 
 # template <typename PointT>
 # class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+    cdef cppclass PointCloudColorHandlerCustom[T]:
+        PointCloudColorHandlerCustom ()
+
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2264,7 +2268,12 @@ ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
         # typedef boost::shared_ptr<PointCloudColorHandlerCustom<PointT> > Ptr;
         # typedef boost::shared_ptr<const PointCloudColorHandlerCustom<PointT> > ConstPtr;
         # /** \brief Constructor. */
-        # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud,　double r, double g, double b)
+        # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloud[T] &cloud, double r, double g, double b)
+        
         # /** \brief Destructor. */
         # virtual ~PointCloudColorHandlerCustom () {};
         # /** \brief Abstract getName method. */
@@ -2274,12 +2283,11 @@ ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
         # /** \brief Obtain the actual color for the input dataset as vtk scalars.
         #   * \param[out] scalars the output scalars containing the color for the dataset
         # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const;
-        # protected:
-        # // Members derived from the base class
-        # using PointCloudColorHandler<PointT>::cloud_;
-        # using PointCloudColorHandler<PointT>::capable_;
-        # /** \brief Internal R, G, B holding the values given by the user. */
-        # double r_, g_, b_;
+
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZ] PointCloudColorHandlerCustom_t
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZI] PointCloudColorHandlerCustom_PointXYZI_t
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGB] PointCloudColorHandlerCustom_PointXYZRGB_t
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGBA] PointCloudColorHandlerCustom_PointXYZRGBA_t
 ###
 
 # template <typename PointT>

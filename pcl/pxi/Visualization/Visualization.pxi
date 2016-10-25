@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# main
 cimport _pcl
 cimport pcl_defs as cpp
 cimport numpy as cnp

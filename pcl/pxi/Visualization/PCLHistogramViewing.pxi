@@ -24,7 +24,7 @@ cdef class PCLHistogramViewing:
         if init is None:
             return
         else:
-            raise TypeError("Can't initialize a HistogramVisualizer from a %s" % type(init))
+            raise TypeError("Can't initialize a PCLHistogramViewing from a %s" % type(init))
 
     cdef inline pclvis.PCLHistogramVisualizer *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PCLHistogramVisualizer

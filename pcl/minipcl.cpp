@@ -229,10 +229,34 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 #include <pcl/keypoints/harris_keypoint3D.h>
 
 // HarrisKeypoint3D
+// NG 
+// outcloud set pcl::PointXYZI
 void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
                                    pcl::PointCloud<pcl::PointXYZ> *outcloud)
 {
-    pcl::HarrisKeypoint3D<pcl::PointXYZ,pcl::PointXYZI> detector;
+    // pcl::HarrisKeypoint3D<pcl::PointXYZ, pcl::PointXYZ> detector;
+    pcl::HarrisKeypoint3D<pcl::PointXYZ, pcl::PointXYZI> detector;
+
+    detector.setInputCloud(incloud);
+
+    detector.setNonMaxSupression (true);
+    detector.setRadius (0.01);
+    // detector.setRadiusSearch (100);
+    // detector.setIndices(indicesptr);
+    
+    // NG
+    // detector.compute(*outcloud);
+
+    // OK
+    pcl::PointCloud<pcl::PointXYZI>::Ptr keypoints(new pcl::PointCloud<pcl::PointXYZI>());
+    detector.compute(*keypoints);
+}
+
+// HarrisKeypoint3D
+void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
+                                   pcl::PointCloud<pcl::PointXYZI> *outcloud)
+{
+    pcl::HarrisKeypoint3D<pcl::PointXYZ, pcl::PointXYZI> detector;
 
     detector.setInputCloud(incloud);
 
@@ -240,26 +264,9 @@ void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
     detector.setRadius (0.01);
     //detector.setRadiusSearch (100);
 
-    detector.setIndices(indicesptr);
-    detector.filter(*outcloud);
+    // detector.setIndices(indicesptr);
+    // detector.compute(*outcloud);
+    detector.compute(*outcloud);
 }
-
-
-// pcl::PointCloud<pcl::Normal>::Ptr surface_normals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
-// {
-//     pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
-//     ne.setInputCloud (cloud);//法線の計算を行いたい点群を指定する
-// 
-//     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());//KDTREEを作る
-//     ne.setSearchMethod (tree);//検索方法にKDTREEを指定する
-// 
-//     pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);//法線情報を入れる変数
-// 
-//     ne.setRadiusSearch (0.005);//検索する半径を指定する
-// 
-//     ne.compute (*cloud_normals);//法線情報の出力先を指定する
-// 
-//     return cloud_normals;
-// }
 
 
