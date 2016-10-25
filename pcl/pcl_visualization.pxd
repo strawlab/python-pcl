@@ -2259,20 +2259,14 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 # class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
 cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandlerCustom[T]:
-        PointCloudColorHandlerCustom ()
-
-        # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
-        # typedef typename PointCloud::Ptr PointCloudPtr;
-        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-        # public:
-        # typedef boost::shared_ptr<PointCloudColorHandlerCustom<PointT> > Ptr;
-        # typedef boost::shared_ptr<const PointCloudColorHandlerCustom<PointT> > ConstPtr;
+        # PointCloudColorHandlerCustom ()
         # /** \brief Constructor. */
         # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
-        PointCloudColorHandlerCustom (const cpp.PointCloud[T] &cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloudPtr_t &cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud[T] *cloud, double r, double g, double b)
         
         # /** \brief Destructor. */
         # virtual ~PointCloudColorHandlerCustom () {};
@@ -2284,10 +2278,21 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[out] scalars the output scalars containing the color for the dataset
         # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const;
 
+# typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
+# typedef typename PointCloud::Ptr PointCloudPtr;
+# typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+# public:
+# typedef boost::shared_ptr<PointCloudColorHandlerCustom<PointT> > Ptr;
+# typedef boost::shared_ptr<const PointCloudColorHandlerCustom<PointT> > ConstPtr;
 ctypedef PointCloudColorHandlerCustom[cpp.PointXYZ] PointCloudColorHandlerCustom_t
 ctypedef PointCloudColorHandlerCustom[cpp.PointXYZI] PointCloudColorHandlerCustom_PointXYZI_t
 ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGB] PointCloudColorHandlerCustom_PointXYZRGB_t
 ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGBA] PointCloudColorHandlerCustom_PointXYZRGBA_t
+
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZ]] PointCloudColorHandlerCustom_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZI]] PointCloudColorHandlerCustom_PointXYZI_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGB]] PointCloudColorHandlerCustom_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudColorHandlerCustom_PointXYZRGBA_Ptr_t
 ###
 
 # template <typename PointT>

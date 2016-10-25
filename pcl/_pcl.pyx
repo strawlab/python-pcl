@@ -29,6 +29,7 @@ from libcpp.vector cimport vector
 
 from boost_shared_ptr cimport sp_assign
 
+# Enum Setting
 SAC_RANSAC = pcl_sc.SAC_RANSAC
 SAC_LMEDS = pcl_sc.SAC_LMEDS
 SAC_MSAC = pcl_sc.SAC_MSAC

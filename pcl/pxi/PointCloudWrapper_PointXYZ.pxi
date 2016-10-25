@@ -478,7 +478,7 @@ cdef class PointCloud:
         return concaveHull
 
 
-    def make_HarrisKeypoint3D(self, int ksearch=-1, double searchRadius=-1.0):
+    def make_HarrisKeypoint3D(self):
         """
         Return a pcl.PointCloud object with this object set as the input-cloud
         """
@@ -516,6 +516,7 @@ include "ProjectInliers.pxi"
 include "RadiusOutlierRemoval.pxi"
 include "ConditionAnd.pxi"
 include "ConditionalRemoval.pxi"
+# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Surface
 include "ConcaveHull.pxi"

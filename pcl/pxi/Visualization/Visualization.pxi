@@ -8,6 +8,7 @@ from boost_shared_ptr cimport sp_assign
 
 cdef class Visualization:
     """
+    
     """
     cdef pclvis.CloudViewerPtr_t thisptr_shared
     # cdef pclvis.CloudViewer *me
