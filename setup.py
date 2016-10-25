@@ -420,8 +420,8 @@ else:
                            # 1.6.0 NG
                            Extension("pcl.pcl_registration_160", ["pcl/pcl_registration_160.pyx"],
                                      language="c++", **ext_args),
-                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                                     language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #           language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
@@ -442,8 +442,8 @@ else:
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
-                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                                     language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #           language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
@@ -464,8 +464,8 @@ else:
                                      language = "c++", **ext_args),
                            Extension("pcl.pcl_registration_172", ["pcl/pcl_registration_172.pyx"],
                                      language="c++", **ext_args),
-                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                                     language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
+                           #           language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
