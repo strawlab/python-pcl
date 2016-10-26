@@ -498,27 +498,24 @@ cdef class PointCloud:
         return result
 ###
 
-include "Segmentation.pxi"
-include "SegmentationNormal.pxi"
-include "StatisticalOutlierRemovalFilter.pxi"
-include "VoxelGridFilter.pxi"
-include "PassThroughFilter.pxi"
-include "MovingLeastSquares.pxi"
-# include "KdTree.pxi"
-include "KdTree_FLANN.pxi"
-include "OctreePointCloud.pxi"
-include "OctreePointCloudSearch.pxi"
+include "Segmentation/Segmentation.pxi"
+include "Segmentation/SegmentationNormal.pxi"
+include "Filters/StatisticalOutlierRemovalFilter.pxi"
+include "Filters/VoxelGridFilter.pxi"
+include "Filters/PassThroughFilter.pxi"
+include "Surface/MovingLeastSquares.pxi"
+# include "KdTree/KdTree.pxi"
+include "Octree/OctreePointCloud.pxi"
+include "Octree/OctreePointCloudSearch.pxi"
 include "Vertices.pxi"
-include "CropHull.pxi"
-include "CropBox.pxi"
-include "ProjectInliers.pxi"
-include "RadiusOutlierRemoval.pxi"
-include "ConditionAnd.pxi"
-include "ConditionalRemoval.pxi"
+include "Filters/CropHull.pxi"
+include "Filters/CropBox.pxi"
+include "Filters/ProjectInliers.pxi"
+include "Filters/RadiusOutlierRemoval.pxi"
+include "Filters/ConditionAnd.pxi"
+include "Filters/ConditionalRemoval.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
-
-# Surface
-include "ConcaveHull.pxi"
+include "Surface/ConcaveHull.pxi"
 
 # harris3D
 # include "HarrisKeypoint3D.pxi"

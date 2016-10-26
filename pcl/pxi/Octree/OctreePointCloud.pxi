@@ -4,7 +4,7 @@ cimport pcl_octree as pcloct
 
 cimport eigen as eig
 
-include "PointXYZtoPointXYZ.pxi"
+include "../PointXYZtoPointXYZ.pxi"
 
 cdef class OctreePointCloud:
     """
