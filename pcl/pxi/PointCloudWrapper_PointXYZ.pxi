@@ -505,6 +505,7 @@ include "Filters/VoxelGridFilter.pxi"
 include "Filters/PassThroughFilter.pxi"
 include "Surface/MovingLeastSquares.pxi"
 # include "KdTree/KdTree.pxi"
+include "KdTree/KdTree_FLANN.pxi
 include "Octree/OctreePointCloud.pxi"
 include "Octree/OctreePointCloudSearch.pxi"
 include "Vertices.pxi"
