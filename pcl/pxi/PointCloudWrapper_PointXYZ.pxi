@@ -462,9 +462,8 @@ cdef class PointCloud:
         """
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
-        condRemoval = ConditionalRemoval()
+        condRemoval = ConditionalRemoval(range_conf)
         cdef pclfil.ConditionalRemoval_t *cCondRemoval = <pclfil.ConditionalRemoval_t *>condRemoval.me
-        # cCondRemoval.set_ConditionAdd(range_conf)
         cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return condRemoval
 

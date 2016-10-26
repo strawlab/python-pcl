@@ -1,5 +1,10 @@
+# -*- coding: utf-8 -*-
 # http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid
+# http://derivecv.tumblr.com/post/13631147204
+# http://nisot0710.blogspot.jp/2014/09/pclvoxelgridpclpointcloud2.html
 # PCLPointCloud2 is 1.7.2
+
+import pcl
 
 # int main (int argc, char** argv)
 {

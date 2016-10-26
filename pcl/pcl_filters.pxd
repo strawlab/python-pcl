@@ -513,12 +513,12 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
     cdef cppclass ConditionalRemoval[T](Filter[T]):
         ConditionalRemoval()
         ConditionalRemoval(int)
-        # ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false) :
+        # ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false)
         # python invalid default param ?
-        # ConditionalRemoval (ConditionBasePtr_t condition, bool extract_removed_indices = false) :
-        # ConditionalRemoval (ConditionBase_PointXYZI_Ptr_t condition, bool extract_removed_indices = false) :
-        # ConditionalRemoval (ConditionBase_PointXYZRGB_Ptr_t condition, bool extract_removed_indices = false) :
-        # ConditionalRemoval (ConditionBase_PointXYZRGBA_Ptr_t condition, bool extract_removed_indices = false) :
+        ConditionalRemoval (ConditionBasePtr_t condition, bool extract_removed_indices = false)
+        ConditionalRemoval (ConditionBase_PointXYZI_Ptr_t condition, bool extract_removed_indices = false)
+        ConditionalRemoval (ConditionBase_PointXYZRGB_Ptr_t condition, bool extract_removed_indices = false)
+        ConditionalRemoval (ConditionBase_PointXYZRGBA_Ptr_t condition, bool extract_removed_indices = false)
 
         # using Filter<PointT>::input_;
         # using Filter<PointT>::filter_name_;

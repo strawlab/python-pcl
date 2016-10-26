@@ -16,12 +16,15 @@ cdef class ConditionalRemoval:
     """
     cdef pclfil.ConditionalRemoval_t *me
 
-    def __cinit__(self, PointCloud pc not None, ConditionAnd cond):
-        self.me = new pclfil.ConditionalRemoval_t(cond)
-        self.me.setInputCloud(pc.thisptr_shared)
+    def __cinit__(self, ConditionAnd cond):
+        # self.me = new pclfil.ConditionalRemoval_t(<pclfil.ConditionBase_t*>cond.me)
+        # direct - NG
+        self.me = new pclfil.ConditionalRemoval_t(<pclfil.ConditionBasePtr_t>cond.me)
 
-    def __dealloc__(self):
-        del self.me
+    # def __dealloc__(self):
+    #    # MemoryAccessError
+    #    # del self.me
+    #    self.me
 
     def set_KeepOrganized(self, flag):
         self.me.setKeepOrganized(flag)

@@ -31,7 +31,7 @@ cdef class ConditionAnd:
     """
     cdef pclfil.ConditionAnd_t *me
     # cdef pclfil.FieldComparisonConstPtr_t fieldCompPtr
-    cdef pclfil.FieldComparisonPtr_t fieldCompPtr
+    # cdef pclfil.FieldComparisonPtr_t fieldCompPtr
 
     def __cinit__(self):
         self.me = new pclfil.ConditionAnd_t()
@@ -47,20 +47,28 @@ cdef class ConditionAnd:
         if isinstance(field_name, unicode):
             fname_ascii = field_name.encode("ascii")
         elif not isinstance(field_name, bytes):
-            raise TypeError("field_name should be a string, got %r"
-                            % field_name)
+            raise TypeError("field_name should be a string, got %r" % field_name)
         else:
             fname_ascii = field_name
-
+        
         # cdef pclfil.ComparisonBasePtr_t fieldCompConst = <pclfil.ComparisonBasePtr_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
         # cdef pclfil.ComparisonBasePtr_t fieldCompConst = pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
-        # cdef pclfil.FieldComparisonPtr_t fieldCompConst
+        # cdef pclfil.FieldComparisonConstPtr_t fieldCompConst = pclfil.FieldComparisonConstPtr_t(string(fname_ascii), compOp, thresh)
         # sp_assign(self.fieldCompPtr, new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh) )
         # self.fieldCompPtr = new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
         # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldCompConst)
         # self.me.addComparison(fieldCompPtr)
-        self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> self.fieldCompPtr)
+        # NG
+        # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> self.fieldCompPtr)
         # self.me.addComparison(deref(*fieldCompConst))
         # self.me.addComparison(fieldCompConst.thisptr())
-
+        # cdef pclfil.FieldComparisonConstPtr_t fieldCompConst = <pclfil.FieldComparison_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        # OK? -> NG(MemoryLeakError)
+        # cdef pclfil.FieldComparison_t *fieldComp = new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
+        cdef pclfil.FieldComparisonPtr_t fieldComp = <pclfil.FieldComparisonPtr_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
+        # NG
+        # sp_assign( self.fieldCompPtr, new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh) )
+        # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> self.fieldCompPtr)
 
