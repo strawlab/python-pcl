@@ -84,7 +84,7 @@ before_install:
 
 install:
   - pip install --upgrade pip
-  - pip install cython
+  - pip install cython==0.24
   - pip install numpy
   - python setup.py build_ext -i
   - python setup.py install
