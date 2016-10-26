@@ -186,6 +186,11 @@ ctypedef KdTree[cpp.PointXYZ] KdTree_t
 ctypedef KdTree[cpp.PointXYZI] KdTree_PointXYZI_t
 ctypedef KdTree[cpp.PointXYZRGB] KdTree_PointXYZRGB_t
 ctypedef KdTree[cpp.PointXYZRGBA] KdTree_PointXYZRGBA_t
+
+ctypedef shared_ptr[KdTree[cpp.PointXYZ]] KdTreePtr_t
+ctypedef shared_ptr[KdTree[cpp.PointXYZI]] KdTree_PointXYZI_Ptr_t
+ctypedef shared_ptr[KdTree[cpp.PointXYZRGB]] KdTree_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[KdTree[cpp.PointXYZRGBA]] KdTree_PointXYZRGBA_Ptr_t
 ###
 
 # kdtree_flann.h
@@ -308,4 +313,15 @@ ctypedef KdTreeFLANN[cpp.PointXYZI] KdTreeFLANN_PointXYZI_t
 ctypedef KdTreeFLANN[cpp.PointXYZRGB] KdTreeFLANN_PointXYZRGB_t
 ctypedef KdTreeFLANN[cpp.PointXYZRGBA] KdTreeFLANN_PointXYZRGBA_t
 
+ctypedef shared_ptr[KdTreeFLANN[cpp.PointXYZ]] KdTreeFLANNPtr_t
+ctypedef shared_ptr[KdTreeFLANN[cpp.PointXYZI]] KdTreeFLANN_PointXYZI_Ptr_t
+ctypedef shared_ptr[KdTreeFLANN[cpp.PointXYZRGB]] KdTreeFLANN_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[KdTreeFLANN[cpp.PointXYZRGBA]] KdTreeFLANN_PointXYZRGBA_Ptr_t
+
+ctypedef shared_ptr[const KdTreeFLANN[cpp.PointXYZ]] KdTreeFLANNConstPtr_t
+ctypedef shared_ptr[const KdTreeFLANN[cpp.PointXYZI]] KdTreeFLANN_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const KdTreeFLANN[cpp.PointXYZRGB]] KdTreeFLANN_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const KdTreeFLANN[cpp.PointXYZRGBA]] KdTreeFLANN_PointXYZRGBA_ConstPtr_t
+
 ###
+

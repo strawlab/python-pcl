@@ -1401,7 +1401,9 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         PCLHistogramVisualizer ()
         
         # brief Spin once method. Calls the interactor and updates the screen once. 
-        void spinOnce (int time = 1, bool force_redraw = false)
+        # void spinOnce (int time = 1, bool force_redraw = false)
+        void spinOnce ()
+        void spinOnce (int time, bool force_redraw)
         
         # brief Spin method. Calls the interactor and runs an internal loop. */
         void spin ()
@@ -1412,6 +1414,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # param[in] b the blue component of the RGB color
         # param[in] viewport the view port (default: all)
         # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0)
+        void setBackgroundColor (const double &r, const double &g, const double &b, int viewport)
         
         # brief Add a histogram feature to screen as a separate window, from a cloud containing a single histogram.
         # param[in] cloud the PointCloud dataset containing the histogram
@@ -1423,7 +1426,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, 
         #                      int hsize, 
         #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        bool addFeatureHistogram (cpp.PointCloudPtr_t cloud,               int hsize, const string cloudname, int win_width, int win_height)
+        bool addFeatureHistogram (cpp.PointCloudPtr_t cloud, int hsize, string cloudname, int win_width, int win_height)
         # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGB_Ptr_t cloud,  int hsize, const string cloudname, int win_width, int win_height)
         # bool addFeatureHistogram (cpp.PointCloud_PointXYZRGBA_Ptr_t cloud, int hsize, const string cloudname, int win_width, int win_height)
         # bool addFeatureHistogram (cpp.PointCloud_PointXYZI_Ptr_t cloud,    int hsize, const string cloudname, int win_width, int win_height)

@@ -168,3 +168,7 @@ http://d.hatena.ne.jp/ousttrue/20081119/1227064302
 
 Cython  cppclass enum
 
+Verision ‚É‚æ‚éˆá‚¢
+0.24 -> 0.25
+deref ‚Ì“®‚«‚Éˆá‚¢‚ª‚ ‚éH
+

@@ -8,6 +8,7 @@ from boost_shared_ptr cimport shared_ptr
 
 # main
 cimport pcl_defs as cpp
+cimport pcl_kdtree as pclkdt
 
 ###############################################################################
 # Enum
@@ -54,14 +55,29 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # public:
         inline void setSearchSurface (const cpp.PointCloudPtr_t &)
         inline cpp.PointCloudPtr_t getSearchSurface () const
+        
         # inline void setSearchMethod (const KdTreePtr &tree)
+        # void setSearchMethod (pclkdt.KdTreePtr_t tree)
+        # void setSearchMethod (pclkdt.KdTreeFLANNPtr_t tree)
+        # void setSearchMethod (pclkdt.KdTreeFLANNConstPtr_t &tree)
+        
         # inline KdTreePtr getSearchMethod () const
+        # pclkdt.KdTreePtr_t getSearchMethod ()
+        # pclkdt.KdTreeFLANNPtr_t getSearchMethod ()
+        # pclkdt.KdTreeFLANNConstPtr_t getSearchMethod ()
+        
         inline double getSearchParameter () const
         inline void setKSearch (int search)
         inline int getKSearch () const
         inline void setRadiusSearch (double radius)
         inline double getRadiusSearch () const
+        
         # void compute (PointCloudOut &output);
+        void compute (cpp.PointCloudPtr_t output)
+        void compute (cpp.PointCloud_PointXYZI_Ptr_t output)
+        void compute (cpp.PointCloud_PointXYZRGB_Ptr_t output)
+        void compute (cpp.PointCloud_PointXYZRGBA_Ptr_t output)
+        
         # void computeEigen (cpp.PointCloud[Eigen::MatrixXf] &output);
         # protected:
         # /** \brief The feature name. */
@@ -111,14 +127,16 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # using Feature<PointInT, PointOutT>::input_;
         # using Feature<PointInT, PointOutT>::surface_;
         # using Feature<PointInT, PointOutT>::getClassName;
+		
         # /** \brief Provide a pointer to the input dataset that contains the point normals of
         #         * the XYZ dataset.
         # * In case of search surface is set to be different from the input cloud,
         # * normals should correspond to the search surface, not the input cloud!
         # * \param[in] normals the const boost shared pointer to a PointCloud of normals.
         # * By convention, L2 norm of each normal should be 1.
-        # */
         # inline void setInputNormals (const PointCloudNConstPtr &normals)
+        void setInputNormals (cpp.PointNormalCloudPtr_t normals)
+        
         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
         # inline PointCloudNConstPtr getInputNormals ()
         # protected:
@@ -1166,6 +1184,7 @@ cdef extern from "pcl/features/multiscale_feature_persistence.h" namespace "pcl"
 #   flipNormalTowardsViewpoint (const PointT &point, float vp_x, float vp_y, float vp_z,
 #                               float &nx, float &ny, float &nz)
 #
+
 # template <typename PointInT, typename PointOutT>
 # class NormalEstimation: public Feature<PointInT, PointOutT>
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
@@ -1224,6 +1243,7 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * normal estimation method uses the sensor origin of the input cloud.
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
+        
         # protected:
         # * \brief Estimate normals for all points given in <setInputCloud (), setIndices ()> using the surface in
         # * setSearchSurface () and the spatial locator in setSearchMethod ()
@@ -1239,6 +1259,12 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # Eigen::Vector4f xyz_centroid_;
         # /** whether the sensor origin of the input cloud or a user given viewpoint should be used.*/
         # bool use_sensor_origin_;
+
+ctypedef NormalEstimation[cpp.PointXYZ, cpp.Normal] NormalEstimation_t
+ctypedef NormalEstimation[cpp.PointXYZI, cpp.Normal] NormalEstimation_PointXYZI_t
+ctypedef NormalEstimation[cpp.PointXYZRGB, cpp.Normal] NormalEstimation_PointXYZRGB_t
+ctypedef NormalEstimation[cpp.PointXYZRGBA, cpp.Normal] NormalEstimation_PointXYZRGBA_t
+
 ###
 
 # template <typename PointInT>

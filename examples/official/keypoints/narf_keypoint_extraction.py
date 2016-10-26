@@ -66,21 +66,21 @@ pcd_filename_indices = [0, 0, 0]
 # if pcd_filename_indices.empty() == False
 
 if len(pcd_filename_indices) != 0:
-    # string filename = argv[pcd_filename_indices[0]]
-    filename = argv[pcd_filename_indices[0]]
-    point_cloud = pcl.load(argv[0])
-
-    scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
-                                                               point_cloud.sensor_origin_[1],
-                                                               point_cloud.sensor_origin_[2])) *
-                        Eigen::Affine3f (point_cloud.sensor_orientation_);
-
-    # std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+_far_ranges.pcd;
-    far_ranges_filename = pcl::getFilenameWithoutExtension (filename) + "_far_ranges.pcd";
-
-    # if (pclioloadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
-    #     stdcout  Far ranges file far_ranges_filename does not exists.n;
-    far_ranges = pcl.load(far_ranges_filename)
+    # # string filename = argv[pcd_filename_indices[0]]
+    # filename = argv[pcd_filename_indices[0]]
+    # point_cloud = pcl.load(argv[0])
+	# 
+    # scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
+    #                                                            point_cloud.sensor_origin_[1],
+    #                                                            point_cloud.sensor_origin_[2])) *
+    #                     Eigen::Affine3f (point_cloud.sensor_orientation_);
+	# 
+    # # std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+_far_ranges.pcd;
+    # far_ranges_filename = pcl::getFilenameWithoutExtension (filename) + "_far_ranges.pcd";
+	# 
+    # # if (pclioloadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
+    # #     stdcout  Far ranges file far_ranges_filename does not exists.n;
+    # far_ranges = pcl.load(far_ranges_filename)
 
 else:
     setUnseenToMaxRange = true
@@ -142,6 +142,7 @@ min_range = 0.0f
 # range_image_widget.markPoint (keypoint_indices.points[i]%range_image.width,
 #                               keypoint_indices.points[i]range_image.width);
 # 
+
 # # -----Show keypoints in 3D viewer-----
 # pclPointCloudpclPointXYZPtr keypoints_ptr (new pclPointCloudpclPointXYZ);
 # pclPointCloudpclPointXYZ& keypoints = keypoints_ptr;
@@ -153,6 +154,7 @@ min_range = 0.0f
 # viewer.addPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints);
 # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
 # 
+
 # # -----Main loop-----
 # # while (!viewer.wasStopped ())
 # while True

@@ -13,8 +13,10 @@ cdef class KdTree:
 
     def __cinit__(self, PointCloud pc not None):
         self.me = new cpp.KdTree_t()
-
         self.me.setInputCloud(pc.thisptr_shared)
+
+    def __dealloc__(self):
+        del self.me
 
 
 cdef class KdTree_PointXYZI:
@@ -29,7 +31,6 @@ cdef class KdTree_PointXYZI:
 
     def __cinit__(self, PointCloud_PointXYZI pc not None):
         self.me = new cpp.KdTree_PointXYZI_t()
-
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
@@ -47,7 +48,6 @@ cdef class KdTree_PointXYZRGB:
 
     def __cinit__(self, PointCloud_PointXYZRGB pc not None):
         self.me = new cpp.KdTree_PointXYZRGB_t()
-
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
@@ -65,7 +65,6 @@ cdef class KdTree_PointXYZRGBA:
 
     def __cinit__(self, PointCloud_PointXYZRGBA pc not None):
         self.me = new cpp.KdTree_PointXYZRGBA_t()
-
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):

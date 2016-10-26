@@ -139,6 +139,10 @@ cdef class PointCloud:
             cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
             return np.array([o.w(), o.x(), o.y(), o.z()])
 
+    # cdef inline PointCloud[PointXYZ] *thisptr(self) nogil:
+    #     # Shortcut to get raw pointer to underlying PointCloud
+    #     return self.thisptr_shared.get()
+
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
@@ -495,31 +499,63 @@ cdef class PointCloud:
         # # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
 
         return result
+
+#     def make_NormalEstimation(self):
+#         normalEstimation = NormalEstimation()
+#         cdef pclftr.NormalEstimation_t *cNormalEstimation = <pclftr.NormalEstimation_t *>normalEstimation.me
+#         cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+#         kdtree = KdTreeFLANN(self)
+#         cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
+#         # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
+#         cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
+#         cNormalEstimation.setRadiusSearch(0.005)
+#         
+#         return normalEstimation
+# 
+#     def make_VFHEstimation(self):
+#         vfhEstimation = VFHEstimation()
+#         normalEstimation = self.make_NormalEstimation()
+#         cloud_normals = normalEstimation.Compute()
+#         # features
+#         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
+#         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+#         cVFHEstimation.setInputNormals(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> cloud_normals.thisptr_shared)
+#         kdtree = KdTreeFLANN(self)
+#         cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
+#         # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
+#         cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
+# 
+#         return vfhEstimation
+# 
 ###
 
-include "Segmentation\Segmentation.pxi"
-include "Segmentation\SegmentationNormal.pxi"
-include "Filters\StatisticalOutlierRemovalFilter.pxi"
-include "Filters\VoxelGridFilter.pxi"
-include "Filters\PassThroughFilter.pxi"
-include "Surface\MovingLeastSquares.pxi"
-# include "KdTree\KdTree.pxi"
-include "KdTree\KdTree_FLANN.pxi"
-include "Octree\OctreePointCloud.pxi"
-include "Octree\OctreePointCloudSearch.pxi"
+include "Segmentation/Segmentation.pxi"
+include "Segmentation/SegmentationNormal.pxi"
+include "Filters/StatisticalOutlierRemovalFilter.pxi"
+include "Filters/VoxelGridFilter.pxi"
+include "Filters/PassThroughFilter.pxi"
+include "Surface/MovingLeastSquares.pxi"
+# include "KdTree/KdTree.pxi"
+include "KdTree/KdTree_FLANN.pxi"
+include "Octree/OctreePointCloud.pxi"
+include "Octree/OctreePointCloudSearch.pxi"
 include "Vertices.pxi"
-include "Filters\CropHull.pxi"
-include "Filters\CropBox.pxi"
-include "Filters\ProjectInliers.pxi"
-include "Filters\RadiusOutlierRemoval.pxi"
-include "Filters\ConditionAnd.pxi"
-include "Filters\ConditionalRemoval.pxi"
+include "Filters/CropHull.pxi"
+include "Filters/CropBox.pxi"
+include "Filters/ProjectInliers.pxi"
+include "Filters/RadiusOutlierRemoval.pxi"
+include "Filters/ConditionAnd.pxi"
+include "Filters/ConditionalRemoval.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
-include "Surface\ConcaveHull.pxi"
+include "Surface/ConcaveHull.pxi"
 
 # harris3D
 # include "HarrisKeypoint3D.pxi"
 # include "PointCloudWrapper_PointXYZI.pxi"
+
+# Features
+include "Features/NormalEstimation.pxi"
+include "Features/VFHEstimation.pxi"
 
 
 # PCL_VERSION = "1.6.0"
