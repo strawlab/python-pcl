@@ -1,0 +1,8 @@
+http://docs.chainer.org/en/stable/cupy-reference/kernel.html
+
+Chainer User Group(‰pŒê)
+https://groups.google.com/forum/#%21forum/chainer
+
+Chainer Japanese User Group
+https://groups.google.com/forum/#!forum/chainer-jp
+

@@ -1,0 +1,55 @@
+
+AppVeyor でのmsiインストール作業
+
+サイレントインストールを行う方法
+https://hds.networld.co.jp/helpdesk/support/FaqFacadeServlet?TaskType=Detail&seriesId=InstallShieldFAQ&id=00001745&categoryId=0064&faqInfo=1&JspUrl=/support/FrequentlyDetail.jsp#question
+
+付録B. InstallShield コマンド行パラメーターバージョン 6.0.0
+http://www.ibm.com/support/knowledgecenter/ja/SSEQ5Y_6.0.0/com.ibm.pcomm.doc/books/html/install_guide12.htm
+
+
+UCRTをアプリと同じフォルダに置く (VS2015 Update 1以降)
+http://dev.activebasic.com/egtra/2016/04/19/878/
+
+
+ユニバーサルCRT（リリースビルド用）
+C:\Program Files (x86)\Windows Kits\10\Redist\ucrt\DLLs\x64
+C:\Program Files (x86)\Windows Kits\10\Redist\ucrt\DLLs\x86
+
+ユニバーサルCRT（デバッグビルド用）
+C:\Program Files (x86)\Windows Kits\10\bin\x86\ucrt
+C:\Program Files (x86)\Windows Kits\10\bin\x64\ucrt
+
+MSDN
+https://msdn.microsoft.com/ja-jp/library/abx4dbyh.aspx
+
+---
+
+AppVeyor でのpck-config がNGな件の対応
+
+Python Packaging User Guide  
+https://packaging.python.org/appveyor/
+
+Additional Notes
+Testing with tox
+Many projects use the Tox tool to run their tests. It ensures that tests are run in an isolated environment using the exact files that will be distributed by the project.
+In order to use tox on Appveyor there are a couple of additional considerations (in actual fact, these issues are not specific to Appveyor, and may well affect other CI systems).
+1.By default, tox only passes a chosen subset of environment variables to the test processes. Because distutils uses environment variables to control the compiler, this “test isolation” feature will cause the tests to use the wrong compiler by default.
+To force tox to pass the necessary environment variables to the subprocess, you need to set the tox configuration option passenv to list the additional environment variables to be passed to the subprocess. For the SDK compilers, you need
+
+その他の注意事項
+
+TOXを使用したテスト
+多くのプロジェクトは、彼らのテストを実行するためにトックスツールを使用します。
+これは、テストはプロジェクトによって配布される正確なファイルを使用して隔離された環境で実行されることを保証します。
+AppveyorにTOXを使用するためにそこに（実際には、これらの問題はAppveyorに固有のものではなく、他のCIシステムに影響する場合があります）
+追加の考慮事項のカップルです。
+1.Byのデフォルトは、TOXは、テストプロセスに環境変数の選択されたサブセットを渡します。distutilsのコンパイラを制御するために、
+環境変数を使用しているので、この「テスト・アイソレーション」機能は、テストは、デフォルトで間違ったコンパイラを使用するようになります。
+サブプロセスに必要な環境変数を渡すためにTOXを強制するには、サブプロセスに渡される追加の環境変数を一覧表示するTOX設定オプションpassenvを設定する必要があります。
+SDKのコンパイラでは、次のものが必要
+
+pkg-config.exe の実行結果
+Command exited with code -1073741515(0xc0000225)
+
+

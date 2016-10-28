@@ -29,7 +29,11 @@ from libcpp.vector cimport vector
 
 from boost_shared_ptr cimport sp_assign
 
-# Enum Setting
+cnp.import_array()
+
+### Enum ###
+
+## Enum Setting
 SAC_RANSAC = pcl_sc.SAC_RANSAC
 SAC_LMEDS = pcl_sc.SAC_LMEDS
 SAC_MSAC = pcl_sc.SAC_MSAC
@@ -56,13 +60,7 @@ SACMODEL_PARALLEL_PLANE = pcl_sc.SACMODEL_PARALLEL_PLANE
 SACMODEL_NORMAL_PARALLEL_PLANE = pcl_sc.SACMODEL_NORMAL_PARALLEL_PLANE
 SACMODEL_STICK = pcl_sc.SACMODEL_STICK
 
-# BORDER_POLICY_IGNORE = pcl_ftr.BORDER_POLICY_IGNORE
-# BORDER_POLICY_MIRROR = pcl_ftr.BORDER_POLICY_MIRROR
-# COVARIANCE_MATRIX = pcl_ftr.COVARIANCE_MATRIX
-# AVERAGE_3D_GRADIENT = pcl_ftr.AVERAGE_3D_GRADIENT
-# AVERAGE_DEPTH_CHANGE = pcl_ftr.AVERAGE_DEPTH_CHANGE
-# SIMPLE_3D_GRADIENT = pcl_ftr.SIMPLE_3D_GRADIENT
-cnp.import_array()
+## Enum Setting(define Class InternalType)
 
 # CythonCompareOp
 @cython.internal
@@ -84,7 +82,7 @@ cdef class _CythonCompareOp_Type:
 CythonCompareOp_Type = _CythonCompareOp_Type()
 
 # RangeImage 
-# CythonCompareOp
+# CythonCoordinateFrame
 @cython.internal
 cdef class _CythonCoordinateFrame_Type:
     cdef:
@@ -95,8 +93,40 @@ cdef class _CythonCoordinateFrame_Type:
         self.CAMERA_FRAME = pcl_r_img.COORDINATEFRAME_CAMERA
         self.LASER_FRAME = pcl_r_img.COORDINATEFRAME_LASER
 
-CythonCoordinateFrame_Type = _CythonCompareOp_Type()
+CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 
+# # features
+# # CythonBorderPolicy
+# @cython.internal
+# cdef class _CythonBorderPolicy_Type:
+#     cdef:
+#         readonly int BORDER_POLICY_IGNORE
+#         readonly int BORDER_POLICY_MIRROR
+# 
+#     def __cinit__(self):
+#         self.BORDER_POLICY_IGNORE = pcl_ftr.BORDERPOLICY2_IGNORE
+#         self.BORDER_POLICY_MIRROR = pcl_ftr.BORDERPOLICY2_MIRROR
+# 
+# CythonBorderPolicy_Type = _CythonBorderPolicy_Type()
+# 
+# # CythonNormalEstimationMethod
+# @cython.internal
+# cdef class _CythonNormalEstimationMethod_Type:
+#     cdef:
+#         readonly int COVARIANCE_MATRIX
+#         readonly int AVERAGE_3D_GRADIENT
+#         readonly int AVERAGE_DEPTH_CHANGE
+#         readonly int SIMPLE_3D_GRADIENT
+# 
+#     def __cinit__(self):
+#         self.COVARIANCE_MATRIX = pcl_ftr.ESTIMATIONMETHOD2_COVARIANCE_MATRIX
+#         self.AVERAGE_3D_GRADIENT = pcl_ftr.ESTIMATIONMETHOD2_AVERAGE_3D_GRADIENT
+#         self.AVERAGE_DEPTH_CHANGE = pcl_ftr.ESTIMATIONMETHOD2_AVERAGE_DEPTH_CHANGE
+#         self.SIMPLE_3D_GRADIENT = pcl_ftr.ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT
+# 
+# CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
+# 
+###
 
 include "pxi/PointCloudWrapper_PointXYZ.pxi"
 include "pxi/PointCloudWrapper_PointXYZI.pxi"
@@ -105,3 +135,20 @@ include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 
 # include "pxi/OctreePointCloudSearch.pxi"
 # include "pxi/OctreePointCloudChangeDetector.pxi"
+
+### common ###
+# cdef float deg2rad(float alpha):
+#     return pcl_cmn.deg2rad(alpha)
+# 
+# cdef float rad2deg(float alpha):
+#     return pcl_cmn.rad2deg(alpha)
+# 
+# cdef double deg2rad(double alpha):
+#     return pcl_cmn.rad2deg(alpha)
+# 
+# cdef double rad2deg(double alpha):
+#     return pcl_cmn.rad2deg(alpha)
+# 
+# cdef float normAngle (float alpha):
+#     return pcl_cmn.normAngle(alpha)
+

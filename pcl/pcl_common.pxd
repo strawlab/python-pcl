@@ -1,6 +1,5 @@
 # angles.h
 # namespace pcl
-# {
 cdef extern from "pcl/common/angles.h" namespace "pcl":
     # brief Convert an angle from radians to degrees
     # param alpha the input angle (in radians)
@@ -31,12 +30,8 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
     # ingroup common
     # inline float normAngle (float alpha);
     cdef float normAngle (float alpha)
-
-# #include <pcl/common/impl/angles.hpp>
-# #endif  // PCL_COMMON_ANGLES_H_
-# ###
 ###
-  
+
 # bivariate_polynomial.h
 # namespace pcl 
 # {
@@ -63,67 +58,47 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # 
 #       //-----METHODS-----
 #       /** Initialize members to default values */
-#       void
-#       setDegree (int new_degree);
+#       void setDegree (int new_degree);
 # 
 #       /** How many parametes has a bivariate polynomial with this degree */
-#       unsigned int
-#       getNoOfParameters () const { return getNoOfParametersFromDegree (degree);}
+#       unsigned int getNoOfParameters () const { return getNoOfParametersFromDegree (degree);}
 # 
 #       /** Calculate the value of the polynomial at the given point */
-#       real
-#       getValue (real x, real y) const;  
+#       real getValue (real x, real y) const;  
 # 
 #       /** Calculate the gradient of this polynomial
 #        *  If forceRecalc is false, it will do nothing when the gradient already exists */
-#       void
-#       calculateGradient (bool forceRecalc=false);
+#       void calculateGradient (bool forceRecalc=false);
 # 
 #       /** Calculate the value of the gradient at the given point */
-#       void
-#       getValueOfGradient (real x, real y, real& gradX, real& gradY);
+#       void getValueOfGradient (real x, real y, real& gradX, real& gradY);
 # 
 #       /** Returns critical points of the polynomial. type can be 0=maximum, 1=minimum, or 2=saddle point
 #        *  !!Currently only implemented for degree 2!! */
-#       void
-#       findCriticalPoints (std::vector<real>& x_values, std::vector<real>& y_values, std::vector<int>& types) const;
+#       void findCriticalPoints (std::vector<real>& x_values, std::vector<real>& y_values, std::vector<int>& types) const;
 #       
 #       /** write as binary to a stream */
-#       void
-#       writeBinary (std::ostream& os) const;
+#       void writeBinary (std::ostream& os) const;
 # 
 #       /** write as binary into a file */
-#       void
-#       writeBinary (const char* filename) const;
+#       void writeBinary (const char* filename) const;
 # 
 #       /** read binary from a stream */
-#       void
-#       readBinary (std::istream& os);
+#       void readBinary (std::istream& os);
 # 
 #       /** read binary from a file */
-#       void
-#       readBinary (const char* filename);
+#       void readBinary (const char* filename);
 #       
 #       /** How many parametes has a bivariate polynomial of the given degree */
-#       static unsigned int
-#       getNoOfParametersFromDegree (int n) { return ((n+2)* (n+1))/2;}
-# 
-#       //-----VARIABLES-----
-#       int degree;
-#       real* parameters;
-#       BivariatePolynomialT<real>* gradient_x, * gradient_y;
-#       
+#       static unsigned int getNoOfParametersFromDegree (int n) { return ((n+2)* (n+1))/2;}
+#
 #     protected:
 #       //-----METHODS-----
 #       /** Delete all members */
-#       void
-#       memoryCleanUp ();
+#       void memoryCleanUp ();
 # 
 #       /** Create a deep copy of the given polynomial */
-#       void
-#       deepCopy (const BivariatePolynomialT<real>& other);
-#     //-----VARIABLES-----
-#   };
+#       void deepCopy (const BivariatePolynomialT<real>& other);
 # 
 #   template<typename real>
 #   std::ostream&
@@ -131,11 +106,8 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # 
 #   typedef BivariatePolynomialT<double> BivariatePolynomiald;
 #   typedef BivariatePolynomialT<float>  BivariatePolynomial;
-# 
 # }  // end namespace
-# 
 # #include <pcl/common/impl/bivariate_polynomial.hpp>
-# 
 # #endif
 ###
 

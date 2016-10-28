@@ -12,6 +12,8 @@ cimport pcl_sample_consensus as pcl_sc
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
+cimport pcl_range_image as pcl_r_img
+
 
 cimport indexing as idx
 
@@ -504,11 +506,11 @@ cdef class PointCloud:
 #         normalEstimation = NormalEstimation()
 #         cdef pclftr.NormalEstimation_t *cNormalEstimation = <pclftr.NormalEstimation_t *>normalEstimation.me
 #         cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#         kdtree = KdTreeFLANN(self)
-#         cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
+#         # kdtree = KdTreeFLANN(self)
+#         # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
 #         # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
-#         cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
-#         cNormalEstimation.setRadiusSearch(0.005)
+#         # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
+#         # cNormalEstimation.setRadiusSearch(0.005)
 #         
 #         return normalEstimation
 # 
@@ -519,14 +521,20 @@ cdef class PointCloud:
 #         # features
 #         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
 #         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#         cVFHEstimation.setInputNormals(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> cloud_normals.thisptr_shared)
-#         kdtree = KdTreeFLANN(self)
-#         cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
+#         # NG?
+#         # cVFHEstimation.setInputNormals(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> cloud_normals.thisptr_shared)
+#         # kdtree = KdTreeFLANN(self)
+#         # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
 #         # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
-#         cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
+#         # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
 # 
 #         return vfhEstimation
 # 
+#     def make_RangeImage(self):
+#         rangeImage = RangeImage()
+#         cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImage.me
+# 
+#         return rangeImage
 ###
 
 include "Segmentation/Segmentation.pxi"
@@ -548,6 +556,7 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 include "Surface/ConcaveHull.pxi"
+include "RangeImage.pxi"
 
 # harris3D
 # include "HarrisKeypoint3D.pxi"

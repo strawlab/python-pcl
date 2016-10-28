@@ -1,0 +1,45 @@
+
+Escape 文字対処?
+-- パス名にスペースのある実行ファイルの指定方法
+https://social.technet.microsoft.com/Forums/ja-JP/29918073-43cf-4e24-8bce-b4090c05c2d4?forum=powershellja
+
+
+numpyで空の配列に列を追加していきたい
+http://imaimamu.com/archives/1846
+
+cloud = pcl.PointCloud(pcl.PointXYZ)
+
+python-pcl の Interface を決めるのによさそうなページ
+Interface 
+
+---
+
+環境変数
+OPEN_NI_BIN64
+C:\Program Files\OpenNI\Bin64
+
+OPEN_NI_INCLUDE
+C:\Program Files\OpenNI\Include
+
+OPEN_NI_INSTALL_PATH64
+C:\Program Files\OpenNI\
+
+OPEN_NI_LIB64
+C:\Program Files\OpenNI\Lib64
+
+---
+
+Windowsでの実装
+
+Compiling C extension modules on Windows
+https://github.com/cython/cython/wiki/CythonExtensionsOnWindows
+
+Python でビルドする際のコンパイラの変更?
+http://draftcode.github.io/2013/03/17/5f45fabb-8b64-469e-a0f6-7f9d76564af8.html
+
+Windows 上の Python FAQ(原文)
+http://docs.python.jp/2/faq/windows.html
+
+AppVeyor での 1.6.0 のDLL でエラーとなる現象の対応で引っ掛かる件について(Windows - OpenNI周りが怪しい)
+http://d.hatena.ne.jp/takmin/20130317/1363532529
+

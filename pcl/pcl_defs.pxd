@@ -473,12 +473,14 @@ ctypedef PointCloud[PointXYZI] PointCloud_PointXYZI_t
 ctypedef PointCloud[PointXYZRGB] PointCloud_PointXYZRGB_t
 ctypedef PointCloud[PointXYZRGBA] PointCloud_PointXYZRGBA_t
 ctypedef PointCloud[VFHSignature308] PointCloud_VFHSignature308_t
+ctypedef PointCloud[PointWithViewpoint] PointCloud_PointWithViewpoint_t
 
 ctypedef shared_ptr[PointCloud[PointXYZ]] PointCloudPtr_t
 ctypedef shared_ptr[PointCloud[PointXYZI]] PointCloud_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGB]] PointCloud_PointXYZRGB_Ptr_t
 ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloud_PointXYZRGBA_Ptr_t
 ctypedef shared_ptr[PointCloud[VFHSignature308]] PointCloud_VFHSignature308_Ptr_t
+ctypedef shared_ptr[PointCloud[PointWithViewpoint]] PointCloud_PointWithViewpoint_Ptr_t
 
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[Normal]] PointNormalCloudPtr_t

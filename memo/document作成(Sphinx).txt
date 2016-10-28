@@ -1,0 +1,21 @@
+説明資料・使い方
+http://planset-study-sphinx.readthedocs.io/ja/latest/01.html
+http://docs.sphinx-users.jp/rest.html
+
+---
+
+github のプロジェクトにSphinxドキュメントを良さげな感じにおきたい 其の一 
+http://tell-k.hatenablog.com/entry/2012/01/18/224126
+http://tell-k.hatenablog.com/entry/2012/01/20/020531
+
+github pages に Sphinx で生成したドキュメントを公開する。
+http://d.hatena.ne.jp/kuma8/20110925/1316937363
+
+Sphinx-Users.jp 
+http://sphinx-users.jp/cookbook/hosting/
+
+Read The Doc を使用する方について(こっちのが楽?)
+http://kumar.hateblo.jp/entry/2014/04/07/020033
+http://docs.readthedocs.io/ja/latest/getting_started.html
+
+

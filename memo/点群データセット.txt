@@ -1,0 +1,25 @@
+ŠCŠO
+
+KITTI
+http://www.cvlibs.net/datasets/kitti/raw_data.php
+
+Shapenet
+https://www.shapenet.org/
+http://3dshapenets.cs.princeton.edu/
+
+Ford
+http://robots.engin.umich.edu/SoftwareData/Ford
+
+---
+
+“ú–{
+–¼ŒÃ‰®‘åŠw
+Open PointCloud Map
+http://opcm.uclab.jp/group/%E7%82%B9%E7%BE%A4%E3%83%87%E3%83%BC%E3%82%BF
+
+Autoware - Sample Data
+https://github.com/CPFL/Autoware
+3D map of Moriyama in Nagoya(http://db3.ertl.jp/autoware/sample_data/sample_moriyama_data.tar.gz)
+ROSBAG data of Moriyama driving(http://db3.ertl.jp/autoware/sample_data/sample_moriyama_150324.tar.gz)
+
+

@@ -15,17 +15,13 @@ cdef class Visualization:
 
     cdef Py_ssize_t _view_count
 
-    def __cinit__(self, init=None):
+    def __cinit__(self):
         self._view_count = 0
         
         # self.me = new pclvis.CloudViewer()
         # sp_assign(<cpp.shared_ptr[pclvis.CloudViewer]> self.thisptr_shared, new pclvis.CloudViewer('cloud'))
         sp_assign(self.thisptr_shared, new pclvis.CloudViewer('cloud'))
         
-        if init is None:
-            return
-        else:
-            raise TypeError("Can't initialize a Visualization from a %s" % type(init))
 
     cdef inline pclvis.CloudViewer *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying CloudViewer
