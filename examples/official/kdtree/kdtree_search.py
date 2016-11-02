@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # http://pointclouds.org/documentation/tutorials/kdtree_search.php#kdtree-search
 
 import numpy as np

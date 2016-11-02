@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # agast_2d.h
 # namespace pcl
 # namespace keypoints

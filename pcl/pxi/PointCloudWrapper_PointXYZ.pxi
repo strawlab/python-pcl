@@ -530,11 +530,12 @@ cdef class PointCloud:
 # 
 #         return vfhEstimation
 # 
-#     def make_RangeImage(self):
-#         rangeImage = RangeImage()
-#         cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImage.me
-# 
-#         return rangeImage
+
+    def make_RangeImage(self):
+        rangeImage = RangeImage(self)
+        cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImage.me
+
+        return rangeImage
 ###
 
 include "Segmentation/Segmentation.pxi"

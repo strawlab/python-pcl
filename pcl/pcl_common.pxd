@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # angles.h
 # namespace pcl
 cdef extern from "pcl/common/angles.h" namespace "pcl":

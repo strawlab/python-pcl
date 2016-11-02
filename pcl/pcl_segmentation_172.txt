@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # approximate_progressive_morphological_filter.h
 # boost.h
 # comparator.h

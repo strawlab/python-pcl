@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # ascii_io.h
 # boost.h
 # debayer.h

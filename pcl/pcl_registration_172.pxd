@@ -1,4 +1,6 @@
-﻿from libcpp cimport bool
+﻿# -*- coding: utf-8 -*-
+
+from libcpp cimport bool
 
 # main
 cimport pcl_defs as cpp

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # area_picking_event.h
 # boost.h
 # cloud_viewer.h

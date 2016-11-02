@@ -11,6 +11,8 @@ cimport pcl_defs as cpp
 # boost
 from boost_shared_ptr cimport shared_ptr
 
+cimport eigen as eigen3
+
 # range_image.h
 cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
     cdef cppclass RangeImage:
@@ -25,8 +27,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # enum CoordinateFrame
         #   CAMERA_FRAME = 0,
         #   LASER_FRAME  = 1
-        
-        # // =====STATIC VARIABLES=====
+# // =====STATIC VARIABLES=====
         # /** The maximum number of openmp threads that can be used in this class */
         # static int max_no_of_threads;
         
@@ -87,16 +88,18 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #     const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
         #     CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
         #     float min_range=0.0f, int border_size=0);
-        # createFromPointCloud (
-        #     const PointCloudType& point_cloud, 
-        #     float angular_resolution,
-        #     float max_angle_width, 
-        #     float max_angle_height,
-        #     const Eigen::Affine3f& sensor_pose,
-        #     CoordinateFrame2 coordinate_frame, 
-        #     float noise_level,
-        #     float min_range, 
-        #     int border_size)
+        
+        createFromPointCloud (
+            const cpp.PointXYZ point_cloud, 
+            float angular_resolution,
+            float max_angle_width, 
+            float max_angle_height,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame, 
+            float noise_level,
+            float min_range, 
+            int border_size)
+        
         # PointXYZ
         # createFromPointCloud (
         #     const PointCloudType& point_cloud, 
@@ -280,6 +283,10 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # /** \brief Integrates the given far range measurements into the range image */
         # PCL_EXPORTS void
         # integrateFarRanges (const PointCloud<PointWithViewpoint>& far_ranges);
+        # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_t & far_ranges)
+        # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_Ptr_t & far_ranges)
+        
+        
         # * \brief Cut the range image to the minimal size so that it still contains all actual range readings.
         # * \param border_size allows increase from the minimal size by the specified number of pixels (defaults to 0)
         # * \param top if positive, this value overrides the position of the top edge (defaults to -1)
@@ -695,67 +702,67 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         # /** \brief Get a boost shared pointer of a copy of this */
         # inline Ptr makeShared () { return Ptr (new RangeImagePlanar (*this)); } 
         
-        # /** \brief Create the image from an existing disparity image.
-        #   * \param disparity_image the input disparity image data
-        #   * \param di_width the disparity image width
-        #   * \param di_height the disparity image height
-        #   * \param focal_length the focal length of the primary camera that generated the disparity image
-        #   * \param base_line the baseline of the stereo pair that generated the disparity image
-        #   * \param desired_angular_resolution If this is set, the system will skip as many pixels as necessary to get as
-        #   *         close to this angular resolution as possible while not going over this value (the density will not be
-        #   *         lower than this value). The value is in radians per pixel. 
-        #   */
+        # brief Create the image from an existing disparity image.
+        # param disparity_image the input disparity image data
+        # param di_width the disparity image width
+        # param di_height the disparity image height
+        # param focal_length the focal length of the primary camera that generated the disparity image
+        # param base_line the baseline of the stereo pair that generated the disparity image
+        # param desired_angular_resolution If this is set, the system will skip as many pixels as necessary to get as
+        #        close to this angular resolution as possible while not going over this value (the density will not be
+        #        lower than this value). The value is in radians per pixel. 
+        # 
         # PCL_EXPORTS void setDisparityImage (const float* disparity_image, int di_width, int di_height,
         #                    float focal_length, float base_line, float desired_angular_resolution=-1);
         ##
         
-        # /** Create the image from an existing depth image.
-        #   * \param depth_image the input depth image data as float values
-        #   * \param di_width the disparity image width 
-        #   * \param di_height the disparity image height
-        #   * \param di_center_x the x-coordinate of the camera's center of projection
-        #   * \param di_center_y the y-coordinate of the camera's center of projection
-        #   * \param di_focal_length_x the camera's focal length in the horizontal direction
-        #   * \param di_focal_length_y the camera's focal length in the vertical direction
-        #   * \param desired_angular_resolution If this is set, the system will skip as many pixels as necessary to get as
-        #   *         close to this angular resolution as possible while not going over this value (the density will not be
-        #   *         lower than this value). The value is in radians per pixel.
-        #   */
+        # Create the image from an existing depth image.
+        # param depth_image the input depth image data as float values
+        # param di_width the disparity image width 
+        # param di_height the disparity image height
+        # param di_center_x the x-coordinate of the camera's center of projection
+        # param di_center_y the y-coordinate of the camera's center of projection
+        # param di_focal_length_x the camera's focal length in the horizontal direction
+        # param di_focal_length_y the camera's focal length in the vertical direction
+        # param desired_angular_resolution If this is set, the system will skip as many pixels as necessary to get as
+        #        close to this angular resolution as possible while not going over this value (the density will not be
+        #        lower than this value). The value is in radians per pixel.
+        # 
         # PCL_EXPORTS void
         # setDepthImage (const float* depth_image, int di_width, int di_height, float di_center_x, float di_center_y,
         #                float di_focal_length_x, float di_focal_length_y, float desired_angular_resolution=-1);
         ##
         
-        # /** Create the image from an existing depth image.
-        #   * \param depth_image the input disparity image data as short values describing millimeters
-        #   * \param di_width the disparity image width 
-        #   * \param di_height the disparity image height
-        #   * \param di_center_x the x-coordinate of the camera's center of projection
-        #   * \param di_center_y the y-coordinate of the camera's center of projection
-        #   * \param di_focal_length_x the camera's focal length in the horizontal direction
-        #   * \param di_focal_length_y the camera's focal length in the vertical direction
-        #   * \param desired_angular_resolution If this is set, the system will skip as many pixels as necessary to get as
-        #   *         close to this angular resolution as possible while not going over this value (the density will not be
-        #   *         lower than this value). The value is in radians per pixel.
-        #   */
+        # Create the image from an existing depth image.
+        # param depth_image the input disparity image data as short values describing millimeters
+        # param di_width the disparity image width 
+        # param di_height the disparity image height
+        # param di_center_x the x-coordinate of the camera's center of projection
+        # param di_center_y the y-coordinate of the camera's center of projection
+        # param di_focal_length_x the camera's focal length in the horizontal direction
+        # param di_focal_length_y the camera's focal length in the vertical direction
+        # param desired_angular_resolution If this is set, the system will skip as many pixels as necessary to get as
+        #        close to this angular resolution as possible while not going over this value (the density will not be
+        #        lower than this value). The value is in radians per pixel.
+        # 
         # PCL_EXPORTS void
         # setDepthImage (const unsigned short* depth_image, int di_width, int di_height, float di_center_x, float di_center_y,
         #                float di_focal_length_x, float di_focal_length_y, float desired_angular_resolution=-1);
         ##
         
-        # /** Create the image from an existing point cloud.
-        #   * \param point_cloud the source point cloud
-        #   * \param di_width the disparity image width 
-        #   * \param di_height the disparity image height
-        #   * \param di_center_x the x-coordinate of the camera's center of projection
-        #   * \param di_center_y the y-coordinate of the camera's center of projection
-        #   * \param di_focal_length_x the camera's focal length in the horizontal direction
-        #   * \param di_focal_length_y the camera's focal length in the vertical direction
-        #   * \param sensor_pose the pose of the virtual depth camera
-        #   * \param coordinate_frame the used coordinate frame of the point cloud
-        #   * \param noise_level what is the typical noise of the sensor - is used for averaging in the z-buffer
-        #   * \param min_range minimum range to consifder points
-        #   */
+        # Create the image from an existing point cloud.
+        # param point_cloud the source point cloud
+        # param di_width the disparity image width 
+        # param di_height the disparity image height
+        # param di_center_x the x-coordinate of the camera's center of projection
+        # param di_center_y the y-coordinate of the camera's center of projection
+        # param di_focal_length_x the camera's focal length in the horizontal direction
+        # param di_focal_length_y the camera's focal length in the vertical direction
+        # param sensor_pose the pose of the virtual depth camera
+        # param coordinate_frame the used coordinate frame of the point cloud
+        # param noise_level what is the typical noise of the sensor - is used for averaging in the z-buffer
+        # param min_range minimum range to consifder points
+        # 
         # template <typename PointCloudType> void
         # createFromPointCloudWithFixedSize (const PointCloudType& point_cloud,
         #                                    int di_width, int di_height, float di_center_x, float di_center_y,
@@ -769,23 +776,23 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         # using RangeImage::calculate3DPoint;
         # using RangeImage::getImagePoint;
         
-        # /** \brief Calculate the 3D point according to the given image point and range
-        #   * \param image_x the x image position
-        #   * \param image_y the y image position
-        #   * \param range the range
-        #   * \param point the resulting 3D point
-        #   * \note Implementation according to planar range images (compared to spherical as in the original)
-        #   */
+        # brief Calculate the 3D point according to the given image point and range
+        # param image_x the x image position
+        # param image_y the y image position
+        # param range the range
+        # param point the resulting 3D point
+        # note Implementation according to planar range images (compared to spherical as in the original)
+        # 
         # virtual inline void calculate3DPoint (float image_x, float image_y, float range, Eigen::Vector3f& point) const;
         #
          
-        # /** \brief Calculate the image point and range from the given 3D point
-        #   * \param point the resulting 3D point
-        #   * \param image_x the resulting x image position
-        #   * \param image_y the resulting y image position
-        #   * \param range the resulting range
-        #   * \note Implementation according to planar range images (compared to spherical as in the original)
-        #   */
+        # brief Calculate the image point and range from the given 3D point
+        # param point the resulting 3D point
+        # param image_x the resulting x image position
+        # param image_y the resulting y image position
+        # param range the resulting range
+        # note Implementation according to planar range images (compared to spherical as in the original)
+        # 
         # virtual inline void  getImagePoint (const Eigen::Vector3f& point, float& image_x, float& image_y, float& range) const;
         ##
         
@@ -815,15 +822,6 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
 ###############################################################################
 # Enum
 ###############################################################################
-
-# Filters
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
-#     ctypedef enum CompareOp2 "pcl::ComparisonOps::CompareOp":
-#         COMPAREOP_GT "pcl::ComparisonOps::GT"
-#         COMPAREOP_GE "pcl::ComparisonOps::GE"
-#         COMPAREOP_LT "pcl::ComparisonOps::LT"
-#         COMPAREOP_LE "pcl::ComparisonOps::LE"
-#         COMPAREOP_EQ "pcl::ComparisonOps::EQ"
 
 # enum CoordinateFrame
 # CAMERA_FRAME = 0,

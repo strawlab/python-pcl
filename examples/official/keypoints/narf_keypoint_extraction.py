@@ -1,7 +1,6 @@
+# -*- coding: utf-8 -*-
 # author Bastian Steder 
 # http://pointclouds.org/documentation/tutorials/narf_keypoint_extraction.php#narf-keypoint-extraction
-
-#coding: UTF-8
 
 import pcl
 import numpy as np
@@ -13,7 +12,7 @@ import argparse
 angular_resolution = 0.5
 support_size = 0.2
 coordinate_frame = pcl.CythonCoordinateFrame_Type.CAMERA_FRAME
-setUnseenToMaxRange = false
+setUnseenToMaxRange = False
 
 import argparse
 
@@ -28,7 +27,7 @@ import argparse
 # -----Main-----
 # -----Parse Command Line Arguments-----
 parser = argparse.ArgumentParser(description='StrawPCL example: narf keyPoint extraction')
-parser.add_argument('--UnseenToMaxRange', '-m', default=true, type=bool,
+parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
 parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
                     help='Using coordinate frame = ')
@@ -36,29 +35,32 @@ parser.add_argument('--SupportSize', '-s', default=0, type=int,
                     help='Setting support size to = ')
 parser.add_argument('--AngularResolution', '-r', default=0, type=int,
                     help='Setting angular resolution to = ')
-parser.add_argument('--Help', '-h',
-                    help='Usage: narf_keypoint_extraction.py [options] <scene.pcd>nn'
-                    'Options:n'
+parser.add_argument('--Help', 
+                    help='Usage: narf_keypoint_extraction.py [options] <scene.pcd>\n\n'
+                    'Options:\n'
                     '-------------------------------------------n'
                     '-r <float>   angular resolution in degrees (default = angular_resolution)n'
                     '-c <int>     coordinate frame (default = coordinate_frame)n'
                     '-m           Treat all unseen points as maximum range readingsn'
                     '-s <float>   support size for the interest points (diameter of the used sphere - default = support_size)n'
                     '-h           this helpnnn;')
+
 args = parser.parse_args()
 
+# args setting
 setUnseenToMaxRange = args.UnseenToMaxRange
-coordinate_frame = pclRangeImageCoordinateFrame (args.CoordinateFrame)
-angular_resolution = pcl.deg2rad (args.AngularResolution)
+# coordinate_frame = pcl.RangeImage.CoordinateFrame (args.CoordinateFrame)
+# angular_resolution = pcl.deg2rad (args.AngularResolution)
 
 # -----Read pcd file or create example point cloud if not given-----
 # pclPointCloudPointTypePtr point_cloud_ptr (new pclPointCloudPointType);
 # pclPointCloudPointType& point_cloud = point_cloud_ptr
-point_cloud = pcl.PointCloud()
+# point_cloud = pcl.PointCloud()
 
 # pcl::PointCloud<pcl::PointWithViewpoint> far_ranges
-# EigenAffine3f scene_sensor_pose (EigenAffine3fIdentity ())
-scene_sensor_pose = (EigenAffine3fIdentity ())
+
+# Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ())
+# scene_sensor_pose = (Eigen::Affine3f::Identity ())
 # vector[int] pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
 # pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
 pcd_filename_indices = [0, 0, 0]
@@ -69,15 +71,16 @@ if len(pcd_filename_indices) != 0:
     # # string filename = argv[pcd_filename_indices[0]]
     # filename = argv[pcd_filename_indices[0]]
     # point_cloud = pcl.load(argv[0])
-	# 
+    point_cloud = pcl.load('test_pcd.pcd')
+    
     # scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
     #                                                            point_cloud.sensor_origin_[1],
     #                                                            point_cloud.sensor_origin_[2])) *
     #                     Eigen::Affine3f (point_cloud.sensor_orientation_);
-	# 
+    # 
     # # std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+_far_ranges.pcd;
     # far_ranges_filename = pcl::getFilenameWithoutExtension (filename) + "_far_ranges.pcd";
-	# 
+    # 
     # # if (pclioloadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
     # #     stdcout  Far ranges file far_ranges_filename does not exists.n;
     # far_ranges = pcl.load(far_ranges_filename)
@@ -85,30 +88,48 @@ if len(pcd_filename_indices) != 0:
 else:
     setUnseenToMaxRange = true
     print ('nNo *.pcd file given = Genarating example point cloud.nn')
-    for (float x = -0.5f; x = 0.5f; x += 0.01f)
-        for (float y = -0.5f; y = 0.5f; y += 0.01f)
-            points = np.zeros((1, 3), dtype=np.float32)
-            points[0][0] = x  
-            points[0][1] = y
-            points[0][2] = 2.0f - y
-        end
-    end
-    point_cloud.points.push_back (point);
+    # for (float x = -0.5f; x = 0.5f; x += 0.01f)
+    #     for (float y = -0.5f; y = 0.5f; y += 0.01f)
+    #         points = np.zeros((1, 3), dtype=np.float32)
+    #         points[0][0] = x  
+    #         points[0][1] = y
+    #         points[0][2] = 2.0f - y
+    #     end
+    # end
+    count = 0
+    points = np.zeros((100 * 100, 3), dtype=np.float32)
+    for x in range(-0.5, 0.5, 0.01):
+        for y in range(-0.5, 0.5, 0.01):
+            points[count][0] = x
+            points[count][1] = y
+            points[count][2] = 2.0 - y
+            count = count + 1
 
-    point_cloud.width  = (int) point_cloud.points.size ()
-    point_cloud.height = 1;
+    # point_cloud.points.push_back (point);
+    # point_cloud.width  = (int) point_cloud.points.size ()
+    # point_cloud.height = 1;
+    cloud.from_array(points)
+    
+    far_ranges = pcl.
 
 # ----- Create RangeImage from the PointCloud -----
 noise_level = 0.0
-min_range = 0.0f
+min_range = 0.0
 
 # int border_size = 1
 # boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pclRangeImage);
 # pclRangeImage& range_image = range_image_ptr;
+range_image = point_cloud.make_RangeImage()
+
 # range_image.createFromPointCloud (
-#                             point_cloud, angular_resolution, pcldeg2rad (360.0f), pcldeg2rad (180.0f),
+#                             point_cloud, angular_resolution, pcl.deg2rad (360.0f), pcl.deg2rad (180.0f),
 #                             scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
+range_image.CreateFromPointCloud (angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0),
+                                            coordinate_frame, noise_level, min_range, border_size)
+
 # range_image.integrateFarRanges (far_ranges);
+range_image.IntegrateFarRanges (far_ranges)
+
 # 
 # if (setUnseenToMaxRange)
 #     range_image.setUnseenToMaxRange ();
@@ -157,7 +178,7 @@ min_range = 0.0f
 
 # # -----Main loop-----
 # # while (!viewer.wasStopped ())
-# while True
+# while True:
 #     # process GUI events
 #     range_image_widget.spinOnce ()
 #     viewer.spinOnce ()

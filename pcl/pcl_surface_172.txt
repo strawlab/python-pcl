@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 bilateral_upsampling.h
 boost.h
 concave_hull.h
