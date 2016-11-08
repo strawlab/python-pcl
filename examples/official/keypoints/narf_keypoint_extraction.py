@@ -110,7 +110,7 @@ else:
     # point_cloud.height = 1;
     cloud.from_array(points)
     
-    far_ranges = pcl.
+    far_ranges = pcl.PointCloud()
 
 # ----- Create RangeImage from the PointCloud -----
 noise_level = 0.0
@@ -119,6 +119,7 @@ min_range = 0.0
 # int border_size = 1
 # boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pclRangeImage);
 # pclRangeImage& range_image = range_image_ptr;
+border_size = 1
 range_image = point_cloud.make_RangeImage()
 
 # range_image.createFromPointCloud (
@@ -130,22 +131,32 @@ range_image.CreateFromPointCloud (angular_resolution, pcl.deg2rad (360.0), pcl.d
 # range_image.integrateFarRanges (far_ranges);
 range_image.IntegrateFarRanges (far_ranges)
 
-# 
+
 # if (setUnseenToMaxRange)
 #     range_image.setUnseenToMaxRange ();
 # 
-# # -----Open 3D viewer and add point cloud-----
-# pclvisualizationPCLVisualizer viewer ("3D Viewer")
+
+
+# # # -----Open 3D viewer and add point cloud-----
+# # pclvisualizationPCLVisualizer viewer ("3D Viewer")
+# # viewer.setBackgroundColor (1, 1, 1)
+# # pclvisualizationPointCloudColorHandlerCustompclPointWithRange range_image_color_handler (range_image_ptr, 0, 0, 0);
+# # viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
+# # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image");
+# # viewer.initCameraParameters ();
+# viewer = pcl.pcl_visualization.Visualization()
 # viewer.setBackgroundColor (1, 1, 1)
-# pclvisualizationPointCloudColorHandlerCustompclPointWithRange range_image_color_handler (range_image_ptr, 0, 0, 0);
-# viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
-# viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image");
-# viewer.initCameraParameters ();
-# 
+# range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandlerCustompclPointWithRange (range_image_ptr, 0, 0, 0)
+# viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image")
+# viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image")
+# viewer.initCameraParameters ()
+
 # # -----Show range image-----
 # pclvisualizationRangeImageVisualizer range_image_widget (Range image);
 # range_image_widget.showRangeImage (range_image);
 # 
+
+
 # # -----Extract NARF keypoints-----
 # pclRangeImageBorderExtractor range_image_border_extractor;
 # pclNarfKeypoint narf_keypoint_detector (&range_image_border_extractor);
@@ -153,10 +164,13 @@ range_image.IntegrateFarRanges (far_ranges)
 # narf_keypoint_detector.getParameters ().support_size = support_size;
 # narf_keypoint_detector.getParameters ().add_points_on_straight_edges = true;
 # narf_keypoint_detector.getParameters ().distance_for_additional_points = 0.5;
-# 
+
+
 # pclPointCloudint keypoint_indices;
 # narf_keypoint_detector.compute (keypoint_indices);
 # stdcout  Found keypoint_indices.points.size () key points.n;
+
+
 # 
 # # -----Show keypoints in range image widget-----
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
@@ -168,9 +182,13 @@ range_image.IntegrateFarRanges (far_ranges)
 # pclPointCloudpclPointXYZPtr keypoints_ptr (new pclPointCloudpclPointXYZ);
 # pclPointCloudpclPointXYZ& keypoints = keypoints_ptr;
 # keypoints.points.resize (keypoint_indices.points.size ());
+
+
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
 # keypoints.points[i].getVector3fMap () = range_image.points[keypoint_indices.points[i]].getVector3fMap ();
 # 
+
+
 # pclvisualizationPointCloudColorHandlerCustompclPointXYZ keypoints_color_handler (keypoints_ptr, 0, 255, 0);
 # viewer.addPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints);
 # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);

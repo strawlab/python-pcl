@@ -33,8 +33,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             self._nearest_k(pc, i, k, ind[i], sqdist[i])
         return ind, sqdist
 
-    def nearest_k_search_for_point(self, PointCloud pc not None, int index,
-                                   int k=1):
+    def nearest_k_search_for_point(self, PointCloud pc not None, int index, int k=1):
         """
         Find the k nearest neighbours and squared distances for the point
         at pc[index]. Results are in ndarrays, size (k)
@@ -67,7 +66,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """
         Search for all neighbors of query point that are within a given radius.
-
+        
         Returns: (k_indices, k_sqr_distances)
         """
         cdef vector[int] k_indices
@@ -82,6 +81,32 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             np_k_sqr_distances[i] = k_sqr_distances[i]
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
+
+    def VoxelSearch (self, PointCloud pc):
+        """
+        Search for all neighbors of query point that are within a given voxel.
+        
+        Returns: (v_indices)
+        """
+        cdef vector[int] v_indices
+        # cdef bool isVexelSearch = (<pcloct.OctreePointCloudSearch_t*>self.me).voxelSearch(pc.thisptr()[0], v_indices)
+        # self._VoxelSearch(pc, v_indices)
+        result = pc.to_array()
+        cdef cpp.PointXYZ point
+        point.x = result[0, 0]
+        point.y = result[0, 1]
+        point.z = result[0, 2]
+        
+        self._VoxelSearch(point, v_indices)
+        v = v_indices.size()
+        cdef cnp.ndarray[int] np_v_indices = np.zeros(v, dtype=np.int32)
+        for i in range(v):
+            np_v_indices[i] = v_indices[i]
+        return np_v_indices
+
+    @cython.boundscheck(False)
+    cdef void _VoxelSearch(self, cpp.PointXYZ point, vector[int] v_indices) except +:
+        (<pcloct.OctreePointCloudSearch_t*>self.me).voxelSearch(point, v_indices)
 
 #     def radius_search_for_cloud(self, PointCloud pc not None, double radius):
 #         """
