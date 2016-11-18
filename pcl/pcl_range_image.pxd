@@ -81,7 +81,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #                     will always take the minimum per cell.
         # param min_range the minimum visible range (defaults to 0)
         # param border_size the border size (defaults to 0)
-        # 
+        #
         # template <typename PointCloudType> void
         # createFromPointCloud (const PointCloudType& point_cloud, float angular_resolution=pcl::deg2rad (0.5f),
         #     float max_angle_width=pcl::deg2rad (360.0f), float max_angle_height=pcl::deg2rad (180.0f),
@@ -575,7 +575,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # inline void setImageOffsets (int offset_x, int offset_y)
         # /** Get a sub part of the complete image as a new range image.
         #   * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #   *                         This is always according to absolute 0,0 meaning -180属,-90属
+        #   *                         This is always according to absolute 0,0 meaning -180,-90
         #   *                         and it is already in the system of the new image, so the
         #   *                         actual pixel used in the original image is
         #   *                         combine_pixels* (image_offset_x-image_offset_x_)
@@ -810,7 +810,7 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         
         # /** Get a sub part of the complete image as a new range image.
         #   * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #   *                         This is always according to absolute 0,0 meaning -180�,-90 
+        #   *                         This is always according to absolute 0,0 meaning(-180, -90)
         #   *                         and it is already in the system of the new image, so the
         #   *                         actual pixel used in the original image is
         #   *                         combine_pixels* (image_offset_x-image_offset_x_)
