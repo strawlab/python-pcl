@@ -81,7 +81,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #                     will always take the minimum per cell.
         # param min_range the minimum visible range (defaults to 0)
         # param border_size the border size (defaults to 0)
-        #
+        # 
         # template <typename PointCloudType> void
         # createFromPointCloud (const PointCloudType& point_cloud, float angular_resolution=pcl::deg2rad (0.5f),
         #     float max_angle_width=pcl::deg2rad (360.0f), float max_angle_height=pcl::deg2rad (180.0f),
@@ -89,8 +89,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #     CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
         #     float min_range=0.0f, int border_size=0);
         
-        createFromPointCloud (
-            const cpp.PointXYZ point_cloud, 
+        void createFromPointCloud (
+            const cpp.PointCloud_t point_cloud, 
             float angular_resolution,
             float max_angle_width, 
             float max_angle_height,
@@ -100,6 +100,19 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float min_range, 
             int border_size)
         
+        # ctypedef PointCloud[PointXYZI] PointCloud_PointXYZI_t
+        # ctypedef PointCloud[PointXYZRGBA] PointCloud_PointXYZRGBA_t
+        void createFromPointCloud (
+            const cpp.PointCloud_PointXYZRGB_t point_cloud, 
+            float angular_resolution,
+            float max_angle_width, 
+            float max_angle_height,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame, 
+            float noise_level,
+            float min_range, 
+            int border_size)
+
         # PointXYZ
         # createFromPointCloud (
         #     const PointCloudType& point_cloud, 
@@ -281,11 +294,10 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         ##
         
         # /** \brief Integrates the given far range measurements into the range image */
-        # PCL_EXPORTS void
-        # integrateFarRanges (const PointCloud<PointWithViewpoint>& far_ranges);
-        # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_t & far_ranges)
-        # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_Ptr_t & far_ranges)
-        
+        # PCL_EXPORTS void integrateFarRanges (const PointCloud<PointWithViewpoint>& far_ranges);
+        # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_t far_ranges)
+        # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_Ptr_t &far_ranges)
+        void integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_t &far_ranges)
         
         # * \brief Cut the range image to the minimal size so that it still contains all actual range readings.
         # * \param border_size allows increase from the minimal size by the specified number of pixels (defaults to 0)
@@ -798,7 +810,7 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         
         # /** Get a sub part of the complete image as a new range image.
         #   * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #   *                         This is always according to absolute 0,0 meaning -180属,-90属
+        #   *                         This is always according to absolute 0,0 meaning -180�,-90 
         #   *                         and it is already in the system of the new image, so the
         #   *                         actual pixel used in the original image is
         #   *                         combine_pixels* (image_offset_x-image_offset_x_)

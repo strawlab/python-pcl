@@ -1075,7 +1075,7 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
         # param[out] point_idx_data the resultant indices of the neighboring voxel points
         # return "true" if leaf node exist; "false" otherwise
         # bool voxelSearch (const int index, std::vector<int>& point_idx_data);
-        # bool voxelSearch (const int index, vector[int] point_idx_data)
+        bool voxelSearch (const int index, vector[int] point_idx_data)
         
         # brief Search for approx. nearest neighbor at the query point.
         # param[in] cloud the point cloud data

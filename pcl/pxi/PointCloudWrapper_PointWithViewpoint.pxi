@@ -1,5 +1,6 @@
 
 cimport pcl_defs as cpp
+cimport pcl_io as pclio
 
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
@@ -8,11 +9,9 @@ from _pcl cimport PointCloud_PointWithViewpoint
 cdef class PointCloud_PointWithViewpoint:
     """
     Represents a cloud of points in 6-d space.
-
     A point cloud can be initialized from either a NumPy ndarray of shape
     (n_points, 6), from a list of triples, or from an integer n to create an
     "empty" cloud of n points.
-
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
@@ -141,6 +140,34 @@ cdef class PointCloud_PointWithViewpoint:
     def __getitem__(self, cnp.npy_intp nmidx):
         cdef cpp.PointWithViewpoint *p = idx.getptr_at(self.thisptr(), nmidx)
         return p.x, p.y, p.z, p.vp_x, p.vp_y, p.vp_z
+
+    def from_file(self, char *f):
+        """
+        Fill this pointcloud from a file (a local path).
+        Only pcd files supported currently.
+        
+        Deprecated; use pcl.load instead.
+        """
+        return self._from_pcd_file(f)
+
+    def _from_pcd_file(self, const char *s):
+        cdef int error = 0
+        with nogil:
+            error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+        return error
+
+    def _from_ply_file(self, const char *s):
+        cdef int ok = 0
+        with nogil:
+            ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
+        return ok
+
+    def to_file(self, const char *fname, bool ascii=True):
+        """
+        Save pointcloud to a file in PCD format.
+        Deprecated: use pcl.save instead.
+        """
+        return self._to_pcd_file(fname, not ascii)
 
 ###
 

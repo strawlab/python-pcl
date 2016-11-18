@@ -1,13 +1,12 @@
 # How to extract borders from range images
-# http://pointclouds.org/documentation/tutorials/
-# author Bastian Steder
+# http://pointclouds.org/documentation/tutorials/range_image_border_extraction.php#range-image-border-extraction
 
 import pcl
 import numpy as np
 import random
 
 # -----Parameters-----
-angular_resolution = 0.5f;
+angular_resolution = 0.5
 # pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 coordinate_frame = pcl.CythonCoordinateFrame_Type.CAMERA_FRAME
 setUnseenToMaxRange = False;
@@ -51,24 +50,24 @@ import argparse
 # cout << "Setting angular resolution to "<<angular_resolution<<"deg.\n";
 
 parser = argparse.ArgumentParser(description='StrawPCL example: range image border extraction')
-parser.add_argument('--UnseenToMaxRange', '-m', default=true, type=bool,
+parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
 parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
                     help='Using coordinate frame = ')
 parser.add_argument('--AngularResolution', '-r', default=0, type=int,
                     help='Setting angular resolution to = ')
-parser.add_argument('--Help', '-h',
-                    help='Usage: narf_keypoint_extraction.py [options] <scene.pcd>nn'
-                    'Options:n'
-                    '-------------------------------------------n'
-                    '-r <float>   angular resolution in degrees (default = angular_resolution)n'
-                    '-c <int>     coordinate frame (default = coordinate_frame)n'
-                    '-m           Treat all unseen points as max rangen'
-                    '-h           this helpnnn;')
+parser.add_argument('--Help',
+                    help='Usage: narf_keypoint_extraction.py [options] <scene.pcd>\n\n'
+                    'Options:\n'
+                    '-------------------------------------------\n'
+                    '-r <float>   angular resolution in degrees (default = angular_resolution)\n'
+                    '-c <int>     coordinate frame (default = coordinate_frame)\n'
+                    '-m           Treat all unseen points as max range\n'
+                    '-h           this help\n\n\n;')
 args = parser.parse_args()
 
 setUnseenToMaxRange = args.UnseenToMaxRange
-coordinate_frame = pclRangeImageCoordinateFrame (args.CoordinateFrame)
+# coordinate_frame = pcl.RangeImage.CoordinateFrame (args.CoordinateFrame)
 angular_resolution = pcl.deg2rad (args.AngularResolution)
 
 # // -----Read pcd file or create example point cloud if not given-----
@@ -78,11 +77,12 @@ point_cloud = pcl.PointCloud()
 
 # pcl::PointCloud<pcl::PointWithViewpoint> far_ranges;
 # Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ());
-scene_sensor_pose = (EigenAffine3fIdentity ())
+scene_sensor_pose = (Eigen::Affine3f::Identity ())
 
 # std::vector<int> pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, "pcd");
 pcd_filename_indices = [0, 0, 0]
 
+##
 # if (!pcd_filename_indices.empty ())
 # {
 # std::string filename = argv[pcd_filename_indices[0]];
@@ -119,18 +119,28 @@ far_ranges = pcl.load(far_ranges_filename)
 if far_ranges.size != 0:
     print ('Far ranges file ' + far_ranges_filename + ' does not exists.n')
 else:
-    print ('nNo *.pcd file given => Genarating example point cloudnn')
-    for i in [0.01*x for x in range(-0.5, 0.5)]:
-        for j in [0.01*y for y in range(-0.5, 0.5)]:
-            # PointType point;  point.x = i;  point.y = j;  point.z = 2.0f - y;
-            # point_cloud.points.push_back (point);
-            print ('')
+    setPoints = np.zeros((100, 3), dtype=np.float32)
+    count = 0
 
+    print ('nNo *.pcd file given => Genarating example point cloudnn')
+    for i in [0.01 * x for x in range(-0.5, 0.5)]:
+        for j in [0.01 * y for y in range(-0.5, 0.5)]:
+            # PointType point;  point.x = i;  point.y = j;  point.z = 2.0f - j;
+            # point_cloud.points.push_back (point);
+            setPoints[count][0] = i
+            setPoints[count][1] = j
+            setPoints[count][2] = 2.0 - j
+            count = count + 1
+
+    point_cloud.from_array(setPoints)
+
+
+##
 # // -----------------------------------------------
 # // -----Create RangeImage from the PointCloud-----
 # // -----------------------------------------------
 noise_level = 0.0;
-min_range = 0.0f;
+min_range = 0.0;
 border_size = 1;
 # boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
 # pcl::RangeImage& range_image = *range_image_ptr;   
@@ -140,6 +150,9 @@ border_size = 1;
 # if (setUnseenToMaxRange)
 # range_image.setUnseenToMaxRange ();
 
+
+
+##
 # // --------------------------------------------
 # // -----Open 3D viewer and add point cloud-----
 # // --------------------------------------------
@@ -151,14 +164,20 @@ border_size = 1;
 # // PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 150, 150, 150);
 # // viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
 # // viewer.setPointCloudRenderingProperties (PCL_VISUALIZER_POINT_SIZE, 2, "range image");
-# 
+
+
+
+##
 # // -------------------------
 # // -----Extract borders-----
 # // -------------------------
 # pcl::RangeImageBorderExtractor border_extractor (&range_image);
 # pcl::PointCloud<pcl::BorderDescription> border_descriptions;
 # border_extractor.compute (border_descriptions);
-# 
+
+
+
+##
 # // ----------------------------------
 # // -----Show points in 3D viewer-----
 # // ----------------------------------
@@ -190,6 +209,10 @@ border_size = 1;
 # viewer.addPointCloud<pcl::PointWithRange> (shadow_points_ptr, shadow_points_color_handler, "shadow points");
 # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "shadow points");
 # 
+
+
+
+##
 # //-------------------------------------
 # // -----Show points on range image-----
 # // ------------------------------------
@@ -197,9 +220,11 @@ border_size = 1;
 # range_image_borders_widget =
 # pcl::visualization::RangeImageVisualizer::getRangeImageBordersWidget (range_image, -std::numeric_limits<float>::infinity (), std::numeric_limits<float>::infinity (), false,
 #                                                                       border_descriptions, "Range image with borders");
-# // -------------------------------------
 # 
-# 
+
+
+
+##
 # //--------------------
 # // -----Main loop-----
 # //--------------------

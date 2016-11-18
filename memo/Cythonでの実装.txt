@@ -120,3 +120,5 @@ bool addPlane (const pcl::ModelCoefficients &coefficients,
                const std::string &id = "plane",
                int viewport = 0);
 
+---
+

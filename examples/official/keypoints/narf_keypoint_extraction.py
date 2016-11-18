@@ -63,7 +63,8 @@ setUnseenToMaxRange = args.UnseenToMaxRange
 # scene_sensor_pose = (Eigen::Affine3f::Identity ())
 # vector[int] pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
 # pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
-pcd_filename_indices = [0, 0, 0]
+pcd_filename_indices = ''
+# pcd_filename_indices = [0, 0, 0]
 
 # if pcd_filename_indices.empty() == False
 
@@ -72,6 +73,7 @@ if len(pcd_filename_indices) != 0:
     # filename = argv[pcd_filename_indices[0]]
     # point_cloud = pcl.load(argv[0])
     point_cloud = pcl.load('test_pcd.pcd')
+    far_ranges_filename = 'test_pcd.pcd'
     
     # scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
     #                                                            point_cloud.sensor_origin_[1],
@@ -81,13 +83,15 @@ if len(pcd_filename_indices) != 0:
     # # std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+_far_ranges.pcd;
     # far_ranges_filename = pcl::getFilenameWithoutExtension (filename) + "_far_ranges.pcd";
     # 
-    # # if (pclioloadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
+    # # if (pcl::io::loadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
     # #     stdcout  Far ranges file far_ranges_filename does not exists.n;
-    # far_ranges = pcl.load(far_ranges_filename)
+    
+    far_ranges = pcl.load_PointWithViewpoint(far_ranges_filename)
 
 else:
-    setUnseenToMaxRange = true
-    print ('nNo *.pcd file given = Genarating example point cloud.nn')
+    setUnseenToMaxRange = True
+    print ('No *.pcd file given = Genarating example point cloud.\n')
+    
     # for (float x = -0.5f; x = 0.5f; x += 0.01f)
     #     for (float y = -0.5f; y = 0.5f; y += 0.01f)
     #         points = np.zeros((1, 3), dtype=np.float32)
@@ -96,21 +100,28 @@ else:
     #         points[0][2] = 2.0f - y
     #     end
     # end
+    
     count = 0
     points = np.zeros((100 * 100, 3), dtype=np.float32)
-    for x in range(-0.5, 0.5, 0.01):
-        for y in range(-0.5, 0.5, 0.01):
-            points[count][0] = x
-            points[count][1] = y
-            points[count][2] = 2.0 - y
-            count = count + 1
 
+    # float NG
+    # TypeError: range() integer end argument expected, got float.
+    # for x in range(-0.5, 0.5, 0.01):
+    #     for y in range(-0.5, 0.5, 0.01):
+    for x in range(-50, 50, 1):
+        for y in range(-50, 50, 1):
+            points[count][0] = x * 0.1
+            points[count][1] = y * 0.1
+            points[count][2] = 2.0 - y * 0.1
+            count = count + 1
+    
     # point_cloud.points.push_back (point);
     # point_cloud.width  = (int) point_cloud.points.size ()
     # point_cloud.height = 1;
-    cloud.from_array(points)
+    point_cloud = pcl.PointCloud()
+    point_cloud.from_array(points)
     
-    far_ranges = pcl.PointCloud()
+    far_ranges = pcl.PointCloud_PointWithViewpoint()
 
 # ----- Create RangeImage from the PointCloud -----
 noise_level = 0.0
@@ -122,20 +133,26 @@ min_range = 0.0
 border_size = 1
 range_image = point_cloud.make_RangeImage()
 
+print ('range_image::createFromPointCloud.\n')
+
 # range_image.createFromPointCloud (
 #                             point_cloud, angular_resolution, pcl.deg2rad (360.0f), pcl.deg2rad (180.0f),
 #                             scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
 range_image.CreateFromPointCloud (angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0),
                                             coordinate_frame, noise_level, min_range, border_size)
 
+print ('range_image::integrateFarRanges.\n')
+
 # range_image.integrateFarRanges (far_ranges);
 range_image.IntegrateFarRanges (far_ranges)
 
+print ('range_image::setUnseenToMaxRange.\n')
 
 # if (setUnseenToMaxRange)
 #     range_image.setUnseenToMaxRange ();
-# 
 
+if setUnseenToMaxRange == True:
+    range_image.setUnseenToMaxRange ()
 
 # # # -----Open 3D viewer and add point cloud-----
 # # pclvisualizationPCLVisualizer viewer ("3D Viewer")

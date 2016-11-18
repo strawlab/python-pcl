@@ -172,3 +172,27 @@ Verision による違い
 0.24 -> 0.25
 deref の動きに違いがある？
 
+
+---
+
+pxi ファイル
+
+戻り値を設定していないと
+Cython でのコード生成時に PyObject の戻り値を要求されるので注意
+
+_pcl.cpp
+
+ /* "pcl/pxi/RangeImage.pxi":64
+ * 
+ *     def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
+ *         self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])             # <<<<<<<<<<<<<<
+ *         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
+ * 
+ */
+  __pyx_t_1 = __pyx_v_self->me->integrateFarRanges(((__pyx_t_3pcl_8pcl_defs_PointCloud_PointWithViewpoint_t &)(__pyx_f_3pcl_4_pcl_29PointCloud_PointWithViewpoint_thisptr(__pyx_v_viewpoint)[0]))); if (unlikely(!__pyx_t_1)) __PYX_ERR(20, 64, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+※ RangeImage::integrateFarRanges 自体の戻り値は void だが
+   pxi で定義した時に戻り値定義をしていなかったため上記のようになった。
+

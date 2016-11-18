@@ -35,22 +35,26 @@ python examples\official\keypoints\narf_keypoint_extraction.py
 ###
 
 # octree
-
 # execute NG
 python examples\official\octree\octree_search.py
-
 # python examples\official\octree\octree_change_detection_172.py
 ###
 
 # RangeImage
+python examples\official\RangeImage\range_image_border_extraction.py
+###
 
 # Recognition
+###
 
 # Registration
+###
 
 # SampleConsensus
+###
 
 # Segmentation
+###
 
 # Surface
 python examples\official\surface\concave_hull_2d.py
@@ -58,6 +62,9 @@ python examples\official\surface\concave_hull_2d.py
 # python examples\official\surface\greedy_projection_172.py
 # NG
 python examples\official\surface\resampling.py
+###
 
 # Visualization
+###
+
 

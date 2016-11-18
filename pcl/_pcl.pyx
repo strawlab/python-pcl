@@ -138,12 +138,12 @@ include "pxi/PointCloudWrapper_PointWithViewpoint.pxi"
 # include "pxi/OctreePointCloudChangeDetector.pxi"
 
 ### common ###
-# cdef float deg2rad(float alpha):
-#     return pcl_cmn.deg2rad(alpha)
-# 
-# cdef float rad2deg(float alpha):
-#     return pcl_cmn.rad2deg(alpha)
-# 
+def deg2rad(float alpha):
+    return pcl_cmn.deg2rad(alpha)
+
+def rad2deg(float alpha):
+    return pcl_cmn.rad2deg(alpha)
+
 # cdef double deg2rad(double alpha):
 #     return pcl_cmn.rad2deg(alpha)
 # 

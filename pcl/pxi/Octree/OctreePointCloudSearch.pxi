@@ -17,6 +17,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         self.me = <pcloct.OctreePointCloud_t*> new pcloct.OctreePointCloudSearch_t(resolution)
 
     # nearestKSearch
+    ###
     def nearest_k_search_for_cloud(self, PointCloud pc not None, int k=1):
         """
         Find the k nearest neighbours and squared distances for all points
@@ -63,6 +64,10 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             sqdist[i] = k_sqr_distances[i]
             ind[i] = k_indices[i]
 
+    ###
+
+    # radius Search
+    ###
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """
         Search for all neighbors of query point that are within a given radius.
@@ -82,6 +87,10 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
+    ###
+
+    # Voxel Search
+    ### 
     def VoxelSearch (self, PointCloud pc):
         """
         Search for all neighbors of query point that are within a given voxel.
@@ -97,16 +106,35 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         point.y = result[0, 1]
         point.z = result[0, 2]
         
+        print ('VoxelSearch at (' + str(point.x) + ' ' + str(point.y) + ' ' + str(point.z) + ')')
+        
+        # print('before v_indices count = ' + str(v_indices.size()))
         self._VoxelSearch(point, v_indices)
         v = v_indices.size()
+        # print('after v_indices count = ' + str(v))
+        
         cdef cnp.ndarray[int] np_v_indices = np.zeros(v, dtype=np.int32)
         for i in range(v):
             np_v_indices[i] = v_indices[i]
+        
         return np_v_indices
 
     @cython.boundscheck(False)
-    cdef void _VoxelSearch(self, cpp.PointXYZ point, vector[int] v_indices) except +:
-        (<pcloct.OctreePointCloudSearch_t*>self.me).voxelSearch(point, v_indices)
+    cdef void _VoxelSearch(self, cpp.PointXYZ point, vector[int] &v_indices) except +:
+        cdef vector[int] voxel_indices
+        # k = 10
+        # voxel_indices.resize(k)
+        (<pcloct.OctreePointCloudSearch_t*>self.me).voxelSearch(point, voxel_indices)
+        
+        # print('_VoxelSearch k = ' + str(k))
+        # print('_VoxelSearch voxel_indices = ' + str(voxel_indices.size()))
+        k = voxel_indices.size()
+        
+        for i in range(k):
+            v_indices.push_back(voxel_indices[i])
+
+    ### 
+
 
 #     def radius_search_for_cloud(self, PointCloud pc not None, double radius):
 #         """
