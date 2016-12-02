@@ -1,11 +1,9 @@
+# -*- coding: utf-8 -*-
 # How to visualize a range image
 # http://pointclouds.org/documentation/tutorials/range_image_visualization.php#range-image-visualization
 
-
 #include <iostream>
-
 #include <boost/thread/thread.hpp>
-
 #include <pcl/common/common_headers.h>
 #include <pcl/range_image/range_image.h>
 #include <pcl/io/pcd_io.h>
@@ -15,19 +13,14 @@
 
 typedef pcl::PointXYZ PointType;
 
-// --------------------
 // -----Parameters-----
-// --------------------
 float angular_resolution_x = 0.5f,
       angular_resolution_y = angular_resolution_x;
 pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 bool live_update = false;
 
-// --------------
 // -----Help-----
-// --------------
-void 
-printUsage (const char* progName)
+void printUsage (const char* progName)
 {
   std::cout << "\n\nUsage: "<<progName<<" [options] <scene.pcd>\n\n"
             << "Options:\n"

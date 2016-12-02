@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # PCLPlotter
 # http://pointclouds.org/documentation/tutorials/pcl_plotter.php#pcl-plotter
 

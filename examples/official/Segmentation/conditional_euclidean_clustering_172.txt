@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Conditional Euclidean Clustering
 # http://pointclouds.org/documentation/tutorials/conditional_euclidean_clustering.php#conditional-euclidean-clustering
 

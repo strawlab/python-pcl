@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Difference of Normals Based Segmentation
 # http://pointclouds.org/documentation/tutorials/don_segmentation.php#don-segmentation
 

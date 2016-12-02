@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 # How to extract borders from range images
-# http://pointclouds.org/documentation/tutorials/
+# http://pointclouds.org/documentation/tutorials/range_image_border_extraction.php#range-image-border-extraction
 # author Bastian Steder
 
 import pcl

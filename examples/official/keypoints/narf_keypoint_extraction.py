@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-# author Bastian Steder 
+# author : Bastian Steder 
 # http://pointclouds.org/documentation/tutorials/narf_keypoint_extraction.php#narf-keypoint-extraction
 
 import pcl
 import numpy as np
 import random
-
 import argparse
 
 # Parameters
@@ -13,8 +12,6 @@ angular_resolution = 0.5
 support_size = 0.2
 coordinate_frame = pcl.CythonCoordinateFrame_Type.CAMERA_FRAME
 setUnseenToMaxRange = False
-
-import argparse
 
 # void setViewerPose (pclvisualizationPCLVisualizer& viewer, const EigenAffine3f& viewer_pose)
 #   EigenVector3f pos_vector = viewer_pose  EigenVector3f (0, 0, 0);
@@ -26,7 +23,7 @@ import argparse
 
 # -----Main-----
 # -----Parse Command Line Arguments-----
-parser = argparse.ArgumentParser(description='StrawPCL example: narf keyPoint extraction')
+parser = argparse.ArgumentParser(description='PointCloudLibrary example: narf keyPoint extraction')
 parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
 parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
@@ -110,9 +107,9 @@ else:
     #     for y in range(-0.5, 0.5, 0.01):
     for x in range(-50, 50, 1):
         for y in range(-50, 50, 1):
-            points[count][0] = x * 0.1
-            points[count][1] = y * 0.1
-            points[count][2] = 2.0 - y * 0.1
+            points[count][0] = x * 0.01
+            points[count][1] = y * 0.01
+            points[count][2] = 2.0 - y * 0.01
             count = count + 1
     
     # point_cloud.points.push_back (point);
@@ -126,21 +123,21 @@ else:
 # ----- Create RangeImage from the PointCloud -----
 noise_level = 0.0
 min_range = 0.0
-
-# int border_size = 1
-# boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pclRangeImage);
-# pclRangeImage& range_image = range_image_ptr;
 border_size = 1
+
+# boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
+# pclRangeImage& range_image = *range_image_ptr;
 range_image = point_cloud.make_RangeImage()
 
 print ('range_image::createFromPointCloud.\n')
+print ('point_cloud(size  ) = ' + str(point_cloud.size  ) )
+print ('point_cloud(width ) = ' + str(point_cloud.width ) )
+print ('point_cloud(height) = ' + str(point_cloud.height) )
 
 # range_image.createFromPointCloud (
 #                             point_cloud, angular_resolution, pcl.deg2rad (360.0f), pcl.deg2rad (180.0f),
 #                             scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
-range_image.CreateFromPointCloud (angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0),
-                                            coordinate_frame, noise_level, min_range, border_size)
-
+range_image.CreateFromPointCloud (point_cloud, angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0), coordinate_frame, noise_level, min_range, border_size)
 print ('range_image::integrateFarRanges.\n')
 
 # range_image.integrateFarRanges (far_ranges);
@@ -154,16 +151,16 @@ print ('range_image::setUnseenToMaxRange.\n')
 if setUnseenToMaxRange == True:
     range_image.setUnseenToMaxRange ()
 
-# # # -----Open 3D viewer and add point cloud-----
+# ----- Open 3D viewer and add point cloud -----
 # # pclvisualizationPCLVisualizer viewer ("3D Viewer")
 # # viewer.setBackgroundColor (1, 1, 1)
-# # pclvisualizationPointCloudColorHandlerCustompclPointWithRange range_image_color_handler (range_image_ptr, 0, 0, 0);
+# # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 0, 0, 0);
 # # viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
 # # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image");
 # # viewer.initCameraParameters ();
-# viewer = pcl.pcl_visualization.Visualization()
-# viewer.setBackgroundColor (1, 1, 1)
-# range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandlerCustompclPointWithRange (range_image_ptr, 0, 0, 0)
+viewer = pcl.pcl_visualization.Visualization()
+viewer.setBackgroundColor (1, 1, 1)
+# range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandlerCustom[pcl.PointWithRange] (range_image_ptr, 0, 0, 0)
 # viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image")
 # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image")
 # viewer.initCameraParameters ()
@@ -171,7 +168,6 @@ if setUnseenToMaxRange == True:
 # # -----Show range image-----
 # pclvisualizationRangeImageVisualizer range_image_widget (Range image);
 # range_image_widget.showRangeImage (range_image);
-# 
 
 
 # # -----Extract NARF keypoints-----
@@ -188,14 +184,13 @@ if setUnseenToMaxRange == True:
 # stdcout  Found keypoint_indices.points.size () key points.n;
 
 
-# 
-# # -----Show keypoints in range image widget-----
+# -----Show keypoints in range image widget-----
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
 # range_image_widget.markPoint (keypoint_indices.points[i]%range_image.width,
 #                               keypoint_indices.points[i]range_image.width);
-# 
 
-# # -----Show keypoints in 3D viewer-----
+
+# -----Show keypoints in 3D viewer-----
 # pclPointCloudpclPointXYZPtr keypoints_ptr (new pclPointCloudpclPointXYZ);
 # pclPointCloudpclPointXYZ& keypoints = keypoints_ptr;
 # keypoints.points.resize (keypoint_indices.points.size ());
@@ -203,15 +198,13 @@ if setUnseenToMaxRange == True:
 
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
 # keypoints.points[i].getVector3fMap () = range_image.points[keypoint_indices.points[i]].getVector3fMap ();
-# 
 
 
 # pclvisualizationPointCloudColorHandlerCustompclPointXYZ keypoints_color_handler (keypoints_ptr, 0, 255, 0);
 # viewer.addPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints);
 # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
-# 
 
-# # -----Main loop-----
+# -----Main loop-----
 # # while (!viewer.wasStopped ())
 # while True:
 #     # process GUI events

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # The CloudViewer
 # http://pointclouds.org/documentation/tutorials/cloud_viewer.php#cloud-viewer
 

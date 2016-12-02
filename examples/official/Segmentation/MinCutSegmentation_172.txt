@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # http://pointclouds.org/documentation/tutorials/min_cut_segmentation.php
 
 #pcl::PointCloud <pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud <pcl::PointXYZ>);
@@ -22,7 +23,7 @@ indices = pass.filter()
 # pcl::MinCutSegmentation<pcl::PointXYZ> seg;
 # seg.setInputCloud (cloud);
 # seg.setIndices (indices);
-# seg = cloud.make_MinCutSegmentation()
+seg = cloud.make_MinCutSegmentation()
 
 # pcl::PointCloud<pcl::PointXYZ>::Ptr foreground_points(new pcl::PointCloud<pcl::PointXYZ> ());
 foreground_points = pcl.PointCloud()
@@ -31,7 +32,8 @@ foreground_points = pcl.PointCloud()
 # point.x = 68.97;
 # point.y = -18.55;
 # point.z = 0.57;
-# foreground_points->points.push_back(point);
+# foreground_points->points.push_back(point)
+
 
 # seg.setForegroundPoints (foreground_points);
 # seg.setSigma (0.25);

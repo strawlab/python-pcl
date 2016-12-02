@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # http://pointclouds.org/documentation/tutorials/global_hypothesis_verification.php#global-hypothesis-verification
 
 /*

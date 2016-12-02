@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Detecting people and their poses using PointCloud Library
 # http://pointclouds.org/documentation/tutorials/gpu_people.php#gpu-people
 
