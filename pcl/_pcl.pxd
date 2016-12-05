@@ -109,3 +109,5 @@ cdef class KdTree:
 #     cdef inline pclkdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying KdTreeFLANN<PointXYZ>.
 #         return self.thisptr_shared.get()
+
+

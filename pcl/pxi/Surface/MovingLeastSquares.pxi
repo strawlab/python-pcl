@@ -41,9 +41,9 @@ cdef class MovingLeastSquares:
        # self.me.setSearchMethod(kdtree.thisptr())
        self.me.setSearchMethod(kdtree.thisptr_shared)
     
-    def set_Search_Method(self, KdTreeFLANN kdtree):
-       # self.me.setSearchMethod(kdtree.thisptr())
-       self.me.setSearchMethod(kdtree.thisptr_shared)
+    # def set_Search_Method(self, KdTreeFLANN kdtree):
+    #    # self.me.setSearchMethod(kdtree.thisptr())
+    #    self.me.setSearchMethod(kdtree.thisptr_shared)
     
     # def Process(self):
     #     """
