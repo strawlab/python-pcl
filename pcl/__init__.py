@@ -122,6 +122,19 @@ def save_XYZRGBA(cloud, path, format=None, binary=False):
         raise IOError("error while saving pointcloud to %r (format=%r)"
                       % (path, format))
 
+def save_PointNormal(cloud, path, format=None, binary=False):
+    """
+    Save pointcloud to file.
+    Format should be "pcd", "ply", or None to infer from the pathname.
+    """
+    format = _infer_format(path, format)
+    try:
+        dumper = getattr(cloud, "_to_%s_file" % format)
+    except AttributeError:
+        raise ValueError("unknown file format %s" % format)
+    if dumper(_encode(path), binary):
+        raise IOError("error while saving pointcloud to %r (format=%r)"
+                      % (path, format))
 
 def _encode(path):
     # Encode path for use in C++.

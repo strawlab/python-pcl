@@ -45,15 +45,17 @@ cdef class MovingLeastSquares:
     #    # self.me.setSearchMethod(kdtree.thisptr())
     #    self.me.setSearchMethod(kdtree.thisptr_shared)
     
-    # def Process(self):
-    #     """
-    #     Apply the smoothing according to the previously set values and return
-    #     a new PointCloudNormal
-    #     """
-    #     cdef PointCloud_Normal pcNormal = PointCloud_Normal()
-    #     self.me.process(pcNormal.thisptr()[0])
-    #     return pcNormal
-
+    def Process(self):
+        """
+        Apply the smoothing according to the previously set values and return
+        a new PointCloudNormal
+        """
+        cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
+        self.me.process(pcNormal.thisptr()[0])
+        return pcNormal
+        # cdef PointCloud pc = PointCloud()
+        # self.me.process(pc.thisptr())
+        # return pc
 
 # cdef class MovingLeastSquares_PointXYZI:
 #     """
@@ -130,9 +132,12 @@ cdef class MovingLeastSquares_PointXYZRGB:
         Apply the smoothing according to the previously set values and return
         a new pointcloud
         """
-        cdef PointCloud_PointXYZRGB pc = PointCloud_PointXYZRGB()
-        self.me.process(pc.thisptr()[0])
-        return pc
+        # cdef PointCloud_PointXYZRGB pc = PointCloud_PointXYZRGB()
+        # self.me.process(pc.thisptr()[0])
+        # return pc
+        cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
+        self.me.process(pcNormal.thisptr()[0])
+        return pcNormal
 
 cdef class MovingLeastSquares_PointXYZRGBA:
     """
@@ -169,7 +174,10 @@ cdef class MovingLeastSquares_PointXYZRGBA:
         Apply the smoothing according to the previously set values and return
         a new pointcloud
         """
-        cdef PointCloud_PointXYZRGBA pc = PointCloud_PointXYZRGBA()
-        self.me.process(pc.thisptr()[0])
-        return pc
+        # cdef PointCloud_PointXYZRGBA pc = PointCloud_PointXYZRGBA()
+        # self.me.process(pc.thisptr()[0])
+        # return pc
+        cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
+        self.me.process(pcNormal.thisptr()[0])
+        return pcNormal
 

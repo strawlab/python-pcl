@@ -94,6 +94,19 @@ cdef class PointCloud_Normal:
         return self.thisptr_shared.get()
 
 
+# class override(PointCloud_PointNormal)
+cdef class PointCloud_PointNormal:
+    cdef cpp.PointCloud_PointNormal_Ptr_t thisptr_shared   # PointNormal
+    
+    # Buffer protocol support.
+    cdef Py_ssize_t _shape[2]
+    cdef Py_ssize_t _view_count
+    
+    cdef inline cpp.PointCloud[cpp.PointNormal] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying PointCloud<PointNormal>.
+        return self.thisptr_shared.get()
+
+
 ## KdTree
 # class override
 cdef class KdTree:

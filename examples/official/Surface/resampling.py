@@ -11,11 +11,14 @@ import random
 # // Load bun0.pcd -- should be available with the PCL archive in test 
 # pcl::io::loadPCDFile ("bun0.pcd", *cloud);
 cloud = pcl.load("bun0.pcd")
+print('cloud(size) = ' + str(cloud.size))
 
 # // Create a KD-Tree
 # pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-# tree = cloud.make_kdtree()
-tree = cloud.make_kdtree_flann()
+tree = cloud.make_kdtree()
+# tree = cloud.make_kdtree_flann()
+# blankCloud = pcl.PointCloud()
+# tree = blankCloud.make_kdtree()
 
 # // Output has the PointNormal type in order to store the normals calculated by MLS
 # pcl::PointCloud<pcl::PointNormal> mls_points;
@@ -33,12 +36,14 @@ tree = cloud.make_kdtree_flann()
 # // Reconstruct
 # mls.process (mls_points);
 mls = cloud.make_moving_least_squares()
+# print('make_moving_least_squares')
 mls.set_Compute_Normals (True)
 mls.set_polynomial_fit (True)
 mls.set_Search_Method (tree)
 mls.set_search_radius (0.03)
+print('set parameters')
 mls_points = mls.Process ()
 
-
-#  // Save output
-#  pcl::io::savePCDFile ("bun0-mls.pcd", mls_points);
+# Save output
+# pcl::io::savePCDFile ("bun0-mls.pcd", mls_points);
+pcl.save_PointNormal(mls_points, 'bun0-mls.pcd')

@@ -72,7 +72,7 @@ Plane_model_segmentation.txt
 python examples\official\surface\concave_hull_2d.py
 # ver1.7.2
 # python examples\official\surface\greedy_projection_172.py
-# NG
+# NG(process Function DLL Excetion)
 python examples\official\surface\resampling.py
 ###
 

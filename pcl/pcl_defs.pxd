@@ -485,6 +485,9 @@ ctypedef shared_ptr[PointCloud[PointWithViewpoint]] PointCloud_PointWithViewpoin
 ctypedef PointCloud[Normal] PointNormalCloud_t
 ctypedef shared_ptr[PointCloud[Normal]] PointNormalCloudPtr_t
 
+ctypedef PointCloud[PointNormal] PointCloud_PointNormal_t
+ctypedef shared_ptr[PointCloud[PointNormal]] PointCloud_PointNormal_Ptr_t
+
 # definitions used everywhere
 ctypedef shared_ptr[vector[int]] IndicesPtr_t;
 # ctypedef shared_ptr[vector[int]] IndicesPtrConst_t;

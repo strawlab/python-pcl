@@ -2229,15 +2229,22 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void setComputeNormals (bool compute_normals)
         void setPolynomialOrder(bool)
         void setPolynomialFit(int)
-        void process(cpp.PointCloud[O] &) except +
+        # void process(cpp.PointCloud[O] &) except +
+        void process(cpp.PointCloud[O] &)
+        
         # KdTree
         void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
         pclkdt.KdTreePtr_t getSearchMethod ()
 
-ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointXYZ] MovingLeastSquares_t
-ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_PointXYZI_t
-ctypedef MovingLeastSquares[cpp.PointXYZRGB, cpp.PointXYZRGB] MovingLeastSquares_PointXYZRGB_t
-ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquares_PointXYZRGBA_t
+# ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointXYZ] MovingLeastSquares_t
+# ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_PointXYZI_t
+# ctypedef MovingLeastSquares[cpp.PointXYZRGB, cpp.PointXYZRGB] MovingLeastSquares_PointXYZRGB_t
+# ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointXYZRGBA] MovingLeastSquares_PointXYZRGBA_t
+ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointNormal] MovingLeastSquares_t
+ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointNormal] MovingLeastSquares_PointXYZI_t
+ctypedef MovingLeastSquares[cpp.PointXYZRGB, cpp.PointNormal] MovingLeastSquares_PointXYZRGB_t
+ctypedef MovingLeastSquares[cpp.PointXYZRGBA, cpp.PointNormal] MovingLeastSquares_PointXYZRGBA_t
+
 
 # namespace pcl
 # {
