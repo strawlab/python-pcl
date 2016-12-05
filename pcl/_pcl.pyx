@@ -134,6 +134,8 @@ include "pxi/PointCloudWrapper_PointXYZRGB.pxi"
 include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 include "pxi/PointCloudWrapper_PointWithViewpoint.pxi"
 
+include "pxi/PointCloudWrapper_Normal.pxi"
+
 # include "pxi/OctreePointCloudSearch.pxi"
 # include "pxi/OctreePointCloudChangeDetector.pxi"
 

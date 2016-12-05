@@ -3,6 +3,7 @@
 # modules.
 
 cimport pcl_defs as cpp
+cimport pcl_kdtree as pclkdt
 
 # class override(PointCloud)
 cdef class PointCloud:
@@ -80,3 +81,31 @@ cdef class PointCloud_PointWithViewpoint:
         return self.thisptr_shared.get()
 
 
+# class override(PointCloud_Normal)
+cdef class PointCloud_Normal:
+    cdef cpp.PointNormalCloudPtr_t thisptr_shared   # Normal
+    
+    # Buffer protocol support.
+    cdef Py_ssize_t _shape[2]
+    cdef Py_ssize_t _view_count
+    
+    cdef inline cpp.PointCloud[cpp.Normal] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying PointCloud<Normal>.
+        return self.thisptr_shared.get()
+
+
+## KdTree
+# class override
+cdef class KdTree:
+    cdef pclkdt.KdTreePtr_t thisptr_shared   # KdTree
+    
+    cdef inline pclkdt.KdTree[cpp.PointXYZ] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying KdTree<PointXYZ>.
+        return self.thisptr_shared.get()
+
+# cdef class KdTreeFLANN:
+#     cdef pclkdt.KdTreeFLANNPtr_t thisptr_shared   # KdTreeFLANN
+#     
+#     cdef inline pclkdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
+#         # Shortcut to get raw pointer to underlying KdTreeFLANN<PointXYZ>.
+#         return self.thisptr_shared.get()

@@ -20,7 +20,11 @@ cdef extern from "indexing.hpp" nogil:
     cdef cpp.PointXYZRGBA *getptr(cpp.PointCloud[cpp.PointXYZRGBA] *, size_t)
     cdef cpp.PointXYZRGBA *getptr_at(cpp.PointCloud[cpp.PointXYZRGBA] *, size_t) except +
     cdef cpp.PointXYZRGBA *getptr_at2(cpp.PointCloud[cpp.PointXYZRGBA] *, int, int) except +
+    
     # 
+    cdef cpp.Normal *getptr(cpp.PointCloud[cpp.Normal] *, size_t)
+    cdef cpp.Normal *getptr_at(cpp.PointCloud[cpp.Normal] *, size_t) except +
+    cdef cpp.Normal *getptr_at2(cpp.PointCloud[cpp.Normal] *, int, int) except +
     cdef cpp.PointWithViewpoint *getptr(cpp.PointCloud[cpp.PointWithViewpoint] *, size_t)
     cdef cpp.PointWithViewpoint *getptr_at(cpp.PointCloud[cpp.PointWithViewpoint] *, size_t) except +
     cdef cpp.PointWithViewpoint *getptr_at2(cpp.PointCloud[cpp.PointWithViewpoint] *, int, int) except +

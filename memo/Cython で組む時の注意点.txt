@@ -196,3 +196,10 @@ _pcl.cpp
 ※ RangeImage::integrateFarRanges 自体の戻り値は void だが
    pxi で定義した時に戻り値定義をしていなかったため上記のようになった。
 
+---
+
+def/cdef/cpdef の役割について
+http://omake.accense.com/static/doc-ja/cython/src/tutorial/cdef_classes.html
+http://d.hatena.ne.jp/shive/20160506/1462523337
+
+

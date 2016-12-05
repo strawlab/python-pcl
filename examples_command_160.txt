@@ -54,6 +54,18 @@ python examples\official\RangeImage\range_image_border_extraction.py
 ###
 
 # Segmentation
+# Version 1.7.2
+bare_earth_172.txt
+conditional_euclidean_clustering_172.txt
+don_segmentation_172.txt
+MinCutSegmentation_172.txt
+region_growing_rgb_segmentation_172.txt
+region_growing_segmentation_172.txt
+supervoxel_clustering_172.txt
+# 
+cluster_extraction.txt
+cylinder_segmentation.txt
+Plane_model_segmentation.txt
 ###
 
 # Surface

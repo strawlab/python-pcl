@@ -152,8 +152,8 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float x
         float y
         float z
-    cdef struct Normal:
-        pass
+#     cdef struct Normal:
+#         pass
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct Normal:

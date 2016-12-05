@@ -37,7 +37,7 @@ cdef extern from "Eigen/Dense" namespace "Eigen":
         Matrix3d() except +
         # NG
         # double coeff(int row, int col)
-        double& element "operator()"(int row,int col)
+        double& element "operator()"(int row, int col)
 
 # Eigen
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:

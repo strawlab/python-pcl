@@ -27,28 +27,30 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # enum CoordinateFrame
         #   CAMERA_FRAME = 0,
         #   LASER_FRAME  = 1
-# // =====STATIC VARIABLES=====
-        # /** The maximum number of openmp threads that can be used in this class */
+        
+        # // =====STATIC VARIABLES=====
+        # The maximum number of openmp threads that can be used in this class
         # static int max_no_of_threads;
         
         # // =====STATIC METHODS=====
-        # /** \brief Get the size of a certain area when seen from the given pose
-        # * \param viewer_pose an affine matrix defining the pose of the viewer
-        # * \param center the center of the area
-        # * \param radius the radius of the area
-        # * \return the size of the area as viewed according to \a viewer_pose
+        # brief Get the size of a certain area when seen from the given pose
+        # param viewer_pose an affine matrix defining the pose of the viewer
+        # param center the center of the area
+        # param radius the radius of the area
+        # return the size of the area as viewed according to \a viewer_pose
         # static inline float getMaxAngleSize (const Eigen::Affine3f& viewer_pose, const Eigen::Vector3f& center, float radius);
         
-        # * \brief Get Eigen::Vector3f from PointWithRange
-        # * \param point the input point
-        # * \return an Eigen::Vector3f representation of the input point
+        # brief Get Eigen::Vector3f from PointWithRange
+        # param point the input point
+        # return an Eigen::Vector3f representation of the input point
         # static inline Eigen::Vector3f getEigenVector3f (const PointWithRange& point);
+        eigen3.Vector3f getEigenVector3f (const cpp.PointWithRange& point);
         
-        # * \brief Get the transformation that transforms the given coordinate frame into CAMERA_FRAME
-        # * \param coordinate_frame the input coordinate frame
-        # * \param transformation the resulting transformation that warps \a coordinate_frame into CAMERA_FRAME
-        # PCL_EXPORTS static void
-        # getCoordinateFrameTransformation (RangeImage::CoordinateFrame coordinate_frame, Eigen::Affine3f& transformation);
+        # brief Get the transformation that transforms the given coordinate frame into CAMERA_FRAME
+        # param coordinate_frame the input coordinate frame
+        # param transformation the resulting transformation that warps \a coordinate_frame into CAMERA_FRAME
+        # PCL_EXPORTS static void getCoordinateFrameTransformation (RangeImage::CoordinateFrame coordinate_frame, Eigen::Affine3f& transformation);
+        # void getCoordinateFrameTransformation (CoordinateFrame2 coordinate_frame, float& transformation)
         
         # * \brief Get the average viewpoint of a point cloud where each point carries viewpoint information as 
         # * vp_x, vp_y, vp_z
@@ -64,9 +66,11 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # // =====METHODS=====
         # /** \brief Get a boost shared pointer of a copy of this */
         # inline Ptr makeShared () { return Ptr (new RangeImage (*this)); } 
+        # RangeImagePtr_t makeShared ()
         
         # /** \brief Reset all values to an empty range image */
         # PCL_EXPORTS void reset ();
+        void reset ()
 
         ###
         # brief Create the depth image from a point cloud
@@ -88,9 +92,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #     const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
         #     CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
         #     float min_range=0.0f, int border_size=0);
-        
         void createFromPointCloud (
-            const cpp.PointCloud_t point_cloud, 
+            cpp.PointCloud_t& point_cloud, 
             float angular_resolution,
             float max_angle_width, 
             float max_angle_height,
@@ -100,10 +103,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float min_range, 
             int border_size)
         
-        # ctypedef PointCloud[PointXYZI] PointCloud_PointXYZI_t
-        # ctypedef PointCloud[PointXYZRGBA] PointCloud_PointXYZRGBA_t
         void createFromPointCloud (
-            const cpp.PointCloud_PointXYZRGB_t point_cloud, 
+            const cpp.PointCloud_PointXYZI_t& point_cloud, 
             float angular_resolution,
             float max_angle_width, 
             float max_angle_height,
@@ -112,7 +113,29 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float noise_level,
             float min_range, 
             int border_size)
-
+        
+        void createFromPointCloud (
+            const cpp.PointCloud_PointXYZRGBA_t& point_cloud, 
+            float angular_resolution,
+            float max_angle_width, 
+            float max_angle_height,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame, 
+            float noise_level,
+            float min_range, 
+            int border_size)
+        
+        void createFromPointCloud (
+            const cpp.PointCloud_PointXYZRGB_t& point_cloud, 
+            float angular_resolution,
+            float max_angle_width, 
+            float max_angle_height,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame, 
+            float noise_level,
+            float min_range, 
+            int border_size)
+        
         # PointXYZ
         # createFromPointCloud (
         #     const PointCloudType& point_cloud, 
@@ -151,9 +174,19 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #   CoordinateFrame coordinate_frame=CAMERA_FRAME,
         #   float noise_level=0.0f, float min_range=0.0f, int border_size=0);
         ## 
-
-        # brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
-        # aster calculation.
+        void createFromPointCloud (
+            cpp.PointCloud_t& point_cloud, 
+            float angular_resolution_x,
+            float angular_resolution_y,
+            float max_angle_width, 
+            float max_angle_height,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame, 
+            float noise_level,
+            float min_range, 
+            int border_size)
+        
+        # brief Create the depth image from a point cloud, getting a hint about the size of the scene for aster calculation.
         # param point_cloud the input point cloud
         # param angular_resolution the angle (in radians) between each sample in the depth image
         # param point_cloud_center the center of bounding sphere
@@ -174,6 +207,16 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #                                  CoordinateFrame coordinate_frame=CAMERA_FRAME,
         #                                  float noise_level=0.0f, float min_range=0.0f, int border_size=0);
         ## 
+        createFromPointCloudWithKnownSize (
+            cpp.PointCloud_t& point_cloud,
+            float angular_resolution,
+            const eigen3.Vector3f& point_cloud_center, 
+            float point_cloud_radius,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame,
+            float noise_level, 
+            float min_range, 
+            int border_size)
 
         # brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
         # aster calculation.
@@ -202,65 +245,101 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #                                  CoordinateFrame coordinate_frame=CAMERA_FRAME,
         #                                  float noise_level=0.0f, float min_range=0.0f, int border_size=0);
         ## 
+        createFromPointCloudWithKnownSize (
+            cpp.PointCloud_t& point_cloud, 
+            float angular_resolution_x,
+            float angular_resolution_y,
+            const eigen3.Vector3f& point_cloud_center,
+            float point_cloud_radius,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame,
+            float noise_level, 
+            float min_range, 
+            int border_size)
         
-        # * \brief Create the depth image from a point cloud, using the average viewpoint of the points 
-        # * (vp_x,vp_y,vp_z in the point type) in the point cloud as sensor pose (assuming a rotation of (0,0,0)).
-        # * \param point_cloud the input point cloud
-        # * \param angular_resolution the angle (in radians) between each sample in the depth image
-        # * \param max_angle_width an angle (in radians) defining the horizontal bounds of the sensor
-        # * \param max_angle_height an angle (in radians) defining the vertical bounds of the sensor
-        # * \param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
-        # * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
-        # *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
-        # *                      will always take the minimum per cell.
-        # * \param min_range the minimum visible range (defaults to 0)
-        # * \param border_size the border size (defaults to 0)
-        # * \note If wrong_coordinate_system is true, the sensor pose will be rotated to change from a coordinate frame
-        # * with x to the front, y to the left and z to the top to the coordinate frame we use here (x to the right, y 
-        # * to the bottom and z to the front) */
-        # template <typename PointCloudTypeWithViewpoints> void
-        # createFromPointCloudWithViewpoints (const PointCloudTypeWithViewpoints& point_cloud, float angular_resolution,
+        # brief Create the depth image from a point cloud, using the average viewpoint of the points 
+        # (vp_x,vp_y,vp_z in the point type) in the point cloud as sensor pose (assuming a rotation of (0,0,0)).
+        # param point_cloud the input point cloud
+        # param angular_resolution the angle (in radians) between each sample in the depth image
+        # param max_angle_width an angle (in radians) defining the horizontal bounds of the sensor
+        # param max_angle_height an angle (in radians) defining the vertical bounds of the sensor
+        # param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
+        # param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
+        #                     but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
+        #                     will always take the minimum per cell.
+        # param min_range the minimum visible range (defaults to 0)
+        # param border_size the border size (defaults to 0)
+        # note If wrong_coordinate_system is true, the sensor pose will be rotated to change from a coordinate frame
+        # with x to the front, y to the left and z to the top to the coordinate frame we use here (x to the right, y 
+        # to the bottom and z to the front)
+        # template <typename PointCloudTypeWithViewpoints> 
+        # void createFromPointCloudWithViewpoints (const PointCloudTypeWithViewpoints& point_cloud, float angular_resolution,
         #                                   float max_angle_width, float max_angle_height,
         #                                   CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
         #                                   float min_range=0.0f, int border_size=0);
         ## 
+        void createFromPointCloudWithViewpoints (
+            const cpp.PointCloud_PointWithViewpoint_t& point_cloud,
+            float angular_resolution,
+            float max_angle_width, 
+            float max_angle_height,
+            CoordinateFrame2 coordinate_frame,
+            float noise_level,
+            float min_range,
+            int border_size)
         
-        # * \brief Create the depth image from a point cloud, using the average viewpoint of the points 
-        # * (vp_x,vp_y,vp_z in the point type) in the point cloud as sensor pose (assuming a rotation of (0,0,0)).
-        # * \param point_cloud the input point cloud
-        # * \param angular_resolution_x the angular difference (in radians) between the
-        # *                             individual pixels in the image in the x-direction
-        # * \param angular_resolution_y the angular difference (in radians) between the
-        # *                             individual pixels in the image in the y-direction
-        # * \param max_angle_width an angle (in radians) defining the horizontal bounds of the sensor
-        # * \param max_angle_height an angle (in radians) defining the vertical bounds of the sensor
-        # * \param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
-        # * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
-        # *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
-        # *                      will always take the minimum per cell.
-        # * \param min_range the minimum visible range (defaults to 0)
-        # * \param border_size the border size (defaults to 0)
-        # * \note If wrong_coordinate_system is true, the sensor pose will be rotated to change from a coordinate frame
-        # * with x to the front, y to the left and z to the top to the coordinate frame we use here (x to the right, y 
-        # * to the bottom and z to the front) */
-        # template <typename PointCloudTypeWithViewpoints> void
-        # createFromPointCloudWithViewpoints (const PointCloudTypeWithViewpoints& point_cloud,
+        # brief Create the depth image from a point cloud, using the average viewpoint of the points 
+        # (vp_x,vp_y,vp_z in the point type) in the point cloud as sensor pose (assuming a rotation of (0,0,0)).
+        # param point_cloud the input point cloud
+        # param angular_resolution_x the angular difference (in radians) between the
+        #                            individual pixels in the image in the x-direction
+        # param angular_resolution_y the angular difference (in radians) between the
+        #                            individual pixels in the image in the y-direction
+        # param max_angle_width an angle (in radians) defining the horizontal bounds of the sensor
+        # param max_angle_height an angle (in radians) defining the vertical bounds of the sensor
+        # param coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
+        # param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
+        #                     but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
+        #                     will always take the minimum per cell.
+        # param min_range the minimum visible range (defaults to 0)
+        # param border_size the border size (defaults to 0)
+        # note If wrong_coordinate_system is true, the sensor pose will be rotated to change from a coordinate frame
+        # with x to the front, y to the left and z to the top to the coordinate frame we use here (x to the right, y 
+        # to the bottom and z to the front)
+        # template <typename PointCloudTypeWithViewpoints> 
+        # void createFromPointCloudWithViewpoints (const PointCloudTypeWithViewpoints& point_cloud,
         #                                   float angular_resolution_x, float angular_resolution_y,
         #                                   float max_angle_width, float max_angle_height,
         #                                   CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
         #                                   float min_range=0.0f, int border_size=0);
         ##
+        void createFromPointCloudWithViewpoints (
+            const cpp.PointCloud_PointWithViewpoint_t& point_cloud,
+            float angular_resolution_x,
+            float angular_resolution_y,
+            float max_angle_width,
+            float max_angle_height,
+            CoordinateFrame2 coordinate_frame,
+            float noise_level,
+            float min_range, 
+            int border_size)
         
-        # * \brief Create an empty depth image (filled with unobserved points)
-        # * \param[in] angular_resolution the angle (in radians) between each sample in the depth image
-        # * \param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3f::Identity () )
-        # * \param[in] coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
-        # * \param[in] angle_width an angle (in radians) defining the horizontal bounds of the sensor (defaults to 2*pi (360deg))
-        # * \param[in] angle_height an angle (in radians) defining the vertical bounds of the sensor (defaults to pi (180deg))
+        # brief Create an empty depth image (filled with unobserved points)
+        # param[in] angular_resolution the angle (in radians) between each sample in the depth image
+        # param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3f::Identity () )
+        # param[in] coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
+        # param[in] angle_width an angle (in radians) defining the horizontal bounds of the sensor (defaults to 2*pi (360deg))
+        # param[in] angle_height an angle (in radians) defining the vertical bounds of the sensor (defaults to pi (180deg))
         # void createEmpty (float angular_resolution, const Eigen::Affine3f& sensor_pose=Eigen::Affine3f::Identity (),
         #            RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, float angle_width=pcl::deg2rad (360.0f),
         #            float angle_height=pcl::deg2rad (180.0f));
         ##
+        void createEmpty (
+            float angular_resolution, 
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame,
+            float angle_width,
+            float angle_height)
         
         # * \brief Create an empty depth image (filled with unobserved points)
         # * \param angular_resolution_x the angular difference (in radians) between the
@@ -276,6 +355,13 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #            RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, float angle_width=pcl::deg2rad (360.0f),
         #            float angle_height=pcl::deg2rad (180.0f));
         ##
+        void createEmpty (
+            float angular_resolution_x, 
+            float angular_resolution_y,
+            const eigen3.Affine3f& sensor_pose,
+            CoordinateFrame2 coordinate_frame,
+            float angle_width,
+            float angle_height)
         
         # * \brief Integrate the given point cloud into the current range image using a z-buffer
         # * \param point_cloud the input point cloud
@@ -292,6 +378,14 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # doZBuffer (const PointCloudType& point_cloud, float noise_level,
         #            float min_range, int& top, int& right, int& bottom, int& left);
         ##
+        doZBuffer (
+            cpp.PointCloud_t& point_cloud,
+            float noise_level,
+            float min_range, 
+            int& top, 
+            int& right, 
+            int& bottom,
+            int& left)
         
         # /** \brief Integrates the given far range measurements into the range image */
         # PCL_EXPORTS void integrateFarRanges (const PointCloud<PointWithViewpoint>& far_ranges);
@@ -305,88 +399,87 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # * \param right if positive, this value overrides the position of the right edge (defaults to -1)
         # * \param bottom if positive, this value overrides the position of the bottom edge (defaults to -1)
         # * \param left if positive, this value overrides the position of the left edge (defaults to -1)
-        # PCL_EXPORTS void
-        # cropImage (int border_size=0, int top=-1, int right=-1, int bottom=-1, int left=-1);
-
+        # 
+        # PCL_EXPORTS void cropImage (int border_size=0, int top=-1, int right=-1, int bottom=-1, int left=-1);
+        void cropImage (
+            int border_size=0,
+            int top=-1,
+            int right=-1,
+            int bottom=-1,
+            int left=-1);
+        
         # * \brief Get all the range values in one float array of size width*height  
         # * \return a pointer to a new float array containing the range values
         # * \note This method allocates a new float array; the caller is responsible for freeing this memory.
         # PCL_EXPORTS float* getRangesArray () const;
-
+        float* getRangesArray ()
+        
         # /** Getter for the transformation from the world system into the range image system
         #  *  (the sensor coordinate frame) */
-        # inline const Eigen::Affine3f&
-        # getTransformationToRangeImageSystem () const { return (to_range_image_system_); }
+        # inline const Eigen::Affine3f& getTransformationToRangeImageSystem () const { return (to_range_image_system_); }
         
         # /** Setter for the transformation from the range image system
         #  *  (the sensor coordinate frame) into the world system */
-        # inline void 
-        # setTransformationToRangeImageSystem (const Eigen::Affine3f& to_range_image_system);
+        # inline void setTransformationToRangeImageSystem (const Eigen::Affine3f& to_range_image_system);
         
-        # /** Getter for the transformation from the range image system
-        #  *  (the sensor coordinate frame) into the world system */
-        # inline const Eigen::Affine3f&
-        # getTransformationToWorldSystem () const { return to_world_system_;}
+        # Getter for the transformation from the range image system
+        # (the sensor coordinate frame) into the world system
+        # inline const Eigen::Affine3f& getTransformationToWorldSystem () const { return to_world_system_;}
         
-        # /** Getter for the angular resolution of the range image in x direction in radians per pixel.
-        #  *  Provided for downwards compatability */
-        # inline float
-        # getAngularResolution () const { return angular_resolution_x_;}
+        # Getter for the angular resolution of the range image in x direction in radians per pixel.
+        # Provided for downwards compatability */
+        # inline float getAngularResolution () const { return angular_resolution_x_;}
         
-        # /** Getter for the angular resolution of the range image in x direction in radians per pixel. */
-        # inline float
-        # getAngularResolutionX () const { return angular_resolution_x_;}
+        # Getter for the angular resolution of the range image in x direction in radians per pixel.
+        # inline float getAngularResolutionX () const { return angular_resolution_x_;}
         
-        # /** Getter for the angular resolution of the range image in y direction in radians per pixel. */
-        # inline float
-        # getAngularResolutionY () const { return angular_resolution_y_;}
+        # Getter for the angular resolution of the range image in y direction in radians per pixel.
+        # inline float getAngularResolutionY () const { return angular_resolution_y_;}
         
-        # /** Getter for the angular resolution of the range image in x and y direction (in radians). */
-        # inline void
-        # getAngularResolution (float& angular_resolution_x, float& angular_resolution_y) const;
+        # Getter for the angular resolution of the range image in x and y direction (in radians).
+        # inline void getAngularResolution (float& angular_resolution_x, float& angular_resolution_y) const;
         
-        # /** \brief Set the angular resolution of the range image
-        #   * \param angular_resolution the new angular resolution in x and y direction (in radians per pixel)
+        # brief Set the angular resolution of the range image
+        # param angular_resolution the new angular resolution in x and y direction (in radians per pixel)
         # inline void setAngularResolution (float angular_resolution);
         
-        # /** \brief Set the angular resolution of the range image
-        #   * \param angular_resolution_x the new angular resolution in x direction (in radians per pixel)
-        #   * \param angular_resolution_y the new angular resolution in y direction (in radians per pixel)
+        # brief Set the angular resolution of the range image
+        # param angular_resolution_x the new angular resolution in x direction (in radians per pixel)
+        # param angular_resolution_y the new angular resolution in y direction (in radians per pixel)
         inline void setAngularResolution (float angular_resolution_x, float angular_resolution_y)
         
-        # /** \brief Return the 3D point with range at the given image position
-        #   * \param image_x the x coordinate
-        #   * \param image_y the y coordinate
-        #   * \return the point at the specified location (returns unobserved_point if outside of the image bounds)
+        # brief Return the 3D point with range at the given image position
+        # param image_x the x coordinate
+        # param image_y the y coordinate
+        # return the point at the specified location (returns unobserved_point if outside of the image bounds)
         # inline const PointWithRange& getPoint (int image_x, int image_y) const;
+        const cpp.PointWithRange& getPoint (int image_x, int image_y)
         
-        # /** \brief Non-const-version of getPoint */
+        # brief Non-const-version of getPoint
         # inline PointWithRange& getPoint (int image_x, int image_y);
         
-        # /** Return the 3d point with range at the given image position */
-        # inline const PointWithRange&
-        # getPoint (float image_x, float image_y) const;
+        # Return the 3d point with range at the given image position
+        # inline const PointWithRange& getPoint (float image_x, float image_y) const;
+        const cpp.PointWithRange& getPoint (float image_x, float image_y)
         
-        # /** Non-const-version of the above */
-        # inline PointWithRange&
-        # getPoint (float image_x, float image_y);
+        # Non-const-version of the above
+        # inline PointWithRange& getPoint (float image_x, float image_y);
         
-        # /** \brief Return the 3D point with range at the given image position.  This methd performs no error checking
-        #   * to make sure the specified image position is inside of the image!
-        #   * \param image_x the x coordinate
-        #   * \param image_y the y coordinate
-        #   * \return the point at the specified location (program may fail if the location is outside of the image bounds)
-        # inline const PointWithRange&
-        # getPointNoCheck (int image_x, int image_y) const;
+        # brief Return the 3D point with range at the given image position.  This methd performs no error checking
+        # to make sure the specified image position is inside of the image!
+        # param image_x the x coordinate
+        # param image_y the y coordinate
+        # return the point at the specified location (program may fail if the location is outside of the image bounds)
+        # inline const PointWithRange& getPointNoCheck (int image_x, int image_y) const;
+        const cpp.PointWithRange& getPointNoCheck (int image_x, int image_y)
         
-        # /** Non-const-version of getPointNoCheck */
-        # inline PointWithRange&
-        # getPointNoCheck (int image_x, int image_y);
+        # Non-const-version of getPointNoCheck
+        # inline PointWithRange& getPointNoCheck (int image_x, int image_y);
         
-        # /** Same as above */
+        # Same as above
         # inline void getPoint (int image_x, int image_y, Eigen::Vector3f& point) const;
         
-        # /** Same as above */
+        # Same as above
         # inline void getPoint (int index, Eigen::Vector3f& point) const;
         
         # /** Same as above */
@@ -398,8 +491,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # getEigenVector3f (int index) const;
         
         # /** Return the 3d point with range at the given index (whereas index=y*width+x) */
-        # inline const PointWithRange&
-        # getPoint (int index) const;
+        # inline const PointWithRange& getPoint (int index) const;
         
         # /** Calculate the 3D point according to the given image point and range */
         # inline void calculate3DPoint (float image_x, float image_y, float range, PointWithRange& point) const;
@@ -487,53 +579,83 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #                               Eigen::Vector3f* point_on_plane=NULL, int step_size=1) const;
         
         # /** Same as above, using default values */
-        # inline bool
-        # getNormalForClosestNeighbors (int x, int y, Eigen::Vector3f& normal, int radius=2) const;
+        # inline bool getNormalForClosestNeighbors (int x, int y, Eigen::Vector3f& normal, int radius=2) const;
         
-        # /** Same as above but extracts some more data and can also return the extracted
-        #  * information for all neighbors in radius if normal_all_neighbors is not NULL */
-        # inline bool
-        # getSurfaceInformation (int x, int y, int radius, const Eigen::Vector3f& point,
+        # Same as above but extracts some more data and can also return the extracted
+        # information for all neighbors in radius if normal_all_neighbors is not NULL
+        # inline bool getSurfaceInformation (int x, int y, int radius, const Eigen::Vector3f& point,
         #                        int no_of_closest_neighbors, int step_size,
         #                        float& max_closest_neighbor_distance_squared,
         #                        Eigen::Vector3f& normal, Eigen::Vector3f& mean, Eigen::Vector3f& eigen_values,
         #                        Eigen::Vector3f* normal_all_neighbors=NULL,
         #                        Eigen::Vector3f* mean_all_neighbors=NULL,
         #                        Eigen::Vector3f* eigen_values_all_neighbors=NULL) const;
+        ##
+        bool getSurfaceInformation (
+            int x,
+            int y,
+            int radius,
+            const eigen3.Vector3f& point,
+            int no_of_closest_neighbors,
+            int step_size,
+            float& max_closest_neighbor_distance_squared,
+            eigen3.Vector3f& normal, 
+            eigen3.Vector3f& mean,
+            eigen3.Vector3f& eigen_values,
+            eigen3.Vector3f* normal_all_neighbors,
+            eigen3.Vector3f* mean_all_neighbors,
+            eigen3.Vector3f* eigen_values_all_neighbors) const;
         
         # // Return the squared distance to the n-th neighbors of the point at x,y
         # inline float getSquaredDistanceOfNthNeighbor (int x, int y, int radius, int n, int step_size) const;
+        float getSquaredDistanceOfNthNeighbor (
+            int x, int y,
+            int radius,
+            int n, 
+            int step_size)
         
         # /** Calculate the impact angle based on the sensor position and the two given points - will return
         #  * -INFINITY if one of the points is unobserved */
         # inline float getImpactAngle (const PointWithRange& point1, const PointWithRange& point2) const;
+        float getImpactAngle (
+            const cpp.PointWithRange& point1, 
+            const cpp.PointWithRange& point2)
         
         # //! Same as above
         # inline float getImpactAngle (int x1, int y1, int x2, int y2) const;
+        float getImpactAngle (int x1, int y1, int x2, int y2)
         
         # /** Extract a local normal (with a heuristic not to include background points) and calculate the impact
         #  *  angle based on this */
         # inline float getImpactAngleBasedOnLocalNormal (int x, int y, int radius) const;
+        float getImpactAngleBasedOnLocalNormal (int x, int y, int radius)
         
         # /** Uses the above function for every point in the image */
         # PCL_EXPORTS float* getImpactAngleImageBasedOnLocalNormals (int radius) const;
+        float* getImpactAngleImageBasedOnLocalNormals (int radius)
         
         # /** Calculate a score [0,1] that tells how acute the impact angle is (1.0f - getImpactAngle/90deg)
         #  *  This uses getImpactAngleBasedOnLocalNormal
         #  *  Will return -INFINITY if no normal could be calculated */
         # inline float getNormalBasedAcutenessValue (int x, int y, int radius) const;
+        float getNormalBasedAcutenessValue (int x, int y, int radius)
         
         # /** Calculate a score [0,1] that tells how acute the impact angle is (1.0f - getImpactAngle/90deg)
         #  *  will return -INFINITY if one of the points is unobserved */
         # inline float getAcutenessValue (const PointWithRange& point1, const PointWithRange& point2) const;
+        float getAcutenessValue (const cpp.PointWithRange& point1, const cpp.PointWithRange& point2)
         
         # //! Same as above
         # inline float getAcutenessValue (int x1, int y1, int x2, int y2) const;
+        float getAcutenessValue (int x1, int y1, int x2, int y2)
         
         # /** Calculate getAcutenessValue for every point */
-        # PCL_EXPORTS void
-        # getAcutenessValueImages (int pixel_distance, float*& acuteness_value_image_x,
-        #                          float*& acuteness_value_image_y) const;
+        # PCL_EXPORTS void getAcutenessValueImages (int pixel_distance, float*& acuteness_value_image_x,
+        #                                             float*& acuteness_value_image_y) const;
+        void getAcutenessValueImages (
+            int pixel_distance,
+            float*& acuteness_value_image_x,
+            float*& acuteness_value_image_y)
         
         # /** Calculates, how much the surface changes at a point. Pi meaning a flat suface and 0.0f
         #  *  would be a needle point */

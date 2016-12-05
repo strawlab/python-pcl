@@ -14,7 +14,8 @@ cloud = pcl.load("bun0.pcd")
 
 # // Create a KD-Tree
 # pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-tree = cloud.make_kdtree()
+# tree = cloud.make_kdtree()
+tree = cloud.make_kdtree_flann()
 
 # // Output has the PointNormal type in order to store the normals calculated by MLS
 # pcl::PointCloud<pcl::PointNormal> mls_points;
@@ -32,11 +33,11 @@ tree = cloud.make_kdtree()
 # // Reconstruct
 # mls.process (mls_points);
 mls = cloud.make_moving_least_squares()
-mls.set_Compute_Normals (true)
-mls.set_polynomial_fit (true)
+mls.set_Compute_Normals (True)
+mls.set_polynomial_fit (True)
 mls.set_Search_Method (tree)
 mls.set_search_radius (0.03)
-mls_points = mls.process ()
+mls_points = mls.Process ()
 
 
 #  // Save output

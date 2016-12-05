@@ -5,6 +5,7 @@ from libcpp.vector cimport vector
 
 # main
 cimport pcl_defs as cpp
+cimport pcl_kdtree as pclkdt
 from boost_shared_ptr cimport shared_ptr
 
 ###############################################################################
@@ -15,30 +16,33 @@ from boost_shared_ptr cimport shared_ptr
 
 # reconstruction.h
 # namespace pcl
-# /** \brief Pure abstract class. All types of meshing/reconstruction
-#   * algorithms in \b libpcl_surface must inherit from this, in order to make
-#   * sure we have a consistent API. The methods that we care about here are:
-#   *  - \b setSearchMethod(&SearchPtr): passes a search locator
-#   *  - \b reconstruct(&PolygonMesh): creates a PolygonMesh object from the input data
-#   * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
-#   */
+# brief Pure abstract class. All types of meshing/reconstruction
+# algorithms in \b libpcl_surface must inherit from this, in order to make
+# sure we have a consistent API. The methods that we care about here are:
+#  - \b setSearchMethod(&SearchPtr): passes a search locator
+#  - \b reconstruct(&PolygonMesh): creates a PolygonMesh object from the input data
+# author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
+# 
 # template <typename PointInT>
 # class PCLSurfaceBase: public PCLBase<PointInT>
 cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
     cdef cppclass PCLSurfaceBase[In](cpp.PCLBase[In]):
         PCLSurfaceBase()
-#       public:
-#       typedef typename pcl::search::Search<PointInT> KdTree;
-#       typedef typename pcl::search::Search<PointInT>::Ptr KdTreePtr;
-#       /** \brief Provide an optional pointer to a search object.
-#         * \param[in] tree a pointer to the spatial search object.
-#       inline void setSearchMethod (const KdTreePtr &tree)
-#       /** \brief Get a pointer to the search method used. */
-#       inline KdTreePtr getSearchMethod ()
+        
+        # brief Provide an optional pointer to a search object.
+        # param[in] tree a pointer to the spatial search object.
+        # inline void setSearchMethod (const KdTreePtr &tree)
+        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        
+        # brief Get a pointer to the search method used.
+        # inline KdTreePtr getSearchMethod ()
+        pclkdt.KdTreePtr_t getSearchMethod ()
+
 #       /** \brief Base method for surface reconstruction for all points given in
 #         * <setInputCloud (), setIndices ()> 
 #         * \param[out] output the resultant reconstructed surface model
 #       virtual void reconstruct (pcl::PolygonMesh &output) = 0;
+
 #       protected:
 #       /** \brief A pointer to the spatial search object. */
 #       KdTreePtr tree_;
@@ -101,18 +105,18 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
 #                              std::vector<pcl::Vertices> &polygons) = 0;
 ###
 
-# /** \brief MeshConstruction represents a base surface reconstruction
-#   * class. All \b mesh constructing methods that take in a point cloud and
-#   * generate a surface that uses the original data as vertices should inherit
-#   * from this class.
-#   *
-#   * \note Reconstruction methods that generate a new surface or create new
-#   * vertices in locations different than the input data should inherit from
-#   * \ref SurfaceReconstruction.
-#   *
-#   * \author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
-#   * \ingroup surface
-#   */
+# brief MeshConstruction represents a base surface reconstruction
+# class. All \b mesh constructing methods that take in a point cloud and
+# generate a surface that uses the original data as vertices should inherit
+# from this class.
+# 
+# note Reconstruction methods that generate a new surface or create new
+# vertices in locations different than the input data should inherit from
+# \ref SurfaceReconstruction.
+# 
+# author Radu B. Rusu, Michael Dixon, Alexandru E. Ichim
+# \ingroup surface
+# 
 # template <typename PointInT>
 # class MeshConstruction: public PCLSurfaceBase<PointInT>
 cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
@@ -126,21 +130,18 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
         # using PCLSurfaceBase<PointInT>::tree_;
         # using PCLSurfaceBase<PointInT>::getClassName;
         
-        # /** \brief Base method for surface reconstruction for all points given in
-        #   * <setInputCloud (), setIndices ()> 
-        #   * \param[out] output the resultant reconstructed surface model
-        #   *
-        #   * \note This method copies the input point cloud data from
-        #   * PointCloud<T> to PointCloud2, and is implemented here for backwards
-        #   * compatibility only!
-        #   *
-        #   */
+        # brief Base method for surface reconstruction for all points given in <setInputCloud (), setIndices ()> 
+        # param[out] output the resultant reconstructed surface model
+        # 
+        # note This method copies the input point cloud data from
+        # PointCloud<T> to PointCloud2, and is implemented here for backwards
+        # compatibility only!
+        # 
         # virtual void reconstruct (pcl::PolygonMesh &output);
-        # /** \brief Base method for mesh construction for all points given in
-        #   * <setInputCloud (), setIndices ()> 
-        #   * \param[out] polygons the resultant polygons, as a set of
-        #   * vertices. The Vertices structure contains an array of point indices.
-        #   */
+        # brief Base method for mesh construction for all points given in <setInputCloud (), setIndices ()> 
+        # param[out] polygons the resultant polygons, as a set of vertices.
+        # The Vertices structure contains an array of point indices.
+        # 
         # virtual void reconstruct (std::vector<pcl::Vertices> &polygons);
         # 
         # protected:
@@ -2229,6 +2230,9 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void setPolynomialOrder(bool)
         void setPolynomialFit(int)
         void process(cpp.PointCloud[O] &) except +
+        # KdTree
+        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        pclkdt.KdTreePtr_t getSearchMethod ()
 
 ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointXYZ] MovingLeastSquares_t
 ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_PointXYZI_t
