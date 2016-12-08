@@ -719,37 +719,7 @@ cdef extern from "pcl/segmentation/extract_clusters.h" namespace "pcl":
         # brief Cluster extraction in a PointCloud given by <setInputCloud (), setIndices ()>
         # param[out] clusters the resultant point clusters
         # void extract (std::vector<PointIndices> &clusters);
-        # 
-        # protected:
-        # // Members derived from the base class
-        # using BasePCLBase::input_;
-        # using BasePCLBase::indices_;
-        # using BasePCLBase::initCompute;
-        # using BasePCLBase::deinitCompute;
-        # 
-        # brief A pointer to the spatial search object.
-        # KdTreePtr tree_;
-        # 
-        # brief The spatial cluster tolerance as a measure in the L2 Euclidean space.
-        # double cluster_tolerance_;
-        # 
-        # brief The minimum number of points that a cluster needs to contain in order to be considered valid (default = 1).
-        # int min_pts_per_cluster_;
-        # 
-        # brief The maximum number of points that a cluster needs to contain in order to be considered valid (default = MAXINT).
-        # int max_pts_per_cluster_;
-        # 
-        # brief Class getName method.
-        # virtual std::string getClassName () const { return ("EuclideanClusterExtraction"); }
-        # 
-        # };
-        # brief Sort clusters method (for std::sort). 
-        # ingroup segmentation
-        # inline bool comparePointClusters (const pcl::PointIndices &a, const pcl::PointIndices &b)
-        # {
-        #   return (a.indices.size () < b.indices.size ());
-        # }
-        
+        void extract (vector[PointIndices] &clusters)
         
 ctypedef EuclideanClusterExtraction[PointXYZ] EuclideanClusterExtraction_t
 ctypedef EuclideanClusterExtraction[PointXYZI] EuclideanClusterExtraction_PointXYZI_t

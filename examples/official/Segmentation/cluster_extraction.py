@@ -85,7 +85,8 @@ nr_points = cloud_filtered.size
 #   // Creating the KdTree object for the search method of the extraction
 #   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
 #   tree->setInputCloud (cloud_filtered);
-tree = cloud_filtered.make_kdtree_flann()
+tree = cloud_filtered.make_kdtree()
+# tree = cloud_filtered.make_kdtree_flann()
 
 #   std::vector<pcl::PointIndices> cluster_indices;
 #   pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
@@ -100,8 +101,10 @@ ec.set_ClusterTolerance (0.02)
 ec.set_MinClusterSize (100)
 ec.set_MaxClusterSize (25000)
 ec.set_SearchMethod (tree)
-ec.Extract (cluster_indices)
+cluster_indices = ec.Extract()
 
+print('cluster_indices : ' + str(cluster_indices.count) + " count.")
+# print('cluster_indices : ' + str(cluster_indices.indices.max_size) + " count.")
 
 #   int j = 0;
 #   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)
@@ -119,4 +122,15 @@ ec.Extract (cluster_indices)
 #     writer.write<pcl::PointXYZ> (ss.str (), *cloud_cluster, false); //*
 #     j++;
 #   }
+# 
+
+cloud_cluster = pcl.PointCloud()
+for j, indices in enumerate(cluster_indices):
+    # cloudsize = indices
+    print('dataNum = ' + str(j) + ', data point[x y z]: ' + str(cloud_filtered[indices][0]) + ' ' + str(cloud_filtered[indices][1]) + ' ' + str(cloud_filtered[indices][2]))
+    # for indice in enumerate(indices)
+    # print('data point[x y z]: ' + str(cloud_filtered[indices][0]) + ' ' + str(cloud_filtered[indices][1]) + ' ' + str(cloud_filtered[indices][2]))
+    #   print('PointCloud representing the Cluster: ' + str(cloud_cluster.size) + " data points.")
+    #   ss = "cloud_cluster_" + str(j) + ".pcd";
+    #   pcl.save(ss, cloud_cluster)
 
