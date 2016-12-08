@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Euclidean Cluster Extraction
 # http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction
+import pcl
 
 # int main (int argc, char** argv)
 # {
@@ -18,8 +19,8 @@ cloud = pcl.load("table_scene_lms400.pcd")
 #   vg.setLeafSize (0.01f, 0.01f, 0.01f);
 #   vg.filter (*cloud_filtered);
 #   std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size ()  << " data points." << std::endl; //*
-vg = cloud.makeVoxelGrid()
-vg.setLeafSize (0.01, 0.01, 0.01)
+vg = cloud.make_voxel_grid_filter()
+vg.set_leaf_size (0.01, 0.01, 0.01)
 cloud_filtered = vg.filter ()
 
 #   // Create the segmentation object for the planar model and set all the parameters
@@ -33,7 +34,12 @@ cloud_filtered = vg.filter ()
 #   seg.setMethodType (pcl::SAC_RANSAC);
 #   seg.setMaxIterations (100);
 #   seg.setDistanceThreshold (0.02);
-
+seg = cloud.make_segmenter()
+seg.set_optimize_coefficients (True)
+seg.set_model_type (pcl.SACMODEL_PLANE)
+seg.set_method_type (pcl.SAC_RANSAC)
+seg.set_MaxIterations (100)
+seg.set_distance_threshold (0.02)
 
 #   int i=0, nr_points = (int) cloud_filtered->points.size ();
 #   while (cloud_filtered->points.size () > 0.3 * nr_points)
@@ -46,7 +52,6 @@ cloud_filtered = vg.filter ()
 #       std::cout << "Could not estimate a planar model for the given dataset." << std::endl;
 #       break;
 #     }
-# 
 #     // Extract the planar inliers from the input cloud
 #     pcl::ExtractIndices<pcl::PointXYZ> extract;
 #     extract.setInputCloud (cloud_filtered);
@@ -63,9 +68,24 @@ cloud_filtered = vg.filter ()
 #     *cloud_filtered = *cloud_f;
 #   }
 
+i = 0
+nr_points = cloud_filtered.size
+# while nr_points > 0.3 * nr_points:
+#     # Segment the largest planar component from the remaining cloud
+#     [inliers, coefficients] = seg.segment()
+#     extract = cloud_filtered.make_extract()
+#     extract.setIndices (inliers);
+#     extract.setNegative (false);
+#     cloud_plane = extract.filter ()
+#     
+#     extract.setNegative (True);
+#     cloud_f = extract.filter ()
+#     cloud_filtered = cloud_f
+
 #   // Creating the KdTree object for the search method of the extraction
 #   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
 #   tree->setInputCloud (cloud_filtered);
+tree = cloud_filtered.make_kdtree_flann()
 
 #   std::vector<pcl::PointIndices> cluster_indices;
 #   pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
@@ -75,6 +95,13 @@ cloud_filtered = vg.filter ()
 #   ec.setSearchMethod (tree);
 #   ec.setInputCloud (cloud_filtered);
 #   ec.extract (cluster_indices);
+ec = cloud_filtered.make_EuclideanClusterExtraction()
+ec.set_ClusterTolerance (0.02)
+ec.set_MinClusterSize (100)
+ec.set_MaxClusterSize (25000)
+ec.set_SearchMethod (tree)
+ec.Extract (cluster_indices)
+
 
 #   int j = 0;
 #   for (std::vector<pcl::PointIndices>::const_iterator it = cluster_indices.begin (); it != cluster_indices.end (); ++it)

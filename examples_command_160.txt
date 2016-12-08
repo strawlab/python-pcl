@@ -55,17 +55,17 @@ python examples\official\RangeImage\range_image_border_extraction.py
 
 # Segmentation
 # Version 1.7.2
-bare_earth_172.txt
-conditional_euclidean_clustering_172.txt
-don_segmentation_172.txt
-MinCutSegmentation_172.txt
-region_growing_rgb_segmentation_172.txt
-region_growing_segmentation_172.txt
-supervoxel_clustering_172.txt
+# python examples\official\Segmentation\bare_earth_172.txt
+# python examples\official\Segmentation\conditional_euclidean_clustering_172.txt
+# python examples\official\Segmentation\don_segmentation_172.txt
+# python examples\official\Segmentation\MinCutSegmentation_172.txt
+# python examples\official\Segmentation\region_growing_rgb_segmentation_172.txt
+# python examples\official\Segmentation\region_growing_segmentation_172.txt
+# python examples\official\Segmentation\supervoxel_clustering_172.txt
 # 
-cluster_extraction.txt
-cylinder_segmentation.txt
-Plane_model_segmentation.txt
+python examples\official\Segmentation\cluster_extraction.py
+# python examples\official\Segmentation\cylinder_segmentation.txt
+# python examples\official\Segmentation\Plane_model_segmentation.txt
 ###
 
 # Surface

@@ -28,6 +28,8 @@ cdef class Segmentation:
         self.me.setMethodType (m)
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
+    def set_MaxIterations(self, int count):
+        self.me.setMaxIterations (count)
 
 cdef class Segmentation_PointXYZI:
     """

@@ -530,15 +530,24 @@ cdef class PointCloud:
 #         return vfhEstimation
 # 
 
+
     def make_RangeImage(self):
         rangeImage = RangeImage(self)
         cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImage.me
-
         return rangeImage
+
+
+    def make_EuclideanClusterExtraction(self):
+        euclideanclusterextraction = EuclideanClusterExtraction(self)
+        cdef pclseg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pclseg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
+        cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return euclideanclusterextraction
+
 ###
 
 include "Segmentation/Segmentation.pxi"
 include "Segmentation/SegmentationNormal.pxi"
+include "Segmentation/EuclideanClusterExtraction.pxi"
 include "Filters/StatisticalOutlierRemovalFilter.pxi"
 include "Filters/VoxelGridFilter.pxi"
 include "Filters/PassThroughFilter.pxi"

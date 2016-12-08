@@ -163,7 +163,8 @@ void mpcl_extract_PointXYZRGBA(pcl::PointCloud<pcl::PointXYZRGBA>::Ptr &incloud,
     ext.filter(*outcloud);
 }
 
-/// Octree
+// EuclideanClusterExtraction
+// Octree
 // void mpcl_deleteVoxelAtPoint(pcl::octree::OctreePointCloud<pcl::PointXYZ>& inOctree, pcl::PointXYZ incloud)
 // {
 //     inOctree.deleteVoxelAtPoint(incloud);
@@ -215,7 +216,6 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
     pcl::PointCloud<pcl::VFHSignature308>::Ptr vfhs (new pcl::PointCloud<pcl::VFHSignature308> ());
     
     // cloud_normals = surface_normals(cloud);
-    
     vfh.setInputCloud (cloud);
     vfh.setInputNormals (cloud_normals);
     
@@ -229,7 +229,7 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 /*
 // pcl1.6 
 #include <pcl/keypoints/harris_keypoint3D.h>
-// not use 1.7Å`
+// use 1.7Å`
 #include <pcl/keypoints/harris_3d.h>
 
 // HarrisKeypoint3D
