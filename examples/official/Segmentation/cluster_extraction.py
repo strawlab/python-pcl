@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Euclidean Cluster Extraction
 # http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction
+import numpy as np
 import pcl
 
 # int main (int argc, char** argv)
@@ -73,29 +74,33 @@ nr_points = cloud_filtered.size
 # while nr_points > 0.3 * nr_points:
 #     # Segment the largest planar component from the remaining cloud
 #     [inliers, coefficients] = seg.segment()
-#     extract = cloud_filtered.make_extract()
-#     extract.setIndices (inliers);
-#     extract.setNegative (false);
+#     # extract = cloud_filtered.extract()
+#     # extract = pcl.PointIndices()
+#     cloud_filtered.extract(extract)
+#     extract.set_Indices (inliers)
+#     extract.set_Negative (false)
 #     cloud_plane = extract.filter ()
 #     
-#     extract.setNegative (True);
+#     extract.set_Negative (True)
 #     cloud_f = extract.filter ()
 #     cloud_filtered = cloud_f
 
-#   // Creating the KdTree object for the search method of the extraction
-#   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-#   tree->setInputCloud (cloud_filtered);
+
+# Creating the KdTree object for the search method of the extraction
+# pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
+# tree->setInputCloud (cloud_filtered);
 tree = cloud_filtered.make_kdtree()
 # tree = cloud_filtered.make_kdtree_flann()
 
-#   std::vector<pcl::PointIndices> cluster_indices;
-#   pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
-#   ec.setClusterTolerance (0.02); // 2cm
-#   ec.setMinClusterSize (100);
-#   ec.setMaxClusterSize (25000);
-#   ec.setSearchMethod (tree);
-#   ec.setInputCloud (cloud_filtered);
-#   ec.extract (cluster_indices);
+
+# std::vector<pcl::PointIndices> cluster_indices;
+# pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
+# ec.setClusterTolerance (0.02); // 2cm
+# ec.setMinClusterSize (100);
+# ec.setMaxClusterSize (25000);
+# ec.setSearchMethod (tree);
+# ec.setInputCloud (cloud_filtered);
+# ec.extract (cluster_indices);
 ec = cloud_filtered.make_EuclideanClusterExtraction()
 ec.set_ClusterTolerance (0.02)
 ec.set_MinClusterSize (100)
@@ -125,12 +130,22 @@ print('cluster_indices : ' + str(cluster_indices.count) + " count.")
 # 
 
 cloud_cluster = pcl.PointCloud()
+
 for j, indices in enumerate(cluster_indices):
     # cloudsize = indices
-    print('dataNum = ' + str(j) + ', data point[x y z]: ' + str(cloud_filtered[indices][0]) + ' ' + str(cloud_filtered[indices][1]) + ' ' + str(cloud_filtered[indices][2]))
-    # for indice in enumerate(indices)
-    # print('data point[x y z]: ' + str(cloud_filtered[indices][0]) + ' ' + str(cloud_filtered[indices][1]) + ' ' + str(cloud_filtered[indices][2]))
-    #   print('PointCloud representing the Cluster: ' + str(cloud_cluster.size) + " data points.")
-    #   ss = "cloud_cluster_" + str(j) + ".pcd";
-    #   pcl.save(ss, cloud_cluster)
+    print('indices = ' + str(len(indices)))
+    # cloudsize = len(indices)
+    points = np.zeros((len(indices), 3), dtype=np.float32)
+    # points = np.zeros((cloudsize, 3), dtype=np.float32)
+    
+    # for indice in range(len(indices)):
+    for i, indice in enumerate(indices):
+        # print('dataNum = ' + str(i) + ', data point[x y z]: ' + str(cloud_filtered[indice][0]) + ' ' + str(cloud_filtered[indice][1]) + ' ' + str(cloud_filtered[indice][2]))
+        # print('PointCloud representing the Cluster: ' + str(cloud_cluster.size) + " data points.")
+        points[i][0] = cloud_filtered[indice][0]
+        points[i][1] = cloud_filtered[indice][1]
+        points[i][2] = cloud_filtered[indice][2]
 
+    cloud_cluster.from_array(points)
+    ss = "cloud_cluster_" + str(j) + ".pcd";
+    pcl.save(cloud_cluster, ss)

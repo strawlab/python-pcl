@@ -64,5 +64,7 @@ cdef class EuclideanClusterExtraction:
                 dim.push_back(idx.indices[i])
             result.push_back(dim)
             inc(it)
+            dim.clear()
+        
         return result
 
