@@ -242,6 +242,11 @@ if platform.system() == "Windows":
     for librelease in libreleases:
         ext_args['libraries'].append(librelease)
 
+    # use vtk need library(Windows base library)
+    win_libreleases = ['kernel32', 'user32', 'gdi32', 'winspool', 'comdlg32', 'advapi32', 'shell32', 'ole32', 'oleaut32', 'uuid', 'odbc32', 'odbccp32']
+    for win_librelease in win_libreleases:
+        ext_args['libraries'].append(win_librelease)
+
     # ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
     # define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]

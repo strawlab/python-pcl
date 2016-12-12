@@ -56,5 +56,3 @@ cdef class Visualization:
 
     # def OffScreenRendering(bool)
     # 
-
-

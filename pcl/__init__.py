@@ -1,5 +1,6 @@
 ﻿# XXX do a more specific import!
 from ._pcl import *
+from .pcl_visualization import *
 
 import sys
 

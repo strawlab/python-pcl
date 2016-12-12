@@ -2276,7 +2276,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
 
 # template <typename PointT>
 # class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerCustom[PointT]:
         PointCloudColorHandlerCustom ()
 
@@ -2317,7 +2317,7 @@ ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudCo
 
 # template <typename PointT>
 # class PointCloudColorHandlerRGBField : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerRGBField[PointT]:
         PointCloudColorHandlerRGBField ()
 
@@ -2353,7 +2353,7 @@ ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZRGBA]] PointCloud
 
 # template <typename PointT>
 # class PointCloudColorHandlerHSVField : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerHSVField[PointT]:
         PointCloudColorHandlerHSVField ()
         
@@ -2396,7 +2396,7 @@ ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGBA]] PointCloud
 
 # template <typename PointT>
 # class PointCloudColorHandlerGenericField : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerGenericField[PointT]:
         PointCloudColorHandlerGenericField ()
 
@@ -2815,3 +2815,29 @@ cdef extern from "pcl/visualization/registration_visualizer.h" namespace "pcl::v
         # vtkSmartPointer<ExitCallback> exit_callback_;
 ###
 
+###############################################################################
+# Enum
+###############################################################################
+
+# common.h
+cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualization":
+    cdef enum RenderingProperties:
+        PCL_VISUALIZER_POINT_SIZE
+        PCL_VISUALIZER_OPACITY
+        PCL_VISUALIZER_LINE_WIDTH
+        PCL_VISUALIZER_FONT_SIZE
+        PCL_VISUALIZER_COLOR
+        PCL_VISUALIZER_REPRESENTATION
+        PCL_VISUALIZER_IMMEDIATE_RENDERING
+
+cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualization":
+    cdef enum RenderingRepresentationProperties:
+        PCL_VISUALIZER_REPRESENTATION_POINTS
+        PCL_VISUALIZER_REPRESENTATION_WIREFRAME
+        PCL_VISUALIZER_REPRESENTATION_SURFACE
+
+###
+
+###############################################################################
+# Activation
+###############################################################################

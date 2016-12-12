@@ -67,6 +67,9 @@ cdef class RangeImage:
     def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
         self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
-    
+
+    # def SetUnseenToMaxRange(self):
+    #    self.me.setUnseenToMaxRange()
+
 ###
 

@@ -28,37 +28,52 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # brief Provide a pointer to the input dataset that we need to estimate features at every point for.
         # param cloud the const boost shared pointer to a PointCloud message
         # void setSearchSurface (const PointCloudInConstPtr &cloud)
+        # void setSearchSurface (const PointCloud[In] &cloud)
+        
         # brief Get a pointer to the surface point cloud dataset.
         # PointCloudInConstPtr getSearchSurface ()
+        # PointCloud[In] getSearchSurface ()
+        
         # brief Provide a pointer to the search object.
-        # \param tree a pointer to the spatial search object.
+        # param tree a pointer to the spatial search object.
         # void setSearchMethod (const KdTreePtr &tree)
-        # \brief Get a pointer to the search method used.
+        # void setSearchMethod (-.KdTree &tree)
+        
+        # brief Get a pointer to the search method used.
         # KdTreePtr getSearchMethod ()
-        # * \brief Get the internal search parameter.
-        inline double getSearchParameter ()
-        # * \brief Set the number of k nearest neighbors to use for the feature estimation.
-        # * \param k the number of k-nearest neighbors
-        inline void setKSearch (int k)
-        # * \brief get the number of k nearest neighbors used for the feature estimation. */
-        inline int getKSearch ()
-        # * \brief Set the sphere radius that is to be used for determining the nearest neighbors used for the key point detection
-        # * \param radius the sphere radius used as the maximum distance to consider a point a neighbor
-        inline void setRadiusSearch (double radius)
-        # /** \brief Get the sphere radius used for determining the neighbors. */
-        inline double getRadiusSearch ()
-        # * \brief Base method for key point detection for all points given in <setInputCloud (), setIndices ()> using
-        # * the surface in setSearchSurface () and the spatial locator in setSearchMethod ()
-        # * \param output the resultant point cloud model dataset containing the estimated features
+        # -.KdTree getSearchMethod ()
+        
+        # brief Get the internal search parameter.
+        double getSearchParameter ()
+        
+        # brief Set the number of k nearest neighbors to use for the feature estimation.
+        # param k the number of k-nearest neighbors
+        void setKSearch (int k)
+        
+        # brief get the number of k nearest neighbors used for the feature estimation. */
+        int getKSearch ()
+        
+        # brief Set the sphere radius that is to be used for determining the nearest neighbors used for the key point detection
+        # param radius the sphere radius used as the maximum distance to consider a point a neighbor
+        void setRadiusSearch (double radius)
+        
+        # brief Get the sphere radius used for determining the neighbors. */
+        double getRadiusSearch ()
+        
+        # brief Base method for key point detection for all points given in <setInputCloud (), setIndices ()> using
+        # the surface in setSearchSurface () and the spatial locator in setSearchMethod ()
+        # param output the resultant point cloud model dataset containing the estimated features
         # inline void compute (PointCloudOut &output);
-        # * \brief Search for k-nearest neighbors using the spatial locator from \a setSearchmethod, and the given surface
-        # * from \a setSearchSurface.
-        # * \param index the index of the query point
-        # * \param parameter the search parameter (either k or radius)
-        # * \param indices the resultant vector of indices representing the k-nearest neighbors
-        # * \param distances the resultant vector of distances representing the distances from the query point to the
-        # * k-nearest neighbors
+        
+        # brief Search for k-nearest neighbors using the spatial locator from \a setSearchmethod, and the given surface
+        # from \a setSearchSurface.
+        # param index the index of the query point
+        # param parameter the search parameter (either k or radius)
+        # param indices the resultant vector of indices representing the k-nearest neighbors
+        # param distances the resultant vector of distances representing the distances from the query point to the
+        # k-nearest neighbors
         inline int searchForNeighbors (int index, double parameter, vector[int] &indices, vector[float] &distances)
+        
         # protected:
         # using PCLBase<PointInT>::deinitCompute;
         # virtual bool initCompute ();
@@ -88,70 +103,73 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
 # harris_3d.h (1.7.2)
 # template <typename PointInT, typename PointOutT, typename NormalT = pcl::Normal>
 # class HarrisKeypoint3D : public Keypoint<PointInT, PointOutT>
-# cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
-#     cdef cppclass HarrisKeypoint3D[In, Out, NormalT](Keypoint[In, Out]):
-#         HarrisKeypoint3D ()
-#         # HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
-#         # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
-#         # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-#         # typedef typename Keypoint<PointInT, PointOutT>::KdTree KdTree;
-#         # typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-#         # typedef typename pcl::PointCloud<NormalT> PointCloudN;
-#         # typedef typename PointCloudN::Ptr PointCloudNPtr;
-#         # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#         # using Keypoint<PointInT, PointOutT>::name_;
-#         # using Keypoint<PointInT, PointOutT>::input_;
-#         # using Keypoint<PointInT, PointOutT>::indices_;
-#         # using Keypoint<PointInT, PointOutT>::surface_;
-#         # using Keypoint<PointInT, PointOutT>::tree_;
-#         # using Keypoint<PointInT, PointOutT>::k_;
-#         # using Keypoint<PointInT, PointOutT>::search_radius_;
-#         # using Keypoint<PointInT, PointOutT>::search_parameter_;
-#         # using Keypoint<PointInT, PointOutT>::initCompute;
-#         # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
-#         # * \brief Set the method of the response to be calculated.
-#         # * \param[in] type
-#         # void setMethod (ResponseMethod type)
-#         # * \brief Set the radius for normal estimation and non maxima supression.
-#         # * \param[in] radius
-#         void setRadius (float radius)
-#         # * \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
-#         # * \brief note non maxima suppression needs to be activated in order to use this feature.
-#         # * \param[in] threshold
-#         void setThreshold (float threshold)
-#         # * \brief Whether non maxima suppression should be applied or the response for each point should be returned
-#         # * \note this value needs to be turned on in order to apply thresholding and refinement
-#         # * \param[in] nonmax default is false
-#         void setNonMaxSupression (bool = false)
-#         # * \brief Whether the detected key points should be refined or not. If turned of, the key points are a subset of the original point cloud. Otherwise the key points may be arbitrary.
-#         # * \brief note non maxima supression needs to be on in order to use this feature.
-#         # * \param[in] do_refine
-#         void setRefine (bool do_refine)
-#         # * \brief Set normals if precalculated normals are available.
-#         # * \param normals
-#         # void setNormals (const PointCloudNPtr &normals)
-#         # * \brief Provide a pointer to a dataset to add additional information
-#         # * to estimate the features for every point in the input dataset.  This
-#         # * is optional, if this is not set, it will only use the data in the
-#         # * input cloud to estimate the features.  This is useful when you only
-#         # * need to compute the features for a downsampled cloud.
-#         # * \param[in] cloud a pointer to a PointCloud message
-#         # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
-#         # * \brief Initialize the scheduler and set the number of threads to use.
-#         # * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
-#         inline void setNumberOfThreads (int nr_threads)
-#         # protected:
-#         # bool initCompute ();
-#         # void detectKeypoints (PointCloudOut &output);
-#         # /** \brief gets the corner response for valid input points*/
-#         # void responseHarris (PointCloudOut &output) const;
-#         # void responseNoble (PointCloudOut &output) const;
-#         # void responseLowe (PointCloudOut &output) const;
-#         # void responseTomasi (PointCloudOut &output) const;
-#         # void responseCurvature (PointCloudOut &output) const;
-#         # void refineCorners (PointCloudOut &corners) const;
-#         # /** \brief calculates the upper triangular part of unnormalized covariance matrix over the normals given by the indices.*/
-#         # void calculateNormalCovar (const std::vector<int>& neighbors, float* coefficients) const;
+cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
+    cdef cppclass HarrisKeypoint3D[In, Out, NormalT](Keypoint[In, Out]):
+        HarrisKeypoint3D ()
+        # HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
+        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
+        # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # typedef typename Keypoint<PointInT, PointOutT>::KdTree KdTree;
+        # typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
+        # typedef typename pcl::PointCloud<NormalT> PointCloudN;
+        # typedef typename PointCloudN::Ptr PointCloudNPtr;
+        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+
+        # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
+        
+        # brief Set the method of the response to be calculated.
+        # param[in] type
+        # void setMethod (ResponseMethod type)
+        void setMethod (ResponseMethod2 type)
+        
+        # * \brief Set the radius for normal estimation and non maxima supression.
+        # * \param[in] radius
+        # void setRadius (float radius)
+        void setRadius (float radius)
+        
+        # * \brief Set the threshold value for detecting corners. This is only evaluated if non maxima suppression is turned on.
+        # * \brief note non maxima suppression needs to be activated in order to use this feature.
+        # * \param[in] threshold
+        void setThreshold (float threshold)
+        
+        # * \brief Whether non maxima suppression should be applied or the response for each point should be returned
+        # * \note this value needs to be turned on in order to apply thresholding and refinement
+        # * \param[in] nonmax default is false
+        # void setNonMaxSupression (bool = false)
+        void setNonMaxSupression (bool param)
+        
+        # * \brief Whether the detected key points should be refined or not. If turned of, the key points are a subset of the original point cloud. Otherwise the key points may be arbitrary.
+        # * \brief note non maxima supression needs to be on in order to use this feature.
+        # * \param[in] do_refine
+        void setRefine (bool do_refine)
+        
+        # * \brief Set normals if precalculated normals are available.
+        # * \param normals
+        # void setNormals (const PointCloudNPtr &normals)
+        # void setNormals (const PointCloud[NormalT] &normals)
+        
+        # * \brief Provide a pointer to a dataset to add additional information
+        # * to estimate the features for every point in the input dataset.  This
+        # * is optional, if this is not set, it will only use the data in the
+        # * input cloud to estimate the features.  This is useful when you only
+        # * need to compute the features for a downsampled cloud.
+        # * \param[in] cloud a pointer to a PointCloud message
+        # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
+        
+        # * \brief Initialize the scheduler and set the number of threads to use.
+        # * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
+        # inline void setNumberOfThreads (int nr_threads)
+        void setNumberOfThreads (int nr_threads)
+
+ctypedef HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZ, cpp.Normal] HarrisKeypoint3D_t
+ctypedef HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI, cpp.Normal] HarrisKeypoint3D_PointXYZI_t
+ctypedef HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZRGB, cpp.Normal] HarrisKeypoint3D_PointXYZRGB_t
+ctypedef HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZRGBA, cpp.Normal] HarrisKeypoint3D_PointXYZRGBA_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZ, cpp.Normal]] HarrisKeypoint3DPtr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI, cpp.Normal]] HarrisKeypoint3D_PointXYZI_Ptr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZRGB, cpp.Normal]] HarrisKeypoint3D_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZRGBA, cpp.Normal]] HarrisKeypoint3D_PointXYZRGBA_Ptr_t
+
 ###
 
 # narf_keypoint.h
@@ -210,44 +228,44 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
 #                                                   can be left out to improve the runtime. */
 #           };
 # 
-#     		// =====PUBLIC METHODS=====
-#     		//! Erase all data calculated for the current range image
-#     		void clearData ();
-#     		//! Set the RangeImageBorderExtractor member (required)
-#     		void setRangeImageBorderExtractor (RangeImageBorderExtractor* range_image_border_extractor);
-#     		//! Get the RangeImageBorderExtractor member
-#     		RangeImageBorderExtractor* getRangeImageBorderExtractor ()
-#     		//! Set the RangeImage member of the RangeImageBorderExtractor
-#     		void setRangeImage (const RangeImage* range_image)
-#     		/** Extract interest value per image point */
-#     		float* getInterestImage () { calculateInterestImage(); return interest_image_;}
-#     		//! Extract maxima from an interest image
-#     		const ::pcl::PointCloud<InterestPoint>& getInterestPoints () { calculateInterestPoints(); return *interest_points_;}
-#     		//! Set all points in the image that are interest points to true, the rest to false
-#     		const std::vector<bool>& getIsInterestPointImage ()
-#     		//! Getter for the parameter struct
-#     		Parameters& getParameters ()
-#     		//! Getter for the range image of range_image_border_extractor_
-#     		const RangeImage& getRangeImage ();
-#     		//! Overwrite the compute function of the base class
-#     		void compute (PointCloudOut& output);
-#			
-#     		protected:
-#     		void calculateScaleSpace ();
-#     		void calculateInterestImage ();
-#     		void calculateCompleteInterestImage ();
-#     		void calculateSparseInterestImage ();
-#     		void calculateInterestPoints ();
-#     		virtual void detectKeypoints (PointCloudOut& output);
-#     		using BaseClass::name_;
-#     		RangeImageBorderExtractor* range_image_border_extractor_;
-#     		Parameters parameters_;
-#     		float* interest_image_;
-#     		::pcl::PointCloud<InterestPoint>* interest_points_;
-#     		std::vector<bool> is_interest_point_image_;
-#     		std::vector<RangeImage*> range_image_scale_space_;
-#     		std::vector<RangeImageBorderExtractor*> border_extractor_scale_space_;
-#     		std::vector<float*> interest_image_scale_space_;
+#           // =====PUBLIC METHODS=====
+#           //! Erase all data calculated for the current range image
+#           void clearData ();
+#           //! Set the RangeImageBorderExtractor member (required)
+#           void setRangeImageBorderExtractor (RangeImageBorderExtractor* range_image_border_extractor);
+#           //! Get the RangeImageBorderExtractor member
+#           RangeImageBorderExtractor* getRangeImageBorderExtractor ()
+#           //! Set the RangeImage member of the RangeImageBorderExtractor
+#           void setRangeImage (const RangeImage* range_image)
+#           /** Extract interest value per image point */
+#           float* getInterestImage () { calculateInterestImage(); return interest_image_;}
+#           //! Extract maxima from an interest image
+#           const ::pcl::PointCloud<InterestPoint>& getInterestPoints () { calculateInterestPoints(); return *interest_points_;}
+#           //! Set all points in the image that are interest points to true, the rest to false
+#           const std::vector<bool>& getIsInterestPointImage ()
+#           //! Getter for the parameter struct
+#           Parameters& getParameters ()
+#           //! Getter for the range image of range_image_border_extractor_
+#           const RangeImage& getRangeImage ();
+#           //! Overwrite the compute function of the base class
+#           void compute (PointCloudOut& output);
+#           
+#           protected:
+#           void calculateScaleSpace ();
+#           void calculateInterestImage ();
+#           void calculateCompleteInterestImage ();
+#           void calculateSparseInterestImage ();
+#           void calculateInterestPoints ();
+#           virtual void detectKeypoints (PointCloudOut& output);
+#           using BaseClass::name_;
+#           RangeImageBorderExtractor* range_image_border_extractor_;
+#           Parameters parameters_;
+#           float* interest_image_;
+#           ::pcl::PointCloud<InterestPoint>* interest_points_;
+#           std::vector<bool> is_interest_point_image_;
+#           std::vector<RangeImage*> range_image_scale_space_;
+#           std::vector<RangeImageBorderExtractor*> border_extractor_scale_space_;
+#           std::vector<float*> interest_image_scale_space_;
 #
 # ingroup keypoints
 # inline std::ostream& operator << (std::ostream& os, const NarfKeypoint::Parameters& p)
@@ -305,9 +323,10 @@ cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
     cdef cppclass UniformSampling[In](Keypoint[In, int]):
         UniformSampling ()
         # public:
-        # /** \brief Set the 3D grid leaf size.
-        # * \param radius the 3D grid leaf size
+        # brief Set the 3D grid leaf size.
+        # param radius the 3D grid leaf size
         void setRadiusSearch (double radius)
+        
         # protected:
         # brief Simple structure to hold an nD centroid and the number of points in a leaf.
         # struct Leaf
@@ -337,4 +356,20 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZI]] UniformSampling_PointXYZI_Pt
 ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGB]] UniformSampling_PointXYZRGB_Ptr_t
 ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZRGBA_Ptr_t
 ###
+
+###############################################################################
+# Enum
+###############################################################################
+
+# harris_keypoint3D.h (1.6.0)
+# harris_3d.h (1.7.2)
+# template <typename PointInT, typename PointOutT, typename NormalT = pcl::Normal>
+cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl::HarrisKeypoint3D":
+    ctypedef enum ResponseMethod2 "pcl::HarrisKeypoint3D::ResponseMethod":
+        # typedef enum 
+        RESPONSEMETHOD_HARRIS "pcl::HarrisKeypoint3D::HARRIS", 
+        RESPONSEMETHOD_NOBLE "pcl::HarrisKeypoint3D::NOBLE", 
+        RESPONSEMETHOD_LOWE "pcl::HarrisKeypoint3D::LOWE", 
+        RESPONSEMETHOD_TOMASI "pcl::HarrisKeypoint3D::TOMASI", 
+        RESPONSEMETHOD_CURVATURE "pcl::HarrisKeypoint3D::CURVATURE"
 

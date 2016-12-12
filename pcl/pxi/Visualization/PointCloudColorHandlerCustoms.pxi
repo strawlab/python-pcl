@@ -12,7 +12,7 @@ cdef class PointCloudColorHandlerCustoms:
     """
     cdef pclvis.PointCloudColorHandlerCustom_t *me
 
-    def __cinit__(self, int r, int g, int b, PointCloud pc not None):
+    def __cinit__(self, int r, int g, int b, _pcl.PointCloud pc not None):
         # self.me = new pclvis.PointCloudColorHandlerCustom()
         # self.me = new pclvis.PointCloudColorHandlerCustom(pc.thisptr_shared, r, g, b)
         self.me = <pclvis.PointCloudColorHandlerCustom_t*> new pclvis.PointCloudColorHandlerCustom_t(pc.thisptr_shared, r, g, b)

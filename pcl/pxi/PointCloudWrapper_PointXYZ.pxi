@@ -390,13 +390,13 @@ cdef class PointCloud:
         """
         return CropBox(self)
 
-#     def make_IntegralImageNormalEstimation(self):
-#         """
-#         Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
-# 
-#         Deprecated: use the pcl.Vertices constructor on this cloud.
-#         """
-#         return IntegralImageNormalEstimation(self)
+    def make_IntegralImageNormalEstimation(self):
+        """
+        Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
+
+        Deprecated: use the pcl.Vertices constructor on this cloud.
+        """
+        return IntegralImageNormalEstimation(self)
 
     def extract(self, pyindices, bool negative=False):
         """
@@ -501,41 +501,36 @@ cdef class PointCloud:
 
         return result
 
-#     def make_NormalEstimation(self):
-#         normalEstimation = NormalEstimation()
-#         cdef pclftr.NormalEstimation_t *cNormalEstimation = <pclftr.NormalEstimation_t *>normalEstimation.me
-#         cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#         # kdtree = KdTreeFLANN(self)
-#         # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
-#         # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
-#         # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
-#         # cNormalEstimation.setRadiusSearch(0.005)
-#         
-#         return normalEstimation
-# 
-#     def make_VFHEstimation(self):
-#         vfhEstimation = VFHEstimation()
-#         normalEstimation = self.make_NormalEstimation()
-#         cloud_normals = normalEstimation.Compute()
-#         # features
-#         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
-#         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#         # NG?
-#         # cVFHEstimation.setInputNormals(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> cloud_normals.thisptr_shared)
-#         # kdtree = KdTreeFLANN(self)
-#         # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
-#         # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
-#         # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
-# 
-#         return vfhEstimation
-# 
+    def make_NormalEstimation(self):
+        normalEstimation = NormalEstimation()
+        cdef pclftr.NormalEstimation_t *cNormalEstimation = <pclftr.NormalEstimation_t *>normalEstimation.me
+        cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # kdtree = KdTreeFLANN(self)
+        # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
+        # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
+        # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
+        # cNormalEstimation.setRadiusSearch(0.005)
+        return normalEstimation
 
+    def make_VFHEstimation(self):
+        vfhEstimation = VFHEstimation()
+        normalEstimation = self.make_NormalEstimation()
+        cloud_normals = normalEstimation.Compute()
+        # features
+        cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
+        cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # NG?
+        # cVFHEstimation.setInputNormals(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> cloud_normals.thisptr_shared)
+        # kdtree = KdTreeFLANN(self)
+        # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
+        # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
+        # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
+        return vfhEstimation
 
     def make_RangeImage(self):
         rangeImage = RangeImage(self)
         cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImage.me
         return rangeImage
-
 
     def make_EuclideanClusterExtraction(self):
         euclideanclusterextraction = EuclideanClusterExtraction(self)
@@ -567,14 +562,16 @@ include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
 include "RangeImage.pxi"
 
-# harris3D
-# include "HarrisKeypoint3D.pxi"
 # include "PointCloudWrapper_PointXYZI.pxi"
 
 # Features
 include "Features/NormalEstimation.pxi"
 include "Features/VFHEstimation.pxi"
+include "Features/IntegralImageNormalEstimation.pxi"
 
+# keyPoint
+include "KeyPoint/UniformSampling.pxi"
+include "KeyPoint/HarrisKeypoint3D.pxi"
 
 # PCL_VERSION = "1.6.0"
 # # Ubuntu/Mac NG(1.7? 1.8?)

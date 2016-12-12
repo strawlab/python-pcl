@@ -60,7 +60,7 @@ SACMODEL_PARALLEL_PLANE = pcl_sc.SACMODEL_PARALLEL_PLANE
 SACMODEL_NORMAL_PARALLEL_PLANE = pcl_sc.SACMODEL_NORMAL_PARALLEL_PLANE
 SACMODEL_STICK = pcl_sc.SACMODEL_STICK
 
-## Enum Setting(define Class InternalType)
+### Enum Setting(define Class InternalType) ###
 
 # CythonCompareOp
 @cython.internal

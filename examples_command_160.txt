@@ -9,16 +9,19 @@
 # Filtering
 python examples\official\Filtering\PassThroughFilter.py
 python examples\official\Filtering\project_inliers.py
+
 python examples\official\Filtering\remove_outliers.py -r Radius
+# MemoryLeak?
+python examples\official\Filtering\remove_outliers.py -r Condition
+
 python examples\official\Filtering\VoxelGrid_160.py
 python examples\official\Filtering\statistical_removal.py
 
-# MemoryLeak?
-python examples\official\Filtering\remove_outliers.py -r Condition
 ###
 
 # GPU
 # pcl1.6 - NG
+# python examples\official\GPU\people_detect_172.txt
 ###
 
 # IO
@@ -64,7 +67,7 @@ python examples\official\RangeImage\range_image_border_extraction.py
 # python examples\official\Segmentation\supervoxel_clustering_172.txt
 # 
 python examples\official\Segmentation\cluster_extraction.py
-# python examples\official\Segmentation\cylinder_segmentation.txt
+python examples\official\Segmentation\cylinder_segmentation.py
 # python examples\official\Segmentation\Plane_model_segmentation.txt
 ###
 

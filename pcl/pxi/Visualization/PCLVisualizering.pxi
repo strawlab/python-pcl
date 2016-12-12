@@ -34,7 +34,7 @@ cdef class PCLVisualizering:
     # def AddPointCloud (self, _pcl.PointCloud cloud):
     #    self.thisptr().addPointCloud(cloud.thisptr_shared)
 
-    # def AddPointCloud (self, _pcl.PointCloud cloud, PointCloudColorHandlerCustom):
+    # def AddPointCloud (self, _pcl.PointCloud cloud, PointCloudColorHandlerCustom custom):
     #     self.thisptr().addPointCloud(cloud.thisptr_shared)
 
     # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointNormalCloud normal):
@@ -51,4 +51,13 @@ cdef class PCLVisualizering:
 
     # def SpinOnce(self, millis_to_wait = 1):
     #     self.thisptr().spinOnce (millis_to_wait)
+
+    # def AddPointCloud(self, _pcl.RangeImage rangeImage, PointCloudColorHandlerCustoms custom, string name):
+    #     self.me.addPointCloud (rangeImage.thisptr(), custom.thisptr(), name)
+
+    def SetPointCloudRenderingProperties(self, int propType, int propValue, string propName):
+        self.me.setPointCloudRenderingProperties (propType, propValue, propName)
+
+    def InitCametaParamters(self):
+        self.me.initCameraParameters()
 

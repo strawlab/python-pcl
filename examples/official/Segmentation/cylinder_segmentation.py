@@ -3,8 +3,9 @@
 # http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php#cylinder-segmentation
 # dataset : https://raw.github.com/PointCloudLibrary/data/master/tutorials/table_scene_mug_stereo_textured.pcd
 
-# typedef pcl::PointXYZ PointT;
+import pcl
 
+# typedef pcl::PointXYZ PointT;
 # int main (int argc, char** argv)
 # // All the objects needed
 # pcl::PCDReader reader;
@@ -38,8 +39,8 @@ print("PointCloud has: " + str(cloud.size()) + " data points.")
 # pass.filter (*cloud_filtered);
 # std::cerr << "PointCloud after filtering has: " << cloud_filtered->points.size () << " data points." << std::endl;
 pass = cloud.make_passthrough()
-pass.setFilterFieldName ("z");
-pass.setFilterLimits (0, 1.5);
+pass.setFilterFieldName ("z")
+pass.setFilterLimits (0, 1.5)
 cloud_filtered = pass.filter()
 
 #   // Estimate point normals
@@ -47,6 +48,11 @@ cloud_filtered = pass.filter()
 #   ne.setInputCloud (cloud_filtered);
 #   ne.setKSearch (50);
 #   ne.compute (*cloud_normals);
+ne = cloud_filtered.make_Estimate()
+ne.set_SearchMethod (tree);
+ne.set_KSearch (50);
+cloud_normals = ne.compute ()
+
 
 #   // Create the segmentation object for the planar model and set all the parameters
 #   seg.setOptimizeCoefficients (true);
@@ -60,6 +66,16 @@ cloud_filtered = pass.filter()
 #   // Obtain the plane inliers and coefficients
 #   seg.segment (*inliers_plane, *coefficients_plane);
 #   std::cerr << "Plane coefficients: " << *coefficients_plane << std::endl;
+seg = cloud_filtered.make_Segmentation()
+seg.set_OptimizeCoefficients (true)
+seg.set_ModelType (pcl.SACMODEL_NORMAL_PLANE)
+seg.set_NormalDistanceWeight (0.1)
+seg.set_MethodType (pcl.SAC_RANSAC)
+seg.set_MaxIterations (100)
+seg.set_DistanceThreshold (0.03)
+seg.set_InputNormals (cloud_normals)
+[inliers_plane, coefficients_plane] = seg.segment ()
+
 
 #   // Extract the planar inliers from the input cloud
 #   extract.setInputCloud (cloud_filtered);
@@ -109,8 +125,8 @@ pcl.save("table_scene_mug_stereo_textured_plane.pcd", cloud_plane)
 #     std::cerr << "Can't find the cylindrical component." << std::endl;
 #   else
 #   {
-# 	  std::cerr << "PointCloud representing the cylindrical component: " << cloud_cylinder->points.size () << " data points." << std::endl;
-# 	  writer.write ("table_scene_mug_stereo_textured_cylinder.pcd", *cloud_cylinder, false);
+#     std::cerr << "PointCloud representing the cylindrical component: " << cloud_cylinder->points.size () << " data points." << std::endl;
+#     writer.write ("table_scene_mug_stereo_textured_cylinder.pcd", *cloud_cylinder, false);
 #   }
 # 
 

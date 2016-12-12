@@ -25,19 +25,19 @@ cdef class HarrisKeypoint3D:
 
     def __cinit__(self, PointCloud pc not None):
         self.me = new keypt.HarrisKeypoint3DPtr_t()
-        self.me.setInputCloud(pc.thisptr_shared)
+        # self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me
 
-    def set_NonMaxSupression(self, double param):
-        self.me.setNonMaxSupression (true);
+    # def set_NonMaxSupression(self, bool param):
+    #     self.me.setNonMaxSupression (param)
 
-    def set_Radius(self, double param):
-        self.me.setRadius (0.01);
+    # 
+    #     self.me.setRadius (param)
 
-    def set_RadiusSearch(self, double param):
-        self.me.setRadiusSearch (0.01);
+    # def set_RadiusSearch(self, double param):
+    #     self.me.setRadiusSearch (param)
 
     # def compute(self):
     #    self.me.compute ();
