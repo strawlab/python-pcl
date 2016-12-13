@@ -68,8 +68,8 @@ cdef class Vertices:
         # Shortcut to get raw pointer to underlying Vertices
         return self.thisptr_shared.get()
 
-# class override(PointCloud_PointWithViewpoint)
-cdef class PointCloud_PointWithViewpoint:
+# class override(PointCloudWrapper_PointWithViewpoint)
+cdef class PointCloudWrapper_PointWithViewpoint:
     cdef cpp.PointCloud_PointWithViewpoint_Ptr_t thisptr_shared   # PointWithViewpoint
     
     # Buffer protocol support.

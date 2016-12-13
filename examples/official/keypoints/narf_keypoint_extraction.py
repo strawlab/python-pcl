@@ -129,7 +129,7 @@ min_range = 0.0
 border_size = 1
 
 # boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
-# pclRangeImage& range_image = *range_image_ptr;
+# pcl::RangeImage& range_image = *range_image_ptr;
 range_image = point_cloud.make_RangeImage()
 
 print ('range_image::createFromPointCloud.\n')
@@ -161,25 +161,21 @@ print ('range_image::setUnseenToMaxRange.\n')
 # # viewer.initCameraParameters ();
 viewer = pcl.PCLVisualizering()
 viewer.SetBackgroundColor (1, 1, 1)
+# range_image_color_handler = pcl.PointCloudColorHandlerCustom()
+range_image_color_handler = pcl.PointCloudColorHandlerCustom[pcl.PointWithRange] (range_image_ptr, 0, 0, 0)
 viewer.AddPointCloud (range_image_ptr, range_image_color_handler, "range image")
 viewer.SetPointCloudRenderingProperties (pcl.PCL_VISUALIZER_POINT_SIZE, 1, "range image")
 viewer.InitCameraParameters ()
 
 
-# range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandlerCustom[pcl.PointWithRange] (range_image_ptr, 0, 0, 0)
-# viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image")
-# viewer.setPointCloudRenderingProperties (pclvisualization, PCL_VISUALIZER_POINT_SIZE, 1, "range image")
-# viewer.initCameraParameters ()
-range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandlerCustom()
-
-# # -----Show range image-----
-# pclvisualizationRangeImageVisualizer range_image_widget (Range image);
+# Show range image
+# pcl::visualization::RangeImage::Visualizer range_image_widget (Range image);
 # range_image_widget.showRangeImage (range_image);
 
 
-# # -----Extract NARF keypoints-----
-# pclRangeImageBorderExtractor range_image_border_extractor;
-# pclNarfKeypoint narf_keypoint_detector (&range_image_border_extractor);
+# Extract NARF keypoints
+# pcl::RangeImageBorderExtractor range_image_border_extractor;
+# pcl::NarfKeypoint narf_keypoint_detector (&range_image_border_extractor);
 # narf_keypoint_detector.setRangeImage (&range_image);
 # narf_keypoint_detector.getParameters ().support_size = support_size;
 # narf_keypoint_detector.getParameters ().add_points_on_straight_edges = true;

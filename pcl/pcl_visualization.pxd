@@ -8,6 +8,9 @@ from libcpp cimport bool
 # main
 cimport pcl_defs as cpp
 
+# Eigen
+cimport eigen as eigen3
+
 # boost
 from boost_shared_ptr cimport shared_ptr
 
@@ -17,8 +20,13 @@ from boost_shared_ptr cimport shared_ptr
 
 ### base class ###
 
+# point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudColorHandler
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudColorHandler[T]:
+        PointCloudColorHandler(cpp.PointCloud[T] cloud)
+
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -29,30 +37,28 @@ from boost_shared_ptr cimport shared_ptr
         # PointCloudColorHandler (const PointCloudConstPtr &cloud)
         # /** \brief Destructor. */
         # virtual ~PointCloudColorHandler () {}
+        
         # /** \brief Check if this handler is capable of handling the input data or not. */
         # inline bool isCapable () const
+        bool isCapable ()
+        
         # /** \brief Abstract getName method. */
         # virtual std::string getName () const = 0;
         # /** \brief Abstract getFieldName method. */
         # virtual std::string getFieldName () const = 0;
+        
         # /** \brief Obtain the actual color for the input dataset as vtk scalars.
         #   * \param[out] scalars the output scalars containing the color for the dataset
         # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const = 0;
-        # protected:
-        # /** \brief A pointer to the input dataset. */
-        # PointCloudConstPtr cloud_;
-        # /** \brief True if this handler is capable of handling the input data, false
-        #   * otherwise.
-        # bool capable_;
-        # /** \brief The index of the field holding the data that represents the color. */
-        # int field_idx_;
-        # /** \brief The list of fields available for this PointCloud. */
-        # std::vector<sensor_msgs::PointField> fields_;
 ###
 
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudGeometryHandler
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudGeometryHandler[T]:
+        PointCloudColorHandler(cpp.PointCloud[T] cloud)
+
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -61,30 +67,62 @@ from boost_shared_ptr cimport shared_ptr
         # typedef typename boost::shared_ptr<const PointCloudGeometryHandler<PointT> > ConstPtr;
         # /** \brief Constructor. */
         # PointCloudGeometryHandler (const PointCloudConstPtr &cloud) :
+        
         # /** \brief Abstract getName method.
         #   * \return the name of the class/object.
         # virtual std::string getName () const = 0;
         # /** \brief Abstract getFieldName method. */
         # virtual std::string getFieldName () const  = 0;
+        
         # /** \brief Checl if this handler is capable of handling the input data or not. */
         # inline bool isCapable () const
+        bool isCapable ()
+        
         # /** \brief Obtain the actual point geometry for the input dataset in VTK format.
         #   * \param[out] points the resultant geometry
         # virtual void getGeometry (vtkSmartPointer<vtkPoints> &points) const = 0;
-        # protected:
-        # /** \brief A pointer to the input dataset. */
-        # PointCloudConstPtr cloud_;
-        # /** \brief True if this handler is capable of handling the input data, false
-        #   * otherwise.
-        # bool capable_;
-        # /** \brief The index of the field holding the X data. */
-        # int field_x_idx_;
-        # /** \brief The index of the field holding the Y data. */
-        # int field_y_idx_;
-        # /** \brief The index of the field holding the Z data. */
-        # int field_z_idx_;
-        # /** \brief The list of fields available for this PointCloud. */
-        # std::vector<sensor_msgs::PointField> fields_;
+###
+
+###
+#
+###
+
+# template <typename PointT>
+# class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass PointCloudColorHandlerCustom[PointT]:
+        PointCloudColorHandlerCustom ()
+        
+        # brief Constructor.
+        # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloudPtr_t &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloud[PointT] *cloud, double r, double g, double b)
+        
+        # /** \brief Destructor. */
+        # virtual ~PointCloudColorHandlerCustom () {};
+        # /** \brief Abstract getName method. */
+        # virtual inline std::string getName () const
+        # /** \brief Get the name of the field used. */
+        # virtual std::string getFieldName () const
+        # /** \brief Obtain the actual color for the input dataset as vtk scalars.
+        #   * \param[out] scalars the output scalars containing the color for the dataset
+        # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const;
+
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZ] PointCloudColorHandlerCustom_t
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZI] PointCloudColorHandlerCustom_PointXYZI_t
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGB] PointCloudColorHandlerCustom_PointXYZRGB_t
+ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGBA] PointCloudColorHandlerCustom_PointXYZRGBA_t
+
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZ]] PointCloudColorHandlerCustom_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZI]] PointCloudColorHandlerCustom_PointXYZI_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGB]] PointCloudColorHandlerCustom_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudColorHandlerCustom_PointXYZRGBA_Ptr_t
+
+ctypedef PointCloudColorHandlerCustom[cpp.PointWithRange] PointCloudColorHandlerCustom_PointWithRange_t
+ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointWithRange]] PointCloudColorHandlerCustom_PointWithRange_Ptr_t
 ###
 
 # pcl_visualizer.h
@@ -116,6 +154,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] mode true for full screen, false otherwise
         #   */
         # inline void setFullScreen (bool mode)
+        void setFullScreen (bool mode)
         
         # /** \brief Enables or disable the underlying window borders.
         #   * \note This might or might not work, depending on your window manager.
@@ -123,6 +162,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] mode true for borders, false otherwise
         #   */
         # inline void setWindowBorders (bool mode)
+        void setWindowBorders (bool mode)
         
         # /** \brief Register a callback boost::function for keyboard events
         #   * \param[in] cb a boost function that will be registered as a callback for a keyboard event
@@ -204,13 +244,16 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   *  \param[in] force_redraw - if false it might return without doing anything if the
         #   *  interactor's framerate does not require a redraw yet.
         #   */
-        void spinOnce (int time = 1, bool force_redraw = false)
+        # void spinOnce (int time = 1, bool force_redraw = false)
+        void spinOnce (int time, bool force_redraw)
         
         # /** \brief Adds 3D axes describing a coordinate system to screen at 0,0,0.
         #   * \param[in] scale the scale of the axes (default: 1)
         #   * \param[in] viewport the view port where the 3D axes should be added (default: all)
         #   */
         # void addCoordinateSystem (double scale = 1.0, int viewport = 0);
+        void addCoordinateSystem (double scale, int viewport)
+        
         # /** \brief Adds 3D axes describing a coordinate system to screen at x, y, z
         #   * \param[in] scale the scale of the axes (default: 1)
         #   * \param[in] x the X position of the axes
@@ -219,6 +262,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport the view port where the 3D axes should be added (default: all)
         #   */
         # void addCoordinateSystem (double scale, float x, float y, float z, int viewport = 0);
+        void addCoordinateSystem (double scale, float x, float y, float z, int viewport)
         
         #  /** \brief Adds 3D axes describing a coordinate system to screen at x, y, z, Roll,Pitch,Yaw
         #    *
@@ -252,81 +296,94 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #    *         y
         #    */
         # void addCoordinateSystem (double scale, const Eigen::Affine3f& t, int viewport = 0);
+        void addCoordinateSystem (double scale, const eigen3.Affine3f& t, int viewport)
+        
+        # brief Removes a previously added 3D axes (coordinate system)
+        # param[in] viewport view port where the 3D axes should be removed from (default: all)
         # 
-        # /** \brief Removes a previously added 3D axes (coordinate system)
-        #   * \param[in] viewport view port where the 3D axes should be removed from (default: all)
-        #   */
         # bool removeCoordinateSystem (int viewport = 0);
+        bool removeCoordinateSystem (int viewport)
+        
+        # brief Removes a Point Cloud from screen, based on a given ID.
+        # param[in] id the point cloud object id (i.e., given on \a addPointCloud)
+        # param[in] viewport view port from where the Point Cloud should be removed (default: all)
+        # return true if the point cloud is successfully removed and false if the point cloud is
+        # not actually displayed
         # 
-        # /** \brief Removes a Point Cloud from screen, based on a given ID.
-        #   * \param[in] id the point cloud object id (i.e., given on \a addPointCloud)
-        #   * \param[in] viewport view port from where the Point Cloud should be removed (default: all)
-        #   * \return true if the point cloud is successfully removed and false if the point cloud is
-        #   * not actually displayed
-        #   */
         # bool removePointCloud (const std::string &id = "cloud", int viewport = 0);
+        bool removePointCloud (const string &id, int viewport)
+        
+        # brief Removes a PolygonMesh from screen, based on a given ID.
+        # param[in] id the polygon object id (i.e., given on \a addPolygonMesh)
+        # param[in] viewport view port from where the PolygonMesh should be removed (default: all)
         # 
-        # /** \brief Removes a PolygonMesh from screen, based on a given ID.
-        #   * \param[in] id the polygon object id (i.e., given on \a addPolygonMesh)
-        #   * \param[in] viewport view port from where the PolygonMesh should be removed (default: all)
-        #   */
         # inline bool removePolygonMesh (const std::string &id = "polygon", int viewport = 0)
+        bool removePolygonMesh (const string &id, int viewport)
+        
+        # brief Removes an added shape from screen (line, polygon, etc.), based on a given ID
+        # note This methods also removes PolygonMesh objects and PointClouds, if they match the ID
+        # param[in] id the shape object id (i.e., given on \a addLine etc.)
+        # param[in] viewport view port from where the Point Cloud should be removed (default: all)
         # 
-        # /** \brief Removes an added shape from screen (line, polygon, etc.), based on a given ID
-        #   * \note This methods also removes PolygonMesh objects and PointClouds, if they match the ID
-        #   * \param[in] id the shape object id (i.e., given on \a addLine etc.)
-        #   * \param[in] viewport view port from where the Point Cloud should be removed (default: all)
-        #   */
         # bool removeShape (const std::string &id = "cloud", int viewport = 0);
+        bool removeShape (const string &id, int viewport)
+        
+        # brief Removes an added 3D text from the scene, based on a given ID
+        # param[in] id the 3D text id (i.e., given on \a addText3D etc.)
+        # param[in] viewport view port from where the 3D text should be removed (default: all)
         # 
-        # /** \brief Removes an added 3D text from the scene, based on a given ID
-        #   * \param[in] id the 3D text id (i.e., given on \a addText3D etc.)
-        #   * \param[in] viewport view port from where the 3D text should be removed (default: all)
-        #   */
         # bool removeText3D (const std::string &id = "cloud", int viewport = 0);
+        bool removeText3D (const string &id, int viewport)
+        
+        # brief Remove all point cloud data on screen from the given viewport.
+        # param[in] viewport view port from where the clouds should be removed (default: all)
         # 
-        # /** \brief Remove all point cloud data on screen from the given viewport.
-        #   * \param[in] viewport view port from where the clouds should be removed (default: all)
-        #   */
         # bool removeAllPointClouds (int viewport = 0);
+        bool removeAllPointClouds (int viewport)
+        
+        # brief Remove all 3D shape data on screen from the given viewport.
+        # param[in] viewport view port from where the shapes should be removed (default: all)
         # 
-        # /** \brief Remove all 3D shape data on screen from the given viewport.
-        #   * \param[in] viewport view port from where the shapes should be removed (default: all)
-        #   */
         # bool removeAllShapes (int viewport = 0);
+        bool removeAllShapes (int viewport)
+        
+        # brief Set the viewport's background color.
+        # param[in] r the red component of the RGB color
+        # param[in] g the green component of the RGB color
+        # param[in] b the blue component of the RGB color
+        # param[in] viewport the view port (default: all)
         # 
-        # /** \brief Set the viewport's background color.
-        #   * \param[in] r the red component of the RGB color
-        #   * \param[in] g the green component of the RGB color
-        #   * \param[in] b the blue component of the RGB color
-        #   * \param[in] viewport the view port (default: all)
-        #   */
         # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0);
+        void setBackgroundColor (const double &r, const double &g, const double &b, int viewport)
+        
+        # brief Add a text to screen
+        # param[in] text the text to add
+        # param[in] xpos the X position on screen where the text should be added
+        # param[in] ypos the Y position on screen where the text should be added
+        # param[in] id the text object id (default: equal to the "text" parameter)
+        # param[in] viewport the view port (default: all)
         # 
-        # /** \brief Add a text to screen
-        #   * \param[in] text the text to add
-        #   * \param[in] xpos the X position on screen where the text should be added
-        #   * \param[in] ypos the Y position on screen where the text should be added
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   * \param[in] viewport the view port (default: all)
-        #   */
         # bool addText (const std::string &text,
         #          int xpos, int ypos,
         #          const std::string &id = "", int viewport = 0);
+        bool addText (const string &text, int xpos, int ypos, const string &id, int viewport)
+        
+        # brief Add a text to screen
+        # param[in] text the text to add
+        # param[in] xpos the X position on screen where the text should be added
+        # param[in] ypos the Y position on screen where the text should be added
+        # param[in] r the red color value
+        # param[in] g the green color value
+        # param[in] b the blue color vlaue
+        # param[in] id the text object id (default: equal to the "text" parameter)
+        # param[in] viewport the view port (default: all)
         # 
-        # /** \brief Add a text to screen
-        #   * \param[in] text the text to add
-        #   * \param[in] xpos the X position on screen where the text should be added
-        #   * \param[in] ypos the Y position on screen where the text should be added
-        #   * \param[in] r the red color value
-        #   * \param[in] g the green color value
-        #   * \param[in] b the blue color vlaue
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   * \param[in] viewport the view port (default: all)
-        #   */
         # bool
         # addText (const std::string &text, int xpos, int ypos, double r, double g, double b,
         #          const std::string &id = "", int viewport = 0);
+        bool addText (const string &text, int xpos, int ypos, double r, double g, double b,
+                      const string &id, int viewport)
+        
         # 
         # /** \brief Add a text to screen
         #   * \param[in] text the text to add
@@ -446,14 +503,13 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the point cloud object id. Default: "cloud"
         #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
         #   */
-        # bool
-        # addPointCloudPrincipalCurvatures (
+        # bool addPointCloudPrincipalCurvatures (
         #     const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
         #     const pcl::PointCloud<pcl::Normal>::ConstPtr &normals,
         #     const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
         #     int level = 100, double scale = 1.0,
         #     const std::string &id = "cloud", int viewport = 0);
-        # 
+        
         # /** \brief Add a Point Cloud (templated) to screen.
         #   * \param[in] cloud the input point cloud dataset
         #   * \param[in] id the point cloud object id (default: cloud)
@@ -462,43 +518,47 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
-        # /** \brief Updates the XYZ data for an existing cloud object id on screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id to update (default: cloud)
-        #   * \return false if no cloud with the specified ID was found
-        #   */
+        bool addPointCloud (cpp.PointCloudPtr_t &cloud, const string &id, int viewport)
+        bool addPointCloud (cpp.PointCloud_PointXYZI_Ptr_t &cloud, const string &id, int viewport)
+        bool addPointCloud (cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, const string &id, int viewport)
+        bool addPointCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, const string &id, int viewport)
+        
+        # brief Updates the XYZ data for an existing cloud object id on screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id to update (default: cloud)
+        # return false if no cloud with the specified ID was found
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                   const std::string &id = "cloud");
-        # 
+        
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
         # param[in] geometry_handler the geometry handler to use
         # param[in] id the point cloud object id to update (default: cloud)
         # return false if no cloud with the specified ID was found
-        # 
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                   const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                   const std::string &id = "cloud");
-        # 
+        
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
         # param[in] color_handler the color handler to use
         # param[in] id the point cloud object id to update (default: cloud)
         # return false if no cloud with the specified ID was found
-        # 
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                   const PointCloudColorHandler<PointT> &color_handler,
         #                   const std::string &id = "cloud");
-        # 
-        # //        bool
-        # //        updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
-        # //                          const PointCloudColorHandlerRGBField<pcl::PointXYZRGB> &color_handler,
-        # //                          const std::string &id = "cloud");
-        # 
+        # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+        #                   const PointCloudColorHandler<PointT> &color_handler,
+        #                   const std::string &id = "cloud");
+        
+        # bool
+        # updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
+        #                   const PointCloudColorHandlerRGBField<pcl::PointXYZRGB> &color_handler,
+        #                   const std::string &id = "cloud");
+        
         # brief Add a Point Cloud (templated) to screen.
         # param[in] cloud the input point cloud dataset
         # param[in] geometry_handler use a geometry handler object to extract the XYZ data
@@ -509,179 +569,169 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
+        
         # \brief Add a Point Cloud (templated) to screen.
         # Because the geometry handler is given as a pointer, it will be pushed back to the list of available
         # handlers, rather than replacing the current active geometric handler. This makes it possible to
         # switch between different geometric handlers 'on-the-fly' at runtime, from the PCLVisualizer
         # interactor interface (using Alt+0..9).
-        # 
         # \param[in] cloud the input point cloud dataset
         # \param[in] geometry_handler use a geometry handler object to extract the XYZ data
         # \param[in] id the point cloud object id (default: cloud)
         # \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # 
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] color_handler a specific PointCloud visualizer handler for colors
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        
+        # brief Add a Point Cloud (templated) to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudColorHandler<PointT> &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   *
-        #   * Because the color handler is given as a pointer, it will be pushed back to the list of available
-        #   * handlers, rather than replacing the current active color handler. This makes it possible to
-        #   * switch between different color handlers 'on-the-fly' at runtime, from the PCLVisualizer
-        #   * interactor interface (using 0..9).
-        #   *
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] color_handler a specific PointCloud visualizer handler for colors
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        bool addPointCloud (const cpp.PointCloudPtr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        bool addPointCloud (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        bool addPointCloud (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        bool addPointCloud (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        bool addPointCloud (const cpp.PointCloud_VFHSignature308_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        bool addPointCloud (const cpp.PointCloud_PointWithViewpoint_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        
+        # brief Add a Point Cloud (templated) to screen.
+        # Because the color handler is given as a pointer, it will be pushed back to the list of available
+        # handlers, rather than replacing the current active color handler. This makes it possible to
+        # switch between different color handlers 'on-the-fly' at runtime, from the PCLVisualizer
+        # interactor interface (using 0..9).
+        # param[in] cloud the input point cloud dataset
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const ColorHandlerConstPtr &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   *
-        #   * Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
-        #   * available handlers, rather than replacing the current active handler. This makes it possible to
-        #   * switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
-        #   * interface (using [Alt+]0..9).
-        #   *
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] geometry_handler a specific PointCloud visualizer handler for geometry
-        #   * \param[in] color_handler a specific PointCloud visualizer handler for colors
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        
+        # brief Add a Point Cloud (templated) to screen.
+        # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
+        # available handlers, rather than replacing the current active handler. This makes it possible to
+        # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
+        # interface (using [Alt+]0..9).
+        # param[in] cloud the input point cloud dataset
+        # param[in] geometry_handler a specific PointCloud visualizer handler for geometry
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const ColorHandlerConstPtr &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
-        # /** \brief Add a binary blob Point Cloud to screen.
-        #   *
-        #   * Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
-        #   * available handlers, rather than replacing the current active handler. This makes it possible to
-        #   * switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
-        #   * interface (using [Alt+]0..9).
-        #   *
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] geometry_handler a specific PointCloud visualizer handler for geometry
-        #   * \param[in] color_handler a specific PointCloud visualizer handler for colors
-        #   * \param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
-        #   * \param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
-        # bool
-        # addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
+        
+        # brief Add a binary blob Point Cloud to screen.
+        # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
+        # available handlers, rather than replacing the current active handler. This makes it possible to
+        # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
+        # interface (using [Alt+]0..9).
+        # param[in] cloud the input point cloud dataset
+        # param[in] geometry_handler a specific PointCloud visualizer handler for geometry
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
+        # param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # bool addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const ColorHandlerConstPtr &color_handler,
         #                const Eigen::Vector4f& sensor_origin,
         #                const Eigen::Quaternion<float>& sensor_orientation,
         #                const std::string &id = "cloud", int viewport = 0);
+        
+        # brief Add a binary blob Point Cloud to screen.
         # 
-        # /** \brief Add a binary blob Point Cloud to screen.
-        #   *
-        #   * Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
-        #   * available handlers, rather than replacing the current active handler. This makes it possible to
-        #   * switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
-        #   * interface (using [Alt+]0..9).
-        #   *
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] geometry_handler a specific PointCloud visualizer handler for geometry
-        #   * \param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
-        #   * \param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
-        # bool
-        # addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
+        # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
+        # available handlers, rather than replacing the current active handler. This makes it possible to
+        # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
+        # interface (using [Alt+]0..9).
+        # 
+        # param[in] cloud the input point cloud dataset
+        # param[in] geometry_handler a specific PointCloud visualizer handler for geometry
+        # param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
+        # param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # bool addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const Eigen::Vector4f& sensor_origin,
         #                const Eigen::Quaternion<float>& sensor_orientation,
         #                const std::string &id = "cloud", int viewport = 0);
+        
+        # brief Add a binary blob Point Cloud to screen.
         # 
-        # /** \brief Add a binary blob Point Cloud to screen.
-        #   *
-        #   * Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
-        #   * available handlers, rather than replacing the current active handler. This makes it possible to
-        #   * switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
-        #   * interface (using [Alt+]0..9).
-        #   *
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] color_handler a specific PointCloud visualizer handler for colors
-        #   * \param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
-        #   * \param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
-        # bool
-        # addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
+        # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
+        # available handlers, rather than replacing the current active handler. This makes it possible to
+        # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
+        # interface (using [Alt+]0..9).
+        # 
+        # param[in] cloud the input point cloud dataset
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
+        # param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # bool addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
         #                const ColorHandlerConstPtr &color_handler,
         #                const Eigen::Vector4f& sensor_origin,
         #                const Eigen::Quaternion<float>& sensor_orientation,
         #                const std::string &id = "cloud", int viewport = 0);
-        # 
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] color_handler a specific PointCloud visualizer handler for colors
-        #   * \param[in] geometry_handler use a geometry handler object to extract the XYZ data
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        
+        
+        # brief Add a Point Cloud (templated) to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] geometry_handler use a geometry handler object to extract the XYZ data
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudColorHandler<PointT> &color_handler,
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
+        
+        
+        # brief Add a PointXYZ Point Cloud to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # 
-        # /** \brief Add a PointXYZ Point Cloud to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
         # inline bool
         # addPointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
         #                const std::string &id = "cloud", int viewport = 0)
-        # /** \brief Add a PointXYZRGB Point Cloud to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        
+        # brief Add a PointXYZRGB Point Cloud to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # 
         # inline bool
         # addPointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
         #                const std::string &id = "cloud", int viewport = 0)
-        # 
-        # /** \brief Add a PointXYZRGBA Point Cloud to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        
+        # brief Add a PointXYZRGBA Point Cloud to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # inline bool
         # addPointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
         #                const std::string &id = "cloud", int viewport = 0)
+        
+        # brief Updates the XYZ data for an existing cloud object id on screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id to update (default: cloud)
+        # return false if no cloud with the specified ID was found
         # 
-        # /** \brief Updates the XYZ data for an existing cloud object id on screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id to update (default: cloud)
-        #   * \return false if no cloud with the specified ID was found
-        #   */
         # inline bool
         # updatePointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
         #                   const std::string &id = "cloud")
@@ -2272,47 +2322,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # // Members derived from the base class
         # using PointCloudColorHandler<PointT>::cloud_;
         # using PointCloudColorHandler<PointT>::capable_;
-###
-
-# template <typename PointT>
-# class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
-    cdef cppclass PointCloudColorHandlerCustom[PointT]:
-        PointCloudColorHandlerCustom ()
-
-        # /** \brief Constructor. */
-        # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud, double r, double g, double b)
-        PointCloudColorHandlerCustom (const cpp.PointCloudPtr_t &cloud, double r, double g, double b)
-        PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
-        PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
-        PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud[T] *cloud, double r, double g, double b)
-        
-        # /** \brief Destructor. */
-        # virtual ~PointCloudColorHandlerCustom () {};
-        # /** \brief Abstract getName method. */
-        # virtual inline std::string getName () const
-        # /** \brief Get the name of the field used. */
-        # virtual std::string getFieldName () const
-        # /** \brief Obtain the actual color for the input dataset as vtk scalars.
-        #   * \param[out] scalars the output scalars containing the color for the dataset
-        # virtual void getColor (vtkSmartPointer<vtkDataArray> &scalars) const;
-
-# typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
-# typedef typename PointCloud::Ptr PointCloudPtr;
-# typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-# public:
-# typedef boost::shared_ptr<PointCloudColorHandlerCustom<PointT> > Ptr;
-# typedef boost::shared_ptr<const PointCloudColorHandlerCustom<PointT> > ConstPtr;
-ctypedef PointCloudColorHandlerCustom[cpp.PointXYZ] PointCloudColorHandlerCustom_t
-ctypedef PointCloudColorHandlerCustom[cpp.PointXYZI] PointCloudColorHandlerCustom_PointXYZI_t
-ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGB] PointCloudColorHandlerCustom_PointXYZRGB_t
-ctypedef PointCloudColorHandlerCustom[cpp.PointXYZRGBA] PointCloudColorHandlerCustom_PointXYZRGBA_t
-
-ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZ]] PointCloudColorHandlerCustom_Ptr_t
-ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZI]] PointCloudColorHandlerCustom_PointXYZI_Ptr_t
-ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGB]] PointCloudColorHandlerCustom_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointXYZRGBA]] PointCloudColorHandlerCustom_PointXYZRGBA_Ptr_t
 ###
 
 # template <typename PointT>

@@ -118,7 +118,6 @@ ctypedef shared_ptr[const Filter[cpp.PointXYZRGBA]] Filter_PointXYZRGBA_ConstPtr
 ###
 
 
-
 # template<>
 # class PCL_EXPORTS Filter<sensor_msgs::PointCloud2> : public PCLBase<sensor_msgs::PointCloud2>
 #     public:
@@ -145,30 +144,39 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
         # public:
         # ctypedef pcl::PointCloud<PointT> PointCloud;
         void filter (cpp.PointCloud[T] &output)
+        
         # brief Calls the filtering method and returns the filtered point cloud indices.
         # param[out] indices the resultant filtered point cloud indices
         void filter (vector[int] &indices)
+        
         # \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
         # \param[in] negative false = normal filter behavior (default), true = inverted behavior.
         void setNegative (bool negative)
+        
         # \brief Get whether the regular conditions for points filtering should apply, or the inverted conditions.
         # \return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
         bool getNegative ()
+        
         # \brief Set whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default: NaN),
         # or removed from the PointCloud, thus potentially breaking its organized structure.
         # \param[in] keep_organized false = remove points (default), true = redefine points, keep structure.
         void setKeepOrganized (bool keep_organized)
+        
         # brief Get whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default = NaN),
         # or removed from the PointCloud, thus potentially breaking its organized structure.
         # return The value of the internal \a keep_organized_ parameter; false = remove points (default), true = redefine points, keep structure.
         bool getKeepOrganized ()
+        
         # brief Provide a value that the filtered points should be set to instead of removing them.
         # Used in conjunction with \a setKeepOrganized ().
         # param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
         void setUserFilterValue (float value)
+        
         # brief Get the point indices being removed
         # return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
         cpp.IndicesPtr_t getRemovedIndices ()
+
+###
 
 # template<>
 # class PCL_EXPORTS FilterIndices<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
@@ -570,31 +578,37 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         # \brief Set the minimum point of the box
         # \param[in] min_pt the minimum point of the box
         void setMin (const eigen3.Vector4f &min_pt)
+        
         # """
         # brief Get the value of the minimum point of the box, as set by the user
         # return the value of the internal \a min_pt parameter.
         # """
         eigen3.Vector4f getMin ()
-        # \brief Set the maximum point of the box
-        # \param[in] max_pt the maximum point of the box
+        
+        # brief Set the maximum point of the box
+        # param[in] max_pt the maximum point of the box
         void setMax (const eigen3.Vector4f &max_pt)
-        # \brief Get the value of the maxiomum point of the box, as set by the user
-        # \return the value of the internal \a max_pt parameter.
+        
+        # brief Get the value of the maxiomum point of the box, as set by the user
+        # return the value of the internal \a max_pt parameter.
         eigen3.Vector4f getMax () const
-        # \brief Set a translation value for the box
-        # \param[in] translation the (tx,ty,tz) values that the box should be translated by
+        
+        # brief Set a translation value for the box
+        # param[in] translation the (tx,ty,tz) values that the box should be translated by
         void setTranslation (const eigen3.Vector3f &translation)
-        # \brief Get the value of the box translation parameter as set by the user. */
+        
+        # brief Get the value of the box translation parameter as set by the user. */
         eigen3.Vector3f getTranslation () const
-        # \brief Set a rotation value for the box
-        # \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
+        
+        # brief Set a rotation value for the box
+        # param[in] rotation the (rx,ry,rz) values that the box should be rotated by
         void setRotation (const eigen3.Vector3f &rotation)
-        # \brief Get the value of the box rotatation parameter, as set by the user. */
+        # brief Get the value of the box rotatation parameter, as set by the user. */
         eigen3.Vector3f getRotation () const
-        # \brief Set a transformation that should be applied to the cloud before filtering
-        # \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
+        # brief Set a transformation that should be applied to the cloud before filtering
+        # param[in] transform an affine transformation that needs to be applied to the cloud before filtering
         void setTransform (const eigen3.Affine3f &transform)
-        # \brief Get the value of the transformation parameter, as set by the user. */
+        # brief Get the value of the transformation parameter, as set by the user. */
         eigen3.Affine3f getTransform () const
 
 ###
@@ -696,6 +710,7 @@ cdef extern from "pcl/filters/extract_indices.h" namespace "pcl":
         # ctypedef typename PointCloud::Ptr PointCloudPtr;
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # ctypedef typename pcl::traits::fieldList<PointT>::type FieldList;
+        
         # * \brief Apply the filter and store the results directly in the input cloud.
         # * \details This method will save the time and memory copy of an output cloud but can not alter the original size of the input cloud:
         # * It operates as though setKeepOrganized() is true and will overwrite the filtered points instead of remove them.

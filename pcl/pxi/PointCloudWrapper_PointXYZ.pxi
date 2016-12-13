@@ -409,12 +409,15 @@ cdef class PointCloud:
         for i in pyindices:
             ind.indices.push_back(i)
         
-        result = PointCloud()
+        # result = PointCloud()
+        result = ExtractIndices()
         # (<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr())
         mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
         # XXX are we leaking memory here? del ind causes a double free...
         
         return result
+
+    def make_Extract(self):
 
     def make_ProjectInliers(self):
         """
@@ -505,11 +508,6 @@ cdef class PointCloud:
         normalEstimation = NormalEstimation()
         cdef pclftr.NormalEstimation_t *cNormalEstimation = <pclftr.NormalEstimation_t *>normalEstimation.me
         cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # kdtree = KdTreeFLANN(self)
-        # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
-        # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
-        # cNormalEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
-        # cNormalEstimation.setRadiusSearch(0.005)
         return normalEstimation
 
     def make_VFHEstimation(self):
@@ -519,12 +517,6 @@ cdef class PointCloud:
         # features
         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # NG?
-        # cVFHEstimation.setInputNormals(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> cloud_normals.thisptr_shared)
-        # kdtree = KdTreeFLANN(self)
-        # cdef pclkdt.KdTreeFLANN_t *cKdtree = <pclkdt.KdTreeFLANN_t *> kdtree.me
-        # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNConstPtr_t> cKdtree)
-        # cVFHEstimation.setSearchMethod(<pclkdt.KdTreeFLANNPtr_t> deref(cKdtree))
         return vfhEstimation
 
     def make_RangeImage(self):

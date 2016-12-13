@@ -52,7 +52,11 @@ cdef class PCLVisualizering:
     # def SpinOnce(self, millis_to_wait = 1):
     #     self.thisptr().spinOnce (millis_to_wait)
 
-    # def AddPointCloud(self, _pcl.RangeImage rangeImage, PointCloudColorHandlerCustoms custom, string name):
+    def SetBackgroundColor (self, int r, int g, int b):
+        self.me.setBackgroundColor(r, g, b)
+
+    # def AddPointCloud(self, pcl._pcl.RangeImage rangeImage, PointCloudColorHandlerCustoms custom, string name):
+    # def AddPointCloud(self, RangeImage rangeImage, PointCloudColorHandlerCustoms custom, string name):
     #     self.me.addPointCloud (rangeImage.thisptr(), custom.thisptr(), name)
 
     def SetPointCloudRenderingProperties(self, int propType, int propValue, string propName):

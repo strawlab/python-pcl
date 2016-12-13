@@ -58,13 +58,13 @@ cdef class RangeImage:
     def SetAngularResolution(self, float angular_resolution_x, float angular_resolution_y):
         self.me.setAngularResolution(angular_resolution_x, angular_resolution_y)
     
-    # def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
+    # def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
     #     self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t> viewpoint.thisptr()[0])
     # 
-    # def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
+    # def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
     #     self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_Ptr_t> viewpoint.thisptr()[0])
 
-    def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
+    def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
         self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
 

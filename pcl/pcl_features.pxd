@@ -13,49 +13,6 @@ cimport pcl_defs as cpp
 cimport pcl_kdtree as pclkdt
 
 ###############################################################################
-# Enum
-###############################################################################
-
-# Template
-# # enum CoordinateFrame
-# # CAMERA_FRAME = 0,
-# # LASER_FRAME = 1
-# Start
-# cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
-#     ctypedef enum CoordinateFrame2 "pcl::RangeImage::CoordinateFrame":
-#         COORDINATEFRAME_CAMERA "pcl::RangeImage::CAMERA_FRAME"
-#         COORDINATEFRAME_LASER "pcl::RangeImage::LASER_FRAME"
-# End
-
-# integral_image_normal.h
-# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
-#         cdef enum BorderPolicy:
-#             BORDER_POLICY_IGNORE
-#             BORDER_POLICY_MIRROR
-##
-cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
-    ctypedef enum BorderPolicy2 "pcl::IntegralImageNormalEstimation::BorderPolicy":
-          BORDERPOLICY2_IGNORE "pcl::IntegralImageNormalEstimation::BORDER_POLICY_IGNORE"
-          BORDERPOLICY2_MIRROR "pcl::IntegralImageNormalEstimation::BORDER_POLICY_MIRROR"
-
-# 
-# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
-#         cdef enum NormalEstimationMethod:
-#             COVARIANCE_MATRIX
-#             AVERAGE_3D_GRADIENT
-#             AVERAGE_DEPTH_CHANGE
-#             SIMPLE_3D_GRADIENT
-###
-
-cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
-    ctypedef enum NormalEstimationMethod2 "pcl::IntegralImageNormalEstimation::NormalEstimationMethod":
-            ESTIMATIONMETHOD2_COVARIANCE_MATRIX "pcl::IntegralImageNormalEstimation::COVARIANCE_MATRIX"
-            ESTIMATIONMETHOD2_AVERAGE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::AVERAGE_3D_GRADIENT"
-            ESTIMATIONMETHOD2_AVERAGE_DEPTH_CHANGE "pcl::IntegralImageNormalEstimation::AVERAGE_DEPTH_CHANGE"
-            ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::SIMPLE_3D_GRADIENT"
-
-
-###############################################################################
 # Types
 ###############################################################################
 
@@ -81,30 +38,34 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # ctypedef boost::function<int (size_t, double, std::vector<int> &, std::vector<float> &)> SearchMethod;
         # ctypedef boost::function<int (const PointCloudIn &cloud, size_t index, double, std::vector<int> &, std::vector<float> &)> SearchMethodSurface;
         # public:
-        inline void setSearchSurface (const cpp.PointCloudPtr_t &)
-        inline cpp.PointCloudPtr_t getSearchSurface () const
+        # inline void setSearchSurface (const cpp.PointCloudPtr_t &)
+        # inline cpp.PointCloudPtr_t getSearchSurface () const
+        void setSearchSurface (const In &)
+        In getSearchSurface () const
         
         # inline void setSearchMethod (const KdTreePtr &tree)
         # void setSearchMethod (pclkdt.KdTreePtr_t tree)
         # void setSearchMethod (pclkdt.KdTreeFLANNPtr_t tree)
         # void setSearchMethod (pclkdt.KdTreeFLANNConstPtr_t &tree)
+        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
         
         # inline KdTreePtr getSearchMethod () const
         # pclkdt.KdTreePtr_t getSearchMethod ()
         # pclkdt.KdTreeFLANNPtr_t getSearchMethod ()
         # pclkdt.KdTreeFLANNConstPtr_t getSearchMethod ()
         
-        inline double getSearchParameter () const
-        inline void setKSearch (int search)
-        inline int getKSearch () const
-        inline void setRadiusSearch (double radius)
-        inline double getRadiusSearch () const
+        double getSearchParameter ()
+        void setKSearch (int search)
+        int getKSearch () const
+        void setRadiusSearch (double radius)
+        double getRadiusSearch ()
         
         # void compute (PointCloudOut &output);
-        void compute (cpp.PointCloudPtr_t output)
-        void compute (cpp.PointCloud_PointXYZI_Ptr_t output)
-        void compute (cpp.PointCloud_PointXYZRGB_Ptr_t output)
-        void compute (cpp.PointCloud_PointXYZRGBA_Ptr_t output)
+        # void compute (cpp.PointCloudPtr_t output)
+        # void compute (cpp.PointCloud_PointXYZI_Ptr_t output)
+        # void compute (cpp.PointCloud_PointXYZRGB_Ptr_t output)
+        # void compute (cpp.PointCloud_PointXYZRGBA_Ptr_t output)
+        void compute (Out &output)
         
         # void computeEigen (cpp.PointCloud[Eigen::MatrixXf] &output);
         # protected:
@@ -751,10 +712,10 @@ ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageN
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGBA_t
 
-# ctypedef NormalEstimationMethod[cpp.PointXYZ, cpp.Normal] NormalEstimationMethod_t
-# ctypedef NormalEstimationMethod[cpp.PointXYZI, cpp.Normal] NormalEstimationMethod_PointXYZI_t
-# ctypedef NormalEstimationMethod[cpp.PointXYZRGB, cpp.Normal] NormalEstimationMethod_PointXYZRGB_t
-# ctypedef NormalEstimationMethod[cpp.PointXYZRGBA, cpp.Normal] NormalEstimationMethod_PointXYZRGBA_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGBA_t
 ###
 
 # integral_image2D.h
@@ -1214,7 +1175,7 @@ cdef extern from "pcl/features/multiscale_feature_persistence.h" namespace "pcl"
 #
 
 # template <typename PointInT, typename PointOutT>
-# class NormalEstimation: public Feature<PointInT, PointOutT>
+# class NormalEstimation : public Feature<PointInT, PointOutT>
 cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
     cdef cppclass NormalEstimation[In, Out](Feature[In, Out]):
         NormalEstimation ()
@@ -1229,6 +1190,7 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # using Feature<PointInT, PointOutT>::search_parameter_;
         # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
         # typedef typename Feature<PointInT, PointOutT>::PointCloudConstPtr PointCloudConstPtr;
+        
         # * \brief Compute the Least-Squares plane fit for a given set of points, using their indices,
         # * and return the estimated plane parameters together with the surface curvature.
         # * \param cloud the input point cloud
@@ -1239,6 +1201,8 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * \lambda_0 / (\lambda_0 + \lambda_1 + \lambda_2)
         # * \f]
         # inline void computePointNormal (const cpp.PointCloud[In] &cloud, const vector[int] &indices, Eigen::Vector4f &plane_parameters, float &curvature)
+        # void computePointNormal (const cpp.PointCloud[In] &cloud, const vector[int] &indices, eigen3.Vector4f &plane_parameters, float &curvature)
+        
         # * \brief Compute the Least-Squares plane fit for a given set of points, using their indices,
         # * and return the estimated plane parameters together with the surface curvature.
         # * \param cloud the input point cloud
@@ -1251,6 +1215,8 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * \lambda_0 / (\lambda_0 + \lambda_1 + \lambda_2)
         # * \f]
         # inline void computePointNormal (const cpp.PointCloud[In] &cloud, const vector[int] &indices, float &nx, float &ny, float &nz, float &curvature)
+        void computePointNormal (const cpp.PointCloud[In] &cloud, const vector[int] &indices, float &nx, float &ny, float &nz, float &curvature)
+        
         # * \brief Provide a pointer to the input dataset
         # * \param cloud the const boost shared pointer to a PointCloud message
         # virtual inline void setInputCloud (const PointCloudConstPtr &cloud)
@@ -1259,6 +1225,7 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * \param vpy the Y coordinate of the viewpoint
         # * \param vpz the Z coordinate of the viewpoint
         inline void setViewPoint (float vpx, float vpy, float vpz)
+        
         # * \brief Get the viewpoint.
         # * \param [out] vpx x-coordinate of the view point
         # * \param [out] vpy y-coordinate of the view point
@@ -1267,6 +1234,7 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * If the viewpoint is set manually using the setViewPoint method, this method will return the set view point coordinates.
         # * If an input cloud is set, it will return the sensor origin otherwise it will return the origin (0, 0, 0)
         inline void getViewPoint (float &vpx, float &vpy, float &vpz)
+        
         # * \brief sets whether the sensor origin or a user given viewpoint should be used. After this method, the 
         # * normal estimation method uses the sensor origin of the input cloud.
         # * to use a user defined view point, use the method setViewPoint
@@ -1278,6 +1246,7 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * \note In situations where not enough neighbors are found, the normal and curvature values are set to -1.
         # * \param output the resultant point cloud model dataset that contains surface normals and curvatures
         # void computeFeature (PointCloudOut &output);
+        
         # * \brief Values describing the viewpoint ("pinhole" camera model assumed). For per point viewpoints, inherit
         # * from NormalEstimation and provide your own computeFeature (). By default, the viewpoint is set to 0,0,0. */
         # float vpx_, vpy_, vpz_;
@@ -3254,6 +3223,50 @@ ctypedef VFHEstimation[cpp.PointXYZI, cpp.Normal, cpp.VFHSignature308] VFHEstima
 ctypedef VFHEstimation[cpp.PointXYZRGB, cpp.Normal, cpp.VFHSignature308] VFHEstimation_PointXYZRGB_t
 ctypedef VFHEstimation[cpp.PointXYZRGBA, cpp.Normal, cpp.VFHSignature308] VFHEstimation_PointXYZRGBA_t
 ###
+
+
+###############################################################################
+# Enum
+###############################################################################
+
+# Template
+# # enum CoordinateFrame
+# # CAMERA_FRAME = 0,
+# # LASER_FRAME = 1
+# Start
+# cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
+#     ctypedef enum CoordinateFrame2 "pcl::RangeImage::CoordinateFrame":
+#         COORDINATEFRAME_CAMERA "pcl::RangeImage::CAMERA_FRAME"
+#         COORDINATEFRAME_LASER "pcl::RangeImage::LASER_FRAME"
+# End
+
+# integral_image_normal.h
+# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
+#         cdef enum BorderPolicy:
+#             BORDER_POLICY_IGNORE
+#             BORDER_POLICY_MIRROR
+##
+cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
+    ctypedef enum BorderPolicy2 "pcl::IntegralImageNormalEstimation::BorderPolicy":
+          BORDERPOLICY2_IGNORE "pcl::IntegralImageNormalEstimation::BORDER_POLICY_IGNORE"
+          BORDERPOLICY2_MIRROR "pcl::IntegralImageNormalEstimation::BORDER_POLICY_MIRROR"
+
+# 
+# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
+#         cdef enum NormalEstimationMethod:
+#             COVARIANCE_MATRIX
+#             AVERAGE_3D_GRADIENT
+#             AVERAGE_DEPTH_CHANGE
+#             SIMPLE_3D_GRADIENT
+###
+
+cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
+    ctypedef enum NormalEstimationMethod2 "pcl::IntegralImageNormalEstimation::NormalEstimationMethod":
+            ESTIMATIONMETHOD2_COVARIANCE_MATRIX "pcl::IntegralImageNormalEstimation::COVARIANCE_MATRIX"
+            ESTIMATIONMETHOD2_AVERAGE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::AVERAGE_3D_GRADIENT"
+            ESTIMATIONMETHOD2_AVERAGE_DEPTH_CHANGE "pcl::IntegralImageNormalEstimation::AVERAGE_DEPTH_CHANGE"
+            ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::SIMPLE_3D_GRADIENT"
+
 
 ###############################################################################
 # Activation

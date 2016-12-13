@@ -46,7 +46,13 @@ cnp.import_array()
 
 ### Enum Setting(define Class InternalType) ###
 
-# NG : VTK library error
+###
+
+# NG
+# include "pxi/PointCloud.pxi"
+# include "pxi/RangeImage.pxi"
+
+# VTK
 include "pxi/Visualization/PointCloudColorHandlerCustoms.pxi"
 include "pxi/Visualization/Visualization.pxi"
 include "pxi/Visualization/PCLHistogramViewing.pxi"

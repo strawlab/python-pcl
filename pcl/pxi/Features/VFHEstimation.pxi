@@ -12,13 +12,20 @@ cdef class VFHEstimation:
     """
     cdef pclftr.VFHEstimation_t *me
 
-    def __cinit__(self, PointCloud pc not None):
+    def __cinit__(self):
         self.me = new pclftr.VFHEstimation_t()
-        self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me
 
-#   def compute(self, *normals):
+    def set_SearchMethod(self, KdTree kdtree):
+        self.me.setSearchMethod(kdtree.thisptr_shared)
 
+    def set_KSearch (self, int param):
+        self.me.setKSearch (param)
+
+    # def compute(self):
+    #     cloud_normals = PointCloud[Normal]
+    #     self.me.compute (*cloud_normals)
+    #     return cloud_normals
 
