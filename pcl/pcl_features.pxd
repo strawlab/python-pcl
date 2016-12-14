@@ -11,6 +11,7 @@ from boost_shared_ptr cimport shared_ptr
 # main
 cimport pcl_defs as cpp
 cimport pcl_kdtree as pclkdt
+cimport pcl_range_image as pcl_r_img
 
 ###############################################################################
 # Types
@@ -116,7 +117,7 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # using Feature<PointInT, PointOutT>::input_;
         # using Feature<PointInT, PointOutT>::surface_;
         # using Feature<PointInT, PointOutT>::getClassName;
-		
+        
         # /** \brief Provide a pointer to the input dataset that contains the point normals of
         #         * the XYZ dataset.
         # * In case of search surface is set to be different from the input cloud,
@@ -183,53 +184,7 @@ cdef extern from "pcl/features/3dsc.h" namespace "pcl":
         void setPointDensityRadius (double radius)
         # return The point density search radius
         double getPointDensityRadius ()
-        ##
-        # protected:
-        # brief Initialize computation by allocating all the intervals and the volume lookup table. */
-        # bool initCompute ();
-        # brief Estimate a descriptor for a given point.
-        # param[in] index the index of the point to estimate a descriptor for
-        # param[in] normals a pointer to the set of normals
-        # param[in] rf the reference frame
-        # param[out] desc the resultant estimated descriptor
-        # return true if the descriptor was computed successfully, false if there was an error 
-        # e.g. the nearest neighbor didn't return any neighbors)
-        # bool computePoint (size_t index, const pcl::PointCloud<PointNT> &normals, float rf[9], std::vector<float> &desc);
-        # brief Estimate the actual feature. 
-        # param[out] output the resultant feature 
-        # void computeFeature (PointCloudOut &output);
-
-        # brief Values of the radii interval
-        # vector<float> radii_interval_
-        # brief Theta divisions interval
-        # std::vector<float> theta_divisions_;
-        # brief Phi divisions interval
-        # std::vector<float> phi_divisions_;
-        # brief Volumes look up table
-        # vector<float> volume_lut_;
-        # brief Bins along the azimuth dimension
-        # size_t azimuth_bins_;
-        # brief Bins along the elevation dimension
-        # size_t elevation_bins_;
-        # brief Bins along the radius dimension
-        # size_t radius_bins_;
-        # brief Minimal radius value
-        # double min_radius_;
-        # brief Point density radius
-        # double point_density_radius_;
-        # brief Descriptor length
-        # size_t descriptor_length_;
-        # brief Boost-based random number generator algorithm.
-        # boost::mt19937 rng_alg_;
-        # brief Boost-based random number generator distribution.
-        # boost::shared_ptr<boost::uniform_01<boost::mt19937> > rng_;
-        # brief Shift computed descriptor "L" times along the azimuthal direction
-        # param[in] block_size the size of each azimuthal block
-        # param[in] desc at input desc == original descriptor and on output it contains 
-        # shifted descriptor resized descriptor_length_ * azimuth_bins_
-        # void shiftAlongAzimuth (size_t block_size, std::vector<float>& desc);
-        # brief Boost-based random number generator.
-        # inline double rnd ()
+        
 ###
 
 ### Inheritance class ###
@@ -299,9 +254,6 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
         # param[out] v the resultant v direction
         # inline void getCoordinateSystemOnPlane (const PointNT &p_coeff, 
         #                           Eigen::Vector4f &u, Eigen::Vector4f &v)
-        # protected:
-        # void computeFeature (PointCloudOut &output);
-        # float angle_threshold_;
 
 ###
 
@@ -368,11 +320,7 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
 #         # brief Overloaded computed method from pcl::Feature.
 #         # param[out] output the resultant point cloud model dataset containing the estimated features
 #         # void compute (PointCloudOut &);
-#         # protected:
-#         # /** \brief Centroids that were used to compute different CVFH descriptors */
-#         # std::vector<Eigen::Vector3f> centroids_dominant_orientations_;
-#         # /** \brief Normal centroids that were used to compute different CVFH descriptors */
-#         # std::vector<Eigen::Vector3f> dominant_normals_;
+
 
 ###
 
@@ -392,15 +340,6 @@ cdef extern from "pcl/features/esf.h" namespace "pcl":
         # ctypedef typename pcl::PointCloud<PointInT> PointCloudIn;
         # ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
         # void compute (PointCloudOut &output)
-        # protected:
-        # void computeFeature (PointCloudOut &output);
-        # int lci (const int x1, const int y1, const int z1, 
-        #    const int x2, const int y2, const int z2, 
-        #    float &ratio, int &incnt, int &pointcount);
-        # void computeESF (PointCloudIn &pc, std::vector<float> &hist);
-        # void voxelize9 (PointCloudIn &cluster);
-        # void cleanup9 (PointCloudIn &cluster);
-        # void scale_points_unit_sphere (const pcl::PointCloud<PointInT> &pc, float scalefactor, Eigen::Vector4f& centroid);
 ###
 
 # cdef extern from "pcl/features/feature.h" namespace "pcl":
@@ -438,16 +377,6 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         #   */
         # inline void setInputLabels (const PointCloudLConstPtr &labels)
         # inline PointCloudLConstPtr getInputLabels () const
-        # protected:
-        # /** \brief A pointer to the input dataset that contains the point labels of the XYZ
-        # * dataset.
-        # */
-        # PointCloudLConstPtr labels_;
-        # /** \brief This method should get called before starting the actual computation. */
-        # virtual bool
-        # initCompute ();
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 ###
 
 # template <typename PointInT, typename PointRFT>
@@ -547,31 +476,6 @@ cdef extern from "pcl/features/fpfh.h" namespace "pcl":
         # * \param[out] nr_bins_f2 number of subdivisions for the second angular feature
         # * \param[out] nr_bins_f3 number of subdivisions for the third angular feature
         inline void getNrSubdivisions (int &, int &, int &)
-        # protected:
-        # * \brief Estimate the set of all SPFH (Simple Point Feature Histograms) signatures for the input cloud
-        # * \param[out] spfh_hist_lookup a lookup table for all the SPF feature indices
-        # * \param[out] hist_f1 the resultant SPFH histogram for feature f1
-        # * \param[out] hist_f2 the resultant SPFH histogram for feature f2
-        # * \param[out] hist_f3 the resultant SPFH histogram for feature f3
-        # void computeSPFHSignatures (vector[int] &, Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3);
-        # * \brief Estimate the Fast Point Feature Histograms (FPFH) descriptors at a set of points given by
-        # * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-        # * setSearchMethod ()
-        # * \param[out] output the resultant point cloud model dataset that contains the FPFH feature estimates
-        # void 
-        # computeFeature (PointCloudOut &output);
-        # * \brief The number of subdivisions for each angular feature interval. */
-        # int nr_bins_f1_, nr_bins_f2_, nr_bins_f3_;
-        # * \brief Placeholder for the f1 histogram. */
-        # Eigen::MatrixXf hist_f1_;
-        # * \brief Placeholder for the f2 histogram. */
-        # Eigen::MatrixXf hist_f2_;
-        # /** \brief Placeholder for the f3 histogram. */
-        # Eigen::MatrixXf hist_f3_;
-        # /** \brief Placeholder for a point's FPFH signature. */
-        # Eigen::VectorXf fpfh_histogram_;
-        # /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-        # float d_pi_; 
 ###
 
 # template <typename PointInT, typename PointNT>
@@ -703,9 +607,6 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
         ##
-        # protected:
-        # void computeFeature (PointCloudOut &output);
-        # void initData ()
 
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
@@ -855,28 +756,6 @@ cdef extern from "pcl/features/intensity_gradient.h" namespace "pcl":
         # brief Initialize the scheduler and set the number of threads to use.
         # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         # inline void setNumberOfThreads (int nr_threads)
-        # protected:
-        # /** \brief Estimate the intensity gradients for a set of points given in <setInputCloud (), setIndices ()> using
-        #  *  the surface in setSearchSurface () and the spatial locator in setSearchMethod ().
-        #  *  \param output the resultant point cloud that contains the intensity gradient vectors
-        # void computeFeature (PointCloudOut &output)
-        # /** \brief Estimate the intensity gradient around a given point based on its spatial neighborhood of points
-        #   * \param cloud a point cloud dataset containing XYZI coordinates (Cartesian coordinates + intensity)
-        #   * \param indices the indices of the neighoring points in the dataset
-        #   * \param point the 3D Cartesian coordinates of the point at which to estimate the gradient
-        #   * \param normal the 3D surface normal of the given point
-        #   * \param gradient the resultant 3D gradient vector
-        # void computePointIntensityGradient (const pcl::PointCloud<PointInT> &cloud,
-        #                                const std::vector<int> &indices,
-        #                                const Eigen::Vector3f &point, 
-        #                                float mean_intensity, 
-        #                                const Eigen::Vector3f &normal,
-        #                                Eigen::Vector3f &gradient);
-        # protected:
-        #   ///intensity field accessor structure
-        #   IntensitySelectorT intensity_;
-        #   ///number of threads to be used, default 1
-        #   int threads_;
 ###
 
 # template <typename PointInT, typename PointNT>
@@ -892,14 +771,6 @@ cdef extern from "pcl/features/intensity_gradient.h" namespace "pcl":
 #         #   using IntensityGradientEstimation<PointInT, PointNT, pcl::IntensityGradient>::k_;
 #         #   using IntensityGradientEstimation<PointInT, PointNT, pcl::IntensityGradient>::search_parameter_;
 #         #   using IntensityGradientEstimation<PointInT, PointNT, pcl::IntensityGradient>::compute;
-#         # protected:
-#         # /** \brief Estimate the intensity gradients for a set of points given in <setInputCloud (), setIndices ()> using
-#         #  *  the surface in setSearchSurface () and the spatial locator in setSearchMethod ().
-#         #  *  \param output the resultant point cloud that contains the intensity gradient vectors
-#         # void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-#         # /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
-#         #  * \param[out] output the output point cloud
-#         # void compute (pcl::PointCloud<pcl::Normal> &)
 
 ###
 
@@ -1016,12 +887,6 @@ cdef extern from "pcl/features/moment_invariants.h" namespace "pcl":
         # * \param[out] j3 the resultant third moment invariant
         # void computePointMomentInvariants (const pcl::PointCloud<PointInT> &cloud, 
         #                             float &j1, float &j2, float &j3);
-        # protected:
-        # * \brief Estimate moment invariants for all points given in <setInputCloud (), setIndices ()> using the surface
-        # * in setSearchSurface () and the spatial locator in setSearchMethod ()
-        # * \param[out] output the resultant point cloud model dataset that contains the moment invariants
-        # */
-        # void computeFeature (PointCloudOut &output);
 ###
 
 # template <typename PointInT>
@@ -1240,23 +1105,6 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
         
-        # protected:
-        # * \brief Estimate normals for all points given in <setInputCloud (), setIndices ()> using the surface in
-        # * setSearchSurface () and the spatial locator in setSearchMethod ()
-        # * \note In situations where not enough neighbors are found, the normal and curvature values are set to -1.
-        # * \param output the resultant point cloud model dataset that contains surface normals and curvatures
-        # void computeFeature (PointCloudOut &output);
-        
-        # * \brief Values describing the viewpoint ("pinhole" camera model assumed). For per point viewpoints, inherit
-        # * from NormalEstimation and provide your own computeFeature (). By default, the viewpoint is set to 0,0,0. */
-        # float vpx_, vpy_, vpz_;
-        # /** \brief Placeholder for the 3x3 covariance matrix at each surface patch. */
-        # EIGEN_ALIGN16 Eigen::Matrix3f covariance_matrix_;
-        # /** \brief 16-bytes aligned placeholder for the XYZ centroid of a surface patch. */
-        # Eigen::Vector4f xyz_centroid_;
-        # /** whether the sensor origin of the input cloud or a user given viewpoint should be used.*/
-        # bool use_sensor_origin_;
-
 ctypedef NormalEstimation[cpp.PointXYZ, cpp.Normal] NormalEstimation_t
 ctypedef NormalEstimation[cpp.PointXYZI, cpp.Normal] NormalEstimation_PointXYZI_t
 ctypedef NormalEstimation[cpp.PointXYZRGB, cpp.Normal] NormalEstimation_PointXYZRGB_t
@@ -1304,9 +1152,6 @@ cdef extern from "pcl/features/normal_3d_omp.h" namespace "pcl":
         #     * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         # */
         inline void setNumberOfThreads (unsigned int nr_threads)
-        # protected:
-        # /** \brief The number of threads the scheduler should use. */
-        # unsigned int threads_;
 ###
 
 # template <typename PointInT>
@@ -1396,8 +1241,6 @@ cdef extern from "pcl/features/normal_based_signature.h" namespace "pcl":
         # * \brief Returns the scale parameter - used to determine the radius of the sampling disc around the
         # * point of interest - linked to the smoothing scale of the input cloud
         inline float getScale ()
-        # protected:
-        # void computeFeature (FeatureCloud &output)
 ###
 
 # pfh.h
@@ -1456,30 +1299,8 @@ cdef extern from "pcl/features/pfh.h" namespace "pcl":
         # * \param[out] pfh_histogram the resultant (combinatorial) PFH histogram representing the feature at the query point
         # void computePointPFHSignature (const cpp.PointCloud[In] &cloud, const cpp.PointCloud[NT] &normals, 
         #                         const vector[int] &indices, int nr_split, Eigen::VectorXf &pfh_histogram);
-        # protected:
-        # * \brief Estimate the Point Feature Histograms (PFH) descriptors at a set of points given by
-        # * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-        # * setSearchMethod ()
-        # * \param[out] output the resultant point cloud model dataset that contains the PFH feature estimates
-        # void computeFeature (PointCloudOut &output);
-        # /** \brief The number of subdivisions for each angular feature interval. */
-        # int nr_subdiv_;
-        # /** \brief Placeholder for a point's PFH signature. */
-        # Eigen::VectorXf pfh_histogram_;
-        # /** \brief Placeholder for a PFH 4-tuple. */
-        # Eigen::Vector4f pfh_tuple_;
-        # /** \brief Placeholder for a histogram index. */
-        # int f_index_[3];
-        # /** \brief Float constant = 1.0 / (2.0 * M_PI) */
-        # float d_pi_; 
-        # /** \brief Internal hashmap, used to optimize efficiency of redundant computations. */
-        # std::map<std::pair<int, int>, Eigen::Vector4f, std::less<std::pair<int, int> >, Eigen::aligned_allocator<Eigen::Vector4f> > feature_map_;
-        # /** \brief Queue of pairs saved, used to constrain memory usage. */
-        # std::queue<std::pair<int, int> > key_list_;
-        # /** \brief Maximum size of internal cache memory. */
-        # unsigned int max_cache_size_;
-        # /** \brief Set to true to use the internal cache for removing redundant computations. */
-        # bool use_cache_;
+
+
 ###
 
 # template <typename PointInT, typename PointNT>
@@ -1519,8 +1340,8 @@ cdef extern from "pcl/features/pfhrgb.h" namespace "pcl":
                               float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7)
         # void computePointPFHRGBSignature (const cpp.PointCloud[In] &cloud, const cpp.PointCloud[NT] &normals,
         #                            const vector[int] &indices, int nr_split, Eigen::VectorXf &pfhrgb_histogram)
-        # protected:
-        # void computeFeature (PointCloudOut &output);
+
+
 ###
 
 # ppf.h
@@ -1607,13 +1428,6 @@ cdef extern from "pcl/features/principal_curvatures.h" namespace "pcl":
 #       void computePointPrincipalCurvatures (const pcl::PointCloud<PointNT> &normals,
 #                                        int p_idx, const std::vector<int> &indices,
 #                                        float &pcx, float &pcy, float &pcz, float &pc1, float &pc2);
-#     protected:
-#       /** \brief Estimate the principal curvature (eigenvector of the max eigenvalue), along with both the max (pc1)
-#         * and min (pc2) eigenvalues for all points given in <setInputCloud (), setIndices ()> using the surface in
-#         * setSearchSurface () and the spatial locator in setSearchMethod ()
-#         * \param[out] output the resultant point cloud model dataset that contains the principal curvature estimates
-#         */
-#       void computeFeature (PointCloudOut &output);
 
 # template <typename PointInT, typename PointNT>
 # class PrincipalCurvaturesEstimation<PointInT, PointNT, Eigen::MatrixXf> : public PrincipalCurvaturesEstimation<PointInT, PointNT, pcl::PrincipalCurvatures>
@@ -1632,296 +1446,108 @@ cdef extern from "pcl/features/principal_curvatures.h" namespace "pcl":
 # class RangeImage;
 # template <typename PointType>
 # class PointCloud;
-# class PCL_EXPORTS RangeImageBorderExtractor : public Feature<PointWithRange,BorderDescription>
-#       public:
-#       // =====TYPEDEFS=====
-#       typedef Feature<PointWithRange,BorderDescription> BaseClass;
-#       
-#       // =====PUBLIC STRUCTS=====
-#       //! Stores some information extracted from the neighborhood of a point
-#       struct LocalSurface
-#       {
-#         LocalSurface () : 
-#           normal (), neighborhood_mean (), eigen_values (), normal_no_jumps (), 
-#           neighborhood_mean_no_jumps (), eigen_values_no_jumps (), max_neighbor_distance_squared () {}
-# 
-#         Eigen::Vector3f normal;
-#         Eigen::Vector3f neighborhood_mean;
-#         Eigen::Vector3f eigen_values;
-#         Eigen::Vector3f normal_no_jumps;
-#         Eigen::Vector3f neighborhood_mean_no_jumps;
-#         Eigen::Vector3f eigen_values_no_jumps;
-#         float max_neighbor_distance_squared;
-#       };
-#       
-#       //! Stores the indices of the shadow border corresponding to obstacle borders
-#       struct ShadowBorderIndices 
-#       {
-#         ShadowBorderIndices () : left (-1), right (-1), top (-1), bottom (-1) {}
-#         int left, right, top, bottom;
-#       };
-# 
-#       //! Parameters used in this class
-#       struct Parameters
-#       {
-#         Parameters () : max_no_of_threads(1), pixel_radius_borders (3), pixel_radius_plane_extraction (2), pixel_radius_border_direction (2), 
-#                        minimum_border_probability (0.8f), pixel_radius_principal_curvature (2) {}
-#         int max_no_of_threads;
-#         int pixel_radius_borders;
-#         int pixel_radius_plane_extraction;
-#         int pixel_radius_border_direction;
-#         float minimum_border_probability;
-#         int pixel_radius_principal_curvature;
-#       };
-#       
-#       // =====STATIC METHODS=====
-#       /** \brief Take the information from BorderTraits to calculate the local direction of the border
-#        * \param border_traits contains the information needed to calculate the border angle
-#        */
-#       static inline float
-#       getObstacleBorderAngle (const BorderTraits& border_traits);
-#       
-#       // =====CONSTRUCTOR & DESTRUCTOR=====
-#       /** Constructor */
-#       RangeImageBorderExtractor (const RangeImage* range_image=NULL);
-#       /** Destructor */
-#       ~RangeImageBorderExtractor ();
-#       
-#       // =====METHODS=====
-#       /** \brief Provide a pointer to the range image
-#         * \param range_image a pointer to the range_image
-#         */
-#       void
-#       setRangeImage (const RangeImage* range_image);
-#       
-#       /** \brief Erase all data calculated for the current range image */
-#       void
-#       clearData ();
-#        
-#       /** \brief Get the 2D directions in the range image from the border directions - probably mainly useful for 
-#         * visualization 
-#         */
-#       float*
-#       getAnglesImageForBorderDirections ();
-# 
-#       /** \brief Get the 2D directions in the range image from the surface change directions - probably mainly useful for 
-#         * visualization 
-#         */
-#       float*
-#       getAnglesImageForSurfaceChangeDirections ();
-#       
-#       /** Overwrite the compute function of the base class */
-#       void
-#       compute (PointCloudOut& output);
-#       
-#       // =====GETTER=====
-#       Parameters&
-#       getParameters () { return (parameters_); }
-# 
-#       bool
-#       hasRangeImage () const { return range_image_ != NULL; }
-# 
-#       const RangeImage&
-#       getRangeImage () const { return *range_image_; }
-# 
-#       float*
-#       getBorderScoresLeft ()   { extractBorderScoreImages (); return border_scores_left_; }
-# 
-#       float*
-#       getBorderScoresRight ()  { extractBorderScoreImages (); return border_scores_right_; }
-# 
-#       float*
-#       getBorderScoresTop ()    { extractBorderScoreImages (); return border_scores_top_; }
-# 
-#       float*
-#       getBorderScoresBottom () { extractBorderScoreImages (); return border_scores_bottom_; }
-# 
-#       LocalSurface**
-#       getSurfaceStructure () { extractLocalSurfaceStructure (); return surface_structure_; }
-# 
-#       PointCloudOut&
-#       getBorderDescriptions () { classifyBorders (); return *border_descriptions_; }
-# 
-#       ShadowBorderIndices**
-#       getShadowBorderInformations () { findAndEvaluateShadowBorders (); return shadow_border_informations_; }
-# 
-#       Eigen::Vector3f**
-#       getBorderDirections () { calculateBorderDirections (); return border_directions_; }
-# 
-#       float*
-#       getSurfaceChangeScores () { calculateSurfaceChanges (); return surface_change_scores_; }
-# 
-#       Eigen::Vector3f*
-#       getSurfaceChangeDirections () { calculateSurfaceChanges (); return surface_change_directions_; }
-#       
-#       protected:
-#       // =====PROTECTED MEMBER VARIABLES=====
-#       Parameters parameters_;
-#       const RangeImage* range_image_;
-#       int range_image_size_during_extraction_;
-#       float* border_scores_left_, * border_scores_right_, * border_scores_top_, * border_scores_bottom_;
-#       LocalSurface** surface_structure_;
-#       PointCloudOut* border_descriptions_;
-#       ShadowBorderIndices** shadow_border_informations_;
-#       Eigen::Vector3f** border_directions_;
-#       
-#       float* surface_change_scores_;
-#       Eigen::Vector3f* surface_change_directions_;
-#       
-#       
-#       // =====PROTECTED METHODS=====
-#       /** \brief Calculate a border score based on how distant the neighbor is, compared to the closest neighbors
-#        * /param local_surface
-#        * /param x
-#        * /param y
-#        * /param offset_x
-#        * /param offset_y
-#        * /param pixel_radius (defaults to 1)
-#        * /return the resulting border score
-#        */
-#       inline float
-#       getNeighborDistanceChangeScore (const LocalSurface& local_surface, int x, int y, 
-#                                       int offset_x, int offset_y, int pixel_radius=1) const;
-#       
-#       /** \brief Calculate a border score based on how much the neighbor is away from the local surface plane
-#         * \param local_surface
-#         * \param x
-#         * \param y
-#         * \param offset_x
-#         * \param offset_y
-#         * \return the resulting border score
-#         */
-#       inline float
-#       getNormalBasedBorderScore (const LocalSurface& local_surface, int x, int y, 
-#                                  int offset_x, int offset_y) const;
-#       
-#       /** \brief Find the best corresponding shadow border and lower score according to the shadow borders value
-#         * \param x
-#         * \param y
-#         * \param offset_x
-#         * \param offset_y
-#         * \param border_scores
-#         * \param border_scores_other_direction
-#         * \param shadow_border_idx
-#         * \return
-#         */
-#       inline bool
-#       changeScoreAccordingToShadowBorderValue (int x, int y, int offset_x, int offset_y, float* border_scores,
-#                                                float* border_scores_other_direction, int& shadow_border_idx) const;
-#       
-#       /** \brief Returns a new score for the given pixel that is >= the original value, based on the neighbors values
-#         * \param x the x-coordinate of the input pixel
-#         * \param y the y-coordinate of the input pixel
-#         * \param border_scores the input border scores
-#         * \return the resulting updated border score
-#         */
-#       inline float
-#       updatedScoreAccordingToNeighborValues (int x, int y, const float* border_scores) const;
-# 
-#       /** \brief For all pixels, returns a new score that is >= the original value, based on the neighbors values
-#         * \param border_scores the input border scores
-#         * \return a pointer to the resulting array of updated scores
-#         */
-#       float*
-#       updatedScoresAccordingToNeighborValues (const float* border_scores) const;
-# 
-#       /** \brief Replace all border score values with updates according to \a updatedScoreAccordingToNeighborValues */
-#       void
-#       updateScoresAccordingToNeighborValues ();
-#       
-#       /** \brief Check if a potential border point has a corresponding shadow border
-#         * \param x the x-coordinate of the input point
-#         * \param y the y-coordinate of the input point
-#         * \param offset_x
-#         * \param offset_y
-#         * \param border_scores_left
-#         * \param border_scores_right
-#         * \param shadow_border_idx
-#         * \return a boolean value indicating whether or not the point has a corresponding shadow border
-#        */
-#       inline bool
-#       checkPotentialBorder (int x, int y, int offset_x, int offset_y, float* border_scores_left,
-#                             float* border_scores_right, int& shadow_border_idx) const;
-# 
-#       /** \brief Check if a potential border point is a maximum regarding the border score
-#         * \param x the x-coordinate of the input point
-#         * \param y the y-coordinate of the input point
-#         * \param offset_x
-#         * \param offset_y
-#         * \param border_scores
-#         * \param shadow_border_idx
-#         * \result a boolean value indicating whether or not the point is a maximum
-#         */
-#       inline bool
-#       checkIfMaximum (int x, int y, int offset_x, int offset_y, float* border_scores, int shadow_border_idx) const;
-#       
-#       /** \brief Find the best corresponding shadow border and lower score according to the shadow borders value */
-#       void
-#       findAndEvaluateShadowBorders ();
-#       
-#       /** \brief Extract local plane information in every point (see getSurfaceStructure ()) */
-#       void
-#       extractLocalSurfaceStructure ();
-#       
-#       /** \brief Get images representing the probability that the corresponding pixels are borders in that direction 
-#         * (see getBorderScores... ())
-#         */
-#       void extractBorderScoreImages ();
-#       
-#       /** \brief Classify the pixels in the range image according to the different classes defined below in 
-#         * enum BorderClass. minImpactAngle (in radians) defines how flat the angle at which a surface was seen can be. 
-#         */
-#       void classifyBorders ();
-#       
-#       /** \brief Calculate the 3D direction of the border just using the border traits at this position (facing away from 
-#         * the obstacle)
-#         * \param x the x-coordinate of the input position
-#         * \param y the y-coordinate of the input position
-#         */
-#       inline void
-#       calculateBorderDirection (int x, int y);
-#       
-#       /** \brief Call \a calculateBorderDirection for every point and average the result over 
-#         * parameters_.pixel_radius_border_direction
-#         */
-#       void
-#       calculateBorderDirections ();
-#       
-#       /** \brief Calculate a 3d direction from a border point by projecting the direction in the range image - returns 
-#         * false if direction could not be calculated
-#         * \param border_description
-#         * \param direction
-#         * \param local_surface
-#         * \return a boolean value indicating whether or not a direction could be calculated
-#         */
-#       inline bool
-#       get3dDirection (const BorderDescription& border_description, Eigen::Vector3f& direction,
-#                       const LocalSurface* local_surface=NULL);
-#       
-#       /** \brief Calculate the main principal curvature (the largest eigenvalue and corresponding eigenvector for the 
-#         * normals in the area) in the given point
-#         * \param x the x-coordinate of the input point
-#         * \param y the y-coordinate of the input point
-#         * \param radius the pixel radius that is used to find neighboring points
-#         * \param magnitude the resulting magnitude
-#         * \param main_direction the resulting direction
-#         */
-#       inline bool
-#       calculateMainPrincipalCurvature (int x, int y, int radius, float& magnitude,
-#                                        Eigen::Vector3f& main_direction) const;
-#       
-#       /** \brief Uses either the border or principal curvature to define a score how much the surface changes in a point 
-#           (1 for a border) and what the main direction of that change is */
-#       void
-#       calculateSurfaceChanges ();
-# 
-#       /** \brief Apply a blur to the surface change images */
-#       void
-#       blurSurfaceChanges ();
-#       
-#       /** \brief Implementation of abstract derived function */
-#       virtual void
-#       computeFeature (PointCloudOut &output);
+
+# class PCL_EXPORTS RangeImageBorderExtractor : public Feature<PointWithRange, BorderDescription>
+cdef extern from "pcl/features/range_image_border_extractor.h" namespace "pcl":
+    cdef cppclass RangeImageBorderExtractor(Feature[cpp.PointWithRange, cpp.BorderDescription]):
+        RangeImageBorderExtractor ()
+        RangeImageBorderExtractor (const pcl_r_img.RangeImage range_image)
+        # =====CONSTRUCTOR & DESTRUCTOR=====
+        # Constructor
+        # RangeImageBorderExtractor (const RangeImage* range_image = NULL)
+        # /** Destructor */
+        # ~RangeImageBorderExtractor ();
+        # 
+        
+        # public:
+        # // =====PUBLIC STRUCTS=====
+        # Stores some information extracted from the neighborhood of a point
+        # struct LocalSurface
+        # {
+        #   LocalSurface () : 
+        #     normal (), neighborhood_mean (), eigen_values (), normal_no_jumps (), 
+        #     neighborhood_mean_no_jumps (), eigen_values_no_jumps (), max_neighbor_distance_squared () {}
+        # 
+        #   Eigen::Vector3f normal;
+        #   Eigen::Vector3f neighborhood_mean;
+        #   Eigen::Vector3f eigen_values;
+        #   Eigen::Vector3f normal_no_jumps;
+        #   Eigen::Vector3f neighborhood_mean_no_jumps;
+        #   Eigen::Vector3f eigen_values_no_jumps;
+        #   float max_neighbor_distance_squared;
+        # };
+        
+        # Stores the indices of the shadow border corresponding to obstacle borders
+        # struct ShadowBorderIndices 
+        # {
+        #   ShadowBorderIndices () : left (-1), right (-1), top (-1), bottom (-1) {}
+        #   int left, right, top, bottom;
+        # };
+        
+        # Parameters used in this class
+        # struct Parameters
+        # {
+        #   Parameters () : max_no_of_threads(1), pixel_radius_borders (3), pixel_radius_plane_extraction (2), pixel_radius_border_direction (2), 
+        #                  minimum_border_probability (0.8f), pixel_radius_principal_curvature (2) {}
+        #   int max_no_of_threads;
+        #   int pixel_radius_borders;
+        #   int pixel_radius_plane_extraction;
+        #   int pixel_radius_border_direction;
+        #   float minimum_border_probability;
+        #   int pixel_radius_principal_curvature;
+        # };
+        
+        # =====STATIC METHODS=====
+        # brief Take the information from BorderTraits to calculate the local direction of the border
+        # param border_traits contains the information needed to calculate the border angle
+        # 
+        # static inline float getObstacleBorderAngle (const BorderTraits& border_traits);
+        
+        # // =====METHODS=====
+        # /** \brief Provide a pointer to the range image
+        #   * \param range_image a pointer to the range_image
+        # void setRangeImage (const RangeImage* range_image);
+        void setRangeImage (const pcl_r_img.RangeImage range_image)
+        
+        # brief Erase all data calculated for the current range image
+        void clearData ()
+        
+        # brief Get the 2D directions in the range image from the border directions - probably mainly useful for 
+        # visualization 
+        # float* getAnglesImageForBorderDirections ();
+        # float[] getAnglesImageForBorderDirections ()
+        
+        # brief Get the 2D directions in the range image from the surface change directions - probably mainly useful for visualization 
+        # float* getAnglesImageForSurfaceChangeDirections ();
+        # float[] getAnglesImageForSurfaceChangeDirections ()
+        
+        # /** Overwrite the compute function of the base class */
+        # void compute (PointCloudOut& output);
+        # void compute (PointCloudOut& output)
+        
+        # =====GETTER=====
+        # Parameters& getParameters () { return (parameters_); }
+        # Parameters& getParameters ()
+        # 
+        # bool hasRangeImage () const { return range_image_ != NULL; }
+        bool hasRangeImage ()
+        
+        # const RangeImage& getRangeImage () const { return *range_image_; }
+        const pcl_r_img.RangeImage getRangeImage ()
+        
+        # float* getBorderScoresLeft ()   { extractBorderScoreImages (); return border_scores_left_; }
+        # float* getBorderScoresRight ()  { extractBorderScoreImages (); return border_scores_right_; }
+        # float* getBorderScoresTop ()    { extractBorderScoreImages (); return border_scores_top_; }
+        # float* getBorderScoresBottom () { extractBorderScoreImages (); return border_scores_bottom_; }
+        # 
+        # LocalSurface** getSurfaceStructure () { extractLocalSurfaceStructure (); return surface_structure_; }
+        # PointCloudOut& getBorderDescriptions () { classifyBorders (); return *border_descriptions_; }
+        # ShadowBorderIndices** getShadowBorderInformations () { findAndEvaluateShadowBorders (); return shadow_border_informations_; }
+        # Eigen::Vector3f** getBorderDirections () { calculateBorderDirections (); return border_directions_; }
+        # float* getSurfaceChangeScores () { calculateSurfaceChanges (); return surface_change_scores_; }
+        # Eigen::Vector3f* getSurfaceChangeDirections () { calculateSurfaceChanges (); return surface_change_directions_; }
+
+
 ###
 
 # rift.h
@@ -1944,23 +1570,28 @@ cdef extern from "pcl/features/rift.h" namespace "pcl":
         # typedef typename PointCloudGradient::ConstPtr PointCloudGradientConstPtr;
         # typedef typename boost::shared_ptr<RIFTEstimation<PointInT, GradientT, PointOutT> > Ptr;
         # typedef typename boost::shared_ptr<const RIFTEstimation<PointInT, GradientT, PointOutT> > ConstPtr;
-        # /** \brief Provide a pointer to the input gradient data
-        # * \param[in] gradient a pointer to the input gradient data
-        # */
+        
+        # brief Provide a pointer to the input gradient data
+        # param[in] gradient a pointer to the input gradient data
         # inline void setInputGradient (const PointCloudGradientConstPtr &gradient)
+        
         # /** \brief Returns a shared pointer to the input gradient data */
         # inline PointCloudGradientConstPtr getInputGradient () const 
-        # /** \brief Set the number of bins to use in the distance dimension of the RIFT descriptor
-        # * \param[in] nr_distance_bins the number of bins to use in the distance dimension of the RIFT descriptor
-        # */
+        
+        # brief Set the number of bins to use in the distance dimension of the RIFT descriptor
+        # param[in] nr_distance_bins the number of bins to use in the distance dimension of the RIFT descriptor
         # inline void setNrDistanceBins (int nr_distance_bins)
+        
         # /** \brief Returns the number of bins in the distance dimension of the RIFT descriptor. */
         # inline int getNrDistanceBins () const
+        
         # /** \brief Set the number of bins to use in the gradient orientation dimension of the RIFT descriptor
         # * \param[in] nr_gradient_bins the number of bins to use in the gradient orientation dimension of the RIFT descriptor
         # inline void setNrGradientBins (int nr_gradient_bins)
+        
         # /** \brief Returns the number of bins in the gradient orientation dimension of the RIFT descriptor. */
         # inline int getNrGradientBins () const
+        
         # /** \brief Estimate the Rotation Invariant Feature Transform (RIFT) descriptor for a given point based on its 
         # * spatial neighborhood of 3D points and the corresponding intensity gradient vector field
         # * \param[in] cloud the dataset containing the Cartesian coordinates of the points
@@ -1973,18 +1604,10 @@ cdef extern from "pcl/features/rift.h" namespace "pcl":
         # void computeRIFT (const PointCloudIn &cloud, const PointCloudGradient &gradient, int p_idx, float radius,
         #            const std::vector<int> &indices, const std::vector<float> &squared_distances, 
         #            Eigen::MatrixXf &rift_descriptor);
-        # protected:
-        # /** \brief Estimate the Rotation Invariant Feature Transform (RIFT) descriptors at a set of points given by
-        # * <setInputCloud (), setIndices ()> using the surface in setSearchSurface (), the gradient in 
-        # * setInputGradient (), and the spatial locator in setSearchMethod ()
-        # * \param[out] output the resultant point cloud model dataset that contains the RIFT feature estimates
-        # void computeFeature (PointCloudOut &output);
-        # /** \brief The intensity gradient of the input point cloud data*/
-        # PointCloudGradientConstPtr gradient_;
-        # /** \brief The number of distance bins in the descriptor. */
-        # int nr_distance_bins_;
-        # /** \brief The number of gradient orientation bins in the descriptor. */
-        # int nr_gradient_bins_;
+        
+		
+# ctypedef
+# 
 ###
 
 # template <typename PointInT, typename GradientT>
@@ -2047,63 +1670,6 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #                         const std::vector<int> &indices,
 #                         const std::vector<float> &sqr_dists,
 #                         Eigen::VectorXf &shot) = 0;
-#     protected:
-#       /** \brief This method should get called before starting the actual computation. */
-#       virtual bool
-#       initCompute ();
-#       /** \brief Quadrilinear interpolation used when color and shape descriptions are NOT activated simultaneously
-#         *
-#         * \param[in] indices the neighborhood point indices
-#         * \param[in] sqr_dists the neighborhood point distances
-#         * \param[in] index the index of the point in indices_
-#         * \param[out] binDistance the resultant distance shape histogram
-#         * \param[in] nr_bins the number of bins in the shape histogram
-#         * \param[out] shot the resultant SHOT histogram
-#         */
-#       void
-#       interpolateSingleChannel (const std::vector<int> &indices,
-#                                 const std::vector<float> &sqr_dists,
-#                                 const int index,
-#                                 std::vector<double> &binDistance,
-#                                 const int nr_bins,
-#                                 Eigen::VectorXf &shot);
-#       /** \brief Normalize the SHOT histogram.
-#         * \param[in,out] shot the SHOT histogram
-#         * \param[in] desc_length the length of the histogram
-#         */
-#       void
-#       normalizeHistogram (Eigen::VectorXf &shot, int desc_length);
-#       /** \brief Create a binned distance shape histogram
-#         * \param[in] index the index of the point in indices_
-#         * \param[in] indices the k-neighborhood point indices in surface_
-#         * \param[in] sqr_dists the k-neighborhood point distances in surface_
-#         * \param[out] bin_distance_shape the resultant histogram
-#         */
-#       void
-#       createBinDistanceShape (int index, const std::vector<int> &indices,
-#                               std::vector<double> &bin_distance_shape);
-#       /** \brief The number of bins in each shape histogram. */
-#       int nr_shape_bins_;
-#       /** \brief Placeholder for a point's SHOT. */
-#       Eigen::VectorXf shot_;
-#       /** \brief The squared search radius. */
-#       double sqradius_;
-#       /** \brief 3/4 of the search radius. */
-#       double radius3_4_;
-#       /** \brief 1/4 of the search radius. */
-#       double radius1_4_;
-#       /** \brief 1/2 of the search radius. */
-#       double radius1_2_;
-#       /** \brief Number of azimuthal sectors. */
-#       const int nr_grid_sector_;
-#       /** \brief ... */
-#       const int maxAngularSectors_;
-#       /** \brief One SHOT length. */
-#       int descLength_;
-#       /** \brief Make the computeFeature (&Eigen::MatrixXf); inaccessible from outside the class
-#         * \param[out] output the output point cloud
-#         */
-#       void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &) {}
 ###
 
 # template <typename PointInT, typename PointNT, typename PointOutT = pcl::SHOT352, typename PointRFT = pcl::ReferenceFrame>
@@ -2144,13 +1710,8 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #                         const std::vector<int> &indices,
 #                         const std::vector<float> &sqr_dists,
 #                         Eigen::VectorXf &shot);
-#     protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void computeFeature (pcl::PointCloud<PointOutT> &output);
+
+
 ###
 
 # template <typename PointInT, typename PointNT, typename PointRFT>
@@ -2203,14 +1764,8 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #                         const std::vector<float> &sqr_dists,
 #                         Eigen::VectorXf &shot);
 # 
-#     protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void
-#       computeFeature (pcl::PointCloud<pcl::SHOT> &output);
+
+
 ###
 
 # template <typename PointInT, typename PointNT, typename PointRFT>
@@ -2267,14 +1822,7 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #                         //const std::vector<float> &sqr_dists,
 #                         //Eigen::VectorXf &shot);
 # 
-#     protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void
-#       computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
+#       void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
 # 
 #     
 #       /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
@@ -2326,44 +1874,6 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
         #                         const std::vector<int> &indices,
         #                         const std::vector<float> &sqr_dists,
         #                         Eigen::VectorXf &shot);
-        #     protected:
-        #       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-        #         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-        #         * setSearchMethod ()
-        #         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-        #         */
-        #       void
-        #       computeFeature (pcl::PointCloud<PointOutT> &output);
-        # 
-        #       /** \brief Quadrilinear interpolation; used when color and shape descriptions are both activated
-        #         * \param[in] indices the neighborhood point indices
-        #         * \param[in] sqr_dists the neighborhood point distances
-        #         * \param[in] index the index of the point in indices_
-        #         * \param[out] binDistanceShape the resultant distance shape histogram
-        #         * \param[out] binDistanceColor the resultant color shape histogram
-        #         * \param[in] nr_bins_shape the number of bins in the shape histogram
-        #         * \param[in] nr_bins_color the number of bins in the color histogram
-        #         * \param[out] shot the resultant SHOT histogram
-        #         */
-        #       void
-        #       interpolateDoubleChannel (const std::vector<int> &indices,
-        #                                 const std::vector<float> &sqr_dists,
-        #                                 const int index,
-        #                                 std::vector<double> &binDistanceShape,
-        #                                 std::vector<double> &binDistanceColor,
-        #                                 const int nr_bins_shape,
-        #                                 const int nr_bins_color,
-        #                                 Eigen::VectorXf &shot);
-        # 
-        #       /** \brief Compute shape descriptor. */
-        #       bool b_describe_shape_;
-        # 
-        #       /** \brief Compute color descriptor. */
-        #       bool b_describe_color_;
-        # 
-        #       /** \brief The number of bins in each color histogram. */
-        #       int nr_color_bins_;
-        # 
         #     public:
         #       /** \brief Converts RGB triplets to CIELab space.
         #         * \param[in] R the red channel
@@ -2436,21 +1946,6 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #         pcl::SHOTColorEstimation<PointInT, PointNT, pcl::SHOT1344, PointRFT>::computeEigen (output);
 #       }
 # 
-#     protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void
-#       computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-# 
-#     
-#     /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
-#         * \param[out] output the output point cloud
-#         */
-#       void
-#       compute (pcl::PointCloud<pcl::SHOT1344> &) { assert(0); }
 ###
 
 # template <typename PointNT, typename PointRFT>
@@ -2511,15 +2006,6 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #                         const std::vector<int> &indices,
 #                         const std::vector<float> &sqr_dists,
 #                         Eigen::VectorXf &shot);
-#     protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param[out] output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void
-#       computeFeature (PointCloudOut &output);
-# 
 #       /** \brief Quadrilinear interpolation; used when color and shape descriptions are both activated
 #         * \param[in] indices the neighborhood point indices
 #         * \param[in] sqr_dists the neighborhood point distances

@@ -12,22 +12,16 @@ cdef class RangeImage:
     rangeImage
     """
     cdef pcl_r_img.RangeImage_t *me
-    # cdef pcl_r_img.RangeImage_t *point
-    cdef cpp.PointCloud[cpp.PointWithRange] *point
-    
     
     def __cinit__(self):
         self.me = new pcl_r_img.RangeImage_t()
-    
-    
+
     def __cinit__(self, PointCloud pc not None):
         self.me = new pcl_r_img.RangeImage_t()
-        # self.point = pc.thisptr_shared
-    
-    
+        # point = pc.thisptr_shared
+
     def __dealloc__(self):
         del self.me
-    
     
     def CreateFromPointCloud(self, PointCloud cloud, float angular_resolution, float max_angle_width, float max_angle_height, 
         pcl_r_img.CoordinateFrame2 coordinate_frame, float noise_level, float min_range, int border_size):
@@ -61,26 +55,21 @@ cdef class RangeImage:
             min_range, 
             border_size)
     
-    
     def SetAngularResolution(self, float angular_resolution_x, float angular_resolution_y):
         self.me.setAngularResolution(angular_resolution_x, angular_resolution_y)
-    
     
     # def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
     #     self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t> viewpoint.thisptr()[0])
     # 
     # def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
     #     self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_Ptr_t> viewpoint.thisptr()[0])
-    
-    
+
     def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
         self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
-    
-    
+
     # def SetUnseenToMaxRange(self):
-    #     self.me.setUnseenToMaxRange()
-    
-    
+    #    self.me.setUnseenToMaxRange()
+
 ###
 

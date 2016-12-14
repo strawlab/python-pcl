@@ -131,7 +131,10 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         bool is_dense
         void resize(size_t) except +
         size_t size()
+        # NG
         #T& operator[](size_t)
+        # ???(No Test)
+        #T& "operator[]"(size_t)
         #T& at(size_t) except +
         #T& at(int, int) except +
         shared_ptr[PointCloud[T]] makeShared()
@@ -396,6 +399,37 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct Narf36:
         Narf36()
         float[36] descriptor
+
+# brief Data type to store extended information about a transition from foreground to backgroundSpecification of the fields for BorderDescription::traits.
+# ingroup common
+# typedef std::bitset<32> BorderTraits;
+# 
+# brief Specification of the fields for BorderDescription::traits.
+# ingroup common
+# 
+# enum BorderTrait
+# {
+#   BORDER_TRAIT__OBSTACLE_BORDER, BORDER_TRAIT__SHADOW_BORDER, BORDER_TRAIT__VEIL_POINT,
+#   BORDER_TRAIT__SHADOW_BORDER_TOP, BORDER_TRAIT__SHADOW_BORDER_RIGHT, BORDER_TRAIT__SHADOW_BORDER_BOTTOM,
+#   BORDER_TRAIT__SHADOW_BORDER_LEFT, BORDER_TRAIT__OBSTACLE_BORDER_TOP, BORDER_TRAIT__OBSTACLE_BORDER_RIGHT,
+#   BORDER_TRAIT__OBSTACLE_BORDER_BOTTOM, BORDER_TRAIT__OBSTACLE_BORDER_LEFT, BORDER_TRAIT__VEIL_POINT_TOP,
+#   BORDER_TRAIT__VEIL_POINT_RIGHT, BORDER_TRAIT__VEIL_POINT_BOTTOM, BORDER_TRAIT__VEIL_POINT_LEFT
+# };
+
+cdef extern from "pcl/point_types.h" namespace "pcl":
+    cdef struct BorderDescription:
+        BorderDescription()
+        int x
+        int y
+        int traits
+        # BorderTraits traits;
+        # //std::vector<const BorderDescription*> neighbors;
+
+# inline std::ostream& operator << (std::ostream& os, const BorderDescription& p)
+# {
+#   os << "(" << p.x << "," << p.y << ")";
+#   return (os);
+# }
 
 cdef extern from "pcl/point_types.h" namespace "pcl":
     cdef struct GFPFHSignature16:

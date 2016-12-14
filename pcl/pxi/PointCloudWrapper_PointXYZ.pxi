@@ -409,15 +409,13 @@ cdef class PointCloud:
         for i in pyindices:
             ind.indices.push_back(i)
         
-        # result = PointCloud()
-        result = ExtractIndices()
+        result = PointCloud()
+        # result = ExtractIndices()
         # (<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr())
         mpcl_extract(self.thisptr_shared, result.thisptr(), ind, negative)
         # XXX are we leaking memory here? del ind causes a double free...
         
         return result
-
-    def make_Extract(self):
 
     def make_ProjectInliers(self):
         """
@@ -552,7 +550,7 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 include "Surface/ConcaveHull.pxi"
-include "RangeImage.pxi"
+# include "RangeImage.pxi"
 
 # include "PointCloudWrapper_PointXYZI.pxi"
 

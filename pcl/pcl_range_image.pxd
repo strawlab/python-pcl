@@ -14,23 +14,14 @@ from boost_shared_ptr cimport shared_ptr
 cimport eigen as eigen3
 
 # range_image.h
+# class RangeImage : public pcl::PointCloud<PointWithRange>
 cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
-    cdef cppclass RangeImage:
+    cdef cppclass RangeImage(cpp.PointCloud[cpp.PointWithRange]):
         RangeImage()
         # public:
-        # // =====TYPEDEFS=====
-        # ctypedef pcl::PointCloud<PointWithRange> BaseClass;
-        # ctypedef std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > VectorOfEigenVector3f;
-        # ctypedef boost::shared_ptr<RangeImage> Ptr;
-        # ctypedef boost::shared_ptr<const RangeImage> ConstPtr;
-        
         # enum CoordinateFrame
         #   CAMERA_FRAME = 0,
         #   LASER_FRAME  = 1
-        
-        # // =====STATIC VARIABLES=====
-        # The maximum number of openmp threads that can be used in this class
-        # static int max_no_of_threads;
         
         # // =====STATIC METHODS=====
         # brief Get the size of a certain area when seen from the given pose
@@ -44,24 +35,26 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # param point the input point
         # return an Eigen::Vector3f representation of the input point
         # static inline Eigen::Vector3f getEigenVector3f (const PointWithRange& point);
-        eigen3.Vector3f getEigenVector3f (const cpp.PointWithRange& point);
+        eigen3.Vector3f getEigenVector3f (const cpp.PointWithRange& point)
         
         # brief Get the transformation that transforms the given coordinate frame into CAMERA_FRAME
         # param coordinate_frame the input coordinate frame
         # param transformation the resulting transformation that warps \a coordinate_frame into CAMERA_FRAME
         # PCL_EXPORTS static void getCoordinateFrameTransformation (RangeImage::CoordinateFrame coordinate_frame, Eigen::Affine3f& transformation);
-        # void getCoordinateFrameTransformation (CoordinateFrame2 coordinate_frame, float& transformation)
+        void getCoordinateFrameTransformation (CoordinateFrame2 coordinate_frame, float& transformation)
         
         # * \brief Get the average viewpoint of a point cloud where each point carries viewpoint information as 
         # * vp_x, vp_y, vp_z
         # * \param point_cloud the input point cloud
         # * \return the average viewpoint (as an Eigen::Vector3f)
         # template <typename PointCloudTypeWithViewpoints> static Eigen::Vector3f getAverageViewPoint (const PointCloudTypeWithViewpoints& point_cloud);
+        # eigen3.Vector3f getAverageViewPoint (const PointCloudTypeWithViewpoints& point_cloud)
         
         # * \brief Check if the provided data includes far ranges and add them to far_ranges
         # * \param point_cloud_data a PointCloud2 message containing the input cloud
         # * \param far_ranges the resulting cloud containing those points with far ranges
         # PCL_EXPORTS static void extractFarRanges (const sensor_msgs::PointCloud2& point_cloud_data, PointCloud<PointWithViewpoint>& far_ranges);
+        # void extractFarRanges (const sensor_msgs::PointCloud2& point_cloud_data, PointCloud<PointWithViewpoint>& far_ranges)
 
         # // =====METHODS=====
         # /** \brief Get a boost shared pointer of a copy of this */
@@ -417,31 +410,39 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # /** Getter for the transformation from the world system into the range image system
         #  *  (the sensor coordinate frame) */
         # inline const Eigen::Affine3f& getTransformationToRangeImageSystem () const { return (to_range_image_system_); }
+        const eigen3.Affine3f& getTransformationToRangeImageSystem ()
         
         # /** Setter for the transformation from the range image system
         #  *  (the sensor coordinate frame) into the world system */
         # inline void setTransformationToRangeImageSystem (const Eigen::Affine3f& to_range_image_system);
+        void setTransformationToRangeImageSystem (eigen3.Affine3f& to_range_image_system)
         
         # Getter for the transformation from the range image system
         # (the sensor coordinate frame) into the world system
         # inline const Eigen::Affine3f& getTransformationToWorldSystem () const { return to_world_system_;}
+        const eigen3.Affine3f& getTransformationToWorldSystem ()
         
         # Getter for the angular resolution of the range image in x direction in radians per pixel.
         # Provided for downwards compatability */
         # inline float getAngularResolution () const { return angular_resolution_x_;}
+        float getAngularResolution ()
         
         # Getter for the angular resolution of the range image in x direction in radians per pixel.
         # inline float getAngularResolutionX () const { return angular_resolution_x_;}
+        float getAngularResolutionX ()
         
         # Getter for the angular resolution of the range image in y direction in radians per pixel.
         # inline float getAngularResolutionY () const { return angular_resolution_y_;}
+        float getAngularResolutionY ()
         
         # Getter for the angular resolution of the range image in x and y direction (in radians).
         # inline void getAngularResolution (float& angular_resolution_x, float& angular_resolution_y) const;
+        void getAngularResolution (float& angular_resolution_x, float& angular_resolution_y)
         
         # brief Set the angular resolution of the range image
         # param angular_resolution the new angular resolution in x and y direction (in radians per pixel)
         # inline void setAngularResolution (float angular_resolution);
+        void setAngularResolution (float angular_resolution)
         
         # brief Set the angular resolution of the range image
         # param angular_resolution_x the new angular resolution in x direction (in radians per pixel)
@@ -811,6 +812,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
 
 ctypedef RangeImage RangeImage_t
 ctypedef shared_ptr[RangeImage] RangeImagePtr_t
+ctypedef shared_ptr[const RangeImage] RangeImageCpmstPtr_t
 ###
 
 # range_image_planar.h

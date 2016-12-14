@@ -21,6 +21,7 @@ python examples\official\Filtering\statistical_removal.py
 
 # GPU
 # pcl1.6 - NG
+# Version 1.7.2
 # python examples\official\GPU\people_detect_172.txt
 ###
 
@@ -48,6 +49,9 @@ python examples\official\RangeImage\range_image_border_extraction.py
 ###
 
 # Recognition
+correspondence_grouping correspondence_grouping.txt
+global_hypothesis_verification.txt
+implicit_shape_model.txt
 ###
 
 # Registration

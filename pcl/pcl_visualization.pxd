@@ -90,7 +90,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 # template <typename PointT>
 # class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
 cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
-    cdef cppclass PointCloudColorHandlerCustom[PointT]:
+    cdef cppclass PointCloudColorHandlerCustom[PointT](PointCloudColorHandler[PointT]):
         PointCloudColorHandlerCustom ()
         
         # brief Constructor.
@@ -99,7 +99,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
         # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
         # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
-        PointCloudColorHandlerCustom (const cpp.PointCloud[PointT] *cloud, double r, double g, double b)
+        PointCloudColorHandlerCustom (const cpp.PointCloud[cpp.PointWithRange] &cloud, double r, double g, double b)
+        # Base
+        # PointCloudColorHandlerCustom (const cpp.PointCloud[PointT] cloud, double r, double g, double b)
+        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointWithViewpoint_Ptr_t cloud, double r, double g, double b)
         
         # /** \brief Destructor. */
         # virtual ~PointCloudColorHandlerCustom () {};
@@ -135,6 +138,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] name the window name (empty by default)
         # param[in] create_interactor if true (default), create an interactor, false otherwise
         # PCLVisualizer (const std::string &name = "", const bool create_interactor = true);
+        PCLVisualizer (const string name, bool create_interactor)
         
         # /** \brief PCL Visualizer constructor.
         #   * \param[in] argc
@@ -145,9 +149,11 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # PCLVisualizer (int &argc, char **argv, const std::string &name = "",
         #     PCLVisualizerInteractorStyle* style = PCLVisualizerInteractorStyle::New (), const bool create_interactor = true);
+        # PCLVisualizer (int &argc, char **argv, const std::string &name = "", PCLVisualizerInteractorStyle* style = PCLVisualizerInteractorStyle::New (), const bool create_interactor = true)
         
         # /** \brief PCL Visualizer destructor. */
         # virtual ~PCLVisualizer ();
+        
         # /** \brief Enables/Disabled the underlying window mode to full screen.
         #   * \note This might or might not work, depending on your window manager.
         #   * See the VTK documentation for additional details.
@@ -269,17 +275,14 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #    * \param[in] scale the scale of the axes (default: 1)
         #    * \param[in] t transformation matrix
         #    * \param[in] viewport the view port where the 3D axes should be added (default: all)
-        #    *
         #    * RPY Angles
         #    * Rotate the reference frame by the angle roll about axis x
         #    * Rotate the reference frame by the angle pitch about axis y
         #    * Rotate the reference frame by the angle yaw about axis z
-        #    *
         #    * Description:
         #    * Sets the orientation of the Prop3D.  Orientation is specified as
         #    * X,Y and Z rotations in that order, but they are performed as
         #    * RotateZ, RotateX, and finally RotateY.
-        #    *
         #    * All axies use right hand rule. x=red axis, y=green axis, z=blue axis
         #    * z direction is point into the screen.
         #    *     z
@@ -300,7 +303,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         
         # brief Removes a previously added 3D axes (coordinate system)
         # param[in] viewport view port where the 3D axes should be removed from (default: all)
-        # 
         # bool removeCoordinateSystem (int viewport = 0);
         bool removeCoordinateSystem (int viewport)
         
@@ -309,14 +311,12 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] viewport view port from where the Point Cloud should be removed (default: all)
         # return true if the point cloud is successfully removed and false if the point cloud is
         # not actually displayed
-        # 
         # bool removePointCloud (const std::string &id = "cloud", int viewport = 0);
         bool removePointCloud (const string &id, int viewport)
         
         # brief Removes a PolygonMesh from screen, based on a given ID.
         # param[in] id the polygon object id (i.e., given on \a addPolygonMesh)
         # param[in] viewport view port from where the PolygonMesh should be removed (default: all)
-        # 
         # inline bool removePolygonMesh (const std::string &id = "polygon", int viewport = 0)
         bool removePolygonMesh (const string &id, int viewport)
         
@@ -384,7 +384,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         bool addText (const string &text, int xpos, int ypos, double r, double g, double b,
                       const string &id, int viewport)
         
-        # 
         # /** \brief Add a text to screen
         #   * \param[in] text the text to add
         #   * \param[in] xpos the X position on screen where the text should be added
@@ -399,17 +398,16 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool
         # addText (const std::string &text, int xpos, int ypos, int fontsize, double r, double g, double b,
         #          const std::string &id = "", int viewport = 0);
+        bool addText (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id, int viewport)
+        
         # /** \brief Update a text to screen
         #   * \param[in] text the text to update
         #   * \param[in] xpos the new X position on screen
         #   * \param[in] ypos the new Y position on screen 
         #   * \param[in] id the text object id (default: equal to the "text" parameter)
         #   */
-        # bool
-        # updateText (const std::string &text,
-        #             int xpos, int ypos,
-        #             const std::string &id = "");
-        # 
+        bool updateText (const string &text, int xpos, int ypos, const string &id)
+        
         # /** \brief Update a text to screen
         #   * \param[in] text the text to update
         #   * \param[in] xpos the new X position on screen
@@ -423,7 +421,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # updateText (const std::string &text, 
         #             int xpos, int ypos, double r, double g, double b,
         #             const std::string &id = "");
-        # 
+        bool updateText (const string &text, int xpos, int ypos, double r, double g, double b, const string &id)
+        
         # /** \brief Update a text to screen
         #   * \param[in] text the text to update
         #   * \param[in] xpos the new X position on screen
@@ -438,18 +437,18 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # updateText (const std::string &text, 
         #             int xpos, int ypos, int fontsize, double r, double g, double b,
         #             const std::string &id = "");
-        # 
+        bool updateText (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id)
+        
         # /** \brief Set the pose of an existing shape. 
-        #   * 
         #   * Returns false if the shape doesn't exist, true if the pose was succesfully 
         #   * updated.
-        #   *
         #   * \param[in] id the shape or cloud object id (i.e., given on \a addLine etc.)
         #   * \param[in] pose the new pose
         #   * \return false if no shape or cloud with the specified ID was found
         #   */
         # bool updateShapePose (const std::string &id, const Eigen::Affine3f& pose);
-        # 
+        bool updateShapePose (const string &id, const eigen3.Affine3f& pose)
+        
         # brief Add a 3d text to the scene
         # param[in] text the text to add
         # param[in] position the world position where the text should be added
@@ -459,14 +458,15 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] b the blue color value
         # param[in] id the text object id (default: equal to the "text" parameter)
         # param[in] viewport the view port (default: all)
-        # 
         # template <typename PointT> bool
         # addText3D (const std::string &text,
         #            const PointT &position,
         #            double textScale = 1.0,
         #            double r = 1.0, double g = 1.0, double b = 1.0,
         #            const std::string &id = "", int viewport = 0);
-        # 
+        
+        # bool addText3D (const std::string &text, const PointT &position, double textScale = 1.0, double r = 1.0, double g = 1.0, double b = 1.0, const std::string &id = "", int viewport = 0)
+        
         # brief Add the estimated surface normals of a Point Cloud to screen.
         # param[in] cloud the input point cloud dataset containing XYZ data and normals
         # param[in] level display only every level'th point (default: 100)
@@ -493,7 +493,12 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                       const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
         #                       int level = 100, double scale = 0.02,
         #                       const std::string &id = "cloud", int viewport = 0);
+        # bool addPointCloudNormals (const cpp.PointCloud[PointT] &cloud,
+        #                         const cpp.PointCloud[PointNT] &normals,
+        #                         int level = 100, double scale = 0.02,
+        #                         const string &id, int viewport)
         # 
+        
         # /** \brief Add the estimated principal curvatures of a Point Cloud to screen.
         #   * \param[in] cloud the input point cloud dataset containing the XYZ data
         #   * \param[in] normals the input point cloud dataset containing the normal data
@@ -854,15 +859,19 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool
         # setPointCloudRenderingProperties (int property, double val1, double val2, double val3,
         #                                       const std::string &id = "cloud", int viewport = 0);
+        bool setPointCloudRenderingProperties (int property, double val1, double val2, double val3, string &id, int viewport)
+        
+        
         # /** \brief Set the rendering properties of a PointCloud
         #  * \param[in] property the property type
         #  * \param[in] value the value to be set
         #  * \param[in] id the point cloud object id (default: cloud)
         #  * \param[in] viewport the view port where the Point Cloud's rendering properties should be modified (default: all)
         #  */
-        # bool
-        # setPointCloudRenderingProperties (int property, double value,
+        # bool setPointCloudRenderingProperties (int property, double value,
         #                                   const std::string &id = "cloud", int viewport = 0);
+        bool setPointCloudRenderingProperties (int property, double value, const string &id, int viewport)
+
         # /** \brief Get the rendering properties of a PointCloud
         #  * \param[in] property the property type
         #  * \param[in] value the resultant property value
@@ -1291,25 +1300,33 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #     std::vector<pcl::PointCloud<pcl::PointXYZ>,Eigen::aligned_allocator< pcl::PointCloud<pcl::PointXYZ> > > & cloud,
         #     std::vector<Eigen::Matrix4f,Eigen::aligned_allocator< Eigen::Matrix4f > > & poses, std::vector<float> & enthropies, int tesselation_level,
         #     float view_angle = 45, float radius_sphere = 1, bool use_vertices = true);
+        
         # /** \brief Camera view, window position and size. */
         # Camera camera_;
         # /** \brief Initialize camera parameters with some default values. */
         # void initCameraParameters ();
+        void initCameraParameters()
+        
         # /** \brief Search for camera parameters at the command line and set them internally.
         #   * \param[in] argc
         #   * \param[in] argv
         #   */
         # bool getCameraParameters (int argc, char **argv);
+        
         # /** \brief Checks whether the camera parameters were manually loaded from file.*/
         # bool cameraParamsSet () const;
+        
         # /** \brief Update camera parameters and render. */
         # void updateCamera ();
+        
         # /** \brief Reset camera parameters and render. */
         # void resetCamera ();
+        
         # /** \brief Reset the camera direction from {0, 0, 0} to the center_{x, y, z} of a given dataset.
         #   * \param[in] id the point cloud object id (default: cloud)
         #   */
         # void resetCameraViewpoint (const std::string &id = "cloud");
+        
         # /** \brief sets the camera pose given by position, viewpoint and up vector
         #   * \param posX the x co-ordinate of the camera location
         #   * \param posY the y co-ordinate of the camera location
@@ -1324,6 +1341,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # void setCameraPose (double posX, double posY, double posZ,
         #                double viewX, double viewY, double viewZ,
         #                double upX, double upY, double upZ, int viewport = 0);
+        
         # /** \brief Set the camera location and viewup according to the given arguments
         #   * \param[in] posX the x co-ordinate of the camera location
         #   * \param[in] posY the y co-ordinate of the camera location
@@ -1334,24 +1352,31 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport the viewport to modify camera of, if 0, modifies all cameras
         # void setCameraPosition (double posX,double posY, double posZ,
         #                    double viewX, double viewY, double viewZ, int viewport = 0);
+        
         # /** \brief Get the current camera parameters. */
         # void getCameras (std::vector<Camera>& cameras);
+        
         # /** \brief Get the current viewing pose. */
         # Eigen::Affine3f getViewerPose ();
+        
         # /** \brief Save the current rendered image to disk, as a PNG screenshot.
         #   * \param[in] file the name of the PNG file
         # void saveScreenshot (const std::string &file);
+        
         # /** \brief Return a pointer to the underlying VTK Render Window used. */
         # vtkSmartPointer<vtkRenderWindow>
         # getRenderWindow ()
+        
         # /** \brief Create the internal Interactor object. */
         # void createInteractor ();
+        
         # /** \brief Set up our unique PCL interactor style for a given vtkRenderWindowInteractor object
         #   * attached to a given vtkRenderWindow
         #   * \param[in,out] iren the vtkRenderWindowInteractor object to set up
         #   * \param[in,out] win a vtkRenderWindow object that the interactor is attached to
         # void setupInteractor (vtkRenderWindowInteractor *iren,
         #                  vtkRenderWindow *win);
+        
         # /** \brief Get a pointer to the current interactor style used. */
         # inline vtkSmartPointer<PCLVisualizerInteractorStyle>
         # getInteractorStyle ()

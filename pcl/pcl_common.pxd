@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# angles.h
+# common/angles.h
 # namespace pcl
 cdef extern from "pcl/common/angles.h" namespace "pcl":
     # brief Convert an angle from radians to degrees

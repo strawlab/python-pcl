@@ -11,25 +11,31 @@ from boost_shared_ptr cimport sp_assign
 cdef class PCLVisualizering:
     """
     """
-    cdef pclvis.PCLVisualizerPtr_t thisptr_shared
+    # cdef pclvis.PCLVisualizerPtr_t thisptr_shared
+    cdef pclvis.PCLVisualizer *me
 
     cdef Py_ssize_t _view_count
 
-    def __cinit__(self, init=None):
-        self._view_count = 0
-        
-        print ('test1')
-        sp_assign(self.thisptr_shared, new pclvis.PCLVisualizer())
-        print ('test2')
-        
-        if init is None:
-            return
-        else:
-            raise TypeError("Can't initialize a HistogramVisualizer from a %s" % type(init))
+    # def __cinit__(self, init=None):
+    #     self._view_count = 0
+    #     
+    #     print ('test1')
+    #     sp_assign(self.thisptr_shared, new pclvis.PCLVisualizer())
+    #     print ('test2')
+    #     
+    #     if init is None:
+    #         return
+    #     else:
+    #         raise TypeError("Can't initialize a HistogramVisualizer from a %s" % type(init))
+    # 
+    # cdef inline pclvis.PCLVisualizer *thisptr(self) nogil:
+    #     # Shortcut to get raw pointer to underlying PCLVisualizer
+    #     return self.thisptr_shared.get()
 
-    cdef inline pclvis.PCLVisualizer *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying PCLVisualizer
-        return self.thisptr_shared.get()
+    def __cinit__(self):
+        self.me = new pclvis.PCLVisualizer()
+    def __dealloc__(self):
+        del self.me
 
     # def AddPointCloud (self, _pcl.PointCloud cloud):
     #    self.thisptr().addPointCloud(cloud.thisptr_shared)
@@ -53,14 +59,14 @@ cdef class PCLVisualizering:
     #     self.thisptr().spinOnce (millis_to_wait)
 
     def SetBackgroundColor (self, int r, int g, int b):
-        self.me.setBackgroundColor(r, g, b)
+        self.me.setBackgroundColor(r, g, b, 0)
 
     # def AddPointCloud(self, pcl._pcl.RangeImage rangeImage, PointCloudColorHandlerCustoms custom, string name):
     # def AddPointCloud(self, RangeImage rangeImage, PointCloudColorHandlerCustoms custom, string name):
     #     self.me.addPointCloud (rangeImage.thisptr(), custom.thisptr(), name)
 
     def SetPointCloudRenderingProperties(self, int propType, int propValue, string propName):
-        self.me.setPointCloudRenderingProperties (propType, propValue, propName)
+        self.me.setPointCloudRenderingProperties (propType, propValue, propName, 0)
 
     def InitCametaParamters(self):
         self.me.initCameraParameters()

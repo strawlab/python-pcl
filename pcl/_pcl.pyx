@@ -140,6 +140,8 @@ include "pxi/PointCloudWrapper_PointNormal.pxi"
 # include "pxi/OctreePointCloudSearch.pxi"
 # include "pxi/OctreePointCloudChangeDetector.pxi"
 
+include "pxi/RangeImage.pxi"
+
 ### common ###
 def deg2rad(float alpha):
     return pcl_cmn.deg2rad(alpha)

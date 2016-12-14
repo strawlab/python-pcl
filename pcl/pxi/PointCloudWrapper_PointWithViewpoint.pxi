@@ -4,7 +4,7 @@ cimport pcl_io as pclio
 
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
-from _pcl cimport PointCloudWrapper_PointWithViewpoint
+# from _pcl cimport PointCloudWrapper_PointWithViewpoint
 
 cdef class PointCloudWrapper_PointWithViewpoint:
     """
