@@ -133,14 +133,12 @@ include "pxi/PointCloudWrapper_PointXYZI.pxi"
 include "pxi/PointCloudWrapper_PointXYZRGB.pxi"
 include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
 include "pxi/PointCloudWrapper_PointWithViewpoint.pxi"
-
 # include "pxi/PointCloudWrapper_Normal.pxi"
 include "pxi/PointCloudWrapper_PointNormal.pxi"
 
 # include "pxi/OctreePointCloudSearch.pxi"
 # include "pxi/OctreePointCloudChangeDetector.pxi"
 
-include "pxi/RangeImage.pxi"
 
 ### common ###
 def deg2rad(float alpha):

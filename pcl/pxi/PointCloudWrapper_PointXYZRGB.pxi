@@ -345,13 +345,3 @@ cdef class PointCloud_PointXYZRGB:
         
         return result
 ###
-
-# include "Segmentation.pxi"
-# include "SegmentationNormal.pxi"
-# include "StatisticalOutlierRemovalFilter.pxi"
-# include "VoxelGridFilter.pxi"
-# include "PassThroughFilter.pxi"
-# include "MovingLeastSquares.pxi"
-# include "KdTree_FLANN.pxi"
-# include "OctreePointCloud.pxi"
-

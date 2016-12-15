@@ -160,12 +160,12 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
 
 # processing.h
 # namespace pcl
-# /** \brief @b CloudSurfaceProcessing represents the base class for algorithms that take a point cloud as an input and
-#   * produce a new output cloud that has been modified towards a better surface representation. These types of
-#   * algorithms include surface smoothing, hole filling, cloud upsampling etc.
-#   * \author Alexandru E. Ichim
-#   * \ingroup surface
-#   */
+# brief @b CloudSurfaceProcessing represents the base class for algorithms that take a point cloud as an input and
+# produce a new output cloud that has been modified towards a better surface representation. These types of
+# algorithms include surface smoothing, hole filling, cloud upsampling etc.
+# author Alexandru E. Ichim
+# ingroup surface
+# 
 # template <typename PointInT, typename PointOutT>
 # class CloudSurfaceProcessing : public PCLBase<PointInT>
 cdef extern from "pcl/surface/processing.h" namespace "pcl":

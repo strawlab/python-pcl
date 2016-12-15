@@ -370,14 +370,3 @@ cdef class PointCloud_PointXYZI:
         return result
 ###
 
-# include "Segmentation.pxi"
-# include "SegmentationNormal.pxi"
-# include "StatisticalOutlierRemovalFilter.pxi"
-# include "VoxelGridFilter.pxi"
-# include "PassThroughFilter.pxi"
-# include "MovingLeastSquares.pxi"
-# include "KdTree_FLANN.pxi"
-# include "OctreePointCloud.pxi"
-# include "Vertices.pxi"
-# include "CropHull.pxi"
-# include "CropBox.pxi"

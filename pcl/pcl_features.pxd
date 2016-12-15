@@ -2163,36 +2163,10 @@ cdef extern from "pcl/features/shot_lrf.h" namespace "pcl":
 cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
     cdef cppclass SHOTLocalReferenceFrameEstimationOMP[In, Out](SHOTLocalReferenceFrameEstimation[In, Out]):
         SHOTLocalReferenceFrameEstimationOMP ()
-        #     public:
-        # 
-        #     /** \brief Initialize the scheduler and set the number of threads to use.
-        #      * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
-        #      */
-        #      inline void
-        #      setNumberOfThreads (unsigned int nr_threads)
-        #     protected:
-        #       using Feature<PointInT, PointOutT>::feature_name_;
-        #       using Feature<PointInT, PointOutT>::getClassName;
-        #       //using Feature<PointInT, PointOutT>::searchForNeighbors;
-        #       using Feature<PointInT, PointOutT>::input_;
-        #       using Feature<PointInT, PointOutT>::indices_;
-        #       using Feature<PointInT, PointOutT>::surface_;
-        #       using Feature<PointInT, PointOutT>::tree_;
-        #       using Feature<PointInT, PointOutT>::search_parameter_;
-        #       using SHOTLocalReferenceFrameEstimation<PointInT, PointOutT>::getLocalRF;
-        #       typedef typename Feature<PointInT, PointOutT>::PointCloudIn PointCloudIn;
-        #       typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        # 
-        #       /** \brief Feature estimation method.
-        #         * \param[out] output the resultant features
-        #         */
-        #       virtual void computeFeature (PointCloudOut &output);
-        #       /** \brief Feature estimation method.
-        #         * \param[out] output the resultant features
-        #         */
-        #       virtual void computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-        #       /** \brief The number of threads the scheduler should use. */
-        #       int threads_;
+        # public:
+        # brief Initialize the scheduler and set the number of threads to use.
+        # param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
+        # inline void setNumberOfThreads (unsigned int nr_threads)
 
 ###
 
@@ -2203,43 +2177,32 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
     cdef cppclass SHOTEstimationOMP[In, NT, Out, RFT](SHOTEstimation[In, NT, Out, RFT]):
         SHOTEstimationOMP ()
         # SHOTEstimationOMP (unsigned int nr_threads = - 1)
-        #     public:
-        #       using Feature<PointInT, PointOutT>::feature_name_;
-        #       using Feature<PointInT, PointOutT>::getClassName;
-        #       using Feature<PointInT, PointOutT>::input_;
-        #       using Feature<PointInT, PointOutT>::indices_;
-        #       using Feature<PointInT, PointOutT>::k_;
-        #       using Feature<PointInT, PointOutT>::search_parameter_;
-        #       using Feature<PointInT, PointOutT>::search_radius_;
-        #       using Feature<PointInT, PointOutT>::surface_;
-        #       using Feature<PointInT, PointOutT>::fake_surface_;
-        #       using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
-        #       using FeatureWithLocalReferenceFrames<PointInT, PointRFT>::frames_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::descLength_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::nr_grid_sector_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::nr_shape_bins_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::sqradius_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::radius3_4_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::radius1_4_;
-        #       using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::radius1_2_;
-        #       typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        #       typedef typename Feature<PointInT, PointOutT>::PointCloudIn PointCloudIn;
+        # public:
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using Feature<PointInT, PointOutT>::input_;
+        # using Feature<PointInT, PointOutT>::indices_;
+        # using Feature<PointInT, PointOutT>::k_;
+        # using Feature<PointInT, PointOutT>::search_parameter_;
+        # using Feature<PointInT, PointOutT>::search_radius_;
+        # using Feature<PointInT, PointOutT>::surface_;
+        # using Feature<PointInT, PointOutT>::fake_surface_;
+        # using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
+        # using FeatureWithLocalReferenceFrames<PointInT, PointRFT>::frames_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::descLength_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::nr_grid_sector_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::nr_shape_bins_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::sqradius_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::radius3_4_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::radius1_4_;
+        # using SHOTEstimation<PointInT, PointNT, PointOutT, PointRFT>::radius1_2_;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudIn PointCloudIn;
         # 
         # /** \brief Initialize the scheduler and set the number of threads to use.
         #  * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
         inline void setNumberOfThreads (unsigned int nr_threads)
-        #       protected:
-        #       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-        #         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-        #         * setSearchMethod ()
-        #         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-        #         */
-        #       void computeFeature (PointCloudOut &output);
-        #       /** \brief This method should get called before starting the actual computation. */
-        #       bool initCompute ();
-        #       /** \brief The number of threads the scheduler should use. */
-        #       int threads_;
-
+        
 ###
 
 # template <typename PointInT, typename PointNT, typename PointOutT = pcl::SHOT1344, typename PointRFT = pcl::ReferenceFrame>
@@ -2326,16 +2289,6 @@ cdef extern from "pcl/features/shot_lrf_omp.h" namespace "pcl":
 #         */
 #       inline void setNumberOfThreads (unsigned int nr_threads)
 # 
-#       protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#       void computeFeature (PointCloudOut &output);
-#       /** \brief This method should get called before starting the actual computation. */
-#       bool initCompute ();
-#       /** \brief The number of threads the scheduler should use. */
-#       int threads_;
 ###
 
 # template <typename PointNT, typename PointRFT>
@@ -2459,29 +2412,15 @@ cdef extern from "pcl/features/spin_image.h" namespace "pcl":
         #   * \param[in] is_radial true for radial spin-image structure, false for rectangular
         # */
         void setRadialStructure (bool is_radial = true)
-        # protected:
-        # /** \brief Estimate the Spin Image descriptors at a set of points given by
-        #     * setInputWithNormals() using the surface in setSearchSurfaceWithNormals() and the spatial locator 
-        #   * \param[out] output the resultant point cloud that contains the Spin Image feature estimates
-        #   */
-        # virtual void computeFeature (PointCloudOut &output); 
-        # /** \brief initializes computations specific to spin-image.
-        #     * 
-        #   * \return true iff input data and initialization are correct
-        #   */
-        # virtual bool initCompute ();
-        # /** \brief Computes a spin-image for the point of the scan. 
-        #     * \param[in] index the index of the reference point in the input cloud
-        #   * \return estimated spin-image (or its variant) as a matrix
-        #   */
-        # Eigen::ArrayXXd computeSiForPoint (int index) const;
+
+
 ####
 
 # template <typename PointInT, typename PointNT>
 # class SpinImageEstimation<PointInT, PointNT, Eigen::MatrixXf> : public SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >
 # cdef extern from "pcl/features/spin_image.h" namespace "pcl":
 #    cdef cppclass SpinImageEstimation[In, NT, Eigen::MatrixXf](SpinImageEstimation[In, NT, pcl::Histogram<153>]):
-#        SpinImageEstimation ()
+#       SpinImageEstimation ()
 #       public:
 #       using SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >::indices_;
 #       using SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> >::search_radius_;
@@ -2502,7 +2441,7 @@ cdef extern from "pcl/features/spin_image.h" namespace "pcl":
 #       SpinImageEstimation (unsigned int image_width = 8,
 #                            double support_angle_cos = 0.0,   // when 0, this is bogus, so not applied
 #                            unsigned int min_pts_neighb = 0) : 
-#         SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> > (image_width, support_angle_cos, min_pts_neighb) {}
+#       SpinImageEstimation<PointInT, PointNT, pcl::Histogram<153> > (image_width, support_angle_cos, min_pts_neighb) {}
 ###
 
 # statistical_multiscale_interest_region_extraction.h
@@ -2515,16 +2454,19 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
         # typedef boost::shared_ptr <std::vector<int> > IndicesPtr;
         # typedef typename boost::shared_ptr<StatisticalMultiscaleInterestRegionExtraction<PointT> > Ptr;
         # typedef typename boost::shared_ptr<const StatisticalMultiscaleInterestRegionExtraction<PointT> > ConstPtr;
-        # * \brief Method that generates the underlying nearest neighbor graph based on the
-        # * input point cloud
+        
+        # brief Method that generates the underlying nearest neighbor graph based on the input point cloud
         void generateCloudGraph ()
-        # * \brief The method to be called in order to run the algorithm and produce the resulting
-        # * set of regions of interest
+        
+        # brief The method to be called in order to run the algorithm and produce the resulting
+        # set of regions of interest
         # void computeRegionsOfInterest (list[IndicesPtr_t]& rois)
-        # * \brief Method for setting the scale parameters for the algorithm
-        # * \param scale_values vector of scales to determine the size of each scaling step
+        
+        # brief Method for setting the scale parameters for the algorithm
+        # param scale_values vector of scales to determine the size of each scaling step
         inline void setScalesVector (vector[float] &scale_values)
-        # * \brief Method for getting the scale parameters vector */
+        
+        # brief Method for getting the scale parameters vector */
         inline vector[float] getScalesVector ()
 ###
 
@@ -2585,39 +2527,7 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
 #       inline void setLocalRadius (double radius)
 #       /** \return The local RF radius. */
 #       inline double getLocalRadius () const
-# 
-#       protected:
-#       /** Compute 3D shape context feature descriptor
-#         * \param[in] index point index in input_
-#         * \param[out] desc descriptor to compute
-#       void computePointDescriptor (size_t index, std::vector<float> &desc);
-#       /** \brief Initialize computation by allocating all the intervals and the volume lookup table. */
-#       virtual bool initCompute ();
-#       /** \brief The actual feature computation.
-#         * \param[out] output the resultant features
-#       virtual void computeFeature (PointCloudOut &output);
-#       /** \brief values of the radii interval. */
-#       std::vector<float> radii_interval_;
-#       /** \brief Theta divisions interval. */
-#       std::vector<float> theta_divisions_;
-#       /** \brief Phi divisions interval. */
-#       std::vector<float> phi_divisions_;
-#       /** \brief Volumes look up table. */
-#       std::vector<float> volume_lut_;
-#       /** \brief Bins along the azimuth dimension. */
-#       size_t azimuth_bins_;
-#       /** \brief Bins along the elevation dimension. */
-#       size_t elevation_bins_;
-#       /** \brief Bins along the radius dimension. */
-#       size_t radius_bins_;
-#       /** \brief Minimal radius value. */
-#       double min_radius_;
-#       /** \brief Point density radius. */
-#       double point_density_radius_;
-#       /** \brief Descriptor length. */
-#       size_t descriptor_length_;
-#       /** \brief Radius to compute local RF. */
-#       double local_radius_;
+#
 ###
 
 # template <typename PointInT, typename PointRFT>
@@ -2737,7 +2647,6 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
           BORDERPOLICY2_IGNORE "pcl::IntegralImageNormalEstimation::BORDER_POLICY_IGNORE"
           BORDERPOLICY2_MIRROR "pcl::IntegralImageNormalEstimation::BORDER_POLICY_MIRROR"
 
-# 
 # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
 #         cdef enum NormalEstimationMethod:
 #             COVARIANCE_MATRIX

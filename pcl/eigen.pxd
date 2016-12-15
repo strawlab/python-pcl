@@ -42,8 +42,10 @@ cdef extern from "Eigen/Dense" namespace "Eigen":
 # Eigen
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Matrix4f:
+        Matrix4f() except +
         float *data()
     cdef cppclass Matrix3f:
+        float coeff(int row, int col)
         float *data()
     cdef cppclass Vector4f:
         float *data()
@@ -57,6 +59,7 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float y()
         float z()
     cdef cppclass Affine3f:
+        Affine3f() except +
         float *data()
     cdef cppclass aligned_allocator[T]:
         pass

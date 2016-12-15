@@ -26,19 +26,21 @@ from boost_shared_ptr cimport shared_ptr
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandler[T]:
         PointCloudColorHandler(cpp.PointCloud[T] cloud)
-
+        
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # typedef boost::shared_ptr<PointCloudColorHandler<PointT> > Ptr;
         # typedef boost::shared_ptr<const PointCloudColorHandler<PointT> > ConstPtr;
-        # /** \brief Constructor. */
+        
+        # brief Constructor.
         # PointCloudColorHandler (const PointCloudConstPtr &cloud)
-        # /** \brief Destructor. */
+        
+        # brief Destructor.
         # virtual ~PointCloudColorHandler () {}
         
-        # /** \brief Check if this handler is capable of handling the input data or not. */
+        # brief Check if this handler is capable of handling the input data or not.
         # inline bool isCapable () const
         bool isCapable ()
         
@@ -58,7 +60,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudGeometryHandler[T]:
         PointCloudColorHandler(cpp.PointCloud[T] cloud)
-
+        
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
@@ -140,48 +142,46 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # PCLVisualizer (const std::string &name = "", const bool create_interactor = true);
         PCLVisualizer (const string name, bool create_interactor)
         
-        # /** \brief PCL Visualizer constructor.
-        #   * \param[in] argc
-        #   * \param[in] argv
-        #   * \param[in] name the window name (empty by default)
-        #   * \param[in] style interactor style (defaults to PCLVisualizerInteractorStyle)
-        #   * \param[in] create_interactor if true (default), create an interactor, false otherwise
-        #   */
+        # brief PCL Visualizer constructor.
+        # param[in] argc
+        # param[in] argv
+        # param[in] name the window name (empty by default)
+        # param[in] style interactor style (defaults to PCLVisualizerInteractorStyle)
+        # param[in] create_interactor if true (default), create an interactor, false otherwise
+        # 
         # PCLVisualizer (int &argc, char **argv, const std::string &name = "",
         #     PCLVisualizerInteractorStyle* style = PCLVisualizerInteractorStyle::New (), const bool create_interactor = true);
+        # 
         # PCLVisualizer (int &argc, char **argv, const std::string &name = "", PCLVisualizerInteractorStyle* style = PCLVisualizerInteractorStyle::New (), const bool create_interactor = true)
         
-        # /** \brief PCL Visualizer destructor. */
+        # brief PCL Visualizer destructor.
         # virtual ~PCLVisualizer ();
         
-        # /** \brief Enables/Disabled the underlying window mode to full screen.
-        #   * \note This might or might not work, depending on your window manager.
-        #   * See the VTK documentation for additional details.
-        #   * \param[in] mode true for full screen, false otherwise
-        #   */
+        # brief Enables/Disabled the underlying window mode to full screen.
+        # note This might or might not work, depending on your window manager.
+        # See the VTK documentation for additional details.
+        # param[in] mode true for full screen, false otherwise
+        # 
         # inline void setFullScreen (bool mode)
         void setFullScreen (bool mode)
         
-        # /** \brief Enables or disable the underlying window borders.
-        #   * \note This might or might not work, depending on your window manager.
-        #   * See the VTK documentation for additional details.
-        #   * \param[in] mode true for borders, false otherwise
-        #   */
+        # brief Enables or disable the underlying window borders.
+        # note This might or might not work, depending on your window manager.
+        # See the VTK documentation for additional details.
+        # param[in] mode true for borders, false otherwise
         # inline void setWindowBorders (bool mode)
         void setWindowBorders (bool mode)
         
-        # /** \brief Register a callback boost::function for keyboard events
-        #   * \param[in] cb a boost function that will be registered as a callback for a keyboard event
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
-        # boost::signals2::connection
-        # registerKeyboardCallback (boost::function<void (const pcl::visualization::KeyboardEvent&)> cb);
+        # brief Register a callback boost::function for keyboard events
+        # param[in] cb a boost function that will be registered as a callback for a keyboard event
+        # return a connection object that allows to disconnect the callback function.
+        # boost::signals2::connection registerKeyboardCallback (boost::function<void (const pcl::visualization::KeyboardEvent&)> cb);
         
-        # /** \brief Register a callback function for keyboard events
-        #   * \param[in] callback  the function that will be registered as a callback for a keyboard event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for keyboard events
+        # param[in] callback  the function that will be registered as a callback for a keyboard event
+        # param[in] cookie    user data that is passed to the callback
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # inline boost::signals2::connection
         # registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), void* cookie = NULL)
         
@@ -194,110 +194,109 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # template<typename T> inline boost::signals2::connection
         # registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), T& instance, void* cookie = NULL)
         
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] cb a boost function that will be registered as a callback for a mouse event
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for mouse events
+        # param[in] cb a boost function that will be registered as a callback for a mouse event
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # boost::signals2::connection
         # registerMouseCallback (boost::function<void (const pcl::visualization::MouseEvent&)> cb);
         
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] callback  the function that will be registered as a callback for a mouse event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for mouse events
+        # param[in] callback  the function that will be registered as a callback for a mouse event
+        # param[in] cookie    user data that is passed to the callback
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # inline boost::signals2::connection
         # registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), void* cookie = NULL)
         
-        # /** \brief Register a callback function for mouse events
-        #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for mouse events
+        # param[in] callback  the member function that will be registered as a callback for a mouse event
+        # param[in] instance  instance to the class that implements the callback function
+        # param[in] cookie    user data that is passed to the callback
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # template<typename T> inline boost::signals2::connection
         # registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), T& instance, void* cookie = NULL)
         
-        # /** \brief Register a callback function for point picking events
-        #   * \param[in] cb a boost function that will be registered as a callback for a point picking event
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for point picking events
+        # param[in] cb a boost function that will be registered as a callback for a point picking event
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # boost::signals2::connection
         # registerPointPickingCallback (boost::function<void (const pcl::visualization::PointPickingEvent&)> cb);
         
-        # /** \brief Register a callback function for point picking events
-        #   * \param[in] callback  the function that will be registered as a callback for a point picking event
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for point picking events
+        # param[in] callback  the function that will be registered as a callback for a point picking event
+        # param[in] cookie    user data that is passed to the callback
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # inline boost::signals2::connection
         # registerPointPickingCallback (void (*callback) (const pcl::visualization::PointPickingEvent&, void*), void* cookie = NULL)
         
-        # /** \brief Register a callback function for point picking events
-        #   * \param[in] callback  the member function that will be registered as a callback for a point picking event
-        #   * \param[in] instance  instance to the class that implements the callback function
-        #   * \param[in] cookie    user data that is passed to the callback
-        #   * \return a connection object that allows to disconnect the callback function.
-        #   */
+        # brief Register a callback function for point picking events
+        # param[in] callback  the member function that will be registered as a callback for a point picking event
+        # param[in] instance  instance to the class that implements the callback function
+        # param[in] cookie    user data that is passed to the callback
+        # return a connection object that allows to disconnect the callback function.
+        # 
         # template<typename T> inline boost::signals2::connection
         # registerPointPickingCallback (void (T::*callback) (const pcl::visualization::PointPickingEvent&, void*), T& instance, void* cookie = NULL)
         
-        # /** \brief Spin method. Calls the interactor and runs an internal loop. */
+        # brief Spin method. Calls the interactor and runs an internal loop.
         void spin ()
         
-        # /** \brief Spin once method. Calls the interactor and updates the screen once.
-        #   *  \param[in] time - How long (in ms) should the visualization loop be allowed to run.
-        #   *  \param[in] force_redraw - if false it might return without doing anything if the
-        #   *  interactor's framerate does not require a redraw yet.
-        #   */
+        # brief Spin once method. Calls the interactor and updates the screen once.
+        # param[in] time - How long (in ms) should the visualization loop be allowed to run.
+        # param[in] force_redraw - if false it might return without doing anything if the
+        # interactor's framerate does not require a redraw yet.
         # void spinOnce (int time = 1, bool force_redraw = false)
         void spinOnce (int time, bool force_redraw)
         
-        # /** \brief Adds 3D axes describing a coordinate system to screen at 0,0,0.
-        #   * \param[in] scale the scale of the axes (default: 1)
-        #   * \param[in] viewport the view port where the 3D axes should be added (default: all)
-        #   */
+        # brief Adds 3D axes describing a coordinate system to screen at 0,0,0.
+        # param[in] scale the scale of the axes (default: 1)
+        # param[in] viewport the view port where the 3D axes should be added (default: all)
+        # 
         # void addCoordinateSystem (double scale = 1.0, int viewport = 0);
         void addCoordinateSystem (double scale, int viewport)
         
-        # /** \brief Adds 3D axes describing a coordinate system to screen at x, y, z
-        #   * \param[in] scale the scale of the axes (default: 1)
-        #   * \param[in] x the X position of the axes
-        #   * \param[in] y the Y position of the axes
-        #   * \param[in] z the Z position of the axes
-        #   * \param[in] viewport the view port where the 3D axes should be added (default: all)
-        #   */
+        # brief Adds 3D axes describing a coordinate system to screen at x, y, z
+        # param[in] scale the scale of the axes (default: 1)
+        # param[in] x the X position of the axes
+        # param[in] y the Y position of the axes
+        # param[in] z the Z position of the axes
+        # param[in] viewport the view port where the 3D axes should be added (default: all)
+        # 
         # void addCoordinateSystem (double scale, float x, float y, float z, int viewport = 0);
         void addCoordinateSystem (double scale, float x, float y, float z, int viewport)
         
-        #  /** \brief Adds 3D axes describing a coordinate system to screen at x, y, z, Roll,Pitch,Yaw
-        #    *
-        #    * \param[in] scale the scale of the axes (default: 1)
-        #    * \param[in] t transformation matrix
-        #    * \param[in] viewport the view port where the 3D axes should be added (default: all)
-        #    * RPY Angles
-        #    * Rotate the reference frame by the angle roll about axis x
-        #    * Rotate the reference frame by the angle pitch about axis y
-        #    * Rotate the reference frame by the angle yaw about axis z
-        #    * Description:
-        #    * Sets the orientation of the Prop3D.  Orientation is specified as
-        #    * X,Y and Z rotations in that order, but they are performed as
-        #    * RotateZ, RotateX, and finally RotateY.
-        #    * All axies use right hand rule. x=red axis, y=green axis, z=blue axis
-        #    * z direction is point into the screen.
-        #    *     z
-        #    *      \
-        #    *       \
-        #    *        \
-        #    *         -----------> x
-        #    *         |
-        #    *         |
-        #    *         |
-        #    *         |
-        #    *         |
-        #    *         |
-        #    *         y
-        #    */
+        # brief Adds 3D axes describing a coordinate system to screen at x, y, z, Roll,Pitch,Yaw
+        # 
+        # param[in] scale the scale of the axes (default: 1)
+        # param[in] t transformation matrix
+        # param[in] viewport the view port where the 3D axes should be added (default: all)
+        # RPY Angles
+        # Rotate the reference frame by the angle roll about axis x
+        # Rotate the reference frame by the angle pitch about axis y
+        # Rotate the reference frame by the angle yaw about axis z
+        # Description:
+        # Sets the orientation of the Prop3D.  Orientation is specified as
+        # X,Y and Z rotations in that order, but they are performed as
+        # RotateZ, RotateX, and finally RotateY.
+        # All axies use right hand rule. x=red axis, y=green axis, z=blue axis
+        # z direction is point into the screen.
+        #     z
+        #      \
+        #       \
+        #        \
+        #         -----------> x
+        #         |
+        #         |
+        #         |
+        #         |
+        #         |
+        #         |
+        #         y
+        # 
         # void addCoordinateSystem (double scale, const Eigen::Affine3f& t, int viewport = 0);
         void addCoordinateSystem (double scale, const eigen3.Affine3f& t, int viewport)
         
@@ -324,26 +323,22 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # note This methods also removes PolygonMesh objects and PointClouds, if they match the ID
         # param[in] id the shape object id (i.e., given on \a addLine etc.)
         # param[in] viewport view port from where the Point Cloud should be removed (default: all)
-        # 
         # bool removeShape (const std::string &id = "cloud", int viewport = 0);
         bool removeShape (const string &id, int viewport)
         
         # brief Removes an added 3D text from the scene, based on a given ID
         # param[in] id the 3D text id (i.e., given on \a addText3D etc.)
         # param[in] viewport view port from where the 3D text should be removed (default: all)
-        # 
         # bool removeText3D (const std::string &id = "cloud", int viewport = 0);
         bool removeText3D (const string &id, int viewport)
         
         # brief Remove all point cloud data on screen from the given viewport.
         # param[in] viewport view port from where the clouds should be removed (default: all)
-        # 
         # bool removeAllPointClouds (int viewport = 0);
         bool removeAllPointClouds (int viewport)
         
         # brief Remove all 3D shape data on screen from the given viewport.
         # param[in] viewport view port from where the shapes should be removed (default: all)
-        # 
         # bool removeAllShapes (int viewport = 0);
         bool removeAllShapes (int viewport)
         
@@ -352,7 +347,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] g the green component of the RGB color
         # param[in] b the blue component of the RGB color
         # param[in] viewport the view port (default: all)
-        # 
         # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0);
         void setBackgroundColor (const double &r, const double &g, const double &b, int viewport)
         
@@ -362,8 +356,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] ypos the Y position on screen where the text should be added
         # param[in] id the text object id (default: equal to the "text" parameter)
         # param[in] viewport the view port (default: all)
-        # 
-        # bool addText (const std::string &text,
+        # bool addText (
+        #          const std::string &text,
         #          int xpos, int ypos,
         #          const std::string &id = "", int viewport = 0);
         bool addText (const string &text, int xpos, int ypos, const string &id, int viewport)
@@ -377,75 +371,64 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] b the blue color vlaue
         # param[in] id the text object id (default: equal to the "text" parameter)
         # param[in] viewport the view port (default: all)
-        # 
-        # bool
-        # addText (const std::string &text, int xpos, int ypos, double r, double g, double b,
-        #          const std::string &id = "", int viewport = 0);
-        bool addText (const string &text, int xpos, int ypos, double r, double g, double b,
-                      const string &id, int viewport)
+        # bool addText (const std::string &text, int xpos, int ypos, double r, double g, double b,
+        #               const std::string &id = "", int viewport = 0);
+        bool addText (const string &text, int xpos, int ypos, double r, double g, double b, const string &id, int viewport)
         
-        # /** \brief Add a text to screen
-        #   * \param[in] text the text to add
-        #   * \param[in] xpos the X position on screen where the text should be added
-        #   * \param[in] ypos the Y position on screen where the text should be added
-        #   * \param[in] fontsize the fontsize of the text
-        #   * \param[in] r the red color value
-        #   * \param[in] g the green color value
-        #   * \param[in] b the blue color vlaue
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   * \param[in] viewport the view port (default: all)
-        #   */
-        # bool
-        # addText (const std::string &text, int xpos, int ypos, int fontsize, double r, double g, double b,
-        #          const std::string &id = "", int viewport = 0);
+        # brief Add a text to screen
+        # param[in] text the text to add
+        # param[in] xpos the X position on screen where the text should be added
+        # param[in] ypos the Y position on screen where the text should be added
+        # param[in] fontsize the fontsize of the text
+        # param[in] r the red color value
+        # param[in] g the green color value
+        # param[in] b the blue color vlaue
+        # param[in] id the text object id (default: equal to the "text" parameter)
+        # param[in] viewport the view port (default: all)
+        # bool addText (const std::string &text, int xpos, int ypos, int fontsize, double r, double g, double b,
+        #               const std::string &id = "", int viewport = 0);
         bool addText (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id, int viewport)
         
-        # /** \brief Update a text to screen
-        #   * \param[in] text the text to update
-        #   * \param[in] xpos the new X position on screen
-        #   * \param[in] ypos the new Y position on screen 
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   */
+        # brief Update a text to screen
+        # param[in] text the text to update
+        # param[in] xpos the new X position on screen
+        # param[in] ypos the new Y position on screen 
+        # param[in] id the text object id (default: equal to the "text" parameter)
         bool updateText (const string &text, int xpos, int ypos, const string &id)
         
-        # /** \brief Update a text to screen
-        #   * \param[in] text the text to update
-        #   * \param[in] xpos the new X position on screen
-        #   * \param[in] ypos the new Y position on screen 
-        #   * \param[in] r the red color value
-        #   * \param[in] g the green color value
-        #   * \param[in] b the blue color vlaue
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   */
-        # bool
-        # updateText (const std::string &text, 
-        #             int xpos, int ypos, double r, double g, double b,
-        #             const std::string &id = "");
+        # brief Update a text to screen
+        # param[in] text the text to update
+        # param[in] xpos the new X position on screen
+        # param[in] ypos the new Y position on screen 
+        # param[in] r the red color value
+        # param[in] g the green color value
+        # param[in] b the blue color vlaue
+        # param[in] id the text object id (default: equal to the "text" parameter)
+        # bool updateText (const std::string &text, 
+        #                  int xpos, int ypos, double r, double g, double b,
+        #                  const std::string &id = "");
         bool updateText (const string &text, int xpos, int ypos, double r, double g, double b, const string &id)
         
-        # /** \brief Update a text to screen
-        #   * \param[in] text the text to update
-        #   * \param[in] xpos the new X position on screen
-        #   * \param[in] ypos the new Y position on screen 
-        #   * \param[in] fontsize the fontsize of the text
-        #   * \param[in] r the red color value
-        #   * \param[in] g the green color value
-        #   * \param[in] b the blue color vlaue
-        #   * \param[in] id the text object id (default: equal to the "text" parameter)
-        #   */
-        # bool
-        # updateText (const std::string &text, 
-        #             int xpos, int ypos, int fontsize, double r, double g, double b,
-        #             const std::string &id = "");
+        # brief Update a text to screen
+        # param[in] text the text to update
+        # param[in] xpos the new X position on screen
+        # param[in] ypos the new Y position on screen 
+        # param[in] fontsize the fontsize of the text
+        # param[in] r the red color value
+        # param[in] g the green color value
+        # param[in] b the blue color vlaue
+        # param[in] id the text object id (default: equal to the "text" parameter)
+        # bool updateText (const std::string &text, 
+        #                  int xpos, int ypos, int fontsize, double r, double g, double b,
+        #                  const std::string &id = "");
         bool updateText (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id)
         
-        # /** \brief Set the pose of an existing shape. 
-        #   * Returns false if the shape doesn't exist, true if the pose was succesfully 
-        #   * updated.
-        #   * \param[in] id the shape or cloud object id (i.e., given on \a addLine etc.)
-        #   * \param[in] pose the new pose
-        #   * \return false if no shape or cloud with the specified ID was found
-        #   */
+        # brief Set the pose of an existing shape. 
+        # Returns false if the shape doesn't exist, true if the pose was succesfully 
+        # updated.
+        # param[in] id the shape or cloud object id (i.e., given on \a addLine etc.)
+        # param[in] pose the new pose
+        # return false if no shape or cloud with the specified ID was found
         # bool updateShapePose (const std::string &id, const Eigen::Affine3f& pose);
         bool updateShapePose (const string &id, const eigen3.Affine3f& pose)
         
@@ -473,7 +456,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] scale the normal arrow scale (default: 0.02m)
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # 
         # template <typename PointNT> bool
         # addPointCloudNormals (const typename pcl::PointCloud<PointNT>::ConstPtr &cloud,
         #                       int level = 100, double scale = 0.02,
@@ -487,7 +469,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] scale the normal arrow scale (default: 0.02m)
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # 
         # template <typename PointT, typename PointNT> bool
         # addPointCloudNormals (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                       const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
@@ -497,17 +478,15 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                         const cpp.PointCloud[PointNT] &normals,
         #                         int level = 100, double scale = 0.02,
         #                         const string &id, int viewport)
-        # 
         
-        # /** \brief Add the estimated principal curvatures of a Point Cloud to screen.
-        #   * \param[in] cloud the input point cloud dataset containing the XYZ data
-        #   * \param[in] normals the input point cloud dataset containing the normal data
-        #   * \param[in] pcs the input point cloud dataset containing the principal curvatures data
-        #   * \param[in] level display only every level'th point. Default: 100
-        #   * \param[in] scale the normal arrow scale. Default: 1.0
-        #   * \param[in] id the point cloud object id. Default: "cloud"
-        #   * \param[in] viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        # brief Add the estimated principal curvatures of a Point Cloud to screen.
+        # param[in] cloud the input point cloud dataset containing the XYZ data
+        # param[in] normals the input point cloud dataset containing the normal data
+        # param[in] pcs the input point cloud dataset containing the principal curvatures data
+        # param[in] level display only every level'th point. Default: 100
+        # param[in] scale the normal arrow scale. Default: 1.0
+        # param[in] id the point cloud object id. Default: "cloud"
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # bool addPointCloudPrincipalCurvatures (
         #     const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
         #     const pcl::PointCloud<pcl::Normal>::ConstPtr &normals,
@@ -515,11 +494,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #     int level = 100, double scale = 1.0,
         #     const std::string &id = "cloud", int viewport = 0);
         
-        # /** \brief Add a Point Cloud (templated) to screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id (default: cloud)
-        #   * \param viewport the view port where the Point Cloud should be added (default: all)
-        #   */
+        # brief Add a Point Cloud (templated) to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id (default: cloud)
+        # param viewport the view port where the Point Cloud should be added (default: all)
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const std::string &id = "cloud", int viewport = 0);
@@ -571,6 +549,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # 
         # template <typename PointT> bool
+        # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+        #                const PointCloudGeometryHandler<PointT> &geometry_handler,
+        #                const std::string &id = "cloud", int viewport = 0);
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
@@ -711,52 +692,49 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
         # 
-        # inline bool
-        # addPointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
-        #                const std::string &id = "cloud", int viewport = 0)
+        # inline bool addPointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
+        #                            const std::string &id = "cloud", int viewport = 0)
         
         # brief Add a PointXYZRGB Point Cloud to screen.
         # param[in] cloud the input point cloud dataset
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # 
-        # inline bool
-        # addPointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
-        #                const std::string &id = "cloud", int viewport = 0)
+        # inline bool addPointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
+        #                            const std::string &id = "cloud", int viewport = 0)
         
         # brief Add a PointXYZRGBA Point Cloud to screen.
         # param[in] cloud the input point cloud dataset
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # inline bool
-        # addPointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
-        #                const std::string &id = "cloud", int viewport = 0)
+        # inline bool addPointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
+        #                            const std::string &id = "cloud", int viewport = 0)
         
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
         # param[in] id the point cloud object id to update (default: cloud)
         # return false if no cloud with the specified ID was found
         # 
-        # inline bool
-        # updatePointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
-        #                   const std::string &id = "cloud")
+        # inline bool updatePointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud,
+        #                               const std::string &id = "cloud")
+        
+        # brief Updates the XYZRGB data for an existing cloud object id on screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id to update (default: cloud)
+        # return false if no cloud with the specified ID was found
         # 
-        # /** \brief Updates the XYZRGB data for an existing cloud object id on screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id to update (default: cloud)
-        #   * \return false if no cloud with the specified ID was found
-        #   */
         # inline bool
         # updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud,
         #                   const std::string &id = "cloud")
-        # /** \brief Updates the XYZRGBA data for an existing cloud object id on screen.
-        #   * \param[in] cloud the input point cloud dataset
-        #   * \param[in] id the point cloud object id to update (default: cloud)
-        #   * \return false if no cloud with the specified ID was found
-        #   */
+        
+        # brief Updates the XYZRGBA data for an existing cloud object id on screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] id the point cloud object id to update (default: cloud)
+        # return false if no cloud with the specified ID was found
+        # 
         # inline bool
         # updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGBA>::ConstPtr &cloud,
         #                   const std::string &id = "cloud")
+        
         # /** \brief Add a PolygonMesh object to screen
         #   * \param[in] polymesh the polygonal mesh
         #   * \param[in] id the polygon object id (default: "polygon")
@@ -766,7 +744,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPolygonMesh (const pcl::PolygonMesh &polymesh,
         #                 const std::string &id = "polygon",
         #                 int viewport = 0);
-        # 
+        
         # /** \brief Add a PolygonMesh object to screen
         #   * \param[in] cloud the polygonal mesh point cloud
         #   * \param[in] vertices the polygonal mesh vertices
@@ -778,7 +756,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                 const std::vector<pcl::Vertices> &vertices,
         #                 const std::string &id = "polygon",
         #                 int viewport = 0);
-        # 
+        
         # /** \brief Update a PolygonMesh object on screen
         #   * \param[in] cloud the polygonal mesh point cloud
         #   * \param[in] vertices the polygonal mesh vertices
@@ -789,7 +767,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # updatePolygonMesh (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                    const std::vector<pcl::Vertices> &vertices,
         #                    const std::string &id = "polygon");
-        # 
+        
         # /** \brief Add a Polygonline from a polygonMesh object to screen
         #   * \param[in] polymesh the polygonal mesh from where the polylines will be extracted
         #   * \param[in] id the polygon object id (default: "polygon")
@@ -799,7 +777,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPolylineFromPolygonMesh (const pcl::PolygonMesh &polymesh,
         #                             const std::string &id = "polyline",
         #                             int viewport = 0);
-        # 
+        
         # /** \brief Add the specified correspondences to the display.
         #   * \param[in] source_points The source points
         #   * \param[in] target_points The target points
@@ -813,7 +791,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                     const std::vector<int> & correspondences,
         #                     const std::string &id = "correspondences",
         #                     int viewport = 0);
-        # 
+        
         # /** \brief Add the specified correspondences to the display.
         #   * \param[in] source_points The source points
         #   * \param[in] target_points The target points
@@ -827,27 +805,29 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                     const pcl::Correspondences &correspondences,
         #                     const std::string &id = "correspondences",
         #                     int viewport = 0);
-        # 
+        
         # /** \brief Remove the specified correspondences from the display.
         #   * \param[in] id the polygon correspondences object id (i.e., given on \ref addCorrespondences)
         #   * \param[in] viewport view port from where the correspondences should be removed (default: all)
         #   */
-        # inline void
-        # removeCorrespondences (const std::string &id = "correspondences", int viewport = 0)
+        # inline void removeCorrespondences (const std::string &id = "correspondences", int viewport = 0)
+        
         # /** \brief Get the color handler index of a rendered PointCloud based on its ID
         #   * \param[in] id the point cloud object id
         #   */
-        # inline int
-        # getColorHandlerIndex (const std::string &id)
+        # inline int getColorHandlerIndex (const std::string &id)
+        
         # /** \brief Get the geometry handler index of a rendered PointCloud based on its ID
         #   * \param[in] id the point cloud object id
         #   */
         # inline int getGeometryHandlerIndex (const std::string &id)
+        
         # /** \brief Update/set the color index of a renderered PointCloud based on its ID
         #   * \param[in] id the point cloud object id
         #   * \param[in] index the color handler index to use
         #   */
         # bool updateColorHandlerIndex (const std::string &id, int index);
+        
         # /** \brief Set the rendering properties of a PointCloud (3x values - e.g., RGB)
         #   * \param[in] property the property type
         #   * \param[in] val1 the first value to be set
@@ -856,8 +836,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the point cloud object id (default: cloud)
         #   * \param[in] viewport the view port where the Point Cloud's rendering properties should be modified (default: all)
         #   */
-        # bool
-        # setPointCloudRenderingProperties (int property, double val1, double val2, double val3,
+        # bool setPointCloudRenderingProperties (int property, double val1, double val2, double val3,
         #                                       const std::string &id = "cloud", int viewport = 0);
         bool setPointCloudRenderingProperties (int property, double val1, double val2, double val3, string &id, int viewport)
         
@@ -880,6 +859,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool
         # getPointCloudRenderingProperties (int property, double &value,
         #                                   const std::string &id = "cloud");
+        
         # /** \brief Set the rendering properties of a shape
         #  * \param[in] property the property type
         #  * \param[in] value the value to be set
@@ -889,6 +869,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool
         # setShapeRenderingProperties (int property, double value,
         #                              const std::string &id, int viewport = 0);
+        
         # /** \brief Set the rendering properties of a shape (3x values - e.g., RGB)
         #   * \param[in] property the property type
         #   * \param[in] val1 the first value to be set
@@ -900,7 +881,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #  bool
         #  setShapeRenderingProperties (int property, double val1, double val2, double val3,
         #                               const std::string &id, int viewport = 0);
-        # 
+        
         # #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 4))
         #         /** \brief Returns true when the user tried to close the window */
         #         bool
@@ -918,6 +899,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #         void
         #         resetStoppedFlag () { if (interactor_ != NULL) stopped_ = false; }
         # #endif
+        bool wasStopped ()
+        void resetStoppedFlag ()
+        
         #         /** \brief Stop the interaction and close the visualizaton window. */
         #         void close ()
         #         {
@@ -931,6 +915,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #           interactor_->TerminateApp ();
         # #endif
         #         }
+        void close ()
+        
         # /** \brief Create a new viewport from [xmin,ymin] -> [xmax,ymax].
         #   * \param[in] xmin the minimum X coordinate for the viewport (0.0 <= 1.0)
         #   * \param[in] ymin the minimum Y coordinate for the viewport (0.0 <= 1.0)
@@ -2649,47 +2635,50 @@ ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGBA]] PointC
 ###
 
 # range_image_visualizer.h
-        # class PCL_EXPORTS RangeImageVisualizer : public ImageViewer
+# class PCL_EXPORTS RangeImageVisualizer : public ImageViewer
+cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::visualization" nogil:
+    cdef cppclass RangeImageVisualizer(ImageViewer):
+        RangeImageVisualizer()
         # public:
-        # // =====CONSTRUCTOR & DESTRUCTOR=====
+        # =====CONSTRUCTOR & DESTRUCTOR=====
         # //! Constructor
         # RangeImageVisualizer (const std::string& name="Range Image");
         # //! Destructor
         # ~RangeImageVisualizer ();
-        # 
-        # // =====PUBLIC STATIC METHODS=====
-        # /** Get a widget visualizing the given range image.
-        #  *  You are responsible for deleting it after usage! */
-        # static RangeImageVisualizer* getRangeImageWidget (const pcl::RangeImage& range_image, float min_value,
-        #                                           float max_value, bool grayscale, const std::string& name="Range image");
-        # 
-        # /** Visualize the given range image and the detected borders in it.
-        #  *  Borders on the obstacles are marked green, borders on the background are marked bright blue. */
+        
+        # =====PUBLIC STATIC METHODS=====
+        # Get a widget visualizing the given range image.
+        # You are responsible for deleting it after usage!
+        # static RangeImageVisualizer* getRangeImageWidget (
+        #                                   const pcl::RangeImage& range_image, float min_value,
+        #                                   float max_value, bool grayscale, const std::string& name="Range image");
+        
+        # Visualize the given range image and the detected borders in it.
+        # Borders on the obstacles are marked green, borders on the background are marked bright blue.
         # void visualizeBorders (const pcl::RangeImage& range_image, float min_value, float max_value, bool grayscale,
         #                        const pcl::PointCloud<pcl::BorderDescription>& border_descriptions);
-        # 
+        
         # /** Same as above, but returning a new widget. You are responsible for deleting it after usage! */
         # static RangeImageVisualizer* getRangeImageBordersWidget (const pcl::RangeImage& range_image, float min_value,
         #               float max_value, bool grayscale, const pcl::PointCloud<pcl::BorderDescription>& border_descriptions,
         #               const std::string& name="Range image with borders");
-        # 
+        
         # /** Get a widget visualizing the given angle image (assuming values in (-PI, PI]).
         #  *  -PI and PI will return the same color
         #  *  You are responsible for deleting it after usage! */
         # static RangeImageVisualizer* getAnglesWidget (const pcl::RangeImage& range_image, float* angles_image, const std::string& name);
-        # 
+        
         # /** Get a widget visualizing the given angle image (assuming values in (-PI/2, PI/2]).
         #  *  -PI/2 and PI/2 will return the same color
         #  *  You are responsible for deleting it after usage! */
         # static RangeImageVisualizer* getHalfAnglesWidget (const pcl::RangeImage& range_image, float* angles_image, const std::string& name);
-        # 
-        # 
+        
         # /** Get a widget visualizing the interest values and extracted interest points.
         #  * The interest points will be marked green.
         #  *  You are responsible for deleting it after usage! */
         # static RangeImageVisualizer* getInterestPointsWidget (const pcl::RangeImage& range_image, const float* interest_image, float min_value, float max_value,
         #                                                       const pcl::PointCloud<pcl::InterestPoint>& interest_points, const std::string& name);
-        # 
+        
         # // =====PUBLIC METHODS=====
         # //! Visualize a range image
         # /* void  */
@@ -2697,15 +2686,13 @@ ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGBA]] PointC
         # /*                float min_value = -std::numeric_limits<float>::infinity (),  */
         # /*                float max_value =  std::numeric_limits<float>::infinity (),  */
         # /*                bool grayscale  = false); */
-        # 
-        # void 
-        # showRangeImage (const pcl::RangeImage& range_image, 
-        #                float min_value = -std::numeric_limits<float>::infinity (), 
-        #                float max_value =  std::numeric_limits<float>::infinity (), 
-        #                bool grayscale  = false);
-        # 
-        # protected:
-        # std::string name_;
+        
+        # void showRangeImage (const pcl::RangeImage& range_image, 
+        #                       float min_value = -std::numeric_limits<float>::infinity (), 
+        #                       float max_value =  std::numeric_limits<float>::infinity (), 
+        #                       bool grayscale  = false);
+
+
 ###
 
 # registration_visualizer.h
@@ -2855,6 +2842,12 @@ cdef extern from "pcl/visualization/registration_visualizer.h" namespace "pcl::v
 
 # common.h
 cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualization":
+    cdef enum FrustumCull:
+        PCL_INSIDE_FRUSTUM
+        PCL_INTERSECT_FRUSTUM
+        PCL_OUTSIDE_FRUSTUM
+
+cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualization":
     cdef enum RenderingProperties:
         PCL_VISUALIZER_POINT_SIZE
         PCL_VISUALIZER_OPACITY
@@ -2863,6 +2856,7 @@ cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualizati
         PCL_VISUALIZER_COLOR
         PCL_VISUALIZER_REPRESENTATION
         PCL_VISUALIZER_IMMEDIATE_RENDERING
+        # PCL_VISUALIZER_SHADING
 
 cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualization":
     cdef enum RenderingRepresentationProperties:
@@ -2870,6 +2864,34 @@ cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualizati
         PCL_VISUALIZER_REPRESENTATION_WIREFRAME
         PCL_VISUALIZER_REPRESENTATION_SURFACE
 
+cdef extern from "pcl/visualization/common/common.h" namespace "pcl::visualization":
+    cdef enum ShadingRepresentationProperties:
+        PCL_VISUALIZER_SHADING_FLAT
+        PCL_VISUALIZER_SHADING_GOURAUD
+        PCL_VISUALIZER_SHADING_PHONG
+
+# sample enum set
+# model_types.h
+# cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
+#     cdef enum SacModel:
+#         SACMODEL_PLANE
+#         SACMODEL_LINE
+#         SACMODEL_CIRCLE2D
+#         SACMODEL_CIRCLE3D
+#         SACMODEL_SPHERE
+#         SACMODEL_CYLINDER
+#         SACMODEL_CONE
+#         SACMODEL_TORUS
+#         SACMODEL_PARALLEL_LINE
+#         SACMODEL_PERPENDICULAR_PLANE
+#         SACMODEL_PARALLEL_LINES
+#         SACMODEL_NORMAL_PLANE
+#         SACMODEL_NORMAL_SPHERE        # Version 1.6
+#         SACMODEL_REGISTRATION
+#         SACMODEL_PARALLEL_PLANE
+#         SACMODEL_NORMAL_PARALLEL_PLANE
+#         SACMODEL_STICK
+# 
 ###
 
 ###############################################################################

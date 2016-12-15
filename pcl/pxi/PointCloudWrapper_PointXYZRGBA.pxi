@@ -342,13 +342,3 @@ cdef class PointCloud_PointXYZRGBA:
         # XXX are we leaking memory here? del ind causes a double free...
         return result
 ###
-
-# include "Segmentation.pxi"
-# include "SegmentationNormal.pxi"
-# include "StatisticalOutlierRemovalFilter.pxi"
-# include "VoxelGridFilter.pxi"
-# include "PassThroughFilter.pxi"
-# include "MovingLeastSquares.pxi"
-# include "KdTree_FLANN.pxi"
-# include "OctreePointCloud.pxi"
-

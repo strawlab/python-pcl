@@ -13,7 +13,6 @@ from boost_shared_ptr cimport sp_assign
 
 cdef class PointCloudColorHandlerCustoms:
     """
-    
     """
     # cdef pcl_vis.PointCloudColorHandlerCustom_t *me
     cdef pcl_vis.PointCloudColorHandlerCustom_PointWithRange_t *me

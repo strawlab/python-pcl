@@ -530,6 +530,8 @@ cdef class PointCloud:
 
 ###
 
+
+### include ###
 include "Segmentation/Segmentation.pxi"
 include "Segmentation/SegmentationNormal.pxi"
 include "Segmentation/EuclideanClusterExtraction.pxi"
@@ -550,9 +552,7 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 include "Surface/ConcaveHull.pxi"
-# include "RangeImage.pxi"
-
-# include "PointCloudWrapper_PointXYZI.pxi"
+include "Common/RangeImage/RangeImage.pxi"
 
 # Features
 include "Features/NormalEstimation.pxi"
@@ -581,4 +581,3 @@ include "KeyPoint/HarrisKeypoint3D.pxi"
 #     include "OctreePointCloudChangeDetector.pxi"
 #     include "UniformSampling.pxi"
 #     include "IntegralImageNormalEstimation.pxi"
-
