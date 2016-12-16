@@ -183,8 +183,8 @@ time.sleep(1)
 # Show range image
 # pcl::visualization::RangeImageVisualizer range_image_widget ("Range image");
 # range_image_widget.showRangeImage (range_image);
-range_image_widget = pcl.RangeImageVisualizer()
-range_image_widget.showRangeImage (range_image)
+range_image_widget = pcl.RangeImageVisualization()
+range_image_widget.ShowRangeImage (range_image)
 
 # Extract NARF keypoints
 # pcl::RangeImageBorderExtractor range_image_border_extractor;
@@ -193,43 +193,47 @@ range_image_widget.showRangeImage (range_image)
 # narf_keypoint_detector.getParameters ().support_size = support_size;
 # narf_keypoint_detector.getParameters ().add_points_on_straight_edges = true;
 # narf_keypoint_detector.getParameters ().distance_for_additional_points = 0.5;
-# 
 # pcl::PointCloud<int> keypoint_indices;
 # narf_keypoint_detector.compute (keypoint_indices);
 # std::cout << "Found" << keypoint_indices.points.size () << "key points.\n";
 range_image_border_extractor = pcl.RangeImageBorderExtractor()
 narf_keypoint_detector = pcl.NarfKeypoint(range_image_border_extractor)
+narf_keypoint_detector.SetRangeImage (&range_image)
 
 # pcl::PointCloud<int> keypoint_indices;
 # narf_keypoint_detector.compute (keypoint_indices);
 print("Found" + str(keypoint_indices.size) + "key points.\n")
 
 # Show keypoints in range image widget
+### Comment
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
 # range_image_widget.markPoint (keypoint_indices.points[i] % range_image.width,
-#                               keypoint_indices.points[i]range_image.width);
-##
+#                               keypoint_indices.points[i], range_image.width);
 # for size_t i=0; ikeypoint_indices.points.size (); ++i:
 #     range_image_widget.markPoint (keypoint_indices.points[i] % range_image.width, keypoint_indices.points[i], range_image.width)
+###
 
 # Show keypoints in 3D viewer
 # pcl::PointCloud<pcl::PointXYZPtr> keypoints_ptr (new pclPointCloudpclPointXYZ);
 # pcl::PointCloud<pcl::PointXYZ> &keypoints = keypoints_ptr;
 # keypoints.points.resize (keypoint_indices.points.size ());
-
-
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
 # keypoints.points[i].getVector3fMap () = range_image.points[keypoint_indices.points[i]].getVector3fMap ();
 ##
-# for size_t i=0; ikeypoint_indices.points.size (); ++i:
-#     keypoints.points[i].getVector3fMap () = range_image.points[keypoint_indices.points[i]].getVector3fMap ();
+keypoints = pcl.KeyPoints()
+keypoints.resize(keypoint_indices.size)
+for size_t i=0, i < keypoint_indices.size
+    keypoints.points[i].getVector3fMap () = range_image.[keypoint_indices.points[i]].getVector3fMap ()
 
 
 # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> keypoints_color_handler (keypoints_ptr, 0, 255, 0);
 # viewer.addPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints);
 # viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
+# keypoints_color_handler = pcl.PointCloudColorHandlerCustom (0, 255, 0)
+# viewer.AddPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints)
+# viewer.SetPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
 
-# -----Main loop-----
+# Main loop
 # # while (!viewer.wasStopped ())
 #     # process GUI events
 #     range_image_widget.spinOnce ()
@@ -239,7 +243,7 @@ print("Found" + str(keypoint_indices.size) + "key points.\n")
 
 while True:
     # process GUI events
-    range_image_widget.spinOnce ()
-    viewer.spinOnce ()
+    range_image_widget.SpinOnce ()
+    viewer.SpinOnce ()
 
 
