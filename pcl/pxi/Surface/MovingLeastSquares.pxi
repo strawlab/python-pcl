@@ -9,8 +9,10 @@ cdef class MovingLeastSquares:
     algorithm for data smoothing and improved normal estimation.
     """
     cdef pclsf.MovingLeastSquares_t *me
+    
     def __cinit__(self):
         self.me = new pclsf.MovingLeastSquares_t()
+    
     def __dealloc__(self):
         del self.me
     
@@ -45,17 +47,18 @@ cdef class MovingLeastSquares:
     #    # self.me.setSearchMethod(kdtree.thisptr())
     #    self.me.setSearchMethod(kdtree.thisptr_shared)
     
-    def Process(self):
+    def process(self):
         """
         Apply the smoothing according to the previously set values and return
-        a new PointCloudNormal
+        a new PointCloud
         """
-        cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
-        self.me.process(pcNormal.thisptr()[0])
-        return pcNormal
-        # cdef PointCloud pc = PointCloud()
-        # self.me.process(pc.thisptr())
-        # return pc
+        cdef PointCloud pc = PointCloud()
+        self.me.process(pc.thisptr()[0])
+        return pc
+        # cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
+        # self.me.process(pcNormal.thisptr()[0])
+        # return pcNormal
+
 
 # cdef class MovingLeastSquares_PointXYZI:
 #     """
@@ -63,6 +66,7 @@ cdef class MovingLeastSquares:
 #     algorithm for data smoothing and improved normal estimation.
 #     """
 #     cdef pclsf.MovingLeastSquares_PointXYZI_t *me
+#     
 #     def __cinit__(self):
 #         self.me = new pclsf.MovingLeastSquares_PointXYZI_t()
 #     def __dealloc__(self):
@@ -103,8 +107,10 @@ cdef class MovingLeastSquares_PointXYZRGB:
     algorithm for data smoothing and improved normal estimation.
     """
     cdef pclsf.MovingLeastSquares_PointXYZRGB_t *me
+    
     def __cinit__(self):
         self.me = new pclsf.MovingLeastSquares_PointXYZRGB_t()
+    
     def __dealloc__(self):
         del self.me
     
@@ -132,12 +138,12 @@ cdef class MovingLeastSquares_PointXYZRGB:
         Apply the smoothing according to the previously set values and return
         a new pointcloud
         """
-        # cdef PointCloud_PointXYZRGB pc = PointCloud_PointXYZRGB()
-        # self.me.process(pc.thisptr()[0])
-        # return pc
-        cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
-        self.me.process(pcNormal.thisptr()[0])
-        return pcNormal
+        cdef PointCloud_PointXYZRGB pc = PointCloud_PointXYZRGB()
+        self.me.process(pc.thisptr()[0])
+        return pc
+        # cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
+        # self.me.process(pcNormal.thisptr()[0])
+        # return pcNormal
 
 cdef class MovingLeastSquares_PointXYZRGBA:
     """
@@ -145,8 +151,10 @@ cdef class MovingLeastSquares_PointXYZRGBA:
     algorithm for data smoothing and improved normal estimation.
     """
     cdef pclsf.MovingLeastSquares_PointXYZRGBA_t *me
+    
     def __cinit__(self):
         self.me = new pclsf.MovingLeastSquares_PointXYZRGBA_t()
+    
     def __dealloc__(self):
         del self.me
     
@@ -174,10 +182,10 @@ cdef class MovingLeastSquares_PointXYZRGBA:
         Apply the smoothing according to the previously set values and return
         a new pointcloud
         """
-        # cdef PointCloud_PointXYZRGBA pc = PointCloud_PointXYZRGBA()
-        # self.me.process(pc.thisptr()[0])
-        # return pc
-        cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
-        self.me.process(pcNormal.thisptr()[0])
-        return pcNormal
+        cdef PointCloud_PointXYZRGBA pc = PointCloud_PointXYZRGBA()
+        self.me.process(pc.thisptr()[0])
+        return pc
+        # cdef PointCloud_PointNormal pcNormal = PointCloud_PointNormal()
+        # self.me.process(pcNormal.thisptr()[0])
+        # return pcNormal
 

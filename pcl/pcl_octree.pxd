@@ -708,7 +708,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         # void deleteVoxelAtPoint(cpp.PointXYZI)
         # void deleteVoxelAtPoint(cpp.PointXYZRGB)
         # void deleteVoxelAtPoint(cpp.PointXYZRGBA)
-        void deleteVoxelAtPoint(T)
+        void deleteVoxelAtPoint(T point)
 
 ctypedef OctreePointCloud[cpp.PointXYZ] OctreePointCloud_t
 ctypedef OctreePointCloud[cpp.PointXYZI] OctreePointCloud_PointXYZI_t

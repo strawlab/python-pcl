@@ -154,7 +154,7 @@ cdef class OctreePointCloud_PointXYZI:
         """
         Delete leaf node / voxel at given point.
         """
-        # NG (minipcl?)
+        # NG (use minipcl?)
         self.me.deleteVoxelAtPoint(to_point2_t(point))
         # mpcl_deleteVoxelAtPoint(self.me, to_point2_t(point))
         # mpcl_deleteVoxelAtPoint_PointXYZI(deref(self.me), to_point2_t(point))
