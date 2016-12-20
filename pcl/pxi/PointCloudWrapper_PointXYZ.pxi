@@ -518,9 +518,9 @@ cdef class PointCloud:
         return vfhEstimation
 
     def make_RangeImage(self):
-        rangeImage = RangeImage(self)
-        cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImage.me
-        return rangeImage
+        rangeImages = RangeImages(self)
+        # cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImages.me
+        return rangeImages
 
     def make_EuclideanClusterExtraction(self):
         euclideanclusterextraction = EuclideanClusterExtraction(self)
@@ -552,7 +552,7 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 include "Surface/ConcaveHull.pxi"
-include "Common/RangeImage/RangeImage.pxi"
+include "Common/RangeImage/RangeImages.pxi"
 
 # Features
 include "Features/NormalEstimation.pxi"

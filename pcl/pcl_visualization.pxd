@@ -7,6 +7,7 @@ from libcpp cimport bool
 
 # main
 cimport pcl_defs as cpp
+from pcl_range_image cimport RangeImage
 
 # Eigen
 cimport eigen as eigen3
@@ -2738,7 +2739,7 @@ cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::vi
         #                       float min_value = -std::numeric_limits<float>::infinity (), 
         #                       float max_value =  std::numeric_limits<float>::infinity (), 
         #                       bool grayscale  = false);
-        # void showRangeImage (const pcl.RangeImage& range_image,  float min_value, float max_value, bool grayscale)
+        void showRangeImage (const RangeImage range_image,  float min_value, float max_value, bool grayscale)
 
 
 ###

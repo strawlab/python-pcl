@@ -3,7 +3,10 @@
 # modules.
 
 cimport pcl_defs as cpp
+# KdTree
 cimport pcl_kdtree as pclkdt
+# RangeImage
+cimport pcl_range_image as pcl_r_img
 
 # class override(PointCloud)
 cdef class PointCloud:
@@ -122,5 +125,15 @@ cdef class KdTree:
 #     cdef inline pclkdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying KdTreeFLANN<PointXYZ>.
 #         return self.thisptr_shared.get()
+
+
+## RangeImages
+# class override
+cdef class RangeImages:
+    cdef pcl_r_img.RangeImagePtr_t thisptr_shared   # RangeImages
+    
+    cdef inline pcl_r_img.RangeImage *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying RangeImage.
+        return self.thisptr_shared.get()
 
 

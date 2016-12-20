@@ -13,6 +13,10 @@ from boost_shared_ptr cimport shared_ptr
 
 cimport eigen as eigen3
 
+# FW: Link time errors in RangeImage. (with /clr) 
+# http://www.pcl-users.org/FW-Link-time-errors-in-RangeImage-with-clr-td3581422.html
+# Linking errors using RangeImagePlanar 
+# http://www.pcl-users.org/Linking-errors-using-RangeImagePlanar-td4036511.html
 # range_image.h
 # class RangeImage : public pcl::PointCloud<PointWithRange>
 cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
@@ -743,9 +747,12 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # virtual void
         # getSubImage (int sub_image_image_offset_x, int sub_image_image_offset_y, int sub_image_width,
         #              int sub_image_height, int combine_pixels, RangeImage& sub_image) const;
+        void getSubImage (int sub_image_image_offset_x, int sub_image_image_offset_y, int sub_image_width,
+                          int sub_image_height, int combine_pixels, RangeImage& sub_image)
         
         # Get a range image with half the resolution
         # virtual void getHalfImage (RangeImage& half_image) const;
+        void getHalfImage (RangeImage& half_image)
         
         # Find the minimum and maximum range in the image
         # PCL_EXPORTS void getMinMaxRanges (float& min_range, float& max_range) const;
@@ -849,7 +856,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
 
 ctypedef RangeImage RangeImage_t
 ctypedef shared_ptr[RangeImage] RangeImagePtr_t
-ctypedef shared_ptr[const RangeImage] RangeImageCpmstPtr_t
+ctypedef shared_ptr[const RangeImage] RangeImageConstPtr_t
 ###
 
 # range_image_planar.h
