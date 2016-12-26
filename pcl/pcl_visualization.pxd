@@ -1820,6 +1820,7 @@ cdef extern from "pcl/visualization/image_viewer.h" namespace "pcl::visualizatio
         # param[in] opacity the opacity of the layer (default: 1.0)
         # void markPoint (size_t u, size_t v, Vector3ub fg_color, Vector3ub bg_color = red_color, double radius = 3.0,
         #                 const std::string &layer_id = "points", double opacity = 1.0);
+        # Vector3ub Unknown
         # void markPoint (size_t u, size_t v, Vector3ub fg_color, Vector3ub bg_color, double radius, const string &layer_id, double opacity)
         
         # brief Set the window title name
@@ -2675,7 +2676,7 @@ ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGBA]] PointC
 cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::visualization" nogil:
     cdef cppclass RangeImageVisualizer(ImageViewer):
         RangeImageVisualizer()
-        # RangeImageVisualizer (const string name)
+        RangeImageVisualizer (const string name)
         # public:
         # =====CONSTRUCTOR & DESTRUCTOR=====
         # //! Constructor
@@ -2713,19 +2714,20 @@ cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::vi
         # -PI and PI will return the same color
         # You are responsible for deleting it after usage!
         # static RangeImageVisualizer* getAnglesWidget (const pcl::RangeImage& range_image, float* angles_image, const std::string& name);
-        # RangeImageVisualizer* getAnglesWidget (const pcl.RangeImage& range_image, float* angles_image, const string& name)
+        RangeImageVisualizer* getAnglesWidget (const RangeImage& range_image, float* angles_image, const string& name)
         
         # Get a widget visualizing the given angle image (assuming values in (-PI/2, PI/2]).
         # -PI/2 and PI/2 will return the same color
         # You are responsible for deleting it after usage!
         # RangeImageVisualizer* getHalfAnglesWidget (const pcl.RangeImage& range_image, float* angles_image, const string& name)
+        RangeImageVisualizer* getHalfAnglesWidget (const RangeImage& range_image, float* angles_image, const string& name)
         
         # /** Get a widget visualizing the interest values and extracted interest points.
         #  * The interest points will be marked green.
         #  *  You are responsible for deleting it after usage! */
         # static RangeImageVisualizer* getInterestPointsWidget (const pcl::RangeImage& range_image, const float* interest_image, float min_value, float max_value,
         #                                                       const pcl::PointCloud<pcl::InterestPoint>& interest_points, const std::string& name);
-        # RangeImageVisualizer* getInterestPointsWidget (const pcl.RangeImage& range_image, const float* interest_image, float min_value, float max_value, const cpp.PointCloud[cpp.InterestPoint] &interest_points, const string& name)
+        RangeImageVisualizer* getInterestPointsWidget (const RangeImage& range_image, const float* interest_image, float min_value, float max_value, const cpp.PointCloud[cpp.InterestPoint] &interest_points, const string& name)
         
         # // =====PUBLIC METHODS=====
         # //! Visualize a range image

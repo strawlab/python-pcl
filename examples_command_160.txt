@@ -34,27 +34,44 @@ python examples\official\kdtree\kdtree_search.py
 ###
 
 # keypoints
-# execute NG
+# NG(RangeImage Link Error)
 python examples\official\keypoints\narf_keypoint_extraction.py
 ###
 
 # octree
 # execute NG
+# Exception ignored in: 'pcl._pcl.to_point_t'
+# TypeError: a float is required
 python examples\official\octree\octree_search.py
 # python examples\official\octree\octree_change_detection_172.py
 ###
 
 # RangeImage
+# NG(RangeImage Link Error)
 python examples\official\RangeImage\range_image_border_extraction.py
 ###
 
 # Recognition
-correspondence_grouping correspondence_grouping.txt
-global_hypothesis_verification.txt
-implicit_shape_model.txt
+# pcl 1.7.2
+# pcl 1.6.0 not Implement BOARDLocalReferenceFrameEstimation 
+# python examples\official\Recognition\correspondence_grouping.py
+# pcl 1.7.2
+# python examples\official\Recognition\global_hypothesis_verification.txt
+# pcl 1.7.2
+# python examples\official\Recognition\implicit_shape_model.txt
 ###
 
 # Registration
+# pcl 1.7.2
+python examples\official\Registration\alignment_prerejective.py
+
+# pcl 1.7.2
+# iterative_closest_point.txt
+python examples\official\Registration\iterative_closest_point.py
+
+# normal_distributions_transform.txt
+# pairwise_incremental_registration.txt
+# pcl-interactive_icp.txt
 ###
 
 # SampleConsensus
@@ -69,7 +86,6 @@ implicit_shape_model.txt
 # python examples\official\Segmentation\region_growing_rgb_segmentation_172.txt
 # python examples\official\Segmentation\region_growing_segmentation_172.txt
 # python examples\official\Segmentation\supervoxel_clustering_172.txt
-# 
 python examples\official\Segmentation\cluster_extraction.py
 python examples\official\Segmentation\cylinder_segmentation.py
 # python examples\official\Segmentation\Plane_model_segmentation.txt
@@ -85,5 +101,4 @@ python examples\official\surface\resampling.py
 
 # Visualization
 ###
-
 

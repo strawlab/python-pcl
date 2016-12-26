@@ -21,10 +21,11 @@ cdef class RangeImages:
     
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
-        # sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage())
+        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage())
         # NG
         # self.thisptr_shared = <pcl_r_img.RangeImage *> new pcl_r_img.RangeImage()
-        print('__cinit__')
+        # print('__cinit__')
+        pass
     
     # def __cinit__(self, PointCloud pc not None):
     #     # self.me = new pcl_r_img.RangeImage_t()
@@ -43,11 +44,14 @@ cdef class RangeImages:
         cdef eigen3.Affine3f sensor_pose
         cdef float *data = sensor_pose.data()
         # print('sensor_pose size = ' + str( len(data) ) )
-        data[0] = 0.0
-        data[1] = 0.0
-        data[2] = 0.0
-        data[3] = 0.0
+        # cdef eigen3.Translation3f data(0.0, 0.0, 0.0)
+        # data[0] = 0.0
+        # data[1] = 0.0
+        # data[2] = 0.0
+        # data[3] = 0.0
         # print('sensor_pose = ' + data)
+        # (Eigen::Affine3f)Eigen::Translation3f(0.0f, 0.0f, 0.0f);  
+        sensor_pose = <eigen3.Affine3f>eigen3.Translation3f(0.0, 0.0, 0.0)
         
         print('angular_resolution = ' + str(angular_resolution) )
         print('max_angle_width = ' + str(max_angle_width) )
@@ -56,25 +60,13 @@ cdef class RangeImages:
         print('min_range = ' + str(min_range) )
         print('border_size = ' + str(border_size) )
         
+        print('cloud.size = ' + str(cloud.size) )
+        print('cloud.width = ' + str(cloud.width) )
+        print('cloud.height = ' + str(cloud.height) )
+        
         print('call createFromPointCloud')
         
-        # self.thisprt().createFromPointCloud(
-        #     cloud.thisptr()[0],
-        #     angular_resolution,
-        #     max_angle_width,
-        #     max_angle_height,
-        #     sensor_pose, 
-        #     coordinate_frame, 
-        #     noise_level, 
-        #     min_range, 
-        #     border_size)
-        
-        cdef pcl_r_img.RangeImage_t *user
-        # user = <pcl_r_img.RangeImage_t *> self.thisptr_shared
-        user = <pcl_r_img.RangeImage *> self.thisptr()
-        
-        # <pcl_r_img.RangeImage_t *> self.thisprt().createFromPointCloud(
-        user.createFromPointCloud(
+        self.thisptr().createFromPointCloud(
             cloud.thisptr()[0],
             angular_resolution,
             max_angle_width,
@@ -87,7 +79,7 @@ cdef class RangeImages:
     
     
     def SetAngularResolution(self, float angular_resolution_x, float angular_resolution_y):
-        self.thisprt()[0].setAngularResolution(angular_resolution_x, angular_resolution_y)
+        self.thisptr()[0].setAngularResolution(angular_resolution_x, angular_resolution_y)
     
     
     def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
@@ -102,7 +94,7 @@ cdef class RangeImages:
     
     
     def SetUnseenToMaxRange(self):
-        self.thisprt()[0].setUnseenToMaxRange()
+        self.thisptr()[0].setUnseenToMaxRange()
     
     
 ###

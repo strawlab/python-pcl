@@ -140,16 +140,15 @@ else:
     point_cloud = pcl.PointCloud()
     point_cloud.from_array(points)
     
-    far_ranges = pcl.PointCloud_PointWithViewpoint()
+    far_ranges = pcl.PointCloudWrapper_PointWithViewpoint()
 
 
 ##
-# // -----------------------------------------------
-# // -----Create RangeImage from the PointCloud-----
-# // -----------------------------------------------
-noise_level = 0.0;
-min_range = 0.0;
-border_size = 1;
+# Create RangeImage from the PointCloud
+noise_level = 0.0
+min_range = 0.0
+border_size = 1
+
 # boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
 # pcl::RangeImage& range_image = *range_image_ptr;   
 # range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
@@ -159,10 +158,12 @@ border_size = 1;
 # range_image.setUnseenToMaxRange ();
 
 range_image = point_cloud.make_RangeImage()
-range_image.CreateFromPointCloud (point_cloud, angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0), coordinate_frame, noise_level, min_range, border_size)
+range_image.CreateFromPointCloud (point_cloud, 
+                        angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0), 
+                        coordinate_frame, noise_level, min_range, border_size)
 print ('range_image::integrateFarRanges.\n')
 if setUnseenToMaxRange == True:
-    range_image.setUnseenToMaxRange ()
+    range_image.SetUnseenToMaxRange ()
 
 ##
 # -----Open 3D viewer and add point cloud-----
@@ -175,16 +176,16 @@ if setUnseenToMaxRange == True:
 # // viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
 # // viewer.setPointCloudRenderingProperties (PCL_VISUALIZER_POINT_SIZE, 2, "range image");
 
-viewer = pcl.pcl_visualization.Visualization()
+viewer = pcl.PCLVisualizering("3D Viewer")
 viewer.setBackgroundColor (1, 1, 1)
-range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandlerCustompclPointWithRange (range_image_ptr, 0, 0, 0)
-viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image")
+range_image_color_handler = pcl.PointCloudColorHandlerCustoms (0, 0, 0)
+viewer.AddPointCloud (range_image_ptr, range_image_color_handler, "range image")
 viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image")
 
 
 
 ##
-# -----Extract borders-----
+# Extract borders
 # pcl::RangeImageBorderExtractor border_extractor (&range_image);
 # pcl::PointCloud<pcl::BorderDescription> border_descriptions;
 # border_extractor.compute (border_descriptions);

@@ -51,8 +51,8 @@ setUnseenToMaxRange = args.UnseenToMaxRange
 # angular_resolution = pcl.deg2rad (args.AngularResolution)
 
 # -----Read pcd file or create example point cloud if not given-----
-# pclPointCloudPointTypePtr point_cloud_ptr (new pclPointCloudPointType);
-# pclPointCloudPointType& point_cloud = point_cloud_ptr
+# pcl::PointCloudPointTypePtr point_cloud_ptr (new pcl::PointCloud::PointType);
+# pcl::PointCloudPointType& point_cloud = point_cloud_ptr
 # point_cloud = pcl.PointCloud()
 
 # pcl::PointCloud<pcl::PointWithViewpoint> far_ranges
@@ -198,7 +198,7 @@ range_image_widget.ShowRangeImage (range_image)
 # std::cout << "Found" << keypoint_indices.points.size () << "key points.\n";
 range_image_border_extractor = pcl.RangeImageBorderExtractor()
 narf_keypoint_detector = pcl.NarfKeypoint(range_image_border_extractor)
-narf_keypoint_detector.SetRangeImage (&range_image)
+# narf_keypoint_detector.SetRangeImage (&range_image)
 
 # pcl::PointCloud<int> keypoint_indices;
 # narf_keypoint_detector.compute (keypoint_indices);
@@ -222,16 +222,27 @@ print("Found" + str(keypoint_indices.size) + "key points.\n")
 ##
 keypoints = pcl.KeyPoints()
 keypoints.resize(keypoint_indices.size)
-for size_t i=0, i < keypoint_indices.size
-    keypoints.points[i].getVector3fMap () = range_image.[keypoint_indices.points[i]].getVector3fMap ()
+# for i in range(0, keypoint_indices.size, 1):
+#     keypoints.points[i].getVector3fMap () = range_image[keypoint_indices.points[i]].getVector3fMap ()
+
+# for x in range(-50, 50, 1):
+# for y in range(-50, 50, 1):
 
 
 # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> keypoints_color_handler (keypoints_ptr, 0, 255, 0);
-# viewer.addPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints);
-# viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
+# viewer.addPointCloud<pcl::PointXYZ> (keypoints_ptr, keypoints_color_handler, keypoints);
+# viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, keypoints);
 # keypoints_color_handler = pcl.PointCloudColorHandlerCustom (0, 255, 0)
-# viewer.AddPointCloudpclPointXYZ (keypoints_ptr, keypoints_color_handler, keypoints)
-# viewer.SetPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 7, keypoints);
+# viewer.AddPointCloud<pcl::PointXYZ} (keypoints_ptr, keypoints_color_handler, keypoints)
+# viewer.SetPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, keypoints);
+
+## pcl
+# keypoints_color_handler = pcl.visualization.PointCloudColorHandlerCustom[pcl.PointXYZ](keypoints_ptr, 0, 255, 0)
+viewer.addPointCloud (keypoints_ptr, keypoints_color_handler, keypoints)
+viewer.setPointCloudRenderingProperties (pcl.pcl_visualization.PCL_VISUALIZER_POINT_SIZE, 7, keypoints)
+keypoints_color_handler = pcl.PointCloudColorHandlerCustom (0, 255, 0)
+viewer.AddPointCloud (keypoints_ptr, keypoints_color_handler, keypoints)
+viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCL_VISUALIZER_POINT_SIZE, 7, keypoints)
 
 # Main loop
 # # while (!viewer.wasStopped ())
@@ -241,6 +252,7 @@ for size_t i=0, i < keypoint_indices.size
 #     # pcl_sleep(0.01);
 # end
 
+print("while")
 while True:
     # process GUI events
     range_image_widget.SpinOnce ()

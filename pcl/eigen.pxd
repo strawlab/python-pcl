@@ -82,7 +82,21 @@ ctypedef vector2[cpp.PointXYZRGBA, aligned_allocator_PointXYZRGBA_t] AlignedPoin
 # cdef extern from "Eigen/Eigenvalues" namespace "Eigen" nogil:
 
 # Geometry
-# cdef extern from "Eigen/Geometry" namespace "Eigen" nogil:
+cdef extern from "Eigen/Geometry" namespace "Eigen" nogil:
+    cdef cppclass Translation2f:
+        Translation2f() except +
+        Translation2f(float a, float b) except +
+    cdef cppclass Translation2d:
+        Translation2d() except +
+        Translation2d(double a, double b) except +
+    cdef cppclass Translation3f:
+        Translation3f() except +
+        Translation3f(float a, float b, float c) except +
+        float *data()
+    cdef cppclass Translation3d:
+        Translation3d() except +
+        Translation3d(double a, double b, double c) except +
+        double *data()
 
 # Householder
 # cdef extern from "Eigen/Householder" namespace "Eigen" nogil:

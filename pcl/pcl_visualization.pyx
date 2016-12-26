@@ -58,6 +58,7 @@ PCLVISUALIZER_REPRESENTATION_SURFACE = pcl_vis.PCL_VISUALIZER_REPRESENTATION_SUR
 # VTK
 include "pxi/Visualization/PointCloudColorHandlerCustoms.pxi"
 include "pxi/Visualization/Visualization.pxi"
+# NG(RangeImage Link Error)
 # include "pxi/Visualization/RangeImageVisualizer.pxi"
 include "pxi/Visualization/PCLHistogramViewing.pxi"
 include "pxi/Visualization/PCLVisualizering.pxi"

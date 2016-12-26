@@ -40,6 +40,7 @@ cdef extern from "indexing.hpp" nogil:
 #     # cpdef cpp.PointCloudTypes *getptr_at(cpp.PointCloud[cpp.PointCloudTypes] *, size_t) except +
 #     # cpdef cpp.PointCloudTypes *getptr_at(cpp.PointCloud[cpp.PointCloudTypes] *, int, int) except +
 
+# NG
 # cdef extern from "indexing.hpp" nogil:
 #     cdef cppclass getptr[T]:
 #         T *getptr(PointCloud[T] *, size_t)

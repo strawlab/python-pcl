@@ -203,3 +203,29 @@ http://omake.accense.com/static/doc-ja/cython/src/tutorial/cdef_classes.html
 http://d.hatena.ne.jp/shive/20160506/1462523337
 
 
+convert python object to cython pointer
+http://stackoverflow.com/questions/13669961/convert-python-object-to-cython-pointer
+
+---
+
+pyx で分けるときには、再度読み込ませるものがあるケースがある。
+
+pcl_visualization.pyx の記述として
+RangeImage.pxi は include でもう一度読み込ませる。
+
+---
+
+Cython での基底クラスへのアクセス方法?
+http://omake.accense.com/static/doc-ja/cython/src/userguide/extension_types.html
+
+---
+
+RangeImage の一部関数での対応?(→ ×)
+
+How to wrap a C++ functor in Cython
+http://stackoverflow.com/questions/22056772/how-to-wrap-a-c-functor-in-cython
+
+※ よくよく確認するとhpp をいじくる必要があるため×
+※ template の話のため、少し話が違う。
+
+

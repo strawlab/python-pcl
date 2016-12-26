@@ -4,9 +4,9 @@ cimport pcl_defs as cpp
 cimport numpy as cnp
 
 cimport pcl_visualization as pcl_vis
-from boost_shared_ptr cimport sp_assign
-# from pcl_range_image cimport RangeImage
+cimport pcl_range_image as pcl_r_img
 
+from boost_shared_ptr cimport sp_assign
 
 cdef class RangeImageVisualization:
     """
@@ -14,12 +14,17 @@ cdef class RangeImageVisualization:
     """
     cdef pcl_vis.RangeImageVisualizer *me
     def __cinit__(self):
-        # print('__cinit__')
         self.me = new pcl_vis.RangeImageVisualizer()
+        pass
+    
+    def __cinit__(self, string name):
+        self.me = new pcl_vis.RangeImageVisualizer(name)
+        pass
     
     def __dealloc__(self):
         # print('__dealloc__')
         del self.me
+        pass
     
     # -std::numeric_limits<float>::infinity ()
     #  std::numeric_limits<float>::infinity ()

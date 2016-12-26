@@ -1551,104 +1551,104 @@ cdef extern from "pcl/registration/elch.h" namespace "pcl::registration" nogil:
 cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
     cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](Registration[Source, Target]):
         GeneralizedIterativeClosestPoint() except +
-#     using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::getClassName;
-#     using IterativeClosestPoint<PointSource, PointTarget>::indices_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::target_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::input_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::tree_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::nr_iterations_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::max_iterations_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::previous_transformation_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::final_transformation_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::transformation_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::transformation_epsilon_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::converged_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::corr_dist_threshold_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::inlier_threshold_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::min_number_correspondences_;
-#     using IterativeClosestPoint<PointSource, PointTarget>::update_visualizer_;
-#     typedef pcl::PointCloud<PointSource> PointCloudSource;
-#     typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#     typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#     typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-#     typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-#     typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-#     typedef PointIndices::Ptr PointIndicesPtr;
-#     typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#     typedef typename pcl::KdTree<PointSource> InputKdTree;
-#     typedef typename pcl::KdTree<PointSource>::Ptr InputKdTreePtr;
-#     typedef Eigen::Matrix<double, 6, 1> Vector6d;
-#     public:
-#       /** \brief Provide a pointer to the input dataset
-#         * \param cloud the const boost shared pointer to a PointCloud message
-#         */
-#       void setInputCloud (cpp.PointCloudPtr_t ptcloud)
-# 
-#       /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
-#         * \param[in] target the input point cloud target
-#         */
-#       inline void setInputTarget (const PointCloudTargetConstPtr &target)
-# 
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using an iterative
-#         * non-linear Levenberg-Marquardt approach.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       void estimateRigidTransformationBFGS (
-#                                        const PointCloudSource &cloud_src,
-#                                        const std::vector<int> &indices_src,
-#                                        const PointCloudTarget &cloud_tgt,
-#                                        const std::vector<int> &indices_tgt,
-#                                        Eigen::Matrix4f &transformation_matrix);
-#       
-#       /** \brief \return Mahalanobis distance matrix for the given point index */
-#       inline const Eigen::Matrix3d& mahalanobis(size_t index) const
-# 
-#       /** \brief Computes rotation matrix derivative.
-#         * rotation matrix is obtainded from rotation angles x[3], x[4] and x[5]
-#         * \return d/d_rx, d/d_ry and d/d_rz respectively in g[3], g[4] and g[5]
-#         * param x array representing 3D transformation
-#         * param R rotation matrix
-#         * param g gradient vector
-#         */
-#       void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g) const;
-# 
-#       /** \brief Set the rotation epsilon (maximum allowable difference between two 
-#         * consecutive rotations) in order for an optimization to be considered as having 
-#         * converged to the final solution.
-#         * \param epsilon the rotation epsilon
-#         */
-#       inline void setRotationEpsilon (double epsilon)
-# 
-#       /** \brief Get the rotation epsilon (maximum allowable difference between two 
-#         * consecutive rotations) as set by the user.
-#         */
-#       inline double getRotationEpsilon ()
-# 
-#       /** \brief Set the number of neighbors used when selecting a point neighbourhood
-#         * to compute covariances. 
-#         * A higher value will bring more accurate covariance matrix but will make 
-#         * covariances computation slower.
-#         * \param k the number of neighbors to use when computing covariances
-#         */
-#       void setCorrespondenceRandomness (int k)
-# 
-#       /** \brief Get the number of neighbors used when computing covariances as set by 
-#         * the user 
-#         */
-#       int getCorrespondenceRandomness ()
-# 
-#       /** set maximum number of iterations at the optimization step
-#         * \param[in] max maximum number of iterations for the optimizer
-#         */
-#       void setMaximumOptimizerIterations (int max)
-# 
-#       ///\return maximum number of iterations at the optimization step
-#       int getMaximumOptimizerIterations ()
+        # using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::getClassName;
+        # using IterativeClosestPoint<PointSource, PointTarget>::indices_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::target_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::input_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::tree_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::nr_iterations_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::max_iterations_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::previous_transformation_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::final_transformation_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::transformation_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::transformation_epsilon_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::converged_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::corr_dist_threshold_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::inlier_threshold_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::min_number_correspondences_;
+        # using IterativeClosestPoint<PointSource, PointTarget>::update_visualizer_;
+        # typedef pcl::PointCloud<PointSource> PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # typedef typename pcl::KdTree<PointSource> InputKdTree;
+        # typedef typename pcl::KdTree<PointSource>::Ptr InputKdTreePtr;
+        # typedef Eigen::Matrix<double, 6, 1> Vector6d;
+        # public:
+        # /** \brief Provide a pointer to the input dataset
+        #     * \param cloud the const boost shared pointer to a PointCloud message
+        #     */
+        # void setInputCloud (cpp.PointCloudPtr_t ptcloud)
+    	# 
+        # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
+        #     * \param[in] target the input point cloud target
+        #     */
+        # inline void setInputTarget (const PointCloudTargetConstPtr &target)
+    	# 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using an iterative
+        #     * non-linear Levenberg-Marquardt approach.
+        #     * \param[in] cloud_src the source point cloud dataset
+        #     * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #     * \param[in] cloud_tgt the target point cloud dataset
+        #     * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+        #     * \param[out] transformation_matrix the resultant transformation matrix
+        #     */
+        # void estimateRigidTransformationBFGS (
+        #                                 const PointCloudSource &cloud_src,
+        #                                 const std::vector<int> &indices_src,
+        #                                 const PointCloudTarget &cloud_tgt,
+        #                                 const std::vector<int> &indices_tgt,
+        #                                 Eigen::Matrix4f &transformation_matrix);
+        #   
+        # /** \brief \return Mahalanobis distance matrix for the given point index */
+        # inline const Eigen::Matrix3d& mahalanobis(size_t index) const
+    	# 
+        # /** \brief Computes rotation matrix derivative.
+        #     * rotation matrix is obtainded from rotation angles x[3], x[4] and x[5]
+        #     * \return d/d_rx, d/d_ry and d/d_rz respectively in g[3], g[4] and g[5]
+        #     * param x array representing 3D transformation
+        #     * param R rotation matrix
+        #     * param g gradient vector
+        #     */
+        # void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g) const;
+    	# 
+        # /** \brief Set the rotation epsilon (maximum allowable difference between two 
+        #     * consecutive rotations) in order for an optimization to be considered as having 
+        #     * converged to the final solution.
+        #     * \param epsilon the rotation epsilon
+        #     */
+        # inline void setRotationEpsilon (double epsilon)
+    	# 
+        # /** \brief Get the rotation epsilon (maximum allowable difference between two 
+        #     * consecutive rotations) as set by the user.
+        #     */
+        # inline double getRotationEpsilon ()
+    	# 
+        # /** \brief Set the number of neighbors used when selecting a point neighbourhood
+        #     * to compute covariances. 
+        #     * A higher value will bring more accurate covariance matrix but will make 
+        #     * covariances computation slower.
+        #     * \param k the number of neighbors to use when computing covariances
+        #     */
+        # void setCorrespondenceRandomness (int k)
+    	# 
+        # /** \brief Get the number of neighbors used when computing covariances as set by 
+        #     * the user 
+        #     */
+        # int getCorrespondenceRandomness ()
+    	# 
+        # /** set maximum number of iterations at the optimization step
+        #     * \param[in] max maximum number of iterations for the optimizer
+        #     */
+        # void setMaximumOptimizerIterations (int max)
+    	# 
+        # ///\return maximum number of iterations at the optimization step
+        # int getMaximumOptimizerIterations ()
 ###
 
 # ia_ransac.h

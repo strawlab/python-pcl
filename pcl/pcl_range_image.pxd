@@ -13,9 +13,9 @@ from boost_shared_ptr cimport shared_ptr
 
 cimport eigen as eigen3
 
-# FW: Link time errors in RangeImage. (with /clr) 
+# FW: Link time errors in RangeImage (with /clr)
 # http://www.pcl-users.org/FW-Link-time-errors-in-RangeImage-with-clr-td3581422.html
-# Linking errors using RangeImagePlanar 
+# Linking errors using RangeImagePlanar (no use /clr)
 # http://www.pcl-users.org/Linking-errors-using-RangeImagePlanar-td4036511.html
 # range_image.h
 # class RangeImage : public pcl::PointCloud<PointWithRange>
@@ -23,9 +23,6 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
     cdef cppclass RangeImage(cpp.PointCloud[cpp.PointWithRange]):
         RangeImage()
         # public:
-        # enum CoordinateFrame
-        #   CAMERA_FRAME = 0,
-        #   LASER_FRAME  = 1
         
         # // =====STATIC METHODS=====
         # brief Get the size of a certain area when seen from the given pose
@@ -53,23 +50,23 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # param point_cloud the input point cloud
         # return the average viewpoint (as an Eigen::Vector3f)
         # template <typename PointCloudTypeWithViewpoints> static Eigen::Vector3f getAverageViewPoint (const PointCloudTypeWithViewpoints& point_cloud);
-        # eigen3.Vector3f getAverageViewPoint (const PointCloudTypeWithViewpoints& point_cloud)
+        eigen3.Vector3f getAverageViewPoint (const cpp.PointCloud[cpp.PointWithRange]& point_cloud)
         
         # brief Check if the provided data includes far ranges and add them to far_ranges
         # param point_cloud_data a PointCloud2 message containing the input cloud
         # param far_ranges the resulting cloud containing those points with far ranges
         # PCL_EXPORTS static void extractFarRanges (const sensor_msgs::PointCloud2& point_cloud_data, PointCloud<PointWithViewpoint>& far_ranges);
         # void extractFarRanges (const sensor_msgs::PointCloud2& point_cloud_data, PointCloud<PointWithViewpoint>& far_ranges)
-
+        
         # // =====METHODS=====
         # brief Get a boost shared pointer of a copy of this
         # inline Ptr makeShared () { return Ptr (new RangeImage (*this)); } 
         # RangeImagePtr_t makeShared ()
         
-        # brief Reset all values to an empty range image */
+        # brief Reset all values to an empty range image
         # PCL_EXPORTS void reset ();
         void reset ()
-
+        
         ###
         # brief Create the depth image from a point cloud
         # param point_cloud the input point cloud
@@ -215,7 +212,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float noise_level, 
             float min_range, 
             int border_size)
-
+        
         # brief Create the depth image from a point cloud, getting a hint about the size of the scene for 
         # aster calculation.
         # param point_cloud the input point cloud
@@ -339,15 +336,16 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float angle_width,
             float angle_height)
         
-        # * \brief Create an empty depth image (filled with unobserved points)
-        # * \param angular_resolution_x the angular difference (in radians) between the
-        # *                             individual pixels in the image in the x-direction
-        # * \param angular_resolution_y the angular difference (in radians) between the
-        # *                             individual pixels in the image in the y-direction
-        # * \param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3f::Identity () )
-        # * \param[in] coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
-        # * \param[in] angle_width an angle (in radians) defining the horizontal bounds of the sensor (defaults to 2*pi (360deg))
-        # * \param[in] angle_height an angle (in radians) defining the vertical bounds of the sensor (defaults to pi (180deg))
+        # brief Create an empty depth image (filled with unobserved points)
+        # param angular_resolution_x the angular difference (in radians) between the
+        #                            individual pixels in the image in the x-direction
+        # param angular_resolution_y the angular difference (in radians) between the
+        #                            individual pixels in the image in the y-direction
+        # param[in] sensor_pose an affine matrix defining the pose of the sensor (defaults to  Eigen::Affine3f::Identity () )
+        # param[in] coordinate_frame the coordinate frame (defaults to CAMERA_FRAME)
+        # param[in] angle_width an angle (in radians) defining the horizontal bounds of the sensor (defaults to 2*pi (360deg))
+        # param[in] angle_height an angle (in radians) defining the vertical bounds of the sensor (defaults to pi (180deg))
+        # 
         # void createEmpty (float angular_resolution_x, float angular_resolution_y,
         #            const Eigen::Affine3f& sensor_pose=Eigen::Affine3f::Identity (),
         #            RangeImage::CoordinateFrame coordinate_frame=CAMERA_FRAME, float angle_width=pcl::deg2rad (360.0f),
@@ -361,17 +359,18 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float angle_width,
             float angle_height)
         
-        # * \brief Integrate the given point cloud into the current range image using a z-buffer
-        # * \param point_cloud the input point cloud
-        # * \param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
-        # *                      but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
-        # *                      will always take the minimum per cell.
-        # * \param min_range the minimum visible range
-        # * \param top    returns the minimum y pixel position in the image where a point was added
-        # * \param right  returns the maximum x pixel position in the image where a point was added
-        # * \param bottom returns the maximum y pixel position in the image where a point was added
-        # * \param top returns the minimum y position in the image where a point was added
-        # * \param left   returns the minimum x pixel position in the image where a point was added
+        # brief Integrate the given point cloud into the current range image using a z-buffer
+        # param point_cloud the input point cloud
+        # param noise_level - The distance in meters inside of which the z-buffer will not use the minimum,
+        #                     but the mean of the points. If 0.0 it is equivalent to a normal z-buffer and
+        #                     will always take the minimum per cell.
+        # param min_range the minimum visible range
+        # param top    returns the minimum y pixel position in the image where a point was added
+        # param right  returns the maximum x pixel position in the image where a point was added
+        # param bottom returns the maximum y pixel position in the image where a point was added
+        # param top returns the minimum y position in the image where a point was added
+        # param left   returns the minimum x pixel position in the image where a point was added
+        # 
         # template <typename PointCloudType> void
         # doZBuffer (const PointCloudType& point_cloud, float noise_level,
         #            float min_range, int& top, int& right, int& bottom, int& left);
@@ -391,12 +390,12 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_Ptr_t &far_ranges)
         void integrateFarRanges (const cpp.PointCloud_PointWithViewpoint_t &far_ranges)
         
-        # * \brief Cut the range image to the minimal size so that it still contains all actual range readings.
-        # * \param border_size allows increase from the minimal size by the specified number of pixels (defaults to 0)
-        # * \param top if positive, this value overrides the position of the top edge (defaults to -1)
-        # * \param right if positive, this value overrides the position of the right edge (defaults to -1)
-        # * \param bottom if positive, this value overrides the position of the bottom edge (defaults to -1)
-        # * \param left if positive, this value overrides the position of the left edge (defaults to -1)
+        # brief Cut the range image to the minimal size so that it still contains all actual range readings.
+        # param border_size allows increase from the minimal size by the specified number of pixels (defaults to 0)
+        # param top if positive, this value overrides the position of the top edge (defaults to -1)
+        # param right if positive, this value overrides the position of the right edge (defaults to -1)
+        # param bottom if positive, this value overrides the position of the bottom edge (defaults to -1)
+        # param left if positive, this value overrides the position of the left edge (defaults to -1)
         # 
         # PCL_EXPORTS void cropImage (int border_size=0, int top=-1, int right=-1, int bottom=-1, int left=-1);
         void cropImage (
@@ -406,19 +405,19 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             int bottom=-1,
             int left=-1);
         
-        # * \brief Get all the range values in one float array of size width*height  
-        # * \return a pointer to a new float array containing the range values
-        # * \note This method allocates a new float array; the caller is responsible for freeing this memory.
+        # brief Get all the range values in one float array of size width*height  
+        # return a pointer to a new float array containing the range values
+        # note This method allocates a new float array; the caller is responsible for freeing this memory.
         # PCL_EXPORTS float* getRangesArray () const;
         float* getRangesArray ()
         
-        # /** Getter for the transformation from the world system into the range image system
-        #  *  (the sensor coordinate frame) */
+        # Getter for the transformation from the world system into the range image system
+        # (the sensor coordinate frame)
         # inline const Eigen::Affine3f& getTransformationToRangeImageSystem () const { return (to_range_image_system_); }
         const eigen3.Affine3f& getTransformationToRangeImageSystem ()
         
-        # /** Setter for the transformation from the range image system
-        #  *  (the sensor coordinate frame) into the world system */
+        # Setter for the transformation from the range image system
+        # (the sensor coordinate frame) into the world system
         # inline void setTransformationToRangeImageSystem (const Eigen::Affine3f& to_range_image_system);
         void setTransformationToRangeImageSystem (eigen3.Affine3f& to_range_image_system)
         
@@ -488,52 +487,52 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # Same as above
         # inline void getPoint (int index, Eigen::Vector3f& point) const;
         
-        # /** Same as above */
+        # Same as above
         # inline const Eigen::Map<const Eigen::Vector3f>
         # getEigenVector3f (int x, int y) const;
         
-        # /** Same as above */
+        # Same as above
         # inline const Eigen::Map<const Eigen::Vector3f>
         # getEigenVector3f (int index) const;
         
-        # /** Return the 3d point with range at the given index (whereas index=y*width+x) */
+        # Return the 3d point with range at the given index (whereas index=y*width+x)
         # inline const PointWithRange& getPoint (int index) const;
         const cpp.PointWithRange& getPoint (int index)
         
-        # /** Calculate the 3D point according to the given image point and range */
+        # Calculate the 3D point according to the given image point and range
         # inline void calculate3DPoint (float image_x, float image_y, float range, PointWithRange& point) const;
         void calculate3DPoint (float image_x, float image_y, float range, cpp.PointWithRange& point)
         
-        # /** Calculate the 3D point according to the given image point and the range value at the closest pixel */
+        # Calculate the 3D point according to the given image point and the range value at the closest pixel
         # inline void calculate3DPoint (float image_x, float image_y, PointWithRange& point) const;
         inline void calculate3DPoint (float image_x, float image_y, cpp.PointWithRange& point)
         
-        # /** Calculate the 3D point according to the given image point and range */
+        # Calculate the 3D point according to the given image point and range
         # virtual inline void calculate3DPoint (float image_x, float image_y, float range, Eigen::Vector3f& point) const;
         
-        # /** Calculate the 3D point according to the given image point and the range value at the closest pixel */
+        # Calculate the 3D point according to the given image point and the range value at the closest pixel
         # inline void calculate3DPoint (float image_x, float image_y, Eigen::Vector3f& point) const;
         void calculate3DPoint (float image_x, float image_y, eigen3.Vector3f& point)
         
-        # /** Recalculate all 3D point positions according to their pixel position and range */
+        # Recalculate all 3D point positions according to their pixel position and range
         # PCL_EXPORTS void recalculate3DPointPositions ();
         
-        # /** Get imagePoint from 3D point in world coordinates */
+        # Get imagePoint from 3D point in world coordinates
         # inline virtual void getImagePoint (const Eigen::Vector3f& point, float& image_x, float& image_y, float& range) const;
         
-        # /** Same as above */
+        # Same as above
         # inline void getImagePoint (const Eigen::Vector3f& point, int& image_x, int& image_y, float& range) const;
         
-        # /** Same as above */
+        # Same as above
         # inline void getImagePoint (const Eigen::Vector3f& point, float& image_x, float& image_y) const;
         
-        # /** Same as above */
+        # Same as above
         # inline void getImagePoint (const Eigen::Vector3f& point, int& image_x, int& image_y) const;
         
-        # /** Same as above */
+        # Same as above
         # inline void getImagePoint (float x, float y, float z, float& image_x, float& image_y, float& range) const;
         
-        # /** Same as above */
+        # Same as above
         # inline void getImagePoint (float x, float y, float z, float& image_x, float& image_y) const;
         
         # Same as above
@@ -578,7 +577,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # inline bool isObserved (int x, int y) const;
         bool isObserved (int x, int y)
         
-        # /** Check if a point is a max range (range=INFINITY) - please check isInImage or isObserved first! */
+        # Check if a point is a max range (range=INFINITY) - please check isInImage or isObserved first!
         # inline bool isMaxRange (int x, int y) const;
         bool isMaxRange (int x, int y)
         
@@ -595,7 +594,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         bool getNormalForClosestNeighbors (int x, int y, int radius, const cpp.PointWithRange& point,
                                            int no_of_nearest_neighbors, eigen3.Vector3f& normal, int step_size)
         
-        # /** Same as above */
+        # Same as above
         # inline bool
         # getNormalForClosestNeighbors (int x, int y, int radius, const Eigen::Vector3f& point,
         #                               int no_of_nearest_neighbors, Eigen::Vector3f& normal,
@@ -677,48 +676,43 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         float getAcutenessValue (int x1, int y1, int x2, int y2)
         
         # /** Calculate getAcutenessValue for every point */
-        # PCL_EXPORTS void getAcutenessValueImages (int pixel_distance, float*& acuteness_value_image_x,
-        #                                             float*& acuteness_value_image_y) const;
+        # PCL_EXPORTS void getAcutenessValueImages (int pixel_distance, float*& acuteness_value_image_x, float*& acuteness_value_image_y) const;
         void getAcutenessValueImages (
             int pixel_distance,
             float*& acuteness_value_image_x,
             float*& acuteness_value_image_y)
         
-        # /** Calculates, how much the surface changes at a point. Pi meaning a flat suface and 0.0f
-        #  *  would be a needle point */
+        # Calculates, how much the surface changes at a point. Pi meaning a flat suface and 0.0f would be a needle point
         # //inline float
         # //  getSurfaceChange (const PointWithRange& point, const PointWithRange& neighbor1,
         # //                   const PointWithRange& neighbor2) const;
         
-        # /** Calculates, how much the surface changes at a point. 1 meaning a 90deg angle and 0 a flat suface */
-        # PCL_EXPORTS float
-        # getSurfaceChange (int x, int y, int radius) const;
+        # Calculates, how much the surface changes at a point. 1 meaning a 90deg angle and 0 a flat suface
+        # PCL_EXPORTS float getSurfaceChange (int x, int y, int radius) const;
         float getSurfaceChange (int x, int y, int radius)
         
-        # /** Uses the above function for every point in the image */
-        # PCL_EXPORTS float*
-        # getSurfaceChangeImage (int radius) const;
+        # Uses the above function for every point in the image
+        # PCL_EXPORTS float* getSurfaceChangeImage (int radius) const;
         float* getSurfaceChangeImage (int radius)
         
-        # /** Calculates, how much the surface changes at a point. Returns an angle [0.0f, PI] for x and y direction.
-        #  *  A return value of -INFINITY means that a point was unobserved. */
+        # Calculates, how much the surface changes at a point. Returns an angle [0.0f, PI] for x and y direction.
+        # A return value of -INFINITY means that a point was unobserved.
         # inline void getSurfaceAngleChange (int x, int y, int radius, float& angle_change_x, float& angle_change_y) const;
         void getSurfaceAngleChange (int x, int y, int radius, float& angle_change_x, float& angle_change_y)
         
-        # /** Uses the above function for every point in the image */
+        # Uses the above function for every point in the image
         # PCL_EXPORTS void getSurfaceAngleChangeImages (int radius, float*& angle_change_image_x, float*& angle_change_image_y) const;
         void getSurfaceAngleChangeImages (int radius, float*& angle_change_image_x, float*& angle_change_image_y)
         
-        # /** Calculates the curvature in a point using pca */
+        # Calculates the curvature in a point using pca
         # inline float getCurvature (int x, int y, int radius, int step_size) const;
         float getCurvature (int x, int y, int radius, int step_size)
         
         # Get the sensor position
-        # inline const Eigen::Vector3f
-        # getSensorPos () const;
+        # inline const Eigen::Vector3f getSensorPos () const;
         eigen3.Vector3f getSensorPos ()
         
-        # /** Sets all -INFINITY values to INFINITY */
+        # Sets all -INFINITY values to INFINITY
         # PCL_EXPORTS void setUnseenToMaxRange ();
         void setUnseenToMaxRange ()
         
@@ -731,19 +725,19 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         
         # Setter for image offsets
         # inline void setImageOffsets (int offset_x, int offset_y)
-        # /** Get a sub part of the complete image as a new range image.
-        #   * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #   *                         This is always according to absolute 0,0 meaning -180,-90
-        #   *                         and it is already in the system of the new image, so the
-        #   *                         actual pixel used in the original image is
-        #   *                         combine_pixels* (image_offset_x-image_offset_x_)
-        #   * \param sub_image_image_offset_y - Same as image_offset_x for the y coordinate
-        #   * \param sub_image_width - width of the new image
-        #   * \param sub_image_height - height of the new image
-        #   * \param combine_pixels - shrinking factor, meaning the new angular resolution
-        #   *                         is combine_pixels times the old one
-        #   * \param sub_image - the output image
-        #   */
+        # Get a sub part of the complete image as a new range image.
+        # param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
+        #                        This is always according to absolute 0,0 meaning -180,-90
+        #                        and it is already in the system of the new image, so the
+        #                        actual pixel used in the original image is
+        #                        combine_pixels* (image_offset_x-image_offset_x_)
+        # param sub_image_image_offset_y - Same as image_offset_x for the y coordinate
+        # param sub_image_width - width of the new image
+        # param sub_image_height - height of the new image
+        # param combine_pixels - shrinking factor, meaning the new angular resolution
+        #                        is combine_pixels times the old one
+        # param sub_image - the output image
+        # 
         # virtual void
         # getSubImage (int sub_image_image_offset_x, int sub_image_image_offset_y, int sub_image_width,
         #              int sub_image_height, int combine_pixels, RangeImage& sub_image) const;
@@ -998,6 +992,14 @@ cdef extern from "pcl/range_image/range_image_planar.h" namespace "pcl":
         # Get a range image with half the resolution
         # PCL_EXPORTS virtual void  getHalfImage (RangeImage& half_image) const;
 ###
+
+# override?
+# impl/range_image.hpp
+# cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
+# cdef extern from "pcl/range_image/impl/range_image.hpp" namespace "pcl" nogil:
+#     cdef cppclass RangeImage(cpp.PointCloud[cpp.PointWithRange]):
+#         RangeImage()
+
 
 ###############################################################################
 # Enum
