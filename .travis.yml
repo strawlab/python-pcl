@@ -18,18 +18,18 @@ matrix:
     #   - PYTHON_VERSION=2.7.10
     #   - PYENV_ROOT=~/.pyenv
     #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-    - os: osx
-      language: generic
-      env:
-      - PYTHON_VERSION=3.4.3
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-    - os: osx
-      language: generic
-      env:
-      - PYTHON_VERSION=3.5.1
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    # - os: osx
+    #   language: generic
+    #   env:
+    #   - PYTHON_VERSION=3.4.3
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    # - os: osx
+    #   language: generic
+    #   env:
+    #   - PYTHON_VERSION=3.5.1
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
 
 # travis_wait 45 brew install pcl --without-vtk --without-qt;
 before_install:

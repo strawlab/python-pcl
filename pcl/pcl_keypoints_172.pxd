@@ -907,7 +907,7 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
         #  * \param[in] threshold the threshold to filter out weak corners
         #  */
         # HarrisKeypoint3D (ResponseMethod method = HARRIS, float radius = 0.01f, float threshold = 0.0f)
-        HarrisKeypoint3D ()
+        # HarrisKeypoint3D ()
         # public:
         # typedef boost::shared_ptr<HarrisKeypoint3D<PointInT, PointOutT, NormalT> > Ptr;
         # typedef boost::shared_ptr<const HarrisKeypoint3D<PointInT, PointOutT, NormalT> > ConstPtr;
