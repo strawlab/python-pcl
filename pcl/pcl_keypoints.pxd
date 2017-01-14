@@ -121,7 +121,7 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # brief Set the method of the response to be calculated.
         # param[in] type
         # void setMethod (ResponseMethod type)
-        void setMethod (ResponseMethod2 type)
+        # void setMethod (ResponseMethod2 type)
         
         # * \brief Set the radius for normal estimation and non maxima supression.
         # * \param[in] radius

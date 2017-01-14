@@ -121,7 +121,7 @@ cdef extern from "pcl/keypoints/harris_3d.h" namespace "pcl":
         # brief Set the method of the response to be calculated.
         # param[in] type
         # void setMethod (ResponseMethod type)
-        void setMethod (ResponseMethod2 type)
+        # void setMethod (ResponseMethod2 type)
         
         # * \brief Set the radius for normal estimation and non maxima supression.
         # * \param[in] radius
@@ -1008,7 +1008,7 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
         #  * @param threshold the threshold to filter out weak corners
         #  */
         # HarrisKeypoint6D (float radius = 0.01, float threshold = 0.0)
-        HarrisKeypoint6D ()
+        # HarrisKeypoint6D ()
         # public:
         # typedef boost::shared_ptr<HarrisKeypoint6D<PointInT, PointOutT, NormalT> > Ptr;
         # typedef boost::shared_ptr<const HarrisKeypoint6D<PointInT, PointOutT, NormalT> > ConstPtr;
