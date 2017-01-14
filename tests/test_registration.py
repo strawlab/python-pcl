@@ -6,7 +6,7 @@ from numpy.testing import assert_equal
 import unittest
 
 import pcl
-from pcl.pcl_registration_172 import icp, gicp, icp_nl
+from pcl.pcl_registration import icp, gicp, icp_nl
 
 
 class TestICP(unittest.TestCase):
