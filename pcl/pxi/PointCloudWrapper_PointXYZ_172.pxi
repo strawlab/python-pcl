@@ -561,5 +561,5 @@ include "Features/IntegralImageNormalEstimation.pxi"
 
 # keyPoint
 include "KeyPoint/UniformSampling.pxi"
-include "KeyPoint/HarrisKeypoint3D.pxi"
+include "KeyPoint/HarrisKeypoint3D_172.pxi"
 
