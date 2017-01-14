@@ -550,9 +550,9 @@ include "Filters/ProjectInliers.pxi"
 include "Filters/RadiusOutlierRemoval.pxi"
 include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
-# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages.pxi"
+# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Features
 include "Features/NormalEstimation.pxi"
@@ -560,6 +560,7 @@ include "Features/VFHEstimation.pxi"
 include "Features/IntegralImageNormalEstimation.pxi"
 
 # keyPoint
+# 1.7.2 NG
 # include "KeyPoint/UniformSampling_172.pxi"
 include "KeyPoint/HarrisKeypoint3D_172.pxi"
 

@@ -6,7 +6,7 @@ import pcl
 import random
 import numpy as np
 
-from pcl.pcl_registration_160 import icp, gicp, icp_nl
+from pcl.pcl_registration import icp, gicp, icp_nl
 
 cloud_in = pcl.PointCloud()
 cloud_out = pcl.PointCloud()

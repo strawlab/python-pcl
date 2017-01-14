@@ -5,7 +5,7 @@ import numpy as np
 import pcl
 
 import pcl.pcl_visualization
-# from pcl.pcl_registration_160 import icp, gicp, icp_nl
+# from pcl.pcl_registration import icp, gicp, icp_nl
 
 # cloud = pcl.load('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
 # cloud = pcl.load_XYZI('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
