@@ -735,8 +735,8 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
         #     detector->detectKeypoints (image_data, output);
         #   }
         # };
-        
-        # namespace pcl
+
+# namespace pcl
 # /** \brief Detects 2D AGAST corner points. Based on the original work and
 # * paper reference by
 # *
@@ -752,7 +752,7 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
 # */
 # template <typename PointInT, typename PointOutT, typename IntensityT = pcl::common::IntensityFieldAccessor<PointInT> >
 # class AgastKeypoint2DBase : public Keypoint<PointInT, PointOutT>
-        AgastKeypoint2DBase ()
+        # AgastKeypoint2DBase ()
         # public:
         # typedef typename Keypoint<PointInT, PointOutT>::PointCloudIn PointCloudIn;
         # typedef typename Keypoint<PointInT, PointOutT>::PointCloudOut PointCloudOut;
@@ -1101,7 +1101,7 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
         # * \param[in] salient_radius the radius of the spherical neighborhood used to compute the scatter matrix.
         # */
         # ISSKeypoint3D (double salient_radius = 0.0001)
-        ISSKeypoint3D ()
+        # ISSKeypoint3D ()
         # public:
         # typedef boost::shared_ptr<ISSKeypoint3D<PointInT, PointOutT, NormalT> > Ptr;
         # typedef boost::shared_ptr<const ISSKeypoint3D<PointInT, PointOutT, NormalT> > ConstPtr;
@@ -1218,19 +1218,19 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
         # unsigned int threads_;
 #### 
 
-# susan.h
-namespace pcl
-/** \brief SUSANKeypoint implements a RGB-D extension of the SUSAN detector inluding normal 
- * directions variation in top of intensity variation. 
- * It is different from Harris in that it exploits normals directly so it is faster.  
- * Original paper "SUSAN 窶A New Approach to Low Level Image Processing", Smith,
- * Stephen M. and Brady, J. Michael 
- *
- * \author Nizar Sallem 
- * \ingroup keypoints
- */
-template <typename PointInT, typename PointOutT, typename NormalT = pcl::Normal, typename IntensityT= pcl::common::IntensityFieldAccessor<PointInT> >
-class SUSANKeypoint : public Keypoint<PointInT, PointOutT>
+# # susan.h
+# namespace pcl
+# /** \brief SUSANKeypoint implements a RGB-D extension of the SUSAN detector inluding normal 
+#  * directions variation in top of intensity variation. 
+#  * It is different from Harris in that it exploits normals directly so it is faster.  
+#  * Original paper "SUSAN 窶A New Approach to Low Level Image Processing", Smith,
+#  * Stephen M. and Brady, J. Michael 
+#  *
+#  * \author Nizar Sallem 
+#  * \ingroup keypoints
+#  */
+# template <typename PointInT, typename PointOutT, typename NormalT = pcl::Normal, typename IntensityT= pcl::common::IntensityFieldAccessor<PointInT> >
+# class SUSANKeypoint : public Keypoint<PointInT, PointOutT>
         # /** \brief Constructor
         #   * \param[in] radius the radius for normal estimation as well as for non maxima suppression
         #   * \param[in] distance_threshold to test if the nucleus is far enough from the centroid
@@ -1241,7 +1241,7 @@ class SUSANKeypoint : public Keypoint<PointInT, PointOutT>
         #                float distance_threshold = 0.001f, 
         #                float angular_threshold = 0.0001f, 
         #                float intensity_threshold = 7.0f)
-        SUSANKeypoint()
+        # SUSANKeypoint()
         # public:
         # typedef boost::shared_ptr<SUSANKeypoint<PointInT, PointOutT, NormalT, IntensityT> > Ptr;
         # typedef boost::shared_ptr<const SUSANKeypoint<PointInT, PointOutT, NormalT, Intensity> > ConstPtr;
