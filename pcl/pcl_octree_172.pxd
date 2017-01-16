@@ -10,13 +10,6 @@ from boost_shared_ptr cimport shared_ptr
 cimport eigen as eig
 from vector cimport vector as vector2
 
-# 1.7.2 Add headers
-# octree2buf_base.h
-# octree_pointcloud_adjacency.h
-# octree_pointcloud_adjacency_container.h
-# octree_pointcloud_changedetector.h
-###
-
 ###############################################################################
 # Types
 ###############################################################################
@@ -715,7 +708,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         # void deleteVoxelAtPoint(cpp.PointXYZI)
         # void deleteVoxelAtPoint(cpp.PointXYZRGB)
         # void deleteVoxelAtPoint(cpp.PointXYZRGBA)
-        void deleteVoxelAtPoint(T)
+        void deleteVoxelAtPoint(T point)
 
 ctypedef OctreePointCloud[cpp.PointXYZ] OctreePointCloud_t
 ctypedef OctreePointCloud[cpp.PointXYZI] OctreePointCloud_PointXYZI_t
@@ -1068,9 +1061,97 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
         int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
 
+        ## Functions
+        # brief Search for neighbors within a voxel at given point
+        # param[in] point point addressing a leaf node voxel
+        # param[out] point_idx_data the resultant indices of the neighboring voxel points
+        # return "true" if leaf node exist; "false" otherwise
+        # bool voxelSearch (const PointT& point, std::vector<int>& point_idx_data);
+        bool voxelSearch (const T& point, vector[int] point_idx_data)
+        
+        # brief Search for neighbors within a voxel at given point referenced by a point index
+        # param[in] index the index in input cloud defining the query point
+        # param[out] point_idx_data the resultant indices of the neighboring voxel points
+        # return "true" if leaf node exist; "false" otherwise
+        # bool voxelSearch (const int index, std::vector<int>& point_idx_data);
+        bool voxelSearch (const int index, vector[int] point_idx_data)
+        
+        # brief Search for approx. nearest neighbor at the query point.
+        # param[in] cloud the point cloud data
+        # param[in] query_index the index in \a cloud representing the query point
+        # param[out] result_index the resultant index of the neighbor point
+        # param[out] sqr_distance the resultant squared distance to the neighboring point
+        # return number of neighbors found
+        # 
+        # inline void approxNearestSearch (const PointCloud &cloud, int query_index, int &result_index, float &sqr_distance)
+        # {
+        #   return (approxNearestSearch (cloud.points[query_index], result_index, sqr_distance));
+        # }
+        # 
+        # /** \brief Search for approx. nearest neighbor at the query point.
+        #   * \param[in] p_q the given query point
+        #   * \param[out] result_index the resultant index of the neighbor point
+        #   * \param[out] sqr_distance the resultant squared distance to the neighboring point
+        #   */
+        # void approxNearestSearch (const PointT &p_q, int &result_index, float &sqr_distance);
+        # 
+        # /** \brief Search for approx. nearest neighbor at the query point.
+        #   * \param[in] query_index index representing the query point in the dataset given by \a setInputCloud.
+        #   *        If indices were given in setInputCloud, index will be the position in the indices vector.
+        #   * \param[out] result_index the resultant index of the neighbor point
+        #   * \param[out] sqr_distance the resultant squared distance to the neighboring point
+        #   * \return number of neighbors found
+        #   */
+        # void approxNearestSearch (int query_index, int &result_index, float &sqr_distance);
+        # 
+        # /** \brief Get a PointT vector of centers of all voxels that intersected by a ray (origin, direction).
+        #   * \param[in] origin ray origin
+        #   * \param[in] direction ray direction vector
+        #   * \param[out] voxel_center_list results are written to this vector of PointT elements
+        #   * \param[in] max_voxel_count stop raycasting when this many voxels intersected (0: disable)
+        #   * \return number of intersected voxels
+        #  */
+        # int getIntersectedVoxelCenters (Eigen::Vector3f origin, Eigen::Vector3f direction,
+        #                             AlignedPointTVector &voxel_center_list, int max_voxel_count = 0) const;
+        # 
+        # /** \brief Get indices of all voxels that are intersected by a ray (origin, direction).
+        #   * \param[in] origin ray origin
+        #   * \param[in] direction ray direction vector
+        #   * \param[out] k_indices resulting point indices from intersected voxels
+        #   * \param[in] max_voxel_count stop raycasting when this many voxels intersected (0: disable)
+        #  * \return number of intersected voxels
+        #  */
+        # int getIntersectedVoxelIndices (Eigen::Vector3f origin, Eigen::Vector3f direction,
+        #                             std::vector<int> &k_indices,
+        #                             int max_voxel_count = 0) const; 
+        # 
+        # /** \brief Search for points within rectangular search area
+        #  * \param[in] min_pt lower corner of search area
+        #  * \param[in] max_pt upper corner of search area
+        #  * \param[out] k_indices the resultant point indices
+        #  * \return number of points found within search area
+        #  */
+        # int boxSearch (const Eigen::Vector3f &min_pt, const Eigen::Vector3f &max_pt, std::vector<int> &k_indices) const;
+
 ctypedef OctreePointCloudSearch[cpp.PointXYZ] OctreePointCloudSearch_t
 ctypedef OctreePointCloudSearch[cpp.PointXYZI] OctreePointCloudSearch_PointXYZI_t
 ctypedef OctreePointCloudSearch[cpp.PointXYZRGB] OctreePointCloudSearch_PointXYZRGB_t
 ctypedef OctreePointCloudSearch[cpp.PointXYZRGBA] OctreePointCloudSearch_PointXYZRGBA_t
-
 ###
+
+
+# 1.7.2 Add headers
+# octree2buf_base.h
+# octree_pointcloud_adjacency.h
+# octree_pointcloud_adjacency_container.h
+# octree_pointcloud_changedetector.h
+###
+
+
+###############################################################################
+# Enum
+###############################################################################
+
+###############################################################################
+# Activation
+###############################################################################

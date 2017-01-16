@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation_172 as pclseg
+cimport pcl_segmentation as pclseg
+# cimport pcl_segmentation_172 as pclseg
 cimport pcl_defs as cpp
 
-cdef class MinCutSegmentation:
+cdef class Segmentation:
     """
-    MinCutSegmentation class for Sample Consensus methods and models
+    Segmentation class for Sample Consensus methods and models
     """
     cdef pclseg.SACSegmentation_t *me
     def __cinit__(self):
@@ -28,6 +29,8 @@ cdef class MinCutSegmentation:
         self.me.setMethodType (m)
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
+    def set_MaxIterations(self, int count):
+        self.me.setMaxIterations (count)
 
 cdef class Segmentation_PointXYZI:
     """

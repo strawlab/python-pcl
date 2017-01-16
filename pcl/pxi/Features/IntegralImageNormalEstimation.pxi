@@ -21,7 +21,7 @@ cdef class IntegralImageNormalEstimation:
 
 # use minipcl 
 #    def set_NormalEstimation_Method (self):
-#        cdef pclftr.NormalEstimationMethod method = <pclftr.NormalEstimationMethod>1
+#        cdef pclftr.NormalEstimationMethod method = <pclftr.NormalEstimationMethod>
 #        self.me.setNormalEstimationMethod(method)
 
     def set_MaxDepthChange_Factor(self, double param):

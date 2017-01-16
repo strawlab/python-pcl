@@ -528,6 +528,15 @@ cdef class PointCloud:
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
 
+    def make_IterativeClosestPoint():
+        iterativeClosestPoint = IterativeClosestPoint(self)
+        cdef pclseg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pclseg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
+        
+        cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # icp.setInputCloud(cloud_in);
+        # icp.setInputTarget(cloud_out);
+        return euclideanclusterextraction
+
 ###
 
 
@@ -541,8 +550,9 @@ include "Filters/PassThroughFilter.pxi"
 include "Surface/MovingLeastSquares.pxi"
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
-include "Octree/OctreePointCloud.pxi"
-include "Octree/OctreePointCloudSearch.pxi"
+# Octree
+include "Octree/OctreePointCloud_172.pxi"
+include "Octree/OctreePointCloudSearch_172.pxi"
 include "Vertices.pxi"
 include "Filters/CropHull.pxi"
 include "Filters/CropBox.pxi"
@@ -560,7 +570,6 @@ include "Features/VFHEstimation.pxi"
 include "Features/IntegralImageNormalEstimation.pxi"
 
 # keyPoint
-# 1.7.2 NG
 # include "KeyPoint/UniformSampling_172.pxi"
 include "KeyPoint/HarrisKeypoint3D_172.pxi"
 
