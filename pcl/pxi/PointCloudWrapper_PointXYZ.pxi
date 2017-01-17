@@ -28,7 +28,7 @@ cdef extern from "minipcl.h":
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
     ## void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_PointXYZ *) except +
-    #void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *) except +
+    # void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_t *) except +
 
 
 cdef extern from "ProjectInliers.h":
@@ -376,6 +376,7 @@ cdef class PointCloud:
     def make_crophull(self):
         """
         Return a pcl.CropHull object with this object set as the input-cloud
+
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return CropHull(self)
@@ -546,9 +547,10 @@ include "Filters/ProjectInliers.pxi"
 include "Filters/RadiusOutlierRemoval.pxi"
 include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
-# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages.pxi"
+
+# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Features
 include "Features/NormalEstimation.pxi"

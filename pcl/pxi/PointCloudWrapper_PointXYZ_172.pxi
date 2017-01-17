@@ -363,14 +363,14 @@ cdef class PointCloud:
         octreeSearch.set_input_cloud(self)
         return octreeSearch
 
-     # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
-     def make_octreeChangeDetector(self, double resolution):
-         """
-         Return a pcl.make_octreeSearch object with this object set as the input-cloud
-         """
-         octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
-         octreeChangeDetector.set_input_cloud(self)
-         return octreeChangeDetector
+    # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
+    def make_octreeChangeDetector(self, double resolution):
+        """
+        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+        """
+        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+        octreeChangeDetector.set_input_cloud(self)
+        return octreeChangeDetector
 
     def make_crophull(self):
         """
@@ -379,11 +379,10 @@ cdef class PointCloud:
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return CropHull(self)
-        
+
     def make_cropbox(self):
         """
         Return a pcl.CropBox object with this object set as the input-cloud
-
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return CropBox(self)
@@ -485,7 +484,7 @@ cdef class PointCloud:
         Return a pcl.PointCloud object with this object set as the input-cloud
         """
         cdef PointCloud result
-
+        
         result = PointCloud_PointXYZI()
         # # harris = HarrisKeypoint3D()
         # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
@@ -496,7 +495,6 @@ cdef class PointCloud:
         # # charris.setRadius (1.0)
         # # charris.setRadiusSearch (searchRadius)
         # # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
-
         return result
 
     def make_NormalEstimation(self):
