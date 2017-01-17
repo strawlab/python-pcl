@@ -90,8 +90,10 @@ install:
   - python setup.py build_ext -i
   - python setup.py install
 
-
+# pcl base 1.7.2
+# - python examples\official\Recognition\cpython correspondence_grouping.py pcldata\tutorials\correspondence_grouping\milk.pcd pcldata\tutorials\correspondence_grouping\milk_cartoon_all_small_clorox.pcd
 script:
   - python tests/test.py
   - python tests/test_registration.py
+
 

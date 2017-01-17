@@ -363,16 +363,14 @@ cdef class PointCloud:
         octreeSearch.set_input_cloud(self)
         return octreeSearch
 
-# pcl 1.6.0 use ok
-# cpl 1.7.2, 1.8.0 use ng(octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
-#    def make_octreeChangeDetector(self, double resolution):
-#        """
-#        Return a pcl.make_octreeSearch object with this object set as the input-cloud
-#        """
-#        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
-#        octreeChangeDetector.set_input_cloud(self)
-#        return octreeChangeDetector
-
+     # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
+     def make_octreeChangeDetector(self, double resolution):
+         """
+         Return a pcl.make_octreeSearch object with this object set as the input-cloud
+         """
+         octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+         octreeChangeDetector.set_input_cloud(self)
+         return octreeChangeDetector
 
     def make_crophull(self):
         """
@@ -482,7 +480,6 @@ cdef class PointCloud:
         cConcaveHull.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return concaveHull
 
-
     def make_HarrisKeypoint3D(self):
         """
         Return a pcl.PointCloud object with this object set as the input-cloud
@@ -528,14 +525,15 @@ cdef class PointCloud:
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
 
-    def make_IterativeClosestPoint():
-        iterativeClosestPoint = IterativeClosestPoint(self)
-        cdef pclseg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pclseg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
-        
-        cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # icp.setInputCloud(cloud_in);
-        # icp.setInputTarget(cloud_out);
-        return euclideanclusterextraction
+    # registration - icp?
+    # def make_IterativeClosestPoint():
+    #     iterativeClosestPoint = IterativeClosestPoint(self)
+    #     cdef pclseg.IterativeClosestPoint *cEuclideanClusterExtraction = <pclseg.IterativeClosestPoint *>euclideanclusterextraction.me
+    #     
+    #     cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+    #     # icp.setInputCloud(cloud_in);
+    #     # icp.setInputTarget(cloud_out);
+    #     return euclideanclusterextraction
 
 ###
 
@@ -553,6 +551,7 @@ include "KdTree/KdTree_FLANN.pxi"
 # Octree
 include "Octree/OctreePointCloud_172.pxi"
 include "Octree/OctreePointCloudSearch_172.pxi"
+include "Octree/OctreePointCloudChangeDetector_172.pxi"
 include "Vertices.pxi"
 include "Filters/CropHull.pxi"
 include "Filters/CropBox.pxi"

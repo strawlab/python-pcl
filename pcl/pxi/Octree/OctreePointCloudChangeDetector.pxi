@@ -13,6 +13,9 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud):
         """ 
         self.me = <pcloct.OctreePointCloud_t*> new pcloct.OctreePointCloudChangeDetector_t(resolution)
 
+    def switchBuffers (self):
+        self.switchBuffers()
+
 cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud_PointXYZI):
     """
     Octree pointcloud ChangeDetector
@@ -23,6 +26,10 @@ cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud_PointXYZI):
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me = <pcloct.OctreePointCloud_PointXYZI_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZI_t(resolution)
+
+    def switchBuffers (self):
+        self.switchBuffers()
+
 
 cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud_PointXYZRGB):
     """
@@ -35,6 +42,10 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud_PointXYZR
         """ 
         self.me = <pcloct.OctreePointCloud_PointXYZRGB_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t(resolution)
 
+    def switchBuffers (self):
+        self.switchBuffers()
+
+
 cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
     """
     Octree pointcloud ChangeDetector
@@ -45,4 +56,7 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud_PointXYZ
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me = <pcloct.OctreePointCloud_PointXYZRGBA_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t(resolution)
+
+    def switchBuffers (self):
+        self.switchBuffers()
 

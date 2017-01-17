@@ -42,7 +42,7 @@ mls.set_polynomial_fit (True)
 mls.set_Search_Method (tree)
 mls.set_search_radius (0.03)
 print('set parameters')
-mls_points = mls.Process ()
+mls_points = mls.process ()
 
 # Save output
 # pcl::io::savePCDFile ("bun0-mls.pcd", mls_points);

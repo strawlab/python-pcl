@@ -1381,7 +1381,7 @@ ctypedef VoxelGrid[cpp.PointXYZRGBA] VoxelGrid_PointXYZRGBA_t
 
 # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
 #     cdef enum CompareOp:
-#cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl"
+# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl"
 #   ctypedef enum CythonCompareOp "pcl::ComparisonOps::CompareOp":
 cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl::ComparisonOps":
     ctypedef enum CompareOp2 "pcl::ComparisonOps::CompareOp":

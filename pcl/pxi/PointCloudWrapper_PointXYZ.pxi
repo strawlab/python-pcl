@@ -363,29 +363,26 @@ cdef class PointCloud:
         octreeSearch.set_input_cloud(self)
         return octreeSearch
 
-# pcl 1.6.0 use ok
-# cpl 1.7.2, 1.8.0 use ng(octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
-#    def make_octreeChangeDetector(self, double resolution):
-#        """
-#        Return a pcl.make_octreeSearch object with this object set as the input-cloud
-#        """
-#        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
-#        octreeChangeDetector.set_input_cloud(self)
-#        return octreeChangeDetector
-
+    # pcl 1.6.0 use ok
+    # cpl 1.7.2, 1.8.0 use ng(octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
+    def make_octreeChangeDetector(self, double resolution):
+        """
+        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+        """
+        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+        octreeChangeDetector.set_input_cloud(self)
+        return octreeChangeDetector
 
     def make_crophull(self):
         """
         Return a pcl.CropHull object with this object set as the input-cloud
-
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return CropHull(self)
-        
+
     def make_cropbox(self):
         """
         Return a pcl.CropBox object with this object set as the input-cloud
-
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return CropBox(self)
@@ -541,6 +538,7 @@ include "Surface/MovingLeastSquares.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 include "Octree/OctreePointCloud.pxi"
 include "Octree/OctreePointCloudSearch.pxi"
+include "Octree/OctreePointCloudChangeDetector.pxi"
 include "Vertices.pxi"
 include "Filters/CropHull.pxi"
 include "Filters/CropBox.pxi"

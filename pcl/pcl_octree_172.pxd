@@ -976,21 +976,23 @@ ctypedef OctreePointCloud[cpp.PointXYZRGBA] OctreePointCloud_PointXYZRGBA_t
         #     AlignedPointTVector &voxelCenterList_arg) const;
 ###
 
+# pcl_1.7.2 use octree_pointcloud.h
 # namespace pcl
 # namespace octree
 # template<typename PointT, typename LeafT = OctreeContainerDataTVector<int>,
 # typename BranchT = OctreeContainerEmpty<int> >
 #     class OctreePointCloudChangeDetector : public OctreePointCloud<PointT, LeafT, BranchT, Octree2BufBase<int, LeafT, BranchT> >
-cdef extern from "pcl/octree/octree_pointcloud_changedetector.h" namespace "pcl::octree":
+cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloudChangeDetector[T](OctreePointCloud[T]):
 #     cdef cppclass OctreePointCloudChangeDetector[T, LeafT, BranchT](OctreePointCloud[T, LeafT, BranchT]):
         OctreePointCloudChangeDetector (const double resolution_arg)
-        #  public:
-        #/** \brief Get a indices from all leaf nodes that did not exist in previous buffer.
+        # public:
+        # /** \brief Get a indices from all leaf nodes that did not exist in previous buffer.
         # * \param indicesVector_arg: results are written to this vector of int indices
         # * \param minPointsPerLeaf_arg: minimum amount of points required within leaf node to become serialized.
         # * \return number of point indices
-        #int getPointIndicesFromNewVoxels (std::vector<int> &indicesVector_arg, const int minPointsPerLeaf_arg = 0)
+        # */
+        # int getPointIndicesFromNewVoxels (std::vector<int> &indicesVector_arg, const int minPointsPerLeaf_arg = 0)
 
 ctypedef OctreePointCloudChangeDetector[cpp.PointXYZ] OctreePointCloudChangeDetector_t
 ctypedef OctreePointCloudChangeDetector[cpp.PointXYZI] OctreePointCloudChangeDetector_PointXYZI_t
@@ -1024,6 +1026,7 @@ ctypedef OctreePointCloudChangeDetector[cpp.PointXYZRGBA] OctreePointCloudChange
 #         # /** \brief Empty reset leaf node implementation as this leaf node does not store any data. */
 #         # void reset ()
 ###
+
 
 # template<typename PointT, typename LeafT = OctreePointCloudDensityContainer<int> , typename BranchT = OctreeContainerEmpty<int> >
 # class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafT, BranchT>
@@ -1060,7 +1063,7 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
         # int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
         int nearestKSearch (cpp.PointCloud[T], int, int, vector[int], vector[float])
         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
-
+        
         ## Functions
         # brief Search for neighbors within a voxel at given point
         # param[in] point point addressing a leaf node voxel

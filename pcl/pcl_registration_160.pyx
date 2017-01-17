@@ -150,3 +150,5 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
     icp_nl.setInputCloud(source.thisptr_shared)
     return run(icp_nl, source, target, max_iter)
+
+

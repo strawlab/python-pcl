@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 # 3D Object Recognition based on Correspondence Grouping
 # http://pointclouds.org/documentation/tutorials/correspondence_grouping.php#correspondence-grouping
-
+# python correspondence_grouping.py milk.pcd milk_cartoon_all_small_clorox.pcd
+# python correspondence_grouping.py milk.pcd milk_cartoon_all_small_clorox.pcd milk.pcd milk_cartoon_all_small_clorox.pcd -r --model_ss 7.5 --scene_ss 20 --rf_rad 10 --descr_rad 15 --cg_size 10
 import pcl
 import numpy as np
 import random
@@ -155,7 +156,7 @@ scene_filename_ = ''
 parser = argparse.ArgumentParser(description='PointCloudLibrary example: correspondence_grouping correspondence_grouping')
 parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
-parser.add_argument('--algorithm', '-algorithm', choices=('Radius', 'Condition'), default='',
+parser.add_argument('--algorithm', '-algorithm', choices=('Hough', 'GC'), default='',
                     help='Using algorithm Hough|GC.')
 parser.add_argument('--model_ss', '-s', default=0.01, type=double,
                     help='Model uniform sampling radius (default 0.01)')
@@ -241,17 +242,20 @@ if use_cloud_resolution_ == True:
 
 
 # Compute Normals
-norm_est = model.make_segmenter_normals(10)
 # pcl::NormalEstimationOMP<PointType, NormalType> norm_est;
 # norm_est.setKSearch (10);
 # norm_est.setInputCloud (model);
 # norm_est.compute (*model_normals);
 # model_normals = norm_est.Å`
+norm_est = model.make_segmenter_normals(10)
+norm_est.setKSearch
+model_normals = 
 
-norm_est2 = scene.make_segmenter_normals(10)
 # scene_normals = norm_est2.Å`
 # norm_est.setInputCloud (scene);
 # norm_est.compute (*scene_normals);
+norm_est = norm_est.set_InputCloud(scene)
+scene_normals =  norm_est.make_segmenter_normals(10)
 
 # Downsample Clouds to Extract keypoints
 # pcl::UniformSampling<PointType> uniform_sampling;
@@ -297,10 +301,11 @@ scene_descriptors = descr_est.compute ()
 
 # Find Model-Scene Correspondences with KdTree
 # pcl::CorrespondencesPtr model_scene_corrs (new pcl::Correspondences ());
-# model_scene_corrs = 
+model_scene_corrs = pcl.Correspondences()
 
 # pcl::KdTreeFLANN<DescriptorType> match_search;
 # match_search.setInputCloud (model_descriptors);
+match_search = model_descriptors.make_KdTreeFLANN()
 
 # For each scene keypoint descriptor, find nearest neighbor into the model keypoints descriptor cloud and add it to the correspondences vector.
 # for (size_t i = 0; i < scene_descriptors->size (); ++i)

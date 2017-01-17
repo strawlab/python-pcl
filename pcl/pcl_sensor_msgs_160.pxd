@@ -12,6 +12,10 @@ from boost_shared_ptr cimport shared_ptr
 
 cimport pcl_160_std_msgs as std_msgs
 
+###############################################################################
+# Types
+###############################################################################
+
 cdef extern from "sensor_msgs/Image.h" namespace "sensor_msgs":
     cdef struct Image:
         Image ()
@@ -77,3 +81,22 @@ ctypedef sharedptr[PointField*] PointFieldConstPtr;
 
 # inline std::ostream& operator<<(std::ostream& s, const  ::sensor_msgs::PointField & v)
 
+###############################################################################
+# Enum
+###############################################################################
+
+cdef extern from "sensor_msgs/PointField.h" namespace "sensor_msgs":
+    cdef enum:
+        INT8 = 1
+        UINT8 = 2
+        INT16 = 3
+        UINT16 = 4
+        INT32 = 5
+        UINT32 = 6
+        FLOAT32 = 7
+        FLOAT64 = 8
+
+
+###############################################################################
+# Activation
+###############################################################################

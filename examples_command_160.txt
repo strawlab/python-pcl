@@ -43,7 +43,7 @@ python examples\official\keypoints\narf_keypoint_extraction.py
 # Exception ignored in: 'pcl._pcl.to_point_t'
 # TypeError: a float is required
 python examples\official\octree\octree_search.py
-# python examples\official\octree\octree_change_detection_172.py
+python examples\official\octree\octree_change_detection_172.py
 ###
 
 # RangeImage
@@ -54,7 +54,7 @@ python examples\official\RangeImage\range_image_border_extraction.py
 # Recognition
 # pcl 1.7.2
 # pcl 1.6.0 not Implement BOARDLocalReferenceFrameEstimation 
-# python examples\official\Recognition\correspondence_grouping.py
+# python examples\official\Recognition\cpython correspondence_grouping.py pcldata\tutorials\correspondence_grouping\milk.pcd pcldata\tutorials\correspondence_grouping\milk_cartoon_all_small_clorox.pcd
 # pcl 1.7.2
 # python examples\official\Recognition\global_hypothesis_verification.txt
 # pcl 1.7.2

@@ -68,8 +68,9 @@ for i in range(0, 5):
 
 cloudB.from_array(points2)
 
-octree.setInputCloud (cloudB)
-octree.addPointsFromInputCloud ()
+cloudB.make_octreeChangeDetector
+# octree.setInputCloud ()
+# octree.addPointsFromInputCloud ()
 
 # std::vector<int> newPointIdxVector;
 # // Get vector of point indices from octree voxels which did not exist in previous buffer
