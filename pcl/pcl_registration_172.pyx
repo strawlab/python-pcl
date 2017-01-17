@@ -12,7 +12,7 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport pcl_registration_172 as pcl_reg
 from boost_shared_ptr cimport shared_ptr
-# from eigen cimport Matrix4f
+from eigen cimport Matrix4f
 
 np.import_array()
 
@@ -30,7 +30,8 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg,
         reg.align(result.thisptr()[0])
 
     # Get transformation matrix and convert from Eigen to NumPy format.
-    cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4 mat
+    # cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4f mat
+    cdef Matrix4f mat
     mat = reg.getFinalTransformation()
     cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='fortran'] transf
     cdef np.float32_t *transf_data
@@ -127,3 +128,5 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     """
     cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
     return run(icp_nl, source, target, max_iter)
+
+

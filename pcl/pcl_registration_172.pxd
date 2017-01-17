@@ -1,22 +1,39 @@
 ﻿# -*- coding: utf-8 -*-
 
 from libcpp cimport bool
+from libcpp.string cimport string
 
 # main
 cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 
+# Cython - limits.pxd
+# from libcpp cimport numeric_limits
+
 # base
 from eigen cimport Matrix4f
 
 # registration.h
-# template <typename PointSource, typename PointTarget, typename Scalar = float>
+# Version 1.7.2
+# cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
+#     cdef cppclass Registration[Source, Target]:
+#         cppclass Matrix4:
+#             float *data()
+#         void align(cpp.PointCloud[Source] &) except +
+#         Matrix4f getFinalTransformation() except +
+#         double getFitnessScore() except +
+#         bool hasConverged() except +
+#         void setInputSource(cpp.PointCloudPtr_t) except +
+#         void setInputTarget(cpp.PointCloudPtr_t) except +
+#         void setMaximumIterations(int) except +
+###
+
+# template <typename PointSource, typename PointTarget>
 # class Registration : public PCLBase<PointSource>
+# cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target]:
         Registration()
-        cppclass Matrix4:
-            float *data()
         void align(cpp.PointCloud[Source] &) except +
         Matrix4 getFinalTransformation() except +
         double getFitnessScore() except +
@@ -24,10 +41,14 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         void setInputSource(cpp.PointCloudPtr_t) except +
         void setInputTarget(cpp.PointCloudPtr_t) except +
         void setMaximumIterations(int) except +
-        
+        # override?
+        void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
+        void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
+        # cdef void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
+        #   cpp.PCLBase.setInputSource(ptcloud)
+        # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
         # public:
-        # typedef Eigen::Matrix<Scalar, 4, 4> Matrix4;
-        # // using PCLBase<PointSource>::initCompute;
+        # using PCLBase<PointSource>::initCompute;
         # using PCLBase<PointSource>::deinitCompute;
         # using PCLBase<PointSource>::input_;
         # using PCLBase<PointSource>::indices_;

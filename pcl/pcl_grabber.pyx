@@ -6,7 +6,6 @@
 from libcpp cimport bool
 
 cimport numpy as np
-import numpy as np
 
 cimport _pcl
 cimport pcl_defs as cpp
