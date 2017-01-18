@@ -45,34 +45,17 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # using PCLBase<PointSource>::deinitCompute;
         # using PCLBase<PointSource>::input_;
         # using PCLBase<PointSource>::indices_;
-        # ctypedef boost::shared_ptr< Registration<PointSource, PointTarget> > Ptr;
-        # ctypedef boost::shared_ptr< const Registration<PointSource, PointTarget> > ConstPtr;
-        # ctypedef typename pcl::KdTree<PointTarget> KdTree;
-        # ctypedef typename pcl::KdTree<PointTarget>::Ptr KdTreePtr;
-        # ctypedef pcl::PointCloud<PointSource> PointCloudSource;
-        # ctypedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-        # ctypedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-        # ctypedef pcl::PointCloud<PointTarget> PointCloudTarget;
-        # ctypedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-        # ctypedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-        # ctypedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
-        # ctypedef typename pcl::registration::TransformationEstimation<PointSource, PointTarget> TransformationEstimation;
-        # ctypedef typename TransformationEstimation::Ptr TransformationEstimationPtr;
-        # ctypedef typename TransformationEstimation::ConstPtr TransformationEstimationConstPtr;
-        # brief Provide a pointer to the transformation estimation object. (e.g., SVD, point to plane etc.) 
-        # param te is the pointer to the corresponding transformation estimation object
-        # void setTransformationEstimation (const TransformationEstimationPtr &te)
-        # virtual inline void setInputTarget (const PointCloudTargetConstPtr &cloud);
         void setInputTarget(cpp.PointCloudPtr_t ptcloud) except +
         void setInputTarget2(cpp.PointCloudPtr_t pt2cloud) except +
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # inline PointCloudTargetConstPtr const getInputTarget ()
         cpp.PointCloudPtr_t getInputTarget ()
-
+		# 
         # brief Get the final transformation matrix estimated by the registration method.
         Matrix4f getFinalTransformation ()
         # /** \brief Get the last incremental transformation matrix estimated by the registration method. */
         Matrix4f getLastIncrementalTransformation ()
+		# 
         # Set the maximum number of iterations the internal optimization should run for.
         # param nr_iterations the maximum number of iterations the internal optimization should run for
         void setMaximumIterations (int nr_iterations) except +
@@ -127,7 +110,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # template<typename FunctionSignature>  bool
         # registerVisualizationCallback (boost::function<FunctionSignature> &visualizerCallback)
         # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
-        #   * \param max_range maximum allowable distance between a point and its correspondence in the target 
+        #   * \param[in] max_range maximum allowable distance between a point and its correspondence in the target 
         #   * (default: double::max)
         #   */
         #  double getFitnessScore (double max_range = numeric_limits[double]::max ());
@@ -2092,13 +2075,13 @@ cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pc
         #     const pcl::PointCloud<PointTarget> &cloud_tgt,
         #     const pcl::Correspondences &correspondences,
         #     Eigen::Matrix4f &transformation_matrix);
-
+		#
         # /** \brief Set the function we use to warp points. Defaults to rigid 6D warp.
         #   * \param[in] warp_fcn a shared pointer to an object that warps points
         #   */
         # void
         # setWarpFunction (const boost::shared_ptr<WarpPointRigid<PointSource, PointTarget> > &warp_fcn)
-
+		# 
         # /** Base functor all the models that need non linear optimization must
         #   * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
         #   * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
@@ -2212,6 +2195,7 @@ cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pc
         # };
         # public:
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
 
 ###
 
@@ -2368,11 +2352,9 @@ cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl" 
         # ctypedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
         # ctypedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
         # /** \brief Validate the given transformation with respect to the input cloud data, and return a score.
-        #   *
         #   * \param[in] cloud_src the source point cloud dataset
         #   * \param[in] cloud_tgt the target point cloud dataset
         #   * \param[out] transformation_matrix the resultant transformation matrix
-        #   *
         #   * \return the score or confidence measure for the given
         #   * transformation_matrix with respect to the input data
         #   */

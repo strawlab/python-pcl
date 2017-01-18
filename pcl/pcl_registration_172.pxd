@@ -33,7 +33,7 @@ from eigen cimport Matrix4f
 # cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target]:
-        Registration()
+        # Registration()
         void align(cpp.PointCloud[Source] &) except +
         Matrix4 getFinalTransformation() except +
         double getFitnessScore() except +
@@ -43,35 +43,8 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         void setMaximumIterations(int) except +
         # override?
         void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
-        void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
-        # cdef void setInputSource(cpp.PointCloudPtr_t ptcloud) except +
-        #   cpp.PCLBase.setInputSource(ptcloud)
         # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
         # public:
-        # using PCLBase<PointSource>::initCompute;
-        # using PCLBase<PointSource>::deinitCompute;
-        # using PCLBase<PointSource>::input_;
-        # using PCLBase<PointSource>::indices_;
-        # typedef boost::shared_ptr< Registration<PointSource, PointTarget, Scalar> > Ptr;
-        # typedef boost::shared_ptr< const Registration<PointSource, PointTarget, Scalar> > ConstPtr;
-        # typedef typename pcl::registration::CorrespondenceRejector::Ptr CorrespondenceRejectorPtr;
-        # typedef pcl::search::KdTree<PointTarget> KdTree;
-        # typedef typename pcl::search::KdTree<PointTarget>::Ptr KdTreePtr;
-        # typedef pcl::search::KdTree<PointSource> KdTreeReciprocal;
-        # typedef typename KdTree::Ptr KdTreeReciprocalPtr;
-        # typedef pcl::PointCloud<PointSource> PointCloudSource;
-        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-        # typedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
-        # typedef typename pcl::registration::TransformationEstimation<PointSource, PointTarget, Scalar> TransformationEstimation;
-        # typedef typename TransformationEstimation::Ptr TransformationEstimationPtr;
-        # typedef typename TransformationEstimation::ConstPtr TransformationEstimationConstPtr;
-        # typedef typename pcl::registration::CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> CorrespondenceEstimation;
-        # typedef typename CorrespondenceEstimation::Ptr CorrespondenceEstimationPtr;
-        # typedef typename CorrespondenceEstimation::ConstPtr CorrespondenceEstimationConstPtr;
         # 
         # /** \brief Provide a pointer to the transformation estimation object.
         #   * (e.g., SVD, point to plane etc.) 
@@ -132,6 +105,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # 
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # inline PointCloudTargetConstPtr const getInputTarget ()
+        cpp.PointCloudPtr_t getInputTarget ()
         # 
         # /** \brief Provide a pointer to the search object used to find correspondences in
         #   * the target cloud.
@@ -161,25 +135,24 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # 
         # /** \brief Get the final transformation matrix estimated by the registration method. */
         # inline Matrix4 getFinalTransformation ()
+        Matrix4 getFinalTransformation ()
         # 
         # /** \brief Get the last incremental transformation matrix estimated by the registration method. */
-        # inline Matrix4 getLastIncrementalTransformation ()
-        # 
-        # /** \brief Set the maximum number of iterations the internal optimization should run for.
-        #   * \param[in] nr_iterations the maximum number of iterations the internal optimization should run for
-        #   */
-        # inline void setMaximumIterations (int nr_iterations)
-        # 
+        Matrix4f getLastIncrementalTransformation ()
+		# 
+        # Set the maximum number of iterations the internal optimization should run for.
+        # param nr_iterations the maximum number of iterations the internal optimization should run for
+        void setMaximumIterations (int nr_iterations) except +
         # /** \brief Get the maximum number of iterations the internal optimization should run for, as set by the user. */
-        # inline int getMaximumIterations ()
-        # 
+        int getMaximumIterations () 
         # /** \brief Set the number of iterations RANSAC should run for.
         #   * \param[in] ransac_iterations is the number of iterations RANSAC should run for
         #   */
-        # inline void setRANSACIterations (int ransac_iterations)
+        void setRANSACIterations (int ransac_iterations)
         # 
         # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
         # inline double getRANSACIterations ()
+        double getRANSACIterations ()
         # 
         # /** \brief Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
         #   * The method considers a point to be an inlier, if the distance between the target data index and the transformed 
@@ -246,8 +219,8 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * \param[in] max_range maximum allowable distance between a point and its correspondence in the target 
         #   * (default: double::max)
         #   */
-        # inline double getFitnessScore (double max_range = std::numeric_limits<double>::max ());
-        # 
+        #  double getFitnessScore (double max_range = numeric_limits[double]::max ());
+        double getFitnessScore() except +
         # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
         #   * from two sets of correspondence distances (distances between source and target points)
         #   * \param[in] distances_a the first set of distances between correspondences
@@ -4955,6 +4928,8 @@ cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pc
         # };
         # public:
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
 ###
 
 # transformation_estimation_point_to_plane.h
@@ -5550,7 +5525,7 @@ cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl" 
         #   * \param[out] transformation_matrix the resultant transformation matrix
         #   * \return the score or confidence measure for the given
         #   * transformation_matrix with respect to the input data
-        # */
+        #   */
         # virtual double validateTransformation (
         #    const cpp.PointCloudPtr_t &cloud_src,
         #    const cpp.PointCloudPtr_t &cloud_tgt,
