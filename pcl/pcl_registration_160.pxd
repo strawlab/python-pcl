@@ -43,7 +43,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # using PCLBase<PointSource>::input_;
         # using PCLBase<PointSource>::indices_;
         void setInputTarget(cpp.PointCloudPtr_t ptcloud) except +
-        void setInputTarget2(cpp.PointCloudPtr_t pt2cloud) except +
+        # void setInputTarget2(cpp.PointCloudPtr_t pt2cloud) except +
         
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # inline PointCloudTargetConstPtr const getInputTarget ()
@@ -70,7 +70,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
         # inline double getRANSACIterations ()
         double getRANSACIterations ()
-        
+		
         # /** \brief Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
         #   * The method considers a point to be an inlier, if the distance between the target data index and the transformed 
         #   * source index is smaller than the given inlier distance threshold. 
@@ -156,20 +156,17 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # inline double getFitnessScore (const std::vector<float> &distances_a, const std::vector<float> &distances_b);
         double getFitnessScore (const vector[float] &distances_a, const vector[float] &distances_b)
         
-        # 
         # /** \brief Return the state of convergence after the last align run */
         # inline bool hasConverged ()
         bool hasConverged ()
         
-        # 
         # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
         #   * (input) as \a output.
         #   * \param[out] output the resultant input transfomed point cloud dataset
         #   */
         # inline void align (PointCloudSource &output);
-        void align (cpp.PointCloud[Source] &output)
+        void align(cpp.PointCloud[Source] &) except +
         
-        # 
         # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
         #   * (input) as \a output.
         #   * \param[out] output the resultant input transfomed point cloud dataset
@@ -276,81 +273,81 @@ cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::r
 #   * \ingroup registration
 #   */
 # class DataContainerInterface
-cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
-    cdef cppclass DataContainerInterface:
-        DataContainerInterface()
-        public:
-        virtual ~DataContainerInterface () {}
-        virtual double getCorrespondenceScore (int index) = 0;
-        virtual double getCorrespondenceScore (const pcl::Correspondence &) = 0;
+# cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
+#     cdef cppclass DataContainerInterface:
+#         DataContainerInterface()
+#         public:
+#         virtual ~DataContainerInterface () {}
+#         virtual double getCorrespondenceScore (int index) = 0;
+#         virtual double getCorrespondenceScore (const pcl::Correspondence &) = 0;
+# 
+# 
+# ###
 
-
-###
-
-# /** @b DataContainer is a container for the input and target point clouds and implements the interface 
-#   * to compute correspondence scores between correspondent points in the input and target clouds ingroup registration
-#   */
-# template <typename PointT, typename NormalT=pcl::PointNormal>
-# class DataContainer : public DataContainerInterface
-cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
-    cdef cppclass DataContainer[PointT, NormalT](DataContainerInterface):
-        DataContainer()
-        # typedef typename pcl::PointCloud<PointT>::ConstPtr PointCloudConstPtr;
-        # typedef typename pcl::KdTree<PointT>::Ptr KdTreePtr;
-        # typedef typename pcl::PointCloud<NormalT>::ConstPtr NormalsPtr;
-        # public:
-        # /** \brief Empty constructor. */
-        # DataContainer ()
-        # 
-        # /** \brief Provide a source point cloud dataset (must contain XYZ data!), used to compute the correspondence distance.  
-        #  * \param[in] cloud a cloud containing XYZ data
-        #  */
-        # inline void setInputCloud (const PointCloudConstPtr &cloud)
-        void setInputCloud (const cpp.PointCloud[PointT] &cloud)
-        
-        # /** \brief Provide a target point cloud dataset (must contain XYZ data!), used to compute the correspondence distance.  
-        #  * \param[in] target a cloud containing XYZ data
-        #  */
-        # inline void setInputTarget (const PointCloudConstPtr &target)
-        void setInputTarget (const cpp.PointCloud[PointT] &target)
-        
-        # /** \brief Set the normals computed on the input point cloud
-        #   * \param[in] normals the normals computed for the input cloud
-        #   */
-        # inline void setInputNormals (const NormalsPtr &normals)
-        void setInputNormals (const NormalsPtr &normals)
-        
-        # /** \brief Set the normals computed on the target point cloud
-        #   * \param[in] normals the normals computed for the input cloud
-        #   */
-        # inline void setTargetNormals (const NormalsPtr &normals)
-        void setTargetNormals (const cpp.PointCloudNormals[PointT] &normals)
-        
-        # /** \brief Get the normals computed on the input point cloud */
-        # inline NormalsPtr getInputNormals ()
-        cpp.NormalsPtr getInputNormals ()
-        
-        # /** \brief Get the normals computed on the target point cloud */
-        # inline NormalsPtr getTargetNormals ()
-        cpp.NormalsPtr getTargetNormals ()
-        
-        # /** \brief Get the correspondence score for a point in the input cloud
-        #  *  \param[index] index of the point in the input cloud
-        #  */
-        # inline double getCorrespondenceScore (int index)
-        # 
-        # /** \brief Get the correspondence score for a given pair of correspondent points
-        #  *  \param[corr] Correspondent points
-        #  */
-        # inline double getCorrespondenceScore (const pcl::Correspondence &corr)
-        # 
-        # /** \brief Get the correspondence score for a given pair of correspondent points based on the angle betweeen the normals. 
-        #   * The normmals for the in put and target clouds must be set before using this function
-        #   * \param[in] corr Correspondent points
-        #   */
-        # double getCorrespondenceScoreFromNormals (const pcl::Correspondence &corr)
-
-
+# # /** @b DataContainer is a container for the input and target point clouds and implements the interface 
+# #   * to compute correspondence scores between correspondent points in the input and target clouds ingroup registration
+# #   */
+# # template <typename PointT, typename NormalT=pcl::PointNormal>
+# # class DataContainer : public DataContainerInterface
+# cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
+#     cdef cppclass DataContainer[PointT, NormalT](DataContainerInterface):
+#         DataContainer()
+#         # typedef typename pcl::PointCloud<PointT>::ConstPtr PointCloudConstPtr;
+#         # typedef typename pcl::KdTree<PointT>::Ptr KdTreePtr;
+#         # typedef typename pcl::PointCloud<NormalT>::ConstPtr NormalsPtr;
+#         # public:
+#         # /** \brief Empty constructor. */
+#         # DataContainer ()
+#         # 
+#         # /** \brief Provide a source point cloud dataset (must contain XYZ data!), used to compute the correspondence distance.  
+#         #  * \param[in] cloud a cloud containing XYZ data
+#         #  */
+#         # inline void setInputCloud (const PointCloudConstPtr &cloud)
+#         void setInputCloud (const cpp.PointCloud[PointT] &cloud)
+#         
+#         # /** \brief Provide a target point cloud dataset (must contain XYZ data!), used to compute the correspondence distance.  
+#         #  * \param[in] target a cloud containing XYZ data
+#         #  */
+#         # inline void setInputTarget (const PointCloudConstPtr &target)
+#         void setInputTarget (const cpp.PointCloud[PointT] &target)
+#         
+#         # /** \brief Set the normals computed on the input point cloud
+#         #   * \param[in] normals the normals computed for the input cloud
+#         #   */
+#         # inline void setInputNormals (const NormalsPtr &normals)
+#         void setInputNormals (const NormalsPtr &normals)
+#         
+#         # /** \brief Set the normals computed on the target point cloud
+#         #   * \param[in] normals the normals computed for the input cloud
+#         #   */
+#         # inline void setTargetNormals (const NormalsPtr &normals)
+#         void setTargetNormals (const cpp.PointCloudNormals[PointT] &normals)
+#         
+#         # /** \brief Get the normals computed on the input point cloud */
+#         # inline NormalsPtr getInputNormals ()
+#         cpp.NormalsPtr getInputNormals ()
+#         
+#         # /** \brief Get the normals computed on the target point cloud */
+#         # inline NormalsPtr getTargetNormals ()
+#         cpp.NormalsPtr getTargetNormals ()
+#         
+#         # /** \brief Get the correspondence score for a point in the input cloud
+#         #  *  \param[index] index of the point in the input cloud
+#         #  */
+#         # inline double getCorrespondenceScore (int index)
+#         # 
+#         # /** \brief Get the correspondence score for a given pair of correspondent points
+#         #  *  \param[corr] Correspondent points
+#         #  */
+#         # inline double getCorrespondenceScore (const pcl::Correspondence &corr)
+#         # 
+#         # /** \brief Get the correspondence score for a given pair of correspondent points based on the angle betweeen the normals. 
+#         #   * The normmals for the in put and target clouds must be set before using this function
+#         #   * \param[in] corr Correspondent points
+#         #   */
+#         # double getCorrespondenceScoreFromNormals (const pcl::Correspondence &corr)
+# 
+# 
 ###
 
 # correspondence_estimation.h
@@ -481,7 +478,7 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
         #   * param g gradient vector
         #   */
         # void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g) const;
-        void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g)
+        # void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g)
         
         # /** \brief Set the rotation epsilon (maximum allowable difference between two 
         #   * consecutive rotations) in order for an optimization to be considered as having 
@@ -2310,41 +2307,40 @@ cdef extern from "pcl/registration/bfgs.h" namespace "pcl":
         Success = 0
         NoProgress = 1
 
-
-        # /** Base functor all the models that need non linear optimization must
-        #   * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
-        #   * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
-        #   */
-        # template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
-        # struct Functor
-        # {
-        #   typedef _Scalar Scalar;
-        #   enum 
-        #   {
-        #     InputsAtCompileTime = NX,
-        #     ValuesAtCompileTime = NY
-        #   };
-        #   typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
-        #   typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
-        #   typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
-        # 
-        #   /** \brief Empty Construtor. */
-        #   Functor () : m_data_points_ (ValuesAtCompileTime) {}
-        #   /** \brief Constructor
-        #     * \param[in] m_data_points number of data points to evaluate.
-        #     */
-        #   Functor (int m_data_points) : m_data_points_ (m_data_points) {}
-        # 
-        #   /** \brief Destructor. */
-        #   virtual ~Functor () {}
-        # 
-        #   /** \brief Get the number of values. */ 
-        #   int
-        #   values () const { return (m_data_points_); }
-        # 
-        #   protected:
-        #     int m_data_points_;
-        # };
+# /** Base functor all the models that need non linear optimization must
+#   * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
+#   * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
+#   */
+# template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
+# struct Functor
+# {
+#   typedef _Scalar Scalar;
+#   enum 
+#   {
+#     InputsAtCompileTime = NX,
+#     ValuesAtCompileTime = NY
+#   };
+#   typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
+#   typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
+#   typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
+# 
+#   /** \brief Empty Construtor. */
+#   Functor () : m_data_points_ (ValuesAtCompileTime) {}
+#   /** \brief Constructor
+#     * \param[in] m_data_points number of data points to evaluate.
+#     */
+#   Functor (int m_data_points) : m_data_points_ (m_data_points) {}
+# 
+#   /** \brief Destructor. */
+#   virtual ~Functor () {}
+# 
+#   /** \brief Get the number of values. */ 
+#   int
+#   values () const { return (m_data_points_); }
+# 
+#   protected:
+#     int m_data_points_;
+# };
 
 #####
 

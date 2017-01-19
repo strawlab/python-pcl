@@ -20,7 +20,6 @@ from eigen cimport Matrix4f
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
         Registration()
-        void align(cpp.PointCloud[Source] &) except +
         Matrix4f getFinalTransformation() except +
         double getFitnessScore() except +
         bool hasConverged() except +
@@ -238,7 +237,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * \param[out] output the resultant input transfomed point cloud dataset
         #   */
         # inline void align (PointCloudSource &output);
-        void align (cpp.PointCloud[Source] &output)
+        void align(cpp.PointCloud[Source] &) except +
         
         # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
         #   * (input) as \a output.
@@ -5771,5 +5770,82 @@ cdef extern from "pcl/registration/warp_point_rigid_6d.h" namespace "pcl" nogil:
         # public:
         # virtual void setParam (const Eigen::VectorXf & p)
 
+
 ###
+
+###############################################################################
+# Enum
+###############################################################################
+
+# bfgs.h
+# template<typename _Scalar, int NX=Eigen::Dynamic>
+# struct BFGSDummyFunctor
+# cdef extern from "pcl/registration/bfgs.h" nogil:
+#     # cdef struct BFGSDummyFunctor[_Scalar, NX]:
+#         # enum { InputsAtCompileTime = NX };
+# 
+# cdef extern from "pcl/registration/bfgs.h" namespace "pcl":
+#     ctypedef enum "pcl::BFGSDummyFunctor":
+#             INPUTSATCOMPILETIME "pcl::BFGSDummyFunctor::InputsAtCompileTime"
+# 
+###
+
+# bfgs.h
+# namespace BFGSSpace {
+#   enum Status {
+#     NegativeGradientEpsilon = -3,
+#     NotStarted = -2,
+#     Running = -1,
+#     Success = 0,
+#     NoProgress = 1
+#   };
+# }
+cdef extern from "pcl/registration/bfgs.h" namespace "pcl":
+    cdef enum Status:
+        NegativeGradientEpsilon = -3
+        NotStarted = -2
+        Running = -1
+        Success = 0
+        NoProgress = 1
+
+# /** Base functor all the models that need non linear optimization must
+#   * define their own one and implement operator() (const Eigen::VectorXd& x, Eigen::VectorXd& fvec)
+#   * or operator() (const Eigen::VectorXf& x, Eigen::VectorXf& fvec) dependening on the choosen _Scalar
+#   */
+# template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
+# struct Functor
+# {
+#   typedef _Scalar Scalar;
+#   enum 
+#   {
+#     InputsAtCompileTime = NX,
+#     ValuesAtCompileTime = NY
+#   };
+#   typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
+#   typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
+#   typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
+# 
+#   /** \brief Empty Construtor. */
+#   Functor () : m_data_points_ (ValuesAtCompileTime) {}
+#   /** \brief Constructor
+#     * \param[in] m_data_points number of data points to evaluate.
+#     */
+#   Functor (int m_data_points) : m_data_points_ (m_data_points) {}
+# 
+#   /** \brief Destructor. */
+#   virtual ~Functor () {}
+# 
+#   /** \brief Get the number of values. */ 
+#   int
+#   values () const { return (m_data_points_); }
+# 
+#   protected:
+#     int m_data_points_;
+# };
+
+#####
+
+###############################################################################
+# Activation
+###############################################################################
 
