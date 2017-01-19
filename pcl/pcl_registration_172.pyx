@@ -46,7 +46,8 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg, _pcl.Poin
 
 
 def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
-    """Align source to target using iterative closest point (ICP).
+    """
+    Align source to target using iterative closest point (ICP).
     
     Parameters
     ----------
@@ -74,7 +75,8 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
 
 
 def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
-    """Align source to target using generalized iterative closest point (GICP).
+    """
+    Align source to target using generalized iterative closest point (GICP).
     
     Parameters
     ----------
@@ -98,11 +100,13 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
+    gicp.setInputCloud(source.thisptr_shared)
     return run(gicp, source, target, max_iter)
 
 
 def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
-    """Align source to target using generalized non-linear ICP (ICP-NL).
+    """
+    Align source to target using generalized non-linear ICP (ICP-NL).
     
     Parameters
     ----------
@@ -127,6 +131,7 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         Sum of squares error in the estimated transformation.
     """
     cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
+    icp_nl.setInputCloud(source.thisptr_shared)
     return run(icp_nl, source, target, max_iter)
 
 

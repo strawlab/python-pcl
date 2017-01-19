@@ -2,6 +2,7 @@
 
 from libcpp cimport bool
 from libcpp.string cimport string
+from libcpp.vector cimport vector
 
 # main
 cimport pcl_defs as cpp
@@ -20,7 +21,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
         Registration()
         void align(cpp.PointCloud[Source] &) except +
-        Matrix4 getFinalTransformation() except +
+        Matrix4f getFinalTransformation() except +
         double getFitnessScore() except +
         bool hasConverged() except +
         void setInputSource(cpp.PointCloudPtr_t) except +
@@ -43,7 +44,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * icp.setTransformationEstimation (trans_svd);
         #   * \endcode
         #   */
-        # void setTransformationEstimation (const TransformationEstimationPtr &te) { transformation_estimation_ = te; }
+        # void setTransformationEstimation (const TransformationEstimationPtr &te)
         # 
         # /** \brief Provide a pointer to the correspondence estimation object.
         #   * (e.g., regular, reciprocal, normal shooting etc.) 
@@ -63,7 +64,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * icp.setCorrespondenceEstimation (cens);
         #   * \endcode
         #   */
-        # void setCorrespondenceEstimation (const CorrespondenceEstimationPtr &ce) { correspondence_estimation_ = ce; }
+        # void setCorrespondenceEstimation (const CorrespondenceEstimationPtr &ce)
         # 
         # /** \brief Provide a pointer to the input source 
         #   * (e.g., the point cloud that we want to align to the target)
@@ -120,25 +121,27 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # 
         # /** \brief Get the final transformation matrix estimated by the registration method. */
         # inline Matrix4 getFinalTransformation ()
-        Matrix4 getFinalTransformation ()
-        # 
+        Matrix4f getFinalTransformation ()
+        
         # /** \brief Get the last incremental transformation matrix estimated by the registration method. */
         Matrix4f getLastIncrementalTransformation ()
-        # 
+        
         # Set the maximum number of iterations the internal optimization should run for.
         # param nr_iterations the maximum number of iterations the internal optimization should run for
         void setMaximumIterations (int nr_iterations) except +
+        
         # /** \brief Get the maximum number of iterations the internal optimization should run for, as set by the user. */
         int getMaximumIterations () 
+        
         # /** \brief Set the number of iterations RANSAC should run for.
         #   * \param[in] ransac_iterations is the number of iterations RANSAC should run for
         #   */
         void setRANSACIterations (int ransac_iterations)
-        # 
+        
         # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
         # inline double getRANSACIterations ()
         double getRANSACIterations ()
-        # 
+
         # /** \brief Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
         #   * The method considers a point to be an inlier, if the distance between the target data index and the transformed 
         #   * source index is smaller than the given inlier distance threshold. 
@@ -146,22 +149,26 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * \param[in] inlier_threshold the inlier distance threshold for the internal RANSAC outlier rejection loop
         #   */
         # inline void setRANSACOutlierRejectionThreshold (double inlier_threshold) { inlier_threshold_ = inlier_threshold; }
-        # 
+        void setRANSACOutlierRejectionThreshold (double inlier_threshold)
+        
         # /** \brief Get the inlier distance threshold for the internal outlier rejection loop as set by the user. */
         # inline double getRANSACOutlierRejectionThreshold ()
-        # 
+        double getRANSACOutlierRejectionThreshold ()
+        
         # /** \brief Set the maximum distance threshold between two correspondent points in source <-> target. If the 
         #   * distance is larger than this threshold, the points will be ignored in the alignment process.
         #   * \param[in] distance_threshold the maximum distance threshold between a point and its nearest neighbor 
         #   * correspondent in order to be considered in the alignment process
         #   */
         # inline void setMaxCorrespondenceDistance (double distance_threshold)
-        # 
+        void setMaxCorrespondenceDistance (double distance_threshold)
+        
         # /** \brief Get the maximum distance threshold between two correspondent points in source <-> target. If the 
         #   * distance is larger than this threshold, the points will be ignored in the alignment process.
         #   */
         # inline double getMaxCorrespondenceDistance ()
-        # 
+        double getMaxCorrespondenceDistance ()
+        
         # /** \brief Set the transformation epsilon (maximum allowable difference between two consecutive 
         #   * transformations) in order for an optimization to be considered as having converged to the final 
         #   * solution.
@@ -169,12 +176,14 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * converged to the final solution.
         #   */
         # inline void setTransformationEpsilon (double epsilon)
-        # 
+        void setTransformationEpsilon (double epsilon)
+        
         # /** \brief Get the transformation epsilon (maximum allowable difference between two consecutive 
         #   * transformations) as set by the user.
         #   */
         # inline double getTransformationEpsilon ()
-        # 
+        double getTransformationEpsilon ()
+        
         # /** \brief Set the maximum allowed Euclidean error between two consecutive steps in the ICP loop, before 
         #   * the algorithm is considered to have converged. 
         #   * The error is estimated as the sum of the differences between correspondences in an Euclidean sense, 
@@ -183,11 +192,14 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * converged
         #   */
         # inline void setEuclideanFitnessEpsilon (double epsilon)
-        # 
+        void setEuclideanFitnessEpsilon (double epsilon)
+        
         # /** \brief Get the maximum allowed distance error before the algorithm will be considered to have converged,
         #   * as set by the user. See \ref setEuclideanFitnessEpsilon
         #   */
         # inline double getEuclideanFitnessEpsilon ()
+        double getEuclideanFitnessEpsilon ()
+        
         # 
         # /** \brief Provide a boost shared pointer to the PointRepresentation to be used when comparing points
         #   * \param[in] point_representation the PointRepresentation to be used by the k-D tree
@@ -199,58 +211,73 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #  * \param[in] visualizerCallback reference of the user callback function
         #  */
         # template<typename FunctionSignature> inline bool registerVisualizationCallback (boost::function<FunctionSignature> &visualizerCallback)
-        # 
+        
         # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
         #   * \param[in] max_range maximum allowable distance between a point and its correspondence in the target 
         #   * (default: double::max)
         #   */
-        #  double getFitnessScore (double max_range = numeric_limits[double]::max ());
+        # double getFitnessScore (double max_range = numeric_limits[double]::max ());
         double getFitnessScore() except +
+        
         # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
         #   * from two sets of correspondence distances (distances between source and target points)
         #   * \param[in] distances_a the first set of distances between correspondences
         #   * \param[in] distances_b the second set of distances between correspondences
         #   */
         # inline double getFitnessScore (const std::vector<float> &distances_a, const std::vector<float> &distances_b);
+        double getFitnessScore (const vector[float] &distances_a, const vector[float] &distances_b)
+        
         # 
         # /** \brief Return the state of convergence after the last align run */
         # inline bool hasConverged ()
+        bool hasConverged ()
+        
         # 
         # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
         #   * (input) as \a output.
         #   * \param[out] output the resultant input transfomed point cloud dataset
         #   */
         # inline void align (PointCloudSource &output);
+        void align (cpp.PointCloud[Source] &output)
+        
         # 
         # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
         #   * (input) as \a output.
         #   * \param[out] output the resultant input transfomed point cloud dataset
         #   * \param[in] guess the initial gross estimation of the transformation
         #   */
-        # inline void align (PointCloudSource &output, const Matrix4& guess);
-        # 
+        # inline void align (PointCloudSource &output, const Matrix4f& guess);
+        void align (cpp.PointCloud[Source] &output, const Matrix4f& guess)
+        
         # /** \brief Abstract class get name method. */
         # inline const std::string& getClassName () const
-        # 
+        string& getClassName ()
+        
         # /** \brief Internal computation initalization. */
         # bool initCompute ();
-        # 
+        bool initCompute ()
+        
         # /** \brief Internal computation when reciprocal lookup is needed */
         # bool initComputeReciprocal ();
-        # 
+        bool initComputeReciprocal ()
+        
         # /** \brief Add a new correspondence rejector to the list
         #   * \param[in] rejector the new correspondence rejector to concatenate
         # inline void addCorrespondenceRejector (const CorrespondenceRejectorPtr &rejector)
-        # 
+        # void addCorrespondenceRejector (const CorrespondenceRejectorPtr &rejector)
+        
         # /** \brief Get the list of correspondence rejectors. */
         # inline std::vector<CorrespondenceRejectorPtr> getCorrespondenceRejectors ()
-        # 
+        # vector[CorrespondenceRejectorPtr] getCorrespondenceRejectors ()
+        
         # /** \brief Remove the i-th correspondence rejector in the list
         #   * \param[in] i the position of the correspondence rejector in the list to remove
         # inline bool removeCorrespondenceRejector (unsigned int i)
-        # 
+        bool removeCorrespondenceRejector (unsigned int i)
+        
         # /** \brief Clear the list of correspondence rejectors. */
         # inline void clearCorrespondenceRejectors ()
+        void clearCorrespondenceRejectors ()
 
 
 ###
@@ -262,8 +289,7 @@ cdef extern from "pcl/registration/warp_point_rigid.h" namespace "pcl" nogil:
     cdef cppclass WarpPointRigid[Source, Target]:
         WarpPointRigid (int nr_dim)
         # public:
-        # virtual void 
-        # setParam (const Eigen::VectorXf& p) = 0;
+        # virtual void setParam (const Eigen::VectorXf& p) = 0;
         # void warpPoint (const PointSourceT& pnt_in, PointSourceT& pnt_out) const
         # int getDimension () const {return nr_dim_;}
         # const Eigen::Matrix4f& getTransform () const { return transform_matrix_; }
@@ -273,9 +299,9 @@ cdef extern from "pcl/registration/warp_point_rigid.h" namespace "pcl" nogil:
 
 # correspondence_rejection.h
 # class CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
     cdef cppclass CorrespondenceRejector:
-        # CorrespondenceRejector()
+        CorrespondenceRejector()
         # /** \brief Provide a pointer to the vector of the input correspondences.
         #   * \param[in] correspondences the const boost shared pointer to a correspondence vector
         #   */
@@ -350,8 +376,8 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
         #   inline void setInputTarget (const PointCloudConstPtr &target)
         #   
         #   /** \brief Set the normals computed on the input point cloud
-        #   * \param[in] normals the normals computed for the input cloud
-        #   */
+        #    * \param[in] normals the normals computed for the input cloud
+        #    */
         #   inline void setInputNormals (const NormalsPtr &normals)
         # 
         #   /** \brief Set the normals computed on the target point cloud
@@ -366,27 +392,75 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
         #   inline NormalsPtr getTargetNormals ()
         # 
         #   /** \brief Get the correspondence score for a point in the input cloud
-        #   *  \param[index] index of the point in the input cloud
-        #   */
+        #    *  \param[index] index of the point in the input cloud
+        #    */
         #   inline double getCorrespondenceScore (int index)
         # 
         #   /** \brief Get the correspondence score for a given pair of correspondent points
-        #   *  \param[corr] Correspondent points
-        #   */
+        #    *  \param[corr] Correspondent points
+        #    */
         #   inline double getCorrespondenceScore (const pcl::Correspondence &corr)
         # 
         #   /** \brief Get the correspondence score for a given pair of correspondent points based on 
-        #   * the angle betweeen the normals. The normmals for the in put and target clouds must be 
-        #   * set before using this function
-        #   * \param[in] corr Correspondent points
-        #   */
+        #    * the angle betweeen the normals. The normmals for the in put and target clouds must be 
+        #    * set before using this function
+        #    * \param[in] corr Correspondent points
+        #    */
         #   double getCorrespondenceScoreFromNormals (const pcl::Correspondence &corr)
         # }
+
+###
+
+# correspondence_estimation.h
+# template <typename PointSource, typename PointTarget>
+# class CorrespondenceEstimation : public PCLBase<PointSource>
+cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::registration" nogil:
+    cdef cppclass CorrespondenceEstimation[Source, Target](cpp.PCLBase[Source]):
+        CorrespondenceEstimation()
+        # public:
+        # using PCLBase<PointSource>::initCompute;
+        # using PCLBase<PointSource>::deinitCompute;
+        # using PCLBase<PointSource>::input_;
+        # using PCLBase<PointSource>::indices_;
+        # typedef typename pcl::KdTree<PointTarget> KdTree;
+        # typedef typename pcl::KdTree<PointTarget>::Ptr KdTreePtr;
+        # typedef pcl::PointCloud<PointSource> PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # typedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
+        # 
+        # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the 
+        #   * input source to)
+        #   * \param[in] cloud the input point cloud target
+        #   */
+        # virtual inline void setInputTarget (const PointCloudTargetConstPtr &cloud);
+        # 
+        # /** \brief Get a pointer to the input point cloud dataset target. */
+        # inline PointCloudTargetConstPtr const getInputTarget () { return (target_ ); }
+        # 
+        # /** \brief Provide a boost shared pointer to the PointRepresentation to be used when comparing points
+        #   * \param[in] point_representation the PointRepresentation to be used by the k-D tree
+        #   */
+        # inline void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
+        # 
+        # /** \brief Determine the correspondences between input and target cloud.
+        #   * \param[out] correspondences the found correspondences (index of query point, index of target point, distance)
+        #   * \param[in] max_distance maximum distance between correspondences
+        #   */
+        # virtual void determineCorrespondences (pcl::Correspondences &correspondences, float max_distance = std::numeric_limits<float>::max ());
+        # 
+        # /** \brief Determine the correspondences between input and target cloud.
+        #   * \param[out] correspondences the found correspondences (index of query and target point, distance)
+        #   */
+        # virtual void determineReciprocalCorrespondences (pcl::Correspondences &correspondences);
 
 
 ###
 
-# Inheritance
+### Inheritance ###
 
 # icp.h
 # template <typename PointSource, typename PointTarget>
@@ -402,22 +476,21 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
         # ctypedef PointIndices::ConstPtr PointIndicesConstPtr;
 
 
-ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPoint_t
-ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPoint_PointXYZI_t
-ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB] IterativeClosestPoint_PointXYZRGB_t
-ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA] IterativeClosestPoint_PointXYZRGBA_t
-
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPoint_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PoiPointXYZIntXYZ, cpp.PointXYZI]] IterativeClosestPoint_PointXYZI_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPoint_PointXYZRGB_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPoint_PointXYZRGBA_t
-
+# ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPoint_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPoint_PointXYZI_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB] IterativeClosestPoint_PointXYZRGB_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA] IterativeClosestPoint_PointXYZRGBA_t
+# 
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPoint_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PoiPointXYZIntXYZ, cpp.PointXYZI]] IterativeClosestPoint_PointXYZI_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPoint_PointXYZRGB_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPoint_PointXYZRGBA_t
 ###
 
 # gicp.h
 cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
     cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](Registration[Source, Target]):
-        # GeneralizedIterativeClosestPoint() except +
+        GeneralizedIterativeClosestPoint() except +
         # using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
         # using IterativeClosestPoint<PointSource, PointTarget>::getClassName;
         # using IterativeClosestPoint<PointSource, PointTarget>::indices_;
@@ -448,23 +521,23 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
         # typedef Eigen::Matrix<double, 6, 1> Vector6d;
         # public:
         # /** \brief Provide a pointer to the input dataset
-        # * \param cloud the const boost shared pointer to a PointCloud message
-        # */
+        #  * \param cloud the const boost shared pointer to a PointCloud message
+        #  */
         # void setInputCloud (cpp.PointCloudPtr_t ptcloud)
         # 
         # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
-        # * \param[in] target the input point cloud target
-        # */
+        #  * \param[in] target the input point cloud target
+        #  */
         # inline void setInputTarget (const PointCloudTargetConstPtr &target)
         # 
         # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using an iterative
-        # * non-linear Levenberg-Marquardt approach.
-        # * \param[in] cloud_src the source point cloud dataset
-        # * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-        # * \param[in] cloud_tgt the target point cloud dataset
-        # * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
-        # * \param[out] transformation_matrix the resultant transformation matrix
-        # */
+        #  * non-linear Levenberg-Marquardt approach.
+        #  * \param[in] cloud_src the source point cloud dataset
+        #  * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #  * \param[in] cloud_tgt the target point cloud dataset
+        #  * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+        #  * \param[out] transformation_matrix the resultant transformation matrix
+        #  */
         # void estimateRigidTransformationBFGS (
         #                                const PointCloudSource &cloud_src,
         #                                const std::vector<int> &indices_src,
@@ -476,42 +549,42 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
         # inline const Eigen::Matrix3d& mahalanobis(size_t index) const
         # 
         # /** \brief Computes rotation matrix derivative.
-        # * rotation matrix is obtainded from rotation angles x[3], x[4] and x[5]
-        # * \return d/d_rx, d/d_ry and d/d_rz respectively in g[3], g[4] and g[5]
-        # * param x array representing 3D transformation
-        # * param R rotation matrix
-        # * param g gradient vector
-        # */
+        #  * rotation matrix is obtainded from rotation angles x[3], x[4] and x[5]
+        #  * \return d/d_rx, d/d_ry and d/d_rz respectively in g[3], g[4] and g[5]
+        #  * param x array representing 3D transformation
+        #  * param R rotation matrix
+        #  * param g gradient vector
+        #  */
         # void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g) const;
         # 
         # /** \brief Set the rotation epsilon (maximum allowable difference between two 
-        # * consecutive rotations) in order for an optimization to be considered as having 
-        # * converged to the final solution.
-        # * \param epsilon the rotation epsilon
-        # */
+        #  * consecutive rotations) in order for an optimization to be considered as having 
+        #  * converged to the final solution.
+        #  * \param epsilon the rotation epsilon
+        #  */
         # inline void setRotationEpsilon (double epsilon)
         # 
         # /** \brief Get the rotation epsilon (maximum allowable difference between two 
-        # * consecutive rotations) as set by the user.
-        # */
+        #  * consecutive rotations) as set by the user.
+        #  */
         # inline double getRotationEpsilon ()
         # 
         # /** \brief Set the number of neighbors used when selecting a point neighbourhood
-        # * to compute covariances. 
-        # * A higher value will bring more accurate covariance matrix but will make 
-        # * covariances computation slower.
-        # * \param k the number of neighbors to use when computing covariances
-        # */
+        #  * to compute covariances. 
+        #  * A higher value will bring more accurate covariance matrix but will make 
+        #  * covariances computation slower.
+        #  * \param k the number of neighbors to use when computing covariances
+        #  */
         # void setCorrespondenceRandomness (int k)
         # 
         # /** \brief Get the number of neighbors used when computing covariances as set by 
-        # * the user 
-        # */
+        #  * the user 
+        #  */
         # int getCorrespondenceRandomness ()
         # 
         # /** set maximum number of iterations at the optimization step
-        # * \param[in] max maximum number of iterations for the optimizer
-        # */
+        #  * \param[in] max maximum number of iterations for the optimizer
+        #  */
         # void setMaximumOptimizerIterations (int max)
         # 
         # ///\return maximum number of iterations at the optimization step
@@ -527,6 +600,8 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
 cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
     cdef cppclass IterativeClosestPointNonLinear[Source, Target](IterativeClosestPoint[Source, Target]):
         IterativeClosestPointNonLinear() except +
+
+
 ###
 
 # bfgs.h
@@ -535,37 +610,39 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 # cdef extern from "pcl/registration/bfgs.h" namespace "Eigen" nogil:
 #     cdef cppclass PolynomialSolver[_Scalar, 2](PolynomialSolverBase[_Scalar, 2]):
 #         PolynomialSolver (int nr_dim)
-#         public:
-#         typedef PolynomialSolverBase<_Scalar,2>    PS_Base;
-#         EIGEN_POLYNOMIAL_SOLVER_BASE_INHERITED_TYPES( PS_Base )
-#         public:
-#         template< typename OtherPolynomial >
-#         inline PolynomialSolver( const OtherPolynomial& poly, bool& hasRealRoot )
-#         /** Computes the complex roots of a new polynomial. */
-#         template< typename OtherPolynomial >
-#         void compute( const OtherPolynomial& poly, bool& hasRealRoot)
-#         template< typename OtherPolynomial > void compute( const OtherPolynomial& poly)
-# 
+        # public:
+        # typedef PolynomialSolverBase<_Scalar,2>    PS_Base;
+        # EIGEN_POLYNOMIAL_SOLVER_BASE_INHERITED_TYPES( PS_Base )
+        # public:
+        # template< typename OtherPolynomial >
+        # inline PolynomialSolver( const OtherPolynomial& poly, bool& hasRealRoot )
+        # /** Computes the complex roots of a new polynomial. */
+        # template< typename OtherPolynomial >
+        # void compute( const OtherPolynomial& poly, bool& hasRealRoot)
+        # template< typename OtherPolynomial > 
+        # void compute( const OtherPolynomial& poly)
+
 ###
 
+# bfgs.h
 # template<typename _Scalar, int NX=Eigen::Dynamic>
 # struct BFGSDummyFunctor
 # cdef extern from "pcl/registration/bfgs.h" nogil:
-#     cdef struct BFGSDummyFunctor[_Scalar, NX]:
-#         BFGSDummyFunctor ()
-#         BFGSDummyFunctor(int inputs)
-#     typedef _Scalar Scalar;
-#     enum { InputsAtCompileTime = NX };
-#     typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> VectorType;
-#     const int m_inputs;
-#     int inputs() const { return m_inputs; }
-#     virtual double operator() (const VectorType &x) = 0;
-#     virtual void  df(const VectorType &x, VectorType &df) = 0;
-#     virtual void fdf(const VectorType &x, Scalar &f, VectorType &df) = 0;
+#   cdef struct BFGSDummyFunctor[_Scalar, NX]:
+#       BFGSDummyFunctor ()
+#       BFGSDummyFunctor(int inputs)
+#       typedef _Scalar Scalar;
+#       enum { InputsAtCompileTime = NX };
+#       typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> VectorType;
+#       const int m_inputs;
+#       int inputs() const { return m_inputs; }
+#       virtual double operator() (const VectorType &x) = 0;
+#       virtual void  df(const VectorType &x, VectorType &df) = 0;
+#       virtual void fdf(const VectorType &x, Scalar &f, VectorType &df) = 0;
 # 
 ###
 
-
+# bfgs.h
 # namespace BFGSSpace {
 #   enum Status {
 #     NegativeGradientEpsilon = -3,
@@ -578,8 +655,9 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 # 
 ###
 
+# bfgs.h
 # /**
-#  * BFGS stands for Broyden窶擢letcher窶敵oldfarb窶鉄hanno (BFGS) method for solving 
+#  * BFGS stands for Broydenletcheroldfarbhanno (BFGS) method for solving 
 #  * unconstrained nonlinear optimization problems. 
 #  * For further details please visit: http://en.wikipedia.org/wiki/BFGS_method
 #  * The method provided here is almost similar to the one provided by GSL.
@@ -599,9 +677,19 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 # 
 #   typedef Eigen::DenseIndex Index;
 # 
-#   cdef struct Parameters
+#   struct Parameters {
 #     Parameters()
-#     Index max_iters;   # maximum number of function evaluation
+#     : max_iters(400)
+#       , bracket_iters(100)
+#       , section_iters(100)
+#       , rho(0.01)
+#       , sigma(0.01)
+#       , tau1(9)
+#       , tau2(0.05)
+#       , tau3(0.5)
+#       , step_size(1)
+#       , order(3) {}
+#     Index max_iters;   // maximum number of function evaluation
 #     Index bracket_iters;
 #     Index section_iters;
 #     Scalar rho;
@@ -669,141 +757,6 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 # BFGS<FunctorType>::lineSearch(Scalar rho, Scalar sigma, 
 #                               Scalar tau1, Scalar tau2, Scalar tau3,
 #                               int order, Scalar alpha1, Scalar &alpha_new)
-###
-
-# boost.h
-# #include <boost/graph/adjacency_list.hpp>
-# #include <boost/graph/graph_traits.hpp>
-# #include <boost/graph/dijkstra_shortest_paths.hpp>
-# #include <boost/property_map/property_map.hpp>
-# #include <boost/unordered_map.hpp>
-# #include <boost/noncopyable.hpp>
-# #include <boost/make_shared.hpp>
-# #include <boost/function.hpp>
-# #include <boost/bind.hpp>
-###
-
-# boost_graph.h
-# namespace boost
-#     struct eigen_vecS
-# 
-#     template <class ValueType>
-#     struct container_gen<eigen_vecS, ValueType>
-#     {
-#       typedef std::vector<ValueType, Eigen::aligned_allocator<ValueType> > type;
-#     };
-# 
-#   template <>
-#     struct parallel_edge_traits<eigen_vecS>
-#     {
-#       typedef allow_parallel_edge_tag type;
-#     };
-# 
-#   namespace detail
-#   {
-#     template <>
-#       struct is_random_access<eigen_vecS>
-#       {
-#         enum { value = true };
-#         typedef mpl::true_ type;
-#       };
-#   }
-# 
-#   struct eigen_listS
-#   {
-#   };
-# 
-#   template <class ValueType>
-#     struct container_gen<eigen_listS, ValueType>
-#     {
-#       typedef std::list<ValueType, Eigen::aligned_allocator<ValueType> > type;
-#     };
-# 
-#   template <>
-#     struct parallel_edge_traits<eigen_listS>
-#     {
-#       typedef allow_parallel_edge_tag type;
-#     };
-# 
-#   namespace detail
-#   {
-#     template <>
-#       struct is_random_access<eigen_listS>
-#       {
-#         enum { value = false };
-#         typedef mpl::false_ type;
-#       };
-#   }
-# }
-###
-
-# convergence_criteria.h
-# namespace pcl
-# namespace registration
-# class PCL_EXPORTS ConvergenceCriteria
-cdef extern from "pcl/registration/convergence_criteria.h" namespace "pcl::registration" nogil:
-    cdef cppclass ConvergenceCriteria:
-        ConvergenceCriteria()
-		# public:
-		# typedef boost::shared_ptr<ConvergenceCriteria> Ptr;
-		# typedef boost::shared_ptr<const ConvergenceCriteria> ConstPtr;
-		# 
-		# /** \brief Empty constructor. */
-		# ConvergenceCriteria () {}
-        # /** \brief Empty destructor. */
-        # virtual ~ConvergenceCriteria () {}
-        # /** \brief Check if convergence has been reached. Pure virtual. */
-        # virtual bool hasConverged () = 0;
-        # /** \brief Bool operator. */
-        # operator bool ()
-
-
-###
-
-# correspondence_estimation.h
-# template <typename PointSource, typename PointTarget>
-# class CorrespondenceEstimation : public PCLBase<PointSource>
-cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::registration" nogil:
-    cdef cppclass CorrespondenceEstimation[Source, Target](cpp.PCLBase[Source]):
-        CorrespondenceEstimation()
-      	# public:
-        # using PCLBase<PointSource>::initCompute;
-        # using PCLBase<PointSource>::deinitCompute;
-        # using PCLBase<PointSource>::input_;
-        # using PCLBase<PointSource>::indices_;
-        # typedef typename pcl::KdTree<PointTarget> KdTree;
-        # typedef typename pcl::KdTree<PointTarget>::Ptr KdTreePtr;
-        # typedef pcl::PointCloud<PointSource> PointCloudSource;
-        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-        # typedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
-        # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the 
-        #   * input source to)
-        #   * \param[in] cloud the input point cloud target
-        # virtual inline void  setInputTarget (const PointCloudTargetConstPtr &cloud);
-        # /** \brief Get a pointer to the input point cloud dataset target. */
-        # inline PointCloudTargetConstPtr const getInputTarget () { return (target_ ); }
-        # /** \brief Provide a boost shared pointer to the PointRepresentation to be used when comparing points
-        #   * \param[in] point_representation the PointRepresentation to be used by the k-D tree
-        #   */
-        # inline void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
-        # /** \brief Determine the correspondences between input and target cloud.
-        #   * \param[out] correspondences the found correspondences (index of query point, index of target point, distance)
-        #   * \param[in] max_distance maximum distance between correspondences
-        #   */
-        # virtual void 
-        # determineCorrespondences (pcl::Correspondences &correspondences,
-        #                           float max_distance = std::numeric_limits<float>::max ());
-        # /** \brief Determine the correspondences between input and target cloud.
-        #   * \param[out] correspondences the found correspondences (index of query and target point, distance)
-        #   */
-        # virtual void 
-        # determineReciprocalCorrespondences (pcl::Correspondences &correspondences);
-
-
 ###
 
 # correspondence_estimation_backprojection.h
@@ -907,8 +860,7 @@ cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::
 
 ###
 
-
-# # correspondence_estimation_normal_shooting.h
+# correspondence_estimation_normal_shooting.h
 # template <typename PointSource, typename PointTarget, typename NormalT>
 # class CorrespondenceEstimationNormalShooting : public CorrespondenceEstimation <PointSource, PointTarget>
 cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" namespace "pcl::registration" nogil:
