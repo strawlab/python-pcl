@@ -142,7 +142,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
         # inline double getRANSACIterations ()
         double getRANSACIterations ()
-		
+        
         # /** \brief Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
         #   * The method considers a point to be an inlier, if the distance between the target data index and the transformed 
         #   * source index is smaller than the given inlier distance threshold. 
@@ -418,7 +418,7 @@ cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::r
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class CorrespondenceEstimationBase: public PCLBase<PointSource>
 cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::registration" nogil:
-    cdef cppclass CorrespondenceEstimationBase[Source, Target, float](cpp.PCLBase[Source, Target, float]):
+    cdef cppclass CorrespondenceEstimationBase[Source, Target, float](cpp.PCLBase[Source]):
         CorrespondenceEstimationBase()
         # public:
         # typedef boost::shared_ptr<CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> > Ptr;
@@ -1011,51 +1011,56 @@ cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::
 # template <typename PointSource, typename PointTarget, typename NormalT>
 # class CorrespondenceEstimationNormalShooting : public CorrespondenceEstimation <PointSource, PointTarget>
 cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" namespace "pcl::registration" nogil:
-    cdef cppclass CorrespondenceEstimationNormalShooting[Source, Target, NormalT](CorrespondenceEstimation[Source, Target]):
+    cdef cppclass CorrespondenceEstimationNormalShooting[Source, Target, NormalT](CorrespondenceEstimation[Source, Target, NormalT]):
         CorrespondenceEstimationNormalShooting()
-#       public:
-#         using PCLBase<PointSource>::initCompute;
-#         using PCLBase<PointSource>::deinitCompute;
-#         using PCLBase<PointSource>::input_;
-#         using PCLBase<PointSource>::indices_;
-#         using CorrespondenceEstimation<PointSource, PointTarget>::getClassName;
-#         typedef typename pcl::KdTree<PointTarget> KdTree;
-#         typedef typename pcl::KdTree<PointTarget>::Ptr KdTreePtr;
-#         typedef pcl::PointCloud<PointSource> PointCloudSource;
-#         typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#         typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#         typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-#         typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-#         typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-#         typedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
-#         typedef typename pcl::PointCloud<NormalT>::Ptr NormalsPtr;
-#
-#         /** \brief Set the normals computed on the input point cloud
-#           * \param[in] normals the normals computed for the input cloud
-#           */
-#         inline void setSourceNormals (const NormalsPtr &normals)
-# 
-#         /** \brief Get the normals of the input point cloud
-#           */
-#         inline NormalsPtr getSourceNormals () const
-# 
-#         /** \brief Determine the correspondences between input and target cloud.
-#           * \param[out] correspondences the found correspondences (index of query point, index of target point, distance)
-#           * \param[in] max_distance maximum distance between the normal on the source point cloud and the corresponding point in the target
-#           * point cloud
-#           */
-#         void 
-#         determineCorrespondences (pcl::Correspondences &correspondences,
-#                                   float max_distance = std::numeric_limits<float>::max ());
-# 
-#         /** \brief Set the number of nearest neighbours to be considered in the target point cloud
-#           * \param[in] k the number of nearest neighbours to be considered
-#           */
-#         inline void setKSearch (unsigned int k)
-# 
-#         /** \brief Get the number of nearest neighbours considered in the target point cloud for computing correspondence
-#           */
-#         inline void getKSearch ()
+        # public:
+        # using PCLBase<PointSource>::initCompute;
+        # using PCLBase<PointSource>::deinitCompute;
+        # using PCLBase<PointSource>::input_;
+        # using PCLBase<PointSource>::indices_;
+        # using CorrespondenceEstimation<PointSource, PointTarget>::getClassName;
+        # typedef typename pcl::KdTree<PointTarget> KdTree;
+        # typedef typename pcl::KdTree<PointTarget>::Ptr KdTreePtr;
+        # typedef pcl::PointCloud<PointSource> PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # typedef typename KdTree::PointRepresentationConstPtr PointRepresentationConstPtr;
+        # typedef typename pcl::PointCloud<NormalT>::Ptr NormalsPtr;
+        
+        # /** \brief Set the normals computed on the input point cloud
+        #   * \param[in] normals the normals computed for the input cloud
+        #   */
+        # inline void setSourceNormals (const NormalsPtr &normals)
+        # void setSourceNormals (const NormalsPtr &normals)
+        
+        # 
+        # /** \brief Get the normals of the input point cloud
+        #   */
+        # inline NormalsPtr getSourceNormals () const
+        # NormalsPtr getSourceNormals ()
+        
+        # /** \brief Determine the correspondences between input and target cloud.
+        #   * \param[out] correspondences the found correspondences (index of query point, index of target point, distance)
+        #   * \param[in] max_distance maximum distance between the normal on the source point cloud and the corresponding point in the target
+        #   * point cloud
+        #   */
+        # void determineCorrespondences (pcl::Correspondences &correspondences, float max_distance = std::numeric_limits<float>::max ());
+        
+        # /** \brief Set the number of nearest neighbours to be considered in the target point cloud
+        #   * \param[in] k the number of nearest neighbours to be considered
+        #   */
+        # inline void setKSearch (unsigned int k)
+        void setKSearch (unsigned int k)
+        
+        # /** \brief Get the number of nearest neighbours considered in the target point cloud for computing correspondence
+        #   */
+        # inline void getKSearch ()
+        void getKSearch ()
+
+
 ###
 
 # correspondence_estimation_organized_projection.h
