@@ -559,7 +559,7 @@ cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::
         #   * k-D tree for nearest neighbor search
         #   */
         # inline void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
-        void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
+        # void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
         
         # /** \brief Clone and cast to CorrespondenceEstimationBase */
         # virtual boost::shared_ptr< CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> > clone () const = 0;
@@ -950,91 +950,102 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
 # class CorrespondenceEstimationBackProjection : public CorrespondenceEstimationBase <PointSource, PointTarget, Scalar>
 cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::registration" nogil:
     cdef cppclass CorrespondenceEstimationBackProjection[Source, Target, Normal](CorrespondenceEstimationBase[Source, Target, float]):
-          CorrespondenceEstimationBackProjection ()
-          # public:
-          # typedef boost::shared_ptr<CorrespondenceEstimationBackProjection<PointSource, PointTarget, NormalT, Scalar> > Ptr;
-          # typedef boost::shared_ptr<const CorrespondenceEstimationBackProjection<PointSource, PointTarget, NormalT, Scalar> > ConstPtr;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::initCompute;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::initComputeReciprocal;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::input_transformed_;
-          # using PCLBase<PointSource>::deinitCompute;
-          # using PCLBase<PointSource>::input_;
-          # using PCLBase<PointSource>::indices_;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::getClassName;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::point_representation_;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::target_indices_;
-          # typedef typename pcl::search::KdTree<PointTarget> KdTree;
-          # typedef typename pcl::search::KdTree<PointTarget>::Ptr KdTreePtr;
-          # typedef pcl::PointCloud<PointSource> PointCloudSource;
-          # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-          # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-          # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-          # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-          # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-          # typedef pcl::PointCloud<NormalT> PointCloudNormals;
-          # typedef typename PointCloudNormals::Ptr NormalsPtr;
-          # typedef typename PointCloudNormals::ConstPtr NormalsConstPtr;
-          # /** \brief Set the normals computed on the source point cloud
-          #   * \param[in] normals the normals computed for the source cloud
-          #   */
-          # inline void setSourceNormals (const NormalsConstPtr &normals) { source_normals_ = normals; }
-          # /** \brief Get the normals of the source point cloud
-          #   */
-          # inline NormalsConstPtr getSourceNormals () const { return (source_normals_); }
-          # /** \brief Set the normals computed on the target point cloud
-          #   * \param[in] normals the normals computed for the target cloud
-          #   */
-          # inline void setTargetNormals (const NormalsConstPtr &normals) { target_normals_ = normals; }
-          # /** \brief Get the normals of the target point cloud
-          #   */
-          # inline NormalsConstPtr getTargetNormals () const { return (target_normals_); }
-          # /** \brief See if this rejector requires source normals */
-          # bool requiresSourceNormals () const
-          # /** \brief Blob method for setting the source normals */
-          # void setSourceNormals (pcl::PCLPointCloud2::ConstPtr cloud2)
-          # /** \brief See if this rejector requires target normals*/
-          # bool requiresTargetNormals () const
-          # /** \brief Method for setting the target normals */
-          # void setTargetNormals (pcl::PCLPointCloud2::ConstPtr cloud2)
-          # /** \brief Determine the correspondences between input and target cloud.
-          #   * \param[out] correspondences the found correspondences (index of query point, index of target point, distance)
-          #   * \param[in] max_distance maximum distance between the normal on the source point cloud and the corresponding point in the target
-          #   * point cloud
-          #   */
-          # void 
-          # determineCorrespondences (pcl::Correspondences &correspondences,
-          #                           double max_distance = std::numeric_limits<double>::max ());
-          # /** \brief Determine the reciprocal correspondences between input and target cloud.
-          #   * A correspondence is considered reciprocal if both Src_i has Tgt_i as a 
-          #   * correspondence, and Tgt_i has Src_i as one.
-          #   *
-          #   * \param[out] correspondences the found correspondences (index of query and target point, distance)
-          #   * \param[in] max_distance maximum allowed distance between correspondences
-          #   */
-          # virtual void 
-          # determineReciprocalCorrespondences (pcl::Correspondences &correspondences,
-          #                                     double max_distance = std::numeric_limits<double>::max ());
-          # /** \brief Set the number of nearest neighbours to be considered in the target 
-          #   * point cloud. By default, we use k = 10 nearest neighbors.
-          #   *
-          #   * \param[in] k the number of nearest neighbours to be considered
-          #   */
-          # inline void setKSearch (unsigned int k)
-          # /** \brief Get the number of nearest neighbours considered in the target point 
-          #   * cloud for computing correspondences. By default we use k = 10 nearest 
-          #   * neighbors.
-          #   */
-          # inline void getKSearch ()
-          # /** \brief Clone and cast to CorrespondenceEstimationBase */
-          # virtual boost::shared_ptr< CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> > 
-          # clone () const
-          # protected:
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::corr_name_;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::tree_;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::tree_reciprocal_;
-          # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::target_;
-          # /** \brief Internal computation initalization. */
-          # bool initCompute ();
+        CorrespondenceEstimationBackProjection ()
+        # public:
+        # typedef boost::shared_ptr<CorrespondenceEstimationBackProjection<PointSource, PointTarget, NormalT, Scalar> > Ptr;
+        # typedef boost::shared_ptr<const CorrespondenceEstimationBackProjection<PointSource, PointTarget, NormalT, Scalar> > ConstPtr;
+        # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::initCompute;
+        # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::initComputeReciprocal;
+        # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::input_transformed_;
+        # using PCLBase<PointSource>::deinitCompute;
+        # using PCLBase<PointSource>::input_;
+        # using PCLBase<PointSource>::indices_;
+        # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::getClassName;
+        # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::point_representation_;
+        # using CorrespondenceEstimationBase<PointSource, PointTarget, Scalar>::target_indices_;
+        # typedef typename pcl::search::KdTree<PointTarget> KdTree;
+        # typedef typename pcl::search::KdTree<PointTarget>::Ptr KdTreePtr;
+        # typedef pcl::PointCloud<PointSource> PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # typedef pcl::PointCloud<NormalT> PointCloudNormals;
+        # typedef typename PointCloudNormals::Ptr NormalsPtr;
+        # typedef typename PointCloudNormals::ConstPtr NormalsConstPtr;
+        # /** \brief Set the normals computed on the source point cloud
+        #   * \param[in] normals the normals computed for the source cloud
+        #   */
+        # inline void setSourceNormals (const NormalsConstPtr &normals) { source_normals_ = normals; }
+        # void setSourceNormals (const NormalsConstPtr &normals)
+        
+        # /** \brief Get the normals of the source point cloud
+        #   */
+        # inline NormalsConstPtr getSourceNormals () const { return (source_normals_); }
+        # NormalsConstPtr getSourceNormals ()
+        
+        # /** \brief Set the normals computed on the target point cloud
+        #   * \param[in] normals the normals computed for the target cloud
+        #   */
+        # inline void setTargetNormals (const NormalsConstPtr &normals) { target_normals_ = normals; }
+        # void setTargetNormals (const NormalsConstPtr &normals)
+        
+        # /** \brief Get the normals of the target point cloud
+        #   */
+        # inline NormalsConstPtr getTargetNormals () const { return (target_normals_); }
+        # NormalsConstPtr getTargetNormals ()
+        
+        # /** \brief See if this rejector requires source normals */
+        # bool requiresSourceNormals () const
+        bool requiresSourceNormals ()
+        
+        # /** \brief Blob method for setting the source normals */
+        # void setSourceNormals (pcl::PCLPointCloud2::ConstPtr cloud2)
+        # void setSourceNormals (pcl::PCLPointCloud2::ConstPtr cloud2)
+        
+        # /** \brief See if this rejector requires target normals*/
+        # bool requiresTargetNormals () const
+        bool requiresTargetNormals ()
+        
+        # /** \brief Method for setting the target normals */
+        # void setTargetNormals (pcl::PCLPointCloud2::ConstPtr cloud2)
+        # void setTargetNormals (pcl::PCLPointCloud2::ConstPtr cloud2)
+        
+        # /** \brief Determine the correspondences between input and target cloud.
+        #   * \param[out] correspondences the found correspondences (index of query point, index of target point, distance)
+        #   * \param[in] max_distance maximum distance between the normal on the source point cloud and the corresponding point in the target
+        #   * point cloud
+        #   */
+        # void determineCorrespondences (pcl::Correspondences &correspondences, double max_distance = std::numeric_limits<double>::max ());
+        # void determineCorrespondences (pcl::Correspondences &correspondences, double max_distance = std::numeric_limits<double>::max ());
+        
+        # /** \brief Determine the reciprocal correspondences between input and target cloud.
+        #   * A correspondence is considered reciprocal if both Src_i has Tgt_i as a 
+        #   * correspondence, and Tgt_i has Src_i as one.
+        #   *
+        #   * \param[out] correspondences the found correspondences (index of query and target point, distance)
+        #   * \param[in] max_distance maximum allowed distance between correspondences
+        #   */
+        # virtual void determineReciprocalCorrespondences (pcl::Correspondences &correspondences, double max_distance = std::numeric_limits<double>::max ());
+        # 
+        # /** \brief Set the number of nearest neighbours to be considered in the target 
+        #   * point cloud. By default, we use k = 10 nearest neighbors.
+        #   *
+        #   * \param[in] k the number of nearest neighbours to be considered
+        #   */
+        # inline void setKSearch (unsigned int k)
+        # void setKSearch (unsigned int k)
+        
+        # /** \brief Get the number of nearest neighbours considered in the target point 
+        #   * cloud for computing correspondences. By default we use k = 10 nearest 
+        #   * neighbors.
+        #   */
+        # inline void getKSearch ()
+        # void getKSearch ()
+        
+        # /** \brief Clone and cast to CorrespondenceEstimationBase */
+        # virtual boost::shared_ptr< CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> > clone () const
 
 
 ###
@@ -1243,7 +1254,7 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 
 # correspondence_rejection_features.h
 # class CorrespondenceRejectorFeatures: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_features.h" namespace "pcl::registration" nogil:
     cdef cppclass CorrespondenceRejectorFeatures(CorrespondenceRejector):
         CorrespondenceRejectorFeatures()
         # using CorrespondenceRejector::input_correspondences_;
@@ -1304,164 +1315,110 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 cdef extern from "pcl/registration/correspondence_rejection_median_distance.h" namespace "pcl::registration" nogil:
     cdef cppclass CorrespondenceRejectorMedianDistance(CorrespondenceRejector):
         CorrespondenceRejectorMedianDistance()
-#       using CorrespondenceRejector::input_correspondences_;
-#       using CorrespondenceRejector::rejection_name_;
-#       using CorrespondenceRejector::getClassName;
-#       public:
-#         /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
-#           * \param[in] original_correspondences the set of initial correspondences given
-#           * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
-#           */
-#         inline void 
-#         getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
-#                                      pcl::Correspondences& remaining_correspondences);
-#         /** \brief Set the maximum distance used for thresholding in correspondence rejection.
-#           * \param[in] distance Distance to be used as maximum distance between correspondences. 
-#           * Correspondences with larger distances are rejected.
-#           * \note Internally, the distance will be stored squared.
-#           */
-#         virtual inline void setMaximumDistance (float distance)
-#         /** \brief Get the maximum distance used for thresholding in correspondence rejection. */
-#         inline float getMaximumDistance ()
-#         /** \brief Provide a source point cloud dataset (must contain XYZ
-#           * data!), used to compute the correspondence distance.  
-#           * \param[in] cloud a cloud containing XYZ data
-#           */
-#         template <typename PointT> inline void 
-#         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
-# 
-#         /** \brief Provide a target point cloud dataset (must contain XYZ
-#           * data!), used to compute the correspondence distance.  
-#           * \param[in] target a cloud containing XYZ data
-#           */
-#         template <typename PointT> inline void 
-#         setInputTarget (const typename pcl::PointCloud<PointT>::ConstPtr &target)
-# 
+        # using CorrespondenceRejector::input_correspondences_;
+        # using CorrespondenceRejector::rejection_name_;
+        # using CorrespondenceRejector::getClassName;
+        # public:
+        # /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
+        #   * \param[in] original_correspondences the set of initial correspondences given
+        #   * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
+        #   */
+        # inline void 
+        # getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
+        #                              pcl::Correspondences& remaining_correspondences);
+        # /** \brief Set the maximum distance used for thresholding in correspondence rejection.
+        #   * \param[in] distance Distance to be used as maximum distance between correspondences. 
+        #   * Correspondences with larger distances are rejected.
+        #   * \note Internally, the distance will be stored squared.
+        #   */
+        # virtual inline void setMaximumDistance (float distance)
+        # /** \brief Get the maximum distance used for thresholding in correspondence rejection. */
+        # inline float getMaximumDistance ()
+        # /** \brief Provide a source point cloud dataset (must contain XYZ
+        #   * data!), used to compute the correspondence distance.  
+        #   * \param[in] cloud a cloud containing XYZ data
+        #   */
+        # template <typename PointT> inline void 
+        # setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
+  		# 
+        # /** \brief Provide a target point cloud dataset (must contain XYZ
+        #   * data!), used to compute the correspondence distance.  
+        #   * \param[in] target a cloud containing XYZ data
+        #   */
+        # template <typename PointT> inline void 
+        # setInputTarget (const typename pcl::PointCloud<PointT>::ConstPtr &target)
+
+
 ###
 
 # correspondence_rejection_features.h
 # class CorrespondenceRejectorFeatures: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_features.h" namespace "pcl::registration" nogil:
     cdef cppclass CorrespondenceRejectorFeatures(CorrespondenceRejector):
         CorrespondenceRejectorFeatures()
-#       using CorrespondenceRejector::input_correspondences_;
-#       using CorrespondenceRejector::rejection_name_;
-#       using CorrespondenceRejector::getClassName;
-#         /** \brief Get a list of valid correspondences after rejection from the original set of correspondences
-#           * \param[in] original_correspondences the set of initial correspondences given
-#           * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
-#           */
-#         void 
-#         getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
-#                                      pcl::Correspondences& remaining_correspondences);
-# 
-#         /** \brief Provide a pointer to a cloud of feature descriptors associated with the source point cloud
-#           * \param[in] source_feature a cloud of feature descriptors associated with the source point cloud
-#           * \param[in] key a string that uniquely identifies the feature
-#           */
-#         template <typename FeatureT> inline void 
-#         setSourceFeature (const typename pcl::PointCloud<FeatureT>::ConstPtr &source_feature, 
-#                           const std::string &key);
-# 
-#         /** \brief Get a pointer to the source cloud's feature descriptors, specified by the given \a key
-#           * \param[in] key a string that uniquely identifies the feature (must match the key provided by setSourceFeature)
-#           */
-#         template <typename FeatureT> inline typename pcl::PointCloud<FeatureT>::ConstPtr 
-#         getSourceFeature (const std::string &key);
-# 
-#         /** \brief Provide a pointer to a cloud of feature descriptors associated with the target point cloud
-#           * \param[in] target_feature a cloud of feature descriptors associated with the target point cloud
-#           * \param[in] key a string that uniquely identifies the feature
-#           */
-#         template <typename FeatureT> inline void 
-#         setTargetFeature (const typename pcl::PointCloud<FeatureT>::ConstPtr &target_feature, 
-#                           const std::string &key);
-# 
-#         /** \brief Get a pointer to the source cloud's feature descriptors, specified by the given \a key
-#           * \param[in] key a string that uniquely identifies the feature (must match the key provided by setTargetFeature)
-#           */
-#         template <typename FeatureT> inline typename pcl::PointCloud<FeatureT>::ConstPtr 
-#         getTargetFeature (const std::string &key);
-# 
-#         /** \brief Set a hard distance threshold in the feature \a FeatureT space, between source and target
-#           * features. Any feature correspondence that is above this threshold will be considered bad and will be
-#           * filtered out.
-#           * \param[in] thresh the distance threshold
-#           * \param[in] key a string that uniquely identifies the feature
-#           */
-#         template <typename FeatureT> inline void 
-#         setDistanceThreshold (double thresh, const std::string &key);
-# 
-#         /** \brief Test that all features are valid (i.e., does each key have a valid source cloud, target cloud, 
-#           * and search method)
-#           */
-#         inline bool hasValidFeatures ();
-# 
-#         /** \brief Provide a boost shared pointer to a PointRepresentation to be used when comparing features
-#           * \param[in] key a string that uniquely identifies the feature
-#           * \param[in] fr the point feature representation to be used 
-#           */
-#         template <typename FeatureT> inline void
-#         setFeatureRepresentation (const typename pcl::PointRepresentation<FeatureT>::ConstPtr &fr,
-#                                   const std::string &key);
-# 
-#         protected:
-#         /** \brief Apply the rejection algorithm.
-#           * \param[out] correspondences the set of resultant correspondences.
-#           */
-#         inline void 
-#         applyRejection (pcl::Correspondences &correspondences)
-# 
-#         class FeatureContainerInterface
-#         {
-#           public:
-#             virtual bool isValid () = 0;
-#             virtual double getCorrespondenceScore (int index) = 0;
-#             virtual bool isCorrespondenceValid (int index) = 0;
-#         };
-# 
-#         typedef boost::unordered_map<std::string, boost::shared_ptr<FeatureContainerInterface> > FeaturesMap;
-# 
-#         /** \brief An STL map containing features to use when performing the correspondence search.*/
-#         FeaturesMap features_map_;
-# 
-#         /** \brief An inner class containing pointers to the source and target feature clouds 
-#           * and the parameters needed to perform the correspondence search.  This class extends 
-#           * FeatureContainerInterface, which contains abstract methods for any methods that do not depend on the 
-#           * FeatureT --- these methods can thus be called from a pointer to FeatureContainerInterface without 
-#           * casting to the derived class.
-#           */
-#         template <typename FeatureT>
-#         class FeatureContainer : public pcl::registration::CorrespondenceRejectorFeatures::FeatureContainerInterface
-#           public:
-#             typedef typename pcl::PointCloud<FeatureT>::ConstPtr FeatureCloudConstPtr;
-#             typedef boost::function<int (const pcl::PointCloud<FeatureT> &, int, std::vector<int> &, 
-#                                           std::vector<float> &)> SearchMethod;
-#             typedef typename pcl::PointRepresentation<FeatureT>::ConstPtr PointRepresentationConstPtr;
-#             FeatureContainer () : thresh_(std::numeric_limits<double>::max ()), feature_representation_()
-#             inline void setSourceFeature (const FeatureCloudConstPtr &source_features)
-#             inline FeatureCloudConstPtr getSourceFeature ()
-#             inline void setTargetFeature (const FeatureCloudConstPtr &target_features)
-#             inline FeatureCloudConstPtr getTargetFeature ()
-#             inline void setDistanceThreshold (double thresh)
-# 
-#             virtual inline bool isValid ()
-# 
-#             /** \brief Provide a boost shared pointer to a PointRepresentation to be used when comparing features
-#               * \param[in] fr the point feature representation to be used
-#               */
-#             inline void setFeatureRepresentation (const PointRepresentationConstPtr &fr)
-#             /** \brief Obtain a score between a pair of correspondences.
-#               * \param[in] the index to check in the list of correspondences
-#               * \return score the resultant computed score
-#               */
-#             virtual inline double getCorrespondenceScore (int index)
-#             /** \brief Check whether the correspondence pair at the given index is valid
-#               * by computing the score and testing it against the user given threshold 
-#               * \param[in] the index to check in the list of correspondences
-#               * \return true if the correspondence is good, false otherwise
-#               */
-#             virtual inline bool isCorrespondenceValid (int index)
+        # using CorrespondenceRejector::input_correspondences_;
+        # using CorrespondenceRejector::rejection_name_;
+        # using CorrespondenceRejector::getClassName;
+        # /** \brief Get a list of valid correspondences after rejection from the original set of correspondences
+        #   * \param[in] original_correspondences the set of initial correspondences given
+        #   * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
+        #   */
+        # void 
+        # getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
+        #                              pcl::Correspondences& remaining_correspondences);
+  		# 
+        # /** \brief Provide a pointer to a cloud of feature descriptors associated with the source point cloud
+        #   * \param[in] source_feature a cloud of feature descriptors associated with the source point cloud
+        #   * \param[in] key a string that uniquely identifies the feature
+        #   */
+        # template <typename FeatureT> inline void 
+        # setSourceFeature (const typename pcl::PointCloud<FeatureT>::ConstPtr &source_feature, 
+        #                   const std::string &key);
+  		# 
+        # /** \brief Get a pointer to the source cloud's feature descriptors, specified by the given \a key
+        #   * \param[in] key a string that uniquely identifies the feature (must match the key provided by setSourceFeature)
+        #   */
+        # template <typename FeatureT> inline typename pcl::PointCloud<FeatureT>::ConstPtr 
+        # getSourceFeature (const std::string &key);
+  		# 
+        # /** \brief Provide a pointer to a cloud of feature descriptors associated with the target point cloud
+        #   * \param[in] target_feature a cloud of feature descriptors associated with the target point cloud
+        #   * \param[in] key a string that uniquely identifies the feature
+        #   */
+        # template <typename FeatureT> inline void 
+        # setTargetFeature (const typename pcl::PointCloud<FeatureT>::ConstPtr &target_feature, 
+        #                   const std::string &key);
+  		# 
+        # /** \brief Get a pointer to the source cloud's feature descriptors, specified by the given \a key
+        #   * \param[in] key a string that uniquely identifies the feature (must match the key provided by setTargetFeature)
+        #   */
+        # template <typename FeatureT> inline typename pcl::PointCloud<FeatureT>::ConstPtr 
+        # getTargetFeature (const std::string &key);
+  		# 
+        # /** \brief Set a hard distance threshold in the feature \a FeatureT space, between source and target
+        #   * features. Any feature correspondence that is above this threshold will be considered bad and will be
+        #   * filtered out.
+        #   * \param[in] thresh the distance threshold
+        #   * \param[in] key a string that uniquely identifies the feature
+        #   */
+        # template <typename FeatureT> inline void 
+        # setDistanceThreshold (double thresh, const std::string &key);
+  		# 
+        # /** \brief Test that all features are valid (i.e., does each key have a valid source cloud, target cloud, 
+        #   * and search method)
+        #   */
+        # inline bool hasValidFeatures ();
+  		# 
+        # /** \brief Provide a boost shared pointer to a PointRepresentation to be used when comparing features
+        #   * \param[in] key a string that uniquely identifies the feature
+        #   * \param[in] fr the point feature representation to be used 
+        #   */
+        # template <typename FeatureT> inline void
+        # setFeatureRepresentation (const typename pcl::PointRepresentation<FeatureT>::ConstPtr &fr,
+        #                           const std::string &key);
+  		# 
+
+
 ###
 
 # correspondence_rejection_median_distance.h
@@ -1469,39 +1426,40 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 cdef extern from "pcl/registration/correspondence_rejection_median_distance.h" namespace "pcl::registration" nogil:
     cdef cppclass CorrespondenceRejectorMedianDistance(CorrespondenceRejector):
         CorrespondenceRejectorMedianDistance()
-#       using CorrespondenceRejector::input_correspondences_;
-#       using CorrespondenceRejector::rejection_name_;
-#       using CorrespondenceRejector::getClassName;
-#       public:
-#         /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
-#           * \param[in] original_correspondences the set of initial correspondences given
-#           * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
-#           */
-#         inline void 
-#         getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
-#                                      pcl::Correspondences& remaining_correspondences);
-#         /** \brief Get the median distance used for thresholding in correspondence rejection. */
-#         inline double getMedianDistance () const
-#         /** \brief Provide a source point cloud dataset (must contain XYZ
-#           * data!), used to compute the correspondence distance.  
-#           * \param[in] cloud a cloud containing XYZ data
-#           */
-#         template <typename PointT> inline void 
-#         setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
-#         /** \brief Provide a target point cloud dataset (must contain XYZ
-#           * data!), used to compute the correspondence distance.  
-#           * \param[in] target a cloud containing XYZ data
-#           */
-#         template <typename PointT> inline void 
-#         setInputTarget (const typename pcl::PointCloud<PointT>::ConstPtr &target)
-#         /** \brief Set the factor for correspondence rejection. Points with distance greater than median times factor
-#          *  will be rejected
-#          *  \param[in] factor value
-#          */
-#         inline void setMedianFactor (double factor)
-#         /** \brief Get the factor used for thresholding in correspondence rejection. */
-#         inline double getMedianFactor () const { return factor_; };
-# 
+        # using CorrespondenceRejector::input_correspondences_;
+        # using CorrespondenceRejector::rejection_name_;
+        # using CorrespondenceRejector::getClassName;
+        # public:
+        # /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
+        #   * \param[in] original_correspondences the set of initial correspondences given
+        #   * \param[out] remaining_correspondences the resultant filtered set of remaining correspondences
+        #   */
+        # inline void 
+        # getRemainingCorrespondences (const pcl::Correspondences& original_correspondences, 
+        #                              pcl::Correspondences& remaining_correspondences);
+        # /** \brief Get the median distance used for thresholding in correspondence rejection. */
+        # inline double getMedianDistance () const
+        # /** \brief Provide a source point cloud dataset (must contain XYZ
+        #   * data!), used to compute the correspondence distance.  
+        #   * \param[in] cloud a cloud containing XYZ data
+        #   */
+        # template <typename PointT> inline void 
+        # setInputCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud)
+        # /** \brief Provide a target point cloud dataset (must contain XYZ
+        #   * data!), used to compute the correspondence distance.  
+        #   * \param[in] target a cloud containing XYZ data
+        #   */
+        # template <typename PointT> inline void 
+        # setInputTarget (const typename pcl::PointCloud<PointT>::ConstPtr &target)
+        # /** \brief Set the factor for correspondence rejection. Points with distance greater than median times factor
+        #  *  will be rejected
+        #  *  \param[in] factor value
+        #  */
+        # inline void setMedianFactor (double factor)
+        # /** \brief Get the factor used for thresholding in correspondence rejection. */
+        # inline double getMedianFactor () const { return factor_; };
+
+
 ###
 
 # correspondence_rejection_one_to_one.h
@@ -2128,154 +2086,129 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 #   */
 # template <typename Scalar = float>
 # class DefaultConvergenceCriteria : public ConvergenceCriteria
-cdef extern from "pcl/registration/default_convergence_criteria.h" namespace "pcl::registration" nogil:
-    cdef cppclass DefaultConvergenceCriteria(ConvergenceCriteria):
-        DefaultConvergenceCriteria()
-#       public:
-#       typedef boost::shared_ptr<DefaultConvergenceCriteria<Scalar> > Ptr;
-#       typedef boost::shared_ptr<const DefaultConvergenceCriteria<Scalar> > ConstPtr;
-#       typedef Eigen::Matrix<Scalar, 4, 4> Matrix4;
-# 
-#       enum ConvergenceState
-#       {
-#         CONVERGENCE_CRITERIA_NOT_CONVERGED,
-#         CONVERGENCE_CRITERIA_ITERATIONS,
-#         CONVERGENCE_CRITERIA_TRANSFORM,
-#         CONVERGENCE_CRITERIA_ABS_MSE,
-#         CONVERGENCE_CRITERIA_REL_MSE,
-#         CONVERGENCE_CRITERIA_NO_CORRESPONDENCES
-#       };
-# 
-#       /** \brief Empty constructor.
-#         * Sets:
-#         *  * the maximum number of iterations to 1000
-#         *  * the rotation threshold to 0.256 degrees (0.99999)
-#         *  * the translation threshold to 0.0003 meters (3e-4^2)
-#         *  * the MSE relative / absolute thresholds to 0.001% and 1e-12
-#         *
-#         * \param[in] iterations a reference to the number of iterations the loop has ran so far
-#         * \param[in] transform a reference to the current transformation obtained by the transformation evaluation
-#         * \param[in] correspondences a reference to the current set of point correspondences between source and target
-#         */
-#       DefaultConvergenceCriteria (const int &iterations, const Matrix4 &transform, const pcl::Correspondences &correspondences)
-#         : iterations_ (iterations)
-#         , transformation_ (transform)
-#         , correspondences_ (correspondences)
-#         , correspondences_prev_mse_ (std::numeric_limits<double>::max ())
-#         , correspondences_cur_mse_ (std::numeric_limits<double>::max ())
-#         , max_iterations_ (100)                 // 100 iterations
-#         , failure_after_max_iter_ (false)
-#         , rotation_threshold_ (0.99999)         // 0.256 degrees
-#         , translation_threshold_ (3e-4 * 3e-4)  // 0.0003 meters
-#         , mse_threshold_relative_ (0.00001)     // 0.001% of the previous MSE (relative error)
-#         , mse_threshold_absolute_ (1e-12)       // MSE (absolute error)
-#         , iterations_similar_transforms_ (0)
-#         , max_iterations_similar_transforms_ (0)
-#         , convergence_state_ (CONVERGENCE_CRITERIA_NOT_CONVERGED)
-#       {
-#       }
-#       
-#       /** \brief Empty destructor */
-#       virtual ~DefaultConvergenceCriteria () {}
-# 
-#       /** \brief Set the maximum number of iterations that the internal rotation, 
-#         * translation, and MSE differences are allowed to be similar. 
-#         * \param[in] nr_iterations the maximum number of iterations 
-#         */
-#       inline void
-#       setMaximumIterationsSimilarTransforms (const int nr_iterations) { max_iterations_similar_transforms_ = nr_iterations; }
-# 
-#       /** \brief Get the maximum number of iterations that the internal rotation, 
-#         * translation, and MSE differences are allowed to be similar, as set by the user.
-#         */
-#       inline int
-#       getMaximumIterationsSimilarTransforms () const { return (max_iterations_similar_transforms_); }
-# 
-#       /** \brief Set the maximum number of iterations the internal optimization should run for.
-#         * \param[in] nr_iterations the maximum number of iterations the internal optimization should run for
-#         */
-#       inline void
-#       setMaximumIterations (const int nr_iterations) { max_iterations_ = nr_iterations; }
-# 
-#       /** \brief Get the maximum number of iterations the internal optimization should run for, as set by the user. */
-#       inline int
-#       getMaximumIterations () const { return (max_iterations_); }
-# 
-#       /** \brief Specifies if the registration fails or converges when the maximum number of iterations is reached.
-#         * \param[in] failure_after_max_iter If true, the registration fails. If false, the registration is assumed to have converged.
-#         */
-#       inline void
-#       setFailureAfterMaximumIterations (const bool failure_after_max_iter) { failure_after_max_iter_ = failure_after_max_iter; }
-# 
-#       /** \brief Get whether the registration will fail or converge when the maximum number of iterations is reached. */
-#       inline bool
-#       getFailureAfterMaximumIterations () const { return (failure_after_max_iter_); }
-# 
-#       /** \brief Set the rotation threshold cosine angle (maximum allowable difference between two consecutive transformations) in order for an optimization to be considered as having converged to the final solution.
-#         * \param[in] threshold the rotation threshold in order for an optimization to be considered as having converged to the final solution.
-#         */
-#       inline void
-#       setRotationThreshold (const double threshold) { rotation_threshold_ = threshold; }
-# 
-#       /** \brief Get the rotation threshold cosine angle (maximum allowable difference between two consecutive transformations) as set by the user.
-#         */
-#       inline double
-#       getRotationThreshold () const { return (rotation_threshold_); }
-# 
-#       /** \brief Set the translation threshold (maximum allowable difference between two consecutive transformations) in order for an optimization to be considered as having converged to the final solution.
-#         * \param[in] threshold the translation threshold in order for an optimization to be considered as having converged to the final solution.
-#         */
-#       inline void
-#       setTranslationThreshold (const double threshold) { translation_threshold_ = threshold; }
-# 
-#       /** \brief Get the rotation threshold cosine angle (maximum allowable difference between two consecutive transformations) as set by the user.
-#         */
-#       inline double
-#       getTranslationThreshold () const { return (translation_threshold_); }
-# 
-#       /** \brief Set the relative MSE between two consecutive sets of correspondences.
-#         * \param[in] mse_relative the relative MSE threshold
-#         */
-#       inline void
-#       setRelativeMSE (const double mse_relative) { mse_threshold_relative_ = mse_relative; }
-# 
-#       /** \brief Get the relative MSE between two consecutive sets of correspondences. */
-#       inline double
-#       getRelativeMSE () const { return (mse_threshold_relative_); }
-# 
-#       /** \brief Set the absolute MSE between two consecutive sets of correspondences.
-#         * \param[in] mse_absolute the relative MSE threshold
-#         */
-#       inline void
-#       setAbsoluteMSE (const double mse_absolute) { mse_threshold_absolute_ = mse_absolute; }
-# 
-#       /** \brief Get the absolute MSE between two consecutive sets of correspondences. */
-#       inline double
-#       getAbsoluteMSE () const { return (mse_threshold_absolute_); }
-# 
-# 
-#       /** \brief Check if convergence has been reached. */
-#       virtual bool
-#       hasConverged ();
-# 
-#       /** \brief Return the convergence state after hasConverged () */
-#       ConvergenceState
-#       getConvergenceState ()
-#       {
-#         return (convergence_state_);
-#       }
-# 
-#       /** \brief Sets the convergence state externally (for example, when ICP does not find
-#        * enough correspondences to estimate a transformation, the function is called setting
-#        * the convergence state to ConvergenceState::CONVERGENCE_CRITERIA_NO_CORRESPONDENCES)
-#        * \param[in] c the convergence state
-#        */
-#       inline void
-#       setConvergenceState(ConvergenceState c)
-#       {
-#         convergence_state_ = c;
-#       }
-# 
+# cdef extern from "pcl/registration/default_convergence_criteria.h" namespace "pcl::registration" nogil:
+#     cdef cppclass DefaultConvergenceCriteria(ConvergenceCriteria):
+        # DefaultConvergenceCriteria()
+        # public:
+        # typedef boost::shared_ptr<DefaultConvergenceCriteria<Scalar> > Ptr;
+        # typedef boost::shared_ptr<const DefaultConvergenceCriteria<Scalar> > ConstPtr;
+        # typedef Eigen::Matrix<Scalar, 4, 4> Matrix4;
+        # 
+        # enum ConvergenceState
+        # {
+        #   CONVERGENCE_CRITERIA_NOT_CONVERGED,
+        #   CONVERGENCE_CRITERIA_ITERATIONS,
+        #   CONVERGENCE_CRITERIA_TRANSFORM,
+        #   CONVERGENCE_CRITERIA_ABS_MSE,
+        #   CONVERGENCE_CRITERIA_REL_MSE,
+        #   CONVERGENCE_CRITERIA_NO_CORRESPONDENCES
+        # };
+        # 
+        # /** \brief Empty constructor.
+        #   * Sets:
+        #   *  * the maximum number of iterations to 1000
+        #   *  * the rotation threshold to 0.256 degrees (0.99999)
+        #   *  * the translation threshold to 0.0003 meters (3e-4^2)
+        #   *  * the MSE relative / absolute thresholds to 0.001% and 1e-12
+        #   *
+        #   * \param[in] iterations a reference to the number of iterations the loop has ran so far
+        #   * \param[in] transform a reference to the current transformation obtained by the transformation evaluation
+        #   * \param[in] correspondences a reference to the current set of point correspondences between source and target
+        #   */
+        # DefaultConvergenceCriteria (const int &iterations, const Matrix4 &transform, const pcl::Correspondences &correspondences)
+        #   : iterations_ (iterations)
+        #   , transformation_ (transform)
+        #   , correspondences_ (correspondences)
+        #   , correspondences_prev_mse_ (std::numeric_limits<double>::max ())
+        #   , correspondences_cur_mse_ (std::numeric_limits<double>::max ())
+        #   , max_iterations_ (100)                 // 100 iterations
+        #   , failure_after_max_iter_ (false)
+        #   , rotation_threshold_ (0.99999)         // 0.256 degrees
+        #   , translation_threshold_ (3e-4 * 3e-4)  // 0.0003 meters
+        #   , mse_threshold_relative_ (0.00001)     // 0.001% of the previous MSE (relative error)
+        #   , mse_threshold_absolute_ (1e-12)       // MSE (absolute error)
+        #   , iterations_similar_transforms_ (0)
+        #   , max_iterations_similar_transforms_ (0)
+        #   , convergence_state_ (CONVERGENCE_CRITERIA_NOT_CONVERGED)
+        # {
+        # }
+        # 
+        # /** \brief Empty destructor */
+        # virtual ~DefaultConvergenceCriteria () {}
+        # 
+        # /** \brief Set the maximum number of iterations that the internal rotation, 
+        #   * translation, and MSE differences are allowed to be similar. 
+        #   * \param[in] nr_iterations the maximum number of iterations 
+        #   */
+        # inline void setMaximumIterationsSimilarTransforms (const int nr_iterations) { max_iterations_similar_transforms_ = nr_iterations; }
+        # 
+        # /** \brief Get the maximum number of iterations that the internal rotation, 
+        #   * translation, and MSE differences are allowed to be similar, as set by the user.
+        #   */
+        # inline int getMaximumIterationsSimilarTransforms () const { return (max_iterations_similar_transforms_); }
+        # 
+        # /** \brief Set the maximum number of iterations the internal optimization should run for.
+        #   * \param[in] nr_iterations the maximum number of iterations the internal optimization should run for
+        #   */
+        # inline void setMaximumIterations (const int nr_iterations) { max_iterations_ = nr_iterations; }
+        # 
+        # /** \brief Get the maximum number of iterations the internal optimization should run for, as set by the user. */
+        # inline int getMaximumIterations () const { return (max_iterations_); }
+        # 
+        # /** \brief Specifies if the registration fails or converges when the maximum number of iterations is reached.
+        #   * \param[in] failure_after_max_iter If true, the registration fails. If false, the registration is assumed to have converged.
+        #   */
+        # inline void setFailureAfterMaximumIterations (const bool failure_after_max_iter) { failure_after_max_iter_ = failure_after_max_iter; }
+        # 
+        # /** \brief Get whether the registration will fail or converge when the maximum number of iterations is reached. */
+        # inline bool getFailureAfterMaximumIterations () const { return (failure_after_max_iter_); }
+        # 
+        # /** \brief Set the rotation threshold cosine angle (maximum allowable difference between two consecutive transformations) in order for an optimization to be considered as having converged to the final solution.
+        #   * \param[in] threshold the rotation threshold in order for an optimization to be considered as having converged to the final solution.
+        #   */
+        # inline void setRotationThreshold (const double threshold) { rotation_threshold_ = threshold; }
+        # 
+        # /** \brief Get the rotation threshold cosine angle (maximum allowable difference between two consecutive transformations) as set by the user.
+        #   */
+        # inline double getRotationThreshold () const { return (rotation_threshold_); }
+        # 
+        # /** \brief Set the translation threshold (maximum allowable difference between two consecutive transformations) in order for an optimization to be considered as having converged to the final solution.
+        #   * \param[in] threshold the translation threshold in order for an optimization to be considered as having converged to the final solution.
+        #   */
+        # inline void setTranslationThreshold (const double threshold) { translation_threshold_ = threshold; }
+        # 
+        # /** \brief Get the rotation threshold cosine angle (maximum allowable difference between two consecutive transformations) as set by the user.
+        #   */
+        # inline double getTranslationThreshold () const { return (translation_threshold_); }
+        # 
+        # /** \brief Set the relative MSE between two consecutive sets of correspondences.
+        #   * \param[in] mse_relative the relative MSE threshold
+        #   */
+        # inline void setRelativeMSE (const double mse_relative) { mse_threshold_relative_ = mse_relative; }
+        # 
+        # /** \brief Get the relative MSE between two consecutive sets of correspondences. */
+        # inline double getRelativeMSE () const { return (mse_threshold_relative_); }
+        # 
+        # /** \brief Set the absolute MSE between two consecutive sets of correspondences.
+        #   * \param[in] mse_absolute the relative MSE threshold
+        #   */
+        # inline void setAbsoluteMSE (const double mse_absolute) { mse_threshold_absolute_ = mse_absolute; }
+        # 
+        # /** \brief Get the absolute MSE between two consecutive sets of correspondences. */
+        # inline double getAbsoluteMSE () const { return (mse_threshold_absolute_); }
+        # 
+        # /** \brief Check if convergence has been reached. */
+        # virtual bool hasConverged ();
+        # 
+        # /** \brief Return the convergence state after hasConverged () */
+        # ConvergenceState getConvergenceState ()
+        # 
+        # /** \brief Sets the convergence state externally (for example, when ICP does not find
+        #  * enough correspondences to estimate a transformation, the function is called setting
+        #  * the convergence state to ConvergenceState::CONVERGENCE_CRITERIA_NO_CORRESPONDENCES)
+        #  * \param[in] c the convergence state
+        #  */
+        # inline void setConvergenceState(ConvergenceState c)
 
 
 ###
@@ -2630,6 +2563,7 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
         #     virtual ~ErrorFunctor () {}
         #     virtual float operator () (float d) const = 0;
         # };
+        # 
         # class HuberPenalty : public ErrorFunctor
         # cdef cppclass HuberPenalty(ErrorFunctor)
         #     HuberPenalty ()
@@ -2645,6 +2579,7 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
         #   protected:
         #     float threshold_;
         # };
+        # 
         # class TruncatedError : public ErrorFunctor
         # cdef cppclass TruncatedError(ErrorFunctor)
         #     TruncatedError ()
@@ -2661,69 +2596,70 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
         #   protected:
         #     float threshold_;
         # };
+        # 
         # typedef typename KdTreeFLANN<FeatureT>::Ptr FeatureKdTreePtr; 
+        # 
         # /** \brief Provide a boost shared pointer to the source point cloud's feature descriptors
         #   * \param features the source point cloud's features
         #   */
-        # void 
-        # setSourceFeatures (const FeatureCloudConstPtr &features);
+        # void setSourceFeatures (const FeatureCloudConstPtr &features);
+        # 
         # /** \brief Get a pointer to the source point cloud's features */
-        # inline FeatureCloudConstPtr const 
-        # getSourceFeatures () { return (input_features_); }
+        # inline FeatureCloudConstPtr const getSourceFeatures () { return (input_features_); }
+        # 
         # /** \brief Provide a boost shared pointer to the target point cloud's feature descriptors
         #   * \param features the target point cloud's features
         #   */
-        # void 
-        # setTargetFeatures (const FeatureCloudConstPtr &features);
+        # void setTargetFeatures (const FeatureCloudConstPtr &features);
+        # 
         # /** \brief Get a pointer to the target point cloud's features */
-        # inline FeatureCloudConstPtr const 
-        # getTargetFeatures () { return (target_features_); }
+        # inline FeatureCloudConstPtr const getTargetFeatures () { return (target_features_); }
+        # 
         # /** \brief Set the minimum distances between samples
         #   * \param min_sample_distance the minimum distances between samples
         #   */
-        # void 
-        # setMinSampleDistance (float min_sample_distance) { min_sample_distance_ = min_sample_distance; }
+        # void setMinSampleDistance (float min_sample_distance) { min_sample_distance_ = min_sample_distance; }
+        # 
         # /** \brief Get the minimum distances between samples, as set by the user */
-        # float 
-        # getMinSampleDistance () { return (min_sample_distance_); }
+        # float getMinSampleDistance () { return (min_sample_distance_); }
+        # 
         # /** \brief Set the number of samples to use during each iteration
         #   * \param nr_samples the number of samples to use during each iteration
         #   */
-        # void 
-        # setNumberOfSamples (int nr_samples) { nr_samples_ = nr_samples; }
+        # void setNumberOfSamples (int nr_samples) { nr_samples_ = nr_samples; }
+        # 
         # /** \brief Get the number of samples to use during each iteration, as set by the user */
-        # int 
-        # getNumberOfSamples () { return (nr_samples_); }
+        # int getNumberOfSamples () { return (nr_samples_); }
+        # 
         # /** \brief Set the number of neighbors to use when selecting a random feature correspondence.  A higher value will
         #   * add more randomness to the feature matching.
         #   * \param k the number of neighbors to use when selecting a random feature correspondence.
         #   */
-        # void
-        # setCorrespondenceRandomness (int k) { k_correspondences_ = k; }
+        # void setCorrespondenceRandomness (int k) { k_correspondences_ = k; }
+        # 
         # /** \brief Get the number of neighbors used when selecting a random feature correspondence, as set by the user */
-        # int
-        # getCorrespondenceRandomness () { return (k_correspondences_); }
+        # int getCorrespondenceRandomness () { return (k_correspondences_); }
+        # 
         # /** \brief Specify the error function to minimize
         #  * \note This call is optional.  TruncatedError will be used by default
         #  * \param[in] error_functor a shared pointer to a subclass of SampleConsensusInitialAlignment::ErrorFunctor
         #  */
-        # void
-        # setErrorFunction (const boost::shared_ptr<ErrorFunctor> & error_functor) { error_functor_ = error_functor; }
+        # void setErrorFunction (const boost::shared_ptr<ErrorFunctor> & error_functor) { error_functor_ = error_functor; }
+        # 
         # /** \brief Get a shared pointer to the ErrorFunctor that is to be minimized  
         #  * \return A shared pointer to a subclass of SampleConsensusInitialAlignment::ErrorFunctor
         #  */
-        # boost::shared_ptr<ErrorFunctor>
-        # getErrorFunction () { return (error_functor_); }
+        # boost::shared_ptr<ErrorFunctor> getErrorFunction () { return (error_functor_); }
 
 
 ###
 
 # joint_icp.h
-# namespace pcl
 # /** \brief @b JointIterativeClosestPoint extends ICP to multiple frames which
 #   *  share the same transform. This is particularly useful when solving for 
 #   *  camera extrinsics using multiple observations. When given a single pair of 
 #   *  clouds, this reduces to vanilla ICP.
+#   *
 #   * \author Stephen Miller
 #   * \ingroup registration
 #   */
@@ -2732,109 +2668,108 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
 cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
     cdef cppclass JointIterativeClosestPoint[Source, Target, float](IterativeClosestPoint[Source, Target, float]):
         JointIterativeClosestPoint() except +
-#       public:
-#       typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::PointCloudSource PointCloudSource;
-#       typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#       typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#       typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::PointCloudTarget PointCloudTarget;
-#       typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-#       typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-#       typedef pcl::search::KdTree<PointTarget> KdTree;
-#       typedef typename pcl::search::KdTree<PointTarget>::Ptr KdTreePtr;
-#       typedef pcl::search::KdTree<PointSource> KdTreeReciprocal;
-#       typedef typename KdTree::Ptr KdTreeReciprocalPtr;
-#       typedef PointIndices::Ptr PointIndicesPtr;
-#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#       typedef boost::shared_ptr<JointIterativeClosestPoint<PointSource, PointTarget, Scalar> > Ptr;
-#       typedef boost::shared_ptr<const JointIterativeClosestPoint<PointSource, PointTarget, Scalar> > ConstPtr;
-#       typedef typename pcl::registration::CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> CorrespondenceEstimation;
-#       typedef typename CorrespondenceEstimation::Ptr CorrespondenceEstimationPtr;
-#       typedef typename CorrespondenceEstimation::ConstPtr CorrespondenceEstimationConstPtr;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::reg_name_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::getClassName;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::setInputSource;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::input_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::indices_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::target_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::nr_iterations_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::max_iterations_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::previous_transformation_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::final_transformation_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformation_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformation_epsilon_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::converged_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::corr_dist_threshold_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::inlier_threshold_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::min_number_correspondences_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::update_visualizer_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::euclidean_fitness_epsilon_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::correspondences_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformation_estimation_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::correspondence_estimation_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::correspondence_rejectors_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::use_reciprocal_correspondence_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::convergence_criteria_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::source_has_normals_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::target_has_normals_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::need_source_blob_;
-#       using IterativeClosestPoint<PointSource, PointTarget, Scalar>::need_target_blob_;
-#       typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
-#       
-#       /** \brief Empty constructor. */
-#       JointIterativeClosestPoint ()
-#       
-#       /** \brief Empty destructor */
-#       virtual ~JointIterativeClosestPoint () {}
-#       
-#       
-#       /** \brief Provide a pointer to the input source 
-#         * (e.g., the point cloud that we want to align to the target)
-#         */
-#       virtual void
-#       setInputSource (const PointCloudSourceConstPtr& /*cloud*/)
-#       
-#       /** \brief Add a source cloud to the joint solver
-#         *
-#         * \param[in] cloud source cloud
-#         */
-#       inline void
-#       addInputSource (const PointCloudSourceConstPtr &cloud)
-#       
-#       /** \brief Provide a pointer to the input target 
-#         * (e.g., the point cloud that we want to align to the target)
-#         */
-#       virtual void
-#       setInputTarget (const PointCloudTargetConstPtr& /*cloud*/)
-#       
-#       /** \brief Add a target cloud to the joint solver
-#         *
-#         * \param[in] cloud target cloud
-#         */
-#       inline void
-#       addInputTarget (const PointCloudTargetConstPtr &cloud)
-#       
-#       /** \brief Add a manual correspondence estimator
-#         * If you choose to do this, you must add one for each 
-#         * input source / target pair. They do not need to have trees 
-#         * or input clouds set ahead of time.
-#         *
-#         * \param[in] ce Correspondence estimation
-#         */
-#       inline void
-#       addCorrespondenceEstimation (CorrespondenceEstimationPtr ce)
-#       
-#       /** \brief Reset my list of input sources
-#         */
-#       inline void clearInputSources ()
-#       
-#       /** \brief Reset my list of input targets
-#         */
-#       inline void clearInputTargets ()
-#       
-#       /** \brief Reset my list of correspondence estimation methods.
-#         */
-#       inline void clearCorrespondenceEstimations ()
-#       
+        # public:
+        # typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::PointCloudSource PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::PointCloudTarget PointCloudTarget;
+        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # typedef pcl::search::KdTree<PointTarget> KdTree;
+        # typedef typename pcl::search::KdTree<PointTarget>::Ptr KdTreePtr;
+        # typedef pcl::search::KdTree<PointSource> KdTreeReciprocal;
+        # typedef typename KdTree::Ptr KdTreeReciprocalPtr;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # typedef boost::shared_ptr<JointIterativeClosestPoint<PointSource, PointTarget, Scalar> > Ptr;
+        # typedef boost::shared_ptr<const JointIterativeClosestPoint<PointSource, PointTarget, Scalar> > ConstPtr;
+        # typedef typename pcl::registration::CorrespondenceEstimationBase<PointSource, PointTarget, Scalar> CorrespondenceEstimation;
+        # typedef typename CorrespondenceEstimation::Ptr CorrespondenceEstimationPtr;
+        # typedef typename CorrespondenceEstimation::ConstPtr CorrespondenceEstimationConstPtr;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::reg_name_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::getClassName;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::setInputSource;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::input_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::indices_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::target_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::nr_iterations_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::max_iterations_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::previous_transformation_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::final_transformation_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformation_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformation_epsilon_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::converged_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::corr_dist_threshold_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::inlier_threshold_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::min_number_correspondences_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::update_visualizer_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::euclidean_fitness_epsilon_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::correspondences_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::transformation_estimation_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::correspondence_estimation_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::correspondence_rejectors_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::use_reciprocal_correspondence_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::convergence_criteria_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::source_has_normals_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::target_has_normals_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::need_source_blob_;
+        # using IterativeClosestPoint<PointSource, PointTarget, Scalar>::need_target_blob_;
+        # typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
+        # 
+        # /** \brief Empty constructor. */
+        # JointIterativeClosestPoint ()
+        
+        # /** \brief Empty destructor */
+        # virtual ~JointIterativeClosestPoint () {}
+        
+        # /** \brief Provide a pointer to the input source 
+        #   * (e.g., the point cloud that we want to align to the target)
+        #   */
+        # virtual void setInputSource (const PointCloudSourceConstPtr& /*cloud*/)
+        # void setInputSource (const PointCloudSourceConstPtr& /*cloud*/)
+        
+        # /** \brief Add a source cloud to the joint solver
+        #   * \param[in] cloud source cloud
+        #   */
+        # inline void addInputSource (const PointCloudSourceConstPtr &cloud)
+        # void addInputSource (const PointCloudSourceConstPtr &cloud)
+        
+        # /** \brief Provide a pointer to the input target 
+        #   * (e.g., the point cloud that we want to align to the target)
+        #   */
+        # virtual void setInputTarget (const PointCloudTargetConstPtr& /*cloud*/)
+        # void setInputTarget (const PointCloudTargetConstPtr& /*cloud*/)
+        
+        # /** \brief Add a target cloud to the joint solver
+        #   *
+        #   * \param[in] cloud target cloud
+        #   */
+        # inline void addInputTarget (const PointCloudTargetConstPtr &cloud)
+        # void addInputTarget (const PointCloudTargetConstPtr &cloud)
+        
+        # /** \brief Add a manual correspondence estimator
+        #   * If you choose to do this, you must add one for each 
+        #   * input source / target pair. They do not need to have trees 
+        #   * or input clouds set ahead of time.
+        #   *
+        #   * \param[in] ce Correspondence estimation
+        #   */
+        # inline void addCorrespondenceEstimation (CorrespondenceEstimationPtr ce)
+        # void addCorrespondenceEstimation (CorrespondenceEstimationPtr ce)
+        
+        # /** \brief Reset my list of input sources
+        #   */
+        # inline void clearInputSources ()
+        void clearInputSources ()
+        
+        # /** \brief Reset my list of input targets
+        #   */
+        # inline void clearInputTargets ()
+        void clearInputTargets ()
+        
+        # /** \brief Reset my list of correspondence estimation methods.
+        #   */
+        # inline void clearCorrespondenceEstimations ()
 
 
 ###
@@ -2903,212 +2838,194 @@ cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
 cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
     cdef cppclass LUM[Point]:
         LUM()
-#       public:
-#       typedef boost::shared_ptr<LUM<PointT> > Ptr;
-#       typedef boost::shared_ptr<const LUM<PointT> > ConstPtr;
-# 
-#       typedef pcl::PointCloud<PointT> PointCloud;
-#       typedef typename PointCloud::Ptr PointCloudPtr;
-#       typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-# 
-#       struct VertexProperties
-#       {
-#         PointCloudPtr cloud_;
-#         Eigen::Vector6f pose_;
-#         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#       };
-#       struct EdgeProperties
-#       {
-#         pcl::CorrespondencesPtr corrs_;
-#         Eigen::Matrix6f cinv_;
-#         Eigen::Vector6f cinvd_;
-#         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#       };
-# 
-#       typedef boost::adjacency_list<boost::eigen_vecS, boost::eigen_vecS, boost::bidirectionalS, VertexProperties, EdgeProperties, boost::no_property, boost::eigen_listS> SLAMGraph;
-#       typedef boost::shared_ptr<SLAMGraph> SLAMGraphPtr;
-#       typedef typename SLAMGraph::vertex_descriptor Vertex;
-#       typedef typename SLAMGraph::edge_descriptor Edge;
-# 
-#       /** \brief Empty constructor.
-#         */
-#       LUM () 
-#         : slam_graph_ (new SLAMGraph)
-#         , max_iterations_ (5)
-#         , convergence_threshold_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Set the internal SLAM graph structure.
-#         * \details All data used and produced by LUM is stored in this boost::adjacency_list.
-#         * It is recommended to use the LUM class itself to build the graph.
-#         * This method could otherwise be useful for managing several SLAM graphs in one instance of LUM.
-#         * \param[in] slam_graph The new SLAM graph.
-#         */
-#       inline void
-#       setLoopGraph (const SLAMGraphPtr &slam_graph);
-# 
-#       /** \brief Get the internal SLAM graph structure.
-#         * \details All data used and produced by LUM is stored in this boost::adjacency_list.
-#         * It is recommended to use the LUM class itself to build the graph.
-#         * This method could otherwise be useful for managing several SLAM graphs in one instance of LUM.
-#         * \return The current SLAM graph.
-#         */
-#       inline SLAMGraphPtr
-#       getLoopGraph () const;
-# 
-#       /** \brief Get the number of vertices in the SLAM graph.
-#         * \return The current number of vertices in the SLAM graph.
-#         */
-#       typename SLAMGraph::vertices_size_type
-#       getNumVertices () const;
-# 
-#       /** \brief Set the maximum number of iterations for the compute() method.
-#         * \details The compute() method finishes when max_iterations are met or when the convergence criteria is met.
-#         * \param[in] max_iterations The new maximum number of iterations (default = 5).
-#         */
-#       void
-#       setMaxIterations (int max_iterations);
-# 
-#       /** \brief Get the maximum number of iterations for the compute() method.
-#         * \details The compute() method finishes when max_iterations are met or when the convergence criteria is met.
-#         * \return The current maximum number of iterations (default = 5).
-#         */
-#       inline int
-#       getMaxIterations () const;
-# 
-#       /** \brief Set the convergence threshold for the compute() method.
-#         * \details When the compute() method computes the new poses relative to the old poses, it will determine the length of the difference vector.
-#         * When the average length of all difference vectors becomes less than the convergence_threshold the convergence is assumed to be met.
-#         * \param[in] convergence_threshold The new convergence threshold (default = 0.0).
-#         */
-#       void
-#       setConvergenceThreshold (float convergence_threshold);
-# 
-#       /** \brief Get the convergence threshold for the compute() method.
-#         * \details When the compute() method computes the new poses relative to the old poses, it will determine the length of the difference vector.
-#         * When the average length of all difference vectors becomes less than the convergence_threshold the convergence is assumed to be met.
-#         * \return The current convergence threshold (default = 0.0).
-#         */
-#       inline float
-#       getConvergenceThreshold () const;
-# 
-#       /** \brief Add a new point cloud to the SLAM graph.
-#         * \details This method will add a new vertex to the SLAM graph and attach a point cloud to that vertex.
-#         * Optionally you can specify a pose estimate for this point cloud.
-#         * A vertex' pose is always relative to the first vertex in the SLAM graph, i.e. the first point cloud that was added.
-#         * Because this first vertex is the reference, you can not set a pose estimate for this vertex.
-#         * Providing pose estimates to the vertices in the SLAM graph will reduce overall computation time of LUM.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] cloud The new point cloud.
-#         * \param[in] pose (optional) The pose estimate relative to the reference pose (first point cloud that was added).
-#         * \return The vertex descriptor of the newly created vertex.
-#         */
-#       Vertex
-#       addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6f &pose = Eigen::Vector6f::Zero ());
-# 
-#       /** \brief Change a point cloud on one of the SLAM graph's vertices.
-#         * \details This method will change the point cloud attached to an existing vertex and will not alter the SLAM graph structure.
-#         * Note that the correspondences attached to this vertex will not change and may need to be updated manually.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] vertex The vertex descriptor of which to change the point cloud.
-#         * \param[in] cloud The new point cloud for that vertex.
-#         */
-#       inline void
-#       setPointCloud (const Vertex &vertex, const PointCloudPtr &cloud);
-# 
-#       /** \brief Return a point cloud from one of the SLAM graph's vertices.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] vertex The vertex descriptor of which to return the point cloud.
-#         * \return The current point cloud for that vertex.
-#         */
-#       inline PointCloudPtr
-#       getPointCloud (const Vertex &vertex) const;
-# 
-#       /** \brief Change a pose estimate on one of the SLAM graph's vertices.
-#         * \details A vertex' pose is always relative to the first vertex in the SLAM graph, i.e. the first point cloud that was added.
-#         * Because this first vertex is the reference, you can not set a pose estimate for this vertex.
-#         * Providing pose estimates to the vertices in the SLAM graph will reduce overall computation time of LUM.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] vertex The vertex descriptor of which to set the pose estimate.
-#         * \param[in] pose The new pose estimate for that vertex.
-#         */
-#       inline void
-#       setPose (const Vertex &vertex, const Eigen::Vector6f &pose);
-# 
-#       /** \brief Return a pose estimate from one of the SLAM graph's vertices.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] vertex The vertex descriptor of which to return the pose estimate.
-#         * \return The current pose estimate of that vertex.
-#         */
-#       inline Eigen::Vector6f
-#       getPose (const Vertex &vertex) const;
-# 
-#       /** \brief Return a pose estimate from one of the SLAM graph's vertices as an affine transformation matrix.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] vertex The vertex descriptor of which to return the transformation matrix.
-#         * \return The current transformation matrix of that vertex.
-#         */
-#       inline Eigen::Affine3f
-#       getTransformation (const Vertex &vertex) const;
-# 
-#       /** \brief Add/change a set of correspondences for one of the SLAM graph's edges.
-#         * \details The edges in the SLAM graph are directional and point from source vertex to target vertex.
-#         * The query indices of the correspondences, index the points at the source vertex' point cloud.
-#         * The matching indices of the correspondences, index the points at the target vertex' point cloud.
-#         * If no edge was present at the specified location, this method will add a new edge to the SLAM graph and attach the correspondences to that edge.
-#         * If the edge was already present, this method will overwrite the correspondence information of that edge and will not alter the SLAM graph structure.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] source_vertex The vertex descriptor of the correspondences' source point cloud.
-#         * \param[in] target_vertex The vertex descriptor of the correspondences' target point cloud.
-#         * \param[in] corrs The new set of correspondences for that edge.
-#         */
-#       void
-#       setCorrespondences (const Vertex &source_vertex, 
-#                           const Vertex &target_vertex, 
-#                           const pcl::CorrespondencesPtr &corrs);
-# 
-#       /** \brief Return a set of correspondences from one of the SLAM graph's edges.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] source_vertex The vertex descriptor of the correspondences' source point cloud.
-#         * \param[in] target_vertex The vertex descriptor of the correspondences' target point cloud.
-#         * \return The current set of correspondences of that edge.
-#         */
-#       inline pcl::CorrespondencesPtr
-#       getCorrespondences (const Vertex &source_vertex, const Vertex &target_vertex) const;
-# 
-#       /** \brief Perform LUM's globally consistent scan matching.
-#         * \details Computation uses the first point cloud in the SLAM graph as a reference pose and attempts to align all other point clouds to it simultaneously.
-#         * <br>
-#         * Things to keep in mind:
-#         * <ul>
-#         *  <li>Only those parts of the graph connected to the reference pose will properly align to it.</li>
-#         *  <li>All sets of correspondences should span the same space and need to be sufficient to determine a rigid transformation.</li>
-#         *  <li>The algorithm draws it strength from loops in the graph because it will distribute errors evenly amongst those loops.</li>
-#         * </ul>
-#         * Computation ends when either of the following conditions hold:
-#         * <ul>
-#         *  <li>The number of iterations reaches max_iterations. Use setMaxIterations() to change.</li>
-#         *  <li>The convergence criteria is met. Use setConvergenceThreshold() to change.</li>
-#         * </ul>
-#         * Computation will change the pose estimates for the vertices of the SLAM graph, not the point clouds attached to them.
-#         * The results can be retrieved with getPose(), getTransformation(), getTransformedCloud() or getConcatenatedCloud().
-#         */
-#       void
-#       compute ();
-# 
-#       /** \brief Return a point cloud from one of the SLAM graph's vertices compounded onto its current pose estimate.
-#         * \note Vertex descriptors are typecastable to int.
-#         * \param[in] vertex The vertex descriptor of which to return the transformed point cloud.
-#         * \return The transformed point cloud of that vertex.
-#         */
-#       PointCloudPtr
-#       getTransformedCloud (const Vertex &vertex) const;
-# 
-#       /** \brief Return a concatenated point cloud of all the SLAM graph's point clouds compounded onto their current pose estimates.
-#         * \return The concatenated transformed point clouds of the entire SLAM graph.
-#         */
-#       PointCloudPtr getConcatenatedCloud () const;
+        # public:
+        # typedef boost::shared_ptr<LUM<PointT> > Ptr;
+        # typedef boost::shared_ptr<const LUM<PointT> > ConstPtr;
+        # typedef pcl::PointCloud<PointT> PointCloud;
+        # typedef typename PointCloud::Ptr PointCloudPtr;
+        # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        # 
+        # struct VertexProperties
+        # {
+        #   PointCloudPtr cloud_;
+        #   Eigen::Vector6f pose_;
+        #   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+        # };
+        # struct EdgeProperties
+        # {
+        #   pcl::CorrespondencesPtr corrs_;
+        #   Eigen::Matrix6f cinv_;
+        #   Eigen::Vector6f cinvd_;
+        #   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+        # };
+        # 
+        # typedef boost::adjacency_list<boost::eigen_vecS, boost::eigen_vecS, boost::bidirectionalS, VertexProperties, EdgeProperties, boost::no_property, boost::eigen_listS> SLAMGraph;
+        # typedef boost::shared_ptr<SLAMGraph> SLAMGraphPtr;
+        # typedef typename SLAMGraph::vertex_descriptor Vertex;
+        # typedef typename SLAMGraph::edge_descriptor Edge;
+        # 
+        # /** \brief Empty constructor.
+        #   */
+        # LUM () 
+        #   : slam_graph_ (new SLAMGraph)
+        #   , max_iterations_ (5)
+        #   , convergence_threshold_ (0.0)
+        # {
+        # }
+        # 
+        # /** \brief Set the internal SLAM graph structure.
+        #   * \details All data used and produced by LUM is stored in this boost::adjacency_list.
+        #   * It is recommended to use the LUM class itself to build the graph.
+        #   * This method could otherwise be useful for managing several SLAM graphs in one instance of LUM.
+        #   * \param[in] slam_graph The new SLAM graph.
+        #   */
+        # inline void setLoopGraph (const SLAMGraphPtr &slam_graph);
+        # 
+        # /** \brief Get the internal SLAM graph structure.
+        #   * \details All data used and produced by LUM is stored in this boost::adjacency_list.
+        #   * It is recommended to use the LUM class itself to build the graph.
+        #   * This method could otherwise be useful for managing several SLAM graphs in one instance of LUM.
+        #   * \return The current SLAM graph.
+        #   */
+        # inline SLAMGraphPtr getLoopGraph () const;
+        # 
+        # /** \brief Get the number of vertices in the SLAM graph.
+        #   * \return The current number of vertices in the SLAM graph.
+        #   */
+        # typename SLAMGraph::vertices_size_type getNumVertices () const;
+        # 
+        # /** \brief Set the maximum number of iterations for the compute() method.
+        #   * \details The compute() method finishes when max_iterations are met or when the convergence criteria is met.
+        #   * \param[in] max_iterations The new maximum number of iterations (default = 5).
+        #   */
+        # void setMaxIterations (int max_iterations);
+        # 
+        # /** \brief Get the maximum number of iterations for the compute() method.
+        #   * \details The compute() method finishes when max_iterations are met or when the convergence criteria is met.
+        #   * \return The current maximum number of iterations (default = 5).
+        #   */
+        # inline int getMaxIterations () const;
+        # 
+        # /** \brief Set the convergence threshold for the compute() method.
+        #   * \details When the compute() method computes the new poses relative to the old poses, it will determine the length of the difference vector.
+        #   * When the average length of all difference vectors becomes less than the convergence_threshold the convergence is assumed to be met.
+        #   * \param[in] convergence_threshold The new convergence threshold (default = 0.0).
+        #   */
+        # void setConvergenceThreshold (float convergence_threshold);
+        # 
+        # /** \brief Get the convergence threshold for the compute() method.
+        #   * \details When the compute() method computes the new poses relative to the old poses, it will determine the length of the difference vector.
+        #   * When the average length of all difference vectors becomes less than the convergence_threshold the convergence is assumed to be met.
+        #   * \return The current convergence threshold (default = 0.0).
+        #   */
+        # inline float getConvergenceThreshold () const;
+        # 
+        # /** \brief Add a new point cloud to the SLAM graph.
+        #   * \details This method will add a new vertex to the SLAM graph and attach a point cloud to that vertex.
+        #   * Optionally you can specify a pose estimate for this point cloud.
+        #   * A vertex' pose is always relative to the first vertex in the SLAM graph, i.e. the first point cloud that was added.
+        #   * Because this first vertex is the reference, you can not set a pose estimate for this vertex.
+        #   * Providing pose estimates to the vertices in the SLAM graph will reduce overall computation time of LUM.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] cloud The new point cloud.
+        #   * \param[in] pose (optional) The pose estimate relative to the reference pose (first point cloud that was added).
+        #   * \return The vertex descriptor of the newly created vertex.
+        #   */
+        # Vertex addPointCloud (const PointCloudPtr &cloud, const Eigen::Vector6f &pose = Eigen::Vector6f::Zero ());
+        # 
+        # /** \brief Change a point cloud on one of the SLAM graph's vertices.
+        #   * \details This method will change the point cloud attached to an existing vertex and will not alter the SLAM graph structure.
+        #   * Note that the correspondences attached to this vertex will not change and may need to be updated manually.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] vertex The vertex descriptor of which to change the point cloud.
+        #   * \param[in] cloud The new point cloud for that vertex.
+        #   */
+        # inline void setPointCloud (const Vertex &vertex, const PointCloudPtr &cloud);
+        # 
+        # /** \brief Return a point cloud from one of the SLAM graph's vertices.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] vertex The vertex descriptor of which to return the point cloud.
+        #   * \return The current point cloud for that vertex.
+        #   */
+        # inline PointCloudPtr getPointCloud (const Vertex &vertex) const;
+        # 
+        # /** \brief Change a pose estimate on one of the SLAM graph's vertices.
+        #   * \details A vertex' pose is always relative to the first vertex in the SLAM graph, i.e. the first point cloud that was added.
+        #   * Because this first vertex is the reference, you can not set a pose estimate for this vertex.
+        #   * Providing pose estimates to the vertices in the SLAM graph will reduce overall computation time of LUM.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] vertex The vertex descriptor of which to set the pose estimate.
+        #   * \param[in] pose The new pose estimate for that vertex.
+        #   */
+        # inline void setPose (const Vertex &vertex, const Eigen::Vector6f &pose);
+        # 
+        # /** \brief Return a pose estimate from one of the SLAM graph's vertices.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] vertex The vertex descriptor of which to return the pose estimate.
+        #   * \return The current pose estimate of that vertex.
+        #   */
+        # inline Eigen::Vector6f getPose (const Vertex &vertex) const;
+        # 
+        # /** \brief Return a pose estimate from one of the SLAM graph's vertices as an affine transformation matrix.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] vertex The vertex descriptor of which to return the transformation matrix.
+        #   * \return The current transformation matrix of that vertex.
+        #   */
+        # inline Eigen::Affine3f getTransformation (const Vertex &vertex) const;
+        # 
+        # /** \brief Add/change a set of correspondences for one of the SLAM graph's edges.
+        #   * \details The edges in the SLAM graph are directional and point from source vertex to target vertex.
+        #   * The query indices of the correspondences, index the points at the source vertex' point cloud.
+        #   * The matching indices of the correspondences, index the points at the target vertex' point cloud.
+        #   * If no edge was present at the specified location, this method will add a new edge to the SLAM graph and attach the correspondences to that edge.
+        #   * If the edge was already present, this method will overwrite the correspondence information of that edge and will not alter the SLAM graph structure.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] source_vertex The vertex descriptor of the correspondences' source point cloud.
+        #   * \param[in] target_vertex The vertex descriptor of the correspondences' target point cloud.
+        #   * \param[in] corrs The new set of correspondences for that edge.
+        #   */
+        # void setCorrespondences (const Vertex &source_vertex, 
+        #                     const Vertex &target_vertex, 
+        #                     const pcl::CorrespondencesPtr &corrs);
+        # 
+        # /** \brief Return a set of correspondences from one of the SLAM graph's edges.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] source_vertex The vertex descriptor of the correspondences' source point cloud.
+        #   * \param[in] target_vertex The vertex descriptor of the correspondences' target point cloud.
+        #   * \return The current set of correspondences of that edge.
+        #   */
+        # inline pcl::CorrespondencesPtr getCorrespondences (const Vertex &source_vertex, const Vertex &target_vertex) const;
+        # 
+        # /** \brief Perform LUM's globally consistent scan matching.
+        #   * \details Computation uses the first point cloud in the SLAM graph as a reference pose and attempts to align all other point clouds to it simultaneously.
+        #   * <br>
+        #   * Things to keep in mind:
+        #   * <ul>
+        #   *  <li>Only those parts of the graph connected to the reference pose will properly align to it.</li>
+        #   *  <li>All sets of correspondences should span the same space and need to be sufficient to determine a rigid transformation.</li>
+        #   *  <li>The algorithm draws it strength from loops in the graph because it will distribute errors evenly amongst those loops.</li>
+        #   * </ul>
+        #   * Computation ends when either of the following conditions hold:
+        #   * <ul>
+        #   *  <li>The number of iterations reaches max_iterations. Use setMaxIterations() to change.</li>
+        #   *  <li>The convergence criteria is met. Use setConvergenceThreshold() to change.</li>
+        #   * </ul>
+        #   * Computation will change the pose estimates for the vertices of the SLAM graph, not the point clouds attached to them.
+        #   * The results can be retrieved with getPose(), getTransformation(), getTransformedCloud() or getConcatenatedCloud().
+        #   */
+        # void compute ();
+        # 
+        # /** \brief Return a point cloud from one of the SLAM graph's vertices compounded onto its current pose estimate.
+        #   * \note Vertex descriptors are typecastable to int.
+        #   * \param[in] vertex The vertex descriptor of which to return the transformed point cloud.
+        #   * \return The transformed point cloud of that vertex.
+        #   */
+        # PointCloudPtr getTransformedCloud (const Vertex &vertex) const;
+        # 
+        # /** \brief Return a concatenated point cloud of all the SLAM graph's point clouds compounded onto their current pose estimates.
+        #   * \return The concatenated transformed point clouds of the entire SLAM graph.
+        #   */
+        # PointCloudPtr getConcatenatedCloud () const;
 
 
 ###
@@ -3131,94 +3048,92 @@ cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
 cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
     cdef cppclass NormalDistributionsTransform[Source, Target](Registration[Source, Target]):
         NormalDistributionsTransform()
-#       protected:
-#       typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
-#       typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#       typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#       
-#       typedef typename Registration<PointSource, PointTarget>::PointCloudTarget PointCloudTarget;
-#       typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
-#       typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
-#       
-#       typedef PointIndices::Ptr PointIndicesPtr;
-#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#       
-#       /** \brief Typename of searchable voxel grid containing mean and covariance. */
-#       typedef VoxelGridCovariance<PointTarget> TargetGrid;
-#       /** \brief Typename of pointer to searchable voxel grid. */
-#       typedef TargetGrid* TargetGridPtr;
-#       /** \brief Typename of const pointer to searchable voxel grid. */
-#       typedef const TargetGrid* TargetGridConstPtr;
-#       /** \brief Typename of const pointer to searchable voxel grid leaf. */
-#       typedef typename TargetGrid::LeafConstPtr TargetGridLeafConstPtr;
-#       
-#       public:
-#       typedef boost::shared_ptr< NormalDistributionsTransform<PointSource, PointTarget> > Ptr;
-#       typedef boost::shared_ptr< const NormalDistributionsTransform<PointSource, PointTarget> > ConstPtr;
-#       /** \brief Constructor.
-#         * Sets \ref outlier_ratio_ to 0.35, \ref step_size_ to 0.05 and \ref resolution_ to 1.0
-#         */
-#       NormalDistributionsTransform ();
-#       
-#       /** \brief Empty destructor */
-#       virtual ~NormalDistributionsTransform () {}
-#       
-#       /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to).
-#         * \param[in] cloud the input point cloud target
-#         */
-#       inline void setInputTarget (const PointCloudTargetConstPtr &cloud)
-#       
-#       /** \brief Set/change the voxel grid resolution.
-#         * \param[in] resolution side length of voxels
-#         */
-#       inline void setResolution (float resolution)
-#       
-#       /** \brief Get voxel grid resolution.
-#         * \return side length of voxels
-#         */
-#       inline float getResolution () const
-#       
-#       /** \brief Get the newton line search maximum step length.
-#         * \return maximum step length
-#         */
-#       inline double getStepSize () const
-#       
-#       /** \brief Set/change the newton line search maximum step length.
-#         * \param[in] step_size maximum step length
-#         */
-#       inline void setStepSize (double step_size)
-#       
-#       /** \brief Get the point cloud outlier ratio.
-#         * \return outlier ratio
-#         */
-#       inline double getOulierRatio () const
-#       
-#       /** \brief Set/change the point cloud outlier ratio.
-#         * \param[in] outlier_ratio outlier ratio
-#         */
-#       inline void setOulierRatio (double outlier_ratio)
-#       
-#       /** \brief Get the registration alignment probability.
-#         * \return transformation probability
-#         */
-#       inline double getTransformationProbability () const
-#       
-#       /** \brief Get the number of iterations required to calculate alignment.
-#         * \return final number of iterations
-#         */
-#       inline int getFinalNumIteration () const
-#       
-#       /** \brief Convert 6 element transformation vector to affine transformation.
-#         * \param[in] x transformation vector of the form [x, y, z, roll, pitch, yaw]
-#         * \param[out] trans affine transform corresponding to given transfomation vector
-#         */
-#       static void convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Affine3f &trans)
-#       
-#       /** \brief Convert 6 element transformation vector to transformation matrix.
-#         * \param[in] x transformation vector of the form [x, y, z, roll, pitch, yaw]
-#         * \param[out] trans 4x4 transformation matrix corresponding to given transfomation vector
-#         */
-#       static void convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Matrix4f &trans)
+        # protected:
+        # typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef typename Registration<PointSource, PointTarget>::PointCloudTarget PointCloudTarget;
+        # typedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
+        # typedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # 
+        # /** \brief Typename of searchable voxel grid containing mean and covariance. */
+        # typedef VoxelGridCovariance<PointTarget> TargetGrid;
+        # /** \brief Typename of pointer to searchable voxel grid. */
+        # typedef TargetGrid* TargetGridPtr;
+        # /** \brief Typename of const pointer to searchable voxel grid. */
+        # typedef const TargetGrid* TargetGridConstPtr;
+        # /** \brief Typename of const pointer to searchable voxel grid leaf. */
+        # typedef typename TargetGrid::LeafConstPtr TargetGridLeafConstPtr;
+        # 
+        # public:
+        # typedef boost::shared_ptr< NormalDistributionsTransform<PointSource, PointTarget> > Ptr;
+        # typedef boost::shared_ptr< const NormalDistributionsTransform<PointSource, PointTarget> > ConstPtr;
+        # /** \brief Constructor.
+        #   * Sets \ref outlier_ratio_ to 0.35, \ref step_size_ to 0.05 and \ref resolution_ to 1.0
+        #   */
+        # NormalDistributionsTransform ();
+        # 
+        # /** \brief Empty destructor */
+        # virtual ~NormalDistributionsTransform () {}
+        # 
+        # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to).
+        #   * \param[in] cloud the input point cloud target
+        #   */
+        # inline void setInputTarget (const PointCloudTargetConstPtr &cloud)
+        # 
+        # /** \brief Set/change the voxel grid resolution.
+        #   * \param[in] resolution side length of voxels
+        #   */
+        # inline void setResolution (float resolution)
+        # 
+        # /** \brief Get voxel grid resolution.
+        #   * \return side length of voxels
+        #   */
+        # inline float getResolution () const
+        # 
+        # /** \brief Get the newton line search maximum step length.
+        #   * \return maximum step length
+        #   */
+        # inline double getStepSize () const
+        # 
+        # /** \brief Set/change the newton line search maximum step length.
+        #   * \param[in] step_size maximum step length
+        #   */
+        # inline void setStepSize (double step_size)
+        # 
+        # /** \brief Get the point cloud outlier ratio.
+        #   * \return outlier ratio
+        #   */
+        # inline double getOulierRatio () const
+        # 
+        # /** \brief Set/change the point cloud outlier ratio.
+        #   * \param[in] outlier_ratio outlier ratio
+        #   */
+        # inline void setOulierRatio (double outlier_ratio)
+        # 
+        # /** \brief Get the registration alignment probability.
+        #   * \return transformation probability
+        #   */
+        # inline double getTransformationProbability () const
+        # 
+        # /** \brief Get the number of iterations required to calculate alignment.
+        #   * \return final number of iterations
+        #   */
+        # inline int getFinalNumIteration () const
+        # 
+        # /** \brief Convert 6 element transformation vector to affine transformation.
+        #   * \param[in] x transformation vector of the form [x, y, z, roll, pitch, yaw]
+        #   * \param[out] trans affine transform corresponding to given transfomation vector
+        #   */
+        # static void convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Affine3f &trans)
+        # 
+        # /** \brief Convert 6 element transformation vector to transformation matrix.
+        #   * \param[in] x transformation vector of the form [x, y, z, roll, pitch, yaw]
+        #   * \param[out] trans 4x4 transformation matrix corresponding to given transfomation vector
+        #   */
+        # static void convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Matrix4f &trans)
 
 
 ###
@@ -3239,62 +3154,62 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
 cdef extern from "pcl/registration/ndt_2d.h" namespace "pcl" nogil:
     cdef cppclass NormalDistributionsTransform2D[Source, Target](Registration[Source, Target]):
         NormalDistributionsTransform2D()
-#       typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
-#       typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#       typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#       typedef typename Registration<PointSource, PointTarget>::PointCloudTarget PointCloudTarget;
-#       typedef PointIndices::Ptr PointIndicesPtr;
-#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#       
-#       public:
-#       typedef boost::shared_ptr< NormalDistributionsTransform2D<PointSource, PointTarget> > Ptr;
-#       typedef boost::shared_ptr< const NormalDistributionsTransform2D<PointSource, PointTarget> > ConstPtr;
-#       
-#       /** \brief Empty constructor. */
-#       NormalDistributionsTransform2D ()
-#         : Registration<PointSource,PointTarget> (),
-#           grid_centre_ (0,0), grid_step_ (1,1), grid_extent_ (20,20), newton_lambda_ (1,1,1)
-#       
-#       /** \brief Empty destructor */
-#       virtual ~NormalDistributionsTransform2D () {}
-#       
-#       /** \brief centre of the ndt grid (target coordinate system)
-#         * \param centre value to set
-#         */
-#       virtual void
-#       setGridCentre (const Eigen::Vector2f& centre) { grid_centre_ = centre; }
-#       
-#       /** \brief Grid spacing (step) of the NDT grid
-#         * \param[in] step value to set
-#         */
-#       virtual void
-#       setGridStep (const Eigen::Vector2f& step) { grid_step_ = step; }
-#       
-#       /** \brief NDT Grid extent (in either direction from the grid centre)
-#         * \param[in] extent value to set
-#         */
-#       virtual void
-#       setGridExtent (const Eigen::Vector2f& extent) { grid_extent_ = extent; }
-#       
-#       /** \brief NDT Newton optimisation step size parameter
-#         * \param[in] lambda step size: 1 is simple newton optimisation, smaller values may improve convergence
-#         */
-#        virtual void
-#        setOptimizationStepSize (const double& lambda) { newton_lambda_ = Eigen::Vector3d (lambda, lambda, lambda); }
-#       
-#       /** \brief NDT Newton optimisation step size parameter
-#         * \param[in] lambda step size: (1,1,1) is simple newton optimisation,
-#         * smaller values may improve convergence, or elements may be set to
-#         * zero to prevent optimisation over some parameters
-#         *
-#         * This overload allows control of updates to the individual (x, y,
-#         * theta) free parameters in the optimisation. If, for example, theta is
-#         * believed to be close to the correct value a small value of lambda[2]
-#         * should be used.
-#         */
-#        virtual void
-#        setOptimizationStepSize (const Eigen::Vector3d& lambda) { newton_lambda_ = lambda; }
-#       
+        # typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef typename Registration<PointSource, PointTarget>::PointCloudTarget PointCloudTarget;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # 
+        # public:
+        # typedef boost::shared_ptr< NormalDistributionsTransform2D<PointSource, PointTarget> > Ptr;
+        # typedef boost::shared_ptr< const NormalDistributionsTransform2D<PointSource, PointTarget> > ConstPtr;
+        # 
+        # /** \brief Empty constructor. */
+        # NormalDistributionsTransform2D ()
+        #   : Registration<PointSource,PointTarget> (),
+        #     grid_centre_ (0,0), grid_step_ (1,1), grid_extent_ (20,20), newton_lambda_ (1,1,1)
+        # 
+        # /** \brief Empty destructor */
+        # virtual ~NormalDistributionsTransform2D () {}
+        # 
+        # /** \brief centre of the ndt grid (target coordinate system)
+        #   * \param centre value to set
+        #   */
+        # virtual void
+        # setGridCentre (const Eigen::Vector2f& centre) { grid_centre_ = centre; }
+        # 
+        # /** \brief Grid spacing (step) of the NDT grid
+        #   * \param[in] step value to set
+        #   */
+        # virtual void
+        # setGridStep (const Eigen::Vector2f& step) { grid_step_ = step; }
+        # 
+        # /** \brief NDT Grid extent (in either direction from the grid centre)
+        #   * \param[in] extent value to set
+        #   */
+        # virtual void
+        # setGridExtent (const Eigen::Vector2f& extent) { grid_extent_ = extent; }
+        # 
+        # /** \brief NDT Newton optimisation step size parameter
+        #   * \param[in] lambda step size: 1 is simple newton optimisation, smaller values may improve convergence
+        #   */
+        #  virtual void
+        #  setOptimizationStepSize (const double& lambda) { newton_lambda_ = Eigen::Vector3d (lambda, lambda, lambda); }
+        # 
+        # /** \brief NDT Newton optimisation step size parameter
+        #   * \param[in] lambda step size: (1,1,1) is simple newton optimisation,
+        #   * smaller values may improve convergence, or elements may be set to
+        #   * zero to prevent optimisation over some parameters
+        #   *
+        #   * This overload allows control of updates to the individual (x, y,
+        #   * theta) free parameters in the optimisation. If, for example, theta is
+        #   * believed to be close to the correct value a small value of lambda[2]
+        #   * should be used.
+        #   */
+        #  virtual void
+        #  setOptimizationStepSize (const Eigen::Vector3d& lambda) { newton_lambda_ = lambda; }
+        # 
 
 
 ###
@@ -3303,7 +3218,6 @@ cdef extern from "pcl/registration/ndt_2d.h" namespace "pcl" nogil:
 # ErrorLog
 # C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE\xhash(29): error C2440: 'type cast': cannot convert from 'const pcl::PPFHashMapSearch::HashKeyStruct' to 'std::size_t'
 # C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\INCLUDE\xhash(29): note: No user-defined-conversion operator available that can perform this conversion, or the operator cannot be called
-# 
 # ppf_registration.h
 # template <typename PointSource, typename PointTarget>
 # class PPFRegistration : public Registration<PointSource, PointTarget>
@@ -3329,47 +3243,52 @@ cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
         # ctypedef pcl::PointCloud<PointTarget> PointCloudTarget;
         # ctypedef typename PointCloudTarget::Ptr PointCloudTargetPtr;
         # ctypedef typename PointCloudTarget::ConstPtr PointCloudTargetConstPtr;
+        # 
         # /** \brief Method for setting the position difference clustering parameter
         #    * \param clustering_position_diff_threshold distance threshold below which two poses are
         #  * considered close enough to be in the same cluster (for the clustering phase of the algorithm)
         #  */
-        #   inline void
-        # setPositionClusteringThreshold (float clustering_position_diff_threshold)
+        # inline void setPositionClusteringThreshold (float clustering_position_diff_threshold)
+        # 
         # /** \brief Returns the parameter defining the position difference clustering parameter -
         #  * distance threshold below which two poses are considered close enough to be in the same cluster
         #    * (for the clustering phase of the algorithm)
         #  */
-        # inline float
-        # getPositionClusteringThreshold ()
+        # inline float getPositionClusteringThreshold ()
+        # 
         # /** \brief Method for setting the rotation clustering parameter
         #  * \param clustering_rotation_diff_threshold rotation difference threshold below which two
         #  * poses are considered to be in the same cluster (for the clustering phase of the algorithm)
         #  */
-        # inline void
-        # setRotationClusteringThreshold (float clustering_rotation_diff_threshold)
+        # inline void setRotationClusteringThreshold (float clustering_rotation_diff_threshold)
+        # 
         # /** \brief Returns the parameter defining the rotation clustering threshold
         #  */
-        # inline float
-        # getRotationClusteringThreshold ()
+        # inline float getRotationClusteringThreshold ()
+        # 
         # /** \brief Method for setting the scene reference point sampling rate
         #  * \param scene_reference_point_sampling_rate sampling rate for the scene reference point
         #  */
         # inline void setSceneReferencePointSamplingRate (unsigned int scene_reference_point_sampling_rate) { scene_reference_point_sampling_rate_ = scene_reference_point_sampling_rate; }
+        # 
         # /** \brief Returns the parameter for the scene reference point sampling rate of the algorithm */
-        # inline unsigned int
-        # getSceneReferencePointSamplingRate ()
+        # inline unsigned int getSceneReferencePointSamplingRate ()
+        # 
         # /** \brief Function that sets the search method for the algorithm
         #  * \note Right now, the only available method is the one initially proposed by
         #  * the authors - by using a hash map with discretized feature vectors
         #  * \param search_method smart pointer to the search method to be set
         #  */
         # inline void setSearchMethod (PPFHashMapSearch::Ptr search_method)
+        # 
         # /** \brief Getter function for the search method of the class */
         # inline PPFHashMapSearch::Ptr getSearchMethod ()
+        # 
         # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
         #  * \param cloud the input point cloud target
         #  */
         # void setInputTarget (const PointCloudTargetConstPtr &cloud);
+
 
 ###
 
@@ -3389,38 +3308,38 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
         #  * \note Please check the PyramidHistogram class description for more details about this parameter.
         #  */
         # inline void setInputDimensionRange (std::vector<std::pair<float, float> > &dimension_range_input)
+        # 
         # /** \brief Method for retrieving the input dimension range vector */
         # inline std::vector<std::pair<float, float> > getInputDimensionRange () { return dimension_range_input_; }
         # /** \brief Method to set the target dimension range parameter.
         #  * \note Please check the PyramidHistogram class description for more details about this parameter.
         #  */
-        # inline void
-        # setTargetDimensionRange (std::vector<std::pair<float, float> > &dimension_range_target)
+        # inline void setTargetDimensionRange (std::vector<std::pair<float, float> > &dimension_range_target)
+        # 
         # /** \brief Method for retrieving the target dimension range vector */
         # inline std::vector<std::pair<float, float> >
         # getTargetDimensionRange () { return dimension_range_target_; }
         # /** \brief Provide a pointer to the feature representation to use to convert features to k-D vectors.
         #  * \param feature_representation the const boost shared pointer to a PointRepresentation
         #  */
-        # inline void
-        # setPointRepresentation (const FeatureRepresentationConstPtr& feature_representation) { feature_representation_ = feature_representation; }
+        # inline void setPointRepresentation (const FeatureRepresentationConstPtr& feature_representation) { feature_representation_ = feature_representation; }
+        # 
         # /** \brief Get a pointer to the feature representation used when converting features into k-D vectors. */
-        # inline FeatureRepresentationConstPtr const
-        # getPointRepresentation () { return feature_representation_; }
+        # inline FeatureRepresentationConstPtr const getPointRepresentation () { return feature_representation_; }
+        # 
         # /** \brief The central method for inserting the feature set inside the pyramid and obtaining the complete pyramid */
-        # void
-        # compute ();
+        # void compute ();
+        # 
         # /** \brief Checks whether the pyramid histogram has been computed */
-        # inline bool
-        # isComputed () { return is_computed_; }
+        # inline bool isComputed () { return is_computed_; }
+        # 
         # /** \brief Static method for comparing two pyramid histograms that returns a floating point value between 0 and 1,
         #  * representing the similiarity between the feature sets on which the two pyramid histograms are based.
         #  * \param pyramid_a Pointer to the first pyramid to be compared (needs to be computed already).
         #  * \param pyramid_b Pointer to the second pyramid to be compared (needs to be computed already).
         #  */
-        # static float
-        # comparePyramidFeatureHistograms (const PyramidFeatureHistogramPtr &pyramid_a,
-        #                                  const PyramidFeatureHistogramPtr &pyramid_b);
+        # static float comparePyramidFeatureHistograms (const PyramidFeatureHistogramPtr &pyramid_a, const PyramidFeatureHistogramPtr &pyramid_b);
+
 
 ###
 
@@ -3456,155 +3375,112 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
 cdef extern from "pcl/registration/sample_consensus_prerejective.h" namespace "pcl" nogil:
     cdef cppclass SampleConsensusPrerejective[Source, Target, Feature](Registration[Source, Target]):
         SampleConsensusPrerejective()
-#       public:
-#       typedef typename Registration<PointSource, PointTarget>::Matrix4 Matrix4;
-#       using Registration<PointSource, PointTarget>::reg_name_;
-#       using Registration<PointSource, PointTarget>::getClassName;
-#       using Registration<PointSource, PointTarget>::input_;
-#       using Registration<PointSource, PointTarget>::target_;
-#       using Registration<PointSource, PointTarget>::tree_;
-#       using Registration<PointSource, PointTarget>::max_iterations_;
-#       using Registration<PointSource, PointTarget>::corr_dist_threshold_;
-#       using Registration<PointSource, PointTarget>::transformation_;
-#       using Registration<PointSource, PointTarget>::final_transformation_;
-#       using Registration<PointSource, PointTarget>::transformation_estimation_;
-#       using Registration<PointSource, PointTarget>::getFitnessScore;
-#       using Registration<PointSource, PointTarget>::converged_;
-#       typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
-#       typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#       typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#       typedef typename Registration<PointSource, PointTarget>::PointCloudTarget PointCloudTarget;
-#       typedef PointIndices::Ptr PointIndicesPtr;
-#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#       typedef pcl::PointCloud<FeatureT> FeatureCloud;
-#       typedef typename FeatureCloud::Ptr FeatureCloudPtr;
-#       typedef typename FeatureCloud::ConstPtr FeatureCloudConstPtr;
-#       typedef boost::shared_ptr<SampleConsensusPrerejective<PointSource, PointTarget, FeatureT> > Ptr;
-#       typedef boost::shared_ptr<const SampleConsensusPrerejective<PointSource, PointTarget, FeatureT> > ConstPtr;
-#       typedef typename KdTreeFLANN<FeatureT>::Ptr FeatureKdTreePtr;
-#       
-#       typedef pcl::registration::CorrespondenceRejectorPoly<PointSource, PointTarget> CorrespondenceRejectorPoly;
-#       typedef typename CorrespondenceRejectorPoly::Ptr CorrespondenceRejectorPolyPtr;
-#       typedef typename CorrespondenceRejectorPoly::ConstPtr CorrespondenceRejectorPolyConstPtr;
-#       
-#       /** \brief Constructor */
-#       SampleConsensusPrerejective ()
-#         : input_features_ ()
-#         , target_features_ ()
-#         , nr_samples_(3)
-#         , k_correspondences_ (2)
-#         , feature_tree_ (new pcl::KdTreeFLANN<FeatureT>)
-#         , correspondence_rejector_poly_ (new CorrespondenceRejectorPoly)
-#         , inlier_fraction_ (0.0f)
-#       
-#       /** \brief Destructor */
-#       virtual ~SampleConsensusPrerejective ()
-#       {
-#       }
-#       
-#       /** \brief Provide a boost shared pointer to the source point cloud's feature descriptors
-#         * \param features the source point cloud's features
-#         */
-#       void setSourceFeatures (const FeatureCloudConstPtr &features);
-#       
-#       /** \brief Get a pointer to the source point cloud's features */
-#       inline const FeatureCloudConstPtr
-#       getSourceFeatures () const
-#       { 
-#         return (input_features_);
-#       }
-#       
-#       /** \brief Provide a boost shared pointer to the target point cloud's feature descriptors
-#         * \param features the target point cloud's features
-#         */
-#       void 
-#       setTargetFeatures (const FeatureCloudConstPtr &features);
-#       
-#       /** \brief Get a pointer to the target point cloud's features */
-#       inline const FeatureCloudConstPtr 
-#       getTargetFeatures () const
-#       {
-#         return (target_features_);
-#       }
-#       
-#       /** \brief Set the number of samples to use during each iteration
-#         * \param nr_samples the number of samples to use during each iteration
-#         */
-#       inline void 
-#       setNumberOfSamples (int nr_samples)
-#       {
-#         nr_samples_ = nr_samples;
-#       }
-#       
-#       /** \brief Get the number of samples to use during each iteration, as set by the user */
-#       inline int 
-#       getNumberOfSamples () const
-#       {
-#         return (nr_samples_);
-#       }
-#       
-#       /** \brief Set the number of neighbors to use when selecting a random feature correspondence.  A higher value will
-#         * add more randomness to the feature matching.
-#         * \param k the number of neighbors to use when selecting a random feature correspondence.
-#         */
-#       inline void
-#       setCorrespondenceRandomness (int k)
-#       {
-#         k_correspondences_ = k;
-#       }
-#       
-#       /** \brief Get the number of neighbors used when selecting a random feature correspondence, as set by the user */
-#       inline int
-#       getCorrespondenceRandomness () const
-#       {
-#         return (k_correspondences_);
-#       }
-#       
-#       /** \brief Set the similarity threshold in [0,1[ between edge lengths of the underlying polygonal correspondence rejector object,
-#        * where 1 is a perfect match
-#        * \param similarity_threshold edge length similarity threshold
-#        */
-#       inline void
-#       setSimilarityThreshold (float similarity_threshold)
-#       {
-#         correspondence_rejector_poly_->setSimilarityThreshold (similarity_threshold);
-#       }
-#       
-#       /** \brief Get the similarity threshold between edge lengths of the underlying polygonal correspondence rejector object,
-#        * \return edge length similarity threshold
-#        */
-#       inline float
-#       getSimilarityThreshold () const
-#       {
-#         return correspondence_rejector_poly_->getSimilarityThreshold ();
-#       }
-#       
-#       /** \brief Set the required inlier fraction (of the input)
-#        * \param inlier_fraction required inlier fraction, must be in [0,1]
-#        */
-#       inline void
-#       setInlierFraction (float inlier_fraction)
-#       {
-#         inlier_fraction_ = inlier_fraction;
-#       }
-#       
-#       /** \brief Get the required inlier fraction
-#        * \return required inlier fraction in [0,1]
-#        */
-#       inline float
-#       getInlierFraction () const
-#       {
-#         return inlier_fraction_;
-#       }
-#       
-#       /** \brief Get the inlier indices of the source point cloud under the final transformation
-#        * @return inlier indices
-#        */
-#       inline const std::vector<int>&
-#       getInliers () const
-#       {
-#         return inliers_;
-#       }
+        # public:
+        # typedef typename Registration<PointSource, PointTarget>::Matrix4 Matrix4;
+        # using Registration<PointSource, PointTarget>::reg_name_;
+        # using Registration<PointSource, PointTarget>::getClassName;
+        # using Registration<PointSource, PointTarget>::input_;
+        # using Registration<PointSource, PointTarget>::target_;
+        # using Registration<PointSource, PointTarget>::tree_;
+        # using Registration<PointSource, PointTarget>::max_iterations_;
+        # using Registration<PointSource, PointTarget>::corr_dist_threshold_;
+        # using Registration<PointSource, PointTarget>::transformation_;
+        # using Registration<PointSource, PointTarget>::final_transformation_;
+        # using Registration<PointSource, PointTarget>::transformation_estimation_;
+        # using Registration<PointSource, PointTarget>::getFitnessScore;
+        # using Registration<PointSource, PointTarget>::converged_;
+        # typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef typename Registration<PointSource, PointTarget>::PointCloudTarget PointCloudTarget;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # typedef pcl::PointCloud<FeatureT> FeatureCloud;
+        # typedef typename FeatureCloud::Ptr FeatureCloudPtr;
+        # typedef typename FeatureCloud::ConstPtr FeatureCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusPrerejective<PointSource, PointTarget, FeatureT> > Ptr;
+        # typedef boost::shared_ptr<const SampleConsensusPrerejective<PointSource, PointTarget, FeatureT> > ConstPtr;
+        # typedef typename KdTreeFLANN<FeatureT>::Ptr FeatureKdTreePtr;
+        # 
+        # typedef pcl::registration::CorrespondenceRejectorPoly<PointSource, PointTarget> CorrespondenceRejectorPoly;
+        # typedef typename CorrespondenceRejectorPoly::Ptr CorrespondenceRejectorPolyPtr;
+        # typedef typename CorrespondenceRejectorPoly::ConstPtr CorrespondenceRejectorPolyConstPtr;
+        # 
+        # /** \brief Constructor */
+        # SampleConsensusPrerejective ()
+        #   : input_features_ ()
+        #   , target_features_ ()
+        #   , nr_samples_(3)
+        #   , k_correspondences_ (2)
+        #   , feature_tree_ (new pcl::KdTreeFLANN<FeatureT>)
+        #   , correspondence_rejector_poly_ (new CorrespondenceRejectorPoly)
+        #   , inlier_fraction_ (0.0f)
+        # 
+        # /** \brief Destructor */
+        # virtual ~SampleConsensusPrerejective ()
+        # 
+        # /** \brief Provide a boost shared pointer to the source point cloud's feature descriptors
+        #   * \param features the source point cloud's features
+        #   */
+        # void setSourceFeatures (const FeatureCloudConstPtr &features);
+        # 
+        # /** \brief Get a pointer to the source point cloud's features */
+        # inline const FeatureCloudConstPtr getSourceFeatures () const
+        # 
+        # /** \brief Provide a boost shared pointer to the target point cloud's feature descriptors
+        #   * \param features the target point cloud's features
+        #   */
+        # void setTargetFeatures (const FeatureCloudConstPtr &features);
+        # 
+        # /** \brief Get a pointer to the target point cloud's features */
+        # inline const FeatureCloudConstPtr getTargetFeatures () const
+        # 
+        # /** \brief Set the number of samples to use during each iteration
+        #   * \param nr_samples the number of samples to use during each iteration
+        #   */
+        # inline void setNumberOfSamples (int nr_samples)
+        # 
+        # /** \brief Get the number of samples to use during each iteration, as set by the user */
+        # inline int  getNumberOfSamples () const
+        # 
+        # /** \brief Set the number of neighbors to use when selecting a random feature correspondence.  A higher value will
+        #   * add more randomness to the feature matching.
+        #   * \param k the number of neighbors to use when selecting a random feature correspondence.
+        #   */
+        # inline void setCorrespondenceRandomness (int k)
+        # 
+        # /** \brief Get the number of neighbors used when selecting a random feature correspondence, as set by the user */
+        # inline int
+        # getCorrespondenceRandomness () const
+        # {
+        #   return (k_correspondences_);
+        # }
+        # 
+        # /** \brief Set the similarity threshold in [0,1[ between edge lengths of the underlying polygonal correspondence rejector object,
+        #  * where 1 is a perfect match
+        #  * \param similarity_threshold edge length similarity threshold
+        #  */
+        # inline void setSimilarityThreshold (float similarity_threshold)
+        # 
+        # /** \brief Get the similarity threshold between edge lengths of the underlying polygonal correspondence rejector object,
+        #  * \return edge length similarity threshold
+        #  */
+        # inline float getSimilarityThreshold () const
+        # 
+        # /** \brief Set the required inlier fraction (of the input)
+        #  * \param inlier_fraction required inlier fraction, must be in [0,1]
+        #  */
+        # inline void setInlierFraction (float inlier_fraction)
+        # 
+        # /** \brief Get the required inlier fraction
+        #  * \return required inlier fraction in [0,1]
+        #  */
+        # inline float getInlierFraction () const
+        # 
+        # /** \brief Get the inlier indices of the source point cloud under the final transformation
+        #  * @return inlier indices
+        #  */
+        # inline const std::vector<int>& getInliers () const
 
 
 ###
@@ -3621,23 +3497,23 @@ cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl" 
         #   * \param[in] cloud_tgt the target point cloud dataset
         #   * \param[out] transformation_matrix the resultant transformation matrix
         #   */
-        # virtual void
-        # estimateRigidTransformation (
+        # virtual void estimateRigidTransformation (
         #     const pcl::PointCloud<PointSource> &cloud_src,
         #     const pcl::PointCloud<PointTarget> &cloud_tgt,
         #     Eigen::Matrix4f &transformation_matrix) = 0;
+        # 
         # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud.
         #   * \param[in] cloud_src the source point cloud dataset
         #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
         #   * \param[in] cloud_tgt the target point cloud dataset
         #   * \param[out] transformation_matrix the resultant transformation matrix
         #   */
-        # virtual void
-        # estimateRigidTransformation (
+        # virtual void estimateRigidTransformation (
         #     const pcl::PointCloud<PointSource> &cloud_src,
         #     const std::vector<int> &indices_src,
         #     const pcl::PointCloud<PointTarget> &cloud_tgt,
         #     Eigen::Matrix4f &transformation_matrix) = 0;
+        # 
         # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud.
         #   * \param[in] cloud_src the source point cloud dataset
         #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
@@ -3645,21 +3521,20 @@ cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl" 
         #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
         #   * \param[out] transformation_matrix the resultant transformation matrix
         #   */
-        # virtual void
-        # estimateRigidTransformation (
+        # virtual void estimateRigidTransformation (
         #     const pcl::PointCloud<PointSource> &cloud_src,
         #     const std::vector<int> &indices_src,
         #     const pcl::PointCloud<PointTarget> &cloud_tgt,
         #     const std::vector<int> &indices_tgt,
         #     Eigen::Matrix4f &transformation_matrix) = 0;
+        # 
         # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud.
         #   * \param[in] cloud_src the source point cloud dataset
         #   * \param[in] cloud_tgt the target point cloud dataset
         #   * \param[in] correspondences the vector of correspondences between source and target point cloud
         #   * \param[out] transformation_matrix the resultant transformation matrix
         #   */
-        # virtual void
-        # estimateRigidTransformation (
+        # virtual void estimateRigidTransformation (
         #     const pcl::PointCloud<PointSource> &cloud_src,
         #     const pcl::PointCloud<PointTarget> &cloud_tgt,
         #     const pcl::Correspondences &correspondences,
@@ -3687,66 +3562,62 @@ cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl" 
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class TransformationEstimation2D : public TransformationEstimation<PointSource, PointTarget, Scalar>
 cdef extern from "pcl/registration/transformation_estimation_2D.h" namespace "pcl" nogil:
-    cdef cppclass TransformationEstimation2D[Source, Target, float](TransformationEstimation[Source, Target, float]):
+    cdef cppclass TransformationEstimation2D[Source, Target, float](TransformationEstimation[Source, Target]):
         TransformationEstimation2D() except +
-#       public:
-#       typedef boost::shared_ptr<TransformationEstimation2D<PointSource, PointTarget, Scalar> > Ptr;
-#       typedef boost::shared_ptr<const TransformationEstimation2D<PointSource, PointTarget, Scalar> > ConstPtr;
-#       typedef typename TransformationEstimation<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
-#       TransformationEstimation2D () {};
-#       virtual ~TransformationEstimation2D () {};
-# 
-#       /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       virtual void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const std::vector<int> &indices_tgt,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] correspondences the vector of correspondences between source and target point cloud
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       virtual void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const pcl::Correspondences &correspondences,
-#           Matrix4 &transformation_matrix) const;
+        # public:
+        # typedef boost::shared_ptr<TransformationEstimation2D<PointSource, PointTarget, Scalar> > Ptr;
+        # typedef boost::shared_ptr<const TransformationEstimation2D<PointSource, PointTarget, Scalar> > ConstPtr;
+        # typedef typename TransformationEstimation<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
+        # TransformationEstimation2D () {};
+        # virtual ~TransformationEstimation2D () {};
+        # 
+        # /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # virtual void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const std::vector<int> &indices_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid transformation between a source and a target point cloud in 2D.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] correspondences the vector of correspondences between source and target point cloud
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # virtual void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const pcl::Correspondences &correspondences,
+        #     Matrix4 &transformation_matrix) const;
 
 
 ###
@@ -3764,73 +3635,72 @@ cdef extern from "pcl/registration/transformation_estimation_2D.h" namespace "pc
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class TransformationEstimationDualQuaternion : public TransformationEstimation<PointSource, PointTarget, Scalar>
 cdef extern from "pcl/registration/transformation_estimation_dual_quaternion.h" namespace "pcl::registration" nogil:
-    cdef cppclass TransformationEstimationDualQuaternion[Source, Target, float](TransformationEstimation[Source, Target, float]):
+    cdef cppclass TransformationEstimationDualQuaternion[Source, Target, float](TransformationEstimation[Source, Target]):
         TransformationEstimationDualQuaternion() except +
-#       public:
-#       typedef boost::shared_ptr<TransformationEstimationDualQuaternion<PointSource, PointTarget, Scalar> > Ptr;
-#       typedef boost::shared_ptr<const TransformationEstimationDualQuaternion<PointSource, PointTarget, Scalar> > ConstPtr;
-#       
-#       typedef typename TransformationEstimation<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
-#       
-#       TransformationEstimationDualQuaternion () {};
-#       virtual ~TransformationEstimationDualQuaternion () {};
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
-#         * dual quaternion optimization
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
-#         * dual quaternion optimization
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
-#         * dual quaternion optimization
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const std::vector<int> &indices_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
-#         * dual quaternion optimization
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] correspondences the vector of correspondences between source and target point cloud
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const pcl::Correspondences &correspondences,
-#           Matrix4 &transformation_matrix) const;
-# 
+        # public:
+        # typedef boost::shared_ptr<TransformationEstimationDualQuaternion<PointSource, PointTarget, Scalar> > Ptr;
+        # typedef boost::shared_ptr<const TransformationEstimationDualQuaternion<PointSource, PointTarget, Scalar> > ConstPtr;
+        # 
+        # typedef typename TransformationEstimation<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
+        # 
+        # TransformationEstimationDualQuaternion () {};
+        # virtual ~TransformationEstimationDualQuaternion () {};
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
+        #   * dual quaternion optimization
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
+        #   * dual quaternion optimization
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
+        #   * dual quaternion optimization
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const std::vector<int> &indices_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using
+        #   * dual quaternion optimization
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] correspondences the vector of correspondences between source and target point cloud
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const pcl::Correspondences &correspondences,
+        #     Matrix4 &transformation_matrix) const;
 
 
 ###
@@ -3839,110 +3709,95 @@ cdef extern from "pcl/registration/transformation_estimation_dual_quaternion.h" 
 # template <typename PointSource, typename PointTarget, typename MatScalar = float>
 # class TransformationEstimationLM : public TransformationEstimation<PointSource, PointTarget, MatScalar>
 cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pcl" nogil:
-    cdef cppclass TransformationEstimationLM[Source, Target, float](TransformationEstimation[Source, Target, float]):
+    cdef cppclass TransformationEstimationLM[Source, Target, float](TransformationEstimation[Source, Target]):
         TransformationEstimationLM() except +
-#       typedef pcl::PointCloud<PointSource> PointCloudSource;
-#       typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#       typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#       typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-#       typedef PointIndices::Ptr PointIndicesPtr;
-#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#       public:
-#       typedef boost::shared_ptr<TransformationEstimationLM<PointSource, PointTarget, MatScalar> > Ptr;
-#       typedef boost::shared_ptr<const TransformationEstimationLM<PointSource, PointTarget, MatScalar> > ConstPtr;
-# 
-#       typedef Eigen::Matrix<MatScalar, Eigen::Dynamic, 1> VectorX;
-#       typedef Eigen::Matrix<MatScalar, 4, 1> Vector4;
-#       typedef typename TransformationEstimation<PointSource, PointTarget, MatScalar>::Matrix4 Matrix4;
-#       
-#       /** \brief Constructor. */
-#       TransformationEstimationLM ();
-# 
-#       /** \brief Copy constructor. 
-#         * \param[in] src the TransformationEstimationLM object to copy into this 
-#         */
-#       TransformationEstimationLM (const TransformationEstimationLM &src) : 
-#         tmp_src_ (src.tmp_src_), 
-#         tmp_tgt_ (src.tmp_tgt_), 
-#         tmp_idx_src_ (src.tmp_idx_src_), 
-#         tmp_idx_tgt_ (src.tmp_idx_tgt_), 
-#         warp_point_ (src.warp_point_)
-#       {};
-# 
-#       /** \brief Copy operator. 
-#         * \param[in] src the TransformationEstimationLM object to copy into this 
-#         */
-#       TransformationEstimationLM&
-#       operator = (const TransformationEstimationLM &src)
-#       {
-#         tmp_src_ = src.tmp_src_; 
-#         tmp_tgt_ = src.tmp_tgt_; 
-#         tmp_idx_src_ = src.tmp_idx_src_;
-#         tmp_idx_tgt_ = src.tmp_idx_tgt_; 
-#         warp_point_ = src.warp_point_;
-#       }
-# 
-#        /** \brief Destructor. */
-#       virtual ~TransformationEstimationLM () {};
-# 
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from 
-#         * \a indices_src
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const std::vector<int> &indices_tgt,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] correspondences the vector of correspondences between source and target point cloud
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const pcl::Correspondences &correspondences,
-#           Matrix4 &transformation_matrix) const;
-# 
-#       /** \brief Set the function we use to warp points. Defaults to rigid 6D warp.
-#         * \param[in] warp_fcn a shared pointer to an object that warps points
-#         */
-#       void
-#       setWarpFunction (const boost::shared_ptr<WarpPointRigid<PointSource, PointTarget, MatScalar> > &warp_fcn)
+        # typedef pcl::PointCloud<PointSource> PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # public:
+        # typedef boost::shared_ptr<TransformationEstimationLM<PointSource, PointTarget, MatScalar> > Ptr;
+        # typedef boost::shared_ptr<const TransformationEstimationLM<PointSource, PointTarget, MatScalar> > ConstPtr;
+        # typedef Eigen::Matrix<MatScalar, Eigen::Dynamic, 1> VectorX;
+        # typedef Eigen::Matrix<MatScalar, 4, 1> Vector4;
+        # typedef typename TransformationEstimation<PointSource, PointTarget, MatScalar>::Matrix4 Matrix4;
+        # 
+        # /** \brief Constructor. */
+        # TransformationEstimationLM ();
+        # 
+        # /** \brief Copy constructor. 
+        #   * \param[in] src the TransformationEstimationLM object to copy into this 
+        #   */
+        # TransformationEstimationLM (const TransformationEstimationLM &src) : 
+        #   tmp_src_ (src.tmp_src_), 
+        #   tmp_tgt_ (src.tmp_tgt_), 
+        #   tmp_idx_src_ (src.tmp_idx_src_), 
+        #   tmp_idx_tgt_ (src.tmp_idx_tgt_), 
+        #   warp_point_ (src.warp_point_)
+        # 
+        # /** \brief Copy operator. 
+        #   * \param[in] src the TransformationEstimationLM object to copy into this 
+        #   */
+        # TransformationEstimationLM& operator = (const TransformationEstimationLM &src)
+        # 
+        #  /** \brief Destructor. */
+        # virtual ~TransformationEstimationLM () {};
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from 
+        #   * \a indices_src
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const std::vector<int> &indices_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] correspondences the vector of correspondences between source and target point cloud
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const pcl::Correspondences &correspondences,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Set the function we use to warp points. Defaults to rigid 6D warp.
+        #   * \param[in] warp_fcn a shared pointer to an object that warps points
+        #   */
+        # void setWarpFunction (const boost::shared_ptr<WarpPointRigid<PointSource, PointTarget, MatScalar> > &warp_fcn)
 
 
 ###
@@ -4035,70 +3890,70 @@ cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls.
 cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls_weighted.h" namespace "pcl" nogil:
     cdef cppclass TransformationEstimationPointToPlaneLLSWeighted[Source, Target, float](TransformationEstimation[Source, Target, float]):
         TransformationEstimationPointToPlaneLLS ()
-#       public:
-#       typedef boost::shared_ptr<TransformationEstimationPointToPlaneLLSWeighted<PointSource, PointTarget, Scalar> > Ptr;
-#       typedef boost::shared_ptr<const TransformationEstimationPointToPlaneLLSWeighted<PointSource, PointTarget, Scalar> > ConstPtr;
-#       typedef typename TransformationEstimation<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
-#       
-#       TransformationEstimationPointToPlaneLLSWeighted () { };
-#       virtual ~TransformationEstimationPointToPlaneLLSWeighted () { };
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const std::vector<int> &indices_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] correspondences the vector of correspondences between source and target point cloud
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const pcl::Correspondences &correspondences,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Set the weights for the correspondences.
-#         * \param[in] weights the weights for each correspondence
-#         */
-#       inline void setCorrespondenceWeights (const std::vector<Scalar> &weights)
+        # public:
+        # typedef boost::shared_ptr<TransformationEstimationPointToPlaneLLSWeighted<PointSource, PointTarget, Scalar> > Ptr;
+        # typedef boost::shared_ptr<const TransformationEstimationPointToPlaneLLSWeighted<PointSource, PointTarget, Scalar> > ConstPtr;
+        # typedef typename TransformationEstimation<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
+        # 
+        # TransformationEstimationPointToPlaneLLSWeighted () { };
+        # virtual ~TransformationEstimationPointToPlaneLLSWeighted () { };
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const std::vector<int> &indices_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] correspondences the vector of correspondences between source and target point cloud
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const pcl::Correspondences &correspondences,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Set the weights for the correspondences.
+        #   * \param[in] weights the weights for each correspondence
+        #   */
+        # inline void setCorrespondenceWeights (const std::vector<Scalar> &weights)
 
 
 ###
@@ -4111,119 +3966,119 @@ cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls_
 cdef extern from "pcl/registration/transformation_estimation_point_to_plane_weighted.h" namespace "pcl::registration" nogil:
     cdef cppclass TransformationEstimationPointToPlaneWeighted[Source, Target, float](TransformationEstimationPointToPlane[Source, Target, float]):
         TransformationEstimationPointToPlaneWeighted ()
-#       typedef pcl::PointCloud<PointSource> PointCloudSource;
-#       typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
-#       typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
-#       typedef pcl::PointCloud<PointTarget> PointCloudTarget;
-#       typedef PointIndices::Ptr PointIndicesPtr;
-#       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-#       public:
-#       typedef boost::shared_ptr<TransformationEstimationPointToPlaneWeighted<PointSource, PointTarget, MatScalar> > Ptr;
-#       typedef boost::shared_ptr<const TransformationEstimationPointToPlaneWeighted<PointSource, PointTarget, MatScalar> > ConstPtr;
-#       typedef Eigen::Matrix<MatScalar, Eigen::Dynamic, 1> VectorX;
-#       typedef Eigen::Matrix<MatScalar, 4, 1> Vector4;
-#       typedef typename TransformationEstimation<PointSource, PointTarget, MatScalar>::Matrix4 Matrix4;
-#       
-#       /** \brief Constructor. */
-#       TransformationEstimationPointToPlaneWeighted ();
-#       
-#       /** \brief Copy constructor. 
-#         * \param[in] src the TransformationEstimationPointToPlaneWeighted object to copy into this
-#         */
-#       TransformationEstimationPointToPlaneWeighted (const TransformationEstimationPointToPlaneWeighted &src) :
-#         tmp_src_ (src.tmp_src_), 
-#         tmp_tgt_ (src.tmp_tgt_), 
-#         tmp_idx_src_ (src.tmp_idx_src_), 
-#         tmp_idx_tgt_ (src.tmp_idx_tgt_), 
-#         warp_point_ (src.warp_point_),
-#         correspondence_weights_ (src.correspondence_weights_),
-#         use_correspondence_weights_ (src.use_correspondence_weights_)
-#       {};
-#       
-#       /** \brief Copy operator. 
-#         * \param[in] src the TransformationEstimationPointToPlaneWeighted object to copy into this
-#         */
-#       TransformationEstimationPointToPlaneWeighted&
-#       operator = (const TransformationEstimationPointToPlaneWeighted &src)
-#       {
-#         tmp_src_ = src.tmp_src_; 
-#         tmp_tgt_ = src.tmp_tgt_; 
-#         tmp_idx_src_ = src.tmp_idx_src_;
-#         tmp_idx_tgt_ = src.tmp_idx_tgt_; 
-#         warp_point_ = src.warp_point_;
-#         correspondence_weights_ = src.correspondence_weights_;
-#         use_correspondence_weights_ = src.use_correspondence_weights_;
-#       }
-#       
-#        /** \brief Destructor. */
-#       virtual ~TransformationEstimationPointToPlaneWeighted () {};
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         * \note Uses the weights given by setWeights.
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         * \note Uses the weights given by setWeights.
-#         */
-#       inline void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from 
-#         * \a indices_src
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         * \note Uses the weights given by setWeights.
-#         */
-#       void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const std::vector<int> &indices_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const std::vector<int> &indices_tgt,
-#           Matrix4 &transformation_matrix) const;
-#       
-#       /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
-#         * \param[in] cloud_src the source point cloud dataset
-#         * \param[in] cloud_tgt the target point cloud dataset
-#         * \param[in] correspondences the vector of correspondences between source and target point cloud
-#         * \param[out] transformation_matrix the resultant transformation matrix
-#         * \note Uses the weights given by setWeights.
-#         */
-#       void
-#       estimateRigidTransformation (
-#           const pcl::PointCloud<PointSource> &cloud_src,
-#           const pcl::PointCloud<PointTarget> &cloud_tgt,
-#           const pcl::Correspondences &correspondences,
-#           Matrix4 &transformation_matrix) const;  
-#       
-#       inline void setWeights (const std::vector<double> &weights)
-#       
-#       /// use the weights given in the pcl::CorrespondencesPtr for one of the estimateTransformation (...) methods
-#       inline void setUseCorrespondenceWeights (bool use_correspondence_weights)
-#       
-#       /** \brief Set the function we use to warp points. Defaults to rigid 6D warp.
-#         * \param[in] warp_fcn a shared pointer to an object that warps points
-#         */
-#       void setWarpFunction (const boost::shared_ptr<WarpPointRigid<PointSource, PointTarget, MatScalar> > &warp_fcn)
+        # typedef pcl::PointCloud<PointSource> PointCloudSource;
+        # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
+        # typedef typename PointCloudSource::ConstPtr PointCloudSourceConstPtr;
+        # typedef pcl::PointCloud<PointTarget> PointCloudTarget;
+        # typedef PointIndices::Ptr PointIndicesPtr;
+        # typedef PointIndices::ConstPtr PointIndicesConstPtr;
+        # public:
+        # typedef boost::shared_ptr<TransformationEstimationPointToPlaneWeighted<PointSource, PointTarget, MatScalar> > Ptr;
+        # typedef boost::shared_ptr<const TransformationEstimationPointToPlaneWeighted<PointSource, PointTarget, MatScalar> > ConstPtr;
+        # typedef Eigen::Matrix<MatScalar, Eigen::Dynamic, 1> VectorX;
+        # typedef Eigen::Matrix<MatScalar, 4, 1> Vector4;
+        # typedef typename TransformationEstimation<PointSource, PointTarget, MatScalar>::Matrix4 Matrix4;
+        # 
+        # /** \brief Constructor. */
+        # TransformationEstimationPointToPlaneWeighted ();
+        # 
+        # /** \brief Copy constructor. 
+        #   * \param[in] src the TransformationEstimationPointToPlaneWeighted object to copy into this
+        #   */
+        # TransformationEstimationPointToPlaneWeighted (const TransformationEstimationPointToPlaneWeighted &src) :
+        #   tmp_src_ (src.tmp_src_), 
+        #   tmp_tgt_ (src.tmp_tgt_), 
+        #   tmp_idx_src_ (src.tmp_idx_src_), 
+        #   tmp_idx_tgt_ (src.tmp_idx_tgt_), 
+        #   warp_point_ (src.warp_point_),
+        #   correspondence_weights_ (src.correspondence_weights_),
+        #   use_correspondence_weights_ (src.use_correspondence_weights_)
+        # {};
+        # 
+        # /** \brief Copy operator. 
+        #   * \param[in] src the TransformationEstimationPointToPlaneWeighted object to copy into this
+        #   */
+        # TransformationEstimationPointToPlaneWeighted&
+        # operator = (const TransformationEstimationPointToPlaneWeighted &src)
+        # {
+        #   tmp_src_ = src.tmp_src_; 
+        #   tmp_tgt_ = src.tmp_tgt_; 
+        #   tmp_idx_src_ = src.tmp_idx_src_;
+        #   tmp_idx_tgt_ = src.tmp_idx_tgt_; 
+        #   warp_point_ = src.warp_point_;
+        #   correspondence_weights_ = src.correspondence_weights_;
+        #   use_correspondence_weights_ = src.use_correspondence_weights_;
+        # }
+        # 
+        #  /** \brief Destructor. */
+        # virtual ~TransformationEstimationPointToPlaneWeighted () {};
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   * \note Uses the weights given by setWeights.
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   * \note Uses the weights given by setWeights.
+        #   */
+        # inline void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from 
+        #   * \a indices_src
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   * \note Uses the weights given by setWeights.
+        #   */
+        # void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const std::vector<int> &indices_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const std::vector<int> &indices_tgt,
+        #     Matrix4 &transformation_matrix) const;
+        # 
+        # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using LM.
+        #   * \param[in] cloud_src the source point cloud dataset
+        #   * \param[in] cloud_tgt the target point cloud dataset
+        #   * \param[in] correspondences the vector of correspondences between source and target point cloud
+        #   * \param[out] transformation_matrix the resultant transformation matrix
+        #   * \note Uses the weights given by setWeights.
+        #   */
+        # void
+        # estimateRigidTransformation (
+        #     const pcl::PointCloud<PointSource> &cloud_src,
+        #     const pcl::PointCloud<PointTarget> &cloud_tgt,
+        #     const pcl::Correspondences &correspondences,
+        #     Matrix4 &transformation_matrix) const;  
+        # 
+        # inline void setWeights (const std::vector<double> &weights)
+        # 
+        # /// use the weights given in the pcl::CorrespondencesPtr for one of the estimateTransformation (...) methods
+        # inline void setUseCorrespondenceWeights (bool use_correspondence_weights)
+        # 
+        # /** \brief Set the function we use to warp points. Defaults to rigid 6D warp.
+        #   * \param[in] warp_fcn a shared pointer to an object that warps points
+        #   */
+        # void setWarpFunction (const boost::shared_ptr<WarpPointRigid<PointSource, PointTarget, MatScalar> > &warp_fcn)
 
 
 ###
@@ -4306,15 +4161,14 @@ cdef extern from "pcl/registration/transformation_estimation_svd.h" namespace "p
 cdef extern from "pcl/registration/transformation_estimation_svd_scale.h" namespace "pcl::registration" nogil:
     cdef cppclass TransformationEstimationSVDScale[Source, Target, float](TransformationEstimationSVD[Source, Target, float]):
         TransformationEstimationSVDScale ()
-#       public:
-#       typedef boost::shared_ptr<TransformationEstimationSVDScale<PointSource, PointTarget, Scalar> > Ptr;
-#       typedef boost::shared_ptr<const TransformationEstimationSVDScale<PointSource, PointTarget, Scalar> > ConstPtr;
-#       typedef typename TransformationEstimationSVD<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
-# 
-#       /** \brief Inherits from TransformationEstimationSVD, but forces it to not use the Umeyama method */
-#       TransformationEstimationSVDScale ():
-#         TransformationEstimationSVD<PointSource, PointTarget, Scalar> (false)
-# 
+        # public:
+        # typedef boost::shared_ptr<TransformationEstimationSVDScale<PointSource, PointTarget, Scalar> > Ptr;
+        # typedef boost::shared_ptr<const TransformationEstimationSVDScale<PointSource, PointTarget, Scalar> > ConstPtr;
+        # typedef typename TransformationEstimationSVD<PointSource, PointTarget, Scalar>::Matrix4 Matrix4;
+        # 
+        # /** \brief Inherits from TransformationEstimationSVD, but forces it to not use the Umeyama method */
+        # TransformationEstimationSVDScale ():
+        # TransformationEstimationSVD<PointSource, PointTarget, Scalar> (false)
 
 
 ###
@@ -4343,6 +4197,7 @@ cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl" 
         #    const cpp.PointCloudPtr_t &cloud_src,
         #    const cpp.PointCloudPtr_t &cloud_tgt,
         #    const Matrix4f &transformation_matrix) = 0;
+        # 
         # ctypedef shared_ptr[TransformationValidation[PointSource, PointTarget] ] Ptr;
         # ctypedef shared_ptr[const TransformationValidation[PointSource, PointTarget] ] ConstPtr;
 
@@ -4364,7 +4219,7 @@ cdef extern from "pcl/registration/transformation_validation_euclidean.h" namesp
         # ctypedef typename TransformationValidation<PointSource, PointTarget>::PointCloudSourceConstPtr PointCloudSourceConstPtr;
         # ctypedef typename TransformationValidation<PointSource, PointTarget>::PointCloudTargetConstPtr PointCloudTargetConstPtr;
         inline void setMaxRange (double max_range)
-        double validateTransformation (const cpp.PointCloudPtr_t &cloud_src, const cpp.PointCloudPtr_t &cloud_tgt, const Matrix4f &transformation_matrix)
+        # double validateTransformation (const cpp.PointCloudPtr_t &cloud_src, const cpp.PointCloudPtr_t &cloud_tgt, const Matrix4f &transformation_matrix)
 
 
 ###
