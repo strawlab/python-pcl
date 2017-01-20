@@ -20,12 +20,8 @@ from eigen cimport Matrix4f
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
         Registration()
-        Matrix4f getFinalTransformation() except +
-        double getFitnessScore() except +
-        bool hasConverged() except +
         void setInputSource(cpp.PointCloudPtr_t) except +
         void setInputTarget(cpp.PointCloudPtr_t) except +
-        void setMaximumIterations(int) except +
         # override?
         void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
         # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
@@ -218,7 +214,8 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * (default: double::max)
         #   */
         # double getFitnessScore (double max_range = numeric_limits[double]::max ());
-        double getFitnessScore() except +
+        # double getFitnessScore (double max_range)
+        double getFitnessScore()
         
         # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
         #   * from two sets of correspondence distances (distances between source and target points)
