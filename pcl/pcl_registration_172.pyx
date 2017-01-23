@@ -17,7 +17,7 @@ from eigen cimport Matrix4f
 
 np.import_array()
 
-cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, 1.0] &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, float] &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     reg.setInputSource(source.thisptr_shared)
     reg.setInputTarget(target.thisptr_shared)
     
@@ -30,7 +30,7 @@ cdef object run(pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, 1.0] &reg, _pcl
         reg.align(result.thisptr()[0])
     
     # Get transformation matrix and convert from Eigen to NumPy format.
-    # cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, 1.0].Matrix4f mat
+    # cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, float].Matrix4f mat
     cdef Matrix4f mat
     mat = reg.getFinalTransformation()
     cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='fortran'] transf
@@ -70,7 +70,7 @@ def icp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef pcl_reg.IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, 1.0] icp
+    cdef pcl_reg.IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float] icp
     return run(icp, source, target, max_iter)
 
 
@@ -99,7 +99,7 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, 1.0] gicp
+    cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float] gicp
     gicp.setInputCloud(source.thisptr_shared)
     return run(gicp, source, target, max_iter)
 
@@ -130,7 +130,7 @@ def icp_nl(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ, 1.0] icp_nl
+    cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ, float] icp_nl
     icp_nl.setInputCloud(source.thisptr_shared)
     return run(icp_nl, source, target, max_iter)
 
