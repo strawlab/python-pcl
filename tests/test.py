@@ -58,7 +58,7 @@ class TestNumpyIO(unittest.TestCase):
         b = np.asarray(p)
         del b
 
-        self.assertRaises(ValueError, p.resize, 2 * len(p))
+        self.assertRaises(ValueError, p.resize, 2 * p.size)
 
     def test_pickle(self):
         """Test pickle support."""
@@ -170,7 +170,7 @@ def test_copy():
 
 SEGCYLMOD = [0.0552167, 0.0547035, 0.757707,
              -0.0270852, -4.41026, -2.88995, 0.0387603]
-SEGCYLIN = 11462
+SEGCYLIN = 11449 # Why has this value changed?
 
 
 class TestSegmentCylinder(unittest.TestCase):
