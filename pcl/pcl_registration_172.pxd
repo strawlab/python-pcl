@@ -24,11 +24,6 @@ from eigen cimport Matrix4f
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target, float](cpp.PCLBase[Source]):
         Registration()
-        void setInputSource(cpp.PointCloudPtr_t) except +
-        void setInputTarget(cpp.PointCloudPtr_t) except +
-        # override?
-        void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
-        # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
         # public:
         # /** \brief Provide a pointer to the transformation estimation object.
         #   * (e.g., SVD, point to plane etc.) 
@@ -70,6 +65,8 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   */
         # PCL_DEPRECATED ("[pcl::registration::Registration::setInputCloud] setInputCloud is deprecated. Please use setInputSource instead.")
         # void setInputCloud (const PointCloudSourceConstPtr &cloud);
+        void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
+        
         
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # PCL_DEPRECATED ("[pcl::registration::Registration::getInputCloud] getInputCloud is deprecated. Please use getInputSource instead.")
@@ -79,6 +76,8 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * (e.g., the point cloud that we want to align to the target)
         #   * \param[in] cloud the input point cloud source
         # virtual void setInputSource (const PointCloudSourceConstPtr &cloud)
+        void setInputSource(cpp.PointCloudPtr_t) except +
+        # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
         
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # inline PointCloudSourceConstPtr const getInputSource ()
@@ -87,6 +86,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         #   * \param[in] cloud the input point cloud target
         #   */
         # virtual inline void setInputTarget (const PointCloudTargetConstPtr &cloud); 
+        void setInputTarget(cpp.PointCloudPtr_t)
         
         # /** \brief Get a pointer to the input point cloud dataset target. */
         # inline PointCloudTargetConstPtr const getInputTarget ()
@@ -674,15 +674,15 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
         # inline bool getUseReciprocalCorrespondences () const
 
 
-# ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPoint_t
-# ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPoint_PointXYZI_t
-# ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB] IterativeClosestPoint_PointXYZRGB_t
-# ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA] IterativeClosestPoint_PointXYZRGBA_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float] IterativeClosestPoint_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPoint_PointXYZI_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB, float] IterativeClosestPoint_PointXYZRGB_t
+# ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA, float] IterativeClosestPoint_PointXYZRGBA_t
 # 
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPoint_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PoiPointXYZIntXYZ, cpp.PointXYZI]] IterativeClosestPoint_PointXYZI_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPoint_PointXYZRGB_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPoint_PointXYZRGBA_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPoint_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPoint_PointXYZI_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPoint_PointXYZRGB_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPoint_PointXYZRGBA_t
 
 
 # /** \brief @b IterativeClosestPointWithNormals is a special case of
@@ -717,8 +717,22 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
 ###
 
 # gicp.h
+# Version 1.7.2
+# namespace pcl
+# /** \brief GeneralizedIterativeClosestPoint is an ICP variant that implements the 
+#   * generalized iterative closest point algorithm as described by Alex Segal et al. in 
+#   * http://www.stanford.edu/~avsegal/resources/papers/Generalized_ICP.pdf
+#   * The approach is based on using anistropic cost functions to optimize the alignment 
+#   * after closest point assignments have been made.
+#   * The original code uses GSL and ANN while in ours we use an eigen mapped BFGS and 
+#   * FLANN.
+#   * \author Nizar Sallem
+#   * \ingroup registration
+#   */
+# template <typename PointSource, typename PointTarget>
+# class GeneralizedIterativeClosestPoint : public IterativeClosestPoint<PointSource, PointTarget>
 cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
-    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target, float](Registration[Source, Target, float]):
+    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](IterativeClosestPoint[Source, Target, float]):
         GeneralizedIterativeClosestPoint() except +
         # using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
         # using IterativeClosestPoint<PointSource, PointTarget>::getClassName;

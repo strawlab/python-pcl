@@ -99,7 +99,7 @@ def gicp(_pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
     fitness : float
         Sum of squares error in the estimated transformation.
     """
-    cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float] gicp
+    cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
     gicp.setInputCloud(source.thisptr_shared)
     return run(gicp, source, target, max_iter)
 
