@@ -370,6 +370,9 @@ cdef extern from "pcl/features/board.h" namespace "pcl":
 #                             const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &c2,
 #                             float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7, float &f8, float &f9, float &f10);
 # 
+##
+# cppf.h
+# namespace pcl
 # /** \brief Class that calculates the "surflet" features for each pair in the given
 # * pointcloud. Please refer to the following publication for more details:
 # *    C. Choi, Henrik Christensen
@@ -420,7 +423,7 @@ cdef extern from "pcl/features/cppf.h" namespace "pcl":
 # */
 # template<typename PointInT, typename PointNT, typename PointOutT = pcl::Histogram<90> >
 # class CRHEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
-cdef extern from "pcl/features/cppf.h" namespace "pcl":
+cdef extern from "pcl/features/crh.h" namespace "pcl":
     cdef cppclass CRHEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
         CRHEstimation()
         # public:
@@ -664,7 +667,7 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
 # */
 # template <typename PointT>
 # class PCL_EXPORTS MomentOfInertiaEstimation : public pcl::PCLBase <PointT>
-cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
+cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
     cdef cppclass MomentOfInertiaEstimation[PointT](cpp.PCLBase[PointT]):
         MomentOfInertiaEstimation()
         # public:
