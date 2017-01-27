@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-### 1.6.0
-# -*- coding: utf-8 -*-
-
 from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector

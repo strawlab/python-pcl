@@ -27,8 +27,8 @@ cdef class UniformSampling:
 # 
 #     def __dealloc__(self):
 #         del self.me
-# 
-# 
+###
+
 # cdef class UniformSampling_PointXYZRGB:
 #     """
 #     """
@@ -41,8 +41,8 @@ cdef class UniformSampling:
 # 
 #     def __dealloc__(self):
 #         del self.me
-# 
-# 
+###
+
 # cdef class UniformSampling_PointXYZRGBA:
 #     """
 #     """
@@ -55,6 +55,4 @@ cdef class UniformSampling:
 # 
 #     def __dealloc__(self):
 #         del self.me
-# 
-# 
 ###

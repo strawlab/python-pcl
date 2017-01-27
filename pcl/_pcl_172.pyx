@@ -10,9 +10,9 @@ cimport numpy as cnp
 cimport pcl_common as pcl_cmn
 cimport pcl_defs as cpp
 cimport pcl_sample_consensus as pcl_sc
-cimport pcl_features as pcl_ftr
-cimport pcl_filters as pcl_fil
-cimport pcl_range_image as pcl_r_img
+cimport pcl_features_172 as pcl_ftr
+cimport pcl_filters_172 as pcl_fil
+cimport pcl_range_image_172 as pcl_r_img
 # cimport pcl_segmentation as segmentation
 
 cimport cython
