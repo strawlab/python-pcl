@@ -327,7 +327,7 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
 # esf.h
 # class ESFEstimation: public Feature<PointInT, PointOutT>
 cdef extern from "pcl/features/esf.h" namespace "pcl":
-    cdef cppclass ESFEstimation[In, Oou](Feature[In, Oou]):
+    cdef cppclass ESFEstimation[In, Out](Feature[In, Out]):
         ESFEstimation ()
         # public:
         # using Feature<PointInT, PointOutT>::feature_name_;
@@ -2842,18 +2842,21 @@ ctypedef VFHEstimation[cpp.PointXYZRGBA, cpp.Normal, cpp.VFHSignature308] VFHEst
 #     ctypedef enum CoordinateFrame2 "pcl::RangeImage::CoordinateFrame":
 #         COORDINATEFRAME_CAMERA "pcl::RangeImage::CAMERA_FRAME"
 #         COORDINATEFRAME_LASER "pcl::RangeImage::LASER_FRAME"
-# End
+###
 
 # integral_image_normal.h
 # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
 #         cdef enum BorderPolicy:
 #             BORDER_POLICY_IGNORE
 #             BORDER_POLICY_MIRROR
-##
+#
 cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
     ctypedef enum BorderPolicy2 "pcl::IntegralImageNormalEstimation::BorderPolicy":
           BORDERPOLICY2_IGNORE "pcl::IntegralImageNormalEstimation::BORDER_POLICY_IGNORE"
           BORDERPOLICY2_MIRROR "pcl::IntegralImageNormalEstimation::BORDER_POLICY_MIRROR"
+
+
+###
 
 # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
 #         cdef enum NormalEstimationMethod:
@@ -2861,8 +2864,6 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
 #             AVERAGE_3D_GRADIENT
 #             AVERAGE_DEPTH_CHANGE
 #             SIMPLE_3D_GRADIENT
-###
-
 cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
     ctypedef enum NormalEstimationMethod2 "pcl::IntegralImageNormalEstimation::NormalEstimationMethod":
             ESTIMATIONMETHOD2_COVARIANCE_MATRIX "pcl::IntegralImageNormalEstimation::COVARIANCE_MATRIX"
@@ -2870,6 +2871,8 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
             ESTIMATIONMETHOD2_AVERAGE_DEPTH_CHANGE "pcl::IntegralImageNormalEstimation::AVERAGE_DEPTH_CHANGE"
             ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::SIMPLE_3D_GRADIENT"
 
+
+###
 
 ###############################################################################
 # Activation

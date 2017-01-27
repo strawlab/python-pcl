@@ -444,7 +444,7 @@ cdef extern from "pcl/features/cppf.h" namespace "pcl":
 # template <typename PointInT, typename PointNT, typename PointOutT>
 # class DifferenceOfNormalsEstimation : public Feature<PointInT, PointOutT>
 cdef extern from "pcl/features/don.h" namespace "pcl":
-    cdef cppclass DifferenceOfNormalsEstimation[In, NT, Out](Feature[In, NT, Out]):
+    cdef cppclass DifferenceOfNormalsEstimation[In, NT, Out](Feature[In, Out]):
         DifferenceOfNormalsEstimation()
         # using Feature<PointInT, PointOutT>::getClassName;
         # using Feature<PointInT, PointOutT>::feature_name_;
@@ -510,8 +510,8 @@ cdef extern from "pcl/features/don.h" namespace "pcl":
 #   */
 # template <typename PointInT, typename PointLT, typename PointOutT>
 # class GFPFHEstimation : public FeatureFromLabels<PointInT, PointLT, PointOutT>
-cdef extern from "pcl/features/don.h" namespace "pcl":
-    cdef cppclass DifferenceOfNormalsEstimation[In, NT, Out](Feature[In, NT, Out]):
+cdef extern from "pcl/features/gfpfh.h" namespace "pcl":
+    cdef cppclass GFPFHEstimation[In, NT, Out](FeatureFromLabels[In, NT, Out]):
         DifferenceOfNormalsEstimation()
         # public:
         # typedef boost::shared_ptr<GFPFHEstimation<PointInT, PointLT, PointOutT> > Ptr;
@@ -769,21 +769,31 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         # */
         # bool getMassCenter (Eigen::Vector3f& mass_center) const;
 
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZ] MomentOfInertiaEstimation_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZI] MomentOfInertiaEstimation_PointXYZI_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGB] MomentOfInertiaEstimation_PointXYZRGB_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGBA] MomentOfInertiaEstimation_PointXYZRGBA_t
+
+# ctypedef MomentOfInertiaEstimation[cpp.PointXYZ, cpp.Normal] MomentOfInertiaEstimation_t
+# ctypedef MomentOfInertiaEstimation[cpp.PointXYZI, cpp.Normal] MomentOfInertiaEstimation_PointXYZI_t
+# ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGB, cpp.Normal] MomentOfInertiaEstimation_PointXYZRGB_t
+# ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGBA, cpp.Normal] MomentOfInertiaEstimation_PointXYZRGBA_t
+
 
 ###
 
 # our_cvfh.h
 # namespace pcl
 # /** \brief OURCVFHEstimation estimates the Oriented, Unique and Repetable Clustered Viewpoint Feature Histogram (CVFH) descriptor for a given
-# * point cloud dataset given XYZ data and normals, as presented in:
-# *     - OUR-CVFH – Oriented, Unique and Repeatable Clustered Viewpoint Feature Histogram for Object Recognition and 6DOF Pose Estimation
-# *     A. Aldoma, F. Tombari, R.B. Rusu and M. Vincze
-# *     DAGM-OAGM 2012
-# *     Graz, Austria
-# * The suggested PointOutT is pcl::VFHSignature308.
-# * \author Aitor Aldoma
-# * \ingroup features
-# */
+#  * point cloud dataset given XYZ data and normals, as presented in:
+#  *     - OUR-CVFH Oriented, Unique and Repeatable Clustered Viewpoint Feature Histogram for Object Recognition and 6DOF Pose Estimation
+#  *     A. Aldoma, F. Tombari, R.B. Rusu and M. Vincze
+#  *     DAGM-OAGM 2012
+#  *     Graz, Austria
+#  * The suggested PointOutT is pcl::VFHSignature308.
+#  * \author Aitor Aldoma
+#  * \ingroup features
+#  */
 # template<typename PointInT, typename PointNT, typename PointOutT = pcl::VFHSignature308>
 # class OURCVFHEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
 cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
@@ -982,7 +992,7 @@ cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
 # template <typename PointInT, typename PointOutT>
 # class PCL_EXPORTS ROPSEstimation : public pcl::Feature <PointInT, PointOutT>
 cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
-    cdef cppclass ROPSEstimation[In, NT, Out](Feature[In, NT, Out]):
+    cdef cppclass ROPSEstimation[In, Out](Feature[In, Out]):
         ROPSEstimation()
         # public:
         # using Feature <PointInT, PointOutT>::input_;
@@ -1298,7 +1308,7 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
 # esf.h
 # class ESFEstimation: public Feature<PointInT, PointOutT>
 cdef extern from "pcl/features/esf.h" namespace "pcl":
-    cdef cppclass ESFEstimation[In, Oou](Feature[In, Oou]):
+    cdef cppclass ESFEstimation[In, Out](Feature[In, Out]):
         ESFEstimation ()
         # public:
         # using Feature<PointInT, PointOutT>::feature_name_;
@@ -3813,18 +3823,21 @@ ctypedef VFHEstimation[cpp.PointXYZRGBA, cpp.Normal, cpp.VFHSignature308] VFHEst
 #     ctypedef enum CoordinateFrame2 "pcl::RangeImage::CoordinateFrame":
 #         COORDINATEFRAME_CAMERA "pcl::RangeImage::CAMERA_FRAME"
 #         COORDINATEFRAME_LASER "pcl::RangeImage::LASER_FRAME"
-# End
+###
 
 # integral_image_normal.h
 # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
 #         cdef enum BorderPolicy:
 #             BORDER_POLICY_IGNORE
 #             BORDER_POLICY_MIRROR
-##
+#
 cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
     ctypedef enum BorderPolicy2 "pcl::IntegralImageNormalEstimation::BorderPolicy":
           BORDERPOLICY2_IGNORE "pcl::IntegralImageNormalEstimation::BORDER_POLICY_IGNORE"
           BORDERPOLICY2_MIRROR "pcl::IntegralImageNormalEstimation::BORDER_POLICY_MIRROR"
+
+
+###
 
 # cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
 #         cdef enum NormalEstimationMethod:
@@ -3832,8 +3845,6 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
 #             AVERAGE_3D_GRADIENT
 #             AVERAGE_DEPTH_CHANGE
 #             SIMPLE_3D_GRADIENT
-###
-
 cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
     ctypedef enum NormalEstimationMethod2 "pcl::IntegralImageNormalEstimation::NormalEstimationMethod":
             ESTIMATIONMETHOD2_COVARIANCE_MATRIX "pcl::IntegralImageNormalEstimation::COVARIANCE_MATRIX"
@@ -3841,6 +3852,8 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
             ESTIMATIONMETHOD2_AVERAGE_DEPTH_CHANGE "pcl::IntegralImageNormalEstimation::AVERAGE_DEPTH_CHANGE"
             ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::SIMPLE_3D_GRADIENT"
 
+
+###
 
 ###############################################################################
 # Activation
