@@ -187,6 +187,43 @@ cdef extern from "pcl/features/3dsc.h" namespace "pcl":
         
 ###
 
+# feature.h
+# cdef extern from "pcl/features/feature.h" namespace "pcl":
+#     cdef inline void solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+#                                             const Eigen::Vector4f &point,
+#                                             Eigen::Vector4f &plane_parameters, float &curvature);
+#     cdef inline void solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
+#                         float &nx, float &ny, float &nz, float &curvature);
+# template <typename PointInT, typename PointLT, typename PointOutT>
+# class FeatureFromLabels : public Feature<PointInT, PointOutT>
+cdef extern from "pcl/features/feature.h" namespace "pcl":
+    cdef cppclass FeatureFromLabels[In, LT, Out](Feature[In, Out]):
+        FeatureFromLabels()
+        # ctypedef typename Feature<PointInT, PointOutT>::PointCloudIn PointCloudIn;
+        # ctypedef typename PointCloudIn::Ptr PointCloudInPtr;
+        # ctypedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
+        # ctypedef typename pcl::PointCloud<PointLT> PointCloudL;
+        # ctypedef typename PointCloudL::Ptr PointCloudNPtr;
+        # ctypedef typename PointCloudL::ConstPtr PointCloudLConstPtr;
+        # ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # public:
+        # ctypedef boost::shared_ptr< FeatureFromLabels<PointInT, PointLT, PointOutT> > Ptr;
+        # ctypedef boost::shared_ptr< const FeatureFromLabels<PointInT, PointLT, PointOutT> > ConstPtr;
+        # // Members derived from the base class
+        # using Feature<PointInT, PointOutT>::input_;
+        # using Feature<PointInT, PointOutT>::surface_;
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using Feature<PointInT, PointOutT>::k_;
+        # /** \brief Provide a pointer to the input dataset that contains the point labels of
+        #   * the XYZ dataset.
+        #   * In case of search surface is set to be different from the input cloud,
+        #   * labels should correspond to the search surface, not the input cloud!
+        #   * \param[in] labels the const boost shared pointer to a PointCloud of labels.
+        #   */
+        # inline void setInputLabels (const PointCloudLConstPtr &labels)
+        # inline PointCloudLConstPtr getInputLabels () const
+###
+
 ### Inheritance class ###
 
 # > 1.7.2
@@ -494,9 +531,7 @@ cdef extern from "pcl/features/don.h" namespace "pcl":
 # namespace pcl
 # /** \brief @b GFPFHEstimation estimates the Global Fast Point Feature Histogram (GFPFH) descriptor for a given point
 #   * cloud dataset containing points and labels.
-#   *
 #   * @note If you use this code in any academic work, please cite:
-#   *
 #   * <ul>
 #   * <li> R.B. Rusu, A. Holzbach, M. Beetz.
 #   *      Detecting and Segmenting Objects for Mobile Manipulation.
@@ -504,14 +539,13 @@ cdef extern from "pcl/features/don.h" namespace "pcl":
 #   *      2009.
 #   * </li>
 #   * </ul>
-#   *
 #   * \author Radu B. Rusu
 #   * \ingroup features
 #   */
 # template <typename PointInT, typename PointLT, typename PointOutT>
 # class GFPFHEstimation : public FeatureFromLabels<PointInT, PointLT, PointOutT>
 cdef extern from "pcl/features/gfpfh.h" namespace "pcl":
-    cdef cppclass GFPFHEstimation[In, NT, Out](FeatureFromLabels[In, NT, Out]):
+    cdef cppclass GFPFHEstimation[In, LT, Out](FeatureFromLabels[In, LT, Out]):
         DifferenceOfNormalsEstimation()
         # public:
         # typedef boost::shared_ptr<GFPFHEstimation<PointInT, PointLT, PointOutT> > Ptr;
@@ -1321,43 +1355,6 @@ cdef extern from "pcl/features/esf.h" namespace "pcl":
         # ctypedef typename pcl::PointCloud<PointInT> PointCloudIn;
         # ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
         # void compute (PointCloudOut &output)
-###
-
-# cdef extern from "pcl/features/feature.h" namespace "pcl":
-#     cdef inline void solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-#                                             const Eigen::Vector4f &point,
-#                                             Eigen::Vector4f &plane_parameters, float &curvature);
-#     cdef inline void solvePlaneParameters (const Eigen::Matrix3f &covariance_matrix,
-#                         float &nx, float &ny, float &nz, float &curvature);
-
-# template <typename PointInT, typename PointLT, typename PointOutT>
-# class FeatureFromLabels : public Feature<PointInT, PointOutT>
-cdef extern from "pcl/features/feature.h" namespace "pcl":
-    cdef cppclass FeatureFromLabels[In, LT, Out](Feature[In, Out]):
-        FeatureFromLabels()
-        # ctypedef typename Feature<PointInT, PointOutT>::PointCloudIn PointCloudIn;
-        # ctypedef typename PointCloudIn::Ptr PointCloudInPtr;
-        # ctypedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-        # ctypedef typename pcl::PointCloud<PointLT> PointCloudL;
-        # ctypedef typename PointCloudL::Ptr PointCloudNPtr;
-        # ctypedef typename PointCloudL::ConstPtr PointCloudLConstPtr;
-        # ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        # public:
-        # ctypedef boost::shared_ptr< FeatureFromLabels<PointInT, PointLT, PointOutT> > Ptr;
-        # ctypedef boost::shared_ptr< const FeatureFromLabels<PointInT, PointLT, PointOutT> > ConstPtr;
-        # // Members derived from the base class
-        # using Feature<PointInT, PointOutT>::input_;
-        # using Feature<PointInT, PointOutT>::surface_;
-        # using Feature<PointInT, PointOutT>::getClassName;
-        # using Feature<PointInT, PointOutT>::k_;
-        # /** \brief Provide a pointer to the input dataset that contains the point labels of
-        #   * the XYZ dataset.
-        #   * In case of search surface is set to be different from the input cloud,
-        #   * labels should correspond to the search surface, not the input cloud!
-        #   * \param[in] labels the const boost shared pointer to a PointCloud of labels.
-        #   */
-        # inline void setInputLabels (const PointCloudLConstPtr &labels)
-        # inline PointCloudLConstPtr getInputLabels () const
 ###
 
 # template <typename PointInT, typename PointRFT>
