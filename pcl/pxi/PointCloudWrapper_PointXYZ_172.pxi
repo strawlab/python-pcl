@@ -523,6 +523,12 @@ cdef class PointCloud:
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
 
+    def make_MomentOfInertiaEstimation(self):
+        momentofinertiaestimation = MomentOfInertiaEstimation(self)
+        cdef pclftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pclftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
+        cMomentOfInertiaEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return momentofinertiaestimation
+
     # registration - icp?
     # def make_IterativeClosestPoint():
     #     iterativeClosestPoint = IterativeClosestPoint(self)
@@ -565,6 +571,7 @@ include "Common/RangeImage/RangeImages.pxi"
 include "Features/NormalEstimation.pxi"
 include "Features/VFHEstimation.pxi"
 include "Features/IntegralImageNormalEstimation.pxi"
+include "Features/MomentOfInertiaEstimation_172.pxi"
 
 # keyPoint
 # include "KeyPoint/UniformSampling_172.pxi"

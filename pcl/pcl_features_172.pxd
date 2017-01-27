@@ -189,6 +189,977 @@ cdef extern from "pcl/features/3dsc.h" namespace "pcl":
 
 ### Inheritance class ###
 
+# > 1.7.2
+# board.h
+# namespace pcl
+# /** \brief BOARDLocalReferenceFrameEstimation implements the BOrder Aware Repeatable Directions algorithm
+# * for local reference frame estimation as described here:
+# *  - A. Petrelli, L. Di Stefano,
+# *    "On the repeatability of the local reference frame for partial shape matching",
+# *    13th International Conference on Computer Vision (ICCV), 2011
+# *
+# * \author Alioscia Petrelli (original), Tommaso Cavallari (PCL port)
+# * \ingroup features
+# */
+# template<typename PointInT, typename PointNT, typename PointOutT = ReferenceFrame>
+# class BOARDLocalReferenceFrameEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
+cdef extern from "pcl/features/board.h" namespace "pcl":
+    cdef cppclass BOARDLocalReferenceFrameEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+        BOARDLocalReferenceFrameEstimation()
+        # public:
+        # typedef boost::shared_ptr<BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const BOARDLocalReferenceFrameEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
+        # 
+        # /** \brief Constructor. */
+        # BOARDLocalReferenceFrameEstimation () :
+        #   tangent_radius_ (0.0f),
+        #   find_holes_ (false),
+        #   margin_thresh_ (0.85f),
+        #   check_margin_array_size_ (24),
+        #   hole_size_prob_thresh_ (0.2f),
+        #   steep_thresh_ (0.1f),
+        #   check_margin_array_ (),
+        #   margin_array_min_angle_ (),
+        #   margin_array_max_angle_ (),
+        #   margin_array_min_angle_normal_ (),
+        #   margin_array_max_angle_normal_ ()
+        # {
+        #   feature_name_ = "BOARDLocalReferenceFrameEstimation";
+        #   setCheckMarginArraySize (check_margin_array_size_);
+        # }
+        # 
+        # /** \brief Empty destructor */
+        # virtual ~BOARDLocalReferenceFrameEstimation () {}
+        # 
+        # //Getters/Setters
+        # /** \brief Set the maximum distance of the points used to estimate the x_axis and y_axis of the BOARD Reference Frame for a given point.
+        #   *
+        #   * \param[in] radius The search radius for x and y axes. If not set or set to 0 the parameter given with setRadiusSearch is used.
+        #   */
+        # inline void setTangentRadius (float radius)
+        # 
+        # /** \brief Get the maximum distance of the points used to estimate the x_axis and y_axis of the BOARD Reference Frame for a given point.
+        #   *
+        #   * \return The search radius for x and y axes. If set to 0 the parameter given with setRadiusSearch is used.
+        #   */
+        # inline float getTangentRadius () const
+        # 
+        # /** \brief Sets whether holes in the margin of the support, for each point, are searched and accounted for in the estimation of the 
+        # *          Reference Frame or not.
+        # *
+        # * \param[in] find_holes Enable/Disable the search for holes in the support.
+        # */
+        # inline void setFindHoles (bool find_holes)
+        # 
+        # /** \brief Gets whether holes in the margin of the support, for each point, are searched and accounted for in the estimation of the 
+        # *          Reference Frame or not.
+        # *
+        # * \return The search for holes in the support is enabled/disabled.
+        # */
+        # inline bool getFindHoles () const
+        # 
+        # /** \brief Sets the percentage of the search radius (or tangent radius if set) after which a point is considered part of the support margin.
+        # *
+        # * \param[in] margin_thresh the percentage of the search radius after which a point is considered a margin point.
+        # */
+        # inline void setMarginThresh (float margin_thresh)
+        # 
+        # /** \brief Gets the percentage of the search radius (or tangent radius if set) after which a point is considered part of the support margin.
+        # *
+        # * \return The percentage of the search radius after which a point is considered a margin point.
+        # */
+        # inline float getMarginThresh () const
+        # 
+        # /** \brief Sets the number of slices in which is divided the margin for the search of missing regions.
+        # *
+        # * \param[in] size the number of margin slices.
+        # */
+        # void setCheckMarginArraySize (int size)
+        # 
+        # /** \brief Gets the number of slices in which is divided the margin for the search of missing regions.
+        # *
+        # * \return the number of margin slices.
+        # */
+        # inline int getCheckMarginArraySize () const
+        # 
+        # /** \brief Given the angle width of a hole in the support margin, sets the minimum percentage of a circumference this angle 
+        # *         must cover to be considered a missing region in the support and hence used for the estimation of the Reference Frame.
+        # * \param[in] prob_thresh the minimum percentage of a circumference after which a hole is considered in the calculation
+        # */
+        # inline void setHoleSizeProbThresh (float prob_thresh)
+        # 
+        # /** \brief Given the angle width of a hole in the support margin, gets the minimum percentage of a circumference this angle 
+        # *         must cover to be considered a missing region in the support and hence used for the estimation of the Reference Frame.
+        # * \return the minimum percentage of a circumference after which a hole is considered in the calculation
+        # */
+        # inline float getHoleSizeProbThresh () const
+        # 
+        # /** \brief Sets the minimum steepness that the normals of the points situated on the borders of the hole, with reference
+        # *         to the normal of the best point found by the algorithm, must have in order to be considered in the calculation of the Reference Frame.
+        # * \param[in] steep_thresh threshold that defines if a missing region contains a point with the most different normal.
+        # */
+        # inline void setSteepThresh (float steep_thresh)
+        # 
+        # /** \brief Gets the minimum steepness that the normals of the points situated on the borders of the hole, with reference
+        # *         to the normal of the best point found by the algorithm, must have in order to be considered in the calculation of the Reference Frame.
+        # * \return threshold that defines if a missing region contains a point with the most different normal.
+        # */
+        # inline float getSteepThresh () const
+
+
+###
+
+# cppf.h
+# namespace pcl
+#   /** \brief
+#     * \param[in] p1 
+#     * \param[in] n1
+#     * \param[in] p2 
+#     * \param[in] n2
+#     * \param[in] c1
+#     * \param[in] c2
+#     * \param[out] f1
+#     * \param[out] f2
+#     * \param[out] f3
+#     * \param[out] f4
+#     * \param[out] f5
+#     * \param[out] f6
+#     * \param[out] f7
+#     * \param[out] f8
+#     * \param[out] f9
+#     * \param[out] f10
+#     */
+#   computeCPPFPairFeature (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, const Eigen::Vector4i &c1,
+#                             const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &c2,
+#                             float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7, float &f8, float &f9, float &f10);
+# 
+# /** \brief Class that calculates the "surflet" features for each pair in the given
+# * pointcloud. Please refer to the following publication for more details:
+# *    C. Choi, Henrik Christensen
+# *    3D Pose Estimation of Daily Objects Using an RGB-D Camera
+# *    Proceedings of IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)
+# *    2012
+# *
+# * PointOutT is meant to be pcl::CPPFSignature - contains the 10 values of the Surflet
+# * feature and in addition, alpha_m for the respective pair - optimization proposed by
+# * the authors (see above)
+# *
+# * \author Martin Szarski, Alexandru-Eugen Ichim
+# */
+# template <typename PointInT, typename PointNT, typename PointOutT>
+# class CPPFEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
+cdef extern from "pcl/features/cppf.h" namespace "pcl":
+    cdef cppclass CPPFEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+        CPPFEstimation()
+        # public:
+        # typedef boost::shared_ptr<CPPFEstimation<PointInT, PointNT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const CPPFEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
+        # using PCLBase<PointInT>::indices_;
+        # using Feature<PointInT, PointOutT>::input_;
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
+        # typedef pcl::PointCloud<PointOutT> PointCloudOut;
+        # 
+        # /** \brief Empty Constructor. */
+        # CPPFEstimation ();
+
+
+###
+
+# crh.h
+# namespace pcl
+# /** \brief CRHEstimation estimates the Camera Roll Histogram (CRH) descriptor for a given
+# * point cloud dataset containing XYZ data and normals, as presented in:
+# *   - CAD-Model Recognition and 6 DOF Pose Estimation
+# *     A. Aldoma, N. Blodow, D. Gossow, S. Gedikli, R.B. Rusu, M. Vincze and G. Bradski
+# *     ICCV 2011, 3D Representation and Recognition (3dRR11) workshop
+# *     Barcelona, Spain, (2011)
+# *
+# * The suggested PointOutT is pcl::Histogram<90>. //dc (real) + 44 complex numbers (real, imaginary) + nyquist (real)
+# *
+# * \author Aitor Aldoma
+# * \ingroup features
+# */
+# template<typename PointInT, typename PointNT, typename PointOutT = pcl::Histogram<90> >
+# class CRHEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
+cdef extern from "pcl/features/cppf.h" namespace "pcl":
+    cdef cppclass CRHEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+        CRHEstimation()
+        # public:
+        # typedef boost::shared_ptr<CRHEstimation<PointInT, PointNT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const CRHEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
+        # 
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using Feature<PointInT, PointOutT>::indices_;
+        # using Feature<PointInT, PointOutT>::k_;
+        # using Feature<PointInT, PointOutT>::search_radius_;
+        # using Feature<PointInT, PointOutT>::surface_;
+        # using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
+        # 
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # 
+        # /** \brief Constructor. */
+        # CRHEstimation () : vpx_ (0), vpy_ (0), vpz_ (0), nbins_ (90)
+        # 
+        # /** \brief Set the viewpoint.
+        # * \param[in] vpx the X coordinate of the viewpoint
+        # * \param[in] vpy the Y coordinate of the viewpoint
+        # * \param[in] vpz the Z coordinate of the viewpoint
+        # */
+        # inline void setViewPoint (float vpx, float vpy, float vpz)
+        # 
+        # /** \brief Get the viewpoint. 
+        # * \param[out] vpx the X coordinate of the viewpoint
+        # * \param[out] vpy the Y coordinate of the viewpoint
+        # * \param[out] vpz the Z coordinate of the viewpoint
+        # */
+        # inline void getViewPoint (float &vpx, float &vpy, float &vpz)
+        # inline void setCentroid (Eigen::Vector4f & centroid)
+
+
+###
+
+# don.h
+# namespace pcl
+# /** \brief A Difference of Normals (DoN) scale filter implementation for point cloud data.
+# * For each point in the point cloud two normals estimated with a differing search radius (sigma_s, sigma_l)
+# * are subtracted, the difference of these normals provides a scale-based feature which
+# * can be further used to filter the point cloud, somewhat like the Difference of Guassians
+# * in image processing, but instead on surfaces. Best results are had when the two search
+# * radii are related as sigma_l=10*sigma_s, the octaves between the two search radii
+# * can be though of as a filter bandwidth. For appropriate values and thresholds it
+# * can be used for surface edge extraction.
+# * \attention The input normals given by setInputNormalsSmall and setInputNormalsLarge have
+# * to match the input point cloud given by setInputCloud. This behavior is different than
+# * feature estimation methods that extend FeatureFromNormals, which match the normals
+# * with the search surface.
+# * \note For more information please see
+# *    <b>Yani Ioannou. Automatic Urban Modelling using Mobile Urban LIDAR Data.
+# *    Thesis (Master, Computing), Queen's University, March, 2010.</b>
+# * \author Yani Ioannou.
+# * \ingroup features
+# */
+# template <typename PointInT, typename PointNT, typename PointOutT>
+# class DifferenceOfNormalsEstimation : public Feature<PointInT, PointOutT>
+cdef extern from "pcl/features/don.h" namespace "pcl":
+    cdef cppclass DifferenceOfNormalsEstimation[In, NT, Out](Feature[In, NT, Out]):
+        DifferenceOfNormalsEstimation()
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using PCLBase<PointInT>::input_;
+        # typedef typename pcl::PointCloud<PointNT> PointCloudN;
+        # typedef typename PointCloudN::Ptr PointCloudNPtr;
+        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # public:
+        # typedef boost::shared_ptr<DifferenceOfNormalsEstimation<PointInT, PointNT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const DifferenceOfNormalsEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
+        # 
+        # /**
+        # * Creates a new Difference of Normals filter.
+        # */
+        # DifferenceOfNormalsEstimation ()
+        # virtual ~DifferenceOfNormalsEstimation ()
+        # 
+        # /**
+        # * Set the normals calculated using a smaller search radius (scale) for the DoN operator.
+        # * @param normals the smaller radius (scale) of the DoN filter.
+        # */
+        # inline void setNormalScaleSmall (const PointCloudNConstPtr &normals)
+        # 
+        # /**
+        # * Set the normals calculated using a larger search radius (scale) for the DoN operator.
+        # * @param normals the larger radius (scale) of the DoN filter.
+        # */
+        # inline void setNormalScaleLarge (const PointCloudNConstPtr &normals)
+        # 
+        # /**
+        # * Computes the DoN vector for each point in the input point cloud and outputs the vector cloud to the given output.
+        # * @param output the cloud to output the DoN vector cloud to.
+        # */
+        # virtual void computeFeature (PointCloudOut &output);
+        # 
+        # /**
+        # * Initialize for computation of features.
+        # * @return true if parameters (input normals, input) are sufficient to perform computation.
+        # */
+        # virtual bool initCompute ();
+
+
+###
+
+# gfpfh.h
+# namespace pcl
+# /** \brief @b GFPFHEstimation estimates the Global Fast Point Feature Histogram (GFPFH) descriptor for a given point
+#   * cloud dataset containing points and labels.
+#   *
+#   * @note If you use this code in any academic work, please cite:
+#   *
+#   * <ul>
+#   * <li> R.B. Rusu, A. Holzbach, M. Beetz.
+#   *      Detecting and Segmenting Objects for Mobile Manipulation.
+#   *      In the S3DV Workshop of the 12th International Conference on Computer Vision (ICCV),
+#   *      2009.
+#   * </li>
+#   * </ul>
+#   *
+#   * \author Radu B. Rusu
+#   * \ingroup features
+#   */
+# template <typename PointInT, typename PointLT, typename PointOutT>
+# class GFPFHEstimation : public FeatureFromLabels<PointInT, PointLT, PointOutT>
+cdef extern from "pcl/features/don.h" namespace "pcl":
+    cdef cppclass DifferenceOfNormalsEstimation[In, NT, Out](Feature[In, NT, Out]):
+        DifferenceOfNormalsEstimation()
+        # public:
+        # typedef boost::shared_ptr<GFPFHEstimation<PointInT, PointLT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const GFPFHEstimation<PointInT, PointLT, PointOutT> > ConstPtr;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::feature_name_;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::getClassName;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::indices_;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::k_;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::search_parameter_;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::surface_;
+        # 
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::input_;
+        # using FeatureFromLabels<PointInT, PointLT, PointOutT>::labels_;
+        # 
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudIn  PointCloudIn;
+        # 
+        # /** \brief Empty constructor. */
+        # GFPFHEstimation () : octree_leaf_size_ (0.01), number_of_classes_ (16), descriptor_size_ (PointOutT::descriptorSize ())
+        # 
+        # /** \brief Set the size of the octree leaves.
+        #   */
+        # inline void setOctreeLeafSize (double size)
+        # 
+        # /** \brief Get the sphere radius used for determining the neighbors. */
+        # inline double getOctreeLeafSize ()
+        # 
+        # /** \brief Return the empty label value. */
+        # inline uint32_t emptyLabel () const
+        # 
+        # /** \brief Return the number of different classes. */
+        # inline uint32_t getNumberOfClasses () const
+        # 
+        # /** \brief Set the number of different classes.
+        #  * \param n number of different classes.
+        #  */
+        # inline void setNumberOfClasses (uint32_t n)
+        # 
+        # /** \brief Return the size of the descriptor. */
+        # inline int descriptorSize () const
+        # 
+        # /** \brief Overloaded computed method from pcl::Feature.
+        #   * \param[out] output the resultant point cloud model dataset containing the estimated features
+        #   */
+        # void compute (PointCloudOut &output);
+
+
+###
+
+# linear_least_squares_normal.h
+# namespace pcl
+# /** \brief Surface normal estimation on dense data using a least-squares estimation based on a first-order Taylor approximation.
+# * \author Stefan Holzer, Cedric Cagniart
+# */
+# template <typename PointInT, typename PointOutT>
+# class LinearLeastSquaresNormalEstimation : public Feature<PointInT, PointOutT>
+cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
+    cdef cppclass LinearLeastSquaresNormalEstimation[In, Out](Feature[In, Out]):
+        LinearLeastSquaresNormalEstimation()
+        # public:
+        # typedef boost::shared_ptr<LinearLeastSquaresNormalEstimation<PointInT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const LinearLeastSquaresNormalEstimation<PointInT, PointOutT> > ConstPtr;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudIn  PointCloudIn;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # using Feature<PointInT, PointOutT>::input_;
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using Feature<PointInT, PointOutT>::tree_;
+        # using Feature<PointInT, PointOutT>::k_;
+        # 
+        # /** \brief Constructor */
+        # LinearLeastSquaresNormalEstimation () :
+        #   use_depth_dependent_smoothing_(false),
+        #   max_depth_change_factor_(1.0f),
+        #   normal_smoothing_size_(9.0f)
+        # 
+        # /** \brief Destructor */
+        # virtual ~LinearLeastSquaresNormalEstimation ();
+        # 
+        # /** \brief Computes the normal at the specified position. 
+        # * \param[in] pos_x x position (pixel)
+        # * \param[in] pos_y y position (pixel)
+        # * \param[out] normal the output estimated normal 
+        # */
+        # void computePointNormal (const int pos_x, const int pos_y, PointOutT &normal)
+        # 
+        # /** \brief Set the normal smoothing size
+        # * \param[in] normal_smoothing_size factor which influences the size of the area used to smooth normals 
+        # * (depth dependent if useDepthDependentSmoothing is true)
+        # */
+        # void setNormalSmoothingSize (float normal_smoothing_size)
+        # 
+        # /** \brief Set whether to use depth depending smoothing or not
+        #  * \param[in] use_depth_dependent_smoothing decides whether the smoothing is depth dependent
+        #  */
+        # void setDepthDependentSmoothing (bool use_depth_dependent_smoothing)
+        # 
+        # /** \brief The depth change threshold for computing object borders
+        #  * \param[in] max_depth_change_factor the depth change threshold for computing object borders based on 
+        #  * depth changes
+        #  */
+        # void setMaxDepthChangeFactor (float max_depth_change_factor)
+        # 
+        # /** \brief Provide a pointer to the input dataset (overwrites the PCLBase::setInputCloud method)
+        # * \param[in] cloud the const boost shared pointer to a PointCloud message
+        # */
+        # virtual inline void setInputCloud (const typename PointCloudIn::ConstPtr &cloud) 
+
+
+###
+
+# moment_of_inertia_estimation.h
+# namespace pcl
+# /** \brief
+# * Implements the method for extracting features based on moment of inertia. It also
+# * calculates AABB, OBB and eccentricity of the projected cloud.
+# */
+# template <typename PointT>
+# class PCL_EXPORTS MomentOfInertiaEstimation : public pcl::PCLBase <PointT>
+cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
+    cdef cppclass MomentOfInertiaEstimation[PointT](cpp.PCLBase[PointT]):
+        MomentOfInertiaEstimation()
+        # public:
+        # using PCLBase <PointT>::input_;
+        # using PCLBase <PointT>::indices_;
+        # using PCLBase <PointT>::fake_indices_;
+        # using PCLBase <PointT>::use_indices_;
+        # using PCLBase <PointT>::initCompute;
+        # using PCLBase <PointT>::deinitCompute;
+        # typedef typename pcl::PCLBase <PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename pcl::PCLBase <PointT>::PointIndicesConstPtr PointIndicesConstPtr;
+        # public:
+        # /** \brief Provide a pointer to the input dataset
+        # * \param[in] cloud the const boost shared pointer to a PointCloud message
+        # */
+        # virtual void setInputCloud (const PointCloudConstPtr& cloud);
+        # 
+        # /** \brief Provide a pointer to the vector of indices that represents the input data.
+        # * \param[in] indices a pointer to the vector of indices that represents the input data.
+        # */
+        # virtual void setIndices (const IndicesPtr& indices);
+        # 
+        # /** \brief Provide a pointer to the vector of indices that represents the input data.
+        # * \param[in] indices a pointer to the vector of indices that represents the input data.
+        # */
+        # virtual void setIndices (const IndicesConstPtr& indices);
+        # 
+        # /** \brief Provide a pointer to the vector of indices that represents the input data.
+        # * \param[in] indices a pointer to the vector of indices that represents the input data.
+        # */
+        # virtual void setIndices (const PointIndicesConstPtr& indices);
+        # 
+        # /** \brief Set the indices for the points laying within an interest region of 
+        # * the point cloud.
+        # * \note you shouldn't call this method on unorganized point clouds!
+        # * \param[in] row_start the offset on rows
+        # * \param[in] col_start the offset on columns
+        # * \param[in] nb_rows the number of rows to be considered row_start included
+        # * \param[in] nb_cols the number of columns to be considered col_start included
+        # */
+        # virtual void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols);
+        # 
+        # /** \brief Constructor that sets default values for member variables. */
+        # MomentOfInertiaEstimation ();
+        # 
+        # /** \brief Virtual destructor which frees the memory. */
+        # virtual ~MomentOfInertiaEstimation ();
+        # 
+        # /** \brief This method allows to set the angle step. It is used for the rotation
+        # * of the axis which is used for moment of inertia/eccentricity calculation.
+        # * \param[in] step angle step
+        # */
+        # void setAngleStep (const float step);
+        # 
+        # /** \brief Returns the angle step. */
+        # float getAngleStep () const;
+        # 
+        # /** \brief This method allows to set the normalize_ flag. If set to false, then
+        # * point_mass_ will be used to scale the moment of inertia values. Otherwise,
+        # * point_mass_ will be set to 1 / number_of_points. Default value is true.
+        # * \param[in] need_to_normalize desired value
+        # */
+        # void setNormalizePointMassFlag (bool need_to_normalize);
+        # 
+        # /** \brief Returns the normalize_ flag. */
+        # bool getNormalizePointMassFlag () const;
+        # 
+        # /** \brief This method allows to set point mass that will be used for
+        # * moment of inertia calculation. It is needed to scale moment of inertia values.
+        # * default value is 0.0001.
+        # * \param[in] point_mass point mass
+        # */
+        # void setPointMass (const float point_mass);
+        # 
+        # /** \brief Returns the mass of point. */
+        # float getPointMass () const;
+        # 
+        # /** \brief This method launches the computation of all features. After execution
+        # * it sets is_valid_ flag to true and each feature can be accessed with the
+        # * corresponding get method.
+        # */
+        # void compute ();
+        # 
+        # /** \brief This method gives access to the computed axis aligned bounding box. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * \param[out] min_point min point of the AABB
+        # * \param[out] max_point max point of the AABB
+        # */
+        # bool getAABB (PointT& min_point, PointT& max_point) const;
+        # 
+        # /** \brief This method gives access to the computed oriented bounding box. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * Note that in order to get the OBB, each vertex of the given AABB (specified with min_point and max_point)
+        # * must be rotated with the given rotational matrix (rotation transform) and then positioned.
+        # * Also pay attention to the fact that this is not the minimal possible bounding box. This is the bounding box
+        # * which is oriented in accordance with the eigen vectors.
+        # * \param[out] min_point min point of the OBB
+        # * \param[out] max_point max point of the OBB
+        # * \param[out] position position of the OBB
+        # * \param[out] rotational_matrix this matrix represents the rotation transform
+        # */
+        # bool getOBB (PointT& min_point, PointT& max_point, PointT& position, Eigen::Matrix3f& rotational_matrix) const;
+        # 
+        # /** \brief This method gives access to the computed eigen values. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * \param[out] major major eigen value
+        # * \param[out] middle middle eigen value
+        # * \param[out] minor minor eigen value
+        # */
+        # bool getEigenValues (float& major, float& middle, float& minor) const;
+        # 
+        # /** \brief This method gives access to the computed eigen vectors. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * \param[out] major axis which corresponds to the eigen vector with the major eigen value
+        # * \param[out] middle axis which corresponds to the eigen vector with the middle eigen value
+        # * \param[out] minor axis which corresponds to the eigen vector with the minor eigen value
+        # */
+        # bool getEigenVectors (Eigen::Vector3f& major, Eigen::Vector3f& middle, Eigen::Vector3f& minor) const;
+        # 
+        # /** \brief This method gives access to the computed moments of inertia. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * \param[out] moment_of_inertia computed moments of inertia
+        # */
+        # bool getMomentOfInertia (std::vector <float>& moment_of_inertia) const;
+        # 
+        # /** \brief This method gives access to the computed ecentricities. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * \param[out] eccentricity computed eccentricities
+        # */
+        # bool getEccentricity (std::vector <float>& eccentricity) const;
+        # 
+        # /** \brief This method gives access to the computed mass center. It returns true
+        # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
+        # * Note that when mass center of a cloud is computed, mass point is always considered equal 1.
+        # * \param[out] mass_center computed mass center
+        # */
+        # bool getMassCenter (Eigen::Vector3f& mass_center) const;
+
+
+###
+
+# our_cvfh.h
+# namespace pcl
+# /** \brief OURCVFHEstimation estimates the Oriented, Unique and Repetable Clustered Viewpoint Feature Histogram (CVFH) descriptor for a given
+# * point cloud dataset given XYZ data and normals, as presented in:
+# *     - OUR-CVFH – Oriented, Unique and Repeatable Clustered Viewpoint Feature Histogram for Object Recognition and 6DOF Pose Estimation
+# *     A. Aldoma, F. Tombari, R.B. Rusu and M. Vincze
+# *     DAGM-OAGM 2012
+# *     Graz, Austria
+# * The suggested PointOutT is pcl::VFHSignature308.
+# * \author Aitor Aldoma
+# * \ingroup features
+# */
+# template<typename PointInT, typename PointNT, typename PointOutT = pcl::VFHSignature308>
+# class OURCVFHEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
+cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
+    cdef cppclass OURCVFHEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+        OURCVFHEstimation()
+        # public:
+        # typedef boost::shared_ptr<OURCVFHEstimation<PointInT, PointNT, PointOutT> > Ptr;
+        # typedef boost::shared_ptr<const OURCVFHEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using Feature<PointInT, PointOutT>::indices_;
+        # using Feature<PointInT, PointOutT>::k_;
+        # using Feature<PointInT, PointOutT>::search_radius_;
+        # using Feature<PointInT, PointOutT>::surface_;
+        # using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
+        # 
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # typedef typename pcl::search::Search<PointNormal>::Ptr KdTreePtr;
+        # typedef typename pcl::PointCloud<PointInT>::Ptr PointInTPtr;
+        # /** \brief Empty constructor. */
+        # OURCVFHEstimation () :
+        # vpx_ (0), vpy_ (0), vpz_ (0), leaf_size_ (0.005f), normalize_bins_ (false), curv_threshold_ (0.03f), cluster_tolerance_ (leaf_size_ * 3),
+        #     eps_angle_threshold_ (0.125f), min_points_ (50), radius_normals_ (leaf_size_ * 3), centroids_dominant_orientations_ (),
+        #     dominant_normals_ ()
+        # 
+        # /** \brief Creates an affine transformation from the RF axes
+        # * \param[in] evx the x-axis
+        # * \param[in] evy the y-axis
+        # * \param[in] evz the z-axis
+        # * \param[out] transformPC the resulting transformation
+        # * \param[in] center_mat 4x4 matrix concatenated to the resulting transformation
+        # */
+        # inline Eigen::Matrix4f createTransFromAxes (Eigen::Vector3f & evx, Eigen::Vector3f & evy, Eigen::Vector3f & evz, Eigen::Affine3f & transformPC, Eigen::Matrix4f & center_mat)
+        # 
+        # /** \brief Computes SGURF and the shape distribution based on the selected SGURF
+        # * \param[in] processed the input cloud
+        # * \param[out] output the resulting signature
+        # * \param[in] cluster_indices the indices of the stable cluster
+        # */
+        # void computeRFAndShapeDistribution (PointInTPtr & processed, PointCloudOut &output, std::vector<pcl::PointIndices> & cluster_indices);
+        # 
+        # /** \brief Computes SGURF
+        # * \param[in] centroid the centroid of the cluster
+        # * \param[in] normal_centroid the average of the normals
+        # * \param[in] processed the input cloud
+        # * \param[out] transformations the transformations aligning the cloud to the SGURF axes
+        # * \param[out] grid the cloud transformed internally
+        # * \param[in] indices the indices of the stable cluster
+        # */
+        # bool sgurf (Eigen::Vector3f & centroid, Eigen::Vector3f & normal_centroid, PointInTPtr & processed, std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & transformations, PointInTPtr & grid, pcl::PointIndices & indices);
+        # 
+        # /** \brief Removes normals with high curvature caused by real edges or noisy data
+        # * \param[in] cloud pointcloud to be filtered
+        # * \param[in] indices_to_use
+        # * \param[out] indices_out the indices of the points with higher curvature than threshold
+        # * \param[out] indices_in the indices of the remaining points after filtering
+        # * \param[in] threshold threshold value for curvature
+        # */
+        # void filterNormalsWithHighCurvature (const pcl::PointCloud<PointNT> & cloud, std::vector<int> & indices_to_use, std::vector<int> &indices_out, std::vector<int> &indices_in, float threshold);
+        # 
+        # /** \brief Set the viewpoint.
+        # * \param[in] vpx the X coordinate of the viewpoint
+        # * \param[in] vpy the Y coordinate of the viewpoint
+        # * \param[in] vpz the Z coordinate of the viewpoint
+        # */
+        # inline void setViewPoint (float vpx, float vpy, float vpz)
+        # 
+        # /** \brief Set the radius used to compute normals
+        # * \param[in] radius_normals the radius
+        # */
+        # inline void setRadiusNormals (float radius_normals)
+        # 
+        # /** \brief Get the viewpoint. 
+        # * \param[out] vpx the X coordinate of the viewpoint
+        # * \param[out] vpy the Y coordinate of the viewpoint
+        # * \param[out] vpz the Z coordinate of the viewpoint
+        # */
+        # inline void getViewPoint (float &vpx, float &vpy, float &vpz)
+        # 
+        # /** \brief Get the centroids used to compute different CVFH descriptors
+        # * \param[out] centroids vector to hold the centroids
+        # */
+        # inline void getCentroidClusters (std::vector<Eigen::Vector3f> & centroids)
+        # 
+        # /** \brief Get the normal centroids used to compute different CVFH descriptors
+        # * \param[out] centroids vector to hold the normal centroids
+        # */
+        # inline void getCentroidNormalClusters (std::vector<Eigen::Vector3f> & centroids)
+        # 
+        # /** \brief Sets max. Euclidean distance between points to be added to the cluster 
+        # * \param[in] d the maximum Euclidean distance
+        # */
+        # inline void setClusterTolerance (float d)
+        # 
+        # /** \brief Sets max. deviation of the normals between two points so they can be clustered together
+        # * \param[in] d the maximum deviation
+        # */
+        # inline void setEPSAngleThreshold (float d)
+        # 
+        # /** \brief Sets curvature threshold for removing normals
+        # * \param[in] d the curvature threshold
+        # */
+        # inline void setCurvatureThreshold (float d)
+        # 
+        # /** \brief Set minimum amount of points for a cluster to be considered
+        # * \param[in] min the minimum amount of points to be set
+        # */
+        # inline void setMinPoints (size_t min)
+        # 
+        # /** \brief Sets wether if the signatures should be normalized or not
+        # * \param[in] normalize true if normalization is required, false otherwise
+        # */
+        # inline void setNormalizeBins (bool normalize)
+        # 
+        # /** \brief Gets the indices of the original point cloud used to compute the signatures
+        # * \param[out] indices vector of point indices
+        # */
+        # inline void getClusterIndices (std::vector<pcl::PointIndices> & indices)
+        # 
+        # /** \brief Gets the number of non-disambiguable axes that correspond to each centroid
+        # * \param[out] cluster_axes vector mapping each centroid to the number of signatures
+        # */
+        # inline void getClusterAxes (std::vector<short> & cluster_axes)
+        # 
+        # /** \brief Sets the refinement factor for the clusters
+        # * \param[in] rc the factor used to decide if a point is used to estimate a stable cluster
+        # */
+        # void setRefineClusters (float rc)
+        # 
+        # /** \brief Returns the transformations aligning the point cloud to the corresponding SGURF
+        # * \param[out] trans vector of transformations
+        # */
+        # void getTransforms (std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > & trans)
+        # 
+        # /** \brief Returns a boolean vector indicating of the transformation obtained by getTransforms() represents
+        # * a valid SGURF
+        # * \param[out] valid vector of booleans
+        # */
+        # void getValidTransformsVec (std::vector<bool> & valid)
+        # 
+        # /** \brief Sets the min axis ratio between the SGURF axes to decide if disambiguition is feasible
+        # * \param[in] f the ratio between axes
+        # */
+        # void setAxisRatio (float f)
+        # 
+        # /** \brief Sets the min disambiguition axis value to generate several SGURFs for the cluster when disambiguition is difficult
+        # * \param[in] f the min axis value
+        # */
+        # void setMinAxisValue (float f)
+        # 
+        # /** \brief Overloaded computed method from pcl::Feature.
+        # * \param[out] output the resultant point cloud model dataset containing the estimated features
+        # */
+        # void compute (PointCloudOut &output);
+
+
+####
+
+# pfh_tools.h
+# namespace pcl
+#   /** \brief Compute the 4-tuple representation containing the three angles and one distance between two points
+#     * represented by Cartesian coordinates and normals.
+#     * \note For explanations about the features, please see the literature mentioned above (the order of the
+#     * features might be different).
+#     * \param[in] p1 the first XYZ point
+#     * \param[in] n1 the first surface normal
+#     * \param[in] p2 the second XYZ point
+#     * \param[in] n2 the second surface normal
+#     * \param[out] f1 the first angular feature (angle between the projection of nq_idx and u)
+#     * \param[out] f2 the second angular feature (angle between nq_idx and v)
+#     * \param[out] f3 the third angular feature (angle between np_idx and |p_idx - q_idx|)
+#     * \param[out] f4 the distance feature (p_idx - q_idx)
+#     *
+#     * \note For efficiency reasons, we assume that the point data passed to the method is finite.
+#     * \ingroup features
+#     */
+#   PCL_EXPORTS bool 
+#   computePairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, 
+#                        const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, 
+#                        float &f1, float &f2, float &f3, float &f4);
+# 
+#   PCL_EXPORTS bool
+#   computeRGBPairFeatures (const Eigen::Vector4f &p1, const Eigen::Vector4f &n1, const Eigen::Vector4i &colors1,
+#                           const Eigen::Vector4f &p2, const Eigen::Vector4f &n2, const Eigen::Vector4i &colors2,
+#                           float &f1, float &f2, float &f3, float &f4, float &f5, float &f6, float &f7);
+# 
+###
+
+# rops_estimation.h
+# namespace pcl
+# /** \brief
+# * This class implements the method for extracting RoPS features presented in the article
+# * "Rotational Projection Statistics for 3D Local Surface Description and Object Recognition" by
+# * Yulan Guo, Ferdous Sohel, Mohammed Bennamoun, Min Lu and Jianwei Wan.
+# */
+# template <typename PointInT, typename PointOutT>
+# class PCL_EXPORTS ROPSEstimation : public pcl::Feature <PointInT, PointOutT>
+cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
+    cdef cppclass ROPSEstimation[In, NT, Out](Feature[In, NT, Out]):
+        ROPSEstimation()
+        # public:
+        # using Feature <PointInT, PointOutT>::input_;
+        # using Feature <PointInT, PointOutT>::indices_;
+        # using Feature <PointInT, PointOutT>::surface_;
+        # using Feature <PointInT, PointOutT>::tree_;
+        # typedef typename pcl::Feature <PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # typedef typename pcl::Feature <PointInT, PointOutT>::PointCloudIn PointCloudIn;
+        # public:
+        # /** \brief Simple constructor. */
+        # ROPSEstimation ();
+        # 
+        # /** \brief Virtual destructor. */
+        # virtual ~ROPSEstimation ();
+        # 
+        # /** \brief Allows to set the number of partition bins that is used for distribution matrix calculation.
+        # * \param[in] number_of_bins number of partition bins
+        # */
+        # void setNumberOfPartitionBins (unsigned int number_of_bins);
+        # 
+        # /** \brief Returns the nmber of partition bins. */
+        # unsigned int getNumberOfPartitionBins () const;
+        # 
+        # /** \brief This method sets the number of rotations.
+        # * \param[in] number_of_rotations number of rotations
+        # */
+        # void setNumberOfRotations (unsigned int number_of_rotations);
+        # 
+        # /** \brief returns the number of rotations. */
+        # unsigned int getNumberOfRotations () const;
+        # 
+        # /** \brief Allows to set the support radius that is used to crop the local surface of the point.
+        # * \param[in] support_radius support radius
+        # */
+        # void setSupportRadius (float support_radius);
+        # 
+        # /** \brief Returns the support radius. */
+        # float getSupportRadius () const;
+        # 
+        # /** \brief This method sets the triangles of the mesh.
+        # * \param[in] triangles list of triangles of the mesh
+        # */
+        # void setTriangles (const std::vector <pcl::Vertices>& triangles);
+        # 
+        # /** \brief Returns the triangles of the mesh.
+        # * \param[out] triangles triangles of tthe mesh
+        # */
+        # void getTriangles (std::vector <pcl::Vertices>& triangles) const;
+
+
+###
+
+# rsd.h
+# namespace pcl
+#   /** \brief Transform a list of 2D matrices into a point cloud containing the values in a vector (Histogram<N>).
+#     * Can be used to transform the 2D histograms obtained in \ref RSDEstimation into a point cloud.
+#     * @note The template paramter N should be (greater or) equal to the product of the number of rows and columns.
+#     * \param[in] histograms2D the list of neighborhood 2D histograms
+#     * \param[out] histogramsPC the dataset containing the linearized matrices
+#     * \ingroup features
+#     */
+#   template <int N> void getFeaturePointCloud (const std::vector<Eigen::MatrixXf, Eigen::aligned_allocator<Eigen::MatrixXf> > &histograms2D, PointCloud<Histogram<N> > &histogramsPC)
+# 
+#   /** \brief Estimate the Radius-based Surface Descriptor (RSD) for a given point based on its spatial neighborhood of 3D points with normals
+#     * \param[in] surface the dataset containing the XYZ points
+#     * \param[in] normals the dataset containing the surface normals at each point in the dataset
+#     * \param[in] indices the neighborhood point indices in the dataset (first point is used as the reference)
+#     * \param[in] max_dist the upper bound for the considered distance interval
+#     * \param[in] nr_subdiv the number of subdivisions for the considered distance interval
+#     * \param[in] plane_radius maximum radius, above which everything can be considered planar
+#     * \param[in] radii the output point of a type that should have r_min and r_max fields
+#     * \param[in] compute_histogram if not false, the full neighborhood histogram is provided, usable as a point signature
+#     * \ingroup features
+#     */
+#   template <typename PointInT, typename PointNT, typename PointOutT> Eigen::MatrixXf
+#   computeRSD (boost::shared_ptr<const pcl::PointCloud<PointInT> > &surface, boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
+#              const std::vector<int> &indices, double max_dist,
+#              int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram = false);
+# 
+#   /** \brief Estimate the Radius-based Surface Descriptor (RSD) for a given point based on its spatial neighborhood of 3D points with normals
+#     * \param[in] normals the dataset containing the surface normals at each point in the dataset
+#     * \param[in] indices the neighborhood point indices in the dataset (first point is used as the reference)
+#     * \param[in] sqr_dists the squared distances from the first to all points in the neighborhood
+#     * \param[in] max_dist the upper bound for the considered distance interval
+#     * \param[in] nr_subdiv the number of subdivisions for the considered distance interval
+#     * \param[in] plane_radius maximum radius, above which everything can be considered planar
+#     * \param[in] radii the output point of a type that should have r_min and r_max fields
+#     * \param[in] compute_histogram if not false, the full neighborhood histogram is provided, usable as a point signature
+#     * \ingroup features
+#     */
+#   template <typename PointNT, typename PointOutT> Eigen::MatrixXf
+#   computeRSD (boost::shared_ptr<const pcl::PointCloud<PointNT> > &normals,
+#              const std::vector<int> &indices, const std::vector<float> &sqr_dists, double max_dist,
+#              int nr_subdiv, double plane_radius, PointOutT &radii, bool compute_histogram = false);
+# 
+##
+# rsd.h
+# namespace pcl
+# /** \brief @b RSDEstimation estimates the Radius-based Surface Descriptor (minimal and maximal radius of the local surface's curves)
+# * for a given point cloud dataset containing points and normals.
+# *
+# * @note If you use this code in any academic work, please cite:
+# *
+# * <ul>
+# * <li> Z.C. Marton , D. Pangercic , N. Blodow , J. Kleinehellefort, M. Beetz
+# *      General 3D Modelling of Novel Objects from a Single View
+# *      In Proceedings of the 2010 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)
+# *      Taipei, Taiwan, October 18-22, 2010
+# * </li>
+# * <li> Z.C. Marton, D. Pangercic, N. Blodow, Michael Beetz.
+# *      Combined 2D-3D Categorization and Classification for Multimodal Perception Systems.
+# *      In The International Journal of Robotics Research, Sage Publications
+# *      pages 1378--1402, Volume 30, Number 11, September 2011.
+# * </li>
+# * </ul>
+# *
+# * @note The code is stateful as we do not expect this class to be multicore parallelized.
+# * \author Zoltan-Csaba Marton
+# * \ingroup features
+# */
+# template <typename PointInT, typename PointNT, typename PointOutT>
+# class RSDEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
+cdef extern from "pcl/features/rsd.h" namespace "pcl":
+    cdef cppclass RSDEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+        RSDEstimation()
+        # public:
+        # using Feature<PointInT, PointOutT>::feature_name_;
+        # using Feature<PointInT, PointOutT>::getClassName;
+        # using Feature<PointInT, PointOutT>::indices_;
+        # using Feature<PointInT, PointOutT>::search_radius_;
+        # using Feature<PointInT, PointOutT>::search_parameter_;
+        # using Feature<PointInT, PointOutT>::surface_;
+        # using FeatureFromNormals<PointInT, PointNT, PointOutT>::normals_;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
+        # typedef typename Feature<PointInT, PointOutT>::PointCloudIn  PointCloudIn;
+        # typedef typename boost::shared_ptr<RSDEstimation<PointInT, PointNT, PointOutT> > Ptr;
+        # typedef typename boost::shared_ptr<const RSDEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
+        # 
+        # /** \brief Empty constructor. */
+        # RSDEstimation () : nr_subdiv_ (5), plane_radius_ (0.2), save_histograms_ (false)
+        # 
+        # /** \brief Set the number of subdivisions for the considered distance interval.
+        #  * \param[in] nr_subdiv the number of subdivisions
+        #  */
+        # inline void setNrSubdivisions (int nr_subdiv)
+        # 
+        # /** \brief Get the number of subdivisions for the considered distance interval. */
+        # inline int getNrSubdivisions () const
+        # 
+        # /** \brief Set the maximum radius, above which everything can be considered planar.
+        # * \note the order of magnitude should be around 10-20 times the search radius (0.2 works well for typical datasets).
+        # * \note on accurate 3D data (e.g. openni sernsors) a search radius as low as 0.01 still gives good results.
+        # * \param[in] plane_radius the new plane radius
+        # */
+        # inline void setPlaneRadius (double plane_radius)
+        # 
+        # /** \brief Get the maximum radius, above which everything can be considered planar. */
+        # inline double getPlaneRadius () const
+        # 
+        # /** \brief Disables the setting of the number of k nearest neighbors to use for the feature estimation. */
+        # inline void setKSearch (int) 
+        # 
+        # /** \brief Set whether the full distance-angle histograms should be saved.
+        # * @note Obtain the list of histograms by getHistograms ()
+        # * \param[in] save set to true if histograms should be saved
+        # */
+        # inline void setSaveHistograms (bool save)
+        # 
+        # /** \brief Returns whether the full distance-angle histograms are being saved. */
+        # inline bool getSaveHistograms () const
+        # 
+        # /** \brief Returns a pointer to the list of full distance-angle histograms for all points. */
+        # inline boost::shared_ptr<std::vector<Eigen::MatrixXf, Eigen::aligned_allocator<Eigen::MatrixXf> > > getHistograms () const { return (histograms_); }
+
+
+###
+
 # 3dsc.h
 # class ShapeContext3DEstimation<PointInT, PointNT, Eigen::MatrixXf> : public ShapeContext3DEstimation<PointInT, PointNT, pcl::SHOT>
 # cdef extern from "pcl/features/3dsc.h" namespace "pcl":
