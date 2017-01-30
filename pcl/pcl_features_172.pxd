@@ -10,8 +10,8 @@ from boost_shared_ptr cimport shared_ptr
 
 # main
 cimport pcl_defs as cpp
-cimport pcl_kdtree as pclkdt
-cimport pcl_range_image as pcl_r_img
+cimport pcl_kdtree_172 as pclkdt
+cimport pcl_range_image_172 as pcl_r_img
 
 ###############################################################################
 # Types
@@ -670,13 +670,9 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
 cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
     cdef cppclass MomentOfInertiaEstimation[PointT](cpp.PCLBase[PointT]):
         MomentOfInertiaEstimation()
+        # /** \brief Constructor that sets default values for member variables. */
+        # MomentOfInertiaEstimation ();
         # public:
-        # using PCLBase <PointT>::input_;
-        # using PCLBase <PointT>::indices_;
-        # using PCLBase <PointT>::fake_indices_;
-        # using PCLBase <PointT>::use_indices_;
-        # using PCLBase <PointT>::initCompute;
-        # using PCLBase <PointT>::deinitCompute;
         # typedef typename pcl::PCLBase <PointT>::PointCloudConstPtr PointCloudConstPtr;
         # typedef typename pcl::PCLBase <PointT>::PointIndicesConstPtr PointIndicesConstPtr;
         # public:
@@ -709,12 +705,6 @@ cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
         # * \param[in] nb_cols the number of columns to be considered col_start included
         # */
         # virtual void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols);
-        # 
-        # /** \brief Constructor that sets default values for member variables. */
-        # MomentOfInertiaEstimation ();
-        # 
-        # /** \brief Virtual destructor which frees the memory. */
-        # virtual ~MomentOfInertiaEstimation ();
         # 
         # /** \brief This method allows to set the angle step. It is used for the rotation
         # * of the axis which is used for moment of inertia/eccentricity calculation.
