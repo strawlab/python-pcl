@@ -23,7 +23,6 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
     cdef cppclass RangeImage(cpp.PointCloud[cpp.PointWithRange]):
         RangeImage()
         # public:
-        
         # // =====STATIC METHODS=====
         # brief Get the size of a certain area when seen from the given pose
         # param viewer_pose an affine matrix defining the pose of the viewer
@@ -50,7 +49,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # param point_cloud the input point cloud
         # return the average viewpoint (as an Eigen::Vector3f)
         # template <typename PointCloudTypeWithViewpoints> static Eigen::Vector3f getAverageViewPoint (const PointCloudTypeWithViewpoints& point_cloud);
-        eigen3.Vector3f getAverageViewPoint (const cpp.PointCloud[cpp.PointWithRange]& point_cloud)
+        # eigen3.Vector3f getAverageViewPoint (const cpp.PointCloud[cpp.PointWithRange]& point_cloud)
         
         # brief Check if the provided data includes far ranges and add them to far_ranges
         # param point_cloud_data a PointCloud2 message containing the input cloud
