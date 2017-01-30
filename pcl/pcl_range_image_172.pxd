@@ -1125,7 +1125,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # 
         # /** Get a sub part of the complete image as a new range image.
         #  * \param sub_image_image_offset_x - The x coordinate of the top left pixel of the sub image.
-        #  *                         This is always according to absolute 0,0 meaning -180‘®,-90‘®
+        #  *                         This is always according to absolute 0,0 meaning -180,-90
         #  *                         and it is already in the system of the new image, so the
         #  *                         actual pixel used in the original image is
         #  *                         combine_pixels* (image_offset_x-image_offset_x_)
@@ -1195,7 +1195,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
 # * spherical projection. In the original range image, the image will appear more and more
 # * "scaled down" along the y axis, the further away from the mean line of the image a point is.
 # * This class removes this scaling, which makes it especially suitable for spinning LIDAR sensors
-# * that capure a 360‘® view, since a rotation of the sensor will now simply correspond to a shift of the
+# * that capure a 360 view, since a rotation of the sensor will now simply correspond to a shift of the
 # * range image. (This class is similar to RangeImagePlanar, but changes less of the behaviour of the base class.)
 # * \author Andreas Muetzel
 # * \ingroup range_image
