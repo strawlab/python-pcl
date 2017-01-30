@@ -1200,7 +1200,7 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
 # * \author Andreas Muetzel
 # * \ingroup range_image
 # */
-class RangeImageSpherical : public RangeImage
+# class RangeImageSpherical : public RangeImage
         # public:
         # // =====TYPEDEFS=====
         # typedef RangeImage BaseClass;
