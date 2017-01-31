@@ -3,8 +3,8 @@
 cimport pcl_defs as cpp
 
 # parts
-cimport pcl_features as pclftr
-cimport pcl_filters as pclfil
+cimport pcl_features_172 as pclftr
+cimport pcl_filters_172 as pclfil
 cimport pcl_io as pclio
 cimport pcl_kdtree as pclkdt
 cimport pcl_octree as pcloct
@@ -12,7 +12,7 @@ cimport pcl_sample_consensus as pcl_sc
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
-cimport pcl_range_image as pcl_r_img
+cimport pcl_range_image_172 as pcl_r_img
 
 
 cimport indexing as idx

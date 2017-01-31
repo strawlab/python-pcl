@@ -661,10 +661,10 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
 
 # moment_of_inertia_estimation.h
 # namespace pcl
-# /** \brief
-# * Implements the method for extracting features based on moment of inertia. It also
-# * calculates AABB, OBB and eccentricity of the projected cloud.
-# */
+# /** 
+#   * Implements the method for extracting features based on moment of inertia.
+#   * It also calculates AABB, OBB and eccentricity of the projected cloud.
+#   */
 # template <typename PointT>
 # class PCL_EXPORTS MomentOfInertiaEstimation : public pcl::PCLBase <PointT>
 cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
@@ -796,17 +796,11 @@ cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
         # */
         # bool getMassCenter (Eigen::Vector3f& mass_center) const;
 
+
 ctypedef MomentOfInertiaEstimation[cpp.PointXYZ] MomentOfInertiaEstimation_t
 ctypedef MomentOfInertiaEstimation[cpp.PointXYZI] MomentOfInertiaEstimation_PointXYZI_t
 ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGB] MomentOfInertiaEstimation_PointXYZRGB_t
 ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGBA] MomentOfInertiaEstimation_PointXYZRGBA_t
-
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZ, cpp.Normal] MomentOfInertiaEstimation_t
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZI, cpp.Normal] MomentOfInertiaEstimation_PointXYZI_t
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGB, cpp.Normal] MomentOfInertiaEstimation_PointXYZRGB_t
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGBA, cpp.Normal] MomentOfInertiaEstimation_PointXYZRGBA_t
-
-
 ###
 
 # our_cvfh.h
