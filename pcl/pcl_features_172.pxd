@@ -1136,9 +1136,10 @@ cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
 # */
 # template <typename PointInT, typename PointNT, typename PointOutT>
 # class RSDEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
-cdef extern from "pcl/features/rsd.h" namespace "pcl":
-    cdef cppclass RSDEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
-        RSDEstimation()
+# Note : Travis CI error (not found rsd.h)
+# cdef extern from "pcl/features/rsd.h" namespace "pcl":
+#     cdef cppclass RSDEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+#         RSDEstimation()
         # public:
         # using Feature<PointInT, PointOutT>::feature_name_;
         # using Feature<PointInT, PointOutT>::getClassName;
