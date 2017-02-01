@@ -109,8 +109,6 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   typedef BivariatePolynomialT<double> BivariatePolynomiald;
 #   typedef BivariatePolynomialT<float>  BivariatePolynomial;
 # }  // end namespace
-# #include <pcl/common/impl/bivariate_polynomial.hpp>
-# #endif
 ###
 
 # # boost.h
@@ -128,763 +126,894 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # #include <boost/signals2/slot.hpp>
 # #include <boost/algorithm/string.hpp>
 # 
-#endif    // PCL_COMMON_BOOST_H_
 ###
 
 # centroid.h
 # namespace pcl
-# {
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
-  # /** \brief Compute the 3D (X-Y-Z) centroid of a set of points and return it as a 3D vector.
-  #   * \param[in] cloud_iterator an iterator over the input point cloud
-  #   * \param[out] centroid the output centroid
-  #   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \note if return value is 0, the centroid is not changed, thus not valid.
-  #   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
-  #                    Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
-  #                    Eigen::Vector4f &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, float> (cloud_iterator, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
-  #                    Eigen::Vector4d &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, double> (cloud_iterator, centroid));
-  # }
-  # 
-  # /** \brief Compute the 3D (X-Y-Z) centroid of a set of points and return it as a 3D vector.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[out] centroid the output centroid
-  #   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \note if return value is 0, the centroid is not changed, thus not valid.
-  #   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
-  #                    Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
-  #                    Eigen::Vector4f &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, float> (cloud, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
-  #                    Eigen::Vector4d &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, double> (cloud, centroid));
-  # }
-  # 
-  # /** \brief Compute the 3D (X-Y-Z) centroid of a set of points using their indices and
-  #   * return it as a 3D vector.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices the point cloud indices that need to be used
-  #   * \param[out] centroid the output centroid
-  #   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \note if return value is 0, the centroid is not changed, thus not valid.
-  #   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-  #                    const std::vector<int> &indices, 
-  #                    Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-  #                    const std::vector<int> &indices, 
-  #                    Eigen::Vector4f &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, float> (cloud, indices, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-  #                    const std::vector<int> &indices, 
-  #                    Eigen::Vector4d &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, double> (cloud, indices, centroid));
-  # }
-  # 
-  # /** \brief Compute the 3D (X-Y-Z) centroid of a set of points using their indices and
-  #   * return it as a 3D vector.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices the point cloud indices that need to be used
-  #   * \param[out] centroid the output centroid
-  #   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \note if return value is 0, the centroid is not changed, thus not valid.
-  #   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-  #                    const pcl::PointIndices &indices, 
-  #                    Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-  #                    const pcl::PointIndices &indices, 
-  #                    Eigen::Vector4f &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, float> (cloud, indices, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-  #                    const pcl::PointIndices &indices, 
-  #                    Eigen::Vector4d &centroid)
-  # {
-  #   return (compute3DCentroid <PointT, double> (cloud, indices, centroid));
-  # }
-  # 
-  # /** \brief Compute the 3x3 covariance matrix of a given set of points.
-  #   * The result is returned as a Eigen::Matrix3f.
-  #   * Note: the covariance matrix is not normalized with the number of
-  #   * points. For a normalized covariance, please use
-  #   * computeNormalizedCovarianceMatrix.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \note if return value is 0, the covariance matrix is not changed, thus not valid.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const Eigen::Vector4f &centroid,
-  #                          Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, float> (cloud, centroid, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const Eigen::Vector4d &centroid,
-  #                          Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, double> (cloud, centroid, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute normalized the 3x3 covariance matrix of a given set of points.
-  #   * The result is returned as a Eigen::Matrix3f.
-  #   * Normalized means that every entry has been divided by the number of points in the point cloud.
-  #   * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
-  #   * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
-  #   * the covariance matrix and is returned by the computeCovarianceMatrix function.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                                    Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const Eigen::Vector4f &centroid,
-  #                                    Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrixNormalized<PointT, float> (cloud, centroid, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const Eigen::Vector4d &centroid,
-  #                                    Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrixNormalized<PointT, double> (cloud, centroid, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the 3x3 covariance matrix of a given set of points using their indices.
-  #   * The result is returned as a Eigen::Matrix3f.
-  #   * Note: the covariance matrix is not normalized with the number of
-  #   * points. For a normalized covariance, please use
-  #   * computeNormalizedCovarianceMatrix.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices the point cloud indices that need to be used
-  #   * \param[in] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const std::vector<int> &indices,
-  #                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const std::vector<int> &indices,
-  #                          const Eigen::Vector4f &centroid,
-  #                          Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, float> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const std::vector<int> &indices,
-  #                          const Eigen::Vector4d &centroid,
-  #                          Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, double> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the 3x3 covariance matrix of a given set of points using their indices.
-  #   * The result is returned as a Eigen::Matrix3f.
-  #   * Note: the covariance matrix is not normalized with the number of
-  #   * points. For a normalized covariance, please use
-  #   * computeNormalizedCovarianceMatrix.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices the point cloud indices that need to be used
-  #   * \param[in] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const pcl::PointIndices &indices,
-  #                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const pcl::PointIndices &indices,
-  #                          const Eigen::Vector4f &centroid,
-  #                          Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, float> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const pcl::PointIndices &indices,
-  #                          const Eigen::Vector4d &centroid,
-  #                          Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, double> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix of a given set of points using
-  #   * their indices.
-  #   * The result is returned as a Eigen::Matrix3f.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
-  #   * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
-  #   * the covariance matrix and is returned by the computeCovarianceMatrix function.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices the point cloud indices that need to be used
-  #   * \param[in] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const std::vector<int> &indices,
-  #                                    const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                                    Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const std::vector<int> &indices,
-  #                                    const Eigen::Vector4f &centroid,
-  #                                    Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrixNormalized<PointT, float> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const std::vector<int> &indices,
-  #                                    const Eigen::Vector4d &centroid,
-  #                                    Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrixNormalized<PointT, double> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix of a given set of points using
-  #   * their indices. The result is returned as a Eigen::Matrix3f.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
-  #   * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
-  #   * the covariance matrix and is returned by the computeCovarianceMatrix function.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices the point cloud indices that need to be used
-  #   * \param[in] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const pcl::PointIndices &indices,
-  #                                    const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                                    Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const pcl::PointIndices &indices,
-  #                                    const Eigen::Vector4f &centroid,
-  #                                    Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrixNormalized<PointT, float> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
-  #                                    const pcl::PointIndices &indices,
-  #                                    const Eigen::Vector4d &centroid,
-  #                                    Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrixNormalized<PointT, double> (cloud, indices, centroid, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix and the centroid of a given set of points in a single loop.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
-  #   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-  #   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \param[out] centroid the centroid of the set of points in the cloud
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 Eigen::Matrix<Scalar, 3, 3> &covariance_matrix,
-  #                                 Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 Eigen::Matrix3f &covariance_matrix,
-  #                                 Eigen::Vector4f &centroid)
-  # {
-  #   return (computeMeanAndCovarianceMatrix<PointT, float> (cloud, covariance_matrix, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 Eigen::Matrix3d &covariance_matrix,
-  #                                 Eigen::Vector4d &centroid)
-  # {
-  #   return (computeMeanAndCovarianceMatrix<PointT, double> (cloud, covariance_matrix, centroid));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix and the centroid of a given set of points in a single loop.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
-  #   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-  #   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices subset of points given by their indices
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \param[out] centroid the centroid of the set of points in the cloud
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 const std::vector<int> &indices,
-  #                                 Eigen::Matrix<Scalar, 3, 3> &covariance_matrix,
-  #                                 Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 const std::vector<int> &indices,
-  #                                 Eigen::Matrix3f &covariance_matrix,
-  #                                 Eigen::Vector4f &centroid)
-  # {
-  #   return (computeMeanAndCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 const std::vector<int> &indices,
-  #                                 Eigen::Matrix3d &covariance_matrix,
-  #                                 Eigen::Vector4d &centroid)
-  # {
-  #   return (computeMeanAndCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix, centroid));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix and the centroid of a given set of points in a single loop.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
-  #   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-  #   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices subset of points given by their indices
-  #   * \param[out] centroid the centroid of the set of points in the cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 const pcl::PointIndices &indices,
-  #                                 Eigen::Matrix<Scalar, 3, 3> &covariance_matrix,
-  #                                 Eigen::Matrix<Scalar, 4, 1> &centroid);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 const pcl::PointIndices &indices,
-  #                                 Eigen::Matrix3f &covariance_matrix,
-  #                                 Eigen::Vector4f &centroid)
-  # {
-  #   return (computeMeanAndCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix, centroid));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                                 const pcl::PointIndices &indices,
-  #                                 Eigen::Matrix3d &covariance_matrix,
-  #                                 Eigen::Vector4d &centroid)
-  # {
-  #   return (computeMeanAndCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix, centroid));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix for a already demeaned point cloud.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
-  #   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-  #   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, float> (cloud, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, double> (cloud, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix for a already demeaned point cloud.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
-  #   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-  #   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices subset of points given by their indices
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const std::vector<int> &indices,
-  #                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const std::vector<int> &indices,
-  #                          Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const std::vector<int> &indices,
-  #                          Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix));
-  # }
-  # 
-  # /** \brief Compute the normalized 3x3 covariance matrix for a already demeaned point cloud.
-  #   * Normalized means that every entry has been divided by the number of entries in indices.
-  #   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
-  #   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
-  #   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
-  #   * \param[in] cloud the input point cloud
-  #   * \param[in] indices subset of points given by their indices
-  #   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
-  #   * \return number of valid point used to determine the covariance matrix.
-  #   * In case of dense point clouds, this is the same as the size of input cloud.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const pcl::PointIndices &indices,
-  #                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const pcl::PointIndices &indices,
-  #                          Eigen::Matrix3f &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, float> (cloud, indices, covariance_matrix));
-  # }
-  # 
-  # template <typename PointT> inline unsigned int
-  # computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-  #                          const pcl::PointIndices &indices,
-  #                          Eigen::Matrix3d &covariance_matrix)
-  # {
-  #   return (computeCovarianceMatrix<PointT, double> (cloud, indices, covariance_matrix));
-  # }
-  # 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
-  #   * \param[in] cloud_iterator an iterator over the input point cloud
-  #   * \param[in] centroid the centroid of the point cloud
-  #   * \param[out] cloud_out the resultant output point cloud
-  #   * \param[in] npts the number of samples guaranteed to be left in the input cloud, accessible by the iterator. If not given, it will be calculated.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out,
-  #                   int npts = 0);
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Vector4f &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out,
-  #                   int npts = 0)
-  # {
-  #   return (demeanPointCloud<PointT, float> (cloud_iterator, centroid, cloud_out, npts));
-  # }
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Vector4d &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out,
-  #                   int npts = 0)
-  # {
-  #   return (demeanPointCloud<PointT, double> (cloud_iterator, centroid, cloud_out, npts));
-  # }
-  # 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
-  #   * \param[in] cloud_in the input point cloud
-  #   * \param[in] centroid the centroid of the point cloud
-  #   * \param[out] cloud_out the resultant output point cloud
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out);
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Vector4f &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, float> (cloud_iterator, centroid, cloud_out));
-  # }
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Vector4d &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, double> (cloud_iterator, centroid, cloud_out));
-  # }
-  # 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
-  #   * \param[in] cloud_in the input point cloud
-  #   * \param[in] indices the set of point indices to use from the input point cloud
-  #   * \param[out] centroid the centroid of the point cloud
-  #   * \param cloud_out the resultant output point cloud
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const std::vector<int> &indices,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out);
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const std::vector<int> &indices,
-  #                   const Eigen::Vector4f &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
-  # }
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const std::vector<int> &indices,
-  #                   const Eigen::Vector4d &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
-  # }
-  # 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
-  #   * \param[in] cloud_in the input point cloud
-  #   * \param[in] indices the set of point indices to use from the input point cloud
-  #   * \param[out] centroid the centroid of the point cloud
-  #   * \param cloud_out the resultant output point cloud
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const pcl::PointIndices& indices,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out);
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const pcl::PointIndices& indices,
-  #                   const Eigen::Vector4f &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
-  # }
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const pcl::PointIndices& indices,
-  #                   const Eigen::Vector4d &centroid,
-  #                   pcl::PointCloud<PointT> &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
-  # }
-  # 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned
-  #   * representation as an Eigen matrix
-  #   * \param[in] cloud_iterator an iterator over the input point cloud
-  #   * \param[in] centroid the centroid of the point cloud
-  #   * \param[out] cloud_out the resultant output XYZ0 dimensions of \a cloud_in as
-  #   * an Eigen matrix (4 rows, N pts columns)
-  #   * \param[in] npts the number of samples guaranteed to be left in the input cloud, accessible by the iterator. If not given, it will be calculated.
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out,
-  #                   int npts = 0);
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Vector4f &centroid,
-  #                   Eigen::MatrixXf &cloud_out,
-  #                   int npts = 0)
-  # {
-  #   return (demeanPointCloud<PointT, float> (cloud_iterator, centroid, cloud_out, npts));
-  # }
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
-  #                   const Eigen::Vector4d &centroid,
-  #                   Eigen::MatrixXd &cloud_out,
-  #                   int npts = 0)
-  # {
-  #   return (demeanPointCloud<PointT, double> (cloud_iterator, centroid, cloud_out, npts));
-  # }
-  # 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned
-  #   * representation as an Eigen matrix
-  #   * \param[in] cloud_in the input point cloud
-  #   * \param[in] centroid the centroid of the point cloud
-  #   * \param[out] cloud_out the resultant output XYZ0 dimensions of \a cloud_in as
-  #   * an Eigen matrix (4 rows, N pts columns)
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out);
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const Eigen::Vector4f &centroid,
-  #                   Eigen::MatrixXf &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, float> (cloud_in, centroid, cloud_out));
-  # }
-  # 
-  # template <typename PointT> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const Eigen::Vector4d &centroid,
-  #                   Eigen::MatrixXd &cloud_out)
-  # {
-  #   return (demeanPointCloud<PointT, double> (cloud_in, centroid, cloud_out));
-  # }
-# 
-  # /** \brief Subtract a centroid from a point cloud and return the de-meaned
-  #   * representation as an Eigen matrix
-  #   * \param[in] cloud_in the input point cloud
-  #   * \param[in] indices the set of point indices to use from the input point cloud
-  #   * \param[in] centroid the centroid of the point cloud
-  #   * \param[out] cloud_out the resultant output XYZ0 dimensions of \a cloud_in as
-  #   * an Eigen matrix (4 rows, N pts columns)
-  #   * \ingroup common
-  #   */
-  # template <typename PointT, typename Scalar> void
-  # demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-  #                   const std::vector<int> &indices,
-  #                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
-  #                   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out);
-# 
+# /** \brief Compute the 3D (X-Y-Z) centroid of a set of points and return it as a 3D vector.
+#   * \param[in] cloud_iterator an iterator over the input point cloud
+#   * \param[out] centroid the output centroid
+#   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
+#   * \note if return value is 0, the centroid is not changed, thus not valid.
+#   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
+#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
+#                    Eigen::Vector4f &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
+#                    Eigen::Vector4d &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the 3D (X-Y-Z) centroid of a set of points and return it as a 3D vector.
+#   * \param[in] cloud the input point cloud
+#   * \param[out] centroid the output centroid
+#   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
+#   * \note if return value is 0, the centroid is not changed, thus not valid.
+#   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                    Eigen::Vector4f &centroid)
+###
+
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                    Eigen::Vector4d &centroid)
+###
+
+# /** \brief Compute the 3D (X-Y-Z) centroid of a set of points using their indices and
+#   * return it as a 3D vector.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices the point cloud indices that need to be used
+#   * \param[out] centroid the output centroid
+#   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
+#   * \note if return value is 0, the centroid is not changed, thus not valid.
+#   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
+#                    const std::vector<int> &indices, 
+#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
+#                    const std::vector<int> &indices, 
+#                    Eigen::Vector4f &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
+#                    const std::vector<int> &indices, 
+#                    Eigen::Vector4d &centroid)
+###
+
+# /** \brief Compute the 3D (X-Y-Z) centroid of a set of points using their indices and
+#   * return it as a 3D vector.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices the point cloud indices that need to be used
+#   * \param[out] centroid the output centroid
+#   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
+#   * \note if return value is 0, the centroid is not changed, thus not valid.
+#   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
+#                    const pcl::PointIndices &indices, 
+#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
+#                    const pcl::PointIndices &indices, 
+#                    Eigen::Vector4f &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
+#                    const pcl::PointIndices &indices, 
+#                    Eigen::Vector4d &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the 3x3 covariance matrix of a given set of points.
+#   * The result is returned as a Eigen::Matrix3f.
+#   * Note: the covariance matrix is not normalized with the number of
+#   * points. For a normalized covariance, please use
+#   * computeNormalizedCovarianceMatrix.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \note if return value is 0, the covariance matrix is not changed, thus not valid.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const Eigen::Vector4f &centroid,
+#                          Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const Eigen::Vector4d &centroid,
+#                          Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute normalized the 3x3 covariance matrix of a given set of points.
+#   * The result is returned as a Eigen::Matrix3f.
+#   * Normalized means that every entry has been divided by the number of points in the point cloud.
+#   * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
+#   * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
+#   * the covariance matrix and is returned by the computeCovarianceMatrix function.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                                    Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const Eigen::Vector4f &centroid,
+#                                    Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const Eigen::Vector4d &centroid,
+#                                    Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the 3x3 covariance matrix of a given set of points using their indices.
+#   * The result is returned as a Eigen::Matrix3f.
+#   * Note: the covariance matrix is not normalized with the number of
+#   * points. For a normalized covariance, please use
+#   * computeNormalizedCovarianceMatrix.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices the point cloud indices that need to be used
+#   * \param[in] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const std::vector<int> &indices,
+#                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const std::vector<int> &indices,
+#                          const Eigen::Vector4f &centroid,
+#                          Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const std::vector<int> &indices,
+#                          const Eigen::Vector4d &centroid,
+#                          Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the 3x3 covariance matrix of a given set of points using their indices.
+#   * The result is returned as a Eigen::Matrix3f.
+#   * Note: the covariance matrix is not normalized with the number of
+#   * points. For a normalized covariance, please use
+#   * computeNormalizedCovarianceMatrix.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices the point cloud indices that need to be used
+#   * \param[in] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const pcl::PointIndices &indices,
+#                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const pcl::PointIndices &indices,
+#                          const Eigen::Vector4f &centroid,
+#                          Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const pcl::PointIndices &indices,
+#                          const Eigen::Vector4d &centroid,
+#                          Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix of a given set of points using
+#   * their indices.
+#   * The result is returned as a Eigen::Matrix3f.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
+#   * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
+#   * the covariance matrix and is returned by the computeCovarianceMatrix function.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices the point cloud indices that need to be used
+#   * \param[in] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const std::vector<int> &indices,
+#                                    const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                                    Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const std::vector<int> &indices,
+#                                    const Eigen::Vector4f &centroid,
+#                                    Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const std::vector<int> &indices,
+#                                    const Eigen::Vector4d &centroid,
+#                                    Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix of a given set of points using
+#   * their indices. The result is returned as a Eigen::Matrix3f.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, use computeCovarianceMatrix
+#   * and scale the covariance matrix with 1 / (n-1), where n is the number of points used to calculate
+#   * the covariance matrix and is returned by the computeCovarianceMatrix function.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices the point cloud indices that need to be used
+#   * \param[in] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const pcl::PointIndices &indices,
+#                                    const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                                    Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const pcl::PointIndices &indices,
+#                                    const Eigen::Vector4f &centroid,
+#                                    Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrixNormalized (const pcl::PointCloud<PointT> &cloud,
+#                                    const pcl::PointIndices &indices,
+#                                    const Eigen::Vector4d &centroid,
+#                                    Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix and the centroid of a given set of points in a single loop.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
+#   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
+#   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+#   * \param[in] cloud the input point cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \param[out] centroid the centroid of the set of points in the cloud
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 Eigen::Matrix<Scalar, 3, 3> &covariance_matrix,
+#                                 Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 Eigen::Matrix3f &covariance_matrix,
+#                                 Eigen::Vector4f &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 Eigen::Matrix3d &covariance_matrix,
+#                                 Eigen::Vector4d &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix and the centroid of a given set of points in a single loop.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
+#   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
+#   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices subset of points given by their indices
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \param[out] centroid the centroid of the set of points in the cloud
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 const std::vector<int> &indices,
+#                                 Eigen::Matrix<Scalar, 3, 3> &covariance_matrix,
+#                                 Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 const std::vector<int> &indices,
+#                                 Eigen::Matrix3f &covariance_matrix,
+#                                 Eigen::Vector4f &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 const std::vector<int> &indices,
+#                                 Eigen::Matrix3d &covariance_matrix,
+#                                 Eigen::Vector4d &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix and the centroid of a given set of points in a single loop.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
+#   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
+#   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices subset of points given by their indices
+#   * \param[out] centroid the centroid of the set of points in the cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 const pcl::PointIndices &indices,
+#                                 Eigen::Matrix<Scalar, 3, 3> &covariance_matrix,
+#                                 Eigen::Matrix<Scalar, 4, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 const pcl::PointIndices &indices,
+#                                 Eigen::Matrix3f &covariance_matrix,
+#                                 Eigen::Vector4f &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeMeanAndCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                                 const pcl::PointIndices &indices,
+#                                 Eigen::Matrix3d &covariance_matrix,
+#                                 Eigen::Vector4d &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix for a already demeaned point cloud.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
+#   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
+#   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+#   * \param[in] cloud the input point cloud
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix for a already demeaned point cloud.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
+#   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
+#   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices subset of points given by their indices
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const std::vector<int> &indices,
+#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const std::vector<int> &indices,
+#                          Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const std::vector<int> &indices,
+#                          Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Compute the normalized 3x3 covariance matrix for a already demeaned point cloud.
+#   * Normalized means that every entry has been divided by the number of entries in indices.
+#   * For small number of points, or if you want explicitely the sample-variance, scale the covariance matrix
+#   * with n / (n-1), where n is the number of points used to calculate the covariance matrix and is returned by this function.
+#   * \note This method is theoretically exact. However using float for internal calculations reduces the accuracy but increases the efficiency.
+#   * \param[in] cloud the input point cloud
+#   * \param[in] indices subset of points given by their indices
+#   * \param[out] covariance_matrix the resultant 3x3 covariance matrix
+#   * \return number of valid point used to determine the covariance matrix.
+#   * In case of dense point clouds, this is the same as the size of input cloud.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const pcl::PointIndices &indices,
+#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const pcl::PointIndices &indices,
+#                          Eigen::Matrix3f &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> inline unsigned int
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
+#                          const pcl::PointIndices &indices,
+#                          Eigen::Matrix3d &covariance_matrix)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
+#   * \param[in] cloud_iterator an iterator over the input point cloud
+#   * \param[in] centroid the centroid of the point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] npts the number of samples guaranteed to be left in the input cloud, accessible by the iterator. If not given, it will be calculated.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out,
+#                   int npts = 0);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Vector4f &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out,
+#                   int npts = 0)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Vector4d &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out,
+#                   int npts = 0)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] centroid the centroid of the point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Vector4f &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Vector4d &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] centroid the centroid of the point cloud
+#   * \param cloud_out the resultant output point cloud
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const std::vector<int> &indices,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const std::vector<int> &indices,
+#                   const Eigen::Vector4f &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const std::vector<int> &indices,
+#                   const Eigen::Vector4d &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned representation
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] centroid the centroid of the point cloud
+#   * \param cloud_out the resultant output point cloud
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const pcl::PointIndices& indices,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const pcl::PointIndices& indices,
+#                   const Eigen::Vector4f &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const pcl::PointIndices& indices,
+#                   const Eigen::Vector4d &centroid,
+#                   pcl::PointCloud<PointT> &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned
+#   * representation as an Eigen matrix
+#   * \param[in] cloud_iterator an iterator over the input point cloud
+#   * \param[in] centroid the centroid of the point cloud
+#   * \param[out] cloud_out the resultant output XYZ0 dimensions of \a cloud_in as
+#   * an Eigen matrix (4 rows, N pts columns)
+#   * \param[in] npts the number of samples guaranteed to be left in the input cloud, accessible by the iterator. If not given, it will be calculated.
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out,
+#                   int npts = 0);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Vector4f &centroid,
+#                   Eigen::MatrixXf &cloud_out,
+#                   int npts = 0)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (ConstCloudIterator<PointT> &cloud_iterator,
+#                   const Eigen::Vector4d &centroid,
+#                   Eigen::MatrixXd &cloud_out,
+#                   int npts = 0)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned
+#   * representation as an Eigen matrix
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] centroid the centroid of the point cloud
+#   * \param[out] cloud_out the resultant output XYZ0 dimensions of \a cloud_in as
+#   * an Eigen matrix (4 rows, N pts columns)
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const Eigen::Vector4f &centroid,
+#                   Eigen::MatrixXf &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# template <typename PointT> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const Eigen::Vector4d &centroid,
+#                   Eigen::MatrixXd &cloud_out)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+# /** \brief Subtract a centroid from a point cloud and return the de-meaned
+#   * representation as an Eigen matrix
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[in] centroid the centroid of the point cloud
+#   * \param[out] cloud_out the resultant output XYZ0 dimensions of \a cloud_in as
+#   * an Eigen matrix (4 rows, N pts columns)
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void
+# demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
+#                   const std::vector<int> &indices,
+#                   const Eigen::Matrix<Scalar, 4, 1> &centroid,
+#                   Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   template <typename PointT> void
 #   demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
 #                     const std::vector<int> &indices,
 #                     const Eigen::Vector4f &centroid,
 #                     Eigen::MatrixXf &cloud_out)
-#   {
-#     return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
-#   }
-# 
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   template <typename PointT> void
 #   demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
 #                     const std::vector<int> &indices,
 #                     const Eigen::Vector4d &centroid,
 #                     Eigen::MatrixXd &cloud_out)
-#   {
-#     return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
-#   }
-# 
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** \brief Subtract a centroid from a point cloud and return the de-meaned
 #     * representation as an Eigen matrix
 #     * \param[in] cloud_in the input point cloud
@@ -899,25 +1028,31 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #                     const pcl::PointIndices& indices,
 #                     const Eigen::Matrix<Scalar, 4, 1> &centroid,
 #                     Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic> &cloud_out);
-# 
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   template <typename PointT> void
 #   demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
 #                     const pcl::PointIndices& indices,
 #                     const Eigen::Vector4f &centroid,
 #                     Eigen::MatrixXf &cloud_out)
-#   {
-#     return (demeanPointCloud<PointT, float> (cloud_in, indices, centroid, cloud_out));
-#   }
-# 
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   template <typename PointT> void
 #   demeanPointCloud (const pcl::PointCloud<PointT> &cloud_in,
 #                     const pcl::PointIndices& indices,
 #                     const Eigen::Vector4d &centroid,
 #                     Eigen::MatrixXd &cloud_out)
-#   {
-#     return (demeanPointCloud<PointT, double> (cloud_in, indices, centroid, cloud_out));
-#   }
-# 
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** \brief Helper functor structure for n-D centroid estimation. */
 #   template<typename PointT, typename Scalar>
 #   struct NdCentroidFunctor
@@ -930,27 +1065,13 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         p_ (reinterpret_cast<const Pod&>(p)) { }
 # 
 #     template<typename Key> inline void operator() ()
-#     {
-#       typedef typename pcl::traits::datatype<PointT, Key>::type T;
-#       const uint8_t* raw_ptr = reinterpret_cast<const uint8_t*>(&p_) + pcl::traits::offset<PointT, Key>::value;
-#       const T* data_ptr = reinterpret_cast<const T*>(raw_ptr);
 # 
-#       // Check if the value is invalid
-#       if (!pcl_isfinite (*data_ptr))
-#       {
-#         f_idx_++;
-#         return;
-#       }
-# 
-#       centroid_[f_idx_++] += *data_ptr;
-#     }
-# 
-#     private:
-#       int f_idx_;
-#       Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &centroid_;
-#       const Pod &p_;
 #   };
-# 
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** \brief General, all purpose nD centroid estimation for a set of points using their
 #     * indices.
 #     * \param cloud the input point cloud
@@ -960,85 +1081,98 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   template <typename PointT, typename Scalar> inline void
 #   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
 #                      Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &centroid);
-# 
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   template <typename PointT> inline void
 #   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
 #                      Eigen::VectorXf &centroid)
 #   {
 #     return (computeNDCentroid<PointT, float> (cloud, centroid));
 #   }
-# 
-#   template <typename PointT> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                      Eigen::VectorXd &centroid)
-#   {
-#     return (computeNDCentroid<PointT, double> (cloud, centroid));
-#   }
-# 
-#   /** \brief General, all purpose nD centroid estimation for a set of points using their
-#     * indices.
-#     * \param cloud the input point cloud
-#     * \param indices the point cloud indices that need to be used
-#     * \param centroid the output centroid
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud,
-#                      const std::vector<int> &indices, 
-#                      Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &centroid);
-# 
-#   template <typename PointT> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                      const std::vector<int> &indices, 
-#                      Eigen::VectorXf &centroid)
-#   {
-#     return (computeNDCentroid<PointT, float> (cloud, indices, centroid));
-#   }
-# 
-#   template <typename PointT> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                      const std::vector<int> &indices, 
-#                      Eigen::VectorXd &centroid)
-#   {
-#     return (computeNDCentroid<PointT, double> (cloud, indices, centroid));
-#   }
-# 
-#   /** \brief General, all purpose nD centroid estimation for a set of points using their
-#     * indices.
-#     * \param cloud the input point cloud
-#     * \param indices the point cloud indices that need to be used
-#     * \param centroid the output centroid
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud,
-#                      const pcl::PointIndices &indices, 
-#                      Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &centroid);
-# 
-#   template <typename PointT> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                      const pcl::PointIndices &indices, 
-#                      Eigen::VectorXf &centroid)
-#   {
-#     return (computeNDCentroid<PointT, float> (cloud, indices, centroid));
-#   }
-# 
-#   template <typename PointT> inline void
-#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                      const pcl::PointIndices &indices, 
-#                      Eigen::VectorXd &centroid)
-#   {
-#     return (computeNDCentroid<PointT, double> (cloud, indices, centroid));
-#   }
-# 
-# }
-# 
-# # #include <pcl/common/impl/accumulators.hpp>
-# ###
-# 
+### 
+
+# centroid.h
 # namespace pcl
-# {
-# 
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   template <typename PointT> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                      Eigen::VectorXd &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   /** \brief General, all purpose nD centroid estimation for a set of points using their
+#     * indices.
+#     * \param cloud the input point cloud
+#     * \param indices the point cloud indices that need to be used
+#     * \param centroid the output centroid
+#     * \ingroup common
+#     */
+#   template <typename PointT, typename Scalar> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud,
+#                      const std::vector<int> &indices, 
+#                      Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &centroid);
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   template <typename PointT> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                      const std::vector<int> &indices, 
+#                      Eigen::VectorXf &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   template <typename PointT> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                      const std::vector<int> &indices, 
+#                      Eigen::VectorXd &centroid)
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   /** \brief General, all purpose nD centroid estimation for a set of points using their
+#     * indices.
+#     * \param cloud the input point cloud
+#     * \param indices the point cloud indices that need to be used
+#     * \param centroid the output centroid
+#     * \ingroup common
+#     */
+#   template <typename PointT, typename Scalar> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud,
+#                      const pcl::PointIndices &indices, 
+#                      Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &centroid);
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   template <typename PointT> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                      const pcl::PointIndices &indices, 
+#                      Eigen::VectorXf &centroid)
+### 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#   template <typename PointT> inline void
+#   computeNDCentroid (const pcl::PointCloud<PointT> &cloud, 
+#                      const pcl::PointIndices &indices, 
+#                      Eigen::VectorXd &centroid)
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** A generic class that computes the centroid of points fed to it.
 #     *
 #     * Here by "centroid" we denote not just the mean of 3D point coordinates,
@@ -1116,12 +1250,11 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     *
 #     * \ingroup common
 #     * \author Sergey Alexandrov */
-#   template <typename PointT>
-#   class CentroidPoint
-#   {
-# 
-#     public:
-# 
+# template <typename PointT>
+# class CentroidPoint
+# 		
+#     	public:
+# 		
 #       CentroidPoint ()
 #       : num_points_ (0)
 #       {
@@ -1162,21 +1295,17 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       }
 # 
 #       /** Get the total number of points that were added. */
-#       size_t
-#       getSize () const
-#       {
-#         return (num_points_);
-#       }
+#       size_t getSize () const
 # 
 #       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 # 
-#     private:
-# 
-#       size_t num_points_;
-#       typename pcl::detail::Accumulators<PointT>::type accumulators_;
 # 
 #   };
 # 
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** Compute the centroid of a set of points and return it as a point.
 #     *
 #     * Implementation leverages \ref CentroidPoint class and therefore behaves
@@ -1196,7 +1325,11 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   template <typename PointInT, typename PointOutT> size_t
 #   computeCentroid (const pcl::PointCloud<PointInT>& cloud,
 #                    PointOutT& centroid);
-# 
+###
+
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** Compute the centroid of a set of points and return it as a point.
 #     * \param[in] cloud
 #     * \param[in] indices point cloud indices that need to be used
@@ -1210,13 +1343,11 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #                    const std::vector<int>& indices,
 #                    PointOutT& centroid);
 # 
-# }
-# /*@}*/
-# # #include <pcl/common/impl/centroid.hpp>
-# # #endif  //#ifndef PCL_COMMON_CENTROID_H_
-# ###
-# 
-# # common.h
+###
+
+### end of centroid.h file ###
+
+# common.h
 # namespace pcl
 # {
 #   /** \brief Compute the smallest angle between two vectors in the [ 0, PI ) interval in 3D.

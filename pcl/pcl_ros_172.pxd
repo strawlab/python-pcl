@@ -14,7 +14,7 @@ from boost_shared_ptr cimport shared_ptr
 # Types
 ###############################################################################
 
-# conversions.h
+# common\include\pcl\ros\conversions.h
 # namespace pcl
 # {
     # /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object using a field_map.
@@ -73,6 +73,9 @@ from boost_shared_ptr cimport shared_ptr
 ###
 
 
-# register_point_struct.h
-#include <pcl/register_point_struct.h>
+# common\include\pcl\ros\register_point_struct.h
+# changed pcl/register_point_struct.h
+# include <pcl/register_point_struct.h>
 ###
+
+

@@ -5,6 +5,7 @@ from libcpp cimport bool
 cimport pcl_defs as cpp
 cimport pcl_features as pclftr
 
+# from pcl_features cimport NormalEstimationMethod2
 
 cdef class IntegralImageNormalEstimation:
     """
@@ -19,10 +20,8 @@ cdef class IntegralImageNormalEstimation:
     def __dealloc__(self):
         del self.me
 
-# use minipcl 
-#    def set_NormalEstimation_Method (self):
-#        cdef pclftr.NormalEstimationMethod method = <pclftr.NormalEstimationMethod>
-#        self.me.setNormalEstimationMethod(method)
+    # def set_NormalEstimation_Method (self, NormalEstimationMethod2 method):
+    #    self.me.setNormalEstimationMethod(method)
 
     def set_MaxDepthChange_Factor(self, double param):
         self.me.setMaxDepthChangeFactor(param)

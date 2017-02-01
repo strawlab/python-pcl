@@ -4,6 +4,9 @@
 
 # Features
 # pcl1.6 - NG
+# python examples\official\Features\moment_of_inertia moment_of_inertia.py
+# python examples\official\Features\rops_feature rops_feature.txt
+python examples\official\Features\NormalEstimationUsingIntegralImages.py
 ###
 
 # Filtering
@@ -52,8 +55,7 @@ python examples\official\RangeImage\range_image_border_extraction.py
 ###
 
 # Recognition
-# pcl 1.7.2
-# pcl 1.6.0 not Implement BOARDLocalReferenceFrameEstimation 
+# pcl 1.6 - NG (not Implement BOARDLocalReferenceFrameEstimation)
 # python examples\official\Recognition\cpython correspondence_grouping.py pcldata\tutorials\correspondence_grouping\milk.pcd pcldata\tutorials\correspondence_grouping\milk_cartoon_all_small_clorox.pcd
 # pcl 1.7.2
 # python examples\official\Recognition\global_hypothesis_verification.txt

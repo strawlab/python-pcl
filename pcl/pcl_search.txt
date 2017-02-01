@@ -32,18 +32,23 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         # typedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
         # /** \brief returns the search method name
         string getName ()
+        
         # /** \brief sets whether the results should be sorted (ascending in the distance) or not
         #   * \param[in] sorted should be true if the results should be sorted by the distance in ascending order.
         #   * Otherwise the results may be returned in any order.
         void setSortedResults (bool sorted)
+        
         # /** \brief Pass the input dataset that the search will be performed on.
         #   * \param[in] cloud a const pointer to the PointCloud data
         #   * \param[in] indices the point indices subset that is to be used from the cloud
         # virtual void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr &indices = IndicesConstPtr ())
+        
         # /** \brief Get a pointer to the input point cloud dataset. */
         # virtual PointCloudConstPtr getInputCloud () const
+        
         # /** \brief Get a pointer to the vector of indices used. */
         # virtual IndicesConstPtr getIndices () const
+        
         # /** \brief Search for the k-nearest neighbors for the given query point.
         #   * \param[in] point the given query point
         #   * \param[in] k the number of neighbors to search for
@@ -52,6 +57,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * a priori!)
         #   * \return number of neighbors found
         # virtual int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const = 0;
+        
         # /** \brief Search for k-nearest neighbors for the given query point.
         #   * This method accepts a different template parameter for the point type.
         #   * \param[in] point the given query point
@@ -60,8 +66,9 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points (must be resized to \a k
         #   * a priori!)
         #   * \return number of neighbors found
-        # template <typename PointTDiff> inline int nearestKSearchT (const PointTDiff &point, int k,
-        #                  std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+        # template <typename PointTDiff>
+        # inline int nearestKSearchT (const PointTDiff &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+        
         # /** \brief Search for k-nearest neighbors for the given query point.
         #   * \attention This method does not do any bounds checking for the input index
         #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
@@ -73,8 +80,8 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * a priori!)
         #   * \return number of neighbors found
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
-        # virtual int nearestKSearch (const PointCloud &cloud, int index, int k,
-        #                 std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+        # virtual int nearestKSearch (const PointCloud &cloud, int index, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+        # 
         # /** \brief Search for k-nearest neighbors for the given query point (zero-copy).
         #   * \attention This method does not do any bounds checking for the input index
         #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
@@ -87,25 +94,27 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * a priori!)
         #   * \return number of neighbors found
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
-        # virtual int nearestKSearch (int index, int k,
-        #                 vector[int] &k_indices, vector[float] &k_sqr_distances) const
+        # virtual int nearestKSearch (int index, int k, vector[int] &k_indices, vector[float] &k_sqr_distances) const
+        # 
         # /** \brief Search for the k-nearest neighbors for the given query point.
         #   * \param[in] cloud the point cloud data
         #   * \param[in] indices a vector of point cloud indices to query for nearest neighbors
         #   * \param[in] k the number of neighbors to search for
         #   * \param[out] k_indices the resultant indices of the neighboring points, k_indices[i] corresponds to the neighbors of the query point i
         #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points, k_sqr_distances[i] corresponds to the neighbors of the query point i
-        # virtual void nearestKSearch (const PointCloud& cloud, vector[int]& indices, int k, vector[vector[int] ]& k_indices,
-        #                 std::vector< std::vector<float> >& k_sqr_distances) const
-        # /** \brief Search for the k-nearest neighbors for the given query point. Use this method if the query points are of a different type than the points in the data set (e.g. PointXYZRGBA instead of PointXYZ).
+        # virtual void nearestKSearch (const PointCloud& cloud, vector[int]& indices, int k, vector[vector[int] ]& k_indices, std::vector< std::vector<float> >& k_sqr_distances) const
+        # 
+        # /** \brief Search for the k-nearest neighbors for the given query point. 
+        #   *  Use this method if the query points are of a different type than the points in the data set (e.g. PointXYZRGBA instead of PointXYZ).
         #   * \param[in] cloud the point cloud data
         #   * \param[in] indices a vector of point cloud indices to query for nearest neighbors
         #   * \param[in] k the number of neighbors to search for
         #   * \param[out] k_indices the resultant indices of the neighboring points, k_indices[i] corresponds to the neighbors of the query point i
         #   * \param[out] k_sqr_distances the resultant squared distances to the neighboring points, k_sqr_distances[i] corresponds to the neighbors of the query point i
         #   * \note This method copies the input point cloud of type PointTDiff to a temporary cloud of type PointT and performs the batch search on the new cloud. You should prefer the single-point search if you don't use a search algorithm that accelerates batch NN search.
-        # template <typename PointTDiff> void nearestKSearchT (const pcl::PointCloud<PointTDiff> &cloud, const std::vector<int>& indices, int k, std::vector< std::vector<int> > &k_indices,
-        #                  std::vector< std::vector<float> > &k_sqr_distances) const
+        # template <typename PointTDiff> 
+        # void nearestKSearchT (const pcl::PointCloud<PointTDiff> &cloud, const std::vector<int>& indices, int k, std::vector< std::vector<int> > &k_indices, std::vector< std::vector<float> > &k_sqr_distances) const
+        # 
         # /** \brief Search for all the nearest neighbors of the query point in a given radius.
         #   * \param[in] point the given query point
         #   * \param[in] radius the radius of the sphere bounding all of p_q's neighbors
@@ -115,8 +124,8 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * 0 or to a number higher than the number of points in the input cloud, all neighbors in \a radius will be
         #   * returned.
         #   * \return number of neighbors found in radius
-        # virtual int radiusSearch (const PointT& point, double radius, std::vector<int>& k_indices,
-        #               std::vector<float>& k_sqr_distances, unsigned int max_nn = 0) const = 0;
+        # virtual int radiusSearch (const PointT& point, double radius, std::vector<int>& k_indices, std::vector<float>& k_sqr_distances, unsigned int max_nn = 0) const = 0;
+        # 
         # /** \brief Search for all the nearest neighbors of the query point in a given radius.
         #   * \param[in] point the given query point
         #   * \param[in] radius the radius of the sphere bounding all of p_q's neighbors
@@ -126,9 +135,9 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * 0 or to a number higher than the number of points in the input cloud, all neighbors in \a radius will be
         #   * returned.
         #   * \return number of neighbors found in radius
-        # template <typename PointTDiff> inline int
-        # radiusSearchT (const PointTDiff &point, double radius, std::vector<int> &k_indices,
-        #                std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+        # template <typename PointTDiff> 
+        # inline int radiusSearchT (const PointTDiff &point, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+        # 
         # /** \brief Search for all the nearest neighbors of the query point in a given radius.
         #   * \attention This method does not do any bounds checking for the input index
         #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
@@ -142,9 +151,8 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * returned.
         #   * \return number of neighbors found in radius
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
-        # virtual int radiusSearch (const PointCloud &cloud, int index, double radius,
-        #               std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
-        #               unsigned int max_nn = 0) const
+        # virtual int radiusSearch (const PointCloud &cloud, int index, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+        # 
         # /** \brief Search for all the nearest neighbors of the query point in a given radius (zero-copy).
         #   * \attention This method does not do any bounds checking for the input index
         #   * (i.e., index >= cloud.points.size () || index < 0), and assumes valid (i.e., finite) data.
@@ -159,8 +167,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #   * returned.
         #   * \return number of neighbors found in radius
         #   * \exception asserts in debug mode if the index is not between 0 and the maximum number of points
-        # virtual int radiusSearch (int index, double radius, std::vector<int> &k_indices,
-        #               std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
+        # virtual int radiusSearch (int index, double radius, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances, unsigned int max_nn = 0) const
         # 
         # /** \brief Search for all the nearest neighbors of the query point in a given radius.
         #   * \param[in] cloud the point cloud data
@@ -177,6 +184,7 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #               std::vector< std::vector<int> >& k_indices,
         #               std::vector< std::vector<float> > &k_sqr_distances,
         #               unsigned int max_nn = 0) const
+        # 
         # /** \brief Search for all the nearest neighbors of the query points in a given radius.
         #   * \param[in] cloud the point cloud data
         #   * \param[in] indices a vector of point cloud indices to query for nearest neighbors
@@ -194,12 +202,8 @@ cdef extern from "pcl/Search/Search.h" namespace "pcl::search":
         #                std::vector< std::vector<int> > &k_indices,
         #                std::vector< std::vector<float> > &k_sqr_distances,
         #                unsigned int max_nn = 0) const
-        # protected:
-        # void sortResults (std::vector<int>& indices, std::vector<float>& distances) const;
-        # PointCloudConstPtr input_;
-        # IndicesConstPtr indices_;
-        # bool sorted_results_;
-        # std::string name_;
+
+
 ###
 
 # template<typename PointT> void
@@ -296,16 +300,6 @@ cdef extern from "pcl/Search/flann_search.h" namespace "pcl":
         # cdef void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
         # cdef PointRepresentationConstPtr getPointRepresentation ()
 
-        # # protected:
-        # # void convertInputToFlannMatrix();
-        # # IndexPtr index_;
-        # # FlannIndexCreator *creator_;
-        # # MatrixPtr input_flann_;
-        # # float eps_;
-        # # bool input_copied_for_flann_;
-        # # int dim_;
-        # # std::vector<int> index_mapping_;
-        # # bool identity_mapping_;
 
 ###
 
@@ -316,7 +310,7 @@ cdef extern from "pcl/Search/kdtree.h" namespace "pcl::search":
         # public:
         # ctypedef typename Search<PointT>::PointCloud PointCloud;
         # ctypedef typename Search<PointT>::PointCloudConstPtr PointCloudConstPtr;
-
+        
         # ctypedef boost::shared_ptr<std::vector<int> > IndicesPtr;
         # ctypedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
         # using pcl::search::Search<PointT>::indices_;
@@ -334,7 +328,7 @@ cdef extern from "pcl/Search/kdtree.h" namespace "pcl::search":
         # cdef void setEpsilon (float eps)
         # cdef float getEpsilon () const
         # cdef void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr& indices = IndicesConstPtr ())
-
+        
         # cdef int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
         # cdef int radiusSearch (const PointT& point, double radius, 
         #               std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,
@@ -379,19 +373,20 @@ cdef extern from "pcl/Search/Octree.h" namespace "pcl::search":
         #                     std::vector<int> &k_indices,
         #                     std::vector<float> &k_sqr_distances, 
         #                     unsigned int max_nn = 0) const
-
+        
         # cdef int radiusSearch (
         #                     int index, double radius, vector[int] &k_indices,
         #                     vector[float] &k_sqr_distances, unsigned int max_nn = 0) const
-
+        
         # cdef void approxNearestSearch (
         #                     const PointCloudConstPtr &cloud, int query_index, int &result_index,
         #                     float &sqr_distance)
         # cdef void approxNearestSearch (
         #                     const PointT &p_q, int &result_index, float &sqr_distance)
-
+        
         # cdef void approxNearestSearch (
         #                     int query_index, int &result_index, float &sqr_distance)
+
 
 ###
 
@@ -425,14 +420,14 @@ cdef extern from "pcl/Search/organized.h" namespace "pcl::search":
         #                 std::vector<int> &k_indices,
         #                 std::vector<float> &k_sqr_distances) const;
         cdef bool projectPoint (const PointT& p, pcl::PointXY& q) const;
-
+        
         # protected:
         # cdef struct Entry
         #    Entry (int, float)
         #    Entry ()
         #    unsigned index
         #    float distance
-
+        
         # cdef bool testPoint (const PointT& query, unsigned k, std::priority_queue<Entry>& queue, unsigned index) const
         # cdef void clipRange (int& begin, int &end, int min, int max) const
         # void getProjectedRadiusSearchBox (
@@ -448,6 +443,9 @@ cdef extern from "pcl/Search/organized.h" namespace "pcl::search":
         # std::vector<unsigned char> mask_;
         # public:
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
+###
 
 # pcl_search.h
 # include header

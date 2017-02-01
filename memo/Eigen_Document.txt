@@ -1,3 +1,0 @@
-Version 3.2.9
-https://eigen.tuxfamily.org/dox/group__TutorialGeometry.html
-
