@@ -4,8 +4,7 @@ from __future__ import print_function
 import numpy as np
 import pcl
 
-# cloud = pcl.load('pcldata\tutorials\table_scene_mug_stereo_textured.pcd')
-cloud = pcl.load('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
+cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
 
 # pcl::CropBox<PointXYZI> clipper;
 # clipper.setInputCloud(cloud);
@@ -39,7 +38,6 @@ maxs = 0
 clipper.set_MinMax(minx, miny, minz, mins, maxx, maxy, maxz, maxs)
 clipper.Filtering(outcloud)
 
-# outcloud.to_file('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\test.pcd')
 pcl.save(outcloud, "test.pcd")
 
 # stringstream outfilename;

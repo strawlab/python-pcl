@@ -97,16 +97,31 @@ and Windows with
  * (Miniconda/Anaconda) - Python 3.4
  * pcl 1.6.0(VS2010)
  * Cython 0.24
+ * Gtk+
 
 and Windows with
  * (Miniconda/Anaconda) - Python 3.5
  * pcl 1.7.2(VS2015)
  * Cython 0.24
+ * Gtk+
 
 and Windows with
  * (Miniconda/Anaconda) - Python 3.5
  * pcl 1.8.0(VS2015)
  * Cython 0.24
+ * Gtk+
+
+`Windows Gtk+ Download <http://win32builder.gnome.org/>`_ 
+
+Copy bin Folder to pkg-config Folder
+
+set Environment variable
+1. PCL_ROOT
+    $(PCL Install FolderPath)
+
+2. PKG_CONFIG_PATH
+    $(PCL_ROOT)\lib\pkgconfig;$(PCL_ROOT)\3rdParty\FLANN\lib\pkgconfig;$(PCL_ROOT)\3rdParty\Eigen\lib\pkgconfig;
+
 
 
 A note about types
