@@ -8,6 +8,8 @@ from libcpp cimport bool
 
 from boost_shared_ptr cimport shared_ptr
 
+cimport eigen as eigen3
+
 # main
 cimport pcl_defs as cpp
 cimport pcl_kdtree as pclkdt
@@ -66,35 +68,11 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # void compute (cpp.PointCloud_PointXYZI_Ptr_t output)
         # void compute (cpp.PointCloud_PointXYZRGB_Ptr_t output)
         # void compute (cpp.PointCloud_PointXYZRGBA_Ptr_t output)
-        void compute (Out &output)
+        void compute (cpp.PointCloud[Out] &output)
         
         # void computeEigen (cpp.PointCloud[Eigen::MatrixXf] &output);
-        # protected:
-        # /** \brief The feature name. */
-        # std::string feature_name_;
-        # /** \brief The search method template for points. */
-        # SearchMethodSurface search_method_surface_;
-        # PointCloudInConstPtr surface_;
-        # /** \brief A pointer to the spatial search object. */
-        # KdTreePtr tree_;
-        # /** \brief The actual search parameter (from either \a search_radius_ or \a k_). */
-        # double search_parameter_;
-        # /** \brief The nearest neighbors search radius for each point. */
-        # double search_radius_;
-        # /** \brief The number of K nearest neighbors to use for each point. */
-        # int k_;
-        # /** \brief Get a string representation of the name of this class. */
-        # inline const std::string& getClassName () const { return (feature_name_); }
-        # virtual bool initCompute ();
-        # /** \brief This method should get called after ending the actual computation. */
-        # virtual bool deinitCompute ();
-        # /** \brief If no surface is given, we use the input PointCloud as the surface. */
-        # bool fake_surface_;
-        # inline int searchForNeighbors (size_t index, double parameter, vector[int] &indices, vector[float] &distances) const
-        # inline int searchForNeighbors (const PointCloudIn &cloud, size_t index, double parameter,
-        #                     std::vector<int> &indices, std::vector<float> &distances) const
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
 ###
 
 # template <typename PointInT, typename PointNT, typename PointOutT>
@@ -125,19 +103,12 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # * \param[in] normals the const boost shared pointer to a PointCloud of normals.
         # * By convention, L2 norm of each normal should be 1.
         # inline void setInputNormals (const PointCloudNConstPtr &normals)
-        void setInputNormals (cpp.PointNormalCloudPtr_t normals)
+        void setInputNormals (cpp.PointCloud_Normal_Ptr_t normals)
         
         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
         # inline PointCloudNConstPtr getInputNormals ()
-        # protected:
-        # /** \brief A pointer to the input dataset that contains the point normals of the XYZ dataset.
-        #  *
-        #  */
-        # PointCloudNConstPtr normals_;
-        # /** \brief This method should get called before starting the actual computation. */
-        # virtual bool initCompute ();
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
 ###
 
 # 3dsc.h
@@ -356,7 +327,7 @@ cdef extern from "pcl/features/boundary.h" namespace "pcl":
 #         inline void setNormalizeBins (bool bins)
 #         # brief Overloaded computed method from pcl::Feature.
 #         # param[out] output the resultant point cloud model dataset containing the estimated features
-#         # void compute (PointCloudOut &);
+#         # void compute (cpp.PointCloud[Out] &);
 
 
 ###
@@ -376,7 +347,7 @@ cdef extern from "pcl/features/esf.h" namespace "pcl":
         # using Feature<PointInT, PointOutT>::surface_;
         # ctypedef typename pcl::PointCloud<PointInT> PointCloudIn;
         # ctypedef typename Feature<PointInT, PointOutT>::PointCloudOut PointCloudOut;
-        # void compute (PointCloudOut &output)
+        # void compute (cpp.PointCloud[Out] &output)
 ###
 
 # template <typename PointInT, typename PointRFT>
@@ -910,30 +881,14 @@ cdef extern from "pcl/features/moment_invariants.h" namespace "pcl":
 # class MomentInvariantsEstimation<PointInT, Eigen::MatrixXf>: public MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>
 # cdef extern from "pcl/features/moment_invariants.h" namespace "pcl":
 #     cdef cppclass MomentInvariantsEstimation[In, Out](MomentInvariantsEstimation[In]):
-#        MomentInvariantsEstimation ()
-#     public:
-#       using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::k_;
-#       using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::indices_;
-#       using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::search_parameter_;
-#       using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::surface_;
-#       using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::input_;
-#       using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::compute;
-# 
-#    private:
-#       /** \brief Estimate moment invariants for all points given in <setInputCloud (), setIndices ()> using the surface
-#         * in setSearchSurface () and the spatial locator in setSearchMethod ()
-#         * \param[out] output the resultant point cloud model dataset that contains the moment invariants
-#         */
-#       void 
-#       computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-# 
-#       /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
-#         * \param[out] output the output point cloud 
-#         */
-#       void 
-#       compute (pcl::PointCloud<pcl::Normal> &) {}
-#   };
-
+#         MomentInvariantsEstimation ()
+#         public:
+#         using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::k_;
+#         using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::indices_;
+#         using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::search_parameter_;
+#         using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::surface_;
+#         using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::input_;
+#         using MomentInvariantsEstimation<PointInT, pcl::MomentInvariants>::compute;
 ###
 
 # multiscale_feature_persistence.h
@@ -948,42 +903,53 @@ cdef extern from "pcl/features/multiscale_feature_persistence.h" namespace "pcl"
         # typedef typename pcl::Feature<PointSource, PointFeature>::Ptr FeatureEstimatorPtr;
         # typedef boost::shared_ptr<const pcl::PointRepresentation <PointFeature> > FeatureRepresentationConstPtr;
         # using pcl::PCLBase<PointSource>::input_;
+        # 
         # /** \brief Method that calls computeFeatureAtScale () for each scale parameter */
         # void computeFeaturesAtAllScales ();
+        
         # /** \brief Central function that computes the persistent features
         #  * \param output_features a cloud containing the persistent features
         #  * \param output_indices vector containing the indices of the points in the input cloud
         #  * that have persistent features, under a one-to-one correspondence with the output_features cloud
         #  */
-        # void determinePersistentFeatures (FeatureCloud &output_features,
-        #                              boost::shared_ptr<std::vector<int> > &output_indices);
+        # void determinePersistentFeatures (FeatureCloud &output_features, boost::shared_ptr<std::vector<int> > &output_indices);
+        
         # /** \brief Method for setting the scale parameters for the algorithm
         #  * \param scale_values vector of scales to determine the characteristic of each scaling step
         #  */
         inline void setScalesVector (vector[float] &scale_values)
+        
         # /** \brief Method for getting the scale parameters vector */
         inline vector[float] getScalesVector ()
+        
         # /** \brief Setter method for the feature estimator
         #  * \param feature_estimator pointer to the feature estimator instance that will be used
         #  * \note the feature estimator instance should already have the input data given beforehand
         #  * and everything set, ready to be given the compute () command
         #  */
         # inline void setFeatureEstimator (FeatureEstimatorPtr feature_estimator)
+        
         # /** \brief Getter method for the feature estimator */
         # inline FeatureEstimatorPtr getFeatureEstimator ()
+        
         # \brief Provide a pointer to the feature representation to use to convert features to k-D vectors.
         # \param feature_representation the const boost shared pointer to a PointRepresentation
         # inline void setPointRepresentation (const FeatureRepresentationConstPtr& feature_representation)
+        
         # \brief Get a pointer to the feature representation used when converting features into k-D vectors. */
         # inline FeatureRepresentationConstPtr const getPointRepresentation ()
+        
         # \brief Sets the alpha parameter
         # \param alpha value to replace the current alpha with
         inline void setAlpha (float alpha)
+        
         # /** \brief Get the value of the alpha parameter */
         inline float getAlpha ()
+        
         # /** \brief Method for setting the distance metric that will be used for computing the difference between feature vectors
         # * \param distance_metric the new distance metric chosen from the NormType enum
         # inline void setDistanceMetric (NormType distance_metric)
+        
         # /** \brief Returns the distance metric that is currently used to calculate the difference between feature vectors */
         # inline NormType getDistanceMetric ()
 ###
@@ -1192,7 +1158,7 @@ cdef extern from "pcl/features/multiscale_feature_persistence.h" namespace "pcl"
         # void setRangeImage (const RangeImage* range_image, const std::vector<int>* indices=NULL);
         # 
         # //! Overwrite the compute function of the base class
-        # void compute (PointCloudOut& output);
+        # void compute (cpp.PointCloud[Out]& output);
         # 
         # // =====GETTER=====
         # //! Get a reference to the parameters struct
@@ -1399,20 +1365,7 @@ cdef extern from "pcl/features/normal_3d_omp.h" namespace "pcl":
 #         */
 #       NormalEstimationOMP (unsigned int nr_threads) : NormalEstimationOMP<PointInT, pcl::Normal> (nr_threads) {}
 # 
-#     private:
-#       /** \brief Estimate normals for all points given in <setInputCloud (), setIndices ()> using the surface in
-#         * setSearchSurface () and the spatial locator in setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains surface normals and curvatures
-#         */
-#       void 
-#       computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-# 
-#       /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
-#         * \param[out] output the output point cloud 
-#         */
-#       void 
-#       compute (pcl::PointCloud<pcl::Normal> &) {}
-#     };
+
 
 ###
 
@@ -1747,7 +1700,7 @@ cdef extern from "pcl/features/range_image_border_extractor.h" namespace "pcl":
         
         # /** Overwrite the compute function of the base class */
         # void compute (PointCloudOut& output);
-        # void compute (PointCloudOut& output)
+        # void compute (cpp.PointCloud[Out]& output)
         
         # =====GETTER=====
         # Parameters& getParameters () { return (parameters_); }
@@ -2052,9 +2005,9 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #       /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
 #         * \param[out] output the output point cloud
 #         */
-#       void
-#       compute (pcl::PointCloud<pcl::SHOT352> &) { assert(0); }
+#       void compute (pcl::PointCloud<pcl::SHOT352> &) { assert(0); }
 #   };
+
 
 ###
 
@@ -2317,23 +2270,6 @@ cdef extern from "pcl/features/shot.h" namespace "pcl":
 #                       const int nr_color_bins = 30)
 #         : SHOTEstimation<pcl::PointXYZRGBA, PointNT, pcl::SHOT, PointRFT> (describe_shape, describe_color, nr_shape_bins, nr_color_bins) {};
 # 
-#    protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param[out] output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void
-#       computeFeatureEigen (pcl::PointCloud<Eigen::MatrixXf> &output);
-# 
-#     
-#     /** \brief Make the compute (&PointCloudOut); inaccessible from outside the class
-#         * \param[out] output the output point cloud
-#         */
-#       void
-#       compute (pcl::PointCloud<pcl::SHOT> &) { assert(0); }
-#   };
-# 
 ###
 
 # shot_lrf.h
@@ -2465,18 +2401,6 @@ cdef extern from "pcl/features/shot_omp.h" namespace "pcl":
 #         * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
 #         */
 #       inline void setNumberOfThreads (unsigned int nr_threads)
-# 
-#       protected:
-#       /** \brief Estimate the Signatures of Histograms of OrienTations (SHOT) descriptors at a set of points given by
-#         * <setInputCloud (), setIndices ()> using the surface in setSearchSurface () and the spatial locator in
-#         * setSearchMethod ()
-#         * \param output the resultant point cloud model dataset that contains the SHOT feature estimates
-#         */
-#       void computeFeature (PointCloudOut &output);
-#       /** \brief This method should get called before starting the actual computation. */
-#       bool initCompute ();
-#       /** \brief The number of threads the scheduler should use. */
-#       int threads_;
 ###
 
 # template <typename PointInT, typename PointNT, typename PointRFT>
@@ -2774,70 +2698,71 @@ cdef extern from "pcl/features/statistical_multiscale_interest_region_extraction
 cdef extern from "pcl/features/vfh.h" namespace "pcl":
     cdef cppclass VFHEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
         VFHEstimation ()
-#       public:
-#       /** \brief Estimate the SPFH (Simple Point Feature Histograms) signatures of the angular
-#         * (f1, f2, f3) and distance (f4) features for a given point from its neighborhood
-#         * \param[in] centroid_p the centroid point
-#         * \param[in] centroid_n the centroid normal
-#         * \param[in] cloud the dataset containing the XYZ Cartesian coordinates of the two points
-#         * \param[in] normals the dataset containing the surface normals at each point in \a cloud
-#         * \param[in] indices the k-neighborhood point indices in the dataset
-#       void computePointSPFHSignature (const Eigen::Vector4f &centroid_p, const Eigen::Vector4f &centroid_n,
-#                                  const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
-#                                  const std::vector<int> &indices);
-#
+        # public:
+        # /** \brief Estimate the SPFH (Simple Point Feature Histograms) signatures of the angular
+        #   * (f1, f2, f3) and distance (f4) features for a given point from its neighborhood
+        #   * \param[in] centroid_p the centroid point
+        #   * \param[in] centroid_n the centroid normal
+        #   * \param[in] cloud the dataset containing the XYZ Cartesian coordinates of the two points
+        #   * \param[in] normals the dataset containing the surface normals at each point in \a cloud
+        #   * \param[in] indices the k-neighborhood point indices in the dataset
+        # void computePointSPFHSignature (const Eigen::Vector4f &centroid_p, const Eigen::Vector4f &centroid_n,
+        #                            const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals,
+        #                            const std::vector<int> &indices);
+        # 
+        # /** \brief Set the viewpoint.
+        #   * \param[in] vpx the X coordinate of the viewpoint
+        #   * \param[in] vpy the Y coordinate of the viewpoint
+        #   * \param[in] vpz the Z coordinate of the viewpoint
+        # inline void setViewPoint (float vpx, float vpy, float vpz)
+        # 
+        # /** \brief Get the viewpoint. */
+        # inline void getViewPoint (float &vpx, float &vpy, float &vpz)
+        # 
+        # /** \brief Set use_given_normal_
+        #   * \param[in] use Set to true if you want to use the normal passed to setNormalUse(normal)
+        #   */
+        # inline void setUseGivenNormal (bool use)
+        # 
+        # /** \brief Set the normal to use
+        #   * \param[in] normal Sets the normal to be used in the VFH computation. It is is used
+        #   * to build the Darboux Coordinate system.
+        #   */
+        # inline void setNormalToUse (const Eigen::Vector3f &normal)
+        # 
+        # /** \brief Set use_given_centroid_
+        #   * \param[in] use Set to true if you want to use the centroid passed through setCentroidToUse(centroid)
+        #   */
+        # inline void setUseGivenCentroid (bool use)
+        # 
+        # /** \brief Set centroid_to_use_
+        #   * \param[in] centroid Centroid to be used in the VFH computation. It is used to compute the distances
+        #   * from all points to this centroid.
+        #   */
+        # inline void setCentroidToUse (const Eigen::Vector3f &centroid)
+        # 
+        # /** \brief set normalize_bins_
+        #   * \param[in] normalize If true, the VFH bins are normalized using the total number of points
+        #   */
+        # inline void setNormalizeBins (bool normalize)
+        # 
+        # /** \brief set normalize_distances_
+        #   * \param[in] normalize If true, the 4th component of VFH (shape distribution component) get normalized
+        #   * by the maximum size between the centroid and the point cloud
+        #   */
+        # inline void setNormalizeDistance (bool normalize)
+        # 
+        # /** \brief set size_component_
+        #   * \param[in] fill_size True if the 4th component of VFH (shape distribution component) needs to be filled.
+        #   * Otherwise, it is set to zero.
+        #   */
+        # inline void setFillSizeComponent (bool fill_size)
+        # 
+        # /** \brief Overloaded computed method from pcl::Feature.
+        #   * \param[out] output the resultant point cloud model dataset containing the estimated features
+        #   */
+        # void compute (cpp.PointCloud[Out] &output);
 
-#       /** \brief Set the viewpoint.
-#         * \param[in] vpx the X coordinate of the viewpoint
-#         * \param[in] vpy the Y coordinate of the viewpoint
-#         * \param[in] vpz the Z coordinate of the viewpoint
-#       inline void setViewPoint (float vpx, float vpy, float vpz)
-# 
-
-#       /** \brief Get the viewpoint. */
-#       inline void getViewPoint (float &vpx, float &vpy, float &vpz)
-#       /** \brief Set use_given_normal_
-#         * \param[in] use Set to true if you want to use the normal passed to setNormalUse(normal)
-#         */
-
-#       inline void setUseGivenNormal (bool use)
-#       /** \brief Set the normal to use
-#         * \param[in] normal Sets the normal to be used in the VFH computation. It is is used
-#         * to build the Darboux Coordinate system.
-#         */
-#       inline void setNormalToUse (const Eigen::Vector3f &normal)
-
-#       /** \brief Set use_given_centroid_
-#         * \param[in] use Set to true if you want to use the centroid passed through setCentroidToUse(centroid)
-#         */
-#       inline void setUseGivenCentroid (bool use)
-
-#       /** \brief Set centroid_to_use_
-#         * \param[in] centroid Centroid to be used in the VFH computation. It is used to compute the distances
-#         * from all points to this centroid.
-#         */
-#       inline void setCentroidToUse (const Eigen::Vector3f &centroid)
-
-#       /** \brief set normalize_bins_
-#         * \param[in] normalize If true, the VFH bins are normalized using the total number of points
-#         */
-#       inline void setNormalizeBins (bool normalize)
-
-#       /** \brief set normalize_distances_
-#         * \param[in] normalize If true, the 4th component of VFH (shape distribution component) get normalized
-#         * by the maximum size between the centroid and the point cloud
-#         */
-#       inline void setNormalizeDistance (bool normalize)
-
-#       \brief set size_component_
-#       \param[in] fill_size True if the 4th component of VFH (shape distribution component) needs to be filled.
-#       Otherwise, it is set to zero.
-#       inline void setFillSizeComponent (bool fill_size)
-
-#       \brief Overloaded computed method from pcl::Feature.
-#       \param[out] output the resultant point cloud model dataset containing the estimated features
-#       void compute (PointCloudOut &output);
-# 
 
 ctypedef VFHEstimation[cpp.PointXYZ, cpp.Normal, cpp.VFHSignature308] VFHEstimation_t
 ctypedef VFHEstimation[cpp.PointXYZI, cpp.Normal, cpp.VFHSignature308] VFHEstimation_PointXYZI_t

@@ -12,6 +12,7 @@ cdef extern from "minipcl.h":
     void mpcl_features_NormalEstimationMethod_COVARIANCE_MATRIX(pcl_ftr.IntegralImageNormalEstimation_t ) except +
     void mpcl_features_NormalEstimationMethod_AVERAGE_DEPTH_CHANGE(pcl_ftr.IntegralImageNormalEstimation_t ) except +
     void mpcl_features_NormalEstimationMethod_SIMPLE_3D_GRADIENT(pcl_ftr.IntegralImageNormalEstimation_t ) except +
+    void mpcl_features_NormalEstimationMethod_compute(pcl_ftr.IntegralImageNormalEstimation_t, cpp.PointCloud_Normal_t ) except +
 
 cdef class IntegralImageNormalEstimation:
     """
@@ -22,6 +23,7 @@ cdef class IntegralImageNormalEstimation:
     def __cinit__(self, PointCloud pc not None):
         print ('__cinit__ start')
         sp_assign(self.thisptr_shared, new pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]())
+        # NG : Reference Count 
         self.thisptr().setInputCloud(pc.thisptr_shared)
         print ('__cinit__ end')
         # self.me = new pcl_ftr.IntegralImageNormalEstimation_t()
@@ -50,18 +52,28 @@ cdef class IntegralImageNormalEstimation:
     def set_NormalSmoothingSize(self, double param):
         self.thisptr().setNormalSmoothingSize(param)
 
-#     cdef cpp.PointNormalCloud_t normals
+    def compute(self, PointCloud pc not None):
+        # cdef PointCloud_PointNormal normal = PointCloud_PointNormal()
+        normal = PointCloud_PointNormal()
+        cdef cpp.PointCloud_Normal_t *cPointCloudNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
+        # cPointCloudNormal.setInputCloud(pc.thisptr_shared)
+        
+        # compute function based Features class
+        # NG 
+        # self.thisptr().compute (cPointCloudNormal.makeShared())
+        # self.thisptr().compute (cPointCloudNormal.makeShared().get())
+        # from cython cimport address
+        # self.thisptr().compute (cython.address(cPointCloudNormal.makeShared().get()))
+        # self.thisptr().compute (<cpp.PointCloud[Normal]> deref(cPointCloudNormal.makeShared().get()))
+        self.thisptr().compute (deref(cPointCloudNormal.makeShared().get()))
+        return normal
+
+
+#       cdef cpp.PointCloud_Normal_t normals
 #       mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
 #       seg = SegmentationNormal()
 #       cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
 #       cseg.setInputCloud(self.thisptr_shared)
-#       cseg.setInputNormals (normals.makeShared())
-#       return normals.makeShared()
-#     def compute(self):
-#         normalEstimation = pcl_ftr.NormalEstimation()
-#         cdef pcl_ftr.NormalEstimation_t *cNormalEstimation = <pcl_ftr.NormalEstimation_t *>normalEstimation.me
-#         cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-#         self.thisptr().compute (*cNormalEstimation)
-#         return normalEstimation
+#       cseg.setInputNormals (normals.makeShared());
 
 

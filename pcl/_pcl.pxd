@@ -88,7 +88,7 @@ cdef class PointCloudWrapper_PointWithViewpoint:
 
 # class override(PointCloud_Normal)
 cdef class PointCloud_Normal:
-    cdef cpp.PointNormalCloudPtr_t thisptr_shared   # Normal
+    cdef cpp.PointCloud_Normal_Ptr_t thisptr_shared   # Normal
     
     # Buffer protocol support.
     cdef Py_ssize_t _shape[2]

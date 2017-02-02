@@ -20,7 +20,7 @@ cdef class PointCloud_PointNormal:
         
         # TODO: NG --> import pcl --> pyd Error(python shapedptr/C++ shard ptr collusion?)
         # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointNormal]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointNormal]())
-        # sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointNormal]())
+        sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointNormal]())
         
         if init is None:
             return

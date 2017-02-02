@@ -463,7 +463,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPointCloudNormals (const typename pcl::PointCloud<PointNT>::ConstPtr &cloud,
         #                       int level = 100, double scale = 0.02,
         #                       const std::string &id = "cloud", int viewport = 0);
-        addPointCloudNormals(cpp.PointNormalCloud_t cloud, int level, double scale, string id, int viewport)
+        addPointCloudNormals(cpp.PointCloud_Normal_t cloud, int level, double scale, string id, int viewport)
         
         # brief Add the estimated surface normals of a Point Cloud to screen.
         # param[in] cloud the input point cloud dataset containing the XYZ data

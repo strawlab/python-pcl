@@ -298,3 +298,8 @@ void mpcl_features_NormalEstimationMethod_SIMPLE_3D_GRADIENT(pcl::IntegralImageN
     ne.setNormalEstimationMethod (ne.SIMPLE_3D_GRADIENT);
 }
 
+void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne, pcl::PointCloud<pcl::Normal> &out)
+{
+    ne.compute (out);
+}
+

@@ -22,7 +22,7 @@ from boost_shared_ptr cimport sp_assign
 cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
                               double searchRadius,
-                              cpp.PointNormalCloud_t) except +
+                              cpp.PointCloud_Normal_t) except +
     void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
                               double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
@@ -32,7 +32,7 @@ cdef extern from "minipcl.h":
 
 
 cdef extern from "ProjectInliers.h":
-    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t);
+    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?

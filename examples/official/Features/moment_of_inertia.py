@@ -51,9 +51,8 @@ mass_center = feature_extractor.get_MassCenter ()
 # viewer->initCameraParameters ();
 # viewer->addPointCloud<pcl::PointXYZ> (cloud, "sample cloud");
 # viewer->addCube (min_point_AABB.x, max_point_AABB.x, min_point_AABB.y, max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB");
-# 
+###
 
-# 
 # Eigen::Vector3f position (position_OBB.x, position_OBB.y, position_OBB.z);
 # Eigen::Quaternionf quat (rotational_matrix_OBB);
 # viewer->addCube (position, quat, max_point_OBB.x - min_point_OBB.x, max_point_OBB.y - min_point_OBB.y, max_point_OBB.z - min_point_OBB.z, "OBB");

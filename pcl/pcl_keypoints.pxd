@@ -74,30 +74,8 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # param distances the resultant vector of distances representing the distances from the query point to the
         # k-nearest neighbors
         inline int searchForNeighbors (int index, double parameter, vector[int] &indices, vector[float] &distances)
-        
-        # protected:
-        # using PCLBase<PointInT>::deinitCompute;
-        # virtual bool initCompute ();
-        # /** \brief The key point detection method's name. */
-        # std::string name_;
-        # /** \brief The search method template for indices. */
-        # SearchMethod search_method_;
-        # /** \brief The search method template for points. */
-        # SearchMethodSurface search_method_surface_;
-        # /** \brief An input point cloud describing the surface that is to be used for nearest neighbors estimation. */
-        # PointCloudInConstPtr surface_;
-        # /** \brief A pointer to the spatial search object. */
-        # KdTreePtr tree_;
-        # /** \brief The actual search parameter (casted from either \a search_radius_ or \a k_). */
-        # double search_parameter_;
-        # /** \brief The nearest neighbors search radius for each point. */
-        # double search_radius_;
-        # /** \brief The number of K nearest neighbors to use for each point. */
-        # int k_;
-        # /** \brief Get a string representation of the name of this class. */
-        # string getClassName ()
-        # /** \brief Abstract key point detection method. */
-        # virtual void detectKeypoints (PointCloudOut &output) = 0;
+
+
 ###
 
 # harris_keypoint3D.h (1.6.0)
@@ -286,15 +264,12 @@ cdef extern from "pcl/keypoints/sift_keypoint.h" namespace "pcl":
         # * \param nr_octaves the number of octaves (i.e. doublings of scale) to compute 
         # * \param nr_scales_per_octave the number of scales to compute within each octave
         void setScales (float min_scale, int nr_octaves, int nr_scales_per_octave)
+        
         # /** \brief Provide a threshold to limit detection of keypoints without sufficient contrast
         # * \param min_contrast the minimum contrast required for detection
         void setMinimumContrast (float min_contrast)
-        # protected:
-        # bool initCompute ();
-        # /** \brief Detect the SIFT keypoints for a set of points given in setInputCloud () using the spatial locator in 
-        # * setSearchMethod ().
-        # * \param output the resultant cloud of keypoints
-        # void detectKeypoints (PointCloudOut &output);
+
+
 ###
 
 # smoothed_surfaces_keypoint.h
@@ -309,13 +284,14 @@ cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
         #                      KdTreePtr &kdtree,
         #                      float &scale);
         void resetClouds ()
+        
         # inline void setNeighborhoodConstant (float neighborhood_constant)
         # inline float getNeighborhoodConstant ()
         # inline void setInputNormals (const PointCloudNTConstPtr &normals)
         # inline void setInputScale (float input_scale)
         # void detectKeypoints (PointCloudT &output);
-        # protected:
-        # bool initCompute ();
+
+
 ###
 
 # uniform_sampling.h
@@ -328,26 +304,7 @@ cdef extern from "pcl/keypoints/uniform_sampling.h" namespace "pcl":
         # brief Set the 3D grid leaf size.
         # param radius the 3D grid leaf size
         void setRadiusSearch (double radius)
-        
-        # protected:
-        # brief Simple structure to hold an nD centroid and the number of points in a leaf.
-        # struct Leaf
-        # {
-        #   Leaf () : idx (-1) { }
-        #   int idx;
-        # };
-        # /** \brief The 3D grid leaves. */
-        # boost::unordered_map<size_t, Leaf> leaves_;
-        # /** \brief The size of a leaf. */
-        # Eigen::Vector4f leaf_size_;
-        # /** \brief Internal leaf sizes stored as 1/leaf_size_ for efficiency reasons. */ 
-        # Eigen::Array4f inverse_leaf_size_;
-        # /** \brief The minimum and maximum bin coordinates, the number of divisions, and the division multiplier. */
-        # Eigen::Vector4i min_b_, max_b_, div_b_, divb_mul_;
-        # /** \brief Downsample a Point Cloud using a voxelized grid approach
-        # * \param output the resultant point cloud message
-        # */
-        # void detectKeypoints (PointCloudOut &output);
+
 
 ctypedef UniformSampling[cpp.PointXYZ] UniformSampling_t
 ctypedef UniformSampling[cpp.PointXYZI] UniformSampling_PointXYZI_t
@@ -367,6 +324,7 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
 # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
 
 # 1.7.2
+# NG : use Template 
 # RESPONSEMETHOD_HARRIS "pcl::HarrisKeypoint3D::HARRIS", 
 # RESPONSEMETHOD_NOBLE "pcl::HarrisKeypoint3D::NOBLE", 
 # RESPONSEMETHOD_LOWE "pcl::HarrisKeypoint3D::LOWE", 

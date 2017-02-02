@@ -8,7 +8,7 @@ cimport pcl_sample_consensus as pcl_sc
 # cdef extern from "minipcl.h":
 #     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
 #                               double searchRadius,
-#                               cpp.PointNormalCloud_t) except +
+#                               cpp.PointCloud_Normal_t) except +
 #     void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
 #                                  double ax, double ay, double az) except +
 #     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,

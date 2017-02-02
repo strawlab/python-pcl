@@ -18,7 +18,7 @@ from _pcl cimport PointCloud_PointXYZRGB
 cdef extern from "minipcl.h":
     void mpcl_compute_normals_PointXYZRGB(cpp.PointCloud_PointXYZRGB_t, int ksearch,
                               double searchRadius,
-                              cpp.PointNormalCloud_t) except +
+                              cpp.PointCloud_Normal_t) except +
     void mpcl_sacnormal_set_axis_PointXYZRGB(pclseg.SACSegmentationNormal_PointXYZRGB_t,
                               double ax, double ay, double az) except +
     void mpcl_extract_PointXYZRGB(cpp.PointCloud_PointXYZRGB_Ptr_t, cpp.PointCloud_PointXYZRGB_t *,
@@ -266,7 +266,7 @@ cdef class PointCloud_PointXYZRGB:
         """
         Return a pcl.SegmentationNormal object with this object set as the input-cloud
         """
-        cdef cpp.PointNormalCloud_t normals
+        cdef cpp.PointCloud_Normal_t normals
         p = self.thisptr()
         mpcl_compute_normals_PointXYZRGB(<cpp.PointCloud[cpp.PointXYZRGB]> deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)

@@ -516,8 +516,8 @@ ctypedef shared_ptr[PointCloud[PointXYZRGBA]] PointCloud_PointXYZRGBA_Ptr_t
 ctypedef shared_ptr[PointCloud[VFHSignature308]] PointCloud_VFHSignature308_Ptr_t
 ctypedef shared_ptr[PointCloud[PointWithViewpoint]] PointCloud_PointWithViewpoint_Ptr_t
 
-ctypedef PointCloud[Normal] PointNormalCloud_t
-ctypedef shared_ptr[PointCloud[Normal]] PointNormalCloudPtr_t
+ctypedef PointCloud[Normal] PointCloud_Normal_t
+ctypedef shared_ptr[PointCloud[Normal]] PointCloud_Normal_Ptr_t
 
 ctypedef PointCloud[PointNormal] PointCloud_PointNormal_t
 ctypedef shared_ptr[PointCloud[PointNormal]] PointCloud_PointNormal_Ptr_t
