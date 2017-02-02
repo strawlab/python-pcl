@@ -141,10 +141,6 @@ cdef class PointCloud:
             cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
             return np.array([o.w(), o.x(), o.y(), o.z()])
 
-    # cdef inline PointCloud[PointXYZ] *thisptr(self) nogil:
-    #     # Shortcut to get raw pointer to underlying PointCloud
-    #     return self.thisptr_shared.get()
-
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
