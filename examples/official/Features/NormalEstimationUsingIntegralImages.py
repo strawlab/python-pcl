@@ -2,6 +2,7 @@
 # http://pointclouds.org/documentation/tutorials/normal_estimation_using_integral_images.php#normal-estimation-using-integral-images
 
 import pcl
+import pcl.pcl_visualization
 
 # cloud = pcl.load('table_scene_mug_stereo_textured.pcd')
 cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
@@ -26,10 +27,10 @@ normals = ne.compute(cloud)
 print ('compute - end')
 
 # visualize normals
-viewer = pcl.pcl_visualization.Visualization()
-viewer.set_BackgroundColor (0.0, 0.0, 0.5)
+viewer = pcl.pcl_visualization.PCLVisualizer()
+viewer.SetBackgroundColor (0.0, 0.0, 0.5)
 # viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(cloud, normals);
-viewer.addPointCloudNormals(cloud, normals)
+viewer.AddPointCloudNormals(cloud, normals)
 
 while (True):
     viewer.wasStopped ()

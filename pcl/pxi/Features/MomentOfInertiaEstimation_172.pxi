@@ -38,19 +38,19 @@ cdef class MomentOfInertiaEstimation:
     # feature_extractor.getMassCenter (mass_center);
     def get_MomentOfInertia (self):
         cdef vector[float] moment_of_inertia
-        self.getMomentOfInertia(moment_of_inertia)
+        self.me.getMomentOfInertia(moment_of_inertia)
         return moment_of_inertia
 
     def get_Eccentricity (self):
         cdef vector[float] eccentricity
-        self.getEccentricity(eccentricity)
+        self.me.getEccentricity(eccentricity)
         return eccentricity
 
     @cython.boundscheck(False)
     def get_AABB (self):
         cdef cpp.PointXYZ min_point_AABB
         cdef cpp.PointXYZ max_point_AABB
-        self.getAABB (min_point_AABB, max_point_AABB)
+        self.me.getAABB (min_point_AABB, max_point_AABB)
         # return min_point_AABB, max_point_AABB
         
         cdef cnp.npy_intp n = 1
@@ -76,25 +76,25 @@ cdef class MomentOfInertiaEstimation:
     #   cdef cpp.PointXYZ max_point_OBB
     #   cdef cpp.PointXYZ position_OBB
     #   cdef eigen3.Matrix3f rotational_matrix_OBB
-    #   self.getOBB (min_point_OBB, max_point_OBB, position_OBB, rotational_matrix_OBB)
+    #   self.me.getOBB (min_point_OBB, max_point_OBB, position_OBB, rotational_matrix_OBB)
     #   return min_point_OBB, max_point_OBB, position_OBB, rotational_matrix_OBB
 
     def get_EigenValues (self):
         cdef float major_value
         cdef float middle_value
         cdef float minor_value
-        self.getEigenValues (major_value, middle_value, minor_value)
+        self.me.getEigenValues (major_value, middle_value, minor_value)
         return major_value, middle_value, minor_value
 
     # def get_EigenVectors (self):
     #   # cdef eigen3.Vector3f major_vector
     #   # cdef eigen3.Vector3f middle_vector
     #   # cdef eigen3.Vector3f minor_vector
-    #     self.getEigenVectors (major_vector, middle_vector, minor_vector)
+    #     self.me.getEigenVectors (major_vector, middle_vector, minor_vector)
     #     return major_vector, middle_vector, minor_vector
 
     # def get_MassCenter (self):
     #       # cdef eigen3.Vector3f mass_center
-    #     self.getMassCenter (mass_center)
+    #     self.me.getMassCenter (mass_center)
     #     return mass_center
 

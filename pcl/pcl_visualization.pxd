@@ -477,10 +477,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                       const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
         #                       int level = 100, double scale = 0.02,
         #                       const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloudNormals (const cpp.PointCloud[PointT] &cloud,
-        #                         const cpp.PointCloud[PointNT] &normals,
-        #                         int level = 100, double scale = 0.02,
-        #                         const string &id, int viewport)
+        bool addPointCloudNormals (const cpp.PointCloud[PointT] &cloud, const cpp.PointCloud[PointNT] &normals, int level, double scale, const string &id, int viewport)
         
         # brief Add the estimated principal curvatures of a Point Cloud to screen.
         # param[in] cloud the input point cloud dataset containing the XYZ data
@@ -496,6 +493,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #     const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
         #     int level = 100, double scale = 1.0,
         #     const std::string &id = "cloud", int viewport = 0);
+        bool addPointCloudPrincipalCurvatures (
+                    const cpp.PointCloud[PointT] &cloud, const cpp.PointCloud[PointNT] &normals,
+                    const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
+                    int level, double scale, string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # param[in] cloud the input point cloud dataset
@@ -1408,13 +1409,16 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         
         # /** Visualization callable function, may be used for running things on the UI thread.
         # ctypedef boost::function1<void, pcl::visualization::PCLVisualizer&> VizCallable;
+        
         # /** \brief Run a callbable object on the UI thread. Will persist until removed
         #  * @param x Use boost::ref(x) for a function object that you would like to not copy
         #  * \param key The key for the callable -- use the same key to overwrite.
         # void runOnVisualizationThread (VizCallable x, const std::string& key = "callable");
+        
         # /** \brief Run a callbable object on the UI thread. This will run once and be removed
         #  * @param x Use boost::ref(x) for a function object that you would like to not copy
         # void runOnVisualizationThreadOnce (VizCallable x);
+        
         # /** \brief Remove a previously added callable object, NOP if it doesn't exist.
         #  * @param key the key that was registered with the callable object.
         # void removeVisualizationCallable (string& key = "callable")
@@ -1424,34 +1428,40 @@ cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualizatio
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # inline boost::signals2::connection registerKeyboardCallback (void (*callback) (const pcl::visualization::KeyboardEvent&, void*), void* cookie = NULL)
+        
         # /** \brief Register a callback function for keyboard events
         #   * \param[in] callback  the member function that will be registered as a callback for a keyboard event
         #   * \param[in] instance  instance to the class that implements the callback function
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # template<typename T> inline boost::signals2::connection registerKeyboardCallback (void (T::*callback) (const pcl::visualization::KeyboardEvent&, void*), T& instance, void* cookie = NULL)
+        
         # /** \brief Register a callback function for mouse events
         #   * \param[in] callback  the function that will be registered as a callback for a mouse event
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # inline boost::signals2::connection registerMouseCallback (void (*callback) (const pcl::visualization::MouseEvent&, void*), void* cookie = NULL)
+        
         # /** \brief Register a callback function for mouse events
         #   * \param[in] callback  the member function that will be registered as a callback for a mouse event
         #   * \param[in] instance  instance to the class that implements the callback function
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # template<typename T> inline boost::signals2::connection registerMouseCallback (void (T::*callback) (const pcl::visualization::MouseEvent&, void*), T& instance, void* cookie = NULL)
+        
         # /** \brief Register a callback function for point picking events
         #   * \param[in] callback  the function that will be registered as a callback for a point picking event
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # inline boost::signals2::connection  registerPointPickingCallback (void (*callback) (const pcl::visualization::PointPickingEvent&, void*), void* cookie = NULL)
+        
         # /** \brief Register a callback function for point picking events
         #   * \param[in] callback  the member function that will be registered as a callback for a point picking event
         #   * \param[in] instance  instance to the class that implements the callback function
         #   * \param[in] cookie    user data that is passed to the callback
         #   * \return              connection object that allows to disconnect the callback function.
         # template<typename T> inline boost::signals2::connection  registerPointPickingCallback (void (T::*callback) (const pcl::visualization::PointPickingEvent&, void*), T& instance, void* cookie = NULL)
+
 
 # ctypedef CloudViewer CloudViewer_t
 ctypedef shared_ptr[CloudViewer] CloudViewerPtr_t
