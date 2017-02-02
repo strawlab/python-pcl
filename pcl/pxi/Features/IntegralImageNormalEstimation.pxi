@@ -6,7 +6,6 @@ cimport pcl_defs as cpp
 cimport pcl_features as pcl_ftr
 
 from boost_shared_ptr cimport sp_assign
-from boost_shared_ptr cimport sp_assign
 
 cdef extern from "minipcl.h":
     void mpcl_features_NormalEstimationMethod_AVERAGE_3D_GRADIENT(pcl_ftr.IntegralImageNormalEstimation_t ) except +
@@ -21,14 +20,13 @@ cdef class IntegralImageNormalEstimation:
     # cdef pcl_ftr.IntegralImageNormalEstimation_t *me
 
     def __cinit__(self, PointCloud pc not None):
+        print ('load table_scene_mug_stereo_textured.pcd')
         sp_assign(self.thisptr_shared, new pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]())
         self.thisptr().setInputCloud(pc.thisptr_shared)
+        print ('load table_scene_mug_stereo_textured.pcd')
         # pass
         # self.me = new pcl_ftr.IntegralImageNormalEstimation_t()
         # self.me.setInputCloud(pc.thisptr_shared)
-
-    # def __dealloc__(self):
-    #     del self.me
 
     def set_NormalEstimation_Method_AVERAGE_3D_GRADIENT (self):
        mpcl_features_NormalEstimationMethod_AVERAGE_3D_GRADIENT(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()))

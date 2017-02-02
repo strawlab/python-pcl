@@ -392,7 +392,12 @@ cdef class PointCloud:
 
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
-        return IntegralImageNormalEstimation(self)
+        # proj = IntegralImageNormalEstimation()
+        # cdef pclftr.IntegralImageNormalEstimation_t *cproj = <pclftr.IntegralImageNormalEstimation_t *>proj.me
+        # cproj.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # return proj
+        result = IntegralImageNormalEstimation(self)
+        return result
 
     def extract(self, pyindices, bool negative=False):
         """
