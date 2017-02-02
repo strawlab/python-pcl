@@ -11,7 +11,6 @@ from boost_shared_ptr cimport shared_ptr
 
 cdef class CropBox:
     """
-    
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in CropBox(pc).
     """
@@ -80,8 +79,7 @@ cdef class CropBox:
     #     cdef vector[float] k_sqr_distances
     #     k_indices.resize(k)
     #     k_sqr_distances.resize(k)
-    #     self.me.nearestKSearch(pc.thisptr()[0], index, k, k_indices,
-    #                            k_sqr_distances)
+    #     self.me.nearestKSearch(pc.thisptr()[0], index, k, k_indices, k_sqr_distances)
     # 
     #     for i in range(k):
     #         sqdist[i] = k_sqr_distances[i]

@@ -20,13 +20,13 @@ cdef class IntegralImageNormalEstimation:
     # cdef pcl_ftr.IntegralImageNormalEstimation_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        print ('load table_scene_mug_stereo_textured.pcd')
+        print ('__cinit__ start')
         sp_assign(self.thisptr_shared, new pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]())
         self.thisptr().setInputCloud(pc.thisptr_shared)
-        print ('load table_scene_mug_stereo_textured.pcd')
-        # pass
+        print ('__cinit__ end')
         # self.me = new pcl_ftr.IntegralImageNormalEstimation_t()
         # self.me.setInputCloud(pc.thisptr_shared)
+        # pass
 
     def set_NormalEstimation_Method_AVERAGE_3D_GRADIENT (self):
        mpcl_features_NormalEstimationMethod_AVERAGE_3D_GRADIENT(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()))

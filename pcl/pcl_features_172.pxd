@@ -761,7 +761,7 @@ cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
         # * \param[out] max_point max point of the AABB
         # */
         # bool getAABB (PointT& min_point, PointT& max_point) const;
-        bool getAABB ([PointT]& min_point, [PointT]& max_point)
+        bool getAABB (PointT& min_point, PointT& max_point)
         
         # /** \brief This method gives access to the computed oriented bounding box. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
@@ -775,7 +775,7 @@ cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
         # * \param[out] rotational_matrix this matrix represents the rotation transform
         # */
         # bool getOBB (PointT& min_point, PointT& max_point, PointT& position, Eigen::Matrix3f& rotational_matrix) const;
-        bool getOBB ([PointT]& min_point, [PointT]& max_point, [PointT]& position, eigen3.Matrix3f& rotational_matrix)
+        bool getOBB (PointT& min_point, PointT& max_point, PointT& position, eigen3.Matrix3f& rotational_matrix)
         
         # /** \brief This method gives access to the computed eigen values. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
