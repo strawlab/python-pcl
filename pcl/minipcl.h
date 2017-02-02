@@ -87,4 +87,13 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 //                                    pcl::PointCloud<pcl::PointXYZI> *outcloud);
 
 
+// Features
+// NormalEstimationMethod
+void mpcl_features_NormalEstimationMethod_AVERAGE_3D_GRADIENT(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne);
+void mpcl_features_NormalEstimationMethod_COVARIANCE_MATRIX(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne);
+void mpcl_features_NormalEstimationMethod_AVERAGE_DEPTH_CHANGE(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne);
+void mpcl_features_NormalEstimationMethod_SIMPLE_3D_GRADIENT(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne);
+
+// 
+
 #endif

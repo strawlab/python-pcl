@@ -66,8 +66,13 @@ cdef class ConditionAnd:
         # OK? -> NG(MemoryLeakError)
         # cdef pclfil.FieldComparison_t *fieldComp = new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
         # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
-        cdef pclfil.FieldComparisonPtr_t fieldComp = <pclfil.FieldComparisonPtr_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        # cdef pclfil.FieldComparisonPtr_t fieldComp = <pclfil.FieldComparisonPtr_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        cdef pclfil.FieldComparisonConstPtr_t fieldComp = <pclfil.FieldComparisonConstPtr_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        
+        # Cython 0.25.2 NG
+        # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
         self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
+        
         # NG
         # sp_assign( self.fieldCompPtr, new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh) )
         # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> self.fieldCompPtr)

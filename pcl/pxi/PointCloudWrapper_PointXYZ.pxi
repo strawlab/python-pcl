@@ -288,8 +288,6 @@ cdef class PointCloud:
         """
         cdef cpp.PointNormalCloud_t normals
         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
-        # p = self.thisptr()
-        # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = SegmentationNormal()
         cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)

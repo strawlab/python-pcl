@@ -11,17 +11,17 @@ cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.p
 # pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
 ne = cloud.make_IntegralImageNormalEstimation()
 
-ne.set_NormalEstimation_Method (pcl.CythonNormalEstimationMethod_Type.AVERAGE_3D_GRADIENT)
+ne.set_NormalEstimation_Method_AVERAGE_3D_GRADIENT ()
 ne.set_MaxDepthChange_Factor(0.02)
 ne.set_NormalSmoothingSize(10.0)
-normals = ne.compute()
+# normals = ne.compute()
 
 # visualize normals
 viewer = pcl.pcl_visualization.Visualization()
-viewer.set_BackgroundColor (0.0, 0.0, 0.5);
+viewer.set_BackgroundColor (0.0, 0.0, 0.5)
 # viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(cloud, normals);
 
 while (True):
     # viewer.wasStopped ()
-    viewer.spinOnce ();
+    viewer.spinOnce ()
 end

@@ -8,6 +8,8 @@ cimport pcl_kdtree as pclkdt
 # RangeImage
 cimport pcl_range_image as pcl_r_img
 
+cimport pcl_features as pcl_ftr
+
 # class override(PointCloud)
 cdef class PointCloud:
     cdef cpp.PointCloudPtr_t thisptr_shared     # XYZ
@@ -134,6 +136,16 @@ cdef class RangeImages:
     
     cdef inline pcl_r_img.RangeImage *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying RangeImage.
+        return self.thisptr_shared.get()
+
+
+### Features
+# class override
+cdef class IntegralImageNormalEstimation:
+    cdef pcl_ftr.IntegralImageNormalEstimationPtr_t thisptr_shared     # IntegralImageNormalEstimation
+    
+    cdef inline pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>.
         return self.thisptr_shared.get()
 
 

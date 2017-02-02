@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+from libcpp.vector cimport vector
+from libcpp cimport bool
+
 cimport pcl_filters as pclfil
 cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
@@ -19,7 +22,11 @@ cdef class RadiusOutlierRemoval:
         a new pointcloud
         """
         cdef PointCloud pc = PointCloud()
-        self.me.filter(pc.thisptr()[0])
+        # Cython 0.25.2 NG
+        # self.me.filter(pc.thisptr()[0])
+        # Cython 0.24.1 NG
+        # self.me.filter(<vector[int]> pc)
+        self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> pc.thisptr()[0])
         return pc
 
     def set_radius_search(self, double radius):

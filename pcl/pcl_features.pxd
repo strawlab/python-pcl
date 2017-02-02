@@ -546,8 +546,8 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         
         # * \brief Sets the policy for handling borders.
         # * \param[in] border_policy the border policy.
-        # void setBorderPolicy (BorderPolicy2 border_policy)
-        
+        # minipcl
+        # void setBorderPolicy (BorderPolicy border_policy)
         # * \brief Computes the normal at the specified position.
         # * \param[in] pos_x x position (pixel)
         # * \param[in] pos_y y position (pixel)
@@ -572,6 +572,7 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * (depth dependent if useDepthDependentSmoothing is true)
         void setNormalSmoothingSize (float normal_smoothing_size)
         
+        # TODO : use minipcl.cpp/h
         # * \brief Set the normal estimation method. The current implemented algorithms are:
         # * <ul>
         # *   <li><b>COVARIANCE_MATRIX</b> - creates 9 integral images to compute the normal for a specific point
@@ -584,7 +585,7 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * </ul>
         # * \param[in] normal_estimation_method the method used for normal estimation
         # void setNormalEstimationMethod (NormalEstimationMethod2 normal_estimation_method)
-        
+       
         # brief Set whether to use depth depending smoothing or not
         # param[in] use_depth_dependent_smoothing decides whether the smoothing is depth dependent
         void setDepthDependentSmoothing (bool use_depth_dependent_smoothing)
@@ -617,16 +618,22 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
 
-
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGBA_t
-
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGBA_t
+ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]] IntegralImageNormalEstimationPtr_t
+ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal]] IntegralImageNormalEstimation_PointXYZI_Ptr_t
+ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal]] IntegralImageNormalEstimation_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal]] IntegralImageNormalEstimation_PointXYZRGBA_Ptr_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal](Feature[cpp.PointXYZ, cpp.Normal]) IntegralImageNormalEstimation_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal](Feature[cpp.PoinPointXYZItXYZ, cpp.Normal]) IntegralImageNormalEstimation_PointXYZI_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal](Feature[cpp.PointXYZRGB, cpp.Normal]) IntegralImageNormalEstimation_PointXYZRGB_t
+# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal](Feature[cpp.PointXYZRGBA, cpp.Normal]) IntegralImageNormalEstimation_PointXYZRGBA_t
+# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal](Feature[cpp.PointXYZ, cpp.Normal])] IntegralImageNormalEstimationPtr_t
+# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal](Feature[cpp.PoinPointXYZItXYZ, cpp.Normal])] IntegralImageNormalEstimation_PointXYZI_Ptr_t
+# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal](Feature[cpp.PointXYZRGB, cpp.Normal])] IntegralImageNormalEstimation_PointXYZRGB_Ptr_t
+# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal](Feature[cpp.PointXYZRGBA, cpp.Normal])] IntegralImageNormalEstimation_PointXYZRGBA_Ptr_t
 ###
 
 # integral_image2D.h
@@ -2848,7 +2855,7 @@ ctypedef VFHEstimation[cpp.PointXYZRGBA, cpp.Normal, cpp.VFHSignature308] VFHEst
 # # CAMERA_FRAME = 0,
 # # LASER_FRAME = 1
 # Start
-# cdef extern from "pcl/range_image/range_image.h" namespace "pcl::RangeImage":
+# cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
 #     ctypedef enum CoordinateFrame2 "pcl::RangeImage::CoordinateFrame":
 #         COORDINATEFRAME_CAMERA "pcl::RangeImage::CAMERA_FRAME"
 #         COORDINATEFRAME_LASER "pcl::RangeImage::LASER_FRAME"
@@ -2880,9 +2887,9 @@ ctypedef VFHEstimation[cpp.PointXYZRGBA, cpp.Normal, cpp.VFHSignature308] VFHEst
 #         ESTIMATIONMETHOD_AVERAGE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::AVERAGE_3D_GRADIENT"
 #         ESTIMATIONMETHOD_AVERAGE_DEPTH_CHANGE "pcl::IntegralImageNormalEstimation::AVERAGE_DEPTH_CHANGE"
 #         ESTIMATIONMETHOD_SIMPLE_3D_GRADIENT "pcl::IntegralImageNormalEstimation::SIMPLE_3D_GRADIENT"
-# NG : Test (Cython 0.24.1)
+# NG : (Test Cython 0.24.1)
 # define __PYX_VERIFY_RETURN_INT/__PYX_VERIFY_RETURN_INT_EXC etc... , Convert Error "pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>::NormalEstimationMethod"
-# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
+# cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl::IntegralImageNormalEstimation":
 #     ctypedef enum NormalEstimationMethod2 "pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>::NormalEstimationMethod":
 #         ESTIMATIONMETHOD_COVARIANCE_MATRIX "pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>::COVARIANCE_MATRIX"
 #         ESTIMATIONMETHOD_AVERAGE_3D_GRADIENT "pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>::AVERAGE_3D_GRADIENT"

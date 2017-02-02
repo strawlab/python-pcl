@@ -28,9 +28,11 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         #
         # brief Return if the comparison is capable.
         bool isCapable ()
+        
         # /** \brief Evaluate function. */
         # virtual bool evaluate (const PointT &point) const = 0;
-###
+
+
 ctypedef ComparisonBase[cpp.PointXYZ] ComparisonBase_t
 ctypedef ComparisonBase[cpp.PointXYZI] ComparisonBase_PointXYZI_t
 ctypedef ComparisonBase[cpp.PointXYZRGB] ComparisonBase_PointXYZRGB_t
@@ -43,7 +45,7 @@ ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZ]] ComparisonBaseConstPtr_t
 ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_ConstPtr_t
 ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_ConstPtr_t
 ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_ConstPtr_t
-
+###
 
 # conditional_removal.h
 # template<typename PointT>
@@ -57,11 +59,17 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # ctypedef typename ComparisonBase::ConstPtr ComparisonBaseConstPtr;
         # ctypedef boost::shared_ptr<ConditionBase<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionBase<PointT> > ConstPtr;
-        # void addComparison (ConditionBasePtr_t comparison);
-        void addComparison (ComparisonBaseConstPtr_t comparison);
-        void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison);
-        void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison);
-        void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison);
+        
+        # NG : evaluate is virtual Function
+        # void addComparison (ComparisonBase[T] comparison)
+        # void addComparison (const ComparisonBase[T] comparison)
+        # use Const define
+        void addComparison (ComparisonBaseConstPtr_t comparison)
+        void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison)
+        void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison)
+        void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison)
+        # void addComparison (FieldComparison[T] comparison)
+        
         # void addCondition (Ptr condition);
         # void addCondition (ConditionBasePtr_t condition);
         # void addCondition (ConditionBase_PointXYZI_Ptr_t condition);

@@ -18,6 +18,7 @@ cimport pcl_range_image_172 as pcl_r_img
 cimport cython
 # from cython.operator import dereference as deref
 from cython.operator cimport dereference as deref, preincrement as inc
+from cython cimport address
 
 from cpython cimport Py_buffer
 
@@ -108,8 +109,10 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 #         self.BORDER_POLICY_MIRROR = pcl_ftr.BORDERPOLICY2_MIRROR
 # 
 # CythonBorderPolicy_Type = _CythonBorderPolicy_Type()
-# 
-# # CythonNormalEstimationMethod
+###
+
+
+# CythonNormalEstimationMethod
 # @cython.internal
 # cdef class _CythonNormalEstimationMethod_Type:
 #     cdef:
@@ -125,7 +128,6 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 #         self.SIMPLE_3D_GRADIENT = pcl_ftr.ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT
 # 
 # CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
-# 
 ###
 
 include "pxi/PointCloudWrapper_PointXYZ_172.pxi"
@@ -136,8 +138,7 @@ include "pxi/PointCloudWrapper_PointWithViewpoint.pxi"
 # include "pxi/PointCloudWrapper_Normal.pxi"
 include "pxi/PointCloudWrapper_PointNormal.pxi"
 
-# include "pxi/OctreePointCloudSearch.pxi"
-# include "pxi/OctreePointCloudChangeDetector.pxi"
+
 
 
 ### common ###

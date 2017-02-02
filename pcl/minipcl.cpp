@@ -9,6 +9,8 @@
 
 #include <Eigen/Dense>
 
+#include <pcl/features/integral_image_normal.h>
+
 #include "minipcl.h"
 
 // set ksearch and radius to < 0 to disable 
@@ -273,3 +275,26 @@ void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
     detector.compute(*outcloud);
 }
 */
+
+// features
+// integral_image_normal.h
+void mpcl_features_NormalEstimationMethod_AVERAGE_3D_GRADIENT(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne)
+{
+    ne.setNormalEstimationMethod (ne.AVERAGE_3D_GRADIENT);
+}
+
+void mpcl_features_NormalEstimationMethod_COVARIANCE_MATRIX(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne)
+{
+    ne.setNormalEstimationMethod (ne.COVARIANCE_MATRIX);
+}
+
+void mpcl_features_NormalEstimationMethod_AVERAGE_DEPTH_CHANGE(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne)
+{
+    ne.setNormalEstimationMethod (ne.AVERAGE_DEPTH_CHANGE);
+}
+
+void mpcl_features_NormalEstimationMethod_SIMPLE_3D_GRADIENT(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne)
+{
+    ne.setNormalEstimationMethod (ne.SIMPLE_3D_GRADIENT);
+}
+

@@ -5,7 +5,8 @@
 # Features
 # pcl1.6 - NG
 # python examples\official\Features\moment_of_inertia moment_of_inertia.py
-# python examples\official\Features\rops_feature rops_feature.txt
+# python examples\official\Features\rops_feature.py
+# pcl1.6
 python examples\official\Features\NormalEstimationUsingIntegralImages.py
 ###
 

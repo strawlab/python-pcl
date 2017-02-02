@@ -23,7 +23,11 @@ cdef extern from "boost/shared_ptr.hpp" namespace "boost" nogil:
         void reset(T*)
 
 cdef extern from "boost_shared_ptr_assign.h" nogil:
-     #void sp_assign(shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &t, cpp.PointCloud[cpp.PointXYZ] *value)
+     # void sp_assign(shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &t, cpp.PointCloud[cpp.PointXYZ] *value)
+     void sp_assign[T](shared_ptr[T] &p, T *value)
+
+cdef extern from "boost_shared_ptr_assign.h" nogil:
+     # void sp_assign(shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &t, cpp.PointCloud[cpp.PointXYZ] *value)
      void sp_assign[T](shared_ptr[T] &p, T *value)
 
 ###############################################################################
