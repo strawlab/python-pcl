@@ -8,7 +8,7 @@ cimport pcl_visualization as pclvis
 from boost_shared_ptr cimport sp_assign
 
 
-cdef class PCLVisualizer:
+cdef class PCLVisualizering:
     """
     """
     # cdef pclvis.PCLVisualizerPtr_t thisptr_shared
@@ -64,7 +64,7 @@ cdef class PCLVisualizer:
     # def AddPointCloud (self, _pcl.PointCloud cloud, PointCloudColorHandlerCustom custom, string id = "cloud", int viewport = 0):
     #     self.me.addPointCloud(cloud.thisptr_shared, custom.thisptr_shared, id, viewport)
 
-    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointNormalCloud normal):
+    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal):
           self.me.addPointCloudNormals(cloud.thisptr_shared, normal.thisptr_shared, 10, 0.05, 'normals', 0)
 
     def SetPointCloudRenderingProperties(self, int propType, int propValue, string propName = 'cloud'):

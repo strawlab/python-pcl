@@ -11,7 +11,7 @@ cimport pcl_range_image as pcl_r_img
 cimport pcl_visualization as pcl_vis
 from boost_shared_ptr cimport sp_assign
 
-cdef class PointCloudColorHandlerCustoms:
+cdef class PointCloudColorHandlerCustomization:
     """
     """
     # cdef pcl_vis.PointCloudColorHandlerCustom_t *me

@@ -70,6 +70,8 @@ print(outputCloud)
 # // pcl::visualization::CloudViewer viewer ("Cluster viewer");
 # // viewer.showCloud(colored_cloud);
 
+# pcl.visualization.CloudViewer
+
 # Write Point
 # pcl::PCDWriter writer;
 # std::stringstream ss;

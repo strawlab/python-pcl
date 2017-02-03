@@ -91,7 +91,7 @@ cloud.from_array(points)
 # pcl::visualization::CloudViewer viewer("Cloud Viewer");
 # viewer.showCloud(cloud.makeShared());
 # while (!viewer.wasStopped ())
-visual = pcl.pcl_visualization.Visualization()
+visual = pcl.pcl_visualization.CloudViewer()
 visual.ShowColorCloud(cloud)
 while True:
     visual.WasStopped()

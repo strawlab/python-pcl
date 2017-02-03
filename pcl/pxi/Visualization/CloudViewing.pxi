@@ -6,7 +6,7 @@ cimport numpy as cnp
 cimport pcl_visualization as pclvis
 from boost_shared_ptr cimport sp_assign
 
-cdef class Visualization:
+cdef class CloudViewing:
     """
     
     """

@@ -12,7 +12,7 @@ import pcl.pcl_visualization
 cloud = pcl.load_XYZRGB('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
 # cloud = pcl.load_XYZRGBA('G:\\tmp\\PCL\\extendlibrary\\python-pcl\\examples\\pcldata\\tutorials\\table_scene_mug_stereo_textured.pcd')
 # view set
-visual = pcl.pcl_visualization.Visualization()
+visual = pcl.pcl_visualization.CloudViewer()
 
 # PointXYZ
 # visual.ShowMonochromeCloud(cloud)

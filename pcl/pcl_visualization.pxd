@@ -477,7 +477,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                       const typename pcl::PointCloud<PointNT>::ConstPtr &normals,
         #                       int level = 100, double scale = 0.02,
         #                       const std::string &id = "cloud", int viewport = 0);
-        bool addPointCloudNormals (const cpp.PointCloud[PointT] &cloud, const cpp.PointCloud[PointNT] &normals, int level, double scale, const string &id, int viewport)
+        bool addPointCloudNormals [PointT, PointNT] (const cpp.PointCloud[PointT] &cloud, const cpp.PointCloud[PointNT] &normals, int level, double scale, const string &id, int viewport)
         
         # brief Add the estimated principal curvatures of a Point Cloud to screen.
         # param[in] cloud the input point cloud dataset containing the XYZ data
@@ -493,10 +493,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #     const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
         #     int level = 100, double scale = 1.0,
         #     const std::string &id = "cloud", int viewport = 0);
-        bool addPointCloudPrincipalCurvatures (
-                    const cpp.PointCloud[PointT] &cloud, const cpp.PointCloud[PointNT] &normals,
-                    const pcl::PointCloud<pcl::PrincipalCurvatures>::ConstPtr &pcs,
-                    int level, double scale, string &id, int viewport)
+        # bool addPointCloudPrincipalCurvatures (
+        #             const cpp.PointCloud[cpp.PointXYZ] &cloud, const cpp.PointCloud[cpp.Normal] &normals,
+        #             const pcl::PointCloud[cpp.PrincipalCurvatures] &pcs,
+        #             int level, double scale, string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # param[in] cloud the input point cloud dataset
@@ -505,10 +505,11 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const std::string &id = "cloud", int viewport = 0);
-        bool addPointCloud (cpp.PointCloudPtr_t &cloud, const string &id, int viewport)
-        bool addPointCloud (cpp.PointCloud_PointXYZI_Ptr_t &cloud, const string &id, int viewport)
-        bool addPointCloud (cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, const string &id, int viewport)
-        bool addPointCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, const string &id, int viewport)
+        # bool addPointCloud (cpp.PointCloudPtr_t &cloud, const string &id, int viewport)
+        # bool addPointCloud (cpp.PointCloud_PointXYZI_Ptr_t &cloud, const string &id, int viewport)
+        # bool addPointCloud (cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, const string &id, int viewport)
+        # bool addPointCloud (cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, const string &id, int viewport)
+        # bool addPointCloud[PointT] (PointCloud[
         
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
@@ -583,12 +584,12 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudColorHandler<PointT> &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        bool addPointCloud (const cpp.PointCloudPtr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        bool addPointCloud (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        bool addPointCloud (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        bool addPointCloud (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        bool addPointCloud (const cpp.PointCloud_VFHSignature308_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        bool addPointCloud (const cpp.PointCloud_PointWithViewpoint_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        # bool addPointCloud (const cpp.PointCloudPtr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        # bool addPointCloud (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        # bool addPointCloud (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        # bool addPointCloud (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        # bool addPointCloud (const cpp.PointCloud_VFHSignature308_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
+        # bool addPointCloud (const cpp.PointCloud_PointWithViewpoint_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # Because the color handler is given as a pointer, it will be pushed back to the list of available
@@ -840,10 +841,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the point cloud object id (default: cloud)
         #   * \param[in] viewport the view port where the Point Cloud's rendering properties should be modified (default: all)
         #   */
-        # bool setPointCloudRenderingProperties (int property, double val1, double val2, double val3,
-        #                                       const std::string &id = "cloud", int viewport = 0);
+        # bool setPointCloudRenderingProperties (int property, double val1, double val2, double val3, const std::string &id = "cloud", int viewport = 0);
         bool setPointCloudRenderingProperties (int property, double val1, double val2, double val3, string &id, int viewport)
-        
         
         # /** \brief Set the rendering properties of a PointCloud
         #  * \param[in] property the property type
@@ -851,18 +850,15 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #  * \param[in] id the point cloud object id (default: cloud)
         #  * \param[in] viewport the view port where the Point Cloud's rendering properties should be modified (default: all)
         #  */
-        # bool setPointCloudRenderingProperties (int property, double value,
-        #                                   const std::string &id = "cloud", int viewport = 0);
-        bool setPointCloudRenderingProperties (int property, double value, const string &id, int viewport)
-
+        # bool setPointCloudRenderingProperties (int property, double value, const std::string &id = "cloud", int viewport = 0);
+        bool setPointCloudRenderingProperties (int property, double value, const string id, int viewport)
+        
         # /** \brief Get the rendering properties of a PointCloud
         #  * \param[in] property the property type
         #  * \param[in] value the resultant property value
         #  * \param[in] id the point cloud object id (default: cloud)
         #  */
-        # bool
-        # getPointCloudRenderingProperties (int property, double &value,
-        #                                   const std::string &id = "cloud");
+        # bool getPointCloudRenderingProperties (int property, double &value, const std::string &id = "cloud");
         
         # /** \brief Set the rendering properties of a shape
         #  * \param[in] property the property type
@@ -870,9 +866,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #  * \param[in] id the shape object id
         #  * \param[in] viewport the view port where the shape's properties should be modified (default: all)
         #  */
-        # bool
-        # setShapeRenderingProperties (int property, double value,
-        #                              const std::string &id, int viewport = 0);
+        # bool setShapeRenderingProperties (int property, double value, const std::string &id, int viewport = 0);
         
         # /** \brief Set the rendering properties of a shape (3x values - e.g., RGB)
         #   * \param[in] property the property type
@@ -882,26 +876,20 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the shape object id
         #   * \param[in] viewport the view port where the shape's properties should be modified (default: all)
         #   */
-        #  bool
-        #  setShapeRenderingProperties (int property, double val1, double val2, double val3,
-        #                               const std::string &id, int viewport = 0);
+        # bool setShapeRenderingProperties (int property, double val1, double val2, double val3, const std::string &id, int viewport = 0);
         
         # #if ((VTK_MAJOR_VERSION == 5) && (VTK_MINOR_VERSION <= 4))
         #         /** \brief Returns true when the user tried to close the window */
-        #         bool
-        #         wasStopped () const { if (interactor_ != NULL) return (interactor_->stopped); else return true; }
+        #         bool wasStopped () const { if (interactor_ != NULL) return (interactor_->stopped); else return true; }
         # 
         #         /** \brief Set the stopped flag back to false */
-        #         void
-        #         resetStoppedFlag () { if (interactor_ != NULL) interactor_->stopped = false; }
+        #         void resetStoppedFlag () { if (interactor_ != NULL) interactor_->stopped = false; }
         # #else
         #         /** \brief Returns true when the user tried to close the window */
-        #         bool
-        #         wasStopped () const { if (interactor_ != NULL) return (stopped_); else return (true); }
+        #         bool wasStopped () const { if (interactor_ != NULL) return (stopped_); else return (true); }
         # 
         #         /** \brief Set the stopped flag back to false */
-        #         void
-        #         resetStoppedFlag () { if (interactor_ != NULL) stopped_ = false; }
+        #         void resetStoppedFlag () { if (interactor_ != NULL) stopped_ = false; }
         # #endif
         bool wasStopped ()
         void resetStoppedFlag ()
