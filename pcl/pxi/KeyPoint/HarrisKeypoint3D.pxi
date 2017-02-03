@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from libc.stddef cimport size_t
 
 from libcpp.vector cimport vector
@@ -11,6 +12,7 @@ cimport pcl_keypoints as keypt
 # boost
 from boost_shared_ptr cimport shared_ptr
 
+
 ###############################################################################
 # Types
 ###############################################################################
@@ -21,25 +23,32 @@ cdef class HarrisKeypoint3D:
     """
     HarrisKeypoint3D class for 
     """
-    cdef keypt.HarrisKeypoint3DPtr_t *me
+    cdef keypt.HarrisKeypoint3D_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new keypt.HarrisKeypoint3DPtr_t()
-        # self.me.setInputCloud(pc.thisptr_shared)
+        self.me = new keypt.HarrisKeypoint3D_t()
+        self.me.setInputCloud(pc.thisptr_shared)
+        # sp_assign(self.thisptr_shared, new keypt.HarrisKeypoint3DPtr_t())
+        # self.thisptr().setInputCloud(pc.thisptr_shared)
+        # pass
 
     def __dealloc__(self):
         del self.me
 
-    # def set_NonMaxSupression(self, bool param):
-    #     self.me.setNonMaxSupression (param)
+    def set_NonMaxSupression(self, bool param):
+        self.me.setNonMaxSupression (param)
 
-    # 
-    #     self.me.setRadius (param)
+    def set_Radius(self, float param):
+        self.me.setRadius (param)
 
-    # def set_RadiusSearch(self, double param):
-    #     self.me.setRadiusSearch (param)
+    def set_RadiusSearch(self, double param):
+        self.me.setRadiusSearch (param)
 
-    # def compute(self):
-    #    self.me.compute ();
-
+    def compute(self):
+        pointXYZI = PointCloud_PointXYZI()
+        cdef cpp.PointCloud_PointXYZI_t *cPointCloudPointXYZI = <cpp.PointCloud_PointXYZI_t*>pointXYZI.thisptr()
+        # compute function based KeyPoint class
+        # self.thisptr().compute (deref(cPointCloudPointXYZI.makeShared().get()))
+        self.me.compute (<cpp.PointCloud[cpp.PointXYZI]> deref(cPointCloudPointXYZI.makeShared().get()))
+        return pointXYZI
 

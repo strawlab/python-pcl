@@ -65,6 +65,7 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # the surface in setSearchSurface () and the spatial locator in setSearchMethod ()
         # param output the resultant point cloud model dataset containing the estimated features
         # inline void compute (PointCloudOut &output);
+        void compute (cpp.PointCloud[Out] &output)
         
         # brief Search for k-nearest neighbors using the spatial locator from \a setSearchmethod, and the given surface
         # from \a setSearchSurface.
@@ -140,15 +141,15 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # inline void setNumberOfThreads (int nr_threads)
         void setNumberOfThreads (int nr_threads)
 
-ctypedef HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZ, cpp.Normal] HarrisKeypoint3D_t
-ctypedef HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI, cpp.Normal] HarrisKeypoint3D_PointXYZI_t
-ctypedef HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZRGB, cpp.Normal] HarrisKeypoint3D_PointXYZRGB_t
-ctypedef HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZRGBA, cpp.Normal] HarrisKeypoint3D_PointXYZRGBA_t
-ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZ, cpp.Normal]] HarrisKeypoint3DPtr_t
-ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI, cpp.Normal]] HarrisKeypoint3D_PointXYZI_Ptr_t
-ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZRGB, cpp.Normal]] HarrisKeypoint3D_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZRGBA, cpp.Normal]] HarrisKeypoint3D_PointXYZRGBA_Ptr_t
 
+ctypedef HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZI, cpp.Normal] HarrisKeypoint3D_t
+ctypedef HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI, cpp.Normal] HarrisKeypoint3D_PointXYZI_t
+ctypedef HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZI, cpp.Normal] HarrisKeypoint3D_PointXYZRGB_t
+ctypedef HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZI, cpp.Normal] HarrisKeypoint3D_PointXYZRGBA_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZ, cpp.PointXYZI, cpp.Normal]] HarrisKeypoint3DPtr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZI, cpp.PointXYZI, cpp.Normal]] HarrisKeypoint3D_PointXYZI_Ptr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGB, cpp.PointXYZI, cpp.Normal]] HarrisKeypoint3D_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZI, cpp.Normal]] HarrisKeypoint3D_PointXYZRGBA_Ptr_t
 ###
 
 # narf_keypoint.h

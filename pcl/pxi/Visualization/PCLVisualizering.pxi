@@ -40,6 +40,10 @@ cdef class PCLVisualizering:
     def AddPointCloud (self, _pcl.PointCloud cloud, string id = "cloud", int viewport = 0):
         self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, id, viewport)
 
+    # <const shared_ptr[PointCloudColorHandler[PointT]]> 
+    def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, PointCloudColorHandleringCustom color_handler, string id):
+        self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, color_handler.thisptr_shared, id, 0)
+
     # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal):
     #     self.thisptr().addPointCloudNormals(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 10, 0.05, 'normals', 0)
 

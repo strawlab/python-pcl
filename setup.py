@@ -177,8 +177,6 @@ if platform.system() == "Windows":
 
     # set library path
     if pcl_version == '-1.6':
-        # 3rdParty(+Boost)
-        # lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib']
         # 3rdParty(+Boost, +VTK)
         lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
         # extern -> NG?
@@ -186,9 +184,11 @@ if platform.system() == "Windows":
         # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib64-msvc-10.0', pcl_root + '\\3rdParty\\FLANN\lib']
     elif pcl_version == '-1.7':
         # 1.7.2
+        # 3rdParty(+Boost, +VTK)
         lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-6.2']
     elif pcl_version == '-1.8':
         # 1.8.0
+        # 3rdParty(+Boost, +VTK)
         lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-7.0']
     else:
         lib_dir = []
@@ -196,7 +196,7 @@ if platform.system() == "Windows":
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
 
-    # set library files
+    # set compiler flags
     # for flag in pkgconfig('--cflags-only-other'):
     #     if flag.startswith('-D'):
     #         macro, value = flag[2:].split('=', 1)
@@ -215,7 +215,7 @@ if platform.system() == "Windows":
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
         # release + vtk
         libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
-
+        
         # add boost
         # dynamic lib
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
@@ -226,10 +226,14 @@ if platform.system() == "Windows":
         # 'MapReduceMPI-gd.lib', 'vtkNetCDF-gd.lib', 'QVTK-gd.lib', 'vtkNetCDF_cxx-gd.lib', 'vtkRendering-gd.lib', 'vtkViews-gd.lib', 'vtkVolumeRendering-gd.lib', 'vtkWidgets-gd.lib', 'mpistubs-gd.lib', 'vtkalglib-gd.lib', 'vtkCharts-gd.lib', 'vtkexoIIc-gd.lib', 'vtkexpat-gd.lib', 'vtkCommon-gd.lib', 'vtkfreetype-gd.lib', 'vtkDICOMParser-gd.lib', 'vtkftgl-gd.lib', 'vtkFiltering-gd.lib', 'vtkhdf5-gd.lib', 'vtkjpeg-gd.lib', 'vtkGenericFiltering-gd.lib', 'vtklibxml2-gd.lib', 'vtkGeovis-gd.lib', 'vtkmetaio-gd.lib', 'vtkpng-gd.lib', 'vtkGraphics-gd.lib', 'vtkproj4-gd.lib', 'vtkHybrid-gd.lib', 'vtksqlite-gd.lib', 'vtksys-gd.lib', 'vtkIO-gd.lib', 'vtktiff-gd.lib', 'vtkImaging-gd.lib', 'vtkverdict-gd.lib', 'vtkzlib-gd.lib', 'vtkInfovis-gd.lib', 
     elif pcl_version == '-1.7':
         # release
-        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # release + vtk
+        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
     elif pcl_version == '-1.8':
         # release
-        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
+        # release + vtk
+        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
         
         # add boost
         # dynamic lib
@@ -281,14 +285,10 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
-                                     language = "c++", **ext_args),
-                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_160.pyx"],
-                                     language="c++", **ext_args),
-                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                                     language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
-                           #           language="c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_160.pyx"], language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                            # Cython debug ex.
@@ -307,14 +307,10 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
-                                     language = "c++", **ext_args),
-                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"],
-                                     language="c++", **ext_args),
-                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                                     language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
-                           #         language="c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],
@@ -329,12 +325,9 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
-                                     language = "c++", **ext_args),
-                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"],
-                                     language="c++", **ext_args),
-                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                                     language="c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
+                           Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                            # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
                            #         language="c++", **ext_args),
                            # debug
@@ -420,15 +413,11 @@ else:
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
-                                     language = "c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            # 1.6.0 NG
-                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_160.pyx"],
-                                     language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #           language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
-                           #         language="c++", **ext_args),
+                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_160.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],
@@ -443,14 +432,10 @@ else:
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
-                                     language = "c++", **ext_args),
-                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"],
-                                     language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #           language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
-                           #         language="c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],
@@ -465,14 +450,10 @@ else:
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"],
-                                     language = "c++", **ext_args),
-                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"],
-                                     language="c++", **ext_args),
-                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"],
-                           #           language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"],
-                           #         language="c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
+                           Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],

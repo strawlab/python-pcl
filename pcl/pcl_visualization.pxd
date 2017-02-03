@@ -97,14 +97,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerCustom[PointT](PointCloudColorHandler[PointT]):
         PointCloudColorHandlerCustom ()
-        
         # brief Constructor.
-        # PointCloudColorHandlerCustom (const PointCloudConstPtr &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloudPtr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud[cpp.PointWithRange] &cloud, double r, double g, double b)
         PointCloudColorHandlerCustom (const shared_ptr[cpp.PointCloud[PointT]] &cloud, double r, double g, double b)
         
         # Base
@@ -568,14 +561,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudColorHandler<PointT> &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloud (const cpp.PointCloudPtr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        # bool addPointCloud (const cpp.PointCloud_PointXYZI_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        # bool addPointCloud (const cpp.PointCloud_PointXYZRGB_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        # bool addPointCloud (const cpp.PointCloud_PointXYZRGBA_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        # bool addPointCloud (const cpp.PointCloud_VFHSignature308_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        # bool addPointCloud (const cpp.PointCloud_PointWithViewpoint_Ptr_t &cloud, PointCloudColorHandlerCustom_PointWithRange_Ptr_t &color_handler, const string &id, int viewport)
-        # 
-        # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id, int viewport)
+        bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # Because the color handler is given as a pointer, it will be pushed back to the list of available
@@ -590,7 +576,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const ColorHandlerConstPtr &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[???.ColorHandler] &color_handler, const string &id, int viewport)
+        bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
@@ -681,7 +667,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] cloud the input point cloud dataset
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # 
         # inline bool addPointCloud (const pcl::PointCloud<pcl::PointXYZ>::ConstPtr &cloud, const std::string &id = "cloud", int viewport = 0)
         bool addPointCloud (const shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &cloud, const string &id, int viewport)
         
@@ -1409,7 +1394,8 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         
         # brief Spin once method. Calls the interactor and updates the screen once. 
         # void spinOnce (int time = 1, bool force_redraw = false)
-        void spinOnce (int time, bool force_redraw)
+        void spinOnce ()
+        # void spinOnce (int time, bool force_redraw)
         
         # brief Spin method. Calls the interactor and runs an internal loop. */
         void spin ()
@@ -1430,7 +1416,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # param[in] win_height the height of the window
         # template <typename PointT> bool 
         # addFeatureHistogram (const pcl::PointCloud<PointT> &cloud, int hsize, const std::string &id = "cloud", int win_width = 640, int win_height = 200);
-        bool addFeatureHistogram[PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud, int hsize, string cloudname, int win_width, int win_height)
+        bool addFeatureHistogram[PointT](const cpp.PointCloud[PointT] &cloud, int hsize, string cloudname, int win_width, int win_height)
         
         # brief Add a histogram feature to screen as a separate window from a cloud containing a single histogram.
         # param[in] cloud the PointCloud dataset containing the histogram
@@ -1438,7 +1424,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         # param[in] id the point cloud object id (default: cloud)
         # param[in] win_width the width of the window
         # param[in] win_height the height of the window
-        # bool  addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud,  const std::string &field_name, const std::string &id = "cloud", int win_width = 640, int win_height = 200);
+        # bool addFeatureHistogram (const sensor_msgs::PointCloud2 &cloud,  const std::string &field_name, const std::string &id = "cloud", int win_width = 640, int win_height = 200);
         
         # /** \brief Add a histogram feature to screen as a separate window.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
@@ -1453,7 +1439,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #                      const int index,
         #                      const std::string &id = "cloud", int win_width = 640, int win_height = 200);
         # Override before addFeatureHistogram Function
-        # bool addFeatureHistogram[PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud, string field_name, int index, string id, int win_width, int win_height)
+        # bool addFeatureHistogram[PointT](const cpp.PointCloud[PointT] &cloud, string field_name, int index, string id, int win_width, int win_height)
         
         # /** \brief Add a histogram feature to screen as a separate window.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
@@ -1473,7 +1459,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] hsize the length of the histogram
         #   * \param[in] id the point cloud object id (default: cloud)
         # template <typename PointT> bool updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, int hsize, const std::string &id = "cloud");
-        bool updateFeatureHistogram[PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud, int hsize, const string &id)
+        bool updateFeatureHistogram[PointT](const cpp.PointCloud[PointT] &cloud, int hsize, const string &id)
         
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
@@ -1488,7 +1474,7 @@ cdef extern from "pcl/visualization/histogram_visualizer.h" namespace "pcl::visu
         #   * \param[in] id the point cloud object id (default: cloud)
         # template <typename PointT> bool 
         # updateFeatureHistogram (const pcl::PointCloud<PointT> &cloud, const std::string &field_name, const int index, const std::string &id = "cloud");
-        bool updateFeatureHistogram[PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud, const string &field_name, const int index, const string &id)
+        bool updateFeatureHistogram[PointT](const cpp.PointCloud[PointT]  &cloud, const string &field_name, const int index, const string &id)
         
         # /** \brief Update a histogram feature that is already on screen, with a cloud containing a single histogram.
         #   * \param[in] cloud the PointCloud dataset containing the histogram
