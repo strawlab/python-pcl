@@ -5,7 +5,6 @@ from libcpp cimport bool
 from collections import Sequence
 import numbers
 import numpy as np
-
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
@@ -32,7 +31,7 @@ cnp.import_array()
 # cdef enum RenderingProperties:
 # Re: [Cython] resolving name conflict -- does not work for enums !? 
 # https://www.mail-archive.com/cython-dev@codespeak.net/msg02494.html
-PCLVISUALIZER_POINT_SIZE = pcl_vis.RenderingProperties.PCL_VISUALIZER_POINT_SIZE
+PCLVISUALIZER_POINT_SIZE = pcl_vis.PCL_VISUALIZER_POINT_SIZE
 PCLVISUALIZER_OPACITY = pcl_vis.PCL_VISUALIZER_OPACITY
 PCLVISUALIZER_LINE_WIDTH = pcl_vis.PCL_VISUALIZER_LINE_WIDTH
 PCLVISUALIZER_FONT_SIZE = pcl_vis.PCL_VISUALIZER_FONT_SIZE
@@ -56,10 +55,19 @@ PCLVISUALIZER_REPRESENTATION_SURFACE = pcl_vis.PCL_VISUALIZER_REPRESENTATION_SUR
 # include "pxi/Common/RangeImage/RangeImages.pxi"
 
 # VTK
-include "pxi/Visualization/PointCloudColorHandlerCustomization.pxi"
 include "pxi/Visualization/CloudViewing.pxi"
-# NG(RangeImage Link Error)
-# include "pxi/Visualization/RangeImageVisualization.pxi"
-include "pxi/Visualization/PCLHistogramViewing.pxi"
 include "pxi/Visualization/PCLVisualizering.pxi"
+include "pxi/Visualization/PCLHistogramViewing.pxi"
 
+# VTK - Handler
+include "pxi/Visualization/Handler/PointCloudColorHandleringCustom.pxi"
+include "pxi/Visualization/Handler/PointCloudColorHandleringGenericField.pxi"
+include "pxi/Visualization/Handler/PointCloudColorHandleringHSVField.pxi"
+include "pxi/Visualization/Handler/PointCloudColorHandleringRandom.pxi"
+include "pxi/Visualization/Handler/PointCloudColorHandleringRGBField.pxi"
+include "pxi/Visualization/Handler/PointCloudGeometryHandleringSurfaceNormal.pxi"
+include "pxi/Visualization/Handler/PointCloudGeometryHandleringXYZ.pxi"
+
+# NG(vtk Link Error)
+# include "pxi/Visualization/RangeImageVisualization.pxi"
+# include "pxi/Visualization/PCLHistogramViewing.pxi"

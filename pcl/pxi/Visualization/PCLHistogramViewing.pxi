@@ -11,10 +11,8 @@ cdef class PCLHistogramViewing:
     """
     """
     cdef pclvis.PCLHistogramVisualizerPtr_t thisptr_shared
-    # cdef pclvis.PCLHistogramVisualizer_t *me
 
     def __cinit__(self):
-        # self.me = new pclvis.PCLHistogramVisualizer()
         sp_assign(self.thisptr_shared, new pclvis.PCLHistogramVisualizer())
 
     cdef inline pclvis.PCLHistogramVisualizer *thisptr(self) nogil:
@@ -25,16 +23,14 @@ cdef class PCLHistogramViewing:
         # self.thisptr().spinOnce(time, force_redraw)
         self.thisptr().spinOnce()
 
+    def AddFeatureHistogram(self, _pcl.PointCloud cloud, int hsize, string cloudname, int win_width = 640, int win_height = 200):
+        # self.thisptr().addFeatureHistogram[PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud, int hsize, string cloudname, int win_width, int win_height)
+        self.thisptr().addFeatureHistogram(<cpp.PointCloudPtr_t> cloud.thisptr_shared, hsize, cloudname, win_width, win_height)
+
+    # def AddFeatureHistogram(self, _pcl.PointCloud_PointXYZRGB cloud, int hsize, string cloudname):
+    #     # self.thisptr().addFeatureHistogram[PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud, int hsize, string cloudname, int win_width, int win_height)
+    #     self.thisptr().addFeatureHistogram(<cpp.PointCloudPtr_t> cloud.thisptr_shared, hsize, cloudname, 640, 200)
+
     def Spin (self):
         self.thisptr().spin()
-
-    # NG - msg::PointCloud2 batting?
-    # def SetBackgroundColor (self, double r, double g, double b, int viewport = 0):
-    #     self.thisptr().setBackgroundColor(r, g, b, viewport)
-    # 
-    # def AddFeatureHistogram (self, _pcl.PointCloud cloud, int hsize, string cloudname, int win_width = 640, int win_height = 200):
-    #     self.thisptr().addFeatureHistogram(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud.thisptr_shared, <int>hsize, <string>cloudname, <int>win_width, <int>win_height)
-    #     # self.thisptr().addFeatureHistogram(cloud.thisptr_shared, hsize)
-    #     # self.thisptr().addFeatureHistogram(cloud.thisptr(), hsize, cloudname, win_width, win_height)
-    #     # # self.thisptr().addFeatureHistogram(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud.thisptr_shared, hsize, cloudname, win_width, win_height)
 
