@@ -26,7 +26,9 @@ from boost_shared_ptr cimport shared_ptr
 # class PointCloudColorHandler
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandler[T]:
-        PointCloudColorHandler(cpp.PointCloud[T] cloud)
+        # brief Constructor.
+        # PointCloudColorHandler (const PointCloudConstPtr &cloud)
+        PointCloudColorHandler(const shared_ptr[cpp.PointCloud[T]] &cloud)
         
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
@@ -34,9 +36,6 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # typedef boost::shared_ptr<PointCloudColorHandler<PointT> > Ptr;
         # typedef boost::shared_ptr<const PointCloudColorHandler<PointT> > ConstPtr;
-        
-        # brief Constructor.
-        # PointCloudColorHandler (const PointCloudConstPtr &cloud)
         
         # brief Destructor.
         # virtual ~PointCloudColorHandler () {}
@@ -61,7 +60,9 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 # class PointCloudGeometryHandler
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudGeometryHandler[T]:
-        PointCloudColorHandler(cpp.PointCloud[T] cloud)
+        # brief Constructor.
+        # PointCloudGeometryHandler (const PointCloudConstPtr &cloud) :
+        PointCloudGeometryHandler(shared_ptr[cpp.PointCloud[T]] &cloud)
         
         # public:
         # typedef pcl::PointCloud<PointT> PointCloud;
@@ -69,9 +70,6 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # typedef typename boost::shared_ptr<PointCloudGeometryHandler<PointT> > Ptr;
         # typedef typename boost::shared_ptr<const PointCloudGeometryHandler<PointT> > ConstPtr;
-        
-        # brief Constructor.
-        # PointCloudGeometryHandler (const PointCloudConstPtr &cloud) :
         
         # brief Abstract getName method.
         # return the name of the class/object.
@@ -99,10 +97,6 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
         PointCloudColorHandlerCustom ()
         # brief Constructor.
         PointCloudColorHandlerCustom (const shared_ptr[cpp.PointCloud[PointT]] &cloud, double r, double g, double b)
-        
-        # Base
-        # PointCloudColorHandlerCustom (const cpp.PointCloud[PointT] cloud, double r, double g, double b)
-        # PointCloudColorHandlerCustom (const cpp.PointCloud_PointWithViewpoint_Ptr_t cloud, double r, double g, double b)
         
         # /** \brief Destructor. */
         # virtual ~PointCloudColorHandlerCustom () {};
@@ -512,7 +506,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # return false if no cloud with the specified ID was found
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const PointCloudGeometryHandler<PointT> &geometry_handler, const std::string &id = "cloud");
-        # bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, string &id)
+        bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, string &id)
         
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
@@ -521,10 +515,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # return false if no cloud with the specified ID was found
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const PointCloudColorHandler<PointT> &color_handler, const std::string &id = "cloud");
-        # bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id)
-        
-        # bool updatePointCloud (const pcl::PointCloud<pcl::PointXYZRGB>::ConstPtr &cloud, const PointCloudColorHandlerRGBField<pcl::PointXYZRGB> &color_handler, const std::string &id = "cloud");
-        # bool updatePointCloud (const cpp.PointCloud[cpp.PointXYZRGB] &cloud, const PointCloudColorHandlerRGBField[cpp.PointXYZRGB] &color_handler, string &id)
+        bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id)
         
         # brief Add a Point Cloud (templated) to screen.
         # param[in] cloud the input point cloud dataset
@@ -535,7 +526,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandler[PointT]] &geometry_handler, const string &id, int viewport)
+        bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
         
         # \brief Add a Point Cloud (templated) to screen.
         # Because the geometry handler is given as a pointer, it will be pushed back to the list of available
@@ -593,7 +584,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const ColorHandlerConstPtr &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const GeometryHandlerConstPtr &geometry_handler, const ColorHandlerConstPtr &color_handler, const string &id, int viewport)
+        # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[GeometryHandler[PointT] &geometry_handler, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
         
         # brief Add a binary blob Point Cloud to screen.
         # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
@@ -619,7 +610,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # available handlers, rather than replacing the current active handler. This makes it possible to
         # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
         # interface (using [Alt+]0..9).
-        # 
         # param[in] cloud the input point cloud dataset
         # param[in] geometry_handler a specific PointCloud visualizer handler for geometry
         # param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
@@ -637,7 +627,6 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # available handlers, rather than replacing the current active handler. This makes it possible to
         # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
         # interface (using [Alt+]0..9).
-        # 
         # param[in] cloud the input point cloud dataset
         # param[in] color_handler a specific PointCloud visualizer handler for colors
         # param[in] sensor_origin the origin of the cloud data in global coordinates (defaults to 0,0,0)
@@ -910,8 +899,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         #   */
         # template <typename P1, typename P2> bool
-        # addLine (const P1 &pt1, const P2 &pt2, double r, double g, double b,
-        #          const std::string &id = "line", int viewport = 0);
+        # addLine (const P1 &pt1, const P2 &pt2, double r, double g, double b, const std::string &id = "line", int viewport = 0);
         # bool addLine[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Add a line arrow segment between two points, and display the distance between them
@@ -924,8 +912,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         #   */
         # template <typename P1, typename P2> bool
-        # addArrow (const P1 &pt1, const P2 &pt2, double r, double g, double b,
-        #           const std::string &id = "arrow", int viewport = 0);
+        # addArrow (const P1 &pt1, const P2 &pt2, double r, double g, double b, const std::string &id = "arrow", int viewport = 0);
         # bool addArrow[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Add a line arrow segment between two points, and display the distance between them
@@ -938,8 +925,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the line id/name (default: "arrow")
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         # template <typename P1, typename P2> bool
-        # addArrow (const P1 &pt1, const P2 &pt2, double r, double g, double b, bool display_length,
-        #           const std::string &id = "arrow", int viewport = 0);
+        # addArrow (const P1 &pt1, const P2 &pt2, double r, double g, double b, bool display_length, const std::string &id = "arrow", int viewport = 0);
         # bool addArrow[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, bool display_length, const string &id, int viewport)
         
         # /** \brief Add a sphere shape from a point and a radius
@@ -1158,7 +1144,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #          double r = 1.0, double g = 1.0, double b = 1.0,
         #          const std::string &id = "cube",
         #          int viewport = 0);
-        # bool addCube (double x_min, double x_max, double y_min, double y_max, double z_min, double z_max, double r, double g, double b, const std::string &id, int viewport)
+        bool addCube (double x_min, double x_max, double y_min, double y_max, double z_min, double z_max, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Changes the visual representation for all actors to surface representation. */
         # void setRepresentationToSurfaceForAllActors ();
@@ -1180,7 +1166,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] cloud is the rendered point cloud
         #   */
         # void renderView (int xres, int yres, pcl::PointCloud<pcl::PointXYZ>::Ptr & cloud);
-        # void renderView (int xres, int yres, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] & cloud)
+        # void renderView (int xres, int yres, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &cloud)
         
         # /** \brief The purpose of this method is to render a CAD model added to the visualizer from different viewpoints
         #   * in order to simulate partial views of model. The viewpoint locations are the vertices of a tesselated sphere
@@ -1203,6 +1189,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #     std::vector<pcl::PointCloud<pcl::PointXYZ>,Eigen::aligned_allocator< pcl::PointCloud<pcl::PointXYZ> > > & cloud,
         #     std::vector<Eigen::Matrix4f,Eigen::aligned_allocator< Eigen::Matrix4f > > & poses, std::vector<float> & enthropies, int tesselation_level,
         #     float view_angle = 45, float radius_sphere = 1, bool use_vertices = true);
+        # void renderViewTesselatedSphere (
+        #       int xres, int yres,vector[cpp.PointCloud[cpp.PointXYZ]], eigen3.aligned_allocator[cpp.PointCloud[cpp.PointXYZ]]] &cloud,
+        #       vector[eigen3.Matrix4f, eigen3.aligned_allocator[eigen3.Matrix4f]] &poses, vector[float] &enthropies, int tesselation_level,
+        #       float view_angl, float radius_sphere, bool use_vertices)
         
         # /** \brief Camera view, window position and size. */
         # Camera camera_;
@@ -1261,9 +1251,11 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         
         # /** \brief Get the current camera parameters. */
         # void getCameras (std::vector<Camera>& cameras);
+        # void getCameras (vector[Camera]& cameras)
         
         # /** \brief Get the current viewing pose. */
         # Eigen::Affine3f getViewerPose ();
+        # eigen3.Affine3f getViewerPose ()
         
         # /** \brief Save the current rendered image to disk, as a PNG screenshot.
         #   * \param[in] file the name of the PNG file
@@ -1275,13 +1267,13 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         
         # /** \brief Create the internal Interactor object. */
         # void createInteractor ();
+        void createInteractor ()
         
         # /** \brief Set up our unique PCL interactor style for a given vtkRenderWindowInteractor object
         #   * attached to a given vtkRenderWindow
         #   * \param[in,out] iren the vtkRenderWindowInteractor object to set up
         #   * \param[in,out] win a vtkRenderWindow object that the interactor is attached to
-        # void setupInteractor (vtkRenderWindowInteractor *iren,
-        #                  vtkRenderWindow *win);
+        # void setupInteractor (vtkRenderWindowInteractor *iren, vtkRenderWindow *win);
         
         # /** \brief Get a pointer to the current interactor style used. */
         # inline vtkSmartPointer<PCLVisualizerInteractorStyle> getInteractorStyle ()
@@ -2649,8 +2641,11 @@ ctypedef shared_ptr[PointCloudColorHandlerRandom[cpp.PointXYZRGBA]] PointCloudCo
 # class PointCloudColorHandlerRGBField : public PointCloudColorHandler<PointT>
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerRGBField[PointT](PointCloudColorHandler[PointT]):
-        PointCloudColorHandlerRGBField ()
-
+        # PointCloudColorHandlerRGBField ()
+        # /** \brief Constructor. */
+        # PointCloudColorHandlerRGBField (const PointCloudConstPtr &cloud);
+        PointCloudColorHandlerRGBField (const shared_ptr[cpp.PointCloud[PointT]] &cloud)
+        
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2688,7 +2683,11 @@ ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZRGBA]] PointCloud
 # class PointCloudColorHandlerHSVField : public PointCloudColorHandler<PointT>
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerHSVField[PointT](PointCloudColorHandler[PointT]):
-        PointCloudColorHandlerHSVField ()
+        # PointCloudColorHandlerHSVField ()
+        # /** \brief Constructor. */
+        # PointCloudColorHandlerHSVField (const PointCloudConstPtr &cloud);
+        PointCloudColorHandlerHSVField (const shared_ptr[cpp.PointCloud[PointT]] &cloud)
+        
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
@@ -2696,8 +2695,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
         # typedef boost::shared_ptr<PointCloudColorHandlerHSVField<PointT> > Ptr;
         # typedef boost::shared_ptr<const PointCloudColorHandlerHSVField<PointT> > ConstPtr;
         
-        # /** \brief Constructor. */
-        # PointCloudColorHandlerHSVField (const PointCloudConstPtr &cloud);
+        
         
         # /** \brief Get the name of the field used. */
         # virtual std::string getFieldName () const { return ("hsv"); }
@@ -2726,15 +2724,16 @@ ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGBA]] PointCloud
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
     cdef cppclass PointCloudColorHandlerGenericField[PointT](PointCloudColorHandler[PointT]):
         PointCloudColorHandlerGenericField ()
+        # /** \brief Constructor. */
+        # PointCloudColorHandlerGenericField (const PointCloudConstPtr &cloud, const std::string &field_name);
+        PointCloudColorHandlerGenericField (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const string &field_name)
+        
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
         # typedef typename PointCloud::Ptr PointCloudPtr;
         # typedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # public:
         # typedef boost::shared_ptr<PointCloudColorHandlerGenericField<PointT> > Ptr;
         # typedef boost::shared_ptr<const PointCloudColorHandlerGenericField<PointT> > ConstPtr;
-        
-        # /** \brief Constructor. */
-        # PointCloudColorHandlerGenericField (const PointCloudConstPtr &cloud, const std::string &field_name);
         
         # /** \brief Destructor. */
         # virtual ~PointCloudColorHandlerGenericField () {}
