@@ -301,15 +301,18 @@ void mpcl_features_NormalEstimationMethod_SIMPLE_3D_GRADIENT(pcl::IntegralImageN
 void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne, pcl::PointCloud<pcl::Normal> &out)
 {
     // OK
-    printf("Address : %p.\n", ne);
+    // printf("Address : %p.\n", ne);
     
     // Exception
     // printf("%p", out);
-    // pcl::PointCloud<pcl::Normal> out2 = new pcl::PointCloud<pcl::Normal>();
     
     printf("compute start.\n");
-    ne.compute (out);
-    // ne.compute (out2);
+    // 参照カウントでNG?(関数抜けた時にエラー)
+    // ne.compute (out);
+    pcl::PointCloud<pcl::Normal> out2;
+    ne.compute (out2);
+    &out = out2.makeShared().get();
+    printf("out = %p.\n", out);
     printf("compute end.\n");
 }
 

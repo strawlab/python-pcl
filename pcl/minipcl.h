@@ -78,13 +78,11 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
 // // HarrisKeypoint3D
 // // NG(outcloud pcl::PointXYZI)
-// void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
-//                                    pcl::PointCloud<pcl::PointXYZ> *outcloud);
+// void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud, pcl::PointCloud<pcl::PointXYZ> *outcloud);
 // 
 // 
 // // HarrisKeypoint3D
-// void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
-//                                    pcl::PointCloud<pcl::PointXYZI> *outcloud);
+// void mpcl_extract_HarrisKeypoint3D(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud, pcl::PointCloud<pcl::PointXYZI> *outcloud);
 
 
 // Features
@@ -95,4 +93,5 @@ void mpcl_features_NormalEstimationMethod_AVERAGE_DEPTH_CHANGE(pcl::IntegralImag
 void mpcl_features_NormalEstimationMethod_SIMPLE_3D_GRADIENT(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne);
 void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal> ne, pcl::PointCloud<pcl::Normal> &out);
 
-#endif
+#endif // _MINIPCL_H_
+
