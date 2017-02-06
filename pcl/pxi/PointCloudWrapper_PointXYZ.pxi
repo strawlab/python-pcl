@@ -385,7 +385,6 @@ cdef class PointCloud:
     def make_IntegralImageNormalEstimation(self):
         """
         Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
-
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         # proj = IntegralImageNormalEstimation()

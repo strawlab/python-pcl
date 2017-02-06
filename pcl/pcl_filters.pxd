@@ -109,11 +109,11 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # /** \brief Get the point indices being removed */
         cpp.IndicesPtr_t getRemovedIndices ()
+        
         # \brief Calls the filtering method and returns the filtered dataset in output.
         # \param[out] output the resultant filtered point cloud dataset
         void filter (cpp.PointCloud[T] &output)
 
-#
 
 ctypedef shared_ptr[Filter[cpp.PointXYZ]] FilterPtr_t
 ctypedef shared_ptr[Filter[cpp.PointXYZI]] Filter_PointXYZI_Ptr_t
@@ -537,7 +537,11 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         ConditionalRemoval (ConditionBase_PointXYZI_Ptr_t condition, bool extract_removed_indices = false)
         ConditionalRemoval (ConditionBase_PointXYZRGB_Ptr_t condition, bool extract_removed_indices = false)
         ConditionalRemoval (ConditionBase_PointXYZRGBA_Ptr_t condition, bool extract_removed_indices = false)
-
+        # [with PointT = pcl::PointXYZ, pcl::ConditionalRemoval<PointT>::ConditionBasePtr = boost::shared_ptr<pcl::ConditionBase<pcl::PointXYZ> >]
+        # is deprecated (declared at /usr/include/pcl-1.7/pcl/filters/conditional_removal.h:632): ConditionalRemoval(ConditionBasePtr condition, bool extract_removed_indices = false) is deprecated, 
+        # please use the setCondition (ConditionBasePtr condition) function instead. [-Wdeprecated-declarations]
+        # ConditionalRemoval (shared_ptr[]
+        
         # using Filter<PointT>::input_;
         # using Filter<PointT>::filter_name_;
         # using Filter<PointT>::getClassName;
@@ -773,23 +777,29 @@ cdef extern from "pcl/filters/normal_space.h" namespace "pcl":
         # /** \brief Set number of indices to be sampled.
         #   * \param[in] sample the number of sample indices
         void setSample (unsigned int sample)
+        
         # /** \brief Get the value of the internal \a sample parameter. */
         unsigned int getSample () const
+        
         #  \brief Set seed of random function.
         #   * \param[in] seed the input seed
         void setSeed (unsigned int seed)
+        
         # /** \brief Get the value of the internal \a seed parameter. */
         unsigned int getSeed () const
+        
         # /** \brief Set the number of bins in x, y and z direction
         #   * \param[in] binsx number of bins in x direction
         #   * \param[in] binsy number of bins in y direction
         #   * \param[in] binsz number of bins in z direction
         void setBins (unsigned int binsx, unsigned int binsy, unsigned int binsz)
+        
         # /** \brief Get the number of bins in x, y and z direction
         #   * \param[out] binsx number of bins in x direction
         #   * \param[out] binsy number of bins in y direction
         #   * \param[out] binsz number of bins in z direction
         void getBins (unsigned int& binsx, unsigned int& binsy, unsigned int& binsz) const
+        
         # * \brief Set the normals computed on the input point cloud
         #   * \param[in] normals the normals computed for the input cloud
         # void setNormals (const NormalsPtr &normals)

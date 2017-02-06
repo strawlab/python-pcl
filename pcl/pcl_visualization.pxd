@@ -495,8 +495,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] cloud the input point cloud dataset
         # param[in] id the point cloud object id to update (default: cloud)
         # return false if no cloud with the specified ID was found
-        # template <typename PointT> bool
-        # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const std::string &id = "cloud");
+        # template <typename PointT> bool updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const std::string &id = "cloud");
         bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, string &id)
         
         # brief Updates the XYZ data for an existing cloud object id on screen.

@@ -247,9 +247,30 @@ if platform.system() == "Windows":
         ext_args['libraries'].append(librelease)
 
     # use vtk need library(Windows base library)
+    # http://public.kitware.com/pipermail/vtkusers/2008-July/047291.html
     win_libreleases = ['kernel32', 'user32', 'gdi32', 'winspool', 'comdlg32', 'advapi32', 'shell32', 'ole32', 'oleaut32', 'uuid', 'odbc32', 'odbccp32']
     for win_librelease in win_libreleases:
         ext_args['libraries'].append(win_librelease)
+    
+    # http://www.pcl-users.org/error-in-use-PCLVisualizer-td3719235.html
+    # Download MSSDKs
+    # http://msdn.microsoft.com/en-us/windows/bb980924.aspx
+    # 
+    # http://stackoverflow.com/questions/1236670/how-to-make-opengl-apps-in-64-bits-windows
+    # C:\Program Files (x86)\Microsoft SDKs\Windows\7.0\Lib\x64\OpenGL32.lib
+    # C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\OpenGL32.lib
+    # Add OpenGL32 .h/.lib
+    win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\x64']
+    for lib_dir in win_opengl_libdirs:
+        ext_args['library_dirs'].append(lib_dir)
+
+    # win_opengl_libreleases = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\x64\\OpenGL32.lib']
+    win_opengl_libreleases = ['OpenGL32']
+    for opengl_librelease in win_opengl_libreleases:
+        ext_args['libraries'].append(opengl_librelease)
+
+    # use CUDA?
+    # CUDA_PATH
 
     # ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
     # define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],

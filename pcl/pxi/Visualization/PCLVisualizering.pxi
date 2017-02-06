@@ -43,9 +43,17 @@ cdef class PCLVisualizering:
     # <const shared_ptr[PointCloudColorHandler[PointT]]> 
     # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, PointCloudColorHandleringCustom color_handler, string id):
     #     self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, color_handler.thisptr_shared, id, 0)
+    #     self.thisptr().addPointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, color_handler.thisptr_shared, id, 0)
 
     # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal):
-    #     self.thisptr().addPointCloudNormals(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 10, 0.05, 'normals', 0)
+    #     # self.thisptr().addPointCloudNormals(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 100, 0.02, 'cloud', 0)
+    #     self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 100, 0.02, 'cloud', 0)
+    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, const string &id = "cloud", int viewport = 0):
+        self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, level, scale, id, viewport)
+
+    # def updatePointCloud(self, _pcl.PointCloud cloud, string id = 'cloud'):
+    #     flag = self.thisptr().updatePointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, id)
+    #     return flag
 
     def SetPointCloudRenderingProperties(self, int propType, int propValue, string propName = 'cloud'):
         self.thisptr().setPointCloudRenderingProperties (propType, propValue, propName, 0)

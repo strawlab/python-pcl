@@ -22,17 +22,21 @@ ne.set_MaxDepthChange_Factor(0.02)
 print ('set_NormalSmoothingSize: ')
 ne.set_NormalSmoothingSize(10.0)
 print ('set OK')
-print ('compute - start')
-normals = ne.compute(cloud)
-print ('compute - end')
+print ('compute2 - start')
+normals = ne.compute2(cloud)
+print ('compute2 - end')
+print (str(normals.size))
 
 # visualize normals
-viewer = pcl.pcl_visualization.PCLVisualizer()
+viewer = pcl.pcl_visualization.PCLVisualizering()
 viewer.SetBackgroundColor (0.0, 0.0, 0.5)
 # viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(cloud, normals);
 viewer.AddPointCloudNormals(cloud, normals)
+# viewer.AddPointCloud(cloud)
 
-while (True):
-    viewer.wasStopped ()
-    viewer.spinOnce ()
+flag = True
+while (flag):
+    flag != viewer.WasStopped ()
+    viewer.SpinOnce ()
 end
+
