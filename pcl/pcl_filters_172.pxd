@@ -33,18 +33,18 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # virtual bool evaluate (const PointT &point) const = 0;
 
 
-ctypedef ComparisonBase[cpp.PointXYZ] ComparisonBase_t
-ctypedef ComparisonBase[cpp.PointXYZI] ComparisonBase_PointXYZI_t
-ctypedef ComparisonBase[cpp.PointXYZRGB] ComparisonBase_PointXYZRGB_t
-ctypedef ComparisonBase[cpp.PointXYZRGBA] ComparisonBase_PointXYZRGBA_t
-ctypedef shared_ptr[ComparisonBase[cpp.PointXYZ]] ComparisonBasePtr_t
-ctypedef shared_ptr[ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_Ptr_t
-ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_Ptr_t
-ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZ]] ComparisonBaseConstPtr_t
-ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_ConstPtr_t
-ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_ConstPtr_t
-ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_ConstPtr_t
+# ctypedef ComparisonBase[cpp.PointXYZ] ComparisonBase_t
+# ctypedef ComparisonBase[cpp.PointXYZI] ComparisonBase_PointXYZI_t
+# ctypedef ComparisonBase[cpp.PointXYZRGB] ComparisonBase_PointXYZRGB_t
+# ctypedef ComparisonBase[cpp.PointXYZRGBA] ComparisonBase_PointXYZRGBA_t
+# ctypedef shared_ptr[ComparisonBase[cpp.PointXYZ]] ComparisonBasePtr_t
+# ctypedef shared_ptr[ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_Ptr_t
+# ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_Ptr_t
+# ctypedef shared_ptr[ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_Ptr_t
+# ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZ]] ComparisonBaseConstPtr_t
+# ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZI]] ComparisonBase_PointXYZI_ConstPtr_t
+# ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGB]] ComparisonBase_PointXYZRGB_ConstPtr_t
+# ctypedef shared_ptr[const ComparisonBase[cpp.PointXYZRGBA]] ComparisonBase_PointXYZRGBA_ConstPtr_t
 ###
 
 # conditional_removal.h
@@ -91,8 +91,6 @@ ctypedef shared_ptr[const ConditionBase[cpp.PointXYZRGB]] ConditionBase_PointXYZ
 ctypedef shared_ptr[const ConditionBase[cpp.PointXYZRGBA]] ConditionBase_PointXYZRGBA_ConstPtr_t
 ###
 
-
-
 # filter.h
 # template<typename PointT>
 # class Filter : public PCLBase<PointT>
@@ -109,11 +107,11 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
         # /** \brief Get the point indices being removed */
         cpp.IndicesPtr_t getRemovedIndices ()
+        
         # \brief Calls the filtering method and returns the filtered dataset in output.
         # \param[out] output the resultant filtered point cloud dataset
         void filter (cpp.PointCloud[T] &output)
 
-#
 
 ctypedef shared_ptr[Filter[cpp.PointXYZ]] FilterPtr_t
 ctypedef shared_ptr[Filter[cpp.PointXYZI]] Filter_PointXYZI_Ptr_t
@@ -125,22 +123,55 @@ ctypedef shared_ptr[const Filter[cpp.PointXYZRGB]] Filter_PointXYZRGB_ConstPtr_t
 ctypedef shared_ptr[const Filter[cpp.PointXYZRGBA]] Filter_PointXYZRGBA_ConstPtr_t
 ###
 
-
 # template<>
-# class PCL_EXPORTS Filter<sensor_msgs::PointCloud2> : public PCLBase<sensor_msgs::PointCloud2>
-#     public:
-#       typedef sensor_msgs::PointCloud2 PointCloud2;
-#       typedef PointCloud2::Ptr PointCloud2Ptr;
-#       typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
-#       /** \brief Empty constructor. 
-#         * \param[in] extract_removed_indices set to true if the filtered data indices should be saved in a 
-#         * separate list. Default: false.
-#       Filter (bool extract_removed_indices = false)
-#       /** \brief Get the point indices being removed */
-#       IndicesConstPtr const getRemovedIndices ()
-#       /** \brief Calls the filtering method and returns the filtered dataset in output.
-#         * \param[out] output the resultant filtered point cloud dataset
-#       void filter (PointCloud2 &output);
+# class PCL_EXPORTS FilterIndices<pcl::PCLPointCloud2> : public Filter<pcl::PCLPointCloud2>
+        # public:
+        # typedef pcl::PCLPointCloud2 PCLPointCloud2;
+        # 
+        # /** \brief Constructor.
+        #   * \param[in] extract_removed_indices Set to true if you want to extract the indices of points being removed (default = false).
+        #   */
+        # FilterIndices (bool extract_removed_indices = false) :
+        #   negative_ (false), 
+        #   keep_organized_ (false), 
+        #   user_filter_value_ (std::numeric_limits<float>::quiet_NaN ())
+        #   
+        # virtual void filter (PCLPointCloud2 &output)
+        # 
+        # /** \brief Calls the filtering method and returns the filtered point cloud indices.
+        #   * \param[out] indices the resultant filtered point cloud indices
+        #   */
+        # void filter (vector[int] &indices);
+        # 
+        # /** \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
+        #   * \param[in] negative false = normal filter behavior (default), true = inverted behavior.
+        #   */
+        # inline void setNegative (bool negative)
+        # 
+        # /** \brief Get whether the regular conditions for points filtering should apply, or the inverted conditions.
+        #   * \return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
+        #   */
+        # inline bool getNegative ()
+        # 
+        # /** \brief Set whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default: NaN),
+        #   * or removed from the PointCloud, thus potentially breaking its organized structure.
+        #   * \param[in] keep_organized false = remove points (default), true = redefine points, keep structure.
+        #   */
+        # inline void setKeepOrganized (bool keep_organized)
+        # 
+        # /** \brief Get whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default = NaN),
+        #   * or removed from the PointCloud, thus potentially breaking its organized structure.
+        #   *  \return The value of the internal \a keep_organized_ parameter; false = remove points (default), true = redefine points, keep structure.
+        #   */
+        # inline bool getKeepOrganized ()
+        # 
+        # /** \brief Provide a value that the filtered points should be set to instead of removing them.
+        #   * Used in conjunction with \a setKeepOrganized ().
+        #   * \param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
+        #   */
+        # inline void setUserFilterValue (float value)
+
+
 ###
 
 # filter_indices.h
@@ -183,6 +214,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
         # brief Get the point indices being removed
         # return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
         cpp.IndicesPtr_t getRemovedIndices ()
+
 
 ###
 
@@ -278,6 +310,8 @@ cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
         # * \brief Get the state of the internal downsampling parameter (true if
         # * all fields need to be downsampled, false if just XYZ). 
         bool getDownsampleAllData () const
+
+
 ###
 
 # bilateral.h
@@ -313,6 +347,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # * \brief Provide a pointer to the search object.
         # * \param[in] tree a pointer to the spatial search object.
         # void setSearchMethod (const KdTreePtr &tree)
+
+
 ###
 
 # clipper3D.h
@@ -354,6 +390,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # * \brief polymorphic method to clone the underlying clipper with its parameters.
         # * \return the new clipper object from the specific subclass with all its parameters.
         # virtual Clipper3D<PointT>* clone () const = 0;
+
+
 ###
 
 # NG ###
@@ -380,6 +418,7 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<FieldComparison<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const FieldComparison<PointT> > ConstPtr;
+
 
 ctypedef FieldComparison[cpp.PointXYZ] FieldComparison_t
 ctypedef FieldComparison[cpp.PointXYZI] FieldComparison_PointXYZI_t
@@ -537,7 +576,11 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         ConditionalRemoval (ConditionBase_PointXYZI_Ptr_t condition, bool extract_removed_indices = false)
         ConditionalRemoval (ConditionBase_PointXYZRGB_Ptr_t condition, bool extract_removed_indices = false)
         ConditionalRemoval (ConditionBase_PointXYZRGBA_Ptr_t condition, bool extract_removed_indices = false)
-
+        # [with PointT = pcl::PointXYZ, pcl::ConditionalRemoval<PointT>::ConditionBasePtr = boost::shared_ptr<pcl::ConditionBase<pcl::PointXYZ> >]
+        # is deprecated (declared at /usr/include/pcl-1.7/pcl/filters/conditional_removal.h:632): ConditionalRemoval(ConditionBasePtr condition, bool extract_removed_indices = false) is deprecated, 
+        # please use the setCondition (ConditionBasePtr condition) function instead. [-Wdeprecated-declarations]
+        # ConditionalRemoval (shared_ptr[]
+        
         # using Filter<PointT>::input_;
         # using Filter<PointT>::filter_name_;
         # using Filter<PointT>::getClassName;
@@ -611,58 +654,63 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         # brief Set a rotation value for the box
         # param[in] rotation the (rx,ry,rz) values that the box should be rotated by
         void setRotation (const eigen3.Vector3f &rotation)
+        
         # brief Get the value of the box rotatation parameter, as set by the user. */
         eigen3.Vector3f getRotation () const
+        
         # brief Set a transformation that should be applied to the cloud before filtering
         # param[in] transform an affine transformation that needs to be applied to the cloud before filtering
         void setTransform (const eigen3.Affine3f &transform)
+        
         # brief Get the value of the transformation parameter, as set by the user. */
         eigen3.Affine3f getTransform () const
 
-###
-
-# template<>
-# class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
-#    using Filter<sensor_msgs::PointCloud2>::filter_name_;
-#    using Filter<sensor_msgs::PointCloud2>::getClassName;
-#    typedef sensor_msgs::PointCloud2 PointCloud2;
-#    typedef PointCloud2::Ptr PointCloud2Ptr;
-#    typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
-#    public:
-#    /** \brief Empty constructor. */
-#      CropBox () :
-#      /** \brief Set the minimum point of the box
-#        * \param[in] min_pt the minimum point of the box
-#      void setMin (const Eigen::Vector4f& min_pt)
-#      /** \brief Get the value of the minimum point of the box, as set by the user
-#        * \return the value of the internal \a min_pt parameter.
-#      Eigen::Vector4f getMin () const
-#      /** \brief Set the maximum point of the box
-#        * \param[in] max_pt the maximum point of the box
-#      void setMax (const Eigen::Vector4f &max_pt)
-#      /** \brief Get the value of the maxiomum point of the box, as set by the user
-#        * \return the value of the internal \a max_pt parameter.
-#      Eigen::Vector4f getMax () const
-#      /** \brief Set a translation value for the box
-#        * \param[in] translation the (tx,ty,tz) values that the box should be translated by
-#      void setTranslation (const Eigen::Vector3f &translation)
-#      /** \brief Get the value of the box translation parameter as set by the user. */
-#      Eigen::Vector3f getTranslation () const
-#      /** \brief Set a rotation value for the box
-#        * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
-#      void setRotation (const Eigen::Vector3f &rotation)
-#      /** \brief Get the value of the box rotatation parameter, as set by the user. */
-#      Eigen::Vector3f getRotation () const
-#      /** \brief Set a transformation that should be applied to the cloud before filtering
-#        * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
-#      void setTransform (const Eigen::Affine3f &transform)
-#      /** \brief Get the value of the transformation parameter, as set by the user. */
-#      Eigen::Affine3f getTransform () const
 
 ctypedef CropBox[cpp.PointXYZ] CropBox_t
 ctypedef CropBox[cpp.PointXYZI] CropBox_PointXYZI_t
 ctypedef CropBox[cpp.PointXYZRGB] CropBox_PointXYZRGB_t
 ctypedef CropBox[cpp.PointXYZRGBA] CropBox_PointXYZRGBA_t
+###
+
+# Sensor
+# template<>
+# class PCL_EXPORTS CropBox<pcl::PCLPointCloud2> : public FilterIndices<pcl::PCLPointCloud2>
+#       using Filter<pcl::PCLPointCloud2>::filter_name_;
+#       using Filter<pcl::PCLPointCloud2>::getClassName;
+#       typedef pcl::PCLPointCloud2 PCLPointCloud2;
+#       typedef PCLPointCloud2::Ptr PCLPointCloud2Ptr;
+#       typedef PCLPointCloud2::ConstPtr PCLPointCloud2ConstPtr;
+#       public:
+#       /** \brief Empty constructor. */
+#       CropBox () :
+#       /** \brief Set the minimum point of the box
+#        * \param[in] min_pt the minimum point of the box
+#       void setMin (const Eigen::Vector4f& min_pt)
+#       /** \brief Get the value of the minimum point of the box, as set by the user
+#        * \return the value of the internal \a min_pt parameter.
+#       Eigen::Vector4f getMin () const
+#       /** \brief Set the maximum point of the box
+#        * \param[in] max_pt the maximum point of the box
+#       void setMax (const Eigen::Vector4f &max_pt)
+#       /** \brief Get the value of the maxiomum point of the box, as set by the user
+#        * \return the value of the internal \a max_pt parameter.
+#       Eigen::Vector4f getMax () const
+#       /** \brief Set a translation value for the box
+#        * \param[in] translation the (tx,ty,tz) values that the box should be translated by
+#       void setTranslation (const Eigen::Vector3f &translation)
+#       /** \brief Get the value of the box translation parameter as set by the user. */
+#       Eigen::Vector3f getTranslation () const
+#       /** \brief Set a rotation value for the box
+#         * \param[in] rotation the (rx,ry,rz) values that the box should be rotated by
+#       void setRotation (const Eigen::Vector3f &rotation)
+#       /** \brief Get the value of the box rotatation parameter, as set by the user. */
+#       Eigen::Vector3f getRotation () const
+#       /** \brief Set a transformation that should be applied to the cloud before filtering
+#        * \param[in] transform an affine transformation that needs to be applied to the cloud before filtering
+#       void setTransform (const Eigen::Affine3f &transform)
+#       /** \brief Get the value of the transformation parameter, as set by the user. */
+#       Eigen::Affine3f getTransform () const
+
 
 ###
 
@@ -682,30 +730,34 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         # param[in] polygons Vector of polygons (Vertices structures) forming
         # the hull used for filtering points.
         void setHullIndices (const vector[cpp.Vertices]& polygons)
+        
         # brief Get the vertices of the hull used to filter points.
         vector[cpp.Vertices] getHullIndices () const
+        
         # \brief Set the point cloud that the hull indices refer to
         # \param[in] points the point cloud that the hull indices refer to
         void setHullCloud (cpp.PointCloudPtr_t points)
+        
         #/\brief Get the point cloud that the hull indices refer to. */
         cpp.PointCloudPtr_t getHullCloud () const
+        
         # brief Set the dimensionality of the hull to be used.
         # This should be set to correspond to the dimensionality of the
         # convex/concave hull produced by the pcl::ConvexHull and
         # pcl::ConcaveHull classes.
         # param[in] dim Dimensionailty of the hull used to filter points.
         void setDim (int dim)
-
+		
         # \brief Remove points outside the hull (default), or those inside the hull.
         # \param[in] crop_outside If true, the filter will remove points
         # outside the hull. If false, those inside will be removed.
         void setCropOutside(bool crop_outside)
 
+
 ctypedef CropHull[cpp.PointXYZ] CropHull_t
 ctypedef CropHull[cpp.PointXYZI] CropHull_PointXYZI_t
 ctypedef CropHull[cpp.PointXYZRGB] CropHull_PointXYZRGB_t
 ctypedef CropHull[cpp.PointXYZRGBA] CropHull_PointXYZRGBA_t
-
 ###
 
 # extract_indices.h
@@ -773,23 +825,29 @@ cdef extern from "pcl/filters/normal_space.h" namespace "pcl":
         # /** \brief Set number of indices to be sampled.
         #   * \param[in] sample the number of sample indices
         void setSample (unsigned int sample)
+        
         # /** \brief Get the value of the internal \a sample parameter. */
         unsigned int getSample () const
+        
         #  \brief Set seed of random function.
         #   * \param[in] seed the input seed
         void setSeed (unsigned int seed)
+        
         # /** \brief Get the value of the internal \a seed parameter. */
         unsigned int getSeed () const
+        
         # /** \brief Set the number of bins in x, y and z direction
         #   * \param[in] binsx number of bins in x direction
         #   * \param[in] binsy number of bins in y direction
         #   * \param[in] binsz number of bins in z direction
         void setBins (unsigned int binsx, unsigned int binsy, unsigned int binsz)
+        
         # /** \brief Get the number of bins in x, y and z direction
         #   * \param[out] binsx number of bins in x direction
         #   * \param[out] binsy number of bins in y direction
         #   * \param[out] binsz number of bins in z direction
         void getBins (unsigned int& binsx, unsigned int& binsy, unsigned int& binsz) const
+        
         # * \brief Set the normals computed on the input point cloud
         #   * \param[in] normals the normals computed for the input cloud
         # void setNormals (const NormalsPtr &normals)

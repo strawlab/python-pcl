@@ -6,14 +6,13 @@
 # pcl1.6 - NG
 # python examples\official\Features\moment_of_inertia.py
 # python examples\official\Features\rops_feature.py
-# pcl1.6
-python examples\official\Features\NormalEstimationUsingIntegralImages.py
+# pcl1.6 - NG(Leak Error)
+# python examples\official\Features\NormalEstimationUsingIntegralImages.py
 ###
 
 # Filtering
 python examples\official\Filtering\PassThroughFilter.py
 python examples\official\Filtering\project_inliers.py
-
 python examples\official\Filtering\remove_outliers.py -r Radius
 # MemoryLeak?
 python examples\official\Filtering\remove_outliers.py -r Condition
@@ -47,7 +46,8 @@ python examples\official\keypoints\narf_keypoint_extraction.py
 # Exception ignored in: 'pcl._pcl.to_point_t'
 # TypeError: a float is required
 python examples\official\octree\octree_search.py
-python examples\official\octree\octree_change_detection_172.py
+# pcl 1.6 - NG
+# python examples\official\octree\octree_change_detection_172.py
 ###
 
 # RangeImage

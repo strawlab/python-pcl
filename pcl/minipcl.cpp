@@ -308,10 +308,7 @@ void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstima
     
     printf("compute start.\n");
     // 参照カウントでNG?(関数抜けた時にエラー)
-    // ne.compute (out);
-    pcl::PointCloud<pcl::Normal> out2;
-    ne.compute (out2);
-    &out = out2.makeShared().get();
+    ne.compute (out);
     printf("out = %p.\n", out);
     printf("compute end.\n");
 }

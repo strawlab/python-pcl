@@ -60,21 +60,23 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # ctypedef boost::shared_ptr<ConditionBase<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionBase<PointT> > ConstPtr;
         
-        # NG : evaluate is virtual Function
+        # NG(Cython 24.0.1) : evaluate is virtual Function
         # void addComparison (ComparisonBase[T] comparison)
         # void addComparison (const ComparisonBase[T] comparison)
-        # use Const define
-        void addComparison (ComparisonBaseConstPtr_t comparison)
-        void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison)
-        void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison)
-        void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison)
+        # void addComparison (ComparisonBaseConstPtr_t comparison)
+        # void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison)
+        # void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison)
+        # void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison)
         # void addComparison (FieldComparison[T] comparison)
+        void addComparison (shared_ptr[ComparisonBase[T]] comparison)
         
-        # void addCondition (Ptr condition);
-        # void addCondition (ConditionBasePtr_t condition);
-        # void addCondition (ConditionBase_PointXYZI_Ptr_t condition);
-        # void addCondition (ConditionBase_PointXYZRGB_Ptr_t condition);
-        # void addCondition (ConditionBase_PointXYZRGBA_Ptr_t condition);
+        # void addCondition (Ptr condition)
+        # void addCondition (ConditionBasePtr_t condition)
+        # void addCondition (ConditionBase_PointXYZI_Ptr_t condition)
+        # void addCondition (ConditionBase_PointXYZRGB_Ptr_t condition)
+        # void addCondition (ConditionBase_PointXYZRGBA_Ptr_t condition)
+        void addCondition (shared_ptr[ConditionBase[T]] condition)
+        
         bool isCapable ()
 
 ctypedef ConditionBase[cpp.PointXYZ] ConditionBase_t
@@ -90,8 +92,6 @@ ctypedef shared_ptr[const ConditionBase[cpp.PointXYZI]] ConditionBase_PointXYZI_
 ctypedef shared_ptr[const ConditionBase[cpp.PointXYZRGB]] ConditionBase_PointXYZRGB_ConstPtr_t
 ctypedef shared_ptr[const ConditionBase[cpp.PointXYZRGBA]] ConditionBase_PointXYZRGBA_ConstPtr_t
 ###
-
-
 
 # filter.h
 # template<typename PointT>
@@ -124,7 +124,6 @@ ctypedef shared_ptr[const Filter[cpp.PointXYZI]] Filter_PointXYZI_ConstPtr_t
 ctypedef shared_ptr[const Filter[cpp.PointXYZRGB]] Filter_PointXYZRGB_ConstPtr_t
 ctypedef shared_ptr[const Filter[cpp.PointXYZRGBA]] Filter_PointXYZRGBA_ConstPtr_t
 ###
-
 
 # template<>
 # class PCL_EXPORTS Filter<sensor_msgs::PointCloud2> : public PCLBase<sensor_msgs::PointCloud2>
@@ -183,6 +182,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
         # brief Get the point indices being removed
         # return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
         cpp.IndicesPtr_t getRemovedIndices ()
+
 
 ###
 
@@ -278,6 +278,8 @@ cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
         # * \brief Get the state of the internal downsampling parameter (true if
         # * all fields need to be downsampled, false if just XYZ). 
         bool getDownsampleAllData () const
+
+
 ###
 
 # bilateral.h
@@ -313,6 +315,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # * \brief Provide a pointer to the search object.
         # * \param[in] tree a pointer to the spatial search object.
         # void setSearchMethod (const KdTreePtr &tree)
+
+
 ###
 
 # clipper3D.h
@@ -354,6 +358,8 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # * \brief polymorphic method to clone the underlying clipper with its parameters.
         # * \return the new clipper object from the specific subclass with all its parameters.
         # virtual Clipper3D<PointT>* clone () const = 0;
+
+
 ###
 
 # NG ###
@@ -380,6 +386,7 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<FieldComparison<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const FieldComparison<PointT> > ConstPtr;
+
 
 ctypedef FieldComparison[cpp.PointXYZ] FieldComparison_t
 ctypedef FieldComparison[cpp.PointXYZI] FieldComparison_PointXYZI_t

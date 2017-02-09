@@ -7,6 +7,8 @@ import numpy as np
 import random
 import argparse
 
+import pcl.pcl_visualization
+
 # -----Parameters-----
 angular_resolution = 0.5
 # pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
@@ -175,13 +177,13 @@ if setUnseenToMaxRange == True:
 # // PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 150, 150, 150);
 # // viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
 # // viewer.setPointCloudRenderingProperties (PCL_VISUALIZER_POINT_SIZE, 2, "range image");
-
-viewer = pcl.PCLVisualizering("3D Viewer")
-viewer.setBackgroundColor (1, 1, 1)
-range_image_color_handler = pcl.PointCloudColorHandlerCustoms (0, 0, 0)
-viewer.AddPointCloud (range_image_ptr, range_image_color_handler, "range image")
-viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SIZE, 1, "range image")
-
+viewer = pcl.pcl_visualization.PCLVisualizering("3D Viewer")
+viewer.SetBackgroundColor (1.0, 1.0, 1.0)
+range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (point_cloud, 0, 0, 0)
+viewer.AddPointCloud (range_image, range_image_color_handler, 'range image')
+# viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, propName = 'range image')
+# NG - ([setPointCloudRenderingProperties] Could not find any PointCloud datasets with id <cloud>!)
+# viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1)
 
 
 ##
@@ -189,8 +191,6 @@ viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SI
 # pcl::RangeImageBorderExtractor border_extractor (&range_image);
 # pcl::PointCloud<pcl::BorderDescription> border_descriptions;
 # border_extractor.compute (border_descriptions);
-
-
 
 ##
 # // ----------------------------------
@@ -249,3 +249,10 @@ viewer.setPointCloudRenderingProperties (pclvisualizationPCL_VISUALIZER_POINT_SI
 # viewer.spinOnce ();
 # pcl_sleep(0.01);
 # }
+
+flag = True
+while flag:
+    flag != viewer.WasStopped ()
+    viewer.SpinOnce ()
+end
+

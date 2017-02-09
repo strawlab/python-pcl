@@ -3,7 +3,7 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
-cimport pcl_visualization as pclvis
+cimport pcl_visualization_defs as pclvis
 from boost_shared_ptr cimport sp_assign
 
 cdef class CloudViewing:

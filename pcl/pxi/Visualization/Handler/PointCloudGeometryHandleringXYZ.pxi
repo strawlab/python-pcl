@@ -3,7 +3,7 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
-cimport pcl_visualization as pcl_vis
+cimport pcl_visualization_defs as pcl_vis
 from boost_shared_ptr cimport sp_assign
 
 cdef class PointCloudGeometryHandleringXYZ:
