@@ -158,7 +158,7 @@ build_script:
   - ls "%PYTHON%"
   - ls "%PYTHON%\DLLs"
   
-  - "%CMD_IN_ENV% pip install Cython==0.24"
+  - "%CMD_IN_ENV% pip install Cython==0.25"
   - "%CMD_IN_ENV% pip install numpy"
   
   - "%CMD_IN_ENV% python sys_path_check.py"
