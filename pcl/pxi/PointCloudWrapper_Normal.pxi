@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
+import numpy as np
 cimport numpy as cnp
+
+cnp.import_array()
 
 from libcpp cimport bool
 cimport indexing as idx

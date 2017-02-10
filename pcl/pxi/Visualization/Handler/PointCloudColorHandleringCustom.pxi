@@ -6,7 +6,7 @@ from _pcl cimport PointCloudWrapper_PointWithViewpoint
 # from _pcl cimport RangeImage
 cimport pcl_defs as cpp
 cimport numpy as cnp
-
+
 cimport pcl_visualization_defs as pcl_vis
 from boost_shared_ptr cimport sp_assign
 

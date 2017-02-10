@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # main
 cimport pcl_defs as cpp
+import numpy as np
 cimport numpy as cnp
+
+cnp.import_array()
 
 # parts
 cimport pcl_features_172 as pclftr
