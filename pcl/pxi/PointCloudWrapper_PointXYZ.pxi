@@ -482,14 +482,10 @@ cdef class PointCloud:
         """
         Return a pcl.PointCloud object with this object set as the input-cloud
         """
-        cdef PointCloud result
-        # result = pcl.PointCloud_PointXYZI()
-        # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
-        # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr_shared)
         harris = HarrisKeypoint3D(self)
-        # cdef keypt.HarrisKeypoint3DPtr_t *charris = <keypt.HarrisKeypoint3DPtr_t *>harris.me
+        # harris = HarrisKeypoint3D()
+        # cdef keypt.HarrisKeypoint3D_t *charris = <keypt.HarrisKeypoint3D_t *>harris.me
         # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
         return harris
 
     def make_NormalEstimation(self):

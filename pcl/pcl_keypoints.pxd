@@ -74,7 +74,8 @@ cdef extern from "pcl/keypoints/keypoint.h" namespace "pcl":
         # param indices the resultant vector of indices representing the k-nearest neighbors
         # param distances the resultant vector of distances representing the distances from the query point to the
         # k-nearest neighbors
-        inline int searchForNeighbors (int index, double parameter, vector[int] &indices, vector[float] &distances)
+        # inline int searchForNeighbors (int index, double parameter, vector[int] &indices, vector[float] &distances)
+        int searchForNeighbors (int index, double parameter, vector[int] &indices, vector[float] &distances)
 
 
 ###
@@ -101,6 +102,7 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # param[in] type
         # void setMethod (ResponseMethod type)
         # void setMethod (ResponseMethod2 type)
+        void setMethod (int type)
         
         # * \brief Set the radius for normal estimation and non maxima supression.
         # * \param[in] radius
@@ -126,7 +128,7 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # * \brief Set normals if precalculated normals are available.
         # * \param normals
         # void setNormals (const PointCloudNPtr &normals)
-        # void setNormals (const PointCloud[NormalT] &normals)
+        # void setNormals (const cpp.PointCloud[NormalT] &normals)
         
         # * \brief Provide a pointer to a dataset to add additional information
         # * to estimate the features for every point in the input dataset.  This
@@ -135,6 +137,7 @@ cdef extern from "pcl/keypoints/harris_keypoint3D.h" namespace "pcl":
         # * need to compute the features for a downsampled cloud.
         # * \param[in] cloud a pointer to a PointCloud message
         # virtual void setSearchSurface (const PointCloudInConstPtr &cloud)
+        # void setSearchSurface (const PointCloudInConstPtr &cloud)
         
         # * \brief Initialize the scheduler and set the number of threads to use.
         # * \param nr_threads the number of hardware threads to use (-1 sets the value back to automatic)
@@ -322,10 +325,11 @@ ctypedef shared_ptr[UniformSampling[cpp.PointXYZRGBA]] UniformSampling_PointXYZR
 ###############################################################################
 
 # 1.6.0
+# NG : use Template parameters Class Internal
 # typedef enum {HARRIS = 1, NOBLE, LOWE, TOMASI, CURVATURE} ResponseMethod;
 
 # 1.7.2
-# NG : use Template 
+# NG : use Template parameters Class Internal
 # RESPONSEMETHOD_HARRIS "pcl::HarrisKeypoint3D::HARRIS", 
 # RESPONSEMETHOD_NOBLE "pcl::HarrisKeypoint3D::NOBLE", 
 # RESPONSEMETHOD_LOWE "pcl::HarrisKeypoint3D::LOWE", 

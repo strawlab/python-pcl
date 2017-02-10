@@ -28,7 +28,7 @@ cdef class HarrisKeypoint3D:
     def __cinit__(self, PointCloud pc not None):
         self.me = new keypt.HarrisKeypoint3D_t()
         self.me.setInputCloud(pc.thisptr_shared)
-        # sp_assign(self.thisptr_shared, new keypt.HarrisKeypoint3DPtr_t())
+        # sp_assign(self.thisptr_shared, new keypt.HarrisKeypoint3D_t())
         # self.thisptr().setInputCloud(pc.thisptr_shared)
         # pass
 
@@ -45,10 +45,14 @@ cdef class HarrisKeypoint3D:
         self.me.setRadiusSearch (param)
 
     def compute(self):
-        pointXYZI = PointCloud_PointXYZI()
-        cdef cpp.PointCloud_PointXYZI_t *cPointCloudPointXYZI = <cpp.PointCloud_PointXYZI_t*>pointXYZI.thisptr()
         # compute function based KeyPoint class
         # self.thisptr().compute (deref(cPointCloudPointXYZI.makeShared().get()))
-        self.me.compute (<cpp.PointCloud[cpp.PointXYZI]> deref(cPointCloudPointXYZI.makeShared().get()))
-        return pointXYZI
+        ###
+        # OK : data 0
+        keypoints = PointCloud_PointXYZI()
+        cdef cpp.PointCloud_PointXYZI_t *ckeypoints = <cpp.PointCloud_PointXYZI_t*>keypoints.thisptr()
+        self.me.compute (<cpp.PointCloud[cpp.PointXYZI]> deref(ckeypoints.makeShared().get()))
+        # self.me.compute (ckeypoints.makeShared().get())
+        print('keypoints.count : ' + str(keypoints.size))
+        return keypoints
 
