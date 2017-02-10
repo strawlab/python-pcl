@@ -622,16 +622,25 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         # brief Set a rotation value for the box
         # param[in] rotation the (rx,ry,rz) values that the box should be rotated by
         void setRotation (const eigen3.Vector3f &rotation)
+        
         # brief Get the value of the box rotatation parameter, as set by the user. */
         eigen3.Vector3f getRotation () const
+        
         # brief Set a transformation that should be applied to the cloud before filtering
         # param[in] transform an affine transformation that needs to be applied to the cloud before filtering
         void setTransform (const eigen3.Affine3f &transform)
+        
         # brief Get the value of the transformation parameter, as set by the user. */
         eigen3.Affine3f getTransform () const
 
+
+ctypedef CropBox[cpp.PointXYZ] CropBox_t
+ctypedef CropBox[cpp.PointXYZI] CropBox_PointXYZI_t
+ctypedef CropBox[cpp.PointXYZRGB] CropBox_PointXYZRGB_t
+ctypedef CropBox[cpp.PointXYZRGBA] CropBox_PointXYZRGBA_t
 ###
 
+# Sensor
 # template<>
 # class PCL_EXPORTS CropBox<sensor_msgs::PointCloud2> : public FilterIndices<sensor_msgs::PointCloud2>
 #    using Filter<sensor_msgs::PointCloud2>::filter_name_;
@@ -670,10 +679,6 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
 #      /** \brief Get the value of the transformation parameter, as set by the user. */
 #      Eigen::Affine3f getTransform () const
 
-ctypedef CropBox[cpp.PointXYZ] CropBox_t
-ctypedef CropBox[cpp.PointXYZI] CropBox_PointXYZI_t
-ctypedef CropBox[cpp.PointXYZRGB] CropBox_PointXYZRGB_t
-ctypedef CropBox[cpp.PointXYZRGBA] CropBox_PointXYZRGBA_t
 
 ###
 
@@ -693,30 +698,34 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         # param[in] polygons Vector of polygons (Vertices structures) forming
         # the hull used for filtering points.
         void setHullIndices (const vector[cpp.Vertices]& polygons)
+        
         # brief Get the vertices of the hull used to filter points.
         vector[cpp.Vertices] getHullIndices () const
+        
         # \brief Set the point cloud that the hull indices refer to
         # \param[in] points the point cloud that the hull indices refer to
         void setHullCloud (cpp.PointCloudPtr_t points)
+        
         #/\brief Get the point cloud that the hull indices refer to. */
         cpp.PointCloudPtr_t getHullCloud () const
+        
         # brief Set the dimensionality of the hull to be used.
         # This should be set to correspond to the dimensionality of the
         # convex/concave hull produced by the pcl::ConvexHull and
         # pcl::ConcaveHull classes.
         # param[in] dim Dimensionailty of the hull used to filter points.
         void setDim (int dim)
-
+		
         # \brief Remove points outside the hull (default), or those inside the hull.
         # \param[in] crop_outside If true, the filter will remove points
         # outside the hull. If false, those inside will be removed.
         void setCropOutside(bool crop_outside)
 
+
 ctypedef CropHull[cpp.PointXYZ] CropHull_t
 ctypedef CropHull[cpp.PointXYZI] CropHull_PointXYZI_t
 ctypedef CropHull[cpp.PointXYZRGB] CropHull_PointXYZRGB_t
 ctypedef CropHull[cpp.PointXYZRGBA] CropHull_PointXYZRGBA_t
-
 ###
 
 # extract_indices.h

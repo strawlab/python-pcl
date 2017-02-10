@@ -41,8 +41,8 @@ cdef class PCLVisualizering:
     def SetBackgroundColor (self, int r, int g, int b):
         self.thisptr().setBackgroundColor(r, g, b, 0)
 
-    # def AddPointCloud (self, _pcl.PointCloud cloud, string id, int viewport):
-    def AddPointCloud (self, _pcl.PointCloud cloud, string id = "cloud", int viewport = 0):
+    # def AddPointCloud (self, _pcl.PointCloud cloud, str id, int viewport):
+    def AddPointCloud (self, _pcl.PointCloud cloud, string id = 'cloud', int viewport = 0):
         # NG : Cython 25.0.2
         # self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, id, viewport)
         # self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <string> id, <int> viewport)
@@ -55,17 +55,17 @@ cdef class PCLVisualizering:
         self.thisptr().addPointCloud(cloud.thisptr_shared, id, viewport)
 
     # <const shared_ptr[PointCloudColorHandler[PointT]]> 
-    # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id, int viewport = 0):
-    # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = "cloud", int viewport = 0):
-    def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, char* id, int viewport = 0):
+    def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
+    # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, str id = 'cloud', int viewport = 0):
         # NG : Base Class
         # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandler[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         # OK? : Inheritance Class(PointCloudColorHandler)
+        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         pass
 
     # <const shared_ptr[PointCloudGeometryHandler[PointT]]> 
-    # def AddPointCloud_GeometryHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudGeometryHandleringCustom color_handler, string id = "cloud", int viewport = 0):
+    # def AddPointCloud_GeometryHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudGeometryHandleringCustom color_handler, str id = 'cloud', int viewport = 0):
         # NG
         # self.thisptr().addPointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, color_handler.thisptr_shared, id, 0)
         # self.thisptr().addPointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, deref(color_handler.thisptr_shared), id, 0)
@@ -85,7 +85,7 @@ cdef class PCLVisualizering:
     # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal):
     #     # self.thisptr().addPointCloudNormals(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 100, 0.02, 'cloud', 0)
     #     self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 100, 0.02, 'cloud', 0)
-    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, const string &id = "cloud", int viewport = 0):
+    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, const string &id = 'cloud', int viewport = 0):
         self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, level, scale, id, viewport)
 
     # def updatePointCloud(self, _pcl.PointCloud cloud, string id = 'cloud'):

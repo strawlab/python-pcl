@@ -283,16 +283,18 @@ cdef extern from "pcl/keypoints/smoothed_surfaces_keypoint.h" namespace "pcl":
     cdef cppclass SmoothedSurfacesKeypoint[In, Out](Keypoint[In, Out]):
         SmoothedSurfacesKeypoint ()
         # public:
-        # void addSmoothedPointCloud (const PointCloudTConstPtr &cloud,
-        #                      const PointCloudNTConstPtr &normals,
-        #                      KdTreePtr &kdtree,
-        #                      float &scale);
+        # void addSmoothedPointCloud (const PointCloudTConstPtr &cloud, const PointCloudNTConstPtr &normals, KdTreePtr &kdtree, float &scale);
+        
         void resetClouds ()
         
         # inline void setNeighborhoodConstant (float neighborhood_constant)
+        
         # inline float getNeighborhoodConstant ()
+        
         # inline void setInputNormals (const PointCloudNTConstPtr &normals)
+        
         # inline void setInputScale (float input_scale)
+        
         # void detectKeypoints (PointCloudT &output);
 
 

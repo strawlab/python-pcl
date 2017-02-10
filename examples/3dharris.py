@@ -7,22 +7,23 @@ import pcl.pcl_visualization
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 # pcl::io::loadPCDFile<pcl::PointXYZ> (argv[1], *cloud);
 # cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
-cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+# cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+cloud = pcl.load('./bunny.pcd')
+print("cloud points : " + str(cloud.size))
 
 # pcl::HarrisKeypoint3D<pcl::PointXYZ, pcl::PointXYZI> detector;
 # detector.setNonMaxSupression (true);
 # detector.setRadius (0.01);
 # //detector.setRadiusSearch (100);
 # detector.setInputCloud(cloud);
-# //detector.SetRadiusSearch (100);
 # pcl::PointCloud<pcl::PointXYZI>::Ptr keypoints(new pcl::PointCloud<pcl::PointXYZI>());
 # detector.compute(*keypoints);
-##
-print("make_HarrisKeypoint3D start")
+###
 detector = cloud.make_HarrisKeypoint3D()
-print("make_HarrisKeypoint3D end")
 detector.set_NonMaxSupression (True)
-detector.set_Radius (0.01)
+detector.set_Radius (100)
+# detector.set_NonMaxSupression (False)
+# detector.set_Radius (0.1)
 keypoints = detector.compute()
 
 # std::cout << "keypoints detected: " << keypoints->size() << std::endl;
@@ -36,10 +37,8 @@ print("keypoints detected: " + str(keypoints.size))
 #     if ((*i).intensity>max )
 #         std::cout << (*i) << " coords: " << (*i).x << ";" << (*i).y << ";" << (*i).z << std::endl;
 #         max = (*i).intensity;
-# 
 #     if ((*i).intensity<min)
 #         min = (*i).intensity;
-# 
 #     keypoints3D->push_back(tmp);
 # 
 # std::cout << "maximal responce: "<< max << " min responce:  "<< min<<std::endl;
@@ -75,15 +74,19 @@ print("maximal responce: " + str(max) + " min responce:  " +  str(min) )
 # viewer.addPointCloud(cloud, pccolor, "testimg.png");
 # viewer.addPointCloud(keypoints3D, kpcolor,"keypoints.png");
 # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "keypoints.png");
+##
 viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
 pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(cloud, 255, 255, 255)
-# keypoints3D is 0 Count case NG
-# kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints3D, 255, 0, 0)
-kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(cloud, 255, 0, 0)
-# viewer.AddPointCloud_ColorHandler(cloud, pccolor, 'testimg.png')
-# viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor, 'keypoints.png')
+kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints3D, 255, 0, 0)
+# OK
+viewer.AddPointCloud_ColorHandler(cloud, pccolor)
+viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor)
+# viewer.AddPointCloud_ColorHandler(cloud, pccolor, "testimg.png", 0)
+# viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor, str('keypoints.png'), 0)
 # need? : AddPointCloud_ColorHandler Function Succeded
 # viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 7, 'keypoints.png')
+###
+
 
 # while (!viewer.wasStopped ())
 # {
