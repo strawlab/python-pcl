@@ -404,70 +404,62 @@ cdef extern from "pcl/features/fpfh.h" namespace "pcl":
         # * \param[out] f2 the second angular feature (angle between nq_idx and v)
         # * \param[out] f3 the third angular feature (angle between np_idx and |p_idx - q_idx|)
         # * \param[out] f4 the distance feature (p_idx - q_idx)
-        # bool 
-        # computePairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, 
-        #                    int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4);
-        # * \brief Estimate the SPFH (Simple Point Feature Histograms) individual signatures of the three angular
-        # * (f1, f2, f3) features for a given point based on its spatial neighborhood of 3D points with normals
-        # * \param[in] cloud the dataset containing the XYZ Cartesian coordinates of the two points
-        # * \param[in] normals the dataset containing the surface normals at each point in \a cloud
-        # * \param[in] p_idx the index of the query point (source)
-        # * \param[in] row the index row in feature histogramms
-        # * \param[in] indices the k-neighborhood point indices in the dataset
-        # * \param[out] hist_f1 the resultant SPFH histogram for feature f1
-        # * \param[out] hist_f2 the resultant SPFH histogram for feature f2
-        # * \param[out] hist_f3 the resultant SPFH histogram for feature f3
-        # void 
-        # computePointSPFHSignature (const pcl::PointCloud<PointInT> &cloud, 
-        #                          const pcl::PointCloud<PointNT> &normals, int p_idx, int row, 
-        #                          const std::vector<int> &indices, 
-        #                          Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3);
-        # * \brief Weight the SPFH (Simple Point Feature Histograms) individual histograms to create the final FPFH
-        # * (Fast Point Feature Histogram) for a given point based on its 3D spatial neighborhood
-        # * \param[in] hist_f1 the histogram feature vector of \a f1 values over the given patch
-        # * \param[in] hist_f2 the histogram feature vector of \a f2 values over the given patch
-        # * \param[in] hist_f3 the histogram feature vector of \a f3 values over the given patch
-        # * \param[in] indices the point indices of p_idx's k-neighborhood in the point cloud
-        # * \param[in] dists the distances from p_idx to all its k-neighbors
-        # * \param[out] fpfh_histogram the resultant FPFH histogram representing the feature at the query point
-        # void 
-        # weightPointSPFHSignature (const Eigen::MatrixXf &hist_f1, 
-        #                         const Eigen::MatrixXf &hist_f2, 
-        #                         const Eigen::MatrixXf &hist_f3, 
-        #                         const std::vector<int> &indices, 
-        #                         const std::vector<float> &dists, 
-        #                         Eigen::VectorXf &fpfh_histogram);
-        # * \brief Set the number of subdivisions for each angular feature interval.
-        # * \param[in] nr_bins_f1 number of subdivisions for the first angular feature
-        # * \param[in] nr_bins_f2 number of subdivisions for the second angular feature
-        # * \param[in] nr_bins_f3 number of subdivisions for the third angular feature
+        # bool computePairFeatures (const pcl::PointCloud<PointInT> &cloud, const pcl::PointCloud<PointNT> &normals, int p_idx, int q_idx, float &f1, float &f2, float &f3, float &f4);
+        
+        # \brief Estimate the SPFH (Simple Point Feature Histograms) individual signatures of the three angular
+        # (f1, f2, f3) features for a given point based on its spatial neighborhood of 3D points with normals
+        # \param[in] cloud the dataset containing the XYZ Cartesian coordinates of the two points
+        # \param[in] normals the dataset containing the surface normals at each point in \a cloud
+        # \param[in] p_idx the index of the query point (source)
+        # \param[in] row the index row in feature histogramms
+        # \param[in] indices the k-neighborhood point indices in the dataset
+        # \param[out] hist_f1 the resultant SPFH histogram for feature f1
+        # \param[out] hist_f2 the resultant SPFH histogram for feature f2
+        # \param[out] hist_f3 the resultant SPFH histogram for feature f3
+        # void computePointSPFHSignature (
+        #                               const pcl::PointCloud<PointInT> &cloud, 
+        #                               const pcl::PointCloud<PointNT> &normals, int p_idx, int row, 
+        #                               const std::vector<int> &indices, 
+        #                               Eigen::MatrixXf &hist_f1, Eigen::MatrixXf &hist_f2, Eigen::MatrixXf &hist_f3);
+        
+        # \brief Weight the SPFH (Simple Point Feature Histograms) individual histograms to create the final FPFH
+        # (Fast Point Feature Histogram) for a given point based on its 3D spatial neighborhood
+        # \param[in] hist_f1 the histogram feature vector of \a f1 values over the given patch
+        # \param[in] hist_f2 the histogram feature vector of \a f2 values over the given patch
+        # \param[in] hist_f3 the histogram feature vector of \a f3 values over the given patch
+        # \param[in] indices the point indices of p_idx's k-neighborhood in the point cloud
+        # \param[in] dists the distances from p_idx to all its k-neighbors
+        # \param[out] fpfh_histogram the resultant FPFH histogram representing the feature at the query point
+        # void weightPointSPFHSignature (
+        #                           const Eigen::MatrixXf &hist_f1, 
+        #                           const Eigen::MatrixXf &hist_f2, 
+        #                           const Eigen::MatrixXf &hist_f3, 
+        #                           const std::vector<int> &indices, 
+        #                           const std::vector<float> &dists, 
+        #                           Eigen::VectorXf &fpfh_histogram);
+        
+        # \brief Set the number of subdivisions for each angular feature interval.
+        # \param[in] nr_bins_f1 number of subdivisions for the first angular feature
+        # \param[in] nr_bins_f2 number of subdivisions for the second angular feature
+        # \param[in] nr_bins_f3 number of subdivisions for the third angular feature
         inline void setNrSubdivisions (int , int , int )
-         # * \brief Get the number of subdivisions for each angular feature interval. 
-        # * \param[out] nr_bins_f1 number of subdivisions for the first angular feature
-        # * \param[out] nr_bins_f2 number of subdivisions for the second angular feature
-        # * \param[out] nr_bins_f3 number of subdivisions for the third angular feature
+        
+        # \brief Get the number of subdivisions for each angular feature interval. 
+        # \param[out] nr_bins_f1 number of subdivisions for the first angular feature
+        # \param[out] nr_bins_f2 number of subdivisions for the second angular feature
+        # \param[out] nr_bins_f3 number of subdivisions for the third angular feature
         inline void getNrSubdivisions (int &, int &, int &)
-###
 
+
+ctypedef FPFHEstimation[cpp.PointXYZ, cpp.Normal, cpp.PFHSignature125] FPFHEstimation_t
+ctypedef shared_ptr[FPFHEstimation[cpp.PointXYZ, cpp.Normal, cpp.PFHSignature125]] FPFHEstimationPtr_t
 # template <typename PointInT, typename PointNT>
 # class FPFHEstimation<PointInT, PointNT, Eigen::MatrixXf> : public FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>
 # cdef extern from "pcl/features/feature.h" namespace "pcl":
 #     cdef cppclass FPFHEstimation[T, NT]:
 #         FPFHEstimation()
-#         # public:
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::k_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::nr_bins_f1_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::nr_bins_f2_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::nr_bins_f3_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::hist_f1_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::hist_f2_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::hist_f3_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::indices_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::search_parameter_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::input_;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::compute;
-#         # using FPFHEstimation<PointInT, PointNT, pcl::FPFHSignature33>::fpfh_histogram_;
-
+# ctypedef FPFHEstimation[cpp.PointXYZ, cpp.Normal, eigen3.MatrixXf] FPFHEstimation2_t
+# ctypedef shared_ptr[FPFHEstimation[cpp.PointXYZ, cpp.Normal, eigen3.MatrixXf]] FPFHEstimation2Ptr_t
 ###
 
 # fpfh_omp

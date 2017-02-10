@@ -8,6 +8,7 @@ cimport pcl_features as pclftr
 cimport pcl_filters as pclfil
 cimport pcl_io as pclio
 
+from libcpp cimport bool
 cimport indexing as idx
 
 from boost_shared_ptr cimport sp_assign

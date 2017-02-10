@@ -52,7 +52,9 @@ cdef class PCLVisualizering:
         # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, id, viewport)
         # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cython.address(cloud.thisptr_shared), <const string> id, <int> viewport)
         # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[const cpp.PointCloud[cpp.PointXYZ]]> cloud.thisptr_shared, <string> id, <int> viewport)
+        # AppVeyor TestNG
         self.thisptr().addPointCloud(cloud.thisptr_shared, id, viewport)
+        # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[const cpp.PointCloud[cpp.PointXYZ]]> cloud.thisptr_shared, <string> id, <int> viewport)
 
     # <const shared_ptr[PointCloudColorHandler[PointT]]> 
     def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):

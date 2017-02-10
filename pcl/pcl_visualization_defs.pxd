@@ -942,6 +942,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #            double r = 1.0, double g = 1.0, double b = 1.0, const std::string &id = "", int viewport = 0);
         bool addText3D[PointT](const string &text, const PointT &position, double textScale, double r, double g, double b, const string &id, int viewport)
         
+        ###
         # brief Add the estimated surface normals of a Point Cloud to screen.
         # param[in] cloud the input point cloud dataset containing XYZ data and normals
         # param[in] level display only every level'th point (default: 100)

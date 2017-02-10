@@ -2,6 +2,7 @@
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
+from libcpp cimport bool
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 from _pcl cimport PointCloud_Normal

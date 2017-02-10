@@ -25,8 +25,10 @@ cdef class VFHEstimation:
     def set_KSearch (self, int param):
         self.me.setKSearch (param)
 
+    # use PointCloud[VFHSignature308]
     # def compute(self):
-    #     cloud_normals = PointCloud[Normal]
-    #     self.me.compute (*cloud_normals)
-    #     return cloud_normals
+    #     normal = PointCloud_Normal()
+    #     cdef cpp.PointCloud_Normal_t *cNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
+    #     self.me.compute (deref(cNormal))
+    #     return normal
 

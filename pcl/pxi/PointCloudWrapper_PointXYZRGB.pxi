@@ -13,6 +13,7 @@ cimport pcl_octree as pcloct
 cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
 
+from libcpp cimport bool
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 from _pcl cimport PointCloud_PointXYZRGB

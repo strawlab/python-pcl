@@ -2,6 +2,7 @@
 cimport pcl_defs as cpp
 cimport pcl_io as pclio
 
+from libcpp cimport bool
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 # from _pcl cimport PointCloudWrapper_PointWithViewpoint

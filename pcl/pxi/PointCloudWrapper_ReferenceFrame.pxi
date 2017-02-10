@@ -15,7 +15,7 @@ cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
 cimport pcl_range_image as pcl_r_img
 
-
+from libcpp cimport bool
 cimport indexing as idx
 
 from boost_shared_ptr cimport sp_assign
