@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+cimport _pcl
 cimport pcl_defs as cpp
 cimport pcl_surface as pclsf
 cimport pcl_kdtree as pclkdt
@@ -38,12 +39,12 @@ cdef class MovingLeastSquares:
     def set_Compute_Normals(self, bool flag):
         self.me.setComputeNormals(flag)
     
-    def set_Search_Method(self, KdTree kdtree):
+    def set_Search_Method(self, _pcl.KdTree kdtree):
        # self.me.setSearchMethod(kdtree.thisptr()[0])
        # self.me.setSearchMethod(kdtree.thisptr())
        self.me.setSearchMethod(kdtree.thisptr_shared)
     
-    # def set_Search_Method(self, KdTreeFLANN kdtree):
+    # def set_Search_Method(self, _pcl.KdTreeFLANN kdtree):
     #    # self.me.setSearchMethod(kdtree.thisptr())
     #    self.me.setSearchMethod(kdtree.thisptr_shared)
     

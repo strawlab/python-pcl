@@ -1,5 +1,6 @@
-
+# -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
+cimport numpy as cnp
 
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign

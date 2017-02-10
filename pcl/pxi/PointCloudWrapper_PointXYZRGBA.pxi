@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
+cimport numpy as cnp
+
 # parts
 cimport pcl_features as pclftr
 cimport pcl_filters as pclfil

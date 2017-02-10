@@ -274,6 +274,9 @@ cdef extern from "pcl/keypoints/sift_keypoint.h" namespace "pcl":
         void setMinimumContrast (float min_contrast)
 
 
+# pcl::SIFTKeypoint<pcl::PointNormal, pcl::PointWithScale> sift;
+ctypedef SIFTKeypoint[cpp.PointNormal, cpp.PointWithScale] SIFTKeypoint_t
+ctypedef shared_ptr[SIFTKeypoint[cpp.PointNormal, cpp.PointWithScale]] SIFTKeypointPtr_t
 ###
 
 # smoothed_surfaces_keypoint.h

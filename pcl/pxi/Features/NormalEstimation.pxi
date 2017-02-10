@@ -21,11 +21,15 @@ cdef class NormalEstimation:
     def set_SearchMethod(self, KdTree kdtree):
         self.me.setSearchMethod(kdtree.thisptr_shared)
 
+    def set_RadiusSearch(self, double param):
+        self.me.setRadiusSearch(param)
+
     def set_KSearch (self, int param):
         self.me.setKSearch (param)
 
-    # def compute(self):
-    #     cloud_normals = PointCloud[Normal]
-    #     self.me.compute (*cloud_normals)
-    #     return cloud_normals
+    def compute(self):
+        normal = PointCloud_Normal()
+        cdef cpp.PointCloud_Normal_t *cNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
+        self.me.compute (deref(cNormal))
+        return normal
 

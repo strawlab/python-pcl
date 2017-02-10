@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+cimport _pcl
 cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
 from libcpp.vector cimport vector
@@ -22,10 +23,10 @@ cdef class EuclideanClusterExtraction:
     def set_MaxClusterSize(self, int max):
         self.me.setMaxClusterSize(max)
     
-    def set_SearchMethod(self, KdTree kdtree):
+    def set_SearchMethod(self, _pcl.KdTree kdtree):
         self.me.setSearchMethod(kdtree.thisptr_shared)
     
-    # def set_Search_Method(self, KdTreeFLANN kdtree):
+    # def set_Search_Method(self, _pcl.KdTreeFLANN kdtree):
     #    # self.me.setSearchMethod(kdtree.thisptr())
     #    self.me.setSearchMethod(kdtree.thisptr_shared)
     

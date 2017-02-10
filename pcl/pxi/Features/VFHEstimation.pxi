@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+cimport _pcl
 from libcpp.vector cimport vector
 from libcpp cimport bool
 
@@ -18,7 +19,7 @@ cdef class VFHEstimation:
     def __dealloc__(self):
         del self.me
 
-    def set_SearchMethod(self, KdTree kdtree):
+    def set_SearchMethod(self, _pcl.KdTree kdtree):
         self.me.setSearchMethod(kdtree.thisptr_shared)
 
     def set_KSearch (self, int param):
