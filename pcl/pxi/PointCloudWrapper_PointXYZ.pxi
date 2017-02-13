@@ -531,6 +531,7 @@ include "Filters/PassThroughFilter.pxi"
 include "Surface/MovingLeastSquares.pxi"
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
+# Octree
 include "Octree/OctreePointCloud.pxi"
 include "Octree/OctreePointCloudSearch.pxi"
 include "Octree/OctreePointCloudChangeDetector.pxi"

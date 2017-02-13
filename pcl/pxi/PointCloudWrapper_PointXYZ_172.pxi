@@ -145,10 +145,6 @@ cdef class PointCloud:
             cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
             return np.array([o.w(), o.x(), o.y(), o.z()])
 
-    # cdef inline PointCloud[PointXYZ] *thisptr(self) nogil:
-    #     # Shortcut to get raw pointer to underlying PointCloud
-    #     return self.thisptr_shared.get()
-
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
@@ -392,7 +388,6 @@ cdef class PointCloud:
     def make_IntegralImageNormalEstimation(self):
         """
         Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
-
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
         return IntegralImageNormalEstimation(self)
@@ -485,19 +480,11 @@ cdef class PointCloud:
         """
         Return a pcl.PointCloud object with this object set as the input-cloud
         """
-        cdef PointCloud result
-        
-        result = PointCloud_PointXYZI()
-        # # harris = HarrisKeypoint3D()
-        # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
-        # # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr_shared)
-        # # cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
-        # # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # # charris.setNonMaxSupression (true)
-        # # charris.setRadius (1.0)
-        # # charris.setRadiusSearch (searchRadius)
-        # # charris.compare(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> result.thisptr())
-        return result
+        harris = HarrisKeypoint3D(self)
+        # harris = HarrisKeypoint3D()
+        # cdef keypt.HarrisKeypoint3D_t *charris = <keypt.HarrisKeypoint3D_t *>harris.me
+        # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return harris
 
     def make_NormalEstimation(self):
         normalEstimation = NormalEstimation()
@@ -576,6 +563,6 @@ include "Features/IntegralImageNormalEstimation.pxi"
 include "Features/MomentOfInertiaEstimation_172.pxi"
 
 # keyPoint
-# include "KeyPoint/UniformSampling_172.pxi"
 include "KeyPoint/HarrisKeypoint3D_172.pxi"
+include "KeyPoint/UniformSampling_172.pxi"
 
