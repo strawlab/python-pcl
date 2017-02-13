@@ -4,7 +4,6 @@
 from collections import Sequence
 import numbers
 import numpy as np
-
 cimport numpy as cnp
 
 cimport pcl_common as pcl_cmn
@@ -131,9 +130,9 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 ###
 
 include "pxi/PointCloudWrapper_PointXYZ_172.pxi"
-include "pxi/PointCloudWrapper_PointXYZI.pxi"
-include "pxi/PointCloudWrapper_PointXYZRGB.pxi"
-include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
+include "pxi/PointCloudWrapper_PointXYZI_172.pxi"
+include "pxi/PointCloudWrapper_PointXYZRGB_172.pxi"
+include "pxi/PointCloudWrapper_PointXYZRGBA_172.pxi"
 include "pxi/PointCloudWrapper_PointWithViewpoint.pxi"
 # include "pxi/PointCloudWrapper_Normal.pxi"
 include "pxi/PointCloudWrapper_PointNormal.pxi"
