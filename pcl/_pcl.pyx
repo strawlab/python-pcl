@@ -4,7 +4,6 @@
 from collections import Sequence
 import numbers
 import numpy as np
-
 cimport numpy as cnp
 
 cimport pcl_common as pcl_cmn

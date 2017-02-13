@@ -16,7 +16,10 @@ import os
 import time
 
 if platform.system() == "Windows":
-
+    # Check 32bit or 64bit
+    is_64bits = sys.maxsize > 2**32
+    # if is_64bits == True
+    
     # environment Value
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -28,7 +31,7 @@ if platform.system() == "Windows":
     else:
         print("cannot find environment PCL_ROOT", file=sys.stderr)
         sys.exit(1)
-
+    
     # Add environment Value
     # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
     # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig;'
@@ -41,10 +44,10 @@ if platform.system() == "Windows":
     # print("check start")
     print(pkgconfigstr)
     # print("check end")
-
+    
     pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
-
+    
     # AppVeyor Check
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -64,13 +67,13 @@ if platform.system() == "Windows":
             for version in PCL_SUPPORTED:
                 print('    pkg-config pcl_common%s' % version, file=sys.stderr)
             sys.exit(1)
-
+    
     print(pcl_version)
     # pcl_version = '-1.6'
-
+    
     # Python Version Check
     info = sys.version_info
-
+    
     if pcl_version == '-1.6':
         # PCL 1.6.0 python Version == 3.4(>= 3.4?, 2.7 -> NG)
         # Visual Studio 2010
@@ -98,11 +101,11 @@ if platform.system() == "Windows":
     else:
         print('pcl_version Unknown')
         sys.exit(1)
-
+    
     # Add environment Value
     # os.environ["VS90COMNTOOLS"] = '%VS100COMNTOOLS%'
     # os.environ["VS90COMNTOOLS"] = '%VS120COMNTOOLS%'
-
+    
     # Find build/link options for PCL using pkg-config.
     pcl_libs = ["common", "features", "filters", "kdtree", "octree",
                 "registration", "sample_consensus", "search", "segmentation",
@@ -110,11 +113,11 @@ if platform.system() == "Windows":
     pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
     # pcl_libs += ['Eigen3']
     # print(pcl_libs)
-
+    
     ext_args = defaultdict(list)
     # set include path
     ext_args['include_dirs'].append(numpy.get_include())
-
+    
     def pkgconfig(flag, cut):
         # Equivalent in Python 2.7 (but not 2.6):
         # subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
@@ -127,7 +130,7 @@ if platform.system() == "Windows":
         # Windows
         # return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
         return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
-
+    
     # Get setting pkg-config
     # use pkg-config
     # # start
@@ -167,14 +170,14 @@ if platform.system() == "Windows":
         ext_args['include_dirs'].append(inc_dir)
     
     # end
-
+    
     # for flag in pkgconfig('--libs-only-L'):
     #     ext_args['library_dirs'].append(flag[2:])
     #
     # for flag in pkgconfig('--libs-only-other'):
     #     ext_args['extra_link_args'].append(flag)
     # end
-
+    
     # set library path
     if pcl_version == '-1.6':
         # 3rdParty(+Boost, +VTK)
@@ -195,7 +198,7 @@ if platform.system() == "Windows":
     
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
-
+    
     # set compiler flags
     # for flag in pkgconfig('--cflags-only-other'):
     #     if flag.startswith('-D'):
@@ -209,7 +212,7 @@ if platform.system() == "Windows":
     #         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
     #         continue
     #     ext_args['libraries'].append(flag.lstrip().rstrip())
-
+    
     if pcl_version == '-1.6':
         # release
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
@@ -242,10 +245,10 @@ if platform.system() == "Windows":
         # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
     else:
         libreleases = []
-
+    
     for librelease in libreleases:
         ext_args['libraries'].append(librelease)
-
+    
     # use vtk need library(Windows base library)
     # http://public.kitware.com/pipermail/vtkusers/2008-July/047291.html
     win_libreleases = ['kernel32', 'user32', 'gdi32', 'winspool', 'comdlg32', 'advapi32', 'shell32', 'ole32', 'oleaut32', 'uuid', 'odbc32', 'odbccp32']
@@ -260,43 +263,64 @@ if platform.system() == "Windows":
     # C:\Program Files (x86)\Microsoft SDKs\Windows\7.0\Lib\x64\OpenGL32.lib
     # C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\OpenGL32.lib
     # Add OpenGL32 .h/.lib
-    win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\x64']
+    if pcl_version == '-1.6':
+        if is_64bits == True:
+            # win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\x64']
+            # AppVeyor
+            win_opengl_libdirs = ['C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\x64']
+        else:
+            # win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\win32']
+            # AppVeyor
+            win_opengl_libdirs = ['C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\win32']
+    elif pcl_version == '-1.7':
+        if is_64bits == True:
+            win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0A\\Lib\\x64']
+        else:
+            win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0A\\Lib\\win32']
+    elif pcl_version == '-1.8':
+        if is_64bits == True:
+            win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.1A\\Lib\\x64']
+        else:
+            win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.1A\\Lib\\win32']
+    else:
+        pass
+    
     for lib_dir in win_opengl_libdirs:
         ext_args['library_dirs'].append(lib_dir)
-
-    # win_opengl_libreleases = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\x64\\OpenGL32.lib']
+    
     win_opengl_libreleases = ['OpenGL32']
     for opengl_librelease in win_opengl_libreleases:
         ext_args['libraries'].append(opengl_librelease)
-
+    
+    
     # use CUDA?
     # CUDA_PATH
-
+    
     # ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
     # define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
     defines = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')]
     for define in defines:
         ext_args['define_macros'].append(define)
-
+    
     ext_args['extra_compile_args'].append('/EHsc')
-
+    
     # NG
     # ext_args['extra_compile_args'].append('/NODEFAULTLIB:msvcrtd')
     # ext_args['extra_compile_args'].append('/MD')
     # ext_args['extra_compile_args'].append('/MDd')
     # ext_args['extra_compile_args'].append('/MTd')
     # ext_args['extra_compile_args'].append('/MT')
-
+    
     # include_dirs=[pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include', 'C:\\Anaconda2\\envs\\my_env\\Lib\\site-packages\\numpy\\core\\include'],
     # library_dirs=[pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib'],
     # libraries=["pcl_apps_debug", "pcl_common_debug", "pcl_features_debug", "pcl_filters_debug", "pcl_io_debug", "pcl_io_ply_debug", "pcl_kdtree_debug", "pcl_keypoints_debug", "pcl_octree_debug", "pcl_registration_debug", "pcl_sample_consensus_debug", "pcl_segmentation_debug", "pcl_search_debug", "pcl_surface_debug", "pcl_tracking_debug", "pcl_visualization_debug", "flann-gd", "flann_s-gd", "boost_chrono-vc100-mt-1_49", "boost_date_time-vc100-mt-1_49", "boost_filesystem-vc100-mt-1_49", "boost_graph-vc100-mt-1_49", "boost_graph_parallel-vc100-mt-1_49", "boost_iostreams-vc100-mt-1_49", "boost_locale-vc100-mt-1_49", "boost_math_c99-vc100-mt-1_49", "boost_math_c99f-vc100-mt-1_49", "boost_math_tr1-vc100-mt-1_49", "boost_math_tr1f-vc100-mt-1_49", "boost_mpi-vc100-mt-1_49", "boost_prg_exec_monitor-vc100-mt-1_49", "boost_program_options-vc100-mt-1_49", "boost_random-vc100-mt-1_49", "boost_regex-vc100-mt-1_49", "boost_serialization-vc100-mt-1_49", "boost_signals-vc100-mt-1_49", "boost_system-vc100-mt-1_49", "boost_thread-vc100-mt-1_49", "boost_timer-vc100-mt-1_49", "boost_unit_test_framework-vc100-mt-1_49", "boost_wave-vc100-mt-1_49", "boost_wserialization-vc100-mt-1_49", "libboost_chrono-vc100-mt-1_49", "libboost_date_time-vc100-mt-1_49", "libboost_filesystem-vc100-mt-1_49", "libboost_graph_parallel-vc100-mt-1_49", "libboost_iostreams-vc100-mt-1_49", "libboost_locale-vc100-mt-1_49", "libboost_math_c99-vc100-mt-1_49", "libboost_math_c99f-vc100-mt-1_49", "libboost_math_tr1-vc100-mt-1_49", "libboost_math_tr1f-vc100-mt-1_49", "libboost_mpi-vc100-mt-1_49", "libboost_prg_exec_monitor-vc100-mt-1_49", "libboost_program_options-vc100-mt-1_49", "libboost_random-vc100-mt-1_49", "libboost_regex-vc100-mt-1_49", "libboost_serialization-vc100-mt-1_49", "libboost_signals-vc100-mt-1_49", "libboost_system-vc100-mt-1_49", "libboost_test_exec_monitor-vc100-mt-1_49", "libboost_thread-vc100-mt-1_49", "libboost_timer-vc100-mt-1_49", "libboost_unit_test_framework-vc100-mt-1_49", "libboost_wave-vc100-mt-1_49", "libboost_wserialization-vc100-mt-1_49"],
     ## define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # define_macros=[('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')],
     # extra_compile_args=["/EHsc"],
-
+    
     print(ext_args)
-
+    
     if pcl_version == '-1.6':
         setup(name='python-pcl',
               description='pcl wrapper',
@@ -358,7 +382,7 @@ if platform.system() == "Windows":
               )
     else:
         print('no pcl install or pkg-config missed.')
-
+    
 else:
     # Not 'Windows'
     # sys.path.append('./tests')
