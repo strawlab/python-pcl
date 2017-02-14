@@ -68,6 +68,8 @@ cdef class CropBox:
         # self.me.filter(deref(outputCloud.thisptr()))
         # Cython 0.24.1 NG
         # self.me.filter(<vector[int]> outputCloud)
+        # self.me.filter(<vector[int]>& outputCloud)
+        # 1.7.2?
         self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud.thisptr()[0])
 
     # @cython.boundscheck(False)
