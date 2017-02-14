@@ -3226,13 +3226,13 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
 
 
 ctypedef NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float] NormalDistributionsTransform_t
-ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPoint_PointXYZI_t
-ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB, float] IterativeClosestPoint_PointXYZRGB_t
-ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA, float] IterativeClosestPoint_PointXYZRGBA_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPoint_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPoint_PointXYZI_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPoint_PointXYZRGB_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPoint_PointXYZRGBA_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float] NormalDistributionsTransform_PointXYZI_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZRGB, PointXYZRGB, float] NormalDistributionsTransform_PointXYZRGB_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZRGBA, PointXYZRGBA, float] NormalDistributionsTransform_PointXYZRGBA_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float]] NormalDistributionsTransform_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float]] NormalDistributionsTransform_PointXYZI_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] NormalDistributionsTransform_PointXYZRGB_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] NormalDistributionsTransform_PointXYZRGBA_t
 ###
 
 # ndt_2d.h
@@ -3301,7 +3301,6 @@ cdef extern from "pcl/registration/ndt_2d.h" namespace "pcl" nogil:
         #   * should be used.
         #   */
         #  virtual void setOptimizationStepSize (const Eigen::Vector3d& lambda) { newton_lambda_ = lambda; }
-        # 
 
 
 ###
@@ -3341,30 +3340,37 @@ cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
         #  * considered close enough to be in the same cluster (for the clustering phase of the algorithm)
         #  */
         # inline void setPositionClusteringThreshold (float clustering_position_diff_threshold)
-        # 
+        void setPositionClusteringThreshold (float clustering_position_diff_threshold)
+        
         # /** \brief Returns the parameter defining the position difference clustering parameter -
         #  * distance threshold below which two poses are considered close enough to be in the same cluster
         #    * (for the clustering phase of the algorithm)
         #  */
         # inline float getPositionClusteringThreshold ()
-        # 
+        float getPositionClusteringThreshold ()
+        
         # /** \brief Method for setting the rotation clustering parameter
         #  * \param clustering_rotation_diff_threshold rotation difference threshold below which two
         #  * poses are considered to be in the same cluster (for the clustering phase of the algorithm)
         #  */
         # inline void setRotationClusteringThreshold (float clustering_rotation_diff_threshold)
-        # 
+        void setRotationClusteringThreshold (float clustering_rotation_diff_threshold)
+        
         # /** \brief Returns the parameter defining the rotation clustering threshold
         #  */
         # inline float getRotationClusteringThreshold ()
-        # 
+        float getRotationClusteringThreshold ()
+        
         # /** \brief Method for setting the scene reference point sampling rate
         #  * \param scene_reference_point_sampling_rate sampling rate for the scene reference point
         #  */
         # inline void setSceneReferencePointSamplingRate (unsigned int scene_reference_point_sampling_rate) { scene_reference_point_sampling_rate_ = scene_reference_point_sampling_rate; }
-        # 
+        void setSceneReferencePointSamplingRate (unsigned int scene_reference_point_sampling_rate)
+        
         # /** \brief Returns the parameter for the scene reference point sampling rate of the algorithm */
         # inline unsigned int getSceneReferencePointSamplingRate ()
+        unsigned int getSceneReferencePointSamplingRate ()
+        
         # 
         # /** \brief Function that sets the search method for the algorithm
         #  * \note Right now, the only available method is the one initially proposed by
@@ -3372,14 +3378,18 @@ cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
         #  * \param search_method smart pointer to the search method to be set
         #  */
         # inline void setSearchMethod (PPFHashMapSearch::Ptr search_method)
+        # void setSearchMethod (PPFHashMapSearch::Ptr search_method)
+        
         # 
         # /** \brief Getter function for the search method of the class */
         # inline PPFHashMapSearch::Ptr getSearchMethod ()
-        # 
+        # PPFHashMapSearch::Ptr getSearchMethod ()
+        
         # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
         #  * \param cloud the input point cloud target
         #  */
         # void setInputTarget (const PointCloudTargetConstPtr &cloud);
+        # void setInputTarget (const cpp.PointCloud[Target] &cloud);
 
 
 ###
@@ -3400,31 +3410,40 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
         #  * \note Please check the PyramidHistogram class description for more details about this parameter.
         #  */
         # inline void setInputDimensionRange (std::vector<std::pair<float, float> > &dimension_range_input)
-        # 
+        # void setInputDimensionRange (vector[pair[float, float] ] &dimension_range_input)
+        
         # /** \brief Method for retrieving the input dimension range vector */
         # inline std::vector<std::pair<float, float> > getInputDimensionRange () { return dimension_range_input_; }
+        # vector[pair[float, float] ] getInputDimensionRange ()
+        
         # /** \brief Method to set the target dimension range parameter.
         #  * \note Please check the PyramidHistogram class description for more details about this parameter.
         #  */
         # inline void setTargetDimensionRange (std::vector<std::pair<float, float> > &dimension_range_target)
-        # 
+        void setTargetDimensionRange (vector[pair[float, float] ] &dimension_range_target)
+        
         # /** \brief Method for retrieving the target dimension range vector */
-        # inline std::vector<std::pair<float, float> >
-        # getTargetDimensionRange () { return dimension_range_target_; }
+        # inline std::vector<std::pair<float, float> > getTargetDimensionRange () { return dimension_range_target_; }
+        vector[pair[float, float] ] getTargetDimensionRange ()
+        
         # /** \brief Provide a pointer to the feature representation to use to convert features to k-D vectors.
         #  * \param feature_representation the const boost shared pointer to a PointRepresentation
         #  */
         # inline void setPointRepresentation (const FeatureRepresentationConstPtr& feature_representation) { feature_representation_ = feature_representation; }
-        # 
+        # void setPointRepresentation (const FeatureRepresentationConstPtr& feature_representation)
+        
         # /** \brief Get a pointer to the feature representation used when converting features into k-D vectors. */
         # inline FeatureRepresentationConstPtr const getPointRepresentation () { return feature_representation_; }
-        # 
+        # FeatureRepresentationConstPtr const getPointRepresentation ()
+        
         # /** \brief The central method for inserting the feature set inside the pyramid and obtaining the complete pyramid */
         # void compute ();
-        # 
+        void compute ()
+        
         # /** \brief Checks whether the pyramid histogram has been computed */
         # inline bool isComputed () { return is_computed_; }
-        # 
+        bool isComputed ()
+        
         # /** \brief Static method for comparing two pyramid histograms that returns a floating point value between 0 and 1,
         #  * representing the similiarity between the feature sets on which the two pyramid histograms are based.
         #  * \param pyramid_a Pointer to the first pyramid to be compared (needs to be computed already).
@@ -3438,27 +3457,21 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
 # sample_consensus_prerejective.h
 # namespace pcl
 # /** \brief Pose estimation and alignment class using a prerejective RANSAC routine.
-#  * 
 #  * This class inserts a simple, yet effective "prerejection" step into the standard
 #  * RANSAC pose estimation loop in order to avoid verification of pose hypotheses
 #  * that are likely to be wrong. This is achieved by local pose-invariant geometric
 #  * constraints, as also implemented in the class
 #  * \ref registration::CorrespondenceRejectorPoly "CorrespondenceRejectorPoly".
-#  * 
 #  * In order to robustly align partial/occluded models, this routine performs
 #  * fit error evaluation using only inliers, i.e. points closer than a
 #  * Euclidean threshold, which is specifiable using \ref setInlierFraction().
-#  * 
 #  * The amount of prerejection or "greedyness" of the algorithm can be specified
 #  * using \ref setSimilarityThreshold() in [0,1[, where a value of 0 means disabled,
 #  * and 1 is maximally rejective.
-#  * 
 #  * If you use this in academic work, please cite:
-#  * 
 #  * A. G. Buch, D. Kraft, J.-K. Kamarainen, H. G. Petersen and N. Kruger.
 #  * Pose Estimation using Local Structure-Specific Shape and Appearance Context.
 #  * International Conference on Robotics and Automation (ICRA), 2013.
-#  *  
 #  * \author Anders Glent Buch (andersgb1@gmail.com)
 #  * \ingroup registration
 #  */
@@ -3493,7 +3506,6 @@ cdef extern from "pcl/registration/sample_consensus_prerejective.h" namespace "p
         # typedef boost::shared_ptr<SampleConsensusPrerejective<PointSource, PointTarget, FeatureT> > Ptr;
         # typedef boost::shared_ptr<const SampleConsensusPrerejective<PointSource, PointTarget, FeatureT> > ConstPtr;
         # typedef typename KdTreeFLANN<FeatureT>::Ptr FeatureKdTreePtr;
-        # 
         # typedef pcl::registration::CorrespondenceRejectorPoly<PointSource, PointTarget> CorrespondenceRejectorPoly;
         # typedef typename CorrespondenceRejectorPoly::Ptr CorrespondenceRejectorPolyPtr;
         # typedef typename CorrespondenceRejectorPoly::ConstPtr CorrespondenceRejectorPolyConstPtr;
@@ -3515,64 +3527,74 @@ cdef extern from "pcl/registration/sample_consensus_prerejective.h" namespace "p
         #   * \param features the source point cloud's features
         #   */
         # void setSourceFeatures (const FeatureCloudConstPtr &features);
-        # 
+        # void setSourceFeatures (const shared_ptr[cpp.PointCloud[float]] &features);
+        
         # /** \brief Get a pointer to the source point cloud's features */
         # inline const FeatureCloudConstPtr getSourceFeatures () const
-        # 
+        # const shared_ptr[cpp.PointCloud[float]] getSourceFeatures ()
+        
         # /** \brief Provide a boost shared pointer to the target point cloud's feature descriptors
         #   * \param features the target point cloud's features
         #   */
         # void setTargetFeatures (const FeatureCloudConstPtr &features);
+        # void setTargetFeatures (const shared_ptr[cpp.PointCloud[float]] &features)
+        
         # 
         # /** \brief Get a pointer to the target point cloud's features */
         # inline const FeatureCloudConstPtr getTargetFeatures () const
-        # 
+        # const shared_ptr[cpp.PointCloud[float]] getTargetFeatures ()
+        
         # /** \brief Set the number of samples to use during each iteration
         #   * \param nr_samples the number of samples to use during each iteration
         #   */
         # inline void setNumberOfSamples (int nr_samples)
-        # 
+        void setNumberOfSamples (int nr_samples)
+        
         # /** \brief Get the number of samples to use during each iteration, as set by the user */
         # inline int  getNumberOfSamples () const
-        # 
+        int  getNumberOfSamples ()
+        
         # /** \brief Set the number of neighbors to use when selecting a random feature correspondence.  A higher value will
         #   * add more randomness to the feature matching.
         #   * \param k the number of neighbors to use when selecting a random feature correspondence.
         #   */
         # inline void setCorrespondenceRandomness (int k)
-        # 
+        void setCorrespondenceRandomness (int k)
+        
         # /** \brief Get the number of neighbors used when selecting a random feature correspondence, as set by the user */
-        # inline int
-        # getCorrespondenceRandomness () const
-        # {
-        #   return (k_correspondences_);
-        # }
-        # 
+        # inline int getCorrespondenceRandomness () const
+        int getCorrespondenceRandomness ()
+        
         # /** \brief Set the similarity threshold in [0,1[ between edge lengths of the underlying polygonal correspondence rejector object,
         #  * where 1 is a perfect match
         #  * \param similarity_threshold edge length similarity threshold
         #  */
         # inline void setSimilarityThreshold (float similarity_threshold)
-        # 
+        void setSimilarityThreshold (float similarity_threshold)
+        
         # /** \brief Get the similarity threshold between edge lengths of the underlying polygonal correspondence rejector object,
         #  * \return edge length similarity threshold
         #  */
         # inline float getSimilarityThreshold () const
-        # 
+        float getSimilarityThreshold ()
+        
         # /** \brief Set the required inlier fraction (of the input)
         #  * \param inlier_fraction required inlier fraction, must be in [0,1]
         #  */
         # inline void setInlierFraction (float inlier_fraction)
-        # 
+        void setInlierFraction (float inlier_fraction)
+        
         # /** \brief Get the required inlier fraction
         #  * \return required inlier fraction in [0,1]
         #  */
         # inline float getInlierFraction () const
-        # 
+        float getInlierFraction ()
+        
         # /** \brief Get the inlier indices of the source point cloud under the final transformation
         #  * @return inlier indices
         #  */
         # inline const std::vector<int>& getInliers () const
+        const vector[int]& getInliers ()
 
 
 ###
@@ -3632,9 +3654,9 @@ cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl" 
         #     const pcl::Correspondences &correspondences,
         #     Eigen::Matrix4f &transformation_matrix) = 0;
 
+
 # ctypedef shared_ptr[TransformationEstimation<PointSource, PointTarget> > Ptr;
 # ctypedef shared_ptr[const TransformationEstimation<PointSource, PointTarget> > ConstPtr;
-
 ###
 
 # transformation_estimation_2D.h
