@@ -81,34 +81,33 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 Requirements
 ------------
 
-This release has been tested on Linux Mint 17 with
+This release has been tested on Linux Ubuntu 14.04 with
 
- * Python 2.7.6
+ * Python 2.7.6, 3.4.0, 3.5.2
  * pcl 1.7.2
- * Cython 0.21.2
+ * Cython 0.25.2
 
-and CentOS 6.5 with
-
- * Python 2.6.6
- * pcl 1.6.0
- * Cython 0.21
+and MacOS with
+ * Python 2.7.6, 3.4.0, 3.5.2
+ * pcl 1.7.2
+ * Cython 0.25.2
 
 and Windows with
  * (Miniconda/Anaconda) - Python 3.4
  * pcl 1.6.0(VS2010)
- * Cython 0.24
+ * Cython 0.25.2
  * Gtk+
 
 and Windows with
  * (Miniconda/Anaconda) - Python 3.5
  * pcl 1.7.2(VS2015)
- * Cython 0.24
+ * Cython 0.25.2
  * Gtk+
 
 and Windows with
  * (Miniconda/Anaconda) - Python 3.5
  * pcl 1.8.0(VS2015)
- * Cython 0.24
+ * Cython 0.25.2
  * Gtk+
 
 `Windows Gtk+ Download <http://win32builder.gnome.org/>`_ 
@@ -120,9 +119,11 @@ set Environment variable
     $(PCL Install FolderPath)
 
 2. PKG_CONFIG_PATH
-    $(PCL_ROOT)\lib\pkgconfig;$(PCL_ROOT)\3rdParty\FLANN\lib\pkgconfig;$(PCL_ROOT)\3rdParty\Eigen\lib\pkgconfig;
+    $(PCL_ROOT)/lib/pkgconfig;$(PCL_ROOT)/3rdParty/FLANN/lib/pkgconfig;$(PCL_ROOT)/3rdParty/Eigen/lib/pkgconfig;
 
 
+* use Cython 0.25.2 reason
+* `override method support version <http://cython.readthedocs.io/en/latest/src/userguide/wrapping_CPlusPlus.html/>`_
 
 A note about types
 ------------------

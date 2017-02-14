@@ -27,9 +27,7 @@ cdef class RadiusOutlierRemoval:
         # self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> pc.thisptr()[0])
         # Cython 0.24.1 NG(0.25.2 NG)
         # self.me.filter(<vector[int]> pc)
-        # pcl 1.7.2
-        # self.me.filter(<vector[int]>& pc)
-        self.me.filter(<vector[int]>& pc.thisptr()[0])
+        self.me.filter(<vector[int]&> pc)
         return pc
 
     def set_radius_search(self, double radius):
