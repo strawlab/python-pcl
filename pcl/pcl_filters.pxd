@@ -63,21 +63,11 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # NG(Cython 24.0.1) : evaluate is virtual Function
         # void addComparison (ComparisonBase[T] comparison)
         # void addComparison (const ComparisonBase[T] comparison)
-        # void addComparison (ComparisonBaseConstPtr_t comparison)
-        # void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison)
-        # void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison)
-        # void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison)
-        # void addComparison (FieldComparison[T] comparison)
+        # use Cython 0.25.2
         void addComparison (shared_ptr[ComparisonBase[T]] comparison)
-        
-        # void addCondition (Ptr condition)
-        # void addCondition (ConditionBasePtr_t condition)
-        # void addCondition (ConditionBase_PointXYZI_Ptr_t condition)
-        # void addCondition (ConditionBase_PointXYZRGB_Ptr_t condition)
-        # void addCondition (ConditionBase_PointXYZRGBA_Ptr_t condition)
         void addCondition (shared_ptr[ConditionBase[T]] condition)
-        
         bool isCapable ()
+
 
 ctypedef ConditionBase[cpp.PointXYZ] ConditionBase_t
 ctypedef ConditionBase[cpp.PointXYZI] ConditionBase_PointXYZI_t
@@ -264,22 +254,34 @@ cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
         # public:
         # * \brief Set the voxel grid leaf size.
         # * \param[in] leaf_size the voxel grid leaf size
-        void setLeafSize (eigen3.Vector3f &leaf_size) 
+        void setLeafSize (eigen3.Vector3f &leaf_size)
+        
         # * \brief Set the voxel grid leaf size.
         # * \param[in] lx the leaf size for X
         # * \param[in] ly the leaf size for Y
         # * \param[in] lz the leaf size for Z
         void setLeafSize (float lx, float ly, float lz)
+        
         # /** \brief Get the voxel grid leaf size. */
         eigen3.Vector3f getLeafSize ()
+        
         # * \brief Set to true if all fields need to be downsampled, or false if just XYZ.
         # * \param downsample the new value (true/false)
         void setDownsampleAllData (bool downsample)
+        
         # * \brief Get the state of the internal downsampling parameter (true if
         # * all fields need to be downsampled, false if just XYZ). 
         bool getDownsampleAllData () const
 
 
+ctypedef ApproximateVoxelGrid[cpp.PointXYZ] ApproximateVoxelGrid_t
+ctypedef ApproximateVoxelGrid[cpp.PointXYZI] ApproximateVoxelGrid_PointXYZI_t
+ctypedef ApproximateVoxelGrid[cpp.PointXYZRGB] ApproximateVoxelGrid_PointXYZRGB_t
+ctypedef ApproximateVoxelGrid[cpp.PointXYZRGBA] ApproximateVoxelGrid_PointXYZRGBA_t
+ctypedef shared_ptr[ApproximateVoxelGrid[cpp.PointXYZ]] ApproximateVoxelGridPtr_t
+ctypedef shared_ptr[ApproximateVoxelGrid[cpp.PointXYZI]] ApproximateVoxelGrid_PointXYZI_Ptr_t
+ctypedef shared_ptr[ApproximateVoxelGrid[cpp.PointXYZRGB]] ApproximateVoxelGrid_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[ApproximateVoxelGrid[cpp.PointXYZRGBA]] ApproximateVoxelGrid_PointXYZRGBA_Ptr_t
 ###
 
 # bilateral.h
@@ -715,7 +717,7 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         # pcl::ConcaveHull classes.
         # param[in] dim Dimensionailty of the hull used to filter points.
         void setDim (int dim)
-        
+		
         # \brief Remove points outside the hull (default), or those inside the hull.
         # \param[in] crop_outside If true, the filter will remove points
         # outside the hull. If false, those inside will be removed.

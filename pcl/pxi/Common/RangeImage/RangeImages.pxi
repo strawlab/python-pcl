@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from _pcl cimport PointCloud
-from _pcl cimport PointCloudWrapper_PointWithViewpoint
+from _pcl cimport PointCloud_PointWithViewpoint
 cimport pcl_defs as cpp
 cimport pcl_range_image as pcl_r_img
 
@@ -82,7 +82,7 @@ cdef class RangeImages:
         self.thisptr()[0].setAngularResolution(angular_resolution_x, angular_resolution_y)
     
     
-    def IntegrateFarRanges(self, PointCloudWrapper_PointWithViewpoint viewpoint):
+    def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
     #   self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t> viewpoint.thisptr()[0])
     #   self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_Ptr_t> viewpoint.thisptr()[0])
         cdef pcl_r_img.RangeImage_t *user

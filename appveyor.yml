@@ -203,6 +203,31 @@ test_script:
   # - "%CMD_IN_ENV% python tests\\test.py"
   - python sys_path_check.py
   - python tests\test.py
+  # examples_command_160.txt
+  # Filtering
+  - python examples\official\Filtering\PassThroughFilter.py
+  - python examples\official\Filtering\project_inliers.py
+  - python examples\official\Filtering\remove_outliers.py -r Radius
+  # MemoryLeak?
+  - python examples\official\Filtering\remove_outliers.py -r Condition
+  - python examples\official\Filtering\VoxelGrid_160.py
+  - python examples\official\Filtering\statistical_removal.py
+  - python examples\official\IO\pcd_read.py
+  # KdTree
+  - python examples\official\kdtree\kdtree_search.py
+  # keypoints
+  # NG(RangeImage Link Error)
+  - python examples\official\keypoints\narf_keypoint_extraction.py
+  # octree
+  # execute NG
+  # Exception ignored in: 'pcl._pcl.to_point_t'
+  # TypeError: a float is required
+  - python examples\official\octree\octree_search.py
+  - python examples\official\Segmentation\cluster_extraction.py
+  - python examples\official\Segmentation\cylinder_segmentation.py
+  - python examples\official\surface\concave_hull_2d.py
+  - python examples\official\surface\resampling.py
+
 
 #after_test:
 #  # If tests are successful, create binary packages for the project.

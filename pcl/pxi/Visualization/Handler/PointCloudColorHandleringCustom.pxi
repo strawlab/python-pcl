@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 cimport _pcl
 cimport pcl_visualization
-from _pcl cimport PointCloudWrapper_PointWithViewpoint
+from _pcl cimport PointCloud_PointWithViewpoint
 # NG
 # from _pcl cimport RangeImage
 cimport pcl_defs as cpp

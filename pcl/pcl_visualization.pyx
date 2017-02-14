@@ -50,8 +50,8 @@ PCLVISUALIZER_REPRESENTATION_SURFACE = vis.PCL_VISUALIZER_REPRESENTATION_SURFACE
 
 # PointCloud/Common
 # NG
-# include "pxi/PointCloudWrapper_PointXYZ.pxi"
-# include "pxi/PointCloudWrapper_PointXYZI.pxi"
+# include "pxi/PointCloud__PointXYZ.pxi"
+# include "pxi/PointCloud__PointXYZI.pxi"
 # include "pxi/Common/RangeImage/RangeImages.pxi"
 
 # VTK - Handler

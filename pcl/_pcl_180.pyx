@@ -128,13 +128,13 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 # 
 ###
 
-include "pxi/PointCloudWrapper_PointXYZ_172.pxi"
-include "pxi/PointCloudWrapper_PointXYZI.pxi"
-include "pxi/PointCloudWrapper_PointXYZRGB.pxi"
-include "pxi/PointCloudWrapper_PointXYZRGBA.pxi"
-include "pxi/PointCloudWrapper_PointWithViewpoint.pxi"
-# include "pxi/PointCloudWrapper_Normal.pxi"
-include "pxi/PointCloudWrapper_PointNormal.pxi"
+include "pxi/PointCloud_PointXYZ_172.pxi"
+include "pxi/PointCloud_PointXYZI.pxi"
+include "pxi/PointCloud_PointXYZRGB.pxi"
+include "pxi/PointCloud_PointXYZRGBA.pxi"
+include "pxi/PointCloud_PointWithViewpoint.pxi"
+# include "pxi/PointCloud_Normal.pxi"
+include "pxi/PointCloud_PointNormal.pxi"
 
 # include "pxi/OctreePointCloudSearch.pxi"
 # include "pxi/OctreePointCloudChangeDetector.pxi"

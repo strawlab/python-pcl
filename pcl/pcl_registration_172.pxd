@@ -3161,47 +3161,57 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
         #   * \param[in] cloud the input point cloud target
         #   */
         # inline void setInputTarget (const PointCloudTargetConstPtr &cloud)
+        void setInputTarget (const Registration[Source, Target] &cloud)
+        
         # 
         # /** \brief Set/change the voxel grid resolution.
         #   * \param[in] resolution side length of voxels
         #   */
         # inline void setResolution (float resolution)
-        # 
+        void setResolution (float resolution)
+        
         # /** \brief Get voxel grid resolution.
         #   * \return side length of voxels
         #   */
         # inline float getResolution () const
-        # 
+        float getResolution ()
+        
         # /** \brief Get the newton line search maximum step length.
         #   * \return maximum step length
         #   */
         # inline double getStepSize () const
-        # 
+        double getStepSize ()
+        
         # /** \brief Set/change the newton line search maximum step length.
         #   * \param[in] step_size maximum step length
         #   */
         # inline void setStepSize (double step_size)
-        # 
+        void setStepSize (double step_size)
+        
         # /** \brief Get the point cloud outlier ratio.
         #   * \return outlier ratio
         #   */
         # inline double getOulierRatio () const
-        # 
+        double getOulierRatio ()
+        
         # /** \brief Set/change the point cloud outlier ratio.
         #   * \param[in] outlier_ratio outlier ratio
         #   */
         # inline void setOulierRatio (double outlier_ratio)
-        # 
+        void setOulierRatio (double outlier_ratio)
+        
         # /** \brief Get the registration alignment probability.
         #   * \return transformation probability
         #   */
         # inline double getTransformationProbability () const
-        # 
+        double getTransformationProbability ()
+        
         # /** \brief Get the number of iterations required to calculate alignment.
         #   * \return final number of iterations
         #   */
         # inline int getFinalNumIteration () const
-        # 
+        int getFinalNumIteration ()
+        
         # /** \brief Convert 6 element transformation vector to affine transformation.
         #   * \param[in] x transformation vector of the form [x, y, z, roll, pitch, yaw]
         #   * \param[out] trans affine transform corresponding to given transfomation vector
@@ -3215,7 +3225,15 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
         # static void convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Matrix4f &trans)
 
 
-###
+ctypedef NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float] NormalDistributionsTransform_t
+ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPoint_PointXYZI_t
+ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB, float] IterativeClosestPoint_PointXYZRGB_t
+ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA, float] IterativeClosestPoint_PointXYZRGBA_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPoint_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPoint_PointXYZI_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPoint_PointXYZRGB_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPoint_PointXYZRGBA_t
+###
 
 # ndt_2d.h
 # namespace pcl
@@ -3255,26 +3273,22 @@ cdef extern from "pcl/registration/ndt_2d.h" namespace "pcl" nogil:
         # /** \brief centre of the ndt grid (target coordinate system)
         #   * \param centre value to set
         #   */
-        # virtual void
-        # setGridCentre (const Eigen::Vector2f& centre) { grid_centre_ = centre; }
+        # virtual void setGridCentre (const Eigen::Vector2f& centre) { grid_centre_ = centre; }
         # 
         # /** \brief Grid spacing (step) of the NDT grid
         #   * \param[in] step value to set
         #   */
-        # virtual void
-        # setGridStep (const Eigen::Vector2f& step) { grid_step_ = step; }
+        # virtual void setGridStep (const Eigen::Vector2f& step) { grid_step_ = step; }
         # 
         # /** \brief NDT Grid extent (in either direction from the grid centre)
         #   * \param[in] extent value to set
         #   */
-        # virtual void
-        # setGridExtent (const Eigen::Vector2f& extent) { grid_extent_ = extent; }
+        # virtual void setGridExtent (const Eigen::Vector2f& extent) { grid_extent_ = extent; }
         # 
         # /** \brief NDT Newton optimisation step size parameter
         #   * \param[in] lambda step size: 1 is simple newton optimisation, smaller values may improve convergence
         #   */
-        #  virtual void
-        #  setOptimizationStepSize (const double& lambda) { newton_lambda_ = Eigen::Vector3d (lambda, lambda, lambda); }
+        #  virtual void setOptimizationStepSize (const double& lambda) { newton_lambda_ = Eigen::Vector3d (lambda, lambda, lambda); }
         # 
         # /** \brief NDT Newton optimisation step size parameter
         #   * \param[in] lambda step size: (1,1,1) is simple newton optimisation,
@@ -3286,8 +3300,7 @@ cdef extern from "pcl/registration/ndt_2d.h" namespace "pcl" nogil:
         #   * believed to be close to the correct value a small value of lambda[2]
         #   * should be used.
         #   */
-        #  virtual void
-        #  setOptimizationStepSize (const Eigen::Vector3d& lambda) { newton_lambda_ = lambda; }
+        #  virtual void setOptimizationStepSize (const Eigen::Vector3d& lambda) { newton_lambda_ = lambda; }
         # 
 
 

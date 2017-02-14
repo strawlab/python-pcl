@@ -1213,78 +1213,111 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
         # /** \brief Set to true if all fields need to be downsampled, or false if just XYZ.
         #   * \param[in] downsample the new value (true/false)
         # void setDownsampleAllData (bool downsample)
+        void setDownsampleAllData (bool downsample)
+        
         # /** \brief Get the state of the internal downsampling parameter (true if
         #   * all fields need to be downsampled, false if just XYZ). 
         # bool getDownsampleAllData ()
+        bool getDownsampleAllData ()
+        
         # /** \brief Set to true if leaf layout information needs to be saved for later access.
         #   * \param[in] save_leaf_layout the new value (true/false)
         # void setSaveLeafLayout (bool save_leaf_layout)
+        void setSaveLeafLayout (bool save_leaf_layout)
+        
         # /** \brief Returns true if leaf layout information will to be saved for later access. */
-        # bool 
-        # getSaveLeafLayout () { return (save_leaf_layout_); }
-        # /** \brief Get the minimum coordinates of the bounding box (after
-        #   * filtering is performed). 
-        # Eigen::Vector3i 
-        # getMinBoxCoordinates () { return (min_b_.head<3> ()); }
-        # /** \brief Get the minimum coordinates of the bounding box (after
-        #   * filtering is performed). 
-        # Eigen::Vector3i 
-        # getMaxBoxCoordinates () { return (max_b_.head<3> ()); }
-        # /** \brief Get the number of divisions along all 3 axes (after filtering
-        #   * is performed). 
-        # Eigen::Vector3i 
-        # getNrDivisions () { return (div_b_.head<3> ()); }
-        # /** \brief Get the multipliers to be applied to the grid coordinates in
-        #   * order to find the centroid index (after filtering is performed). 
+        # bool getSaveLeafLayout () { return (save_leaf_layout_); }
+        bool getSaveLeafLayout ()
+        
+        # \brief Get the minimum coordinates of the bounding box (after filtering is performed). 
+        # Eigen::Vector3i getMinBoxCoordinates () { return (min_b_.head<3> ()); }
+        # eigen3.Vector3i getMinBoxCoordinates ()
+        
+        # \brief Get the minimum coordinates of the bounding box (after filtering is performed). 
+        # Eigen::Vector3i getMaxBoxCoordinates () { return (max_b_.head<3> ()); }
+        # eigen3.Vector3i getMaxBoxCoordinates ()
+        
+        # \brief Get the number of divisions along all 3 axes (after filtering is performed). 
+        # Eigen::Vector3i getNrDivisions () { return (div_b_.head<3> ()); }
+        # eigen3.Vector3i getNrDivisions ()
+        
+        # \brief Get the multipliers to be applied to the grid coordinates in order to find the centroid index (after filtering is performed). 
         # Eigen::Vector3i getDivisionMultiplier () { return (divb_mul_.head<3> ()); }
+        # eigen3.Vector3i getDivisionMultiplier ()
+        
         # /** \brief Returns the index in the resulting downsampled cloud of the specified point.
         #   * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering 
         #   * performed, and that the point is inside the grid, to avoid invalid access (or use
         #   * getGridCoordinates+getCentroidIndexAt)
         #   * \param[in] p the point to get the index at
         # int getCentroidIndex (const PointT &p)
+        int getCentroidIndex (const T &p)
+        
         # /** \brief Returns the indices in the resulting downsampled cloud of the points at the specified grid coordinates,
         #   * relative to the grid coordinates of the specified point (or -1 if the cell was empty/out of bounds).
         #   * \param[in] reference_point the coordinates of the reference point (corresponding cell is allowed to be empty/out of bounds)
         #   * \param[in] relative_coordinates matrix with the columns being the coordinates of the requested cells, relative to the reference point's cell
         #   * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering performed
         # std::vector<int> getNeighborCentroidIndices (const PointT &reference_point, const Eigen::MatrixXi &relative_coordinates)
+        # vector[int] getNeighborCentroidIndices (const T &reference_point, const eigen3.MatrixXi &relative_coordinates)
+        
         # /** \brief Returns the layout of the leafs for fast access to cells relative to current position.
         #   * \note position at (i-min_x) + (j-min_y)*div_x + (k-min_z)*div_x*div_y holds the index of the element at coordinates (i,j,k) in the grid (-1 if empty)
         # vector[int] getLeafLayout ()
+        vector[int] getLeafLayout ()
+        
         # /** \brief Returns the corresponding (i,j,k) coordinates in the grid of point (x,y,z). 
         #   * \param[in] x the X point coordinate to get the (i, j, k) index at
         #   * \param[in] y the Y point coordinate to get the (i, j, k) index at
         #   * \param[in] z the Z point coordinate to get the (i, j, k) index at
         # Eigen::Vector3i getGridCoordinates (float x, float y, float z) 
+        # eigen3.Vector3i getGridCoordinates (float x, float y, float z) 
+        
         # /** \brief Returns the index in the downsampled cloud corresponding to a given set of coordinates.
         #   * \param[in] ijk the coordinates (i,j,k) in the grid (-1 if empty)
         # int getCentroidIndexAt (const Eigen::Vector3i &ijk)
+        # int getCentroidIndexAt (const eigen3.Vector3i &ijk)
+        
         # /** \brief Provide the name of the field to be used for filtering data. In conjunction with  \a setFilterLimits,
         #   * points having values outside this interval will be discarded.
         #   * \param[in] field_name the name of the field that contains values used for filtering
         # void setFilterFieldName (const std::string &field_name)
+        void setFilterFieldName (const string &field_name)
+        
         # /** \brief Get the name of the field used for filtering. */
         # std::string const getFilterFieldName ()
+        const string getFilterFieldName ()
+        
         # /** \brief Set the field filter limits. All points having field values outside this interval will be discarded.
         #   * \param[in] limit_min the minimum allowed field value
         #   * \param[in] limit_max the maximum allowed field value
         # void setFilterLimits (const double &limit_min, const double &limit_max)
+        void setFilterLimits (const double &limit_min, const double &limit_max)
+        
         # /** \brief Get the field filter limits (min/max) set by the user. The default values are -FLT_MAX, FLT_MAX. 
         #   * \param[out] limit_min the minimum allowed field value
         #   * \param[out] limit_max the maximum allowed field value
         # void getFilterLimits (double &limit_min, double &limit_max)
+        void getFilterLimits (double &limit_min, double &limit_max)
+        
         # /** \brief Set to true if we want to return the data outside the interval specified by setFilterLimits (min, max).
         #   * Default: false.
         #   * \param[in] limit_negative return data inside the interval (false) or outside (true)
         # void setFilterLimitsNegative (const bool limit_negative)
-
+        void setFilterLimitsNegative (const bool limit_negative)
+        
         # /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
         #   * \param[out] limit_negative true if data \b outside the interval [min; max] is to be returned, false otherwise
         # void getFilterLimitsNegative (bool &limit_negative)
+        void getFilterLimitsNegative (bool &limit_negative)
+        
         # /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
         #   * \return true if data \b outside the interval [min; max] is to be returned, false otherwise
         # bool getFilterLimitsNegative ()
+        bool getFilterLimitsNegative ()
+
+
+###
 
 # template <>
 # class PCL_EXPORTS VoxelGrid<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>

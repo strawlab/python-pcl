@@ -5,9 +5,8 @@ cimport pcl_io as pclio
 from libcpp cimport bool
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
-# from _pcl cimport PointCloudWrapper_PointWithViewpoint
 
-cdef class PointCloudWrapper_PointWithViewpoint:
+cdef class PointCloud_PointWithViewpoint:
     """
     Represents a cloud of points in 6-d space.
     A point cloud can be initialized from either a NumPy ndarray of shape
@@ -16,7 +15,7 @@ cdef class PointCloudWrapper_PointWithViewpoint:
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
-        cdef PointCloudWrapper_PointWithViewpoint other
+        cdef PointCloud_PointWithViewpoint other
         
         self._view_count = 0
         

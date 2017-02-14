@@ -312,6 +312,15 @@ cdef class PointCloud:
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
+    def make_ApproximateVoxelGrid(self):
+        """
+        Return a pcl.ApproximateVoxelGrid object with this object set as the input-cloud
+        """
+        fil = ApproximateVoxelGrid()
+        cdef pclfil.ApproximateVoxelGrid_t *cfil = <pclfil.ApproximateVoxelGrid_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return fil
+
     def make_passthrough_filter(self):
         """
         Return a pcl.PassThroughFilter object with this object set as the input-cloud
@@ -527,6 +536,7 @@ include "Segmentation/SegmentationNormal.pxi"
 include "Segmentation/EuclideanClusterExtraction.pxi"
 include "Filters/StatisticalOutlierRemovalFilter.pxi"
 include "Filters/VoxelGridFilter.pxi"
+include "Filters/ApproximateVoxelGrid.pxi"
 include "Filters/PassThroughFilter.pxi"
 include "Surface/MovingLeastSquares.pxi"
 # include "KdTree/KdTree.pxi"
