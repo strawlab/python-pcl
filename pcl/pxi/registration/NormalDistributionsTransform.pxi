@@ -8,13 +8,15 @@ cdef class NormalDistributionsTransform:
     Registration class for NormalDistributionsTransform
     """
     cdef pclreg.NormalDistributionsTransform_t *me
+
     def __cinit__(self):
         self.me = new pclreg.NormalDistributionsTransform_t()
+
     def __dealloc__(self):
         del self.me
 
-    def set_InputTarget(self):
     # def set_InputTarget(self, pclreg.RegistrationPtr_t cloud):
+    def set_InputTarget(self):
         # self.me.setInputTarget (cloud.this_ptr())
         pass
 
