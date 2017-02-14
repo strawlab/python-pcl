@@ -69,7 +69,7 @@ cdef class CropBox:
         # Cython 0.24.1 NG(0.25.2 OK)
         # pcl 1.7.2 NG
         # self.me.filter(<vector[int]> outputCloud)
-        self.me.filter(<vector[int]>& outputCloud)
+        self.me.filter(<vector[int]&> outputCloud)
 
     # @cython.boundscheck(False)
     # cdef void _nearest_k(self, PointCloud pc, int index, int k,
