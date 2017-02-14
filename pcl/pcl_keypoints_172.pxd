@@ -6,9 +6,10 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
-# main
+# pcl
 cimport pcl_defs as cpp
-cimport pcl_features as pclftr
+cimport pcl_features_172 as pclftr
+cimport pcl_kdtree_172 as pclkdt
 
 # boost
 from boost_shared_ptr cimport shared_ptr

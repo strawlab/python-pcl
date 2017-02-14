@@ -564,5 +564,6 @@ include "Features/MomentOfInertiaEstimation_172.pxi"
 
 # keyPoint
 include "KeyPoint/HarrisKeypoint3D_172.pxi"
-include "KeyPoint/UniformSampling_172.pxi"
+# execute NG?
+# include "KeyPoint/UniformSampling_172.pxi"
 
