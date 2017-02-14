@@ -65,8 +65,8 @@ cdef class CropBox:
         # self.me.filter(deref(outputCloud.thisptr()))
         # self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud.thisptr()[0])
         # Cython 0.24.1 NG(0.25.2 OK)
-        self.me.filter(<vector[int]> outputCloud)
-        
+        # self.me.filter(<vector[int]> outputCloud)
+        self.me.filter(<vector[int]&> outputCloud)
 
     # @cython.boundscheck(False)
     # cdef void _nearest_k(self, PointCloud pc, int index, int k,

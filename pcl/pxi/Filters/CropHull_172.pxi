@@ -44,12 +44,11 @@ cdef class CropHull:
         # NG
         # self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud)
         # self.me.filter(outputCloud.thisptr())
-        # Cython 0.25.2 NG
+        # Cython 0.25.2 NG(0.24.1 OK)
         # self.me.filter(deref(outputCloud.thisptr()))
-        # Cython 0.24.1 NG
+        # Cython 0.24.1 NG(0.25.2 OK)
         # self.me.filter(<vector[int]> outputCloud)
-        # 1.7.2
-        self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> outputCloud.thisptr()[0])
+        self.me.filter(<vector[int]&> outputCloud)
 
     # @cython.boundscheck(False)
     # cdef void _nearest_k(self, PointCloud pc, int index, int k,
