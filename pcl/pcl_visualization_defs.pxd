@@ -1084,6 +1084,19 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
+        # param[in] cloud the input point cloud dataset
+        # param[in] color_handler a specific PointCloud visualizer handler for colors
+        # param[in] geometry_handler use a geometry handler object to extract the XYZ data
+        # param[in] id the point cloud object id (default: cloud)
+        # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # template <typename PointT> bool
+        # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
+        #                const PointCloudColorHandler<PointT> &color_handler,
+        #                const PointCloudGeometryHandler<PointT> &geometry_handler,
+        #                const std::string &id = "cloud", int viewport = 0);
+        # bool addPointCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
+        
+        # brief Add a Point Cloud (templated) to screen.
         # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
         # available handlers, rather than replacing the current active handler. This makes it possible to
         # switch between different handlers 'on-the-fly' at runtime, from the PCLVisualizer interactor
@@ -1112,6 +1125,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # pcl 1.6.0
         # bool addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const ColorHandlerConstPtr &color_handler,
@@ -1130,6 +1144,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # pcl 1.6.0
         # bool addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
         #                const GeometryHandlerConstPtr &geometry_handler,
         #                const Eigen::Vector4f& sensor_origin,
@@ -1147,24 +1162,13 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] sensor_orientation the orientation of the cloud data in global coordinates (defaults to 1,0,0,0)
         # param[in] id the point cloud object id (default: cloud)
         # param[in] viewport the view port where the Point Cloud should be added (default: all)
+        # pcl 1.6.0
         # bool addPointCloud (const sensor_msgs::PointCloud2::ConstPtr &cloud,
         #                const ColorHandlerConstPtr &color_handler,
         #                const Eigen::Vector4f& sensor_origin,
         #                const Eigen::Quaternion<float>& sensor_orientation,
         #                const std::string &id = "cloud", int viewport = 0);
-        
-        # brief Add a Point Cloud (templated) to screen.
-        # param[in] cloud the input point cloud dataset
-        # param[in] color_handler a specific PointCloud visualizer handler for colors
-        # param[in] geometry_handler use a geometry handler object to extract the XYZ data
-        # param[in] id the point cloud object id (default: cloud)
-        # param[in] viewport the view port where the Point Cloud should be added (default: all)
-        # template <typename PointT> bool
-        # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
-        #                const PointCloudColorHandler<PointT> &color_handler,
-        #                const PointCloudGeometryHandler<PointT> &geometry_handler,
-        #                const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
+        ### addPointCloud
         
         # /** \brief Add a PolygonMesh object to screen
         #   * \param[in] polymesh the polygonal mesh
@@ -1172,7 +1176,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport the view port where the PolygonMesh should be added (default: all)
         #   */
         # bool addPolygonMesh (const pcl::PolygonMesh &polymesh, const std::string &id = "polygon", int viewport = 0);
-        # bool addPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
+        bool addPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
         
         # /** \brief Add a PolygonMesh object to screen
         #   * \param[in] cloud the polygonal mesh point cloud
@@ -1185,7 +1189,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                 const std::vector<pcl::Vertices> &vertices,
         #                 const std::string &id = "polygon",
         #                 int viewport = 0);
-        # bool addPolygonMesh[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const vector[cpp.Vertices] &vertices, const string &id, int viewport)
+        bool addPolygonMesh[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const vector[cpp.Vertices] &vertices, const string &id, int viewport)
         
         # /** \brief Update a PolygonMesh object on screen
         #   * \param[in] cloud the polygonal mesh point cloud
@@ -1197,14 +1201,14 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # updatePolygonMesh (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #                    const std::vector<pcl::Vertices> &vertices,
         #                    const std::string &id = "polygon");
-        # bool updatePolygonMesh[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const vector[cpp.Vertices] &vertices, const string &id)
+        bool updatePolygonMesh[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const vector[cpp.Vertices] &vertices, const string &id)
         
         # /** \brief Add a Polygonline from a polygonMesh object to screen
         #   * \param[in] polymesh the polygonal mesh from where the polylines will be extracted
         #   * \param[in] id the polygon object id (default: "polygon")
         #   * \param[in] viewport the view port where the PolygonMesh should be added (default: all)
         #   */
-        # bool addPolylineFromPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
+        bool addPolylineFromPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
         
         # /** \brief Add the specified correspondences to the display.
         #   * \param[in] source_points The source points
@@ -1221,6 +1225,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                     int viewport = 0);
         # bool addCorrespondences[PointT](const shared_ptr[cpp.PointCloud[PointT]] &source_points, const shared_ptr[cpp.PointCloud[PointT]] &target_points, const vector[int] & correspondences, const string &id, int viewport)
         
+        ### addCorrespondences
         # /** \brief Add the specified correspondences to the display.
         #   * \param[in] source_points The source points
         #   * \param[in] target_points The target points
@@ -1337,7 +1342,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # template <typename PointT> bool
         # addPolygon (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #             double r, double g, double b, const std::string &id = "polygon", int viewport = 0);
-        # bool addPolygon[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, double r, double g, double b, const string &id, int viewport)
+        bool addPolygon[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Add a polygon (polyline) that represents the input point cloud (connects all
         #   * points in order)
@@ -1347,7 +1352,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # template <typename PointT> bool
         # addPolygon (const typename pcl::PointCloud<PointT>::ConstPtr &cloud,
         #             const std::string &id = "polygon", int viewport = 0);
-        # bool addPolygon[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const string &id, int viewport)
+        bool addPolygon[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const string &id, int viewport)
         
         # /** \brief Add a line segment from two points
         #   * \param[in] pt1 the first (start) point on the line
@@ -1357,7 +1362,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # template <typename P1, typename P2> bool
         # addLine (const P1 &pt1, const P2 &pt2, const std::string &id = "line", int viewport = 0);
-        # bool addLine[P1, P2](const P1 &pt1, const P2 &pt2, const string &id, int viewport)
+        bool addLine[P1, P2](const P1 &pt1, const P2 &pt2, const string &id, int viewport)
         
         # /** \brief Add a line segment from two points
         #   * \param[in] pt1 the first (start) point on the line
@@ -1370,7 +1375,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # template <typename P1, typename P2> bool
         # addLine (const P1 &pt1, const P2 &pt2, double r, double g, double b, const std::string &id = "line", int viewport = 0);
-        # bool addLine[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, const string &id, int viewport)
+        bool addLine[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Add a line arrow segment between two points, and display the distance between them
         #   * \param[in] pt1 the first (start) point on the line
@@ -1383,7 +1388,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   */
         # template <typename P1, typename P2> bool
         # addArrow (const P1 &pt1, const P2 &pt2, double r, double g, double b, const std::string &id = "arrow", int viewport = 0);
-        # bool addArrow[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, const string &id, int viewport)
+        bool addArrow[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Add a line arrow segment between two points, and display the distance between them
         #   * \param[in] pt1 the first (start) point on the line
@@ -1396,7 +1401,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         # template <typename P1, typename P2> bool
         # addArrow (const P1 &pt1, const P2 &pt2, double r, double g, double b, bool display_length, const std::string &id = "arrow", int viewport = 0);
-        # bool addArrow[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, bool display_length, const string &id, int viewport)
+        bool addArrow[P1, P2](const P1 &pt1, const P2 &pt2, double r, double g, double b, bool display_length, const string &id, int viewport)
         
         # /** \brief Add a sphere shape from a point and a radius
         #   * \param[in] center the center of the sphere
@@ -1405,7 +1410,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         # template <typename PointT> bool
         # addSphere (const PointT &center, double radius, const std::string &id = "sphere", int viewport = 0);
-        # bool addSphere[PointT](const PointT &center, double radius, const string &id, int viewport)
+        bool addSphere[PointT](const PointT &center, double radius, const string &id, int viewport)
         
         # /** \brief Add a sphere shape from a point and a radius
         #   * \param[in] center the center of the sphere
@@ -1417,7 +1422,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         # template <typename PointT> bool
         # addSphere (const PointT &center, double radius, double r, double g, double b, const std::string &id = "sphere", int viewport = 0);
-        # bool addSphere[PointT](const PointT &center, double radius, double r, double g, double b, const string &id, int viewport)
+        bool addSphere[PointT](const PointT &center, double radius, double r, double g, double b, const string &id, int viewport)
         
         # /** \brief Update an existing sphere shape from a point and a radius
         #   * \param[in] center the center of the sphere
@@ -1428,7 +1433,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the sphere id/name (default: "sphere")
         # template <typename PointT> bool
         # updateSphere (const PointT &center, double radius, double r, double g, double b, const std::string &id = "sphere");
-        # bool updateSphere[PointT](const PointT &center, double radius, double r, double g, double b, const string &id)
+        bool updateSphere[PointT](const PointT &center, double radius, double r, double g, double b, const string &id)
         
         #  /** \brief Add a vtkPolydata as a mesh
         #   * \param[in] polydata vtkPolyData
@@ -1450,7 +1455,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the model id/name (default: "PLYModel")
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         # bool addModelFromPLYFile (const std::string &filename, const std::string &id = "PLYModel", int viewport = 0);
-        # bool addModelFromPLYFile (const string &filename, const string &id, int viewport)
+        bool addModelFromPLYFile (const string &filename, const string &id, int viewport)
         
         # /** \brief Add a PLYmodel as a mesh and applies given transformation
         #   * \param[in] filename of the ply file
@@ -1482,7 +1487,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \endcode
         #   */
         # bool addCylinder (const pcl::ModelCoefficients &coefficients, const std::string &id = "cylinder", int viewport = 0);
-        # bool addCylinder (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addCylinder (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a sphere from a set of given model coefficients
         #   * \param[in] coefficients the model coefficients (sphere center, radius)
@@ -1503,7 +1508,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \endcode
         #   */
         # bool addSphere (const pcl::ModelCoefficients &coefficients, const std::string &id = "sphere", int viewport = 0);
-        # bool addSphere (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addSphere (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a line from a set of given model coefficients
         #   * \param[in] coefficients the model coefficients (point_on_line, direction)
@@ -1525,7 +1530,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \endcode
         #   */
         # bool addLine (const pcl::ModelCoefficients &coefficients, const std::string &id = "line", int viewport = 0);
-        # bool addLine (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addLine (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a plane from a set of given model coefficients
         #   * \param[in] coefficients the model coefficients (a, b, c, d with ax+by+cz+d=0)
@@ -1545,7 +1550,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \endcode
         #   */
         # bool addPlane (const pcl::ModelCoefficients &coefficients, const std::string &id = "plane", int viewport = 0);
-        # bool addPlane (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addPlane (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a circle from a set of given model coefficients
         #   * \param[in] coefficients the model coefficients (x, y, radius)
@@ -1564,7 +1569,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \endcode
         #    */
         # bool addCircle (const pcl::ModelCoefficients &coefficients, const std::string &id = "circle", int viewport = 0);
-        # bool addCircle (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addCircle (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a cone from a set of given model coefficients
         #   * \param[in] coefficients the model coefficients (point_on_axis, axis_direction, radiu)
@@ -1572,7 +1577,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         #   */
         # bool addCone (const pcl::ModelCoefficients &coefficients, const std::string &id = "cone", int viewport = 0);
-        # bool addCone (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addCone (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a cube from a set of given model coefficients
         #   * \param[in] coefficients the model coefficients (Tx, Ty, Tz, Qx, Qy, Qz, Qw, width, height, depth)
@@ -1580,7 +1585,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         #   */
         # bool addCube (const pcl::ModelCoefficients &coefficients, const std::string &id = "cube", int viewport = 0);
-        # bool addCube (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
+        bool addCube (const cpp.ModelCoefficients &coefficients, const string &id, int viewport)
         
         # /** \brief Add a cube from a set of given model coefficients
         #   * \param[in] translation a translation to apply to the cube from 0,0,0
@@ -1592,7 +1597,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport (optional) the id of the new viewport (default: 0)
         #   */
         # bool addCube (const Eigen::Vector3f &translation, const Eigen::Quaternionf &rotation, double width, double height, double depth, const std::string &id = "cube", int viewport = 0);
-        # bool addCube (const eigen3.Vector3f &translation, const eigen3.Quaternionf &rotation, double width, double height, double depth, const string &id, int viewport)
+        bool addCube (const eigen3.Vector3f &translation, const eigen3.Quaternionf &rotation, double width, double height, double depth, const string &id, int viewport)
         
         # /** \brief Add a cube from a set of bounding points
         #   * \param[in] x_min is the minimum x value of the box
@@ -1636,7 +1641,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] cloud is the rendered point cloud
         #   */
         # void renderView (int xres, int yres, pcl::PointCloud<pcl::PointXYZ>::Ptr & cloud);
-        # void renderView (int xres, int yres, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &cloud)
+        void renderView (int xres, int yres, shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &cloud)
         
         # /** \brief The purpose of this method is to render a CAD model added to the visualizer from different viewpoints
         #   * in order to simulate partial views of model. The viewpoint locations are the vertices of a tesselated sphere
@@ -1666,6 +1671,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         
         # /** \brief Camera view, window position and size. */
         # Camera camera_;
+        
         # /** \brief Initialize camera parameters with some default values. */
         # void initCameraParameters ();
         void initCameraParameters()
@@ -1725,7 +1731,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         
         # /** \brief Get the current viewing pose. */
         # Eigen::Affine3f getViewerPose ();
-        # eigen3.Affine3f getViewerPose ()
+        eigen3.Affine3f getViewerPose ()
         
         # /** \brief Save the current rendered image to disk, as a PNG screenshot.
         #   * \param[in] file the name of the PNG file

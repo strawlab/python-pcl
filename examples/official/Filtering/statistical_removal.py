@@ -3,7 +3,8 @@
 
 import pcl
 
-p = pcl.load("table_scene_lms400.pcd")
+p = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
+
 
 fil = p.make_statistical_outlier_filter()
 fil.set_mean_k(50)

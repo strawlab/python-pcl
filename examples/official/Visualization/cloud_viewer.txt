@@ -33,7 +33,7 @@ cdef viewerPsycho (pcl::visualization::PCLVisualizer& viewer)
 
 # pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>);
 # pcl::io::loadPCDFile ("my_point_cloud.pcd", *cloud);
-cloud = pcl.load('my_point_cloud.pcd')
+cloud = pcl.load('./examples/pcldata/tutorials/my_point_cloud.pcd')
 
 # pcl::visualization::CloudViewer viewer("Cloud Viewer");
 # //blocks until the cloud is actually rendered

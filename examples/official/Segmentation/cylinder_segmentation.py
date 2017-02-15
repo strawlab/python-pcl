@@ -29,7 +29,7 @@ import pcl
 # // Read in the cloud data
 # reader.read ("table_scene_mug_stereo_textured.pcd", *cloud);
 # std::cerr << "PointCloud has: " << cloud->points.size () << " data points." << std::endl;
-cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
+cloud = pcl.load("./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd")
 print('PointCloud has: ' + str(cloud.size) + ' data points.')
 
 # Build a passthrough filter to remove spurious NaNs

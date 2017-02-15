@@ -15,7 +15,7 @@ import random
 
 #  pcl::PCDReader reader;
 #  reader.read ("table_scene_mug_stereo_textured.pcd", *cloud);
-cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
+cloud = pcl.load("./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd")
 
 # // Build a filter to remove spurious NaNs
 # pcl::PassThrough<pcl::PointXYZ> pass;

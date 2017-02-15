@@ -15,7 +15,7 @@ cloud_filtered = pcl.
 # pcl::PCDReader reader;
 # reader.read ("table_scene_lms400.pcd", *cloud_blob);
 # std::cerr << "PointCloud before filtering: " << cloud_blob->width * cloud_blob->height << " data points." << std::endl;
-cloud_blob = pcl.load("table_scene_lms400.pcd")
+cloud_blob = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
 print("PointCloud before filtering: " + str(cloud_blob.width * cloud_blob.height) + " data points.")
 
 // Create the filtering object: downsample the dataset using a leaf size of 1cm

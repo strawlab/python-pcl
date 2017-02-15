@@ -65,7 +65,7 @@ main (int argc, char** argv)
 
   // Load the input point cloud
   std::cerr << "Loading...\n", tt.tic ();
-  pcl::io::loadPCDFile ("Statues_4.pcd", *cloud_in);
+  pcl::io::loadPCDFile ("./examples/pcldata/tutorials/Statues_4.pcd", *cloud_in);
   std::cerr << ">> Done: " << tt.toc () << " ms, " << cloud_in->points.size () << " points\n";
 
   // Downsample the cloud using a Voxel Grid class

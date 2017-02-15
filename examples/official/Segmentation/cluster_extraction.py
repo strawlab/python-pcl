@@ -11,7 +11,7 @@ import pcl
 #   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>), cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
 #   reader.read ("table_scene_lms400.pcd", *cloud);
 #   std::cout << "PointCloud before filtering has: " << cloud->points.size () << " data points." << std::endl; //*
-cloud = pcl.load("table_scene_lms400.pcd")
+cloud = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
 
 #   // Create the filtering object: downsample the dataset using a leaf size of 1cm
 #   pcl::VoxelGrid<pcl::PointXYZ> vg;

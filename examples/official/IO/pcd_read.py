@@ -27,7 +27,7 @@
 
 import pcl
 
-cloud = pcl.load("test_pcd.pcd")
+cloud = pcl.load('./examples/official/IO/test_pcd.pcd')
 
 print ('Loaded ' + str(cloud.width * cloud.height) + ' data points from test_pcd.pcd with the following fields: ')
 for i in range(0, cloud.size):

@@ -52,11 +52,20 @@ mass_center = feature_extractor.get_MassCenter ()
 # viewer->addPointCloud<pcl::PointXYZ> (cloud, "sample cloud");
 # viewer->addCube (min_point_AABB.x, max_point_AABB.x, min_point_AABB.y, max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB");
 ###
+viewer = pcl.visualization.PCLVisualizing()
+viewer.SetBackgroundColor(0, 0, 0)
+viewer->InitCameraParameters ()
+# viewer->AddPointCloud (cloud, 'sample cloud', 0)
+viewer->AddPointCloud (cloud)
+viewer.AddCube (min_point_AABB.x, max_point_AABB.x, min_point_AABB.y, max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB");
+
 
 # Eigen::Vector3f position (position_OBB.x, position_OBB.y, position_OBB.z);
 # Eigen::Quaternionf quat (rotational_matrix_OBB);
 # viewer->addCube (position, quat, max_point_OBB.x - min_point_OBB.x, max_point_OBB.y - min_point_OBB.y, max_point_OBB.z - min_point_OBB.z, "OBB");
-# 
+viewer.AddCube (min_point_AABB.x, max_point_AABB.x, min_point_AABB.y, max_point_AABB.y, min_point_AABB.z, max_point_AABB.z, 1.0, 1.0, 0.0, "AABB");
+
+
 # pcl::PointXYZ center (mass_center (0), mass_center (1), mass_center (2));
 # pcl::PointXYZ x_axis (major_vector (0) + mass_center (0), major_vector (1) + mass_center (1), major_vector (2) + mass_center (2));
 # pcl::PointXYZ y_axis (middle_vector (0) + mass_center (0), middle_vector (1) + mass_center (1), middle_vector (2) + mass_center (2));
@@ -64,6 +73,13 @@ mass_center = feature_extractor.get_MassCenter ()
 # viewer->addLine (center, x_axis, 1.0f, 0.0f, 0.0f, "major eigen vector");
 # viewer->addLine (center, y_axis, 0.0f, 1.0f, 0.0f, "middle eigen vector");
 # viewer->addLine (center, z_axis, 0.0f, 0.0f, 1.0f, "minor eigen vector");
+center = pcl.PointCloud(mass_center[0], mass_center[1], mass_center[2])
+x_axis = pcl.PointCloud(major_vector [0] + mass_center [0], major_vector [1] + mass_center [1], major_vector [2] + mass_center [2])
+y_axis = pcl.PointCloud(middle_vector [0] + mass_center [0], middle_vector [1] + mass_center [1], middle_vector [2] + mass_center [2])
+z_axis = pcl.PointCloud(minor_vector [0] + mass_center [0], minor_vector [1] + mass_center [1], minor_vector [2] + mass_center [2])
+viewer.AddLine (center, x_axis, 1.0f, 0.0f, 0.0f, "major eigen vector");
+viewer.AddLine (center, y_axis, 0.0f, 1.0f, 0.0f, "middle eigen vector");
+viewer.AddLine (center, z_axis, 0.0f, 0.0f, 1.0f, "minor eigen vector");
 
 
 # while(!viewer->wasStopped())
