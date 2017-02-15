@@ -3,6 +3,7 @@
 from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.pair cimport pair
 
 # main
 cimport pcl_defs as cpp
@@ -1766,21 +1767,25 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
         # ctypedef boost::shared_ptr<PyramidFeatureHistogram<PointFeature> > Ptr;
         # ctypedef Ptr PyramidFeatureHistogramPtr;
         # ctypedef boost::shared_ptr<const pcl::PointRepresentation<PointFeature> > FeatureRepresentationConstPtr;
-        
         # /** \brief Method for setting the input dimension range parameter.
         #  * \note Please check the PyramidHistogram class description for more details about this parameter.
         #  */
         # inline void setInputDimensionRange (std::vector<std::pair<float, float> > &dimension_range_input)
+        # void setInputDimensionRange (vector[pair[float, float] ] &dimension_range_input)
         
         # /** \brief Method for retrieving the input dimension range vector */
         # inline std::vector<std::pair<float, float> > getInputDimensionRange () { return dimension_range_input_; }
+        # vector[pair[float, float] ] getInputDimensionRange ()
         
         # /** \brief Method to set the target dimension range parameter.
         #  * \note Please check the PyramidHistogram class description for more details about this parameter.
         #  */
         # inline void setTargetDimensionRange (std::vector<std::pair<float, float> > &dimension_range_target)
+        void setTargetDimensionRange (vector[pair[float, float] ] &dimension_range_target)
+        
         # /** \brief Method for retrieving the target dimension range vector */
         # inline std::vector<std::pair<float, float> > getTargetDimensionRange () { return dimension_range_target_; }
+        vector[pair[float, float] ] getTargetDimensionRange ()
         
         # /** \brief Provide a pointer to the feature representation to use to convert features to k-D vectors.
         #  * \param feature_representation the const boost shared pointer to a PointRepresentation

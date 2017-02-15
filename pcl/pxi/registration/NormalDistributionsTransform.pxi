@@ -37,7 +37,7 @@ cdef class NormalDistributionsTransform:
         return self.me.getOulierRatio()
 
     def set_OulierRatio(self, double outlier_ratio):
-        self.me.set_OulierRatio(outlier_ratio)
+        self.me.setOulierRatio(outlier_ratio)
     
     def get_TransformationProbability(self):
         return self.me.getTransformationProbability()
