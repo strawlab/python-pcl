@@ -11,8 +11,10 @@ import pcl
 # 
 # pcl::PCDReader reader;
 # reader.read("pcdfilename", *cloud);
-cloud = pcl.load('table_scene_lms400.pcd')
+cloud = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
+
 # std::cerr<<"PointCloud befor filtering: " << cloud->width * cloud->height << "data points ( " << pcl::getFieldsList (*cloud) << ").";
+# print('PointCloud befor filtering: ' + str(cloud.width * cloud.height) + 'data points ( ' + pcl.getFieldsList (cloud) + ').')
 
 # pcl::VoxelGrid<pcl::PointXYZ> sor;
 # sor.setInputCloud(cloud);
@@ -23,6 +25,7 @@ sor.set_leaf_size(0.1, 0.1, 0.1)
 cloud_filtered = sor.filter()
 
 # std::cerr<<"PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height << "data points (" << pcl::getFieldsList(*cloud_filtered) <<").";
+# print('PointCloud after filtering: ' + str(cloud_filtered.width * cloud_filtered.height) + 'data points ( ' + pcl.getFieldsList (cloud) + ').')
 
 # pcl::PCDWriter writer;
 # writer.write("savefilename", *cloud_filtered, false);

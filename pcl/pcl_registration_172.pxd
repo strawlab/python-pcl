@@ -678,12 +678,11 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
 # ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPoint_PointXYZI_t
 # ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB, float] IterativeClosestPoint_PointXYZRGB_t
 # ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA, float] IterativeClosestPoint_PointXYZRGBA_t
-# 
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPoint_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPoint_PointXYZI_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPoint_PointXYZRGB_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPoint_PointXYZRGBA_t
-
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPointPtr_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPoint_PointXYZI_Ptr_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPoint_PointXYZRGB_Ptr_t
+# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPoint_PointXYZRGBA_Ptr_t
+###
 
 # /** \brief @b IterativeClosestPointWithNormals is a special case of
 #  * IterativeClosestPoint, that uses a transformation estimated based on
@@ -3161,7 +3160,7 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
         #   * \param[in] cloud the input point cloud target
         #   */
         # inline void setInputTarget (const PointCloudTargetConstPtr &cloud)
-        void setInputTarget (const Registration[Source, Target] &cloud)
+        # void setInputTarget (const Registration[Source, Target, float] &cloud)
         
         # 
         # /** \brief Set/change the voxel grid resolution.
@@ -3227,13 +3226,13 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
 
 ctypedef NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float] NormalDistributionsTransform_t
 ctypedef NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float] NormalDistributionsTransform_PointXYZI_t
-ctypedef NormalDistributionsTransform[cpp.PointXYZRGB, PointXYZRGB, float] NormalDistributionsTransform_PointXYZRGB_t
-ctypedef NormalDistributionsTransform[cpp.PointXYZRGBA, PointXYZRGBA, float] NormalDistributionsTransform_PointXYZRGBA_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float]] NormalDistributionsTransform_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float]] NormalDistributionsTransform_PointXYZI_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] NormalDistributionsTransform_PointXYZRGB_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] NormalDistributionsTransform_PointXYZRGBA_t
-###
+ctypedef NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB, float] NormalDistributionsTransform_PointXYZRGB_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float] NormalDistributionsTransform_PointXYZRGBA_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float]] NormalDistributionsTransformPtr_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float]] NormalDistributionsTransform_PointXYZI_Ptr_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] NormalDistributionsTransform_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] NormalDistributionsTransform_PointXYZRGBA_Ptr_t
+###
 
 # ndt_2d.h
 # namespace pcl

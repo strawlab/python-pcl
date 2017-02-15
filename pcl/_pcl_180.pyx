@@ -4,20 +4,20 @@
 from collections import Sequence
 import numbers
 import numpy as np
-
 cimport numpy as cnp
 
 cimport pcl_common as pcl_cmn
 cimport pcl_defs as cpp
 cimport pcl_sample_consensus as pcl_sc
-cimport pcl_features as pcl_ftr
-cimport pcl_filters as pcl_fil
-cimport pcl_range_image as pcl_r_img
+cimport pcl_features_172 as pcl_ftr
+cimport pcl_filters_172 as pcl_fil
+cimport pcl_range_image_172 as pcl_r_img
 # cimport pcl_segmentation as segmentation
 
 cimport cython
 # from cython.operator import dereference as deref
 from cython.operator cimport dereference as deref, preincrement as inc
+from cython cimport address
 
 from cpython cimport Py_buffer
 
@@ -108,8 +108,10 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 #         self.BORDER_POLICY_MIRROR = pcl_ftr.BORDERPOLICY2_MIRROR
 # 
 # CythonBorderPolicy_Type = _CythonBorderPolicy_Type()
-# 
-# # CythonNormalEstimationMethod
+###
+
+
+# CythonNormalEstimationMethod
 # @cython.internal
 # cdef class _CythonNormalEstimationMethod_Type:
 #     cdef:
@@ -125,19 +127,17 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 #         self.SIMPLE_3D_GRADIENT = pcl_ftr.ESTIMATIONMETHOD2_SIMPLE_3D_GRADIENT
 # 
 # CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
-# 
 ###
 
 include "pxi/PointCloud_PointXYZ_172.pxi"
-include "pxi/PointCloud_PointXYZI.pxi"
-include "pxi/PointCloud_PointXYZRGB.pxi"
-include "pxi/PointCloud_PointXYZRGBA.pxi"
-include "pxi/PointCloud_PointWithViewpoint.pxi"
-# include "pxi/PointCloud_Normal.pxi"
-include "pxi/PointCloud_PointNormal.pxi"
+# include "pxi/PointCloud_PointXYZI_172.pxi"
+# include "pxi/PointCloud_PointXYZRGB_172.pxi"
+# include "pxi/PointCloud_PointXYZRGBA_172.pxi"
+# include "pxi/PointCloud_PointWithViewpoint.pxi"
+# # include "pxi/PointCloud_Normal.pxi"
+# include "pxi/PointCloud_PointNormal.pxi"
 
-# include "pxi/OctreePointCloudSearch.pxi"
-# include "pxi/OctreePointCloudChangeDetector.pxi"
+
 
 
 ### common ###

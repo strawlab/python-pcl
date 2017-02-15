@@ -3,6 +3,7 @@
 from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
+from libcpp.pair cimport pair
 
 # import
 cimport pcl_defs as cpp

@@ -15,25 +15,11 @@ from boost_shared_ptr cimport shared_ptr
 from eigen cimport Matrix4f
 
 # registration.h
-# Version 1.7.2
-# cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
-#     cdef cppclass Registration[Source, Target]:
-#         cppclass Matrix4:
-#             float *data()
-#         void align(cpp.PointCloud[Source] &) except +
-#         Matrix4f getFinalTransformation() except +
-#         double getFitnessScore() except +
-#         bool hasConverged() except +
-#         void setInputSource(cpp.PointCloudPtr_t) except +
-#         void setInputTarget(cpp.PointCloudPtr_t) except +
-#         void setMaximumIterations(int) except +
-###
-
 # template <typename PointSource, typename PointTarget>
 # class Registration : public PCLBase<PointSource>
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
     cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
-        # Registration()
+        Registration()
         # override?
         void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
         # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
@@ -70,7 +56,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
         # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
         # inline double getRANSACIterations ()
         double getRANSACIterations ()
-		
+        
         # /** \brief Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
         #   * The method considers a point to be an inlier, if the distance between the target data index and the transformed 
         #   * source index is smaller than the given inlier distance threshold. 
@@ -237,11 +223,13 @@ cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::r
         #   * \return correspondences the const boost shared pointer to a correspondence vector
         #   */
         # inline CorrespondencesConstPtr getInputCorrespondences ()
+        # CorrespondencesConstPtr getInputCorrespondences ()
         
         # /** \brief Run correspondence rejection
         #   * \param[out] correspondences Vector of correspondences that have not been rejected.
         #   */
         # inline void getCorrespondences (pcl::Correspondences &correspondences)
+        # void getCorrespondences (pcl::Correspondences &correspondences)
         
         # /** \brief Get a list of valid correspondences after rejection from the original set of correspondences.
         #   * Pure virtual. Compared to \a getCorrespondences this function is
