@@ -22,7 +22,7 @@ from boost_shared_ptr cimport shared_ptr
 ### base class ###
 
 # point_cloud_handlers.h(1.6.0)
-# point_cloud_color_handlers.h(1.7.2)
+# point_cloud_handlers.h -> point_cloud_color_handlers.h(1.7.2)
 # template <typename PointT>
 # class PointCloudColorHandler
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
@@ -62,7 +62,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 ###
 
 # point_cloud_handlers.h(1.6.0)
-# point_cloud_geometry_handlers.h(1.7.2)
+# point_cloud_handlers.h -> point_cloud_geometry_handlers.h(1.7.2)
 # template <typename PointT>
 # class PointCloudGeometryHandler
 cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
@@ -175,7 +175,6 @@ ctypedef PointCloudGeometryHandlerXYZ[cpp.PointXYZ] PointCloudGeometryHandlerXYZ
 ctypedef PointCloudGeometryHandlerXYZ[cpp.PointXYZI] PointCloudGeometryHandlerXYZ_PointXYZI_t
 ctypedef PointCloudGeometryHandlerXYZ[cpp.PointXYZRGB] PointCloudGeometryHandlerXYZ_PointXYZRGB_t
 ctypedef PointCloudGeometryHandlerXYZ[cpp.PointXYZRGBA] PointCloudGeometryHandlerXYZ_PointXYZRGBA_t
-
 ctypedef shared_ptr[PointCloudGeometryHandlerXYZ[cpp.PointXYZ]] PointCloudGeometryHandlerXYZ_Ptr_t
 ctypedef shared_ptr[PointCloudGeometryHandlerXYZ[cpp.PointXYZI]] PointCloudGeometryHandlerXYZ_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloudGeometryHandlerXYZ[cpp.PointXYZRGB]] PointCloudGeometryHandlerXYZ_PointXYZRGB_Ptr_t
@@ -209,17 +208,14 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
         # virtual void getGeometry (vtkSmartPointer<vtkPoints> &points) const;
 
 
-
 ctypedef PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZ] PointCloudGeometryHandlerSurfaceNormal_t
 ctypedef PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZI] PointCloudGeometryHandlerSurfaceNormal_PointXYZI_t
 ctypedef PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZRGB] PointCloudGeometryHandlerSurfaceNormal_PointXYZRGB_t
 ctypedef PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZRGBA] PointCloudGeometryHandlerSurfaceNormal_PointXYZRGBA_t
-
 ctypedef shared_ptr[PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZ]] PointCloudGeometryHandlerSurfaceNormal_Ptr_t
 ctypedef shared_ptr[PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZI]] PointCloudGeometryHandlerSurfaceNormal_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZRGB]] PointCloudGeometryHandlerSurfaceNormal_PointXYZRGB_Ptr_t
 ctypedef shared_ptr[PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZRGBA]] PointCloudGeometryHandlerSurfaceNormal_PointXYZRGBA_Ptr_t
-
 ###
 
 # point_cloud_handlers.h
@@ -249,6 +245,16 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
         # /** \brief Obtain the actual point geometry for the input dataset in VTK format.
         #   * \param[out] points the resultant geometry
         # virtual void getGeometry (vtkSmartPointer<vtkPoints> &points) const;
+
+
+ctypedef PointCloudGeometryHandlerCustom[cpp.PointXYZ] PointCloudGeometryHandlerCustom_t
+ctypedef PointCloudGeometryHandlerCustom[cpp.PointXYZI] PointCloudGeometryHandlerCustom_PointXYZI_t
+ctypedef PointCloudGeometryHandlerCustom[cpp.PointXYZRGB] PointCloudGeometryHandlerCustom_PointXYZRGB_t
+ctypedef PointCloudGeometryHandlerCustom[cpp.PointXYZRGBA] PointCloudGeometryHandlerCustom_PointXYZRGBA_t
+ctypedef shared_ptr[PointCloudGeometryHandlerCustom[cpp.PointXYZ]] PointCloudGeometryHandlerCustom_Ptr_t
+ctypedef shared_ptr[PointCloudGeometryHandlerCustom[cpp.PointXYZI]] PointCloudGeometryHandlerCustom_PointXYZI_Ptr_t
+ctypedef shared_ptr[PointCloudGeometryHandlerCustom[cpp.PointXYZRGB]] PointCloudGeometryHandlerCustom_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PointCloudGeometryHandlerCustom[cpp.PointXYZRGBA]] PointCloudGeometryHandlerCustom_PointXYZRGBA_Ptr_t
 ###
 
 # point_cloud_handlers.h
@@ -375,7 +381,6 @@ ctypedef PointCloudColorHandlerRandom[cpp.PointXYZ] PointCloudColorHandlerRandom
 ctypedef PointCloudColorHandlerRandom[cpp.PointXYZI] PointCloudColorHandlerRandom_PointXYZI_t
 ctypedef PointCloudColorHandlerRandom[cpp.PointXYZRGB] PointCloudColorHandlerRandom_PointXYZRGB_t
 ctypedef PointCloudColorHandlerRandom[cpp.PointXYZRGBA] PointCloudColorHandlerRandom_PointXYZRGBA_t
-
 ctypedef shared_ptr[PointCloudColorHandlerRandom[cpp.PointXYZ]] PointCloudColorHandlerRandom_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerRandom[cpp.PointXYZI]] PointCloudColorHandlerRandom_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerRandom[cpp.PointXYZRGB]] PointCloudColorHandlerRandom_PointXYZRGB_Ptr_t
@@ -417,7 +422,6 @@ ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZ] PointCloudColorHandlerRGBF
 ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZI] PointCloudColorHandlerRGBField_PointXYZI_t
 ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZRGB] PointCloudColorHandlerRGBField_PointXYZRGB_t
 ctypedef PointCloudColorHandlerRGBField[cpp.PointXYZRGBA] PointCloudColorHandlerRGBField_PointXYZRGBA_t
-
 ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZ]] PointCloudColorHandlerRGBField_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZI]] PointCloudColorHandlerRGBField_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZRGB]] PointCloudColorHandlerRGBField_PointXYZRGB_Ptr_t
@@ -456,12 +460,10 @@ ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZ] PointCloudColorHandlerHSVF
 ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZI] PointCloudColorHandlerHSVField_PointXYZI_t
 ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZRGB] PointCloudColorHandlerHSVField_PointXYZRGB_t
 ctypedef PointCloudColorHandlerHSVField[cpp.PointXYZRGBA] PointCloudColorHandlerHSVField_PointXYZRGBA_t
-
 ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZ]] PointCloudColorHandlerHSVField_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZI]] PointCloudColorHandlerHSVField_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGB]] PointCloudColorHandlerHSVField_PointXYZRGB_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGBA]] PointCloudColorHandlerHSVField_PointXYZRGBA_Ptr_t
-
 ###
 
 # point_cloud_handlers.h
@@ -496,7 +498,6 @@ ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZ] PointCloudColorHandler
 ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZI] PointCloudColorHandlerGenericField_PointXYZI_t
 ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZRGB] PointCloudColorHandlerGenericField_PointXYZRGB_t
 ctypedef PointCloudColorHandlerGenericField[cpp.PointXYZRGBA] PointCloudColorHandlerGenericField_PointXYZRGBA_t
-
 ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZ]] PointCloudColorHandlerGenericField_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZI]] PointCloudColorHandlerGenericField_PointXYZI_Ptr_t
 ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGB]] PointCloudColorHandlerGenericField_PointXYZRGB_Ptr_t

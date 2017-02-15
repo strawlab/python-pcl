@@ -3125,7 +3125,7 @@ cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
 # template<typename PointSource, typename PointTarget>
 # class NormalDistributionsTransform : public Registration<PointSource, PointTarget>
 cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
-    cdef cppclass NormalDistributionsTransform[Source, Target, float](Registration[Source, Target, float]):
+    cdef cppclass NormalDistributionsTransform[Source, Target](Registration[Source, Target, float]):
         NormalDistributionsTransform()
         # protected:
         # typedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
@@ -3225,14 +3225,14 @@ cdef extern from "pcl/registration/ndt.h" namespace "pcl" nogil:
         # static void convertTransform (const Eigen::Matrix<double, 6, 1> &x, Eigen::Matrix4f &trans)
 
 
-ctypedef NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float] NormalDistributionsTransform_t
-ctypedef NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float] NormalDistributionsTransform_PointXYZI_t
-ctypedef NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB, float] NormalDistributionsTransform_PointXYZRGB_t
-ctypedef NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float] NormalDistributionsTransform_PointXYZRGBA_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ, float]] NormalDistributionsTransformPtr_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI, float]] NormalDistributionsTransform_PointXYZI_Ptr_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] NormalDistributionsTransform_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] NormalDistributionsTransform_PointXYZRGBA_Ptr_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ] NormalDistributionsTransform_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI] NormalDistributionsTransform_PointXYZI_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB] NormalDistributionsTransform_PointXYZRGB_t
+ctypedef NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA] NormalDistributionsTransform_PointXYZRGBA_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZ, cpp.PointXYZ]] NormalDistributionsTransformPtr_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZI, cpp.PointXYZI]] NormalDistributionsTransform_PointXYZI_Ptr_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGB, cpp.PointXYZRGB]] NormalDistributionsTransform_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[NormalDistributionsTransform[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] NormalDistributionsTransform_PointXYZRGBA_Ptr_t
 ###
 
 # ndt_2d.h
