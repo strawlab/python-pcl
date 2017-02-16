@@ -29,7 +29,7 @@ resolution = 32.0
 cloudA = pcl.PointCloud()
 
 points = np.zeros((128, 3), dtype=np.float32)
-RAND_MAX = 1024.0
+RAND_MAX = 1.0
 for i in range(0, 5):
     points[i][0] = 64.0 * random.random () / RAND_MAX
     points[i][1] = 64.0 * random.random () / RAND_MAX
@@ -38,6 +38,7 @@ for i in range(0, 5):
 cloudA.from_array(points)
 octree = cloudA.make_octreeChangeDetector(resolution)
 octree.add_points_from_input_cloud ()
+###
 
 # // Switch octree buffers: This resets octree but keeps previous tree structure in memory.
 # octree.switchBuffers ();
@@ -61,16 +62,15 @@ cloudB = pcl.PointCloud()
 #  octree.setInputCloud (cloudB);
 #  octree.addPointsFromInputCloud ();
 points2 = np.zeros((128, 3), dtype=np.float32)
-for i in range(0, 5):
+for i in range(0, 128):
     points2[i][0] = 64.0 * random.random () / RAND_MAX
     points2[i][1] = 64.0 * random.random () / RAND_MAX
     points2[i][2] = 64.0 * random.random () / RAND_MAX
 
 cloudB.from_array(points2)
 
-cloudB.make_octreeChangeDetector
-# octree.setInputCloud ()
-# octree.addPointsFromInputCloud ()
+octree.set_input_cloud (cloudB)
+octree.add_points_from_input_cloud ()
 
 # std::vector<int> newPointIdxVector;
 # // Get vector of point indices from octree voxels which did not exist in previous buffer
@@ -82,7 +82,13 @@ cloudB.make_octreeChangeDetector
 #             << "  Point:" << cloudB->points[newPointIdxVector[i]].x << " "
 #             << cloudB->points[newPointIdxVector[i]].y << " "
 #             << cloudB->points[newPointIdxVector[i]].z << std::endl;
-[ind, sqdist] = kdtree.radius_search_for_cloud (searchPoint, radius)
-for i in range(0, ind.size):
-    print ('(' + str(i) + '# Index:' + str(ind[0][i]) + '  Point:' + str(cloudB[ind[0][i]][0]) + ' ' + str(cloudB[ind[0][i]][1]) + ' ' + str(cloudB[ind[0][i]][2]) + ' (squared distance: ' + str(sqdist[0][i]) + ')')
+newPointIdxVector = octree.get_PointIndicesFromNewVoxels ()
+print('Output from getPointIndicesFromNewVoxels:')
+
+cloudB.extract(newPointIdxVector)
+
+# count = newPointIdxVector.size
+for i in range(0, cloudB.size):
+    # print(str(i) + '# Index:' + str(newPointIdxVector[i]) + '  Point:' + str(cloudB[i * 3 + 0]) + ' ' + str(cloudB[i * 3 + 1]) + ' ' + str(cloudB[i * 3 + 2]) )
+    print(str(i) + '# Index:' + str(i) + '  Point:' + str(cloudB[i]))
 

@@ -70,5 +70,24 @@ install:
 script:
   - python tests/test.py
   - python tests/test_registration.py
-
+  # # examples_command_172.txt
+  # # Filtering
+  # - python examples\official\Filtering\PassThroughFilter.py
+  # - python examples\official\Filtering\project_inliers.py
+  # - python examples\official\Filtering\remove_outliers.py -r Radius
+  # - python examples\official\Filtering\remove_outliers.py -r Condition
+  # - python examples\official\Filtering\VoxelGrid_160.py
+  # - python examples\official\Filtering\statistical_removal.py
+  # - python examples\official\IO\pcd_read.py
+  # # KdTree
+  # - python examples\official\kdtree\kdtree_search.py
+  # # keypoints
+  # # NG(RangeImage Link Error)
+  # - python examples\official\keypoints\narf_keypoint_extraction.py
+  # # octree
+  # - python examples\official\octree\octree_search.py
+  # - python examples\official\Segmentation\cluster_extraction.py
+  # - python examples\official\Segmentation\cylinder_segmentation.py
+  # - python examples\official\surface\concave_hull_2d.py
+  # - python examples\official\surface\resampling.py
 

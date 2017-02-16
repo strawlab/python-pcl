@@ -122,7 +122,7 @@ else:
     point_cloud = pcl.PointCloud()
     point_cloud.from_array(points)
     
-    far_ranges = pcl.PointCloudWrapper_PointWithViewpoint()
+    far_ranges = pcl.PointCloud_PointWithViewpoint()
 
 # Create RangeImage from the PointCloud
 noise_level = 0.0

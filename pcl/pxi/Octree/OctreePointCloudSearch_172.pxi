@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_octree as pcloct
-# cimport pcl_octree_172 as pcloct
+cimport pcl_octree_172 as pcloct
 
 # include "PointXYZtoPointXYZ.pxi" --> multiple define ng
 # include "OctreePointCloud.pxi"
@@ -57,8 +56,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         cdef vector[float] k_sqr_distances
         k_indices.resize(k)
         k_sqr_distances.resize(k)
-        # self.me.nearestKSearch(pc.thisptr()[0], index, k, k_indices,
-        #                        k_sqr_distances)
+        # self.me.nearestKSearch(pc.thisptr()[0], index, k, k_indices, k_sqr_distances)
         (<pcloct.OctreePointCloudSearch_t*>self.me).nearestKSearch(pc.thisptr()[0], index, k, k_indices, k_sqr_distances)
 
         for i in range(k):
@@ -170,6 +168,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
 #         for i in range(k):
 #             sqdist[i] = radius_distances[i]
 #             ind[i] = radius_indices[i]
+
 
 cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
     """

@@ -531,9 +531,13 @@ cdef class PointCloud:
 
 
 ### include ###
+# common?
+include "PointXYZtoPointXYZ.pxi"
+# Segmentation
 include "Segmentation/Segmentation.pxi"
 include "Segmentation/SegmentationNormal.pxi"
 include "Segmentation/EuclideanClusterExtraction.pxi"
+# Filters
 include "Filters/StatisticalOutlierRemovalFilter.pxi"
 include "Filters/VoxelGridFilter.pxi"
 include "Filters/PassThroughFilter.pxi"
@@ -543,6 +547,7 @@ include "Surface/MovingLeastSquares.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 # Octree
 include "Octree/OctreePointCloud.pxi"
+include "Octree/OctreePointCloud2Buf.pxi"
 include "Octree/OctreePointCloudSearch.pxi"
 include "Octree/OctreePointCloudChangeDetector.pxi"
 include "Vertices.pxi"

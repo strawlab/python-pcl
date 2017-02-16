@@ -46,8 +46,7 @@ python examples\official\keypoints\narf_keypoint_extraction.py
 # Exception ignored in: 'pcl._pcl.to_point_t'
 # TypeError: a float is required
 python examples\official\octree\octree_search.py
-# pcl 1.6 - NG
-# python examples\official\octree\octree_change_detection_172.py
+python examples\official\octree\octree_change_detection.py
 ###
 
 # RangeImage

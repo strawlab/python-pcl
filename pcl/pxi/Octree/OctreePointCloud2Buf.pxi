@@ -4,11 +4,11 @@ cimport pcl_octree as pcloct
 
 cimport eigen as eig
 
-cdef class OctreePointCloud:
+cdef class OctreePointCloud2Buf:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_t *me
+    cdef pcloct.OctreePointCloud2Buf_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -19,8 +19,7 @@ cdef class OctreePointCloud:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = new pcloct.OctreePointCloud_t(resolution)
-        # self.me = new pcloct.OctreePointCloud_t()
+        self.me = new pcloct.OctreePointCloud2Buf_t(resolution)
 
     def __dealloc__(self):
         del self.me
@@ -82,11 +81,11 @@ cdef class OctreePointCloud:
     #     # mpcl_deleteVoxelAtPoint(deref(self.me), to_point_t(point))
 
 
-cdef class OctreePointCloud_PointXYZI:
+cdef class OctreePointCloud2Buf_PointXYZI:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_PointXYZI_t *me
+    cdef pcloct.OctreePointCloud2Buf_PointXYZI_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -97,8 +96,7 @@ cdef class OctreePointCloud_PointXYZI:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = new pcloct.OctreePointCloud_PointXYZI_t(resolution)
-        # self.me = new pcloct.OctreePointCloud_PointXYZI_t()
+        self.me = new pcloct.OctreePointCloud2Buf_PointXYZI_t(resolution)
 
     def __dealloc__(self):
         del self.me
@@ -161,11 +159,11 @@ cdef class OctreePointCloud_PointXYZI:
     #     # mpcl_deleteVoxelAtPoint_PointXYZI(deref(self.me), to_point2_t(point))
 
 
-cdef class OctreePointCloud_PointXYZRGB:
+cdef class OctreePointCloud2Buf_PointXYZRGB:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_PointXYZRGB_t *me
+    cdef pcloct.OctreePointCloud2Buf_PointXYZRGB_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -176,8 +174,7 @@ cdef class OctreePointCloud_PointXYZRGB:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = new pcloct.OctreePointCloud_PointXYZRGB_t(resolution)
-        # self.me = new pcloct.OctreePointCloud_PointXYZRGB_t()
+        self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGB_t(resolution)
 
     def __dealloc__(self):
         del self.me
@@ -236,11 +233,11 @@ cdef class OctreePointCloud_PointXYZRGB:
     #     self.me.deleteVoxelAtPoint(to_point3_t(point))
 
 
-cdef class OctreePointCloud_PointXYZRGBA:
+cdef class OctreePointCloud2Buf_PointXYZRGBA:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_PointXYZRGBA_t *me
+    cdef pcloct.OctreePointCloud2Buf_PointXYZRGBA_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -251,8 +248,7 @@ cdef class OctreePointCloud_PointXYZRGBA:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = new pcloct.OctreePointCloud_PointXYZRGBA_t(resolution)
-        # self.me = new pcloct.OctreePointCloud_PointXYZRGBA_t()
+        self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGBA_t(resolution)
 
     def __dealloc__(self):
         del self.me
