@@ -129,6 +129,8 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 # CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
 ###
 
+include "pxi/pxiInclude.pxi"
+
 include "pxi/PointCloud_PointXYZ.pxi"
 include "pxi/PointCloud_PointXYZI.pxi"
 include "pxi/PointCloud_PointXYZRGB.pxi"
@@ -136,8 +138,6 @@ include "pxi/PointCloud_PointXYZRGBA.pxi"
 include "pxi/PointCloud_PointWithViewpoint.pxi"
 # include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
-
-
 
 
 ### common ###

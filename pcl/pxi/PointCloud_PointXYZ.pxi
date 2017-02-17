@@ -400,12 +400,7 @@ cdef class PointCloud:
         Return a pcl.IntegralImageNormalEstimation object with this object set as the input-cloud
         Deprecated: use the pcl.Vertices constructor on this cloud.
         """
-        # proj = IntegralImageNormalEstimation()
-        # cdef pclftr.IntegralImageNormalEstimation_t *cproj = <pclftr.IntegralImageNormalEstimation_t *>proj.me
-        # cproj.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # return proj
-        result = IntegralImageNormalEstimation(self)
-        return result
+        return IntegralImageNormalEstimation(self)
 
     def extract(self, pyindices, bool negative=False):
         """
@@ -528,46 +523,4 @@ cdef class PointCloud:
         return euclideanclusterextraction
 
 ###
-
-
-### include ###
-# common?
-include "PointXYZtoPointXYZ.pxi"
-# Segmentation
-include "Segmentation/Segmentation.pxi"
-include "Segmentation/SegmentationNormal.pxi"
-include "Segmentation/EuclideanClusterExtraction.pxi"
-# Filters
-include "Filters/StatisticalOutlierRemovalFilter.pxi"
-include "Filters/VoxelGridFilter.pxi"
-include "Filters/PassThroughFilter.pxi"
-include "Filters/ApproximateVoxelGrid.pxi"
-include "Surface/MovingLeastSquares.pxi"
-# include "KdTree/KdTree.pxi"
-include "KdTree/KdTree_FLANN.pxi"
-# Octree
-include "Octree/OctreePointCloud.pxi"
-include "Octree/OctreePointCloud2Buf.pxi"
-include "Octree/OctreePointCloudSearch.pxi"
-include "Octree/OctreePointCloudChangeDetector.pxi"
-include "Vertices.pxi"
-include "Filters/CropHull.pxi"
-include "Filters/CropBox.pxi"
-include "Filters/ProjectInliers.pxi"
-include "Filters/RadiusOutlierRemoval.pxi"
-include "Filters/ConditionAnd.pxi"
-include "Filters/ConditionalRemoval.pxi"
-include "Surface/ConcaveHull.pxi"
-include "Common/RangeImage/RangeImages.pxi"
-
-# include "Visualization/PointCloudColorHandlerCustoms.pxi"
-
-# Features
-include "Features/NormalEstimation.pxi"
-include "Features/VFHEstimation.pxi"
-include "Features/IntegralImageNormalEstimation.pxi"
-
-# keyPoint
-include "KeyPoint/HarrisKeypoint3D.pxi"
-include "KeyPoint/UniformSampling.pxi"
 

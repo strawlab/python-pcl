@@ -12,14 +12,14 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
     cdef pcloct.OctreePointCloudSearch_t *me2
 
     def __cinit__(self, double resolution):
+        """
+        Constructs octree pointcloud with given resolution at lowest octree level
+        """ 
+        self.me2 = NULL
         self.me = NULL
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-    def __cinit__(self, double resolution):
-        """
-        Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
         self.me2 = <pcloct.OctreePointCloudSearch_t*> new pcloct.OctreePointCloudSearch_t(resolution)
         self.me = <pcloct.OctreePointCloud_t*> self.me2
 
@@ -231,6 +231,11 @@ cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudSearch_PointXYZI_t*> new pcloct.OctreePointCloudSearch_PointXYZI_t(resolution)
         self.me = <pcloct.OctreePointCloud_PointXYZI_t*> self.me2
 
@@ -307,6 +312,11 @@ cdef class OctreePointCloudSearch_PointXYZRGB(OctreePointCloud_PointXYZRGB):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudSearch_PointXYZRGB_t*> new pcloct.OctreePointCloudSearch_PointXYZRGB_t(resolution)
         self.me = <pcloct.OctreePointCloud_PointXYZRGB_t*> self.me2
 
@@ -384,6 +394,11 @@ cdef class OctreePointCloudSearch_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudSearch_PointXYZRGBA_t*> new pcloct.OctreePointCloudSearch_PointXYZRGBA_t(resolution)
         self.me = <pcloct.OctreePointCloud_PointXYZRGBA_t*> self.me2
 

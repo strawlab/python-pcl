@@ -3,7 +3,7 @@ cimport _pcl
 cimport pcl_visualization
 from _pcl cimport PointCloud_PointWithViewpoint
 # NG
-# from _pcl cimport RangeImage
+# from _pcl cimport RangeImages
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
@@ -20,9 +20,6 @@ cdef class PointCloudColorHandleringCustom:
 
     # void sp_assign[T](shared_ptr[T] &p, T *value)
     def __cinit__(self, _pcl.PointCloud pc, int r, int g, int b):
-        # self.me = new pcl_vis.PointCloudColorHandlerCustom_t(pc.thisptr_shared, r, g, b)
-        # sp_assign(self.thisptr_shared, new pcl_vis.PointCloudColorHandlerCustom(r, g, b))
-        # sp_assign(self.thisptr_shared, new pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ](r, g, b))
         sp_assign(self.thisptr_shared, new pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ](pc.thisptr_shared, r, g, b))
         pass
 

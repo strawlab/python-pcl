@@ -288,6 +288,7 @@ cdef class OctreePointCloud_PointXYZRGBA:
     #     """
     #     self.me.defineBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z)
 
+    # use NG
     # def add_points_from_input_cloud(self):
     #     """
     #     Add points from input point cloud to octree.

@@ -14,25 +14,17 @@ cdef class RangeImages:
     """
     rangeImage
     """
-    # cdef pcl_r_img.RangeImage_t *me
-    # cdef pcl_r_img.RangeImage_t *point
-    # cdef cpp.PointCloud[cpp.PointWithRange] *point
-    
-    
+
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
         sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage())
-        # NG
-        # self.thisptr_shared = <pcl_r_img.RangeImage *> new pcl_r_img.RangeImage()
-        # print('__cinit__')
         pass
-    
-    # def __cinit__(self, PointCloud pc not None):
-    #     # self.me = new pcl_r_img.RangeImage_t()
-    #     # self.point = pc.thisptr_shared
-    #     sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage())
-    
-    
+
+    def __cinit__(self, PointCloud pc not None):
+        # self.me = new pcl_r_img.RangeImage_t()
+        # self.point = pc.thisptr_shared
+        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage())
+
     def CreateFromPointCloud(self, PointCloud cloud, float angular_resolution, float max_angle_width, float max_angle_height, 
         pcl_r_img.CoordinateFrame2 coordinate_frame, float noise_level, float min_range, int border_size):
         
@@ -77,10 +69,8 @@ cdef class RangeImages:
             min_range, 
             border_size)
     
-    
     def SetAngularResolution(self, float angular_resolution_x, float angular_resolution_y):
         self.thisptr()[0].setAngularResolution(angular_resolution_x, angular_resolution_y)
-    
     
     def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
     #   self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t> viewpoint.thisptr()[0])
@@ -92,10 +82,9 @@ cdef class RangeImages:
         # self.thisprt()[0].integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
     
-    
     def SetUnseenToMaxRange(self):
         self.thisptr()[0].setUnseenToMaxRange()
-    
-    
+
+
 ###
 
