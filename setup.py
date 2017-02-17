@@ -15,6 +15,14 @@ import platform
 import os
 import time
 
+setup_requires = []
+install_requires = [
+    'filelock',
+    'nose',
+    'numpy',
+    'Cython>=0.25.2',
+]
+
 if platform.system() == "Windows":
     # Check 32bit or 64bit
     is_64bits = sys.maxsize > 2**32
@@ -330,6 +338,10 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              zip_safe=False,
+              setup_requires=setup_requires,
+              install_requires=install_requires,
+              tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            Extension("pcl.pcl_registration", ["pcl/pcl_registration_160.pyx"], language="c++", **ext_args),
                            Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
@@ -352,6 +364,10 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              zip_safe=False,
+              setup_requires=setup_requires,
+              install_requires=install_requires,
+              tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
                            Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
@@ -370,6 +386,10 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              zip_safe=False,
+              setup_requires=setup_requires,
+              install_requires=install_requires,
+              tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
                            Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
@@ -458,6 +478,10 @@ else:
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              zip_safe=False,
+              setup_requires=setup_requires,
+              install_requires=install_requires,
+              tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            # 1.6.0 NG
                            Extension("pcl.pcl_registration", ["pcl/pcl_registration_160.pyx"], language="c++", **ext_args),
@@ -477,6 +501,10 @@ else:
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              zip_safe=False,
+              setup_requires=setup_requires,
+              install_requires=install_requires,
+              tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
@@ -495,6 +523,10 @@ else:
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              zip_safe=False,
+              setup_requires=setup_requires,
+              install_requires=install_requires,
+              tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            Extension("pcl.pcl_registration", ["pcl/pcl_registration_172.pyx"], language="c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),

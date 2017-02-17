@@ -8,6 +8,8 @@ import random
 import argparse
 import time
 
+import pcl.pcl_visualization
+
 # Parameters
 angular_resolution = 0.5
 support_size = 0.2
@@ -61,7 +63,7 @@ setUnseenToMaxRange = args.UnseenToMaxRange
 # scene_sensor_pose = (Eigen::Affine3f::Identity ())
 # vector[int] pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
 # pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
-pcd_filename_indices = ''
+pcd_filename_indices = 'test_pcd.pcd'
 # pcd_filename_indices = [0, 0, 0]
 
 # if pcd_filename_indices.empty() == False
@@ -146,8 +148,8 @@ range_image.CreateFromPointCloud (point_cloud,
                                     coordinate_frame, noise_level, min_range, border_size)
 
 # NG
-# print ('range_image::integrateFarRanges.\n')
-# range_image.IntegrateFarRanges (far_ranges)
+print ('range_image::integrateFarRanges.\n')
+range_image.IntegrateFarRanges (far_ranges)
 
 # if (setUnseenToMaxRange)
 #     range_image.setUnseenToMaxRange ();
@@ -156,26 +158,28 @@ if setUnseenToMaxRange == True:
    range_image.SetUnseenToMaxRange ()
 
 # Open 3D viewer and add point cloud
-# # pcl::visualization::PCLVisualizer viewer ("3D Viewer")
-# # viewer.setBackgroundColor (1, 1, 1)
-# # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 0, 0, 0);
-# # viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
-# # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "range image");
-# # viewer.initCameraParameters ();
-viewer = pcl.PCLVisualizering("3D Viewer")
+# pcl::visualization::PCLVisualizer viewer ("3D Viewer")
+# viewer.setBackgroundColor (1, 1, 1)
+# pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 0, 0, 0);
+# viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
+# viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 1, "range image");
+# viewer.initCameraParameters ();
+##
+# viewer = pcl.PCLVisualizering("3D Viewer")
+viewer = pcl.pcl_visualization.PCLVisualizering()
 viewer.SetBackgroundColor (1, 1, 1)
-# range_image_color_handler = pcl.PointCloudColorHandlerCustoms()
 # NG
 # range_image_color_handler = pcl.PointCloudColorHandlerCustoms[cpp.PointWithRange] (range_image, 0, 0, 0)
 # range_image_color_handler = pcl.PointCloudColorHandlerCustoms (range_image, 0, 0, 0)
-range_image_color_handler = pcl.PointCloudColorHandlerCustoms (0, 0, 0)
+range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (range_image, 0, 0, 0)
+
 # viewer.AddPointCloud (range_image, range_image_color_handler, 'range image')
 # viewer.AddPointCloud (point_cloud, 'range image', 0)
 viewer.AddPointCloud (point_cloud)
 
 time.sleep(1)
-# viewer.SetPointCloudRenderingProperties (pcl.PCLVISUALIZER_POINT_SIZE, 1, 'range image')
-viewer.SetPointCloudRenderingProperties (pcl.PCLVISUALIZER_POINT_SIZE, 1)
+# viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, 'range image')
+viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1)
 time.sleep(1)
 viewer.InitCameraParameters ()
 time.sleep(1)
@@ -183,7 +187,7 @@ time.sleep(1)
 # Show range image
 # pcl::visualization::RangeImageVisualizer range_image_widget ("Range image");
 # range_image_widget.showRangeImage (range_image);
-range_image_widget = pcl.RangeImageVisualization()
+range_image_widget = pcl.pcl_visualization.RangeImageVisualization()
 range_image_widget.ShowRangeImage (range_image)
 
 # Extract NARF keypoints

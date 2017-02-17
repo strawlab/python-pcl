@@ -87,8 +87,9 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #     const Eigen::Affine3f& sensor_pose = Eigen::Affine3f::Identity (),
         #     CoordinateFrame coordinate_frame=CAMERA_FRAME, float noise_level=0.0f,
         #     float min_range=0.0f, int border_size=0);
-        void createFromPointCloud (
-            cpp.PointCloud_t& point_cloud, 
+        # use Template
+        void createFromPointCloud [PointCloudType](
+            const PointCloudType& point_cloud, 
             float angular_resolution,
             float max_angle_width, 
             float max_angle_height,
@@ -98,51 +99,50 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
             float min_range, 
             int border_size)
         
-        void createFromPointCloud (
-            const cpp.PointCloud_PointXYZI_t& point_cloud, 
-            float angular_resolution,
-            float max_angle_width, 
-            float max_angle_height,
-            const eigen3.Affine3f& sensor_pose,
-            CoordinateFrame2 coordinate_frame, 
-            float noise_level,
-            float min_range, 
-            int border_size)
-        
-        void createFromPointCloud (
-            const cpp.PointCloud_PointXYZRGBA_t& point_cloud, 
-            float angular_resolution,
-            float max_angle_width, 
-            float max_angle_height,
-            const eigen3.Affine3f& sensor_pose,
-            CoordinateFrame2 coordinate_frame, 
-            float noise_level,
-            float min_range, 
-            int border_size)
-        
-        void createFromPointCloud (
-            const cpp.PointCloud_PointXYZRGB_t& point_cloud, 
-            float angular_resolution,
-            float max_angle_width, 
-            float max_angle_height,
-            const eigen3.Affine3f& sensor_pose,
-            CoordinateFrame2 coordinate_frame, 
-            float noise_level,
-            float min_range, 
-            int border_size)
-        
-        # PointXYZ
-        # createFromPointCloud (
-        #     const PointCloudType& point_cloud, 
+        # void createFromPointCloud (
+        #     cpp.PointCloud_t& point_cloud, 
         #     float angular_resolution,
         #     float max_angle_width, 
         #     float max_angle_height,
-        #     const Eigen::Affine3f& sensor_pose,
+        #     const eigen3.Affine3f& sensor_pose,
         #     CoordinateFrame2 coordinate_frame, 
         #     float noise_level,
         #     float min_range, 
         #     int border_size)
-        ##
+        # 
+        # void createFromPointCloud (
+        #     const cpp.PointCloud_PointXYZI_t& point_cloud, 
+        #     float angular_resolution,
+        #     float max_angle_width, 
+        #     float max_angle_height,
+        #     const eigen3.Affine3f& sensor_pose,
+        #     CoordinateFrame2 coordinate_frame, 
+        #     float noise_level,
+        #     float min_range, 
+        #     int border_size)
+        # 
+        # void createFromPointCloud (
+        #     const cpp.PointCloud_PointXYZRGBA_t& point_cloud, 
+        #     float angular_resolution,
+        #     float max_angle_width, 
+        #     float max_angle_height,
+        #     const eigen3.Affine3f& sensor_pose,
+        #     CoordinateFrame2 coordinate_frame, 
+        #     float noise_level,
+        #     float min_range, 
+        #     int border_size)
+        # 
+        # void createFromPointCloud (
+        #     const cpp.PointCloud_PointXYZRGB_t& point_cloud, 
+        #     float angular_resolution,
+        #     float max_angle_width, 
+        #     float max_angle_height,
+        #     const eigen3.Affine3f& sensor_pose,
+        #     CoordinateFrame2 coordinate_frame, 
+        #     float noise_level,
+        #     float min_range, 
+        #     int border_size)
+        ###
         
         # brief Create the depth image from a point cloud
         # param point_cloud the input point cloud
@@ -202,8 +202,8 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         #                                  CoordinateFrame coordinate_frame=CAMERA_FRAME,
         #                                  float noise_level=0.0f, float min_range=0.0f, int border_size=0);
         ## 
-        createFromPointCloudWithKnownSize (
-            cpp.PointCloud_t& point_cloud,
+        void createFromPointCloudWithKnownSize [PointCloudType](
+            PointCloudType& point_cloud,
             float angular_resolution,
             const eigen3.Vector3f& point_cloud_center, 
             float point_cloud_radius,

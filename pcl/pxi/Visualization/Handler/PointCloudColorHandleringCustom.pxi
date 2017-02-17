@@ -2,8 +2,7 @@
 cimport _pcl
 cimport pcl_visualization
 from _pcl cimport PointCloud_PointWithViewpoint
-# NG
-# from _pcl cimport RangeImages
+from _pcl cimport RangeImages
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
@@ -22,6 +21,10 @@ cdef class PointCloudColorHandleringCustom:
     def __cinit__(self, _pcl.PointCloud pc, int r, int g, int b):
         sp_assign(self.thisptr_shared, new pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ](pc.thisptr_shared, r, g, b))
         pass
+
+    # def __cinit__(self, _pcl.RangeImages rangeImage, int r, int g, int b):
+    #     sp_assign(self.thisptr_shared, new pcl_vis.PointCloudColorHandlerCustom[cpp.PointWithViewpoint](rangeImage.thisptr_shared, r, g, b))
+    #     pass
 
     def __dealloc__(self):
         # del self.me
