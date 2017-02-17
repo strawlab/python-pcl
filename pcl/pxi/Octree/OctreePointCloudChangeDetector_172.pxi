@@ -2,7 +2,7 @@
 cimport pcl_defs as cpp
 cimport pcl_octree_172 as pcloct
 
-cdef class OctreePointCloudChangeDetector(OctreePointCloud):
+cdef class OctreePointCloudChangeDetector(OctreePointCloud2Buf):
     """
     Octree pointcloud ChangeDetector
     """
@@ -15,7 +15,7 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud):
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me2 = <pcloct.OctreePointCloudChangeDetector_t*> new pcloct.OctreePointCloudChangeDetector_t(resolution)
-        self.me = <pcloct.OctreePointCloud_t*> self.me2
+        self.me = <pcloct.OctreePointCloud2Buf_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector
@@ -23,11 +23,19 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud):
         return newPointIdxVector
 
     # use Octree2BufBase class function
-    # def switchBuffers (self):
-    #     self.me.switchBuffers()
+    def switchBuffers (self):
+        cdef pcloct.Octree2BufBase_t* buf
+        buf = <pcloct.Octree2BufBase_t*>self.me2
+        buf.switchBuffers()
+
+    def add_points_from_input_cloud(self):
+        """
+        Add points from input point cloud to octree.
+        """
+        self.me2.addPointsFromInputCloud()
 
 
-cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud_PointXYZI):
+cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud2Buf_PointXYZI):
     """
     Octree pointcloud ChangeDetector
     """
@@ -40,7 +48,7 @@ cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud_PointXYZI):
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZI_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZI_t(resolution)
-        self.me = <pcloct.OctreePointCloud_PointXYZI_t*> self.me2
+        self.me = <pcloct.OctreePointCloud2Buf_PointXYZI_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector
@@ -52,7 +60,7 @@ cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud_PointXYZI):
     #     self.me.switchBuffers()
 
 
-cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud_PointXYZRGB):
+cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud2Buf_PointXYZRGB):
     """
     Octree pointcloud ChangeDetector
     """
@@ -65,7 +73,7 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud_PointXYZR
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t(resolution)
-        self.me = <pcloct.OctreePointCloud_PointXYZRGB_t*> self.me2
+        self.me = <pcloct.OctreePointCloud2Buf_PointXYZRGB_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector
@@ -74,10 +82,10 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud_PointXYZR
 
     # use Octree2BufBase class function
     # def switchBuffers (self):
-    #     self.me.switchBuffers()
+    #     self.me2.switchBuffers()
 
 
-cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
+cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud2Buf_PointXYZRGBA):
     """
     Octree pointcloud ChangeDetector
     """
@@ -90,7 +98,7 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud_PointXYZ
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
         self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t(resolution)
-        self.me = <pcloct.OctreePointCloud_PointXYZRGBA_t*> self.me2
+        self.me = <pcloct.OctreePointCloud2Buf_PointXYZRGBA_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector

@@ -9,12 +9,19 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
     """
     Octree pointcloud search
     """
+    cdef pcloct.OctreePointCloudSearch_t *me2
 
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = <pcloct.OctreePointCloud_t*> new pcloct.OctreePointCloudSearch_t(resolution)
+        self.me2 = <pcloct.OctreePointCloudSearch_t*> new pcloct.OctreePointCloudSearch_t(resolution)
+        self.me = <pcloct.OctreePointCloud_t*> self.me2
+
+    def __dealloc__(self):
+        del self.me2
+        self.me2 = NULL
+        self.me = NULL
 
     # nearestKSearch
     ###
@@ -174,12 +181,19 @@ cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
     """
     Octree pointcloud search
     """
+    cdef pcloct.OctreePointCloudSearch_PointXYZI_t *me2
 
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = <pcloct.OctreePointCloud_PointXYZI_t*> new pcloct.OctreePointCloudSearch_PointXYZI_t(resolution)
+        self.me2 = <pcloct.OctreePointCloudSearch_PointXYZI_t*> new pcloct.OctreePointCloudSearch_PointXYZI_t(resolution)
+        self.me = <pcloct.OctreePointCloud_PointXYZI_t*> self.me2
+
+    def __dealloc__(self):
+        del self.me2
+        self.me2 = NULL
+        self.me = NULL
 
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """
@@ -205,12 +219,19 @@ cdef class OctreePointCloudSearch_PointXYZRGB(OctreePointCloud_PointXYZRGB):
     """
     Octree pointcloud search
     """
+    cdef pcloct.OctreePointCloudSearch_PointXYZRGB_t *me2
 
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = <pcloct.OctreePointCloud_PointXYZRGB_t*> new pcloct.OctreePointCloudSearch_PointXYZRGB_t(resolution)
+        self.me2 = <pcloct.OctreePointCloudSearch_PointXYZRGB_t*> new pcloct.OctreePointCloudSearch_PointXYZRGB_t(resolution)
+        self.me = <pcloct.OctreePointCloud_PointXYZRGB_t*> self.me2
+
+    def __dealloc__(self):
+        del self.me2
+        self.me2 = NULL
+        self.me = NULL
 
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """
@@ -236,12 +257,19 @@ cdef class OctreePointCloudSearch_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
     """
     Octree pointcloud search
     """
+    cdef pcloct.OctreePointCloudSearch_PointXYZRGBA_t *me2
 
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = <pcloct.OctreePointCloud_PointXYZRGBA_t*> new pcloct.OctreePointCloudSearch_PointXYZRGBA_t(resolution)
+        self.me2 = <pcloct.OctreePointCloudSearch_PointXYZRGBA_t*> new pcloct.OctreePointCloudSearch_PointXYZRGBA_t(resolution)
+        self.me = <pcloct.OctreePointCloud_PointXYZRGBA_t*> self.me2
+
+    def __dealloc__(self):
+        del self.me2
+        self.me2 = NULL
+        self.me = NULL
 
     def radius_search (self, point, double radius, unsigned int max_nn = 0):
         """

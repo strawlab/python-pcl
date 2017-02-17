@@ -778,10 +778,11 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     # cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT](OctreeBase[int, LeafT, BranchT]):
     # cdef cppclass OctreePointCloud[PointT](OctreeBase[int]):
     # cdef cppclass OctreePointCloud[PointT](Octree2BufBase[int]):
-    cdef cppclass OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, OctreeT]:
-        # OctreePointCloud()
-        # OctreePointCloud(const double resolution_arg)
-        OctreePointCloud(double)
+    # (cpp build LINK2019)
+    # cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT]:
+    cdef cppclass OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, OctreeBase_t]:
+        OctreePointCloud(const double resolution_arg)
+        # OctreePointCloud(double resolution_arg)
         
         # // iterators are friends
         # friend class OctreeIteratorBase<int, OctreeT> ;
@@ -868,8 +869,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         
         # /** \brief Add points from input point cloud to octree. */
         # void addPointsFromInputCloud ();
-        # use NG
-        # void addPointsFromInputCloud ()
+        void addPointsFromInputCloud ()
         
         # /** \brief Add point at given index from input point cloud to octree. Index will be also added to indices vector.
         #  * \param[in] pointIdx_arg index of point to be added
@@ -1060,6 +1060,7 @@ cdef extern from "pcl/octree/octree_pointcloud_changedetector.h" namespace "pcl:
     # cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT]):
     # cdef cppclass OctreePointCloudChangeDetector[PointT, LeafT, BranchT](OctreePointCloud[PointT, LeafT, BranchT, Octree2BufBase[int, LeafT, BranchT]]):
     # cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT](Octree2BufBase[int])):
+    # cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
     cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
         OctreePointCloudChangeDetector (const double resolution_arg)
         # public:
@@ -1166,7 +1167,7 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
         int radiusSearch (cpp.PointXYZRGB, double, vector[int], vector[float], unsigned int)
         int radiusSearch (cpp.PointXYZRGBA, double, vector[int], vector[float], unsigned int)
         # PointT
-        # int radiusSearch (T, double, vector[int], vector[float], unsigned int)
+        # int radiusSearch (PointT, double, vector[int], vector[float], unsigned int)
         
         # Add index(inline?)
         int radiusSearch (cpp.PointCloud[PointT], int, double, vector[int], vector[float], unsigned int)
@@ -1174,7 +1175,9 @@ cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
         # inline define
         # int nearestKSearch (cpp.PointCloud[PointT], int, int, vector[int], vector[float])
         int nearestKSearch (cpp.PointCloud[PointT], int, int, vector[int], vector[float])
+        
         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const;
+        # int nearestKSearch (const PointT &point, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
         
         ## Functions
         # brief Search for neighbors within a voxel at given point

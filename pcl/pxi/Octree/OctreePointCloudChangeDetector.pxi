@@ -38,6 +38,12 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud2Buf):
         buf = <pcloct.Octree2BufBase_t*>self.me2
         buf.switchBuffers()
 
+    def add_points_from_input_cloud(self):
+        """
+        Add points from input point cloud to octree.
+        """
+        self.me2.addPointsFromInputCloud()
+
 
 cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud2Buf_PointXYZI):
     """

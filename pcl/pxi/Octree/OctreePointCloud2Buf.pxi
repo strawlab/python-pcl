@@ -15,15 +15,15 @@ cdef class OctreePointCloud2Buf:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-    def __cinit__(self, double resolution):
-        """
-        Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
-        self.me = new pcloct.OctreePointCloud2Buf_t(resolution)
+    # def __cinit__(self, double resolution):
+    #     """
+    #     Constructs octree pointcloud with given resolution at lowest octree level
+    #     """ 
+    #     self.me = new pcloct.OctreePointCloud2Buf_t(resolution)
 
-    def __dealloc__(self):
-        del self.me
-        self.me = NULL      # just to be sure
+    # def __dealloc__(self):
+    #     del self.me
+    #     self.me = NULL      # just to be sure
 
     def set_input_cloud(self, PointCloud pc):
         """
@@ -92,15 +92,15 @@ cdef class OctreePointCloud2Buf_PointXYZI:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-    def __cinit__(self, double resolution):
-        """
-        Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
-        self.me = new pcloct.OctreePointCloud2Buf_PointXYZI_t(resolution)
+    # def __cinit__(self, double resolution):
+    #     """
+    #     Constructs octree pointcloud with given resolution at lowest octree level
+    #     """ 
+    #     self.me = new pcloct.OctreePointCloud2Buf_PointXYZI_t(resolution)
 
-    def __dealloc__(self):
-        del self.me
-        self.me = NULL      # just to be sure
+    # def __dealloc__(self):
+    #     del self.me
+    #     self.me = NULL      # just to be sure
 
     def set_input_cloud(self, PointCloud_PointXYZI pc):
         """
@@ -170,15 +170,15 @@ cdef class OctreePointCloud2Buf_PointXYZRGB:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-    def __cinit__(self, double resolution):
-        """
-        Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
-        self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGB_t(resolution)
+    # def __cinit__(self, double resolution):
+    #     """
+    #     Constructs octree pointcloud with given resolution at lowest octree level
+    #     """ 
+    #     self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGB_t(resolution)
 
-    def __dealloc__(self):
-        del self.me
-        self.me = NULL      # just to be sure
+    # def __dealloc__(self):
+    #     del self.me
+    #     self.me = NULL      # just to be sure
 
     def set_input_cloud(self, PointCloud_PointXYZRGB pc):
         """
@@ -244,15 +244,15 @@ cdef class OctreePointCloud2Buf_PointXYZRGBA:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-    def __cinit__(self, double resolution):
-        """
-        Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
-        self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGBA_t(resolution)
+    # def __cinit__(self, double resolution):
+    #     """
+    #     Constructs octree pointcloud with given resolution at lowest octree level
+    #     """ 
+    #     self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGBA_t(resolution)
 
-    def __dealloc__(self):
-        del self.me
-        self.me = NULL      # just to be sure
+    # def __dealloc__(self):
+    #     del self.me
+    #     self.me = NULL      # just to be sure
 
     def set_input_cloud(self, PointCloud_PointXYZRGBA pc):
         """
