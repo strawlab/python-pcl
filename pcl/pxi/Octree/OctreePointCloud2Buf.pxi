@@ -15,6 +15,7 @@ cdef class OctreePointCloud2Buf:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
+    # NG(Build Error)
     # def __cinit__(self, double resolution):
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
@@ -92,6 +93,7 @@ cdef class OctreePointCloud2Buf_PointXYZI:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
+    # NG(BUild Error)
     # def __cinit__(self, double resolution):
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
@@ -170,6 +172,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGB:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
+    # NG(BUild Error)
     # def __cinit__(self, double resolution):
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
@@ -244,6 +247,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGBA:
     #     if resolution <= 0.:
     #         raise ValueError("Expected resolution > 0., got %r" % resolution)
 
+    # NG(Build Error)
     # def __cinit__(self, double resolution):
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
@@ -272,6 +276,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGBA:
     #     """
     #     self.me.defineBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z)
 
+    # use NG
     # def add_points_from_input_cloud(self):
     #     """
     #     Add points from input point cloud to octree.
