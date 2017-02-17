@@ -12,6 +12,11 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
     cdef pcloct.OctreePointCloudSearch_t *me2
 
     def __cinit__(self, double resolution):
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
+    def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 

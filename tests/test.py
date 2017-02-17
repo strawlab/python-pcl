@@ -437,7 +437,7 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #         self.t.add_points_from_input_cloud()
 # 
 #     def testConstructor(self):
-#         self.assertRaises(ValueError, pcl.OctreePointCloudSearch, 0.)
+#         self.assertRaises(ValueError, pcl.OctreePointCloudChangeDetector, 0.)
 # 
 #     def testRadiusSearch(self):
 #         good_point = (0.035296999, -0.074322999, 1.2074)

@@ -1146,7 +1146,7 @@ ctypedef shared_ptr[OctreePointCloudDensity[cpp.PointXYZRGBA]] OctreePointCloudD
 # octree_search.h
 cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloudSearch[PointT](OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, OctreeBase_t]):
-        OctreePointCloudSearch(double)
+        OctreePointCloudSearch (const double resolution_arg)
         
         int radiusSearch (cpp.PointXYZ, double, vector[int], vector[float], unsigned int)
         int radiusSearch (cpp.PointXYZI, double, vector[int], vector[float], unsigned int)

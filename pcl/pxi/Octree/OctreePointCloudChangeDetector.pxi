@@ -14,6 +14,11 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud2Buf):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudChangeDetector_t*> new pcloct.OctreePointCloudChangeDetector_t(resolution)
         self.me = <pcloct.OctreePointCloud2Buf_t*> self.me2
 
@@ -90,6 +95,11 @@ cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud2Buf_PointXY
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZI_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZI_t(resolution)
         self.me = <pcloct.OctreePointCloud2Buf_PointXYZI_t*> self.me2
 
@@ -153,7 +163,12 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud2Buf_Point
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
+        """
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t(resolution)
         self.me = <pcloct.OctreePointCloud2Buf_PointXYZRGB_t*> self.me2
 
@@ -217,7 +232,12 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud2Buf_Poin
     def __cinit__(self, double resolution):
         """
         Constructs octree pointcloud with given resolution at lowest octree level
-        """ 
+        """
+        self.me2 = NULL
+        self.me = NULL
+        if resolution <= 0.:
+            raise ValueError("Expected resolution > 0., got %r" % resolution)
+
         self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t(resolution)
         self.me = <pcloct.OctreePointCloud2Buf_PointXYZRGBA_t*> self.me2
 
