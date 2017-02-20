@@ -41,18 +41,20 @@ if platform.system() == "Windows":
         sys.exit(1)
     
     # Add environment Value
-    # os.environ['PKG_CONFIG_PATH'] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;'
-    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig;'
-    # use [:] -> NG
-    # os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig:' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig:' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig:'
-    # Get Windows Environment Value
-    # pkgconfigstr = str(os.environ.get('PKG_CONFIG_PATH', -1))
-    pkgconfigstr = os.environ['PKG_CONFIG_PATH']
-    # print("%s" % (pkgconfigstr))
-    # print("check start")
-    print(pkgconfigstr)
-    # print("check end")
-    
+    for k, v in os.environ.items():
+        # print("{key} : {value}".format(key=k, value=v))
+        if k == "PKG_CONFIG_PATH":
+            pkgconfigstr = v
+            break
+    else:
+        # print("cannot find environment PKG_CONFIG_PATH", file=sys.stderr)
+        print("cannot find environment PKG_CONFIG_PATH")
+        pkgconfigstr = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig;'
+        os.environ["PKG_CONFIG_PATH"] = pcl_root + '\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\FLANN\\lib\\pkgconfig;' + pcl_root + '\\3rdParty\\Eigen\\lib\\pkgconfig;'
+
+    print("set environment PKG_CONFIG_PATH=%s" % pkgconfigstr)
+
+    # get pkg-config.exe filePath
     pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
     
