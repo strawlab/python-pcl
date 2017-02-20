@@ -156,7 +156,6 @@ if platform.system() == "Windows":
         # vtk 5.8
         # ext_args['include_dirs'].append([pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include'])
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\include']
-        # external Boost (G:\\boost\\boost_1_55_0)
         # NG
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\FLANN\\include']
         # 3rdParty
@@ -193,8 +192,6 @@ if platform.system() == "Windows":
         # 3rdParty(+Boost, +VTK)
         lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
         # extern -> NG?
-        # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib', pcl_root + '\\3rdParty\\FLANN\lib']
-        # lib_dirs = [pcl_root + '\\lib', 'G:\\boost\\boost_1_55_0\\lib64-msvc-10.0', pcl_root + '\\3rdParty\\FLANN\lib']
     elif pcl_version == '-1.7':
         # 1.7.2
         # 3rdParty(+Boost, +VTK)

@@ -13,7 +13,7 @@ import pcl.pcl_visualization
 angular_resolution_x = 0.5
 angular_resolution_y = 0.5
 coordinate_frame = pcl.CythonCoordinateFrame_Type.CAMERA_FRAME
-live_update = false
+live_update = False
 
 # -----Help-----
 # void printUsage (const char* progName)
@@ -114,8 +114,32 @@ args = parser.parse_args()
 #     }
 #     point_cloud.width = (int) point_cloud.points.size ();  point_cloud.height = 1;
 #   }
+pcd_filename_indices = ''
+if len(pcd_filename_indices) != 0:
+    # point_cloud = pcl.load(argv[0])
+    point_cloud = pcl.load('./examples/official/IO/test_pcd.pcd')
+    far_ranges_filename = 'test_pcd.pcd'
 
-point_cloud_ptr
+    far_ranges = pcl.load_PointWithViewpoint(far_ranges_filename)
+else:
+    setUnseenToMaxRange = True
+    print ('No *.pcd file given = Genarating example point cloud.\n')
+
+    count = 0
+    points = np.zeros((100 * 100, 3), dtype=np.float32)
+
+    # float NG
+    for x in range(-50, 50, 1):
+        for y in range(-50, 50, 1):
+            points[count][0] = x * 0.01
+            points[count][1] = y * 0.01
+            points[count][2] = 2.0 - y * 0.01
+            count = count + 1
+    
+    point_cloud = pcl.PointCloud()
+    point_cloud.from_array(points)
+    
+    far_ranges = pcl.PointCloud_PointWithViewpoint()
 
 # // -----------------------------------------------
 # // -----Create RangeImage from the PointCloud-----
@@ -128,7 +152,14 @@ point_cloud_ptr
 # range_image.createFromPointCloud (point_cloud, angular_resolution_x, angular_resolution_y,
 #                                 pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
 #                                 scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
-
+noise_level = 0.0
+min_range = 0.0
+border_size = 1
+range_image = point_cloud.make_RangeImage()
+range_image.CreateFromPointCloud (point_cloud, 
+                        angular_resolution_x, pcl.deg2rad (360.0), pcl.deg2rad (180.0), 
+                        coordinate_frame, noise_level, min_range, border_size)
+print ('range_image::integrateFarRanges.\n')
 
 # // --------------------------------------------
 # // -----Open 3D viewer and add point cloud-----
@@ -143,6 +174,12 @@ point_cloud_ptr
 # //viewer.addPointCloud (point_cloud_ptr, point_cloud_color_handler, "original point cloud");
 # viewer.initCameraParameters ();
 # setViewerPose(viewer, range_image.getTransformationToWorldSystem ());
+viewer = pcl.pcl_visualization.PCLVisualizering()
+viewer.SetBackgroundColor (1.0, 1.0, 1.0)
+range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (point_cloud, 0, 0, 0)
+cloudname = str('cloud')
+viewer.AddPointCloud (range_image, range_image_color_handler, cloudname)
+viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, cloudname)
 
 
 # // --------------------------
@@ -150,6 +187,9 @@ point_cloud_ptr
 # // --------------------------
 # pcl::visualization::RangeImageVisualizer range_image_widget ("Range image");
 # range_image_widget.showRangeImage (range_image);
+range_image_widget = pcl.pcl_visualization.RangeImageVisualization()
+range_image_widget.ShowRangeImage (range_image)
+
 
 #   //--------------------
 #   // -----Main loop-----

@@ -142,7 +142,7 @@ else:
     point_cloud = pcl.PointCloud()
     point_cloud.from_array(points)
     
-    far_ranges = pcl.PointCloudWrapper_PointWithViewpoint()
+    far_ranges = pcl.PointCloud_PointWithViewpoint()
 
 
 ##
@@ -158,7 +158,7 @@ border_size = 1
 # range_image.integrateFarRanges (far_ranges);
 # if (setUnseenToMaxRange)
 # range_image.setUnseenToMaxRange ();
-
+##
 range_image = point_cloud.make_RangeImage()
 range_image.CreateFromPointCloud (point_cloud, 
                         angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0), 
@@ -167,7 +167,7 @@ print ('range_image::integrateFarRanges.\n')
 if setUnseenToMaxRange == True:
     range_image.SetUnseenToMaxRange ()
 
-##
+
 # -----Open 3D viewer and add point cloud-----
 # pcl::visualization::PCLVisualizer viewer ("3D Viewer");
 # viewer.setBackgroundColor (1, 1, 1);
@@ -177,10 +177,14 @@ if setUnseenToMaxRange == True:
 # // PointCloudColorHandlerCustom<pcl::PointWithRange> range_image_color_handler (range_image_ptr, 150, 150, 150);
 # // viewer.addPointCloud (range_image_ptr, range_image_color_handler, "range image");
 # // viewer.setPointCloudRenderingProperties (PCL_VISUALIZER_POINT_SIZE, 2, "range image");
-viewer = pcl.pcl_visualization.PCLVisualizering("3D Viewer")
+##
+# viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
+viewer = pcl.pcl_visualization.PCLVisualizering()
 viewer.SetBackgroundColor (1.0, 1.0, 1.0)
 range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (point_cloud, 0, 0, 0)
-viewer.AddPointCloud (range_image, range_image_color_handler, 'range image')
+# viewer.AddPointCloud (range_image, range_image_color_handler, 'range image')
+viewer.AddPointCloud (point_cloud, 'range image')
+# viewer.AddPointCloud_ColorHandler
 # viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, propName = 'range image')
 # NG - ([setPointCloudRenderingProperties] Could not find any PointCloud datasets with id <cloud>!)
 # viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1)

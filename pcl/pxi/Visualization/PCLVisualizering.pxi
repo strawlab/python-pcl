@@ -7,6 +7,9 @@ cimport cython
 cimport pcl_visualization
 
 cimport pcl_visualization_defs as pclvis
+
+from libcpp.string cimport string
+
 from boost_shared_ptr cimport shared_ptr
 from boost_shared_ptr cimport sp_assign
 
@@ -132,6 +135,10 @@ cdef class PCLVisualizering:
         # OK? : Inheritance Class(PointCloudColorHandler)
         # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
+        pass
+
+    def AddPointCloud_ColorHandler(self, _pcl.RangeImage cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
+        # self.thisptr().addPointCloud[cpp.PointWithRange](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         pass
 
     # <const shared_ptr[PointCloudGeometryHandler[PointT]]> 

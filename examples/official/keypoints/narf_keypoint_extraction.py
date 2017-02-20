@@ -63,7 +63,7 @@ setUnseenToMaxRange = args.UnseenToMaxRange
 # scene_sensor_pose = (Eigen::Affine3f::Identity ())
 # vector[int] pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
 # pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
-pcd_filename_indices = 'test_pcd.pcd'
+pcd_filename_indices = './examples/official/IO/test_pcd.pcd'
 # pcd_filename_indices = [0, 0, 0]
 
 # if pcd_filename_indices.empty() == False
@@ -72,7 +72,7 @@ if len(pcd_filename_indices) != 0:
     # # string filename = argv[pcd_filename_indices[0]]
     # filename = argv[pcd_filename_indices[0]]
     # point_cloud = pcl.load(argv[0])
-    point_cloud = pcl.load('test_pcd.pcd')
+    point_cloud = pcl.load('./examples/official/IO/test_pcd.pcd')
     far_ranges_filename = 'test_pcd.pcd'
     
     # scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
