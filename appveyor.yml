@@ -131,7 +131,7 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
-  - "pip install install wheel"
+  - "pip install wheel"
   
   # PCL Install
   # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe"
