@@ -10,7 +10,7 @@ cimport pcl_features_172 as pclftr
 cimport pcl_filters_172 as pclfil
 cimport pcl_io_172 as pclio
 cimport pcl_kdtree_172 as pclkdt
-cimport pcl_octree_172 as pcloct
+cimport pcl_octree_180 as pcloct
 # cimport pcl_sample_consensus_172 as pcl_sc
 # cimport pcl_search_172 as pcl_sch
 cimport pcl_segmentation_172 as pclseg

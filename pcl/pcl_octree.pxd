@@ -667,6 +667,7 @@ cdef extern from "pcl/octree/octree_key.h" namespace "pcl::octree":
         # unsigned int z;
 ###
 
+# pcl 1.8.0 nothing
 # octree_node_pool.h
 # namespace pcl
 # namespace octree

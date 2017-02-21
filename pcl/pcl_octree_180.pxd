@@ -674,21 +674,21 @@ cdef extern from "pcl/octree/octree_key.h" namespace "pcl::octree":
 # namespace octree
 # template<typename NodeT>
 # class OctreeNodePool
-cdef extern from "pcl/octree/octree_node_pool.h" namespace "pcl::octree":
-    cdef cppclass OctreeNodePool[NodeT]:
-        OctreeNodePool()
-        # public:
-        # /** \brief Push node to pool
-        # *  \param childIdx_arg: pointer of noe
-        # inline void pushNode (NodeT* node_arg)
-        # /** \brief Pop node from pool - Allocates new nodes if pool is empty
-        # *  \return Pointer to octree node
-        # inline NodeT* popNode ()
-        # /** \brief Delete all nodes in pool
-        # */
-        # void deletePool ()
-        # protected:
-        # vector<NodeT*> nodePool_;
+# cdef extern from "pcl/octree/octree_node_pool.h" namespace "pcl::octree":
+#     cdef cppclass OctreeNodePool[T]:
+#         OctreeNodePool()
+#         # public:
+#         # /** \brief Push node to pool
+#         # *  \param childIdx_arg: pointer of noe
+#         # inline void pushNode (NodeT* node_arg)
+#         # /** \brief Pop node from pool - Allocates new nodes if pool is empty
+#         # *  \return Pointer to octree node
+#         # inline NodeT* popNode ()
+#         # /** \brief Delete all nodes in pool
+#         # */
+#         # void deletePool ()
+#         # protected:
+#         # vector<NodeT*> nodePool_;
 ###
 
 # NG

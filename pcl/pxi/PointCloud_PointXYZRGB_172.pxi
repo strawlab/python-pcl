@@ -8,13 +8,13 @@ cnp.import_array()
 # parts
 cimport pcl_features_172 as pclftr
 cimport pcl_filters_172 as pclfil
-cimport pcl_io as pclio
-cimport pcl_kdtree as pclkdt
-cimport pcl_octree as pcloct
-# cimport pcl_sample_consensus as pcl_sc
-# cimport pcl_search as pcl_sch
-cimport pcl_segmentation as pclseg
-cimport pcl_surface as pclsf
+cimport pcl_io_172 as pclio
+cimport pcl_kdtree_172 as pclkdt
+cimport pcl_octree_172 as pcloct
+# cimport pcl_sample_consensus_172 as pcl_sc
+# cimport pcl_search_172 as pcl_sch
+cimport pcl_segmentation_172 as pclseg
+cimport pcl_surface_172 as pclsf
 
 from libcpp cimport bool
 cimport indexing as idx

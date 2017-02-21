@@ -10,7 +10,7 @@ cimport pcl_features_172 as pclftr
 cimport pcl_filters_172 as pclfil
 cimport pcl_io_172 as pclio
 cimport pcl_kdtree_172 as pclkdt
-cimport pcl_octree_172 as pcloct
+cimport pcl_octree_180 as pcloct
 # cimport pcl_sample_consensus_172 as pcl_sc
 # cimport pcl_search_172 as pcl_sch
 cimport pcl_segmentation_172 as pclseg
@@ -19,47 +19,46 @@ cimport pcl_surface_172 as pclsf
 from libcpp cimport bool
 cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
-from _pcl cimport PointCloud_PointXYZI
+from _pcl cimport PointCloud_PointXYZRGB
 
 cdef extern from "minipcl.h":
-    void mpcl_compute_normals_PointXYZI(cpp.PointCloud_PointXYZI_t, int ksearch,
+    void mpcl_compute_normals_PointXYZRGB(cpp.PointCloud_PointXYZRGB_t, int ksearch,
                               double searchRadius,
                               cpp.PointCloud_Normal_t) except +
-    void mpcl_sacnormal_set_axis_PointXYZI(pclseg.SACSegmentationNormal_PointXYZI_t,
+    void mpcl_sacnormal_set_axis_PointXYZRGB(pclseg.SACSegmentationNormal_PointXYZRGB_t,
                               double ax, double ay, double az) except +
-    void mpcl_extract_PointXYZI(cpp.PointCloud_PointXYZI_Ptr_t, cpp.PointCloud_PointXYZI_t *,
+    void mpcl_extract_PointXYZRGB(cpp.PointCloud_PointXYZRGB_Ptr_t, cpp.PointCloud_PointXYZRGB_t *,
                               cpp.PointIndices_t *, bool) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
-cdef Py_ssize_t _strides_xyzi_4[2]
-cdef PointCloud_PointXYZI _pc_xyzi_tmp4 = PointCloud_PointXYZI(np.array([[1, 2, 3, 0],
-                                                                    [4, 5, 6, 0]], dtype=np.float32))
-cdef cpp.PointCloud[cpp.PointXYZI] *p_xyzi_4 = _pc_xyzi_tmp4.thisptr()
-_strides_xyzi_4[0] = (  <Py_ssize_t><void *>idx.getptr(p_xyzi_4, 1)
-               - <Py_ssize_t><void *>idx.getptr(p_xyzi_4, 0))
-_strides_xyzi_4[1] = (  <Py_ssize_t><void *>&(idx.getptr(p_xyzi_4, 0).y)
-               - <Py_ssize_t><void *>&(idx.getptr(p_xyzi_4, 0).x))
-_pc_xyzi_tmp4 = None
+cdef Py_ssize_t _strides_xyzrgb_3[2]
+cdef PointCloud_PointXYZRGB _pc_xyzrgb_tmp3 = PointCloud_PointXYZRGB(np.array([[1, 2, 3, 0],
+                                                                          [4, 5, 6, 0]], dtype=np.float32))
+cdef cpp.PointCloud[cpp.PointXYZRGB] *p_xyzrgb_3 = _pc_xyzrgb_tmp3.thisptr()
+_strides_xyzrgb_3[0] = (  <Py_ssize_t><void *>idx.getptr(p_xyzrgb_3, 1)
+               - <Py_ssize_t><void *>idx.getptr(p_xyzrgb_3, 0))
+_strides_xyzrgb_3[1] = (  <Py_ssize_t><void *>&(idx.getptr(p_xyzrgb_3, 0).y)
+               - <Py_ssize_t><void *>&(idx.getptr(p_xyzrgb_3, 0).x))
+_pc_xyzrgb_tmp3 = None
 
-cdef class PointCloud_PointXYZI:
+cdef class PointCloud_PointXYZRGB:
     """Represents a cloud of points in 3-d space.
 
     A point cloud can be initialized from either a NumPy ndarray of shape
-    (n_points, 4), from a list of triples, or from an integer n to create an
+    (n_points, 3), from a list of triples, or from an integer n to create an
     "empty" cloud of n points.
 
     To load a point cloud from disk, use pcl.load.
     """
     def __cinit__(self, init=None):
-        cdef PointCloud_PointXYZI other
-        
+        cdef PointCloud_PointXYZRGB other
+
         self._view_count = 0
-        
-        # TODO: NG --> import pcl --> pyd Error(python shapedptr/C++ shard ptr collusion?)
-        # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZI]())
-        sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZI]())
-        
+
+        # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGB]]> self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZRGB]())
+        sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZRGB]())
+
         if init is None:
             return
         elif isinstance(init, (numbers.Integral, np.integer)):
@@ -96,7 +95,7 @@ cdef class PointCloud_PointXYZI:
     def __getbuffer__(self, Py_buffer *buffer, int flags):
         # TODO parse flags
         cdef Py_ssize_t npoints = self.thisptr().size()
-        
+
         if self._view_count == 0:
             self._view_count += 1
             self._shape[0] = npoints
@@ -111,7 +110,7 @@ cdef class PointCloud_PointXYZI:
         buffer.obj = self
         buffer.readonly = 0
         buffer.shape = self._shape
-        buffer.strides = _strides_xyzi_4
+        buffer.strides = _strides_xyzrgb_3
         buffer.suboffsets = NULL
 
     def __releasebuffer__(self, Py_buffer *buffer):
@@ -142,16 +141,16 @@ cdef class PointCloud_PointXYZI:
         Fill this object from a 2D numpy array (float32)
         """
         assert arr.shape[1] == 4
-        
+
         cdef cnp.npy_intp npts = arr.shape[0]
         self.resize(npts)
         self.thisptr().width = npts
         self.thisptr().height = 1
-        
-        cdef cpp.PointXYZI *p
+
+        cdef cpp.PointXYZRGB *p
         for i in range(npts):
             p = idx.getptr(self.thisptr(), i)
-            p.x, p.y, p.z, p.intensity = arr[i, 0], arr[i, 1], arr[i, 2], <unsigned long>arr[i, 3]
+            p.x, p.y, p.z, p.rgb = arr[i, 0], arr[i, 1], arr[i, 2], <unsigned long>arr[i, 3]
 
     @cython.boundscheck(False)
     def to_array(self):
@@ -161,15 +160,16 @@ cdef class PointCloud_PointXYZI:
         cdef float x,y,z
         cdef cnp.npy_intp n = self.thisptr().size()
         cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
-        cdef cpp.PointXYZI *p
-        
+        cdef cpp.PointXYZRGB *p
+
         result = np.empty((n, 4), dtype=np.float32)
+
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
-            result[i, 3] = p.intensity
+            result[i, 3] = p.rgb
         return result
 
     @cython.boundscheck(False)
@@ -178,16 +178,13 @@ cdef class PointCloud_PointXYZI:
         Fill this pointcloud from a list of 4-tuples
         """
         cdef Py_ssize_t npts = len(_list)
-        cdef cpp.PointXYZI* p
+        cdef cpp.PointXYZRGB *p
         self.resize(npts)
         self.thisptr().width = npts
         self.thisptr().height = 1
-        # OK
-        # p = idx.getptr(self.thisptr(), 1)
-        # enumerate ? -> i -> type unknown
         for i, l in enumerate(_list):
-             p = idx.getptr(self.thisptr(), <int> i)
-             p.x, p.y, p.z, p.intensity = l
+            p = idx.getptr(self.thisptr(), <int> i)
+            p.x, p.y, p.z, p.rgb = l
 
     def to_list(self):
         """
@@ -205,18 +202,18 @@ cdef class PointCloud_PointXYZI:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZI *p = idx.getptr_at2(self.thisptr(), row, col)
-        return p.x, p.y, p.z, p.intensity
+        cdef cpp.PointXYZRGB *p = idx.getptr_at2(self.thisptr(), row, col)
+        return p.x, p.y, p.z, p.rgb
 
     def __getitem__(self, cnp.npy_intp nmidx):
-        cdef cpp.PointXYZI *p = idx.getptr_at(self.thisptr(), nmidx)
-        return p.x, p.y, p.z, p.intensity
+        cdef cpp.PointXYZRGB *p = idx.getptr_at(self.thisptr(), nmidx)
+        return p.x, p.y, p.z, p.rgb
 
     def from_file(self, char *f):
         """
         Fill this pointcloud from a file (a local path).
         Only pcd files supported currently.
-        
+
         Deprecated; use pcl.load instead.
         """
         return self._from_pcd_file(f)
@@ -224,17 +221,17 @@ cdef class PointCloud_PointXYZI:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            # NG
-            # error = pclio.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()))
             error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
+            # error = cpp.loadPCDFile(string(s), p)
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            # NG
-            # ok = pclio.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()))
             ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
+            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
+            # ok = cpp.loadPLYFile(string(s), p)
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -248,29 +245,26 @@ cdef class PointCloud_PointXYZI:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            # NG
-            # error = pclio.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
-            # OK
             error = pclio.savePCDFile(s, deref(self.thisptr()), binary)
-            # pclio.PointCloud[cpp.PointXYZI] *p = self.thisptr()
-            # error = pclio.savePCDFile(s, p, binary)
+            # cpp.PointCloud[cpp.PointXYZRGB] *
+            # error = cpp.savePCDFile(s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            # NG
-            # error = pclio.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
             error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
+            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
+            # error = cpp.savePLYFile(s, p, binary)
         return error
 
     def make_segmenter(self):
         """
         Return a pcl.Segmentation object with this object set as the input-cloud
         """
-        seg = Segmentation_PointXYZI()
-        cdef pclseg.SACSegmentation_PointXYZI_t *cseg = <pclseg.SACSegmentation_PointXYZI_t *>seg.me
+        seg = Segmentation_PointXYZRGB()
+        cdef pclseg.SACSegmentation_PointXYZRGB_t *cseg = <pclseg.SACSegmentation_PointXYZRGB_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         return seg
 
@@ -279,11 +273,11 @@ cdef class PointCloud_PointXYZI:
         Return a pcl.SegmentationNormal object with this object set as the input-cloud
         """
         cdef cpp.PointCloud_Normal_t normals
-        mpcl_compute_normals_PointXYZI(<cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), ksearch, searchRadius, normals)
-        # p = self.thisptr()
+        p = self.thisptr()
+        mpcl_compute_normals_PointXYZRGB(<cpp.PointCloud[cpp.PointXYZRGB]> deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
-        seg = Segmentation_PointXYZI_Normal()
-        cdef pclseg.SACSegmentation_PointXYZI_Normal_t *cseg = <pclseg.SACSegmentation_PointXYZI_Normal_t *>seg.me
+        seg = Segmentation_PointXYZRGB_Normal()
+        cdef pclseg.SACSegmentation_PointXYZRGB_Normal_t *cseg = <pclseg.SACSegmentation_PointXYZRGB_Normal_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg
@@ -292,87 +286,68 @@ cdef class PointCloud_PointXYZI:
         """
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
         """
-        fil = StatisticalOutlierRemovalFilter_PointXYZI()
-        cdef pclfil.StatisticalOutlierRemoval_PointXYZI_t *cfil = <pclfil.StatisticalOutlierRemoval_PointXYZI_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+        fil = StatisticalOutlierRemovalFilter_PointXYZRGB()
+        cdef pclfil.StatisticalOutlierRemoval_PointXYZRGB_t *cfil = <pclfil.StatisticalOutlierRemoval_PointXYZRGB_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGB]]> self.thisptr_shared)
         return fil
 
     def make_voxel_grid_filter(self):
         """
         Return a pcl.VoxelGridFilter object with this object set as the input-cloud
         """
-        fil = VoxelGridFilter_PointXYZI()
-        cdef pclfil.VoxelGrid_PointXYZI_t *cfil = <pclfil.VoxelGrid_PointXYZI_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+        fil = VoxelGridFilter_PointXYZRGB()
+        cdef pclfil.VoxelGrid_PointXYZRGB_t *cfil = <pclfil.VoxelGrid_PointXYZRGB_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGB]]> self.thisptr_shared)
         return fil
 
     def make_passthrough_filter(self):
         """
         Return a pcl.PassThroughFilter object with this object set as the input-cloud
         """
-        fil = PassThroughFilter_PointXYZI()
-        cdef pclfil.PassThrough_PointXYZI_t *cfil = <pclfil.PassThrough_PointXYZI_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
+        fil = PassThroughFilter_PointXYZRGB()
+        cdef pclfil.PassThrough_PointXYZRGB_t *cfil = <pclfil.PassThrough_PointXYZRGB_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGB]]> self.thisptr_shared)
         return fil
 
-# Error(PointXYZI use?)
-#     def make_moving_least_squares(self):
-#         """
-#         Return a pcl.MovingLeastSquares object with this object as input cloud.
-#         """
-#         mls = MovingLeastSquares_PointXYZI()
-#         cdef pclsf.MovingLeastSquares_PointXYZI_t *cmls = <pclsf.MovingLeastSquares_PointXYZI_t *>mls.me
-#         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
-#         return mls
-# 
+    def make_moving_least_squares(self):
+        """
+        Return a pcl.MovingLeastSquares object with this object as input cloud.
+        """
+        mls = MovingLeastSquares_PointXYZRGB()
+        cdef pclsf.MovingLeastSquares_PointXYZRGB_t *cmls = <pclsf.MovingLeastSquares_PointXYZRGB_t *>mls.me
+        cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGB]]> self.thisptr_shared)
+        return mls
+
     def make_kdtree_flann(self):
         """
         Return a pcl.kdTreeFLANN object with this object set as the input-cloud
-
+        
         Deprecated: use the pcl.KdTreeFLANN constructor on this cloud.
         """
-        return KdTreeFLANN_PointXYZI(self)
+        return KdTreeFLANN_PointXYZRGB(self)
 
 #     def make_octree(self, double resolution):
 #         """
 #         Return a pcl.octree object with this object set as the input-cloud
 #         """
-#         octree = OctreePointCloud_PointXYZI(resolution)
+#         octree = OctreePointCloud_PointXYZRGB(resolution)
 #         octree.set_input_cloud(self)
 #         return octree
-# 
-#     def make_crophull(self):
-#         """
-#         Return a pcl.CropHull object with this object set as the input-cloud
-# 
-#         Deprecated: use the pcl.Vertices constructor on this cloud.
-#         """
-#         return CropHull(self)
-#         
-#     def make_cropbox(self):
-#         """
-#         Return a pcl.CropBox object with this object set as the input-cloud
-# 
-#         Deprecated: use the pcl.Vertices constructor on this cloud.
-#         """
-#         return CropBox(self)
 
     def extract(self, pyindices, bool negative=False):
         """
         Given a list of indices of points in the pointcloud, return a 
         new pointcloud containing only those points.
         """
-        cdef PointCloud_PointXYZI result
+        cdef PointCloud_PointXYZRGB result
         cdef cpp.PointIndices_t *ind = new cpp.PointIndices_t()
         
         for i in pyindices:
             ind.indices.push_back(i)
         
-        result = PointCloud_PointXYZI()
-        # (<cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr())
-        mpcl_extract_PointXYZI(self.thisptr_shared, result.thisptr(), ind, negative)
+        result = PointCloud_PointXYZRGB()
+        mpcl_extract_PointXYZRGB(self.thisptr_shared, result.thisptr(), ind, negative)
         # XXX are we leaking memory here? del ind causes a double free...
         
         return result
 ###
-
