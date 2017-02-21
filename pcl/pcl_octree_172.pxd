@@ -1046,7 +1046,7 @@ ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerDataTVector_t, Octree
 cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     # cdef cppclass OctreePointCloudChangeDetector[T](OctreePointCloud[T]):
     # cdef cppclass OctreePointCloudChangeDetector[T, LeafT, BranchT](OctreePointCloud[T, LeafT, BranchT, Octree2BufBase[int, LeafT, BranchT]]):
-	cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
+    cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
         OctreePointCloudChangeDetector (const double resolution_arg)
         # public:
         # /** \brief Get a indices from all leaf nodes that did not exist in previous buffer.

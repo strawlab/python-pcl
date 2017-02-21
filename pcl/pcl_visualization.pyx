@@ -54,12 +54,13 @@ PCLVISUALIZER_REPRESENTATION_SURFACE = vis.PCL_VISUALIZER_REPRESENTATION_SURFACE
 # include "pxi/PointCloud__PointXYZI.pxi"
 # include "pxi/Common/RangeImage/RangeImages.pxi"
 
-# VTK - Handler
+# VTK - Handler(Color)
 include "pxi/Visualization/Handler/PointCloudColorHandleringCustom.pxi"
 include "pxi/Visualization/Handler/PointCloudColorHandleringGenericField.pxi"
 include "pxi/Visualization/Handler/PointCloudColorHandleringHSVField.pxi"
 include "pxi/Visualization/Handler/PointCloudColorHandleringRandom.pxi"
 include "pxi/Visualization/Handler/PointCloudColorHandleringRGBField.pxi"
+include "pxi/Visualization/Handler/PointCloudGeometryHandleringCustom.pxi"
 include "pxi/Visualization/Handler/PointCloudGeometryHandleringSurfaceNormal.pxi"
 include "pxi/Visualization/Handler/PointCloudGeometryHandleringXYZ.pxi"
 
@@ -67,6 +68,7 @@ include "pxi/Visualization/Handler/PointCloudGeometryHandleringXYZ.pxi"
 include "pxi/Visualization/CloudViewing.pxi"
 include "pxi/Visualization/PCLVisualizering.pxi"
 include "pxi/Visualization/PCLHistogramViewing.pxi"
+# include "pxi/Visualization/RangeImageVisualization.pxi"
 
 # NG(vtk Link Error)
 # include "pxi/Visualization/RangeImageVisualization.pxi"

@@ -47,7 +47,7 @@ cdef class PCLVisualizering:
     # void addCoordinateSystem (double scale, const eigen3.Affine3f& t, int viewport)
 
     # return bool
-    def removeCoordinateSystem (self,int viewport):
+    def removeCoordinateSystem (self, int viewport):
         return self.thisptr().removeCoordinateSystem (viewport)
 
     # return bool
@@ -73,28 +73,31 @@ cdef class PCLVisualizering:
         self.thisptr().setBackgroundColor(r, g, b, 0)
 
     # return bool
-    def AddText (self, string text, int xpos, int ypos, string id, int viewport):
-        return self.thisptr().addText (text, xpos, ypos, id, viewport)
+    def AddText (self, string text, int xpos, int ypos, id, int viewport):
+        return self.thisptr().addText (text, xpos, ypos, <string> id, viewport)
 
     # return bool
-    def AddText (self, string text, int xpos, int ypos, double r, double g, double b, string id, int viewport):
-        return self.thisptr().addText (text, xpos, ypos, r, g, b, id, viewport)
+    def AddText (self, string text, int xpos, int ypos, double r, double g, double b, id, int viewport):
+        return self.thisptr().addText (text, xpos, ypos, r, g, b, <string> id, viewport)
 
     # return bool
-    def AddText (self, string text, int xpos, int ypos, int fontsize, double r, double g, double b, string id, int viewport):
-        return self.thisptr().addText (text, xpos, ypos, fontsize, r, g, b, id, viewport)
+    def AddText (self, string text, int xpos, int ypos, int fontsize, double r, double g, double b, id, int viewport):
+        return self.thisptr().addText (text, xpos, ypos, fontsize, r, g, b, <string> id, viewport)
 
     # return bool
-    def UpdateText (self, string text, int xpos, int ypos, const string &id):
-        return self.thisptr().updateText (text, xpos, ypos, id)
+    # def UpdateText (self, string text, int xpos, int ypos, const string &id):
+    def UpdateText (self, string text, int xpos, int ypos, id):
+        return self.thisptr().updateText (text, xpos, ypos, <string> id)
 
     # return bool
-    def UpdateText (self, string text, int xpos, int ypos, double r, double g, double b, const string &id):
-        return self.thisptr().updateText (text, xpos, ypos,  r,  g,  b, id)
+    # def UpdateText (self, string text, int xpos, int ypos, double r, double g, double b, const string &id):
+    def UpdateText (self, string text, int xpos, int ypos, double r, double g, double b, id):
+        return self.thisptr().updateText (text, xpos, ypos,  r,  g,  b, <string> id)
 
     # return bool
-    def UpdateText (self, string text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id):
-        return self.thisptr().updateText (text, xpos, ypos, fontsize, r, g, b, id)
+    # def UpdateText (self, string text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id):
+    def UpdateText (self, string text, int xpos, int ypos, int fontsize, double r, double g, double b, id):
+        return self.thisptr().updateText (text, xpos, ypos, fontsize, r, g, b, <string> id)
 
     # bool updateShapePose (const string &id, const eigen3.Affine3f& pose)
     
@@ -112,61 +115,37 @@ cdef class PCLVisualizering:
     #     flag = self.thisptr().updatePointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, id)
     #     return flag
 
-    # def AddPointCloud (self, _pcl.PointCloud cloud, str id, int viewport):
-    def AddPointCloud (self, _pcl.PointCloud cloud, string id = 'cloud', int viewport = 0):
-        # NG : Cython 25.0.2
-        # self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, id, viewport)
-        # self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <string> id, <int> viewport)
-        # [cpp.PointCloudPtr_t, string, int]
-        # self.thisptr().addPointCloud[cpp.pointXYZ](cloud.thisptr_shared, id, viewport)
-        # overloaded function setting
-        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, id, viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cython.address(cloud.thisptr_shared), <const string> id, <int> viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[const cpp.PointCloud[cpp.PointXYZ]]> cloud.thisptr_shared, <string> id, <int> viewport)
-        # AppVeyor TestNG
-        self.thisptr().addPointCloud(cloud.thisptr_shared, id, viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[const cpp.PointCloud[cpp.PointXYZ]]> cloud.thisptr_shared, <string> id, <int> viewport)
+    # def AddPointCloud (self, _pcl.PointCloud cloud, string id = 'cloud', int viewport = 0):
+    # call (ex. id=b'range image')
+    def AddPointCloud (self, _pcl.PointCloud cloud, id = b'cloud', int viewport = 0):
+        self.thisptr().addPointCloud(cloud.thisptr_shared, <string> id, viewport)
 
     # <const shared_ptr[PointCloudColorHandler[PointT]]> 
-    def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
-    # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, str id = 'cloud', int viewport = 0):
+    # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
+    def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, id = b'cloud', viewport = 0):
         # NG : Base Class
         # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandler[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         # OK? : Inheritance Class(PointCloudColorHandler)
         # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
-        self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
+        self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), <string> id, viewport)
         pass
 
-    def AddPointCloud_ColorHandler(self, _pcl.RangeImages cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
+    def AddPointCloud_ColorHandler(self, _pcl.RangeImages cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, id = b'cloud', int viewport = 0):
         # self.thisptr().addPointCloud[cpp.PointWithRange](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         pass
 
     # <const shared_ptr[PointCloudGeometryHandler[PointT]]> 
-    # def AddPointCloud_GeometryHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudGeometryHandleringCustom color_handler, str id = 'cloud', int viewport = 0):
-        # NG
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, color_handler.thisptr_shared, id, 0)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, deref(color_handler.thisptr_shared), id, 0)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <const pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ]&> color_handler.thisptr_shared, id, 0)
-        # self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, color_handler.thisptr_shared, id)
-        # self.thisptr().addPointCloud[cpp.PointCloudPtr_t, pclvis.PointCloudColorHandlerCustom_Ptr_t, string, int](cloud.thisptr_shared, color_handler.thisptr_shared, id, viewport)
-        # self.thisptr().addPointCloud(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <pclvis.PointCloudColorHandlerCustom_Ptr_t> color_handler.thisptr_shared.super(), <string> id, <int> viewport)
-        # overloaded
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[cpp.PointCloud[cpp.PointXYZ]]*> deref(cloud.thisptr_shared), <pclvis.PointCloudColorHandlerCustom_Ptr_t> color_handler.thisptr_shared, <const string> id, <int> viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](<const shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> deref(cloud.thisptr_shared), <pclvis.PointCloudColorHandlerCustom_Ptr_t> color_handler.thisptr_shared, <const string> id, <int> viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](deref(cloud.thisptr_shared), color_handler.thisptr_shared, id, viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](deref(cloud.thisptr_shared), color_handler.thisptr_shared.get(), id, viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <pclvis.PointCloudColorHandlerCustom_Ptr_t> color_handler.thisptr_shared.get(), id, viewport)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const shared_ptr[pclvis.PointCloudColorHandler[cpp.PointXYZ]]> color_handler.thisptr_shared, id, viewport)
-        # pass
+    # def AddPointCloud_GeometryHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudGeometryHandleringCustom geometry_handler, id = b'cloud', int viewport = 0):
+    #     # overloaded
+    #     self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudGeometryHandlerCustom[cpp.PointXYZ]> deref(geometry_handler.thisptr_shared.get()), <string> id, viewport)
+    #     # pass
 
-    # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal):
-    #     # self.thisptr().addPointCloudNormals(<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 100, 0.02, 'cloud', 0)
-    #     self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, 100, 0.02, 'cloud', 0)
-    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, const string &id = 'cloud', int viewport = 0):
-        self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, level, scale, id, viewport)
+    # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, const string &id = 'cloud', int viewport = 0):
+    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, id = b'cloud', int viewport = 0):
+        self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, level, scale, <string> id, viewport)
 
-    def SetPointCloudRenderingProperties(self, int propType, int propValue, string propName = 'cloud'):
-        self.thisptr().setPointCloudRenderingProperties (propType, propValue, propName, 0)
+    def SetPointCloudRenderingProperties(self, int propType, int propValue, propName = b'cloud'):
+        self.thisptr().setPointCloudRenderingProperties (propType, propValue, <string> propName, 0)
 
     def InitCameraParameters(self):
         self.thisptr().initCameraParameters()
@@ -180,10 +159,12 @@ cdef class PCLVisualizering:
     def Close(self):
         self.thisptr().close ()
 
-    def AddCube(self, double min_x, double max_x, double min_y, double max_y, double min_z, double max_z, double r, double g, double b, string name):
+    # def AddCube(self, double min_x, double max_x, double min_y, double max_y, double min_z, double max_z, double r, double g, double b, string name):
+    def AddCube(self, double min_x, double max_x, double min_y, double max_y, double min_z, double max_z, double r, double g, double b, name):
         self.thisptr().addCube(min_x,  max_x,  min_y,  max_y,  min_z,  max_z, r, g, b, name, 0)
 
     # def AddLine(self, _pcl.PointCloud center, _pcl.PointCloud axis, double x, double y, double z, string id)
+    # def AddLine(self, _pcl.PointCloud center, _pcl.PointCloud axis, double x, double y, double z, id = b'minor eigen vector')
     #     # pcl::PointXYZ
     #     self.thisptr().addLine(center, z_axis, 0.0, 0.0, 1.0, "minor eigen vector")
 

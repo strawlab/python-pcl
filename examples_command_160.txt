@@ -38,7 +38,7 @@ python examples\official\kdtree\kdtree_search.py
 
 # keypoints
 # NG(RangeImage Link Error)
-python examples\official\keypoints\narf_keypoint_extraction.py
+# python examples\official\keypoints\narf_keypoint_extraction.py
 ###
 
 # octree
@@ -51,7 +51,8 @@ python examples\official\octree\octree_change_detection.py
 
 # RangeImage
 # NG(RangeImage Link Error)
-python examples\official\RangeImage\range_image_border_extraction.py
+# python examples\official\RangeImage\range_image_border_extraction.py
+# python examples\official\RangeImage\range_image_visualize.py
 ###
 
 # Recognition

@@ -653,9 +653,8 @@ cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
         # virtual void setInputCloud (const PointCloudConstPtr& cloud)
         void setInputCloud (const cpp.PCLBase[PointT]& cloud)
         
-        # /** \brief Provide a pointer to the vector of indices that represents the input data.
-        # * \param[in] indices a pointer to the vector of indices that represents the input data.
-        # */
+        # \brief Provide a pointer to the vector of indices that represents the input data.
+        # \param[in] indices a pointer to the vector of indices that represents the input data.
         # virtual void setIndices (const IndicesPtr& indices);
         # void setIndices (const IndicesPtr& indices)
         

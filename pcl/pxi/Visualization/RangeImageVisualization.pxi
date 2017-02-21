@@ -29,7 +29,6 @@ cdef class RangeImageVisualization:
     # -std::numeric_limits<float>::infinity ()
     #  std::numeric_limits<float>::infinity ()
     def ShowRangeImage (self, _pcl.RangeImages range_image, float min_value = -99999.0, float max_value = 99999.0, bool grayscale = False):
-         # self.me.showRangeImage(range_image, min_value, max_value, grayscale)
          # self.me.showRangeImage(range_image.thisptr(), min_value, max_value, grayscale)
          cdef pcl_rngimg.RangeImage_t user
          user = <pcl_rngimg.RangeImage_t> range_image.thisptr()[0]

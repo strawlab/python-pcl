@@ -21,17 +21,17 @@ cdef class CloudViewing:
         # Shortcut to get raw pointer to underlying CloudViewer
         return self.thisptr_shared.get()
 
-    def ShowMonochromeCloud(self, _pcl.PointCloud pc, string cloudname='cloud'):
-        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+    def ShowMonochromeCloud(self, _pcl.PointCloud pc, cloudname=b'cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
-    def ShowGrayCloud(self, _pcl.PointCloud_PointXYZI pc, string cloudname='cloud'):
-        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+    def ShowGrayCloud(self, _pcl.PointCloud_PointXYZI pc, cloudname='cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
-    def ShowColorCloud(self, _pcl.PointCloud_PointXYZRGB pc, string cloudname='cloud'):
-        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+    def ShowColorCloud(self, _pcl.PointCloud_PointXYZRGB pc, cloudname='cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
-    def ShowColorACloud(self, _pcl.PointCloud_PointXYZRGBA pc, string cloudname='cloud'):
-        self.thisptr().showCloud(pc.thisptr_shared, cloudname)
+    def ShowColorACloud(self, _pcl.PointCloud_PointXYZRGBA pc, cloudname='cloud'):
+        self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
     def WasStopped(self, int millis_to_wait = 1):
         return self.thisptr().wasStopped(millis_to_wait)

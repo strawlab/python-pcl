@@ -6,7 +6,7 @@ cimport pcl_defs as cpp
 # KdTree
 cimport pcl_kdtree as pclkdt
 # RangeImage
-cimport pcl_range_image as pcl_r_img
+cimport pcl_range_image as pcl_rngimg
 
 cimport pcl_features as pcl_ftr
 
@@ -132,9 +132,9 @@ cdef class KdTree:
 ## RangeImages
 # class override
 cdef class RangeImages:
-    cdef pcl_r_img.RangeImagePtr_t thisptr_shared   # RangeImages
+    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
     
-    cdef inline pcl_r_img.RangeImage *thisptr(self) nogil:
+    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying RangeImage.
         return self.thisptr_shared.get()
 

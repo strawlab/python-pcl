@@ -310,7 +310,14 @@ if platform.system() == "Windows":
     for define in defines:
         ext_args['define_macros'].append(define)
     
+    # ext_args['extra_compile_args'].append('/DWIN32')
+    # ext_args['extra_compile_args'].append('/D_WINDOWS')
+    # ext_args['extra_compile_args'].append('/W3')
+    # ext_args['extra_compile_args'].append('/GR')
     ext_args['extra_compile_args'].append('/EHsc')
+    # FW: Link time errors in RangeImage (with /clr)
+    # http://www.pcl-users.org/FW-Link-time-errors-in-RangeImage-with-clr-td3581422.html
+    # ext_args['extra_compile_args'].append('/clr:nostdlib')
     
     # NG
     # ext_args['extra_compile_args'].append('/NODEFAULTLIB:msvcrtd')
