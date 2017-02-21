@@ -4,7 +4,7 @@ cimport pcl_defs as cpp
 cimport numpy as cnp
 
 cimport pcl_visualization_defs as pcl_vis
-cimport pcl_range_image as pcl_r_img
+cimport pcl_range_image as pcl_rngimg
 
 from boost_shared_ptr cimport sp_assign
 
@@ -31,8 +31,8 @@ cdef class RangeImageVisualization:
     def ShowRangeImage (self, _pcl.RangeImages range_image, float min_value = -99999.0, float max_value = 99999.0, bool grayscale = False):
          # self.me.showRangeImage(range_image, min_value, max_value, grayscale)
          # self.me.showRangeImage(range_image.thisptr(), min_value, max_value, grayscale)
-         cdef pcl_r_img.RangeImage_t user
-         user = <pcl_r_img.RangeImage_t> range_image.thisptr()[0]
+         cdef pcl_rngimg.RangeImage_t user
+         user = <pcl_rngimg.RangeImage_t> range_image.thisptr()[0]
          self.me.showRangeImage(user, min_value, max_value, grayscale)
     
     # def MarkPoint(self, int ind_width, int point, int width):

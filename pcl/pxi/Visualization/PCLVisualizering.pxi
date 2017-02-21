@@ -137,7 +137,7 @@ cdef class PCLVisualizering:
         self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         pass
 
-    def AddPointCloud_ColorHandler(self, _pcl.RangeImage cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
+    def AddPointCloud_ColorHandler(self, _pcl.RangeImages cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
         # self.thisptr().addPointCloud[cpp.PointWithRange](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         pass
 
