@@ -80,9 +80,9 @@ cdef class MomentOfInertiaEstimation:
     #   return min_point_OBB, max_point_OBB, position_OBB, rotational_matrix_OBB
 
     def get_EigenValues (self):
-        cdef float major_value
-        cdef float middle_value
-        cdef float minor_value
+        cdef float major_value = 0.0
+        cdef float middle_value = 0.0
+        cdef float minor_value = 0.0
         self.me.getEigenValues (major_value, middle_value, minor_value)
         return major_value, middle_value, minor_value
 

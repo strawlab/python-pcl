@@ -69,7 +69,7 @@ for i in range(0, cloud_out.size):
 # pcl::PointCloud<pcl::PointXYZ> Final;
 # icp.align(Final);
 icp = cloud_in.make_IterativeClosestPoint()
-icp.align()
+Final = icp.align()
 
 # std::cout << "has converged:" << icp.hasConverged() << " score: " << icp.getFitnessScore() << std::endl;
 # std::cout << icp.getFinalTransformation() << std::endl;
