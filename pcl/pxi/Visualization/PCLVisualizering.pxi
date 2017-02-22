@@ -105,7 +105,7 @@ cdef class PCLVisualizering:
     # def AddText3D[PointT](const string &text, const PointT &position, double textScale, double r, double g, double b, const string &id, int viewport)
     #     return self.thisptr().AddText3D[PointT](const string &text, const PointT &position, double textScale, double r, double g, double b, const string &id, int viewport)
 
-    # bool addPointCloudNormals[PointNT](cpp.PointCloud[PointNT] cloud, int level, double scale, string id, int viewport)
+    # bool addPointCloudNormals [PointNT](cpp.PointCloud[PointNT] cloud, int level, double scale, string id, int viewport)
     # bool addPointCloudNormals [PointT, PointNT] (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[cpp.PointCloud[PointNT]] &normals, int level, double scale, const string &id, int viewport)
 
     # bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, string &id)

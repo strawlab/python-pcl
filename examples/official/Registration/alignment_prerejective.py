@@ -19,12 +19,12 @@ args = parser.parse_args()
 # 
 # Align a rigid object to a scene with clutter and occlusions
 # 
-#   // Point clouds
-#   PointCloudT::Ptr object (new PointCloudT);
-#   PointCloudT::Ptr object_aligned (new PointCloudT);
-#   PointCloudT::Ptr scene (new PointCloudT);
-#   FeatureCloudT::Ptr object_features (new FeatureCloudT);
-#   FeatureCloudT::Ptr scene_features (new FeatureCloudT);
+# // Point clouds
+# PointCloudT::Ptr object (new PointCloudT);
+# PointCloudT::Ptr object_aligned (new PointCloudT);
+# PointCloudT::Ptr scene (new PointCloudT);
+# FeatureCloudT::Ptr object_features (new FeatureCloudT);
+# FeatureCloudT::Ptr scene_features (new FeatureCloudT);
 
 # // Get input object and scene
 # if (argc != 3)
@@ -32,9 +32,9 @@ args = parser.parse_args()
 #   pcl::console::print_error ("Syntax is: %s object.pcd scene.pcd\n", argv[0]);
 #   return (1);
 # }
-    if args.n != 3:
-        print('Syntax is: " + "" +" object.pcd scene.pcd\n')
-        return 1
+if args.n != 3:
+    print('Syntax is: " + "" +" object.pcd scene.pcd\n')
+    return 1
 
 # // Load object and scene
 # pcl::console::print_highlight ("Loading point clouds...\n");

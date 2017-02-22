@@ -12,7 +12,6 @@ from boost_shared_ptr cimport shared_ptr
 
 # main
 # cimport pcl_defs as cpp
-# 
 from pcl_defs cimport PointIndices
 from pcl_defs cimport ModelCoefficients
 from pcl_defs cimport PointCloud

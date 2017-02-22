@@ -10,7 +10,7 @@ import random
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
 # // Load bun0.pcd -- should be available with the PCL archive in test 
 # pcl::io::loadPCDFile ("bun0.pcd", *cloud);
-cloud = pcl.load('./examples/pcldata/tutorials/bun0.pcd')
+cloud = pcl.load('./examples/offcial/Surface/bun0.pcd')
 print('cloud(size) = ' + str(cloud.size))
 
 # // Create a KD-Tree

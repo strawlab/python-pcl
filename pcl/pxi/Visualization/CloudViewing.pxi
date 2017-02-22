@@ -39,5 +39,5 @@ cdef class CloudViewing:
     # def SpinOnce(self, int millis_to_wait = 1):
     #     self.thisptr().spinOnce (millis_to_wait)
 
-    # def OffScreenRendering(bool)
-    # 
+    # def OffScreenRendering(bool flag)
+    #     self.thisptr().offScreenRendering (flag)
