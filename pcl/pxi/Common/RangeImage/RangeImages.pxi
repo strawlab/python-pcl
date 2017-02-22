@@ -2,7 +2,7 @@
 from _pcl cimport PointCloud
 from _pcl cimport PointCloud_PointWithViewpoint
 cimport pcl_defs as cpp
-cimport pcl_range_image_172 as pcl_r_img
+cimport pcl_range_image as pcl_r_img
 
 cimport eigen as eigen3
 from boost_shared_ptr cimport sp_assign
@@ -13,22 +13,19 @@ cdef class RangeImages:
     """
     rangeImage
     """
-    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
-
-    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying RangeImage.
-        return self.thisptr_shared.get()
-
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
-        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
+        # sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.PointXYZ]())
+        # sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
+        # sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage[cpp.PointCloud[cpp.PointWithRange]]())
         pass
 
-    def __cinit__(self, PointCloud pc not None):
-        # self.me = new pcl_r_img.RangeImage_t()
-        # self.point = pc.thisptr_shared
-        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage_t())
-        self.thisptr().setInputCloud(pc.thisptr_shared)
+    # def __cinit__(self, PointCloud pc not None):
+    #     # self.me = new pcl_r_img.RangeImage_t()
+    #     # self.point = pc.thisptr_shared
+    #     # sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage_t())
+    #     # self.thisptr().setInputCloud(pc.thisptr_shared)
+    #     pass
 
     def CreateFromPointCloud(self, PointCloud cloud, float angular_resolution, float max_angle_width, float max_angle_height, 
         pcl_r_img.CoordinateFrame2 coordinate_frame, float noise_level, float min_range, int border_size):

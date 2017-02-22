@@ -803,22 +803,28 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         # Get the integral image of the range values (used for fast blur operations).
         # You are responsible for deleting it after usage!
         # PCL_EXPORTS void getIntegralImage (float*& integral_image, int*& valid_points_num_image) const;
+        # void getIntegralImage (float*& integral_image, int*& valid_points_num_image)
         
         # /** Get a blurred version of the range image using box filters on the provided integral image*/
         # PCL_EXPORTS void getBlurredImageUsingIntegralImage (int blur_radius, float* integral_image, int* valid_points_num_image, RangeImage& range_image) const;
+        # void getBlurredImageUsingIntegralImage (int blur_radius, float* integral_image, int* valid_points_num_image, RangeImage& range_image)
         
         # /** Get a blurred version of the range image using box filters */
         # PCL_EXPORTS void getBlurredImage (int blur_radius, RangeImage& range_image) const;
+        # void getBlurredImage (int blur_radius, RangeImage& range_image)
         
         # /** Get the squared euclidean distance between the two image points.
         #  *  Returns -INFINITY if one of the points was not observed */
         # inline float getEuclideanDistanceSquared (int x1, int y1, int x2, int y2) const;
+        # float getEuclideanDistanceSquared (int x1, int y1, int x2, int y2)
         
         # Doing the above for some steps in the given direction and averaging
         # inline float getAverageEuclideanDistance (int x, int y, int offset_x, int offset_y, int max_steps) const;
+        float getAverageEuclideanDistance (int x, int y, int offset_x, int offset_y, int max_steps)
         
         # Project all points on the local plane approximation, thereby smoothing the surface of the scan
         # PCL_EXPORTS void getRangeImageWithSmoothedSurface (int radius, RangeImage& smoothed_range_image) const;
+        # void getRangeImageWithSmoothedSurface (int radius, RangeImage& smoothed_range_image)
         
         # //void getLocalNormals (int radius) const;
         
@@ -835,9 +841,11 @@ cdef extern from "pcl/range_image/range_image.h" namespace "pcl":
         
         # /** Get the viewing direction for the given point */
         # inline bool getViewingDirection (int x, int y, Eigen::Vector3f& viewing_direction) const;
+        # bool getViewingDirection (int x, int y, Eigen::Vector3f& viewing_direction) const;
         
         # /** Get the viewing direction for the given point */
         # inline void getViewingDirection (const Eigen::Vector3f& point, Eigen::Vector3f& viewing_direction) const;
+        # void getViewingDirection (const Eigen::Vector3f& point, Eigen::Vector3f& viewing_direction) const;
         
         # /** Return a newly created Range image.
         #  *  Can be reimplmented in derived classes like RangeImagePlanar to return an image of the same type. */

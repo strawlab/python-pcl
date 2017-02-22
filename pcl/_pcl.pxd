@@ -130,12 +130,12 @@ cdef class KdTree:
 
 ## RangeImages
 # class override
-# cdef class RangeImages:
-#     cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
-#     
-#     cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
-#         # Shortcut to get raw pointer to underlying RangeImage.
-#         return self.thisptr_shared.get()
+cdef class RangeImages:
+    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
+    
+    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying RangeImage.
+        return self.thisptr_shared.get()
 
 
 ### Features

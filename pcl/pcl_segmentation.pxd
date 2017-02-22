@@ -35,16 +35,8 @@ from vector cimport vector as vector2
 
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     cdef cppclass SACSegmentation[T](PCLBase[T]):
-        void setOptimizeCoefficients (bool)
+        SACSegmentation()
         void setModelType (SacModel)
-        void setMethodType (int)
-        void setDistanceThreshold (float)
-        # use PCLBase class function
-        # void setInputCloud (shared_ptr[PointCloud[T]])
-        void setMaxIterations (int)
-        void segment (PointIndices, ModelCoefficients)
-        
-        # Add
         # /** \brief Empty constructor. */
         # SACSegmentation () :  model_ (), sac_ (), model_type_ (-1), method_type_ (0), 
         #                       threshold_ (0), optimize_coefficients_ (true), 
@@ -60,15 +52,21 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # 
         # \brief Get a pointer to the SAC model used.
         # inline SampleConsensusModelPtr getModel () const { return (model_); }
-        # 
+        
+        void setMethodType (int)
         # \brief Get the type of sample consensus method used.
         # inline int getMethodType () const { return (method_type_); }
         int getMethodType ()
         
+        void setDistanceThreshold (float)
         # \brief Get the distance to the model threshold.
         # inline double getDistanceThreshold () const { return (threshold_); }
         double getDistanceThreshold ()
         
+        # use PCLBase class function
+        # void setInputCloud (shared_ptr[PointCloud[T]])
+        
+        void setMaxIterations (int)
         # \brief Get maximum number of iterations before giving up.
         # inline int getMaxIterations () const { return (max_iterations_); }
         int getMaxIterations ()
@@ -81,6 +79,8 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # \brief Get the probability of choosing at least one sample free from outliers.
         # inline double getProbability () const { return (probability_); }
         double getProbability ()
+        
+        void setOptimizeCoefficients (bool)
         
         # \brief Get the coefficient refinement internal flag.
         # inline bool getOptimizeCoefficients () const { return (optimize_coefficients_); }
@@ -101,7 +101,7 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # \brief Set the maximum distance allowed when drawing random samples
         # \param[in] radius the maximum distance (L2 norm)
         # inline void setSamplesMaxDist (const double &radius, SearchPtr search)
-        void setSamplesMaxDist (const double &radius, SearchPtr search)
+        # void setSamplesMaxDist (const double &radius, SearchPtr search)
         
         # \brief Get maximum distance allowed when drawing random samples
         # \param[out] radius the maximum distance (L2 norm)
@@ -111,11 +111,11 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # \brief Set the axis along which we need to search for a model perpendicular to.
         # \param[in] ax the axis along which we need to search for a model perpendicular to
         # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-        void setAxis (const eigen3.Vector3f &ax)
+        # void setAxis (const eigen3.Vector3f &ax)
         
         # \brief Get the axis along which we need to search for a model perpendicular to.
         # inline Eigen::Vector3f getAxis () const { return (axis_); }
-        eigen3.Vector3f getAxis ()
+        # eigen3.Vector3f getAxis ()
         
         # \brief Set the angle epsilon (delta) threshold.
         # \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
@@ -125,6 +125,8 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # /** \brief Get the epsilon (delta) model angle threshold in radians. */
         # inline double getEpsAngle () const { return (eps_angle_); }
         double getEpsAngle ()
+
+        void segment (PointIndices, ModelCoefficients)
 
 
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
@@ -1276,7 +1278,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         , refine_labels_ ()
 #         , label_to_model_ ()
 #         , depth_dependent_ (false)
-# 		
+#       
 #       /** \brief Empty constructor for PlaneCoefficientComparator. 
 #         * \param[in] models
 #         * \param[in] refine_labels
@@ -1288,21 +1290,21 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         , refine_labels_ (refine_labels)
 #         , label_to_model_ ()
 #         , depth_dependent_ (false)
-#		
+#       
 #       /** \brief Destructor for PlaneCoefficientComparator. */
 #       virtual
 #       ~PlaneRefinementComparator ()
-# 		
+#       
 #       /** \brief Set the vector of model coefficients to which we will compare.
 #         * \param[in] models a vector of model coefficients produced by the initial segmentation step.
 #         */
 #       void setModelCoefficients (boost::shared_ptr<std::vector<pcl::ModelCoefficients> >& models)
-# 		
+#       
 #       /** \brief Set the vector of model coefficients to which we will compare.
 #         * \param[in] models a vector of model coefficients produced by the initial segmentation step.
 #         */
 #       void setModelCoefficients (std::vector<pcl::ModelCoefficients>& models)
-# 		
+#       
 #       /** \brief Set which labels should be refined.  This is a vector of bools 0-max_label, true if the label should be refined.
 #         * \param[in] refine_labels A vector of bools 0-max_label, true if the label should be refined.
 #         */
@@ -1312,7 +1314,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         * \param[in] refine_labels A vector of bools 0-max_label, true if the label should be refined.
 #         */
 #       void setRefineLabels (std::vector<bool>& refine_labels)
-# 		
+#       
 #       /** \brief A mapping from label to index in the vector of models, allowing the model coefficients of a label to be accessed.
 #         * \param[in] label_to_model A vector of size max_label, with the index of each corresponding model in models
 #         */
@@ -1322,15 +1324,15 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         * \param[in] label_to_model A vector of size max_label, with the index of each corresponding model in models
 #         */
 #       inline void setLabelToModel (std::vector<int>& label_to_model)
-# 		
+#       
 #       /** \brief Get the vector of model coefficients to which we will compare. */
 #       inline boost::shared_ptr<std::vector<pcl::ModelCoefficients> > getModelCoefficients () const
-# 		
+#       
 #       /** \brief ...
 #         * \param[in] labels
 #         */
 #       inline void setLabels (PointCloudLPtr& labels)
-# 		
+#       
 #       /** \brief Compare two neighboring points
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.

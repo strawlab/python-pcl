@@ -13,12 +13,6 @@ cdef class RangeImages:
     """
     rangeImage
     """
-    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
-
-    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying RangeImage.
-        return self.thisptr_shared.get()
-
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
         sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
