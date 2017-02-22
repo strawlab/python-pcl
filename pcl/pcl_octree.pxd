@@ -825,7 +825,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         #  * \param[in] indices_arg the point indices subset that is to be used from \a cloud - if 0 the whole point cloud is used
         #  */
         # inline void setInputCloud (const PointCloudConstPtr &cloud_arg, const IndicesConstPtr &indices_arg = IndicesConstPtr ())
-        void setInputCloud (shared_ptr[cpp.PointCloud[PointT]])
+        void setInputCloud (shared_ptr[cpp.PointCloud[PointT]] &cloud_arg)
         # void setInputCloud (const shared_ptr[cpp.PointCloud] &cloud_arg, const shared_ptr[const vector[int]] &indices_ar)
         
         # /** \brief Get a pointer to the vector of indices used.

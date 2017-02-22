@@ -39,9 +39,11 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         void setModelType (SacModel)
         void setMethodType (int)
         void setDistanceThreshold (float)
-        void setInputCloud (shared_ptr[PointCloud[T]])
+        # use PCLBase class function
+        # void setInputCloud (shared_ptr[PointCloud[T]])
         void setMaxIterations (int)
         void segment (PointIndices, ModelCoefficients)
+        
         # Add
         # /** \brief Empty constructor. */
         # SACSegmentation () :  model_ (), sac_ (), model_type_ (-1), method_type_ (0), 
@@ -51,6 +53,8 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # 
         # /** \brief Get the type of SAC model used. */
         # inline int getModelType () const { return (model_type_); }
+        int getModelType ()
+        
         # 
         # /** \brief Get a pointer to the SAC method used. */
         # inline SampleConsensusPtr getMethod () const { return (sac_); }
@@ -60,6 +64,8 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # 
         # /** \brief Get the type of sample consensus method used. */
         # inline int getMethodType () const { return (method_type_); }
+        int getMethodType ()
+        
         # 
         # /** \brief Get the distance to the model threshold. */
         # inline double getDistanceThreshold () const { return (threshold_); }
@@ -105,20 +111,25 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # 
         # /** \brief Get the axis along which we need to search for a model perpendicular to. */
         # inline Eigen::Vector3f getAxis () const { return (axis_); }
+        # 
         # /** \brief Set the angle epsilon (delta) threshold.
         #   * \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
         #   */
         # inline void setEpsAngle (double ea) { eps_angle_ = ea; }
-        #       /** \brief Get the epsilon (delta) model angle threshold in radians. */
+        # 
+        # /** \brief Get the epsilon (delta) model angle threshold in radians. */
         # inline double getEpsAngle () const { return (eps_angle_); }
 
 
+ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
+ctypedef SACSegmentation[PointXYZI] SACSegmentation_PointXYZI_t
+ctypedef SACSegmentation[PointXYZRGB] SACSegmentation_PointXYZRGB_t
+ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation_PointXYZRGBA_t
 ###
 
-# /** \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
-#   * models that require the use of surface normals for estimation.
-#   * \ingroup segmentation
-#   */
+# \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
+#  models that require the use of surface normals for estimation.
+# \ingroup segmentation
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     # cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T])
     cdef cppclass SACSegmentationFromNormals[T, N]:
@@ -182,14 +193,10 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # inline double getDistanceFromOrigin () const { return (distance_from_origin_); }
 
 
-ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
-ctypedef SACSegmentation[PointXYZI] SACSegmentation_PointXYZI_t
-ctypedef SACSegmentation[PointXYZRGB] SACSegmentation_PointXYZRGB_t
-ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation_PointXYZRGBA_t
-ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
-ctypedef SACSegmentationFromNormals[PointXYZI,Normal] SACSegmentation_PointXYZI_Normal_t
-ctypedef SACSegmentationFromNormals[PointXYZRGB,Normal] SACSegmentation_PointXYZRGB_Normal_t
-ctypedef SACSegmentationFromNormals[PointXYZRGBA,Normal] SACSegmentation_PointXYZRGBA_Normal_t
+ctypedef SACSegmentationFromNormals[PointXYZ, Normal] SACSegmentationFromNormals_t
+ctypedef SACSegmentationFromNormals[PointXYZI, Normal] SACSegmentationFromNormals_PointXYZI_t
+ctypedef SACSegmentationFromNormals[PointXYZRGB, Normal] SACSegmentationFromNormals_PointXYZRGB_t
+ctypedef SACSegmentationFromNormals[PointXYZRGBA, Normal] SACSegmentationFromNormals_PointXYZRGBA_t
 ###
 
 # comparator.h
@@ -222,9 +229,8 @@ cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
         #   * \param[in] idx2 the index of the second point.
         #   */
         # virtual bool compare (int idx1, int idx2) const = 0;
-        # 
-        # protected:
-        #   PointCloudConstPtr input_;
+
+
 ###
 
 # plane_coefficient_comparator.h
@@ -407,7 +413,6 @@ cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" nam
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
-  		# 
         # /** \brief Compare two neighboring points, by using normal information, and euclidean distance information.
         #   * \param[in] idx1 The index of the first point.
         #   * \param[in] idx2 The index of the second point.

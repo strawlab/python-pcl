@@ -11,15 +11,19 @@ from boost_shared_ptr cimport shared_ptr
 
 cdef class CropHull:
     """
-    
-    Must be constructed from the reference point cloud, which is copied, so
-    changed to pc are not reflected in CropHull(pc).
+    Must be constructed from the reference point cloud, which is copied, 
+    so changed to pc are not reflected in CropHull(pc).
     """
     cdef pclfil.CropHull_t *me
 
     def __cinit__(self, PointCloud pc not None):
         self.me = new pclfil.CropHull_t()
-        self.me.setInputCloud(pc.thisptr_shared)
+        self.me.setInputCloud(<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> pc.thisptr_shared)
+        # NG(Build Error)
+        # self.me.setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> pc.thisptr_shared)
+        # self.me.setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> deref(pc.thisptr_shared.get()))
+        # (<cpp.PCLBase_t*>self.me).setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> pc.thisptr_shared)
+        # (<cpp.PCLBase_t*>self.me).setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me

@@ -5,7 +5,6 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
-# from libcpp.memory cimport shared_ptr
 from boost_shared_ptr cimport shared_ptr
 
 # Eigen
@@ -100,25 +99,6 @@ from vector cimport vector as vector2
 #        void setIndices (const PointIndicesConstPtr &indices)
 #       /** \brief Get a pointer to the vector of indices used. */
 #        IndicesPtr const getIndices ()
-#     protected:
-#       /** \brief The input point cloud dataset. */
-#       PointCloud2ConstPtr input_;
-#       /** \brief A pointer to the vector of point indices to use. */
-#       IndicesPtr indices_;
-#       /** \brief Set to true if point indices are used. */
-#       bool use_indices_;
-#       /** \brief If no set of indices are given, we construct a set of fake indices that mimic the input PointCloud. */
-#       bool fake_indices_;
-#       /** \brief The size of each individual field. */
-#       std::vector<int> field_sizes_;
-#       /** \brief The x-y-z fields indices. */
-#       int x_idx_, y_idx_, z_idx_;
-#       /** \brief The desired x-y-z field names. */
-#       std::string x_field_name_, y_field_name_, z_field_name_;
-#       bool initCompute ();
-#       bool deinitCompute ();
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 ###
 
 # point_cloud.h
@@ -138,7 +118,7 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
         #T& at(size_t) except +
         #T& at(int, int) except +
         shared_ptr[PointCloud[T]] makeShared()
-
+        
         Quaternionf sensor_orientation_
         Vector4f sensor_origin_
 
@@ -499,7 +479,6 @@ cdef extern from "pcl/PointIndices.h" namespace "pcl":
 
 ctypedef PointIndices PointIndices_t
 ctypedef shared_ptr[PointIndices] PointIndicesPtr_t
-
 ###
 
 ctypedef PointCloud[PointXYZ] PointCloud_t
@@ -535,17 +514,29 @@ cdef extern from "pcl/pcl_base.h" namespace "pcl":
         PCLBase ()
         # PCLBase (const PCLBase& base)
         # virtual void setInputCloud (PointCloudPtr_t cloud)
-        void setInputCloud (PointCloudPtr_t cloud)
-        PointCloudPtr_t getInputCloud ()
+        # void setInputCloud (PointCloudPtr_t cloud)
+        void setInputCloud (shared_ptr[PointCloud[T]] cloud)
+        
+        # PointCloudPtr_t getInputCloud ()
+        shared_ptr[PointCloud[T]] getInputCloud ()
+        
         void setIndices (IndicesPtr_t &indices)
         # #  void setIndices (const IndicesConstPtr &indices)
-#        void setIndices (const PointIndicesPtr_t &indices)
-#        void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
-#        IndicesPtr_t const getIndices ()
+        
+        # void setIndices (const PointIndicesPtr_t &indices)
+        # void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
+        # IndicesPtr_t const getIndices ()
         # # const PointT& operator[] (size_t pos)
-        # # public:
-        # # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
+
+ctypedef PCLBase[PointXYZ] PCLBase_t
+ctypedef PCLBase[PointXYZI] PCLBase_PointXYZI_t
+ctypedef PCLBase[PointXYZRGB] PCLBase_PointXYZRGB_t
+ctypedef PCLBase[PointXYZRGBA] PCLBase_PointXYZRGBA_t
+ctypedef shared_ptr[PCLBase[PointXYZ]] PCLBasePtr_t
+ctypedef shared_ptr[PCLBase[PointXYZI]] PCLBase_PointXYZI_Ptr_t
+ctypedef shared_ptr[PCLBase[PointXYZRGB]] PCLBase_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[PCLBase[PointXYZRGBA]] PCLBase_PointXYZRGBA_Ptr_t
 ###
 
 # PolygonMesh.h
@@ -579,6 +570,7 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
         float tex_Ns
         int tex_illum
 
+
 ###
 
 cdef extern from "pcl/TextureMesh.h" namespace "pcl":
@@ -592,7 +584,6 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
 
 # ctypedef shared_ptr[TextureMesh] TextureMeshPtr_t
 # ctypedef shared_ptr[TextureMesh const] TextureMeshConstPtr_t
-
 ###
 
 # Vertices.h
@@ -607,11 +598,13 @@ cdef extern from "pcl/Vertices.h" namespace "pcl":
         # ctypedef shared_ptr[Vertices] Ptr
         # ctypedef shared_ptr[Vertices const] ConstPtr
 
+
 # ctypedef Vertices Vertices_t
 ctypedef shared_ptr[Vertices] VerticesPtr_t
 # ctypedef shared_ptr[Vertices const] VerticesConstPtr
 # inline std::ostream& operator<<(std::ostream& s, const  ::pcl::Vertices & v)
 ###
+
 
 ###############################################################################
 # Enum

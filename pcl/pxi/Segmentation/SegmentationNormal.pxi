@@ -23,9 +23,9 @@ cdef class SegmentationNormal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentationNormal_t *me
+    cdef pclseg.SACSegmentationFromNormals_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentationNormal_t()
+        self.me = new pclseg.SACSegmentationFromNormals_t()
 
     def __dealloc__(self):
         del self.me
@@ -76,9 +76,9 @@ cdef class Segmentation_PointXYZI_Normal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentation_PointXYZI_Normal_t *me
+    cdef pclseg.SACSegmentationFromNormals_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZI_Normal_t()
+        self.me = new pclseg.SACSegmentationFromNormals_PointXYZI_t()
 
     def __dealloc__(self):
         del self.me
@@ -129,9 +129,9 @@ cdef class Segmentation_PointXYZRGB_Normal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentation_PointXYZRGB_Normal_t *me
+    cdef pclseg.SACSegmentationFromNormals_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZRGB_Normal_t()
+        self.me = new pclseg.SACSegmentationFromNormals_PointXYZRGB_t()
 
     def __dealloc__(self):
         del self.me
@@ -182,9 +182,9 @@ cdef class Segmentation_PointXYZRGBA_Normal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentation_PointXYZRGBA_Normal_t *me
+    cdef pclseg.SACSegmentationFromNormals_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZRGBA_Normal_t()
+        self.me = new pclseg.SACSegmentationFromNormals_PointXYZRGBA_t()
 
     def __dealloc__(self):
         del self.me

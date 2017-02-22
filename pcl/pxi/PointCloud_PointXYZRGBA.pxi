@@ -277,7 +277,7 @@ cdef class PointCloud_PointXYZRGBA:
         mpcl_compute_normals_PointXYZRGBA(<cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = Segmentation_PointXYZRGBA_Normal()
-        cdef pclseg.SACSegmentation_PointXYZRGBA_Normal_t *cseg = <pclseg.SACSegmentation_PointXYZRGBA_Normal_t *>seg.me
+        cdef pclseg.SACSegmentationFromNormals_PointXYZRGBA_t *cseg = <pclseg.SACSegmentationFromNormals_PointXYZRGBA_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg

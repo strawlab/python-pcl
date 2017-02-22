@@ -18,7 +18,10 @@ cdef class CropBox:
 
     def __cinit__(self, PointCloud pc not None):
         self.me = new pclfil.CropBox_t()
-        self.me.setInputCloud(pc.thisptr_shared)
+        # NG(Build Error)
+        # self.me.setInputCloud [cpp.PointXYZ](pc.thisptr_shared)
+        # self.me.setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> deref(pc.thisptr_shared.get()))
+        # (<cpp.PCLBase_t*>self.me).setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me
