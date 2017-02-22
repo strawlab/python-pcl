@@ -64,21 +64,11 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # NG(Cython 24.0.1) : evaluate is virtual Function
         # void addComparison (ComparisonBase[T] comparison)
         # void addComparison (const ComparisonBase[T] comparison)
-        # void addComparison (ComparisonBaseConstPtr_t comparison)
-        # void addComparison (ComparisonBase_PointXYZI_ConstPtr_t comparison)
-        # void addComparison (ComparisonBase_PointXYZRGB_ConstPtr_t comparison)
-        # void addComparison (ComparisonBase_PointXYZRGBA_ConstPtr_t comparison)
-        # void addComparison (FieldComparison[T] comparison)
+        # use Cython 0.25.2
         void addComparison (shared_ptr[ComparisonBase[T]] comparison)
-        
-        # void addCondition (Ptr condition)
-        # void addCondition (ConditionBasePtr_t condition)
-        # void addCondition (ConditionBase_PointXYZI_Ptr_t condition)
-        # void addCondition (ConditionBase_PointXYZRGB_Ptr_t condition)
-        # void addCondition (ConditionBase_PointXYZRGBA_Ptr_t condition)
         void addCondition (shared_ptr[ConditionBase[T]] condition)
-        
         bool isCapable ()
+
 
 ctypedef ConditionBase[cpp.PointXYZ] ConditionBase_t
 ctypedef ConditionBase[cpp.PointXYZI] ConditionBase_PointXYZI_t
@@ -108,6 +98,7 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         # ctypedef pcl::PointCloud<PointT> PointCloud;
         # ctypedef typename PointCloud::Ptr PointCloudPtr;
         # ctypedef typename PointCloud::ConstPtr PointCloudConstPtr;
+        
         # /** \brief Get the point indices being removed */
         cpp.IndicesPtr_t getRemovedIndices ()
         
@@ -223,38 +214,48 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 
 # template<>
 # class PCL_EXPORTS FilterIndices<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
-#     public:
+#       public:
 #       typedef sensor_msgs::PointCloud2 PointCloud2;
 #       /** \brief Constructor.
 #         * \param[in] extract_removed_indices Set to true if you want to extract the indices of points being removed (default = false).
 #       FilterIndices (bool extract_removed_indices = false) :
+# 
 #       /** \brief Empty virtual destructor. */
 #       virtual ~FilterIndices ()
 #       virtual void filter (PointCloud2 &output)
+# 
 #       /** \brief Calls the filtering method and returns the filtered point cloud indices.
 #         * \param[out] indices the resultant filtered point cloud indices
 #       void filter (vector[int] &indices)
+# 
 #       /** \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
 #         * \param[in] negative false = normal filter behavior (default), true = inverted behavior.
 #       void setNegative (bool negative)
+# 
 #       /** \brief Get whether the regular conditions for points filtering should apply, or the inverted conditions.
 #         * \return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
 #       bool getNegative ()
+# 
 #       /** \brief Set whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default: NaN),
 #         * or removed from the PointCloud, thus potentially breaking its organized structure.
 #         * \param[in] keep_organized false = remove points (default), true = redefine points, keep structure.
 #       void setKeepOrganized (bool keep_organized)
+# 
 #       /** \brief Get whether the filtered points should be kept and set to the value given through \a setUserFilterValue (default = NaN),
 #         * or removed from the PointCloud, thus potentially breaking its organized structure.
 #         * \return The value of the internal \a keep_organized_ parameter; false = remove points (default), true = redefine points, keep structure.
 #       bool getKeepOrganized ()
+# 
 #       /** \brief Provide a value that the filtered points should be set to instead of removing them.
 #         * Used in conjunction with \a setKeepOrganized ().
 #         * \param[in] value the user given value that the filtered point dimensions should be set to (default = NaN).
 #       void setUserFilterValue (float value)
+# 
 #       /** \brief Get the point indices being removed
 #         * \return The value of the internal \a negative_ parameter; false = normal filter behavior (default), true = inverted behavior.
 #       IndicesConstPtr const getRemovedIndices ()
+
+
 ###
 
 ### Inheritance class ###
@@ -343,22 +344,28 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # * \brief Filter the input data and store the results into output
         # * \param[out] output the resultant point cloud message
         void applyFilter (cpp.PointCloud[T] &output)
+        
         # * \brief Compute the intensity average for a single point
         # * \param[in] pid the point index to compute the weight for
         # * \param[in] indices the set of nearest neighor indices 
         # * \param[in] distances the set of nearest neighbor distances
         # * \return the intensity average at a given point index
         double  computePointWeight (const int pid, const vector[int] &indices, const vector[float] &distances)
+        
         # * \brief Set the half size of the Gaussian bilateral filter window.
         # * \param[in] sigma_s the half size of the Gaussian bilateral filter window to use
         void setHalfSize (const double sigma_s)
+        
         # * \brief Get the half size of the Gaussian bilateral filter window as set by the user. */
         double getHalfSize ()
+        
         # \brief Set the standard deviation parameter
         # * \param[in] sigma_r the new standard deviation parameter
         void setStdDev (const double sigma_r)
+        
         # * \brief Get the value of the current standard deviation parameter of the bilateral filter. */
         double getStdDev ()
+        
         # * \brief Provide a pointer to the search object.
         # * \param[in] tree a pointer to the spatial search object.
         # void setSearchMethod (const KdTreePtr &tree)
@@ -379,31 +386,31 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
         # * \return true, it point still exists, false if its clipped
         # virtual bool clipPoint3D (const PointT& point) const = 0;
         # 
-        #   * \brief interface to clip a line segment given by two end points. The order of the end points is unimportant and will sty the same after clipping.
-        #   * This means basically, that the direction of the line will not flip after clipping.
-        #   * \param[in,out] pt1 start point of the line
-        #   * \param[in,out] pt2 end point of the line
-        #   * \return true if the clipped line is not empty, thus the parameters are still valid, false if line completely outside clipping space
+        # \brief interface to clip a line segment given by two end points. The order of the end points is unimportant and will sty the same after clipping.
+        # This means basically, that the direction of the line will not flip after clipping.
+        # \param[in,out] pt1 start point of the line
+        # \param[in,out] pt2 end point of the line
+        # \return true if the clipped line is not empty, thus the parameters are still valid, false if line completely outside clipping space
         # virtual bool clipLineSegment3D (PointT& pt1, PointT& pt2) const = 0;
         # 
-        #   * \brief interface to clip a planar polygon given by an ordered list of points
-        #   * \param[in,out] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
+        # \brief interface to clip a planar polygon given by an ordered list of points
+        # \param[in,out] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
         # virtual void clipPlanarPolygon3D (std::vector<PointT>& polygon) const = 0;
         # 
-        #   * \brief interface to clip a planar polygon given by an ordered list of points
-        #   * \param[in] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
-        #   * \param[out] clipped_polygon the clipped polygon
+        # \brief interface to clip a planar polygon given by an ordered list of points
+        # \param[in] polygon the polygon in any direction (ccw or cw) but ordered, thus two neighboring points define an edge of the polygon
+        # \param[out] clipped_polygon the clipped polygon
         # virtual void clipPlanarPolygon3D (vector[PointT]& polygon, vector[PointT]& clipped_polygon) const = 0;
         # 
-        #   * \brief interface to clip a point cloud
-        #   * \param[in] cloud_in input point cloud
-        #   * \param[out] clipped indices of points that remain after clipping the input cloud
-        #   * \param[in] indices the indices of points in the point cloud to be clipped.
-        #   * \return list of indices of remaining points after clipping.
+        # \brief interface to clip a point cloud
+        # \param[in] cloud_in input point cloud
+        # \param[out] clipped indices of points that remain after clipping the input cloud
+        # \param[in] indices the indices of points in the point cloud to be clipped.
+        # \return list of indices of remaining points after clipping.
         # virtual void clipPointCloud3D (const pcl::PointCloud<PointT> &cloud_in, std::vector<int>& clipped, const std::vector<int>& indices = std::vector<int> ()) const = 0;
         # 
-        # * \brief polymorphic method to clone the underlying clipper with its parameters.
-        # * \return the new clipper object from the specific subclass with all its parameters.
+        # \brief polymorphic method to clone the underlying clipper with its parameters.
+        # \return the new clipper object from the specific subclass with all its parameters.
         # virtual Clipper3D<PointT>* clone () const = 0;
 
 
@@ -411,7 +418,6 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 
 # NG ###
 # no define constructor
-# 
 # template<typename PointT>
 # class PointDataAtOffset
 # cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
@@ -419,7 +425,9 @@ cdef extern from "pcl/filters/bilateral.h" namespace "pcl":
 #         # PointDataAtOffset (uint8_t datatype, uint32_t offset)
 #         # int compare (const T& p, const double& val);
 
+
 ###
+
 # template<typename PointT>
 # class FieldComparison : public ComparisonBase<PointT>
 cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
@@ -449,87 +457,97 @@ ctypedef shared_ptr[const FieldComparison[cpp.PointXYZRGB]] FieldComparison_Poin
 ctypedef shared_ptr[const FieldComparison[cpp.PointXYZRGBA]] FieldComparison_PointXYZRGBA_ConstPtr_t
 ###
 
-
 # template<typename PointT>
 # class PackedRGBComparison : public ComparisonBase<PointT>
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass PackedRGBComparison[T](ComparisonBase[T]):
+        PackedRGBComparison()
+        # PackedRGBComparison (string component_name, CompareOp op, double compare_val)
+        # using ComparisonBase<PointT>::capable_;
+        # using ComparisonBase<PointT>::op_;
+        # virtual boolevaluate (const PointT &point) const;
+###
 
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass PackedRGBComparison[T](ComparisonBase[T]):
-#         # PackedRGBComparison (string component_name, CompareOp op, double compare_val)
-#         # using ComparisonBase<PointT>::capable_;
-#         # using ComparisonBase<PointT>::op_;
-#         # virtual boolevaluate (const PointT &point) const;
-# 
-# # template<typename PointT>
-# # class PackedHSIComparison : public ComparisonBase<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass PackedHSIComparison[T](ComparisonBase[T]):
-#         # PackedHSIComparison (string component_name, CompareOp op, double compare_val)
-#         # using ComparisonBase<PointT>::capable_;
-#         # using ComparisonBase<PointT>::op_;
-#         # public:
-#         # * \brief Construct a PackedHSIComparison 
-#         # * \param component_name either "h", "s" or "i"
-#         # * \param op the operator to use when making the comparison
-#         # * \param compare_val the constant value to compare the component value too
-#         # typedef enum
-#         # {
-#         #   H, // -128 to 127 corresponds to -pi to pi
-#         #   S, // 0 to 255
-#         #   I  // 0 to 255
-#         # } ComponentId;
-# 
-# # template<typename PointT>
-# # class TfQuadraticXYZComparison : public pcl::ComparisonBase<PointT>
-# cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
-#     cdef cppclass TfQuadraticXYZComparison[T](ComparisonBase[T]):
-#         TfQuadraticXYZComparison ()
-#         # * \param op the operator "[OP]" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # * \param comparison_matrix the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # * \param comparison_vector the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # * \param comparison_scalar the scalar "c" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # * \param comparison_transform the transformation of the comparison.
-#         # TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op, const Eigen::Matrix3f &comparison_matrix,
-#         #                         const Eigen::Vector3f &comparison_vector, const float &comparison_scalar,
-#         #                         const Eigen::Affine3f &comparison_transform = Eigen::Affine3f::Identity ());
-#         # public:
-#         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW     //needed whenever there is a fixed size Eigen:: vector or matrix in a class
-#         # ctypedef boost::shared_ptr<TfQuadraticXYZComparison<PointT> > Ptr;
-#         # typedef boost::shared_ptr<const TfQuadraticXYZComparison<PointT> > ConstPtr;
+# template<typename PointT>
+# class PackedHSIComparison : public ComparisonBase<PointT>
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass PackedHSIComparison[T](ComparisonBase[T]):
+        PackedHSIComparison()
+        # PackedHSIComparison (string component_name, CompareOp op, double compare_val)
+        # using ComparisonBase<PointT>::capable_;
+        # using ComparisonBase<PointT>::op_;
+        # public:
+        # * \brief Construct a PackedHSIComparison 
+        # * \param component_name either "h", "s" or "i"
+        # * \param op the operator to use when making the comparison
+        # * \param compare_val the constant value to compare the component value too
+        # typedef enum
+        # {
+        #   H, // -128 to 127 corresponds to -pi to pi
+        #   S, // 0 to 255
+        #   I  // 0 to 255
+        # } ComponentId;
+###
 
-#         # void setComparisonOperator (const pcl::ComparisonOps::CompareOp op)
-#         # * \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         #  */
-#         # void setComparisonMatrix (const Eigen::Matrix3f &matrix)
-#         # * \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # void setComparisonMatrix (const Eigen::Matrix4f &homogeneousMatrix)
-#         # * \brief set the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # void setComparisonVector (const Eigen::Vector3f &vector)
-#         # * \brief set the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # void setComparisonVector (const Eigen::Vector4f &homogeneousVector)
-#         # * \brief set the scalar "c" of the comparison "p'Ap + 2v'p + c [OP] 0".
-#         # void setComparisonScalar (const float &scalar)
-#         # * \brief transform the coordinate system of the comparison. If you think of
-#         # * the transformation to be a translation and rotation of the comparison in the
-#         # * same coordinate system, you have to provide the inverse transformation.
-#         # * This function does not change the original definition of the comparison. Thus,
-#         # * each call of this function will assume the original definition of the comparison
-#         # * as starting point for the transformation.
-#         # * @param transform the transformation (rotation and translation) as an affine matrix.
-#         # void transformComparison (const Eigen::Matrix4f &transform)
-#         # * \brief transform the coordinate system of the comparison. If you think of
-#         # * the transformation to be a translation and rotation of the comparison in the
-#         # * same coordinate system, you have to provide the inverse transformation.
-#         # * This function does not change the original definition of the comparison. Thus,
-#         # * each call of this function will assume the original definition of the comparison
-#         # * as starting point for the transformation.
-#         # * @param transform the transformation (rotation and translation) as an affine matrix.
-#         # void transformComparison (const Eigen::Affine3f &transform)
-#         # \brief Determine the result of this comparison.
-#         # \param point the point to evaluate
-#         # \return the result of this comparison.
-#         # virtual bool evaluate (const PointT &point) const;
-# ###
+# template<typename PointT>
+# class TfQuadraticXYZComparison : public pcl::ComparisonBase<PointT>
+cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
+    cdef cppclass TfQuadraticXYZComparison[T](ComparisonBase[T]):
+        TfQuadraticXYZComparison ()
+        # * \param op the operator "[OP]" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # * \param comparison_matrix the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # * \param comparison_vector the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # * \param comparison_scalar the scalar "c" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # * \param comparison_transform the transformation of the comparison.
+        # TfQuadraticXYZComparison (const pcl::ComparisonOps::CompareOp op, const Eigen::Matrix3f &comparison_matrix,
+        #                         const Eigen::Vector3f &comparison_vector, const float &comparison_scalar,
+        #                         const Eigen::Affine3f &comparison_transform = Eigen::Affine3f::Identity ());
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW     //needed whenever there is a fixed size Eigen:: vector or matrix in a class
+        
+        # ctypedef boost::shared_ptr<TfQuadraticXYZComparison<PointT> > Ptr;
+        # typedef boost::shared_ptr<const TfQuadraticXYZComparison<PointT> > ConstPtr;
+        # void setComparisonOperator (const pcl::ComparisonOps::CompareOp op)
+        # * \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # void setComparisonMatrix (const Eigen::Matrix3f &matrix)
+        
+        # * \brief set the matrix "A" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # void setComparisonMatrix (const Eigen::Matrix4f &homogeneousMatrix)
+        
+        # * \brief set the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # void setComparisonVector (const Eigen::Vector3f &vector)
+        
+        # * \brief set the vector "v" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # void setComparisonVector (const Eigen::Vector4f &homogeneousVector)
+        
+        # * \brief set the scalar "c" of the comparison "p'Ap + 2v'p + c [OP] 0".
+        # void setComparisonScalar (const float &scalar)
+        
+        # * \brief transform the coordinate system of the comparison. If you think of
+        # * the transformation to be a translation and rotation of the comparison in the
+        # * same coordinate system, you have to provide the inverse transformation.
+        # * This function does not change the original definition of the comparison. Thus,
+        # * each call of this function will assume the original definition of the comparison
+        # * as starting point for the transformation.
+        # * @param transform the transformation (rotation and translation) as an affine matrix.
+        # void transformComparison (const Eigen::Matrix4f &transform)
+        
+        # * \brief transform the coordinate system of the comparison. If you think of
+        # * the transformation to be a translation and rotation of the comparison in the
+        # * same coordinate system, you have to provide the inverse transformation.
+        # * This function does not change the original definition of the comparison. Thus,
+        # * each call of this function will assume the original definition of the comparison
+        # * as starting point for the transformation.
+        # * @param transform the transformation (rotation and translation) as an affine matrix.
+        # void transformComparison (const Eigen::Affine3f &transform)
+        
+        # \brief Determine the result of this comparison.
+        # \param point the point to evaluate
+        # \return the result of this comparison.
+        # virtual bool evaluate (const PointT &point) const;
+
+
+###
 # NG end ###
 
 
@@ -543,6 +561,7 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<ConditionAnd<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionAnd<PointT> > ConstPtr;
+
 
 ctypedef ConditionAnd[cpp.PointXYZ] ConditionAnd_t
 ctypedef ConditionAnd[cpp.PointXYZI] ConditionAnd_PointXYZI_t
@@ -568,6 +587,7 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         # public:
         # ctypedef boost::shared_ptr<ConditionOr<PointT> > Ptr;
         # ctypedef boost::shared_ptr<const ConditionOr<PointT> > ConstPtr;
+
 
 ctypedef shared_ptr[ConditionOr[cpp.PointXYZ]] ConditionOrPtr_t
 ctypedef shared_ptr[ConditionOr[cpp.PointXYZI]] ConditionOr_PointXYZI_Ptr_t
@@ -618,7 +638,6 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         void setCondition (ConditionBase_PointXYZRGBA_Ptr_t condition);
 
 
-
 ctypedef ConditionalRemoval[cpp.PointXYZ] ConditionalRemoval_t
 ctypedef ConditionalRemoval[cpp.PointXYZI] ConditionalRemoval_PointXYZI_t
 ctypedef ConditionalRemoval[cpp.PointXYZRGB] ConditionalRemoval_PointXYZRGB_t
@@ -631,7 +650,6 @@ ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZ]] ConditionalRemovalCo
 ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZI]] ConditionalRemoval_PointXYZI_ConstPtr_t
 ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZRGB]] ConditionalRemoval_PointXYZRGB_ConstPtr_t
 ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZRGBA]] ConditionalRemoval_PointXYZRGBA_ConstPtr_t
-
 ###
 
 # crop_box.h
@@ -751,10 +769,12 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         
         # \brief Set the point cloud that the hull indices refer to
         # \param[in] points the point cloud that the hull indices refer to
-        void setHullCloud (cpp.PointCloudPtr_t points)
+        # void setHullCloud (cpp.PointCloudPtr_t points)
+        void setHullCloud (shared_ptr[cpp.PointCloud[T]] points)
         
         #/\brief Get the point cloud that the hull indices refer to. */
-        cpp.PointCloudPtr_t getHullCloud () const
+        # cpp.PointCloudPtr_t getHullCloud () const
+        shared_ptr[cpp.PointCloud[T]] getHullCloud ()
         
         # brief Set the dimensionality of the hull to be used.
         # This should be set to correspond to the dimensionality of the
@@ -762,7 +782,7 @@ cdef extern from "pcl/filters/crop_hull.h" namespace "pcl":
         # pcl::ConcaveHull classes.
         # param[in] dim Dimensionailty of the hull used to filter points.
         void setDim (int dim)
-		
+        
         # \brief Remove points outside the hull (default), or those inside the hull.
         # \param[in] crop_outside If true, the filter will remove points
         # outside the hull. If false, those inside will be removed.
@@ -873,22 +893,33 @@ cdef extern from "pcl/filters/normal_space.h" namespace "pcl":
 # passthrough.h
 # template <typename PointT>
 # class PassThrough : public FilterIndices<PointT>
-#   cdef cppclass PassThrough[T](FilterIndices[T]):
 cdef extern from "pcl/filters/passthrough.h" namespace "pcl":
-    cdef cppclass PassThrough[T]:
+    cdef cppclass PassThrough[T](FilterIndices[T]):
         PassThrough()
         void setFilterFieldName (string field_name)
+        string getFilterFieldName ()
         void setFilterLimits (float min, float max)
-        void setInputCloud (shared_ptr[cpp.PointCloud[T]])
+        void getFilterLimits (float &min, float &max)
+        void setFilterLimitsNegative (const bool limit_negative)
+        void getFilterLimitsNegative (bool &limit_negative)
+        bool getFilterLimitsNegative ()
+        # call base Class(PCLBase)
+        # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
         void filter(cpp.PointCloud[T] c)
+
 
 ctypedef PassThrough[cpp.PointXYZ] PassThrough_t
 ctypedef PassThrough[cpp.PointXYZI] PassThrough_PointXYZI_t
 ctypedef PassThrough[cpp.PointXYZRGB] PassThrough_PointXYZRGB_t
 ctypedef PassThrough[cpp.PointXYZRGBA] PassThrough_PointXYZRGBA_t
+###
 
+# passthrough.h
 # template<>
 # class PCL_EXPORTS PassThrough<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
+# cdef extern from "pcl/filters/passthrough.h" namespace "pcl":
+#     cdef cppclass PassThrough[grb.PointCloud2](Filter[grb.PointCloud2]):
+#         PassThrough(bool extract_removed_indices)
 #     typedef sensor_msgs::PointCloud2 PointCloud2;
 #     typedef PointCloud2::Ptr PointCloud2Ptr;
 #     typedef PointCloud2::ConstPtr PointCloud2ConstPtr;
@@ -935,6 +966,8 @@ ctypedef PassThrough[cpp.PointXYZRGBA] PassThrough_PointXYZRGBA_t
 #       /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
 #         * \return true if data \b outside the interval [min; max] is to be returned, false otherwise
 #       bool getFilterLimitsNegative ()
+
+
 ###
 
 # plane_clipper3D.h
@@ -1170,10 +1203,12 @@ cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
         void setInputCloud (shared_ptr[cpp.PointCloud[T]])
         void filter(cpp.PointCloud[T] &c)
 
+
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZ] StatisticalOutlierRemoval_t
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZI] StatisticalOutlierRemoval_PointXYZI_t
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGB] StatisticalOutlierRemoval_PointXYZRGB_t
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval_PointXYZRGBA_t
+###
 
 # template<>
 # class PCL_EXPORTS StatisticalOutlierRemoval<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
@@ -1435,33 +1470,6 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #       /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
 #         * \return true if data \b outside the interval [min; max] is to be returned, false otherwise
 #       bool getFilterLimitsNegative ()
-#     protected:
-#       /** \brief The size of a leaf. */
-#       Eigen::Vector4f leaf_size_;
-#       /** \brief Internal leaf sizes stored as 1/leaf_size_ for efficiency reasons. */ 
-#       Eigen::Array4f inverse_leaf_size_;
-#       /** \brief Set to true if all fields need to be downsampled, or false if just XYZ. */
-#       bool downsample_all_data_;
-#       /** \brief Set to true if leaf layout information needs to be saved in \a
-#         * leaf_layout. 
-#       bool save_leaf_layout_;
-#       /** \brief The leaf layout information for fast access to cells relative
-#         * to current position 
-#       std::vector<int> leaf_layout_;
-#       /** \brief The minimum and maximum bin coordinates, the number of
-#         * divisions, and the division multiplier. 
-#       Eigen::Vector4i min_b_, max_b_, div_b_, divb_mul_;
-#       /** \brief The desired user filter field name. */
-#       std::string filter_field_name_;
-#       /** \brief The minimum allowed filter value a point will be considered from. */
-#       double filter_limit_min_;
-#       /** \brief The maximum allowed filter value a point will be considered from. */
-#       double filter_limit_max_;
-#       /** \brief Set to true if we want to return the data outside (\a filter_limit_min_;\a filter_limit_max_). Default: false. */
-#       bool filter_limit_negative_;
-#       /** \brief Downsample a Point Cloud using a voxelized grid approach
-#         * \param[out] output the resultant point cloud
-#       void applyFilter (PointCloud2 &output);
 ###
 
 ctypedef VoxelGrid[cpp.PointXYZ] VoxelGrid_t

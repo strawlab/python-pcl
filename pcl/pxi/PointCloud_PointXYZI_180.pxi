@@ -283,7 +283,7 @@ cdef class PointCloud_PointXYZI:
         # p = self.thisptr()
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = Segmentation_PointXYZI_Normal()
-        cdef pclseg.SACSegmentation_PointXYZI_Normal_t *cseg = <pclseg.SACSegmentation_PointXYZI_Normal_t *>seg.me
+        cdef pclseg.SACSegmentationFromNormals_PointXYZI_t *cseg = <pclseg.SACSegmentationFromNormals_PointXYZI_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg

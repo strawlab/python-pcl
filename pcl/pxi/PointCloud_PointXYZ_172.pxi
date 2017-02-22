@@ -289,7 +289,7 @@ cdef class PointCloud:
         cdef cpp.PointCloud_Normal_t normals
         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
         seg = SegmentationNormal()
-        cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
+        cdef pclseg.SACSegmentationFromNormals_t *cseg = <pclseg.SACSegmentationFromNormals_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg
@@ -309,6 +309,15 @@ cdef class PointCloud:
         """
         fil = VoxelGridFilter()
         cdef pclfil.VoxelGrid_t *cfil = <pclfil.VoxelGrid_t *>fil.me
+        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return fil
+
+    def make_ApproximateVoxelGrid(self):
+        """
+        Return a pcl.ApproximateVoxelGrid object with this object set as the input-cloud
+        """
+        fil = ApproximateVoxelGrid()
+        cdef pclfil.ApproximateVoxelGrid_t *cfil = <pclfil.ApproximateVoxelGrid_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 

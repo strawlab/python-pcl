@@ -407,7 +407,7 @@ cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" nam
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
-  		# 
+        # 
         # /** \brief Compare two neighboring points, by using normal information, and euclidean distance information.
         #   * \param[in] idx1 The index of the first point.
         #   * \param[in] idx2 The index of the second point.
@@ -1256,7 +1256,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         , refine_labels_ ()
 #         , label_to_model_ ()
 #         , depth_dependent_ (false)
-# 		
+#       
 #       /** \brief Empty constructor for PlaneCoefficientComparator. 
 #         * \param[in] models
 #         * \param[in] refine_labels
@@ -1268,21 +1268,21 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         , refine_labels_ (refine_labels)
 #         , label_to_model_ ()
 #         , depth_dependent_ (false)
-#		
+#       
 #       /** \brief Destructor for PlaneCoefficientComparator. */
 #       virtual
 #       ~PlaneRefinementComparator ()
-# 		
+#       
 #       /** \brief Set the vector of model coefficients to which we will compare.
 #         * \param[in] models a vector of model coefficients produced by the initial segmentation step.
 #         */
 #       void setModelCoefficients (boost::shared_ptr<std::vector<pcl::ModelCoefficients> >& models)
-# 		
+#       
 #       /** \brief Set the vector of model coefficients to which we will compare.
 #         * \param[in] models a vector of model coefficients produced by the initial segmentation step.
 #         */
 #       void setModelCoefficients (std::vector<pcl::ModelCoefficients>& models)
-# 		
+#       
 #       /** \brief Set which labels should be refined.  This is a vector of bools 0-max_label, true if the label should be refined.
 #         * \param[in] refine_labels A vector of bools 0-max_label, true if the label should be refined.
 #         */
@@ -1292,7 +1292,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         * \param[in] refine_labels A vector of bools 0-max_label, true if the label should be refined.
 #         */
 #       void setRefineLabels (std::vector<bool>& refine_labels)
-# 		
+#       
 #       /** \brief A mapping from label to index in the vector of models, allowing the model coefficients of a label to be accessed.
 #         * \param[in] label_to_model A vector of size max_label, with the index of each corresponding model in models
 #         */
@@ -1302,15 +1302,15 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         * \param[in] label_to_model A vector of size max_label, with the index of each corresponding model in models
 #         */
 #       inline void setLabelToModel (std::vector<int>& label_to_model)
-# 		
+#       
 #       /** \brief Get the vector of model coefficients to which we will compare. */
 #       inline boost::shared_ptr<std::vector<pcl::ModelCoefficients> > getModelCoefficients () const
-# 		
+#       
 #       /** \brief ...
 #         * \param[in] labels
 #         */
 #       inline void setLabels (PointCloudLPtr& labels)
-# 		
+#       
 #       /** \brief Compare two neighboring points
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.
@@ -1829,130 +1829,131 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
         # maximum_curvature_ (0.001),
         # project_points_ (false), 
         # compare_ (new PlaneComparator ()), refinement_compare_ (new PlaneRefinementComparator ())
-        
-        /** \brief Destructor for OrganizedMultiPlaneSegmentation. */
-        virtual ~OrganizedMultiPlaneSegmentation ()
+        # 
+        # /** \brief Destructor for OrganizedMultiPlaneSegmentation. */
+        # virtual ~OrganizedMultiPlaneSegmentation ()
+        # 
+        # /** \brief Provide a pointer to the input normals.
+        # * \param[in] normals the input normal cloud
+        # */
+        # inline void setInputNormals (const PointCloudNConstPtr &normals) 
+        # 
+        # /** \brief Get the input normals. */
+        # inline PointCloudNConstPtr getInputNormals () const
+        # 
+        # /** \brief Set the minimum number of inliers required for a plane
+        # * \param[in] min_inliers the minimum number of inliers required per plane
+        # */
+        # inline void setMinInliers (unsigned min_inliers)
+        # 
+        # /** \brief Get the minimum number of inliers required per plane. */
+        # inline unsigned getMinInliers () const
+        # 
+        # /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
+        # * \param[in] angular_threshold the tolerance in radians
+        # */
+        # inline void setAngularThreshold (double angular_threshold)
+        # 
+        # /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
+        # inline double getAngularThreshold () const
+        # 
+        # /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
+        # * \param[in] distance_threshold the tolerance in meters
+        # */
+        # inline void setDistanceThreshold (double distance_threshold)
+        # 
+        # /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
+        # inline double getDistanceThreshold () const
+        # 
+        # /** \brief Set the maximum curvature allowed for a planar region.
+        # * \param[in] maximum_curvature the maximum curvature
+        # */
+        # inline void setMaximumCurvature (double maximum_curvature)
+        # 
+        # /** \brief Get the maximum curvature allowed for a planar region. */
+        # inline double getMaximumCurvature () const
+        # 
+        # /** \brief Provide a pointer to the comparator to be used for segmentation.
+        # * \param[in] compare A pointer to the comparator to be used for segmentation.
+        # */
+        # void setComparator (const PlaneComparatorPtr& compare)
+        # 
+        # /** \brief Provide a pointer to the comparator to be used for refinement.
+        # * \param[in] compare A pointer to the comparator to be used for refinement.
+        # */
+        # void setRefinementComparator (const PlaneRefinementComparatorPtr& compare)
+        # 
+        # /** \brief Set whether or not to project boundary points to the plane, or leave them in the original 3D space.
+        # * \param[in] project_points true if points should be projected, false if not.
+        # */
+        # void setProjectPoints (bool project_points)
+        # 
+        # /** \brief Segmentation of all planes in a point cloud given by setInputCloud(), setIndices()
+        # * \param[out] model_coefficients a vector of model_coefficients for each plane found in the input cloud
+        # * \param[out] inlier_indices a vector of inliers for each detected plane
+        # * \param[out] centroids a vector of centroids for each plane
+        # * \param[out] covariances a vector of covariance matricies for the inliers of each plane
+        # * \param[out] labels a point cloud for the connected component labels of each pixel
+        # * \param[out] label_indices a vector of PointIndices for each labeled component
+        # */
+        # void segment (
+        #         std::vector<ModelCoefficients>& model_coefficients, 
+        #         std::vector<PointIndices>& inlier_indices,
+        #         std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& centroids,
+        #         std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
+        #         pcl::PointCloud<PointLT>& labels, 
+        #         std::vector<pcl::PointIndices>& label_indices);
+        # 
+        # /** \brief Segmentation of all planes in a point cloud given by setInputCloud(), setIndices()
+        # * \param[out] model_coefficients a vector of model_coefficients for each plane found in the input cloud
+        # * \param[out] inlier_indices a vector of inliers for each detected plane
+        # */
+        # void segment (
+        #         std::vector<ModelCoefficients>& model_coefficients, 
+        #         std::vector<PointIndices>& inlier_indices);
+        # 
+        # /** \brief Segmentation of all planes in a point cloud given by setInputCloud(), setIndices()
+        # * \param[out] regions a list of resultant planar polygonal regions
+        # */
+        # void segment (std::vector<PlanarRegion<PointT>, Eigen::aligned_allocator<PlanarRegion<PointT> > >& regions);
+        # 
+        # /** \brief Perform a segmentation, as well as an additional refinement step.  This helps with including points whose normals may not match neighboring points well, but may match the planar model well.
+        # * \param[out] regions A list of regions generated by segmentation and refinement.
+        # */
+        # void segmentAndRefine (std::vector<PlanarRegion<PointT>, Eigen::aligned_allocator<PlanarRegion<PointT> > >& regions);
+        # 
+        # /** \brief Perform a segmentation, as well as additional refinement step.  Returns intermediate data structures for use in
+        # * subsequent processing.
+        # * \param[out] regions A vector of PlanarRegions generated by segmentation
+        # * \param[out] model_coefficients A vector of model coefficients for each segmented plane
+        # * \param[out] inlier_indices A vector of PointIndices, indicating the inliers to each segmented plane
+        # * \param[out] labels A PointCloud<PointLT> corresponding to the resulting segmentation.
+        # * \param[out] label_indices A vector of PointIndices for each label
+        # * \param[out] boundary_indices A vector of PointIndices corresponding to the outer boundary / contour of each label
+        # */
+        # void segmentAndRefine (
+        #                 std::vector<PlanarRegion<PointT>, Eigen::aligned_allocator<PlanarRegion<PointT> > >& regions,
+        #                 std::vector<ModelCoefficients>& model_coefficients,
+        #                 std::vector<PointIndices>& inlier_indices,
+        #                 PointCloudLPtr& labels,
+        #                 std::vector<pcl::PointIndices>& label_indices,
+        #                 std::vector<pcl::PointIndices>& boundary_indices);
+        # 
+        # /** \brief Perform a refinement of an initial segmentation, by comparing points to adjacent regions detected by the initial segmentation.
+        # * \param [in] model_coefficients The list of segmented model coefficients
+        # * \param [in] inlier_indices The list of segmented inlier indices, corresponding to each model
+        # * \param [in] centroids The list of centroids corresponding to each segmented plane
+        # * \param [in] covariances The list of covariances corresponding to each segemented plane
+        # * \param [in] labels The labels produced by the initial segmentation
+        # * \param [in] label_indices The list of indices corresponding to each label
+        # */
+        # void refine (std::vector<ModelCoefficients>& model_coefficients, 
+        #       std::vector<PointIndices>& inlier_indices,
+        #       std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& centroids,
+        #       std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
+        #       PointCloudLPtr& labels,
+        #       std::vector<pcl::PointIndices>& label_indices);
 
-        /** \brief Provide a pointer to the input normals.
-        * \param[in] normals the input normal cloud
-        */
-        inline void setInputNormals (const PointCloudNConstPtr &normals) 
-        
-        /** \brief Get the input normals. */
-        inline PointCloudNConstPtr getInputNormals () const
-        
-        /** \brief Set the minimum number of inliers required for a plane
-        * \param[in] min_inliers the minimum number of inliers required per plane
-        */
-        inline void setMinInliers (unsigned min_inliers)
-        
-        /** \brief Get the minimum number of inliers required per plane. */
-        inline unsigned getMinInliers () const
-        
-        /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
-        * \param[in] angular_threshold the tolerance in radians
-        */
-        inline void setAngularThreshold (double angular_threshold)
-        
-        /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
-        inline double getAngularThreshold () const
-        
-        /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
-        * \param[in] distance_threshold the tolerance in meters
-        */
-        inline void setDistanceThreshold (double distance_threshold)
-        
-        /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
-        inline double getDistanceThreshold () const
-        
-        /** \brief Set the maximum curvature allowed for a planar region.
-        * \param[in] maximum_curvature the maximum curvature
-        */
-        inline void setMaximumCurvature (double maximum_curvature)
-        
-        /** \brief Get the maximum curvature allowed for a planar region. */
-        inline double getMaximumCurvature () const
-        
-        /** \brief Provide a pointer to the comparator to be used for segmentation.
-        * \param[in] compare A pointer to the comparator to be used for segmentation.
-        */
-        void setComparator (const PlaneComparatorPtr& compare)
-        
-        /** \brief Provide a pointer to the comparator to be used for refinement.
-        * \param[in] compare A pointer to the comparator to be used for refinement.
-        */
-        void setRefinementComparator (const PlaneRefinementComparatorPtr& compare)
-        
-        /** \brief Set whether or not to project boundary points to the plane, or leave them in the original 3D space.
-        * \param[in] project_points true if points should be projected, false if not.
-        */
-        void setProjectPoints (bool project_points)
-        
-        /** \brief Segmentation of all planes in a point cloud given by setInputCloud(), setIndices()
-        * \param[out] model_coefficients a vector of model_coefficients for each plane found in the input cloud
-        * \param[out] inlier_indices a vector of inliers for each detected plane
-        * \param[out] centroids a vector of centroids for each plane
-        * \param[out] covariances a vector of covariance matricies for the inliers of each plane
-        * \param[out] labels a point cloud for the connected component labels of each pixel
-        * \param[out] label_indices a vector of PointIndices for each labeled component
-        */
-        void segment (
-                std::vector<ModelCoefficients>& model_coefficients, 
-                std::vector<PointIndices>& inlier_indices,
-                std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& centroids,
-                std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
-                pcl::PointCloud<PointLT>& labels, 
-                std::vector<pcl::PointIndices>& label_indices);
-        
-        /** \brief Segmentation of all planes in a point cloud given by setInputCloud(), setIndices()
-        * \param[out] model_coefficients a vector of model_coefficients for each plane found in the input cloud
-        * \param[out] inlier_indices a vector of inliers for each detected plane
-        */
-        void segment (
-                std::vector<ModelCoefficients>& model_coefficients, 
-                std::vector<PointIndices>& inlier_indices);
-
-        /** \brief Segmentation of all planes in a point cloud given by setInputCloud(), setIndices()
-        * \param[out] regions a list of resultant planar polygonal regions
-        */
-        void segment (std::vector<PlanarRegion<PointT>, Eigen::aligned_allocator<PlanarRegion<PointT> > >& regions);
-        
-        /** \brief Perform a segmentation, as well as an additional refinement step.  This helps with including points whose normals may not match neighboring points well, but may match the planar model well.
-        * \param[out] regions A list of regions generated by segmentation and refinement.
-        */
-        void segmentAndRefine (std::vector<PlanarRegion<PointT>, Eigen::aligned_allocator<PlanarRegion<PointT> > >& regions);
-
-        /** \brief Perform a segmentation, as well as additional refinement step.  Returns intermediate data structures for use in
-        * subsequent processing.
-        * \param[out] regions A vector of PlanarRegions generated by segmentation
-        * \param[out] model_coefficients A vector of model coefficients for each segmented plane
-        * \param[out] inlier_indices A vector of PointIndices, indicating the inliers to each segmented plane
-        * \param[out] labels A PointCloud<PointLT> corresponding to the resulting segmentation.
-        * \param[out] label_indices A vector of PointIndices for each label
-        * \param[out] boundary_indices A vector of PointIndices corresponding to the outer boundary / contour of each label
-        */
-        void segmentAndRefine (
-                        std::vector<PlanarRegion<PointT>, Eigen::aligned_allocator<PlanarRegion<PointT> > >& regions,
-                        std::vector<ModelCoefficients>& model_coefficients,
-                        std::vector<PointIndices>& inlier_indices,
-                        PointCloudLPtr& labels,
-                        std::vector<pcl::PointIndices>& label_indices,
-                        std::vector<pcl::PointIndices>& boundary_indices);
-      
-        /** \brief Perform a refinement of an initial segmentation, by comparing points to adjacent regions detected by the initial segmentation.
-        * \param [in] model_coefficients The list of segmented model coefficients
-        * \param [in] inlier_indices The list of segmented inlier indices, corresponding to each model
-        * \param [in] centroids The list of centroids corresponding to each segmented plane
-        * \param [in] covariances The list of covariances corresponding to each segemented plane
-        * \param [in] labels The labels produced by the initial segmentation
-        * \param [in] label_indices The list of indices corresponding to each label
-        */
-        void refine (std::vector<ModelCoefficients>& model_coefficients, 
-              std::vector<PointIndices>& inlier_indices,
-              std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& centroids,
-              std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
-              PointCloudLPtr& labels,
-              std::vector<pcl::PointIndices>& label_indices);
 
 ###
 
@@ -2954,9 +2955,10 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #                         PointIndices                                            &indices_in, 
 #                         PointIndices                                            &indices_out, 
 #                         float                                                   delta_hue = 0.0);
-# 
-# # seeded_hue_segmentation.h
-# # namespace pcl
+###
+
+# seeded_hue_segmentation.h
+# namespace pcl
 #   /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
 #     * \param[in] cloud the point cloud message
 #     * \param[in] tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
@@ -2976,9 +2978,10 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #                          PointIndices                                            &indices_out, 
 #                          float                                                   delta_hue = 0.0);
 # 
-# 
-# # seeded_hue_segmentation.h
-# # namespace pcl
+###
+
+# seeded_hue_segmentation.h
+# namespace pcl
 #   /** \brief SeededHueSegmentation 
 #     * \author Koen Buys
 #     * \ingroup segmentation
@@ -3026,227 +3029,131 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #       /** \brief Set the tollerance on the hue
 #         * \param[in] delta_hue the new delta hue
 #         */
-#       inline void 
-#       setDeltaHue (float delta_hue) { delta_hue_ = delta_hue; }
-# 
+#       inline void setDeltaHue (float delta_hue) { delta_hue_ = delta_hue; }
+#       
 #       /** \brief Get the tolerance on the hue */
-#       inline float 
-#       getDeltaHue () const { return (delta_hue_); }
-# 
+#       inline float getDeltaHue () const { return (delta_hue_); }
+#       
 #       /** \brief Cluster extraction in a PointCloud given by <setInputCloud (), setIndices ()>
 #         * \param[in] indices_in
 #         * \param[out] indices_out
 #         */
-#       void 
-#       segment (PointIndices &indices_in, PointIndices &indices_out);
-# 
-#     protected:
-#       // Members derived from the base class
-#       using BasePCLBase::input_;
-#       using BasePCLBase::indices_;
-#       using BasePCLBase::initCompute;
-#       using BasePCLBase::deinitCompute;
-# 
-#       /** \brief A pointer to the spatial search object. */
-#       KdTreePtr tree_;
-# 
-#       /** \brief The spatial cluster tolerance as a measure in the L2 Euclidean space. */
-#       double cluster_tolerance_;
-# 
-#       /** \brief The allowed difference on the hue*/
-#       float delta_hue_;
-# 
-#       /** \brief Class getName method. */
-#       virtual std::string getClassName () const { return ("seededHueSegmentation"); }
-#   };
-# }
-# 
-# #ifdef PCL_NO_PRECOMPILE
-# #include <pcl/segmentation/impl/seeded_hue_segmentation.hpp>
-# #endif
-# 
-# #endif  //#ifndef PCL_SEEDED_HUE_SEGMENTATION_H_
-# ###
-# 
-# 
-# # segment_differences.h
+#       void segment (PointIndices &indices_in, PointIndices &indices_out);
+
+
+###
+
+# segment_differences.h
 # namespace pcl
-# {
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Obtain the difference between two aligned point clouds as another point cloud, given a distance threshold.
-#     * \param src the input point cloud source
-#     * \param tgt the input point cloud target we need to obtain the difference against
-#     * \param threshold the distance threshold (tolerance) for point correspondences. (e.g., check if f a point p1 from 
-#     * src has a correspondence > threshold than a point p2 from tgt)
-#     * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching built over \a tgt
-#     * \param output the resultant output point cloud difference
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> 
-#   void getPointCloudDifference (
-#       const pcl::PointCloud<PointT> &src, const pcl::PointCloud<PointT> &tgt, 
-#       double threshold, const boost::shared_ptr<pcl::search::Search<PointT> > &tree,
-#       pcl::PointCloud<PointT> &output);
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief @b SegmentDifferences obtains the difference between two spatially
-#     * aligned point clouds and returns the difference between them for a maximum
-#     * given distance threshold.
-#     * \author Radu Bogdan Rusu
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT>
-#   class SegmentDifferences: public PCLBase<PointT>
-#   {
-#     typedef PCLBase<PointT> BasePCLBase;
-# 
-#     public:
+# /** \brief Obtain the difference between two aligned point clouds as another point cloud, given a distance threshold.
+#   * \param src the input point cloud source
+#   * \param tgt the input point cloud target we need to obtain the difference against
+#   * \param threshold the distance threshold (tolerance) for point correspondences. (e.g., check if f a point p1 from 
+#   * src has a correspondence > threshold than a point p2 from tgt)
+#   * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching built over \a tgt
+#   * \param output the resultant output point cloud difference
+#   * \ingroup segmentation
+#   */
+# template <typename PointT> 
+# void getPointCloudDifference (
+#     const pcl::PointCloud<PointT> &src, const pcl::PointCloud<PointT> &tgt, 
+#     double threshold, const boost::shared_ptr<pcl::search::Search<PointT> > &tree,
+#     pcl::PointCloud<PointT> &output);
+###
+
+# segment_differences.h
+# namespace pcl
+# /** \brief @b SegmentDifferences obtains the difference between two spatially
+#   * aligned point clouds and returns the difference between them for a maximum
+#   * given distance threshold.
+#   * \author Radu Bogdan Rusu
+#   * \ingroup segmentation
+#   */
+# template <typename PointT>
+# class SegmentDifferences: public PCLBase<PointT>
+#       typedef PCLBase<PointT> BasePCLBase;
+#       
+#       public:
 #       typedef pcl::PointCloud<PointT> PointCloud;
 #       typedef typename PointCloud::Ptr PointCloudPtr;
 #       typedef typename PointCloud::ConstPtr PointCloudConstPtr;
-# 
 #       typedef typename pcl::search::Search<PointT> KdTree;
 #       typedef typename pcl::search::Search<PointT>::Ptr KdTreePtr;
-# 
 #       typedef PointIndices::Ptr PointIndicesPtr;
 #       typedef PointIndices::ConstPtr PointIndicesConstPtr;
-# 
+#       
 #       /** \brief Empty constructor. */
 #       SegmentDifferences () : 
 #         tree_ (), target_ (), distance_threshold_ (0)
 #       {};
-# 
+#       
 #       /** \brief Provide a pointer to the target dataset against which we
 #         * compare the input cloud given in setInputCloud
 #         *
 #         * \param cloud the target PointCloud dataset
 #         */
-#       inline void 
-#       setTargetCloud (const PointCloudConstPtr &cloud) { target_ = cloud; }
-# 
+#       inline void setTargetCloud (const PointCloudConstPtr &cloud) { target_ = cloud; }
+#       
 #       /** \brief Get a pointer to the input target point cloud dataset. */
-#       inline PointCloudConstPtr const 
-#       getTargetCloud () { return (target_); }
-# 
+#       inline PointCloudConstPtr const getTargetCloud () { return (target_); }
+#       
 #       /** \brief Provide a pointer to the search object.
 #         * \param tree a pointer to the spatial search object.
 #         */
-#       inline void 
-#       setSearchMethod (const KdTreePtr &tree) { tree_ = tree; }
-# 
+#       inline void setSearchMethod (const KdTreePtr &tree) { tree_ = tree; }
+#       
 #       /** \brief Get a pointer to the search method used. */
-#       inline KdTreePtr 
-#       getSearchMethod () { return (tree_); }
-# 
+#       inline KdTreePtr getSearchMethod () { return (tree_); }
+#       
 #       /** \brief Set the maximum distance tolerance (squared) between corresponding
 #         * points in the two input datasets.
-#         *
 #         * \param sqr_threshold the squared distance tolerance as a measure in L2 Euclidean space
 #         */
-#       inline void 
-#       setDistanceThreshold (double sqr_threshold) { distance_threshold_ = sqr_threshold; }
-# 
+#       inline void setDistanceThreshold (double sqr_threshold) { distance_threshold_ = sqr_threshold; }
+#       
 #       /** \brief Get the squared distance tolerance between corresponding points as a
 #         * measure in the L2 Euclidean space.
 #         */
-#       inline double 
-#       getDistanceThreshold () { return (distance_threshold_); }
-# 
+#       inline double getDistanceThreshold () { return (distance_threshold_); }
+#       
 #       /** \brief Segment differences between two input point clouds.
 #         * \param output the resultant difference between the two point clouds as a PointCloud
 #         */
-#       void 
-#       segment (PointCloud &output);
-# 
-#     protected:
-#       // Members derived from the base class
-#       using BasePCLBase::input_;
-#       using BasePCLBase::indices_;
-#       using BasePCLBase::initCompute;
-#       using BasePCLBase::deinitCompute;
-# 
-#       /** \brief A pointer to the spatial search object. */
-#       KdTreePtr tree_;
-# 
-#       /** \brief The input target point cloud dataset. */
-#       PointCloudConstPtr target_;
-# 
-#       /** \brief The distance tolerance (squared) as a measure in the L2
-#         * Euclidean space between corresponding points. 
-#         */
-#       double distance_threshold_;
-# 
-#       /** \brief Class getName method. */
-#       virtual std::string 
-#       getClassName () const { return ("SegmentDifferences"); }
-#   };
-# }
-# 
-# #ifdef PCL_NO_PRECOMPILE
-# #include <pcl/segmentation/impl/segment_differences.hpp>
-# #endif
-# 
-# #endif  //#ifndef PCL_SEGMENT_DIFFERENCES_H_
-# ###
-# 
-# 
-# # supervoxel_clustering.h
+#       void segment (PointCloud &output);
+
+
+###
+
+# supervoxel_clustering.h
 # namespace pcl
-# {
-#   /** \brief Supervoxel container class - stores a cluster extracted using supervoxel clustering 
-#    */
-#   template <typename PointT>
-#   class Supervoxel
-#   {
-#     public:
+# /** \brief Supervoxel container class - stores a cluster extracted using supervoxel clustering 
+#  */
+# template <typename PointT>
+# class Supervoxel
+#       public:
 #       Supervoxel () :
 #         voxels_ (new pcl::PointCloud<PointT> ()),
 #         normals_ (new pcl::PointCloud<Normal> ())
-#         {  } 
 #       
 #       typedef boost::shared_ptr<Supervoxel<PointT> > Ptr;
 #       typedef boost::shared_ptr<const Supervoxel<PointT> > ConstPtr;
-# 
+#       
 #       /** \brief Gets the centroid of the supervoxel
 #        *  \param[out] centroid_arg centroid of the supervoxel
 #        */ 
-#       void
-#       getCentroidPoint (PointXYZRGBA &centroid_arg)
-#       {
-#         centroid_arg = centroid_;
-#       }
+#       void getCentroidPoint (PointXYZRGBA &centroid_arg)
 #       
 #       /** \brief Gets the point normal for the supervoxel 
 #        * \param[out] normal_arg Point normal of the supervoxel
 #        * \note This isn't an average, it is a normal computed using all of the voxels in the supervoxel as support
 #        */ 
-#       void
-#       getCentroidPointNormal (PointNormal &normal_arg)
-#       {
-#         normal_arg.x = centroid_.x;
-#         normal_arg.y = centroid_.y;
-#         normal_arg.z = centroid_.z;
-#         normal_arg.normal_x = normal_.normal_x;
-#         normal_arg.normal_y = normal_.normal_y;
-#         normal_arg.normal_z = normal_.normal_z;
-#         normal_arg.curvature = normal_.curvature;
-#       }
-#       
-#       /** \brief The normal calculated for the voxels contained in the supervoxel */
-#       pcl::Normal normal_;
-#       /** \brief The centroid of the supervoxel - average voxel */
-#       pcl::PointXYZRGBA centroid_;
-#       /** \brief A Pointcloud of the voxels in the supervoxel */
-#       typename pcl::PointCloud<PointT>::Ptr voxels_;
-#       /** \brief A Pointcloud of the normals for the points in the supervoxel */
-#       typename pcl::PointCloud<Normal>::Ptr normals_;
-#                 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW  
-#   };
-#   
+#       void getCentroidPointNormal (PointNormal &normal_arg)
+
+
+###
+
+# # supervoxel_clustering.h
+# namespace pcl
 #   /** \brief Implements a supervoxel algorithm based on voxel structure, normals, and rgb values
 #    *   \note Supervoxels are oversegmented volumetric patches (usually surfaces) 
 #    *   \note Usually, color isn't needed (and can be detrimental)- spatial structure is mainly used
@@ -3302,14 +3209,13 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #       
 #       typedef pcl::octree::OctreePointCloudAdjacencyContainer<PointT, VoxelData> LeafContainerT;
 #       typedef std::vector <LeafContainerT*> LeafVectorT;
-#       
 #       typedef typename pcl::PointCloud<PointT> PointCloudT;
 #       typedef typename pcl::PointCloud<Normal> NormalCloudT;
 #       typedef typename pcl::octree::OctreePointCloudAdjacency<PointT, LeafContainerT> OctreeAdjacencyT;
 #       typedef typename pcl::octree::OctreePointCloudSearch <PointT> OctreeSearchT;
 #       typedef typename pcl::search::KdTree<PointT> KdTreeT;
 #       typedef boost::shared_ptr<std::vector<int> > IndicesPtr;
-#            
+#       
 #       using PCLBase <PointT>::initCompute;
 #       using PCLBase <PointT>::deinitCompute;
 #       using PCLBase <PointT>::input_;
@@ -3319,21 +3225,21 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #       typedef VoxelAdjacencyList::edge_descriptor EdgeID;
 #       
 #       
-#     public:
-# 
+#       public:
+#       
 #       /** \brief Constructor that sets default values for member variables. 
 #        *  \param[in] voxel_resolution The resolution (in meters) of voxels used
 #        *  \param[in] seed_resolution The average size (in meters) of resulting supervoxels
 #        *  \param[in] use_single_camera_transform Set to true if point density in cloud falls off with distance from origin (such as with a cloud coming from one stationary camera), set false if input cloud is from multiple captures from multiple locations.
 #        */
 #       SupervoxelClustering (float voxel_resolution, float seed_resolution, bool use_single_camera_transform = true);
-# 
+#       
 #       /** \brief This destructor destroys the cloud, normals and search method used for
 #         * finding neighbors. In other words it frees memory.
 #         */
 #       virtual
 #       ~SupervoxelClustering ();
-# 
+#       
 #       /** \brief Set the resolution of the octree voxels */
 #       void
 #       setVoxelResolution (float resolution);
@@ -3368,7 +3274,7 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #        */
 #       virtual void
 #       extract (std::map<uint32_t,typename Supervoxel<PointT>::Ptr > &supervoxel_clusters);
-# 
+#       
 #       /** \brief This method sets the cloud to be supervoxelized
 #        * \param[in] cloud The cloud to be supervoxelize
 #        */
@@ -3450,191 +3356,6 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #       /** \brief Returns the current maximum (highest) label */
 #       int
 #       getMaxLabel () const;
-#       
-#     private:
-#       
-#       /** \brief This method initializes the label_colors_ vector (assigns random colors to labels)
-#        * \note Checks to see if it is already big enough - if so, does not reinitialize it
-#        */
-#       void
-#       initializeLabelColors ();
-#       
-#       /** \brief This method simply checks if it is possible to execute the segmentation algorithm with
-#         * the current settings. If it is possible then it returns true.
-#         */
-#       virtual bool
-#       prepareForSegmentation ();
-# 
-#       /** \brief This selects points to use as initial supervoxel centroids
-#        *  \param[out] seed_points The selected points
-#        */
-#       void
-#       selectInitialSupervoxelSeeds (std::vector<PointT, Eigen::aligned_allocator<PointT> > &seed_points);
-#       
-#       /** \brief This method creates the internal supervoxel helpers based on the provided seed points
-#        *  \param[in] seed_points The selected points
-#        */
-#       void
-#       createSupervoxelHelpers (std::vector<PointT, Eigen::aligned_allocator<PointT> > &seed_points);
-#       
-#       /** \brief This performs the superpixel evolution */
-#       void
-#       expandSupervoxels (int depth);
-# 
-#       /** \brief This sets the data of the voxels in the tree */
-#       void 
-#       computeVoxelData ();
-#      
-#       /** \brief Reseeds the supervoxels by finding the voxel closest to current centroid */
-#       void
-#       reseedSupervoxels ();
-#       
-#       /** \brief Constructs the map of supervoxel clusters from the internal supervoxel helpers */
-#       void
-#       makeSupervoxels (std::map<uint32_t,typename Supervoxel<PointT>::Ptr > &supervoxel_clusters);
-#       
-#       /** \brief Stores the resolution used in the octree */
-#       float resolution_;
-#     
-#       /** \brief Stores the resolution used to seed the superpixels */
-#       float seed_resolution_;
-#       
-#       /** \brief Distance function used for comparing voxelDatas */
-#       float
-#       voxelDataDistance (const VoxelData &v1, const VoxelData &v2) const;
-#       
-#       /** \brief Transform function used to normalize voxel density versus distance from camera */
-#       void
-#       transformFunction (PointT &p);
-#       
-#       /** \brief Contains a KDtree for the voxelized cloud */
-#       typename pcl::search::KdTree<PointT>::Ptr voxel_kdtree_;
-#       
-#       /** \brief Octree Adjacency structure with leaves at voxel resolution */
-#       typename OctreeAdjacencyT::Ptr adjacency_octree_;
-#       
-#       /** \brief Contains the Voxelized centroid Cloud */
-#       typename PointCloudT::Ptr voxel_centroid_cloud_;
-#       
-#       /** \brief Contains the Voxelized centroid Cloud */
-#       typename NormalCloudT::ConstPtr input_normals_;
-#       
-#       /** \brief Importance of color in clustering */
-#       float color_importance_;
-#       /** \brief Importance of distance from seed center in clustering */
-#       float spatial_importance_;
-#       /** \brief Importance of similarity in normals for clustering */
-#       float normal_importance_;
-#       
-#       /** \brief Stores the colors used for the superpixel labels*/
-#       std::vector<uint32_t> label_colors_;
-#       
-#       /** \brief Internal storage class for supervoxels 
-#        * \note Stores pointers to leaves of clustering internal octree, 
-#        * \note so should not be used outside of clustering class 
-#        */
-#       class SupervoxelHelper
-#       {
-#         public:
-#           SupervoxelHelper (uint32_t label, SupervoxelClustering* parent_arg):
-#             label_ (label),
-#             parent_ (parent_arg)
-#           { }
-#           
-#           void
-#           addLeaf (LeafContainerT* leaf_arg);
-#         
-#           void
-#           removeLeaf (LeafContainerT* leaf_arg);
-#         
-#           void
-#           removeAllLeaves ();
-#           
-#           void 
-#           expand ();
-#           
-#           void 
-#           refineNormals ();
-#           
-#           void 
-#           updateCentroid ();
-#           
-#           void 
-#           getVoxels (typename pcl::PointCloud<PointT>::Ptr &voxels) const;
-#           
-#           void 
-#           getNormals (typename pcl::PointCloud<Normal>::Ptr &normals) const;
-#           
-#           typedef float (SupervoxelClustering::*DistFuncPtr)(const VoxelData &v1, const VoxelData &v2);
-#           
-#           uint32_t
-#           getLabel () const 
-#           { return label_; }
-#           
-#           Eigen::Vector4f 
-#           getNormal () const 
-#           { return centroid_.normal_; }
-#           
-#           Eigen::Vector3f 
-#           getRGB () const 
-#           { return centroid_.rgb_; }
-#           
-#           Eigen::Vector3f
-#           getXYZ () const 
-#           { return centroid_.xyz_;}
-#           
-#           void
-#           getXYZ (float &x, float &y, float &z) const
-#           { x=centroid_.xyz_[0]; y=centroid_.xyz_[1]; z=centroid_.xyz_[2]; }
-#           
-#           void
-#           getRGB (uint32_t &rgba) const
-#           { 
-#             rgba = static_cast<uint32_t>(centroid_.rgb_[0]) << 16 | 
-#                    static_cast<uint32_t>(centroid_.rgb_[1]) << 8 | 
-#                    static_cast<uint32_t>(centroid_.rgb_[2]); 
-#           }
-#           
-#           void 
-#           getNormal (pcl::Normal &normal_arg) const 
-#           { 
-#             normal_arg.normal_x = centroid_.normal_[0];
-#             normal_arg.normal_y = centroid_.normal_[1];
-#             normal_arg.normal_z = centroid_.normal_[2];
-#             normal_arg.curvature = centroid_.curvature_;
-#           }
-#           
-#           void
-#           getNeighborLabels (std::set<uint32_t> &neighbor_labels) const;
-#           
-#           VoxelData
-#           getCentroid () const
-#           { return centroid_; }
-#             
-#           
-#           size_t
-#           size () const { return leaves_.size (); }
-#         private:
-#           //Stores leaves
-#           std::set<LeafContainerT*> leaves_;
-#           uint32_t label_;
-#           VoxelData centroid_;
-#           SupervoxelClustering* parent_;
-#         public:
-#           //Type VoxelData may have fixed-size Eigen objects inside
-#           EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#       };
-#       
-#       //Make boost::ptr_list can access the private class SupervoxelHelper
-#       friend void boost::checked_delete<> (const typename pcl::SupervoxelClustering<PointT>::SupervoxelHelper *);
-#       
-#       typedef boost::ptr_list<SupervoxelHelper> HelperListT;
-#       HelperListT supervoxel_helpers_;
-#       
-#       //TODO DEBUG REMOVE
-#       StopWatch timer_;
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 #   };
 # 
 # }

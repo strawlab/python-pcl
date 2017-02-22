@@ -277,7 +277,7 @@ cdef class PointCloud_PointXYZRGB:
         mpcl_compute_normals_PointXYZRGB(<cpp.PointCloud[cpp.PointXYZRGB]> deref(self.thisptr()), ksearch, searchRadius, normals)
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = Segmentation_PointXYZRGB_Normal()
-        cdef pclseg.SACSegmentation_PointXYZRGB_Normal_t *cseg = <pclseg.SACSegmentation_PointXYZRGB_Normal_t *>seg.me
+        cdef pclseg.SACSegmentationFromNormals_PointXYZRGB_t *cseg = <pclseg.SACSegmentationFromNormals_PointXYZRGB_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg

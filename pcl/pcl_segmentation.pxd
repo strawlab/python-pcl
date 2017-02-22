@@ -162,35 +162,43 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         #   * \param[in] normals the const boost shared pointer to a PointCloud message
         #   */
         # inline void setInputNormals (const PointCloudNConstPtr &normals) { normals_ = normals; }
-        # 
+        # void setInputNormals (const PointCloudNConstPtr &normals)
+        
         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
         # inline PointCloudNConstPtr getInputNormals () const { return (normals_); }
-        # 
+        # PointCloudNConstPtr getInputNormals ()
+        
         # /** \brief Set the relative weight (between 0 and 1) to give to the angular 
         #   * distance (0 to pi/2) between point normals and the plane normal.
         #   * \param[in] distance_weight the distance/angular weight
         #   */
         # inline void setNormalDistanceWeight (double distance_weight) { distance_weight_ = distance_weight; }
-        # 
+        # void setNormalDistanceWeight (double distance_weight)
+        
         # /** \brief Get the relative weight (between 0 and 1) to give to the angular distance (0 to pi/2) between point
         #   * normals and the plane normal. */
         # inline double getNormalDistanceWeight () const { return (distance_weight_); }
-        # 
+        # double getNormalDistanceWeight ()
+        
         # /** \brief Set the minimum opning angle for a cone model.
         #   * \param oa the opening angle which we need minumum to validate a cone model.
         #   */
         # inline void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
-        # 
+        # void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
+        
         # /** \brief Get the opening angle which we need minumum to validate a cone model. */
         # inline void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
-        # 
+        # void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
+        
         # /** \brief Set the distance we expect a plane model to be from the origin
         #   * \param[in] d distance from the template plane modl to the origin
         #   */
         # inline void setDistanceFromOrigin (const double d) { distance_from_origin_ = d; }
-        # 
+        # void setDistanceFromOrigin (const double d)
+        
         # /** \brief Get the distance of a plane model from the origin. */
         # inline double getDistanceFromOrigin () const { return (distance_from_origin_); }
+        # double getDistanceFromOrigin ()
 
 
 ctypedef SACSegmentationFromNormals[PointXYZ, Normal] SACSegmentationFromNormals_t

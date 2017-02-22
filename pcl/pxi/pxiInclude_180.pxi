@@ -29,12 +29,12 @@ include "Filters/RadiusOutlierRemoval_172.pxi"
 include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
-include "Common/RangeImage/RangeImages.pxi"
+include "Common/RangeImage/RangeImages_172.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 # Features
-include "Features/NormalEstimation.pxi"
-include "Features/VFHEstimation.pxi"
-include "Features/IntegralImageNormalEstimation.pxi"
+include "Features/NormalEstimation_172.pxi"
+include "Features/VFHEstimation_172.pxi"
+include "Features/IntegralImageNormalEstimation_172.pxi"
 include "Features/MomentOfInertiaEstimation_172.pxi"
 
 # keyPoint

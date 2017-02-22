@@ -1169,10 +1169,12 @@ cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
         void setInputCloud (shared_ptr[cpp.PointCloud[T]])
         void filter(cpp.PointCloud[T] &c)
 
+
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZ] StatisticalOutlierRemoval_t
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZI] StatisticalOutlierRemoval_PointXYZI_t
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGB] StatisticalOutlierRemoval_PointXYZRGB_t
 ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval_PointXYZRGBA_t
+###
 
 # template<>
 # class PCL_EXPORTS StatisticalOutlierRemoval<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
@@ -1434,33 +1436,6 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 #       /** \brief Get whether the data outside the interval (min/max) is to be returned (true) or inside (false). 
 #         * \return true if data \b outside the interval [min; max] is to be returned, false otherwise
 #       bool getFilterLimitsNegative ()
-#     protected:
-#       /** \brief The size of a leaf. */
-#       Eigen::Vector4f leaf_size_;
-#       /** \brief Internal leaf sizes stored as 1/leaf_size_ for efficiency reasons. */ 
-#       Eigen::Array4f inverse_leaf_size_;
-#       /** \brief Set to true if all fields need to be downsampled, or false if just XYZ. */
-#       bool downsample_all_data_;
-#       /** \brief Set to true if leaf layout information needs to be saved in \a
-#         * leaf_layout. 
-#       bool save_leaf_layout_;
-#       /** \brief The leaf layout information for fast access to cells relative
-#         * to current position 
-#       std::vector<int> leaf_layout_;
-#       /** \brief The minimum and maximum bin coordinates, the number of
-#         * divisions, and the division multiplier. 
-#       Eigen::Vector4i min_b_, max_b_, div_b_, divb_mul_;
-#       /** \brief The desired user filter field name. */
-#       std::string filter_field_name_;
-#       /** \brief The minimum allowed filter value a point will be considered from. */
-#       double filter_limit_min_;
-#       /** \brief The maximum allowed filter value a point will be considered from. */
-#       double filter_limit_max_;
-#       /** \brief Set to true if we want to return the data outside (\a filter_limit_min_;\a filter_limit_max_). Default: false. */
-#       bool filter_limit_negative_;
-#       /** \brief Downsample a Point Cloud using a voxelized grid approach
-#         * \param[out] output the resultant point cloud
-#       void applyFilter (PointCloud2 &output);
 ###
 
 ctypedef VoxelGrid[cpp.PointXYZ] VoxelGrid_t
