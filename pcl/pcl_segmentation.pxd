@@ -34,8 +34,7 @@ from vector cimport vector as vector2
 ### base class ###
 
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
-    # cdef cppclass SACSegmentation[T](PCLBase[T]):
-    cdef cppclass SACSegmentation[T]:
+    cdef cppclass SACSegmentation[T](PCLBase[T]):
         void setOptimizeCoefficients (bool)
         void setModelType (SacModel)
         void setMethodType (int)
@@ -49,21 +48,25 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         #                       threshold_ (0), optimize_coefficients_ (true), 
         #                       radius_min_ (-std::numeric_limits<double>::max()), radius_max_ (std::numeric_limits<double>::max()), samples_radius_ (0.0), eps_angle_ (0.0),
         #                       axis_ (Eigen::Vector3f::Zero ()), max_iterations_ (50), probability_ (0.99)
-        # {
-        #   //srand ((unsigned)time (0)); // set a random seed
-        # }
+        # 
         # /** \brief Get the type of SAC model used. */
         # inline int getModelType () const { return (model_type_); }
+        # 
         # /** \brief Get a pointer to the SAC method used. */
         # inline SampleConsensusPtr getMethod () const { return (sac_); }
+        # 
         # /** \brief Get a pointer to the SAC model used. */
         # inline SampleConsensusModelPtr getModel () const { return (model_); }
+        # 
         # /** \brief Get the type of sample consensus method used. */
         # inline int getMethodType () const { return (method_type_); }
+        # 
         # /** \brief Get the distance to the model threshold. */
         # inline double getDistanceThreshold () const { return (threshold_); }
+        # 
         # /** \brief Get maximum number of iterations before giving up. */
         # inline int getMaxIterations () const { return (max_iterations_); }
+        # 
         # /** \brief Set the probability of choosing at least one sample free from outliers.
         #   * \param[in] probability the model fitting probability
         #   */
@@ -109,10 +112,14 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         #       /** \brief Get the epsilon (delta) model angle threshold in radians. */
         # inline double getEpsAngle () const { return (eps_angle_); }
 
-    # /** \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
-    #   * models that require the use of surface normals for estimation.
-    #   * \ingroup segmentation
-    #   */
+
+###
+
+# /** \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
+#   * models that require the use of surface normals for estimation.
+#   * \ingroup segmentation
+#   */
+cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     # cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T])
     cdef cppclass SACSegmentationFromNormals[T, N]:
         SACSegmentationFromNormals()
@@ -271,16 +278,8 @@ cdef extern from "pcl/segmentation/plane_coefficient_comparator.h" namespace "pc
         #   * \param idx1 The first index for the comparison
         #   * \param idx2 The second index for the comparison
         # virtual bool compare (int idx1, int idx2) const
-        # 
-        # protected:
-        # PointCloudNConstPtr normals_;
-        # boost::shared_ptr<std::vector<float> > plane_coeff_d_;
-        # float angular_threshold_;
-        # float distance_threshold_;
-        # bool depth_dependent_;
-        # Eigen::Vector3f z_axis_;
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
 ###
 
 ### Inheritance class ###
@@ -301,32 +300,26 @@ cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl
         # public:
         # typedef typename Comparator<PointT>::PointCloud PointCloud;
         # typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       # typedef typename pcl::PointCloud<PointNT> PointCloudN;
-#       # typedef typename PointCloudN::Ptr PointCloudNPtr;
-#       # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       # typedef boost::shared_ptr<EdgeAwarePlaneComparator<PointT, PointNT> > Ptr;
-#       # typedef boost::shared_ptr<const EdgeAwarePlaneComparator<PointT, PointNT> > ConstPtr;
-#       # using pcl::PlaneCoefficientComparator<PointT, PointNT>::input_;
-#       # using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
-#       # using pcl::PlaneCoefficientComparator<PointT, PointNT>::plane_coeff_d_;
-#       # using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
-#       # using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
-#       # 
-#       # /** \brief Set a distance map to use. For an example of a valid distance map see 
-#       #   * \ref OrganizedIntegralImageNormalEstimation
-#       #   * \param[in] distance_map the distance map to use
-#       #   */
-#       # inline void setDistanceMap (const float *distance_map)
-#       # /** \brief Return the distance map used. */
-#       # const float* getDistanceMap () const
-#       # 
-#       # protected:
-#       # /** \brief Compare two neighboring points, by using normal information, curvature, and euclidean distance information.
-#       #   * \param[in] idx1 The index of the first point.
-#       #   * \param[in] idx2 The index of the second point.
-#       # bool compare (int idx1, int idx2) const
-#       # protected:
-#       # const float* distance_map_;
+        # typedef typename pcl::PointCloud<PointNT> PointCloudN;
+        # typedef typename PointCloudN::Ptr PointCloudNPtr;
+        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+        # typedef boost::shared_ptr<EdgeAwarePlaneComparator<PointT, PointNT> > Ptr;
+        # typedef boost::shared_ptr<const EdgeAwarePlaneComparator<PointT, PointNT> > ConstPtr;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::input_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::plane_coeff_d_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
+        # 
+        # /** \brief Set a distance map to use. For an example of a valid distance map see 
+        #   * \ref OrganizedIntegralImageNormalEstimation
+        #   * \param[in] distance_map the distance map to use
+        #   */
+        # inline void setDistanceMap (const float *distance_map)
+        # /** \brief Return the distance map used. */
+        # const float* getDistanceMap () const
+
+
 ###
 
 # euclidean_cluster_comparator.h
@@ -339,55 +332,56 @@ cdef extern from "pcl/segmentation/edge_aware_plane_comparator.h" namespace "pcl
 cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pcl":
     cdef cppclass EuclideanClusterComparator[T, NT, LT](Comparator[T]):
         EuclideanClusterComparator()
-#       public:
-#       typedef typename Comparator<PointT>::PointCloud PointCloud;
-#       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef typename pcl::PointCloud<PointNT> PointCloudN;
-#       typedef typename PointCloudN::Ptr PointCloudNPtr;
-#       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       typedef typename pcl::PointCloud<PointLT> PointCloudL;
-#       typedef typename PointCloudL::Ptr PointCloudLPtr;
-#       typedef typename PointCloudL::ConstPtr PointCloudLConstPtr;
-#       typedef boost::shared_ptr<EuclideanClusterComparator<PointT, PointNT, PointLT> > Ptr;
-#       typedef boost::shared_ptr<const EuclideanClusterComparator<PointT, PointNT, PointLT> > ConstPtr;
-#       using pcl::Comparator<PointT>::input_;
-#       
-#       virtual void setInputCloud (const PointCloudConstPtr& cloud)
-#       /** \brief Provide a pointer to the input normals.
-#         * \param[in] normals the input normal cloud
-#       inline void setInputNormals (const PointCloudNConstPtr &normals)
-#       /** \brief Get the input normals. */
-#       inline PointCloudNConstPtr getInputNormals () const
-#       /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
-#         * \param[in] angular_threshold the tolerance in radians
-#       virtual inline void setAngularThreshold (float angular_threshold)
-#       /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
-#       inline float getAngularThreshold () const
-#       /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
-#         * \param[in] distance_threshold the tolerance in meters
-#       inline void setDistanceThreshold (float distance_threshold, bool depth_dependent)
-#       /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
-#       inline float getDistanceThreshold () const
-#       /** \brief Set label cloud
-#         * \param[in] labels The label cloud
-#       void setLabels (PointCloudLPtr& labels)
-#       /** \brief Set labels in the label cloud to exclude.
-#         * \param exclude_labels a vector of bools corresponding to whether or not a given label should be considered
-#       void setExcludeLabels (std::vector<bool>& exclude_labels)
-#       /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
-#         * and the difference between the d component of the normals is less than distance threshold, else false
-#         * \param idx1 The first index for the comparison
-#         * \param idx2 The second index for the comparison
-#       virtual bool compare (int idx1, int idx2) const
-#       
-#       protected:
-#       PointCloudNConstPtr normals_;
-#       PointCloudLPtr labels_;
-#       boost::shared_ptr<std::vector<bool> > exclude_labels_;
-#       float angular_threshold_;
-#       float distance_threshold_;
-#       bool depth_dependent_;
-#       Eigen::Vector3f z_axis_;
+        # public:
+        # typedef typename Comparator<PointT>::PointCloud PointCloud;
+        # typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename pcl::PointCloud<PointNT> PointCloudN;
+        # typedef typename PointCloudN::Ptr PointCloudNPtr;
+        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+        # typedef typename pcl::PointCloud<PointLT> PointCloudL;
+        # typedef typename PointCloudL::Ptr PointCloudLPtr;
+        # typedef typename PointCloudL::ConstPtr PointCloudLConstPtr;
+        # typedef boost::shared_ptr<EuclideanClusterComparator<PointT, PointNT, PointLT> > Ptr;
+        # typedef boost::shared_ptr<const EuclideanClusterComparator<PointT, PointNT, PointLT> > ConstPtr;
+        # using pcl::Comparator<PointT>::input_;
+        # 
+        # virtual void setInputCloud (const PointCloudConstPtr& cloud)
+        # /** \brief Provide a pointer to the input normals.
+        #   * \param[in] normals the input normal cloud
+        # inline void setInputNormals (const PointCloudNConstPtr &normals)
+        # 
+        # /** \brief Get the input normals. */
+        # inline PointCloudNConstPtr getInputNormals () const
+        # 
+        # /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
+        #   * \param[in] angular_threshold the tolerance in radians
+        # virtual inline void setAngularThreshold (float angular_threshold)
+        # 
+        # /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
+        # inline float getAngularThreshold () const
+        # 
+        # /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
+        #   * \param[in] distance_threshold the tolerance in meters
+        # inline void setDistanceThreshold (float distance_threshold, bool depth_dependent)
+        # 
+        # /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
+        # inline float getDistanceThreshold () const
+        # 
+        # /** \brief Set label cloud
+        #   * \param[in] labels The label cloud
+        # void setLabels (PointCloudLPtr& labels)
+        # 
+        # /** \brief Set labels in the label cloud to exclude.
+        #   * \param exclude_labels a vector of bools corresponding to whether or not a given label should be considered
+        # void setExcludeLabels (std::vector<bool>& exclude_labels)
+        # 
+        # /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
+        #   * and the difference between the d component of the normals is less than distance threshold, else false
+        #   * \param idx1 The first index for the comparison
+        #   * \param idx2 The second index for the comparison
+        # virtual bool compare (int idx1, int idx2) const
+
+
 ###
 
 # euclidean_plane_coefficient_comparator.h
@@ -401,24 +395,26 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
 cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" namespace "pcl":
     cdef cppclass EuclideanPlaneCoefficientComparator[T, NT](PlaneCoefficientComparator[T, NT]):
         EuclideanPlaneCoefficientComparator()
-#       public:
-#       typedef typename Comparator<PointT>::PointCloud PointCloud;
-#       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef typename pcl::PointCloud<PointNT> PointCloudN;
-#       typedef typename PointCloudN::Ptr PointCloudNPtr;
-#       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-#       typedef boost::shared_ptr<EuclideanPlaneCoefficientComparator<PointT, PointNT> > Ptr;
-#       typedef boost::shared_ptr<const EuclideanPlaneCoefficientComparator<PointT, PointNT> > ConstPtr;
-#       using pcl::Comparator<PointT>::input_;
-#       using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
-#       using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
-#       using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
-# 
-#       /** \brief Compare two neighboring points, by using normal information, and euclidean distance information.
-#         * \param[in] idx1 The index of the first point.
-#         * \param[in] idx2 The index of the second point.
-#         */
-#       virtual bool compare (int idx1, int idx2) const
+        # public:
+        # typedef typename Comparator<PointT>::PointCloud PointCloud;
+        # typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename pcl::PointCloud<PointNT> PointCloudN;
+        # typedef typename PointCloudN::Ptr PointCloudNPtr;
+        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+        # typedef boost::shared_ptr<EuclideanPlaneCoefficientComparator<PointT, PointNT> > Ptr;
+        # typedef boost::shared_ptr<const EuclideanPlaneCoefficientComparator<PointT, PointNT> > ConstPtr;
+        # using pcl::Comparator<PointT>::input_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
+        # using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
+  		# 
+        # /** \brief Compare two neighboring points, by using normal information, and euclidean distance information.
+        #   * \param[in] idx1 The index of the first point.
+        #   * \param[in] idx2 The index of the second point.
+        #   */
+        # virtual bool compare (int idx1, int idx2) const
+
+
 ###
 
 # extract_clusters.h
@@ -436,229 +432,79 @@ cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" nam
 #       const PointCloud<PointT> &cloud, const boost::shared_ptr<search::Search<PointT> > &tree, 
 #       float tolerance, std::vector<PointIndices> &clusters, 
 #       unsigned int min_pts_per_cluster = 1, unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ());
-# 
-#   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
-#     * \param cloud the point cloud message
-#     * \param indices a list of point indices to use from \a cloud
-#     * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
-#     * \note the tree has to be created as a spatial locator on \a cloud and \a indices
-#     * \param tolerance the spatial cluster tolerance as a measure in L2 Euclidean space
-#     * \param clusters the resultant clusters containing point indices (as a vector of PointIndices)
-#     * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
-#     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> void 
-#   extractEuclideanClusters (
+###
+
+# extract_clusters.h
+# namespace pcl
+# /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
+#   * \param cloud the point cloud message
+#   * \param indices a list of point indices to use from \a cloud
+#   * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
+#   * \note the tree has to be created as a spatial locator on \a cloud and \a indices
+#   * \param tolerance the spatial cluster tolerance as a measure in L2 Euclidean space
+#   * \param clusters the resultant clusters containing point indices (as a vector of PointIndices)
+#   * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
+#   * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
+#   * \ingroup segmentation
+#   */
+# template <typename PointT> void 
+# extractEuclideanClusters (
 #       const PointCloud<PointT> &cloud, const std::vector<int> &indices, 
 #       const boost::shared_ptr<search::Search<PointT> > &tree, float tolerance, std::vector<PointIndices> &clusters, 
 #       unsigned int min_pts_per_cluster = 1, unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ());
-# 
-#   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Decompose a region of space into clusters based on the euclidean distance between points, and the normal
-#     * angular deviation
-#     * \param cloud the point cloud message
-#     * \param normals the point cloud message containing normal information
-#     * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
-#     * \note the tree has to be created as a spatial locator on \a cloud
-#     * \param tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space
-#     * \param clusters the resultant clusters containing point indices (as a vector of PointIndices)
-#     * \param eps_angle the maximum allowed difference between normals in radians for cluster/region growing
-#     * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
-#     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT, typename Normal> void 
-#   extractEuclideanClusters (
+###
+
+# extract_clusters.h
+# namespace pcl
+# /** \brief Decompose a region of space into clusters based on the euclidean distance between points, and the normal
+#   * angular deviation
+#   * \param cloud the point cloud message
+#   * \param normals the point cloud message containing normal information
+#   * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
+#   * \note the tree has to be created as a spatial locator on \a cloud
+#   * \param tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space
+#   * \param clusters the resultant clusters containing point indices (as a vector of PointIndices)
+#   * \param eps_angle the maximum allowed difference between normals in radians for cluster/region growing
+#   * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
+#   * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
+#   * \ingroup segmentation
+#   */
+# template <typename PointT, typename Normal> void 
+# extractEuclideanClusters (
 #       const PointCloud<PointT> &cloud, const PointCloud<Normal> &normals, 
 #       float tolerance, const boost::shared_ptr<KdTree<PointT> > &tree, 
 #       std::vector<PointIndices> &clusters, double eps_angle, 
 #       unsigned int min_pts_per_cluster = 1, 
 #       unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ())
-#   {
-#     if (tree->getInputCloud ()->points.size () != cloud.points.size ())
-#     {
-#       PCL_ERROR ("[pcl::extractEuclideanClusters] Tree built for a different point cloud dataset (%zu) than the input cloud (%zu)!\n", tree->getInputCloud ()->points.size (), cloud.points.size ());
-#       return;
-#     }
-#     if (cloud.points.size () != normals.points.size ())
-#     {
-#       PCL_ERROR ("[pcl::extractEuclideanClusters] Number of points in the input point cloud (%zu) different than normals (%zu)!\n", cloud.points.size (), normals.points.size ());
-#       return;
-#     }
-# 
-#     // Create a bool vector of processed point indices, and initialize it to false
-#     std::vector<bool> processed (cloud.points.size (), false);
-# 
-#     std::vector<int> nn_indices;
-#     std::vector<float> nn_distances;
-#     // Process all points in the indices vector
-#     for (size_t i = 0; i < cloud.points.size (); ++i)
-#     {
-#       if (processed[i])
-#         continue;
-# 
-#       std::vector<unsigned int> seed_queue;
-#       int sq_idx = 0;
-#       seed_queue.push_back (i);
-# 
-#       processed[i] = true;
-# 
-#       while (sq_idx < static_cast<int> (seed_queue.size ()))
-#       {
-#         // Search for sq_idx
-#         if (!tree->radiusSearch (seed_queue[sq_idx], tolerance, nn_indices, nn_distances))
-#         {
-#           sq_idx++;
-#           continue;
-#         }
-# 
-#         for (size_t j = 1; j < nn_indices.size (); ++j)             // nn_indices[0] should be sq_idx
-#         {
-#           if (processed[nn_indices[j]])                         // Has this point been processed before ?
-#             continue;
-# 
-#           //processed[nn_indices[j]] = true;
-#           // [-1;1]
-#           double dot_p = normals.points[i].normal[0] * normals.points[nn_indices[j]].normal[0] +
-#                          normals.points[i].normal[1] * normals.points[nn_indices[j]].normal[1] +
-#                          normals.points[i].normal[2] * normals.points[nn_indices[j]].normal[2];
-#           if ( fabs (acos (dot_p)) < eps_angle )
-#           {
-#             processed[nn_indices[j]] = true;
-#             seed_queue.push_back (nn_indices[j]);
-#           }
-#         }
-# 
-#         sq_idx++;
-#       }
-# 
-#       // If this queue is satisfactory, add to the clusters
-#       if (seed_queue.size () >= min_pts_per_cluster && seed_queue.size () <= max_pts_per_cluster)
-#       {
-#         pcl::PointIndices r;
-#         r.indices.resize (seed_queue.size ());
-#         for (size_t j = 0; j < seed_queue.size (); ++j)
-#           r.indices[j] = seed_queue[j];
-# 
-#         // These two lines should not be needed: (can anyone confirm?) -FF
-#         std::sort (r.indices.begin (), r.indices.end ());
-#         r.indices.erase (std::unique (r.indices.begin (), r.indices.end ()), r.indices.end ());
-# 
-#         r.header = cloud.header;
-#         clusters.push_back (r);   // We could avoid a copy by working directly in the vector
-#       }
-#     }
-#   }
-# 
-# 
-#   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Decompose a region of space into clusters based on the euclidean distance between points, and the normal
-#     * angular deviation
-#     * \param cloud the point cloud message
-#     * \param normals the point cloud message containing normal information
-#     * \param indices a list of point indices to use from \a cloud
-#     * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
-#     * \note the tree has to be created as a spatial locator on \a cloud
-#     * \param tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space
-#     * \param clusters the resultant clusters containing point indices (as PointIndices)
-#     * \param eps_angle the maximum allowed difference between normals in degrees for cluster/region growing
-#     * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
-#     * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT, typename Normal> 
-#   void extractEuclideanClusters (
-#       const PointCloud<PointT> &cloud, const PointCloud<Normal> &normals, 
-#       const std::vector<int> &indices, const boost::shared_ptr<KdTree<PointT> > &tree, 
-#       float tolerance, std::vector<PointIndices> &clusters, double eps_angle, 
-#       unsigned int min_pts_per_cluster = 1, 
-#       unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ())
-#   {
-#     // \note If the tree was created over <cloud, indices>, we guarantee a 1-1 mapping between what the tree returns
-#     //and indices[i]
-#     if (tree->getInputCloud ()->points.size () != cloud.points.size ())
-#     {
-#       PCL_ERROR ("[pcl::extractEuclideanClusters] Tree built for a different point cloud dataset (%zu) than the input cloud (%zu)!\n", tree->getInputCloud ()->points.size (), cloud.points.size ());
-#       return;
-#     }
-#     if (tree->getIndices ()->size () != indices.size ())
-#     {
-#       PCL_ERROR ("[pcl::extractEuclideanClusters] Tree built for a different set of indices (%zu) than the input set (%zu)!\n", tree->getIndices ()->size (), indices.size ());
-#       return;
-#     }
-#     if (cloud.points.size () != normals.points.size ())
-#     {
-#       PCL_ERROR ("[pcl::extractEuclideanClusters] Number of points in the input point cloud (%zu) different than normals (%zu)!\n", cloud.points.size (), normals.points.size ());
-#       return;
-#     }
-#     // Create a bool vector of processed point indices, and initialize it to false
-#     std::vector<bool> processed (cloud.points.size (), false);
-# 
-#     std::vector<int> nn_indices;
-#     std::vector<float> nn_distances;
-#     // Process all points in the indices vector
-#     for (size_t i = 0; i < indices.size (); ++i)
-#     {
-#       if (processed[indices[i]])
-#         continue;
-# 
-#       std::vector<int> seed_queue;
-#       int sq_idx = 0;
-#       seed_queue.push_back (indices[i]);
-# 
-#       processed[indices[i]] = true;
-# 
-#       while (sq_idx < static_cast<int> (seed_queue.size ()))
-#       {
-#         // Search for sq_idx
-#         if (!tree->radiusSearch (cloud.points[seed_queue[sq_idx]], tolerance, nn_indices, nn_distances))
-#         {
-#           sq_idx++;
-#           continue;
-#         }
-# 
-#         for (size_t j = 1; j < nn_indices.size (); ++j)             // nn_indices[0] should be sq_idx
-#         {
-#           if (processed[nn_indices[j]])                             // Has this point been processed before ?
-#             continue;
-# 
-#           //processed[nn_indices[j]] = true;
-#           // [-1;1]
-#           double dot_p =
-#             normals.points[indices[i]].normal[0] * normals.points[indices[nn_indices[j]]].normal[0] +
-#             normals.points[indices[i]].normal[1] * normals.points[indices[nn_indices[j]]].normal[1] +
-#             normals.points[indices[i]].normal[2] * normals.points[indices[nn_indices[j]]].normal[2];
-#           if ( fabs (acos (dot_p)) < eps_angle )
-#           {
-#             processed[nn_indices[j]] = true;
-#             seed_queue.push_back (nn_indices[j]);
-#           }
-#         }
-# 
-#         sq_idx++;
-#       }
-# 
-#       // If this queue is satisfactory, add to the clusters
-#       if (seed_queue.size () >= min_pts_per_cluster && seed_queue.size () <= max_pts_per_cluster)
-#       {
-#         pcl::PointIndices r;
-#         r.indices.resize (seed_queue.size ());
-#         for (size_t j = 0; j < seed_queue.size (); ++j)
-#           r.indices[j] = seed_queue[j];
-# 
-#         // These two lines should not be needed: (can anyone confirm?) -FF
-#         std::sort (r.indices.begin (), r.indices.end ());
-#         r.indices.erase (std::unique (r.indices.begin (), r.indices.end ()), r.indices.end ());
-# 
-#         r.header = cloud.header;
-#         clusters.push_back (r);
-#       }
-#     }
-#   }
-# 
+###
 
+# extract_clusters.h
+# namespace pcl
+# /** \brief Decompose a region of space into clusters based on the euclidean distance between points, and the normal
+#   * angular deviation
+#   * \param cloud the point cloud message
+#   * \param normals the point cloud message containing normal information
+#   * \param indices a list of point indices to use from \a cloud
+#   * \param tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
+#   * \note the tree has to be created as a spatial locator on \a cloud
+#   * \param tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space
+#   * \param clusters the resultant clusters containing point indices (as PointIndices)
+#   * \param eps_angle the maximum allowed difference between normals in degrees for cluster/region growing
+#   * \param min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
+#   * \param max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
+#   * \ingroup segmentation
+#   */
+# template <typename PointT, typename Normal> 
+# void extractEuclideanClusters (
+#     const PointCloud<PointT> &cloud, const PointCloud<Normal> &normals, 
+#     const std::vector<int> &indices, const boost::shared_ptr<KdTree<PointT> > &tree, 
+#     float tolerance, std::vector<PointIndices> &clusters, double eps_angle, 
+#     unsigned int min_pts_per_cluster = 1, 
+#     unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) ())
+###
+
+# extract_clusters.h
+# namespace pcl
 # EuclideanClusterExtraction represents a segmentation class for cluster extraction in an Euclidean sense.
 # author Radu Bogdan Rusu
 # ingroup segmentation
@@ -715,7 +561,8 @@ cdef extern from "pcl/segmentation/extract_clusters.h" namespace "pcl":
         # param[out] clusters the resultant point clusters
         # void extract (std::vector<PointIndices> &clusters);
         void extract (vector[PointIndices] &clusters)
-        
+
+
 ctypedef EuclideanClusterExtraction[PointXYZ] EuclideanClusterExtraction_t
 ctypedef EuclideanClusterExtraction[PointXYZI] EuclideanClusterExtraction_PointXYZI_t
 ctypedef EuclideanClusterExtraction[PointXYZRGB] EuclideanClusterExtraction_PointXYZRGB_t
@@ -725,33 +572,32 @@ ctypedef EuclideanClusterExtraction[PointXYZRGBA] EuclideanClusterExtraction_Poi
 
 # extract_labeled_clusters.h
 # namespace pcl
-# {
-#   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
-#     * \param[in] cloud the point cloud message
-#     * \param[in] tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
-#     * \note the tree has to be created as a spatial locator on \a cloud
-#     * \param[in] tolerance the spatial cluster tolerance as a measure in L2 Euclidean space
-#     * \param[out] labeled_clusters the resultant clusters containing point indices (as a vector of PointIndices)
-#     * \param[in] min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
-#     * \param[in] max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
-#     * \param[in] max_label
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> void 
-#   extractLabeledEuclideanClusters (
-#       const PointCloud<PointT> &cloud, const boost::shared_ptr<search::Search<PointT> > &tree, 
-#       float tolerance, std::vector<std::vector<PointIndices> > &labeled_clusters, 
-#       unsigned int min_pts_per_cluster = 1, unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) (), 
-#       unsigned int max_label = (std::numeric_limits<int>::max));
+# /** \brief Decompose a region of space into clusters based on the Euclidean distance between points
+#   * \param[in] cloud the point cloud message
+#   * \param[in] tree the spatial locator (e.g., kd-tree) used for nearest neighbors searching
+#   * \note the tree has to be created as a spatial locator on \a cloud
+#   * \param[in] tolerance the spatial cluster tolerance as a measure in L2 Euclidean space
+#   * \param[out] labeled_clusters the resultant clusters containing point indices (as a vector of PointIndices)
+#   * \param[in] min_pts_per_cluster minimum number of points that a cluster may contain (default: 1)
+#   * \param[in] max_pts_per_cluster maximum number of points that a cluster may contain (default: max int)
+#   * \param[in] max_label
+#   * \ingroup segmentation
+#   */
+# template <typename PointT> void 
+# extractLabeledEuclideanClusters (
+#     const PointCloud<PointT> &cloud, const boost::shared_ptr<search::Search<PointT> > &tree, 
+#     float tolerance, std::vector<std::vector<PointIndices> > &labeled_clusters, 
+#     unsigned int min_pts_per_cluster = 1, unsigned int max_pts_per_cluster = (std::numeric_limits<int>::max) (), 
+#     unsigned int max_label = (std::numeric_limits<int>::max));
 
 
+# extract_labeled_clusters.h
+# namespace pcl
 # brief @b LabeledEuclideanClusterExtraction represents a segmentation class for cluster extraction in an Euclidean sense, with label info.
 # author Koen Buys
 # ingroup segmentation
 # template <typename PointT>
 # class LabeledEuclideanClusterExtraction: public PCLBase<PointT>
-# {
         # typedef PCLBase<PointT> BasePCLBase;
         # 
         # public:
@@ -848,45 +694,46 @@ ctypedef EuclideanClusterExtraction[PointXYZRGBA] EuclideanClusterExtraction_Poi
 
 # extract_polygonal_prism_data.h
 # namespace pcl
-# {
-#   /** \brief General purpose method for checking if a 3D point is inside or
-#     * outside a given 2D polygon. 
-#     * \note this method accepts any general 3D point that is projected onto the
-#     * 2D polygon, but performs an internal XY projection of both the polygon and the point. 
-#     * \param point a 3D point projected onto the same plane as the polygon
-#     * \param polygon a polygon
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> bool isPointIn2DPolygon (const PointT &point, const pcl::PointCloud<PointT> &polygon);
-# 
-#   /** \brief Check if a 2d point (X and Y coordinates considered only!) is
-#     * inside or outside a given polygon. This method assumes that both the point
-#     * and the polygon are projected onto the XY plane.
-#     *
-#     * \note (This is highly optimized code taken from http://www.visibone.com/inpoly/)
-#     *       Copyright (c) 1995-1996 Galacticomm, Inc.  Freeware source code.
-#     * \param point a 3D point projected onto the same plane as the polygon
-#     * \param polygon a polygon
-#     * \ingroup segmentation
-#     */
-#   template <typename PointT> bool 
-#   isXYPointIn2DXYPolygon (const PointT &point, const pcl::PointCloud<PointT> &polygon);
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////
-#   /** \brief @b ExtractPolygonalPrismData uses a set of point indices that
-#     * represent a planar model, and together with a given height, generates a 3D
-#     * polygonal prism. The polygonal prism is then used to segment all points
-#     * lying inside it.
-#     *
-#     * An example of its usage is to extract the data lying within a set of 3D
-#     * boundaries (e.g., objects supported by a plane).
-#     *
-#     * \author Radu Bogdan Rusu
-#     * \ingroup segmentation
-#     */
+# /** \brief General purpose method for checking if a 3D point is inside or
+#   * outside a given 2D polygon. 
+#   * \note this method accepts any general 3D point that is projected onto the
+#   * 2D polygon, but performs an internal XY projection of both the polygon and the point. 
+#   * \param point a 3D point projected onto the same plane as the polygon
+#   * \param polygon a polygon
+#   * \ingroup segmentation
+#   */
+# template <typename PointT> bool isPointIn2DPolygon (const PointT &point, const pcl::PointCloud<PointT> &polygon);
+###
 
-#   template <typename PointT>
-#   class ExtractPolygonalPrismData : public PCLBase<PointT>
+# extract_polygonal_prism_data.h
+# namespace pcl
+# /** \brief Check if a 2d point (X and Y coordinates considered only!) is
+#   * inside or outside a given polygon. This method assumes that both the point
+#   * and the polygon are projected onto the XY plane.
+#   *
+#   * \note (This is highly optimized code taken from http://www.visibone.com/inpoly/)
+#   *       Copyright (c) 1995-1996 Galacticomm, Inc.  Freeware source code.
+#   * \param point a 3D point projected onto the same plane as the polygon
+#   * \param polygon a polygon
+#   * \ingroup segmentation
+#   */
+# template <typename PointT> bool 
+# isXYPointIn2DXYPolygon (const PointT &point, const pcl::PointCloud<PointT> &polygon);
+###
+
+# extract_polygonal_prism_data.h
+# namespace pcl
+# /** \brief @b ExtractPolygonalPrismData uses a set of point indices that
+#   * represent a planar model, and together with a given height, generates a 3D
+#   * polygonal prism. The polygonal prism is then used to segment all points
+#   * lying inside it.
+#   * An example of its usage is to extract the data lying within a set of 3D
+#   * boundaries (e.g., objects supported by a plane).
+#   * \author Radu Bogdan Rusu
+#   * \ingroup segmentation
+#   */
+# template <typename PointT>
+# class ExtractPolygonalPrismData : public PCLBase<PointT>
 cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pcl":
     cdef cppclass ExtractPolygonalPrismData[T](PCLBase[T]):
         ExtractPolygonalPrismData()
@@ -954,23 +801,23 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
         # 
         # brief Class getName method.
         # virtual std::string getClassName () const { return ("ExtractPolygonalPrismData"); }
+
+
 ###
 
 # organized_connected_component_segmentation.h
 # namespace pcl
-# {
-#   /** \brief OrganizedConnectedComponentSegmentation allows connected
-#     * components to be found within organized point cloud data, given a
-#     * comparison function.  Given an input cloud and a comparator, it will
-#     * output a PointCloud of labels, giving each connected component a unique
-#     * id, along with a vector of PointIndices corresponding to each component.
-#     * See OrganizedMultiPlaneSegmentation for an example application.
-#     *
-#     * \author Alex Trevor, Suat Gedikli
-#     */
-#   template <typename PointT, typename PointLT>
-#   class OrganizedConnectedComponentSegmentation : public PCLBase<PointT>
-#   {
+# /** \brief OrganizedConnectedComponentSegmentation allows connected
+#   * components to be found within organized point cloud data, given a
+#   * comparison function.  Given an input cloud and a comparator, it will
+#   * output a PointCloud of labels, giving each connected component a unique
+#   * id, along with a vector of PointIndices corresponding to each component.
+#   * See OrganizedMultiPlaneSegmentation for an example application.
+#   *
+#   * \author Alex Trevor, Suat Gedikli
+#   */
+# template <typename PointT, typename PointLT>
+# class OrganizedConnectedComponentSegmentation : public PCLBase<PointT>
 #     using PCLBase<PointT>::input_;
 #     using PCLBase<PointT>::indices_;
 #     using PCLBase<PointT>::initCompute;
@@ -1048,18 +895,16 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 
 # organized_multi_plane_segmentation.h
 # namespace pcl
-# {
-#   /** \brief OrganizedMultiPlaneSegmentation finds all planes present in the
-#     * input cloud, and outputs a vector of plane equations, as well as a vector
-#     * of point clouds corresponding to the inliers of each detected plane.  Only
-#     * planes with more than min_inliers points are detected.
-#     * Templated on point type, normal type, and label type
-#     *
-#     * \author Alex Trevor, Suat Gedikli
-#     */
-#   template<typename PointT, typename PointNT, typename PointLT>
-#   class OrganizedMultiPlaneSegmentation : public PCLBase<PointT>
-#   {
+# /** \brief OrganizedMultiPlaneSegmentation finds all planes present in the
+#   * input cloud, and outputs a vector of plane equations, as well as a vector
+#   * of point clouds corresponding to the inliers of each detected plane.  Only
+#   * planes with more than min_inliers points are detected.
+#   * Templated on point type, normal type, and label type
+#   *
+#   * \author Alex Trevor, Suat Gedikli
+#   */
+# template<typename PointT, typename PointNT, typename PointLT>
+# class OrganizedMultiPlaneSegmentation : public PCLBase<PointT>
 #     using PCLBase<PointT>::input_;
 #     using PCLBase<PointT>::indices_;
 #     using PCLBase<PointT>::initCompute;
@@ -1279,53 +1124,18 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #               std::vector <Eigen::Matrix3f, Eigen::aligned_allocator<Eigen::Matrix3f> >& covariances,
 #               PointCloudLPtr& labels,
 #               std::vector<pcl::PointIndices>& label_indices);
-# 
-#     protected:
-# 
-#       /** \brief A pointer to the input normals */
-#       PointCloudNConstPtr normals_;
-# 
-#       /** \brief The minimum number of inliers required for each plane. */
-#       unsigned min_inliers_;
-# 
-#       /** \brief The tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
-#       double angular_threshold_;
-# 
-#       /** \brief The tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane. */
-#       double distance_threshold_;
-# 
-#       /** \brief The tolerance for maximum curvature after fitting a plane.  Used to remove smooth, but non-planar regions. */
-#       double maximum_curvature_;
-# 
-#       /** \brief Whether or not points should be projected to the plane, or left in the original 3D space. */
-#       bool project_points_;
-# 
-#       /** \brief A comparator for comparing neighboring pixels' plane equations. */
-#       PlaneComparatorPtr compare_;
-# 
-#       /** \brief A comparator for use on the refinement step.  Compares points to regions segmented in the first pass. */
-#       PlaneRefinementComparatorPtr refinement_compare_;
-# 
-#       /** \brief Class getName method. */
-#       virtual std::string
-#       getClassName () const
-#       {
-#         return ("OrganizedMultiPlaneSegmentation");
-#       }
-#   };
-# 
+
+
 ###
 
 # planar_polygon_fusion.h
 # namespace pcl
-# {
-#   /** \brief PlanarPolygonFusion takes a list of 2D planar polygons and
-#     * attempts to reduce them to a minimum set that best represents the scene,
-#     * based on various given comparators.
-#     */
-#   template <typename PointT>
-#   class PlanarPolygonFusion
-#   {
+# /** \brief PlanarPolygonFusion takes a list of 2D planar polygons and
+#   * attempts to reduce them to a minimum set that best represents the scene,
+#   * based on various given comparators.
+#   */
+# template <typename PointT>
+# class PlanarPolygonFusion
 #     public:
 #       /** \brief Constructor */
 #       PlanarPolygonFusion () : regions_ () {}
@@ -1351,22 +1161,17 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         for(size_t i = 0; i < input.size (); i++)
 #           regions_[start+i] = input[i];
 #       }
-# 
-#     protected:
-#       /** \brief Internal list of planar states. */
-#       std::vector<pcl::PlanarRegion<PointT>, Eigen::aligned_allocator<pcl::PlanarRegion<PointT> > > regions_;
-#   };
+
+
 ###
 
 # planar_region.h
 # namespace pcl
-# {
-#   /** \brief PlanarRegion represents a set of points that lie in a plane.  Inherits summary statistics about these points from Region3D, and  summary statistics of a 3D collection of points.
-#     * \author Alex Trevor
-#     */
-#   template <typename PointT>
-#   class PlanarRegion : public pcl::Region3D<PointT>, public pcl::PlanarPolygon<PointT>
-#   {
+# /** \brief PlanarRegion represents a set of points that lie in a plane.  Inherits summary statistics about these points from Region3D, and  summary statistics of a 3D collection of points.
+#   * \author Alex Trevor
+#   */
+# template <typename PointT>
+# class PlanarRegion : public pcl::Region3D<PointT>, public pcl::PlanarPolygon<PointT>
 #     protected:
 #       using Region3D<PointT>::centroid_;
 #       using Region3D<PointT>::covariance_; 
@@ -1414,50 +1219,35 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         contour_ = contour;
 #         coefficients_ = coefficients;
 #       }
-#       
-#     private:
-#       /** \brief The labels (good=true, bad=false) for whether or not this boundary was observed, 
-#         * or was due to edge of frame / occlusion boundary. 
-#         */
-#       std::vector<bool> contour_labels_;
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
+
+
 ###
 
 # plane_refinement_comparator.h
 # namespace pcl
-# {
-#   /** \brief PlaneRefinementComparator is a Comparator that operates on plane coefficients, 
-#     * for use in planar segmentation.
-#     * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#     *
-#     * \author Alex Trevor, Suat Gedikli
-#     */
-#   template<typename PointT, typename PointNT, typename PointLT>
-#   class PlaneRefinementComparator: public PlaneCoefficientComparator<PointT, PointNT>
-#   {
+# /** \brief PlaneRefinementComparator is a Comparator that operates on plane coefficients, 
+#   * for use in planar segmentation.
+#   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
+#   *
+#   * \author Alex Trevor, Suat Gedikli
+#   */
+# template<typename PointT, typename PointNT, typename PointLT>
+# class PlaneRefinementComparator: public PlaneCoefficientComparator<PointT, PointNT>
 #     public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       
 #       typedef typename pcl::PointCloud<PointNT> PointCloudN;
 #       typedef typename PointCloudN::Ptr PointCloudNPtr;
 #       typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
-# 
 #       typedef typename pcl::PointCloud<PointLT> PointCloudL;
 #       typedef typename PointCloudL::Ptr PointCloudLPtr;
 #       typedef typename PointCloudL::ConstPtr PointCloudLConstPtr;
-# 
 #       typedef boost::shared_ptr<PlaneRefinementComparator<PointT, PointNT, PointLT> > Ptr;
 #       typedef boost::shared_ptr<const PlaneRefinementComparator<PointT, PointNT, PointLT> > ConstPtr;
-# 
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::input_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
 #       using pcl::PlaneCoefficientComparator<PointT, PointNT>::plane_coeff_d_;
-# 
 # 
 #       /** \brief Empty constructor for PlaneCoefficientComparator. */
 #      PlaneRefinementComparator ()
@@ -1466,9 +1256,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         , refine_labels_ ()
 #         , label_to_model_ ()
 #         , depth_dependent_ (false)
-#       {
-#       }
-# 
+# 		
 #       /** \brief Empty constructor for PlaneCoefficientComparator. 
 #         * \param[in] models
 #         * \param[in] refine_labels
@@ -1480,138 +1268,65 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #         , refine_labels_ (refine_labels)
 #         , label_to_model_ ()
 #         , depth_dependent_ (false)
-#       {
-#       }
-# 
+#		
 #       /** \brief Destructor for PlaneCoefficientComparator. */
 #       virtual
 #       ~PlaneRefinementComparator ()
-#       {
-#       }
-# 
+# 		
 #       /** \brief Set the vector of model coefficients to which we will compare.
 #         * \param[in] models a vector of model coefficients produced by the initial segmentation step.
 #         */
-#       void
-#       setModelCoefficients (boost::shared_ptr<std::vector<pcl::ModelCoefficients> >& models)
-#       {
-#         models_ = models;
-#       }
-# 
+#       void setModelCoefficients (boost::shared_ptr<std::vector<pcl::ModelCoefficients> >& models)
+# 		
 #       /** \brief Set the vector of model coefficients to which we will compare.
 #         * \param[in] models a vector of model coefficients produced by the initial segmentation step.
 #         */
-#       void
-#       setModelCoefficients (std::vector<pcl::ModelCoefficients>& models)
-#       {
-#         models_ = boost::make_shared<std::vector<pcl::ModelCoefficients> >(models);
-#       }
-# 
+#       void setModelCoefficients (std::vector<pcl::ModelCoefficients>& models)
+# 		
 #       /** \brief Set which labels should be refined.  This is a vector of bools 0-max_label, true if the label should be refined.
 #         * \param[in] refine_labels A vector of bools 0-max_label, true if the label should be refined.
 #         */
-#       void
-#       setRefineLabels (boost::shared_ptr<std::vector<bool> >& refine_labels)
-#       {
-#         refine_labels_ = refine_labels;
-#       }
+#       void setRefineLabels (boost::shared_ptr<std::vector<bool> >& refine_labels)
 #       
 #       /** \brief Set which labels should be refined.  This is a vector of bools 0-max_label, true if the label should be refined.
 #         * \param[in] refine_labels A vector of bools 0-max_label, true if the label should be refined.
 #         */
-#       void
-#       setRefineLabels (std::vector<bool>& refine_labels)
-#       {
-#         refine_labels_ = boost::make_shared<std::vector<bool> >(refine_labels);
-#       }
-# 
+#       void setRefineLabels (std::vector<bool>& refine_labels)
+# 		
 #       /** \brief A mapping from label to index in the vector of models, allowing the model coefficients of a label to be accessed.
 #         * \param[in] label_to_model A vector of size max_label, with the index of each corresponding model in models
 #         */
-#       inline void
-#       setLabelToModel (boost::shared_ptr<std::vector<int> >& label_to_model)
-#       {
-#         label_to_model_ = label_to_model;
-#       }
+#       inline void setLabelToModel (boost::shared_ptr<std::vector<int> >& label_to_model)
 #       
 #       /** \brief A mapping from label to index in the vector of models, allowing the model coefficients of a label to be accessed.
 #         * \param[in] label_to_model A vector of size max_label, with the index of each corresponding model in models
 #         */
-#       inline void
-#       setLabelToModel (std::vector<int>& label_to_model)
-#       {
-#         label_to_model_ = boost::make_shared<std::vector<int> >(label_to_model);
-#       }
-# 
+#       inline void setLabelToModel (std::vector<int>& label_to_model)
+# 		
 #       /** \brief Get the vector of model coefficients to which we will compare. */
-#       inline boost::shared_ptr<std::vector<pcl::ModelCoefficients> >
-#       getModelCoefficients () const
-#       {
-#         return (models_);
-#       }
-# 
+#       inline boost::shared_ptr<std::vector<pcl::ModelCoefficients> > getModelCoefficients () const
+# 		
 #       /** \brief ...
 #         * \param[in] labels
 #         */
-#       inline void
-#       setLabels (PointCloudLPtr& labels)
-#       {
-#         labels_ = labels;
-#       }
-# 
+#       inline void setLabels (PointCloudLPtr& labels)
+# 		
 #       /** \brief Compare two neighboring points
 #         * \param[in] idx1 The index of the first point.
 #         * \param[in] idx2 The index of the second point.
 #         */
-#       virtual bool
-#       compare (int idx1, int idx2) const
-#       {
-#         int current_label = labels_->points[idx1].label;
-#         int next_label = labels_->points[idx2].label;
-# 
-#         if (!((*refine_labels_)[current_label] && !(*refine_labels_)[next_label]))
-#           return (false);
-#         
-#         const pcl::ModelCoefficients& model_coeff = (*models_)[(*label_to_model_)[current_label]];
-#         
-#         PointT pt = input_->points[idx2];
-#         double ptp_dist = fabs (model_coeff.values[0] * pt.x + 
-#                                 model_coeff.values[1] * pt.y + 
-#                                 model_coeff.values[2] * pt.z +
-#                                 model_coeff.values[3]);
-#         
-#         // depth dependent
-#         float threshold = distance_threshold_;
-#         if (depth_dependent_)
-#         {
-#           //Eigen::Vector4f origin = input_->sensor_origin_;
-#           Eigen::Vector3f vec = input_->points[idx1].getVector3fMap ();// - origin.head<3> ();
-#           
-#           float z = vec.dot (z_axis_);
-#           threshold *= z * z;
-#         }
-#         
-#         return (ptp_dist < threshold);
-#       }
-# 
-#     protected:
-#       boost::shared_ptr<std::vector<pcl::ModelCoefficients> > models_;
-#       PointCloudLPtr labels_;
-#       boost::shared_ptr<std::vector<bool> > refine_labels_;
-#       boost::shared_ptr<std::vector<int> > label_to_model_;
-#       bool depth_dependent_;
-#       using PlaneCoefficientComparator<PointT, PointNT>::z_axis_;
+#       virtual bool compare (int idx1, int idx2) const
+
+
 ###
 
 # region_3d.h
 # namespace pcl
-# {
-#   /** \brief Region3D represents summary statistics of a 3D collection of points.
-#     * \author Alex Trevor
-#     */
-#   template <typename PointT>
-#   class Region3D
-#   {
+# /** \brief Region3D represents summary statistics of a 3D collection of points.
+#   * \author Alex Trevor
+#   */
+# template <typename PointT>
+# class Region3D
 #     public:
 #       /** \brief Empty constructor for Region3D. */
 #       Region3D () : centroid_ (Eigen::Vector3f::Zero ()), covariance_ (Eigen::Matrix3f::Identity ()), count_ (0)
@@ -1646,39 +1361,21 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #       }
 #       
 #       /** \brief Get the number of points in the region. */
-#       unsigned
-#       getCount () const
-#       {
-#         return (count_);
-#       }
-# 
-#     protected:
-#       /** \brief The centroid of the region. */
-#       Eigen::Vector3f centroid_;
-#       
-#       /** \brief The covariance of the region. */
-#       Eigen::Matrix3f covariance_;
-#       
-#       /** \brief The number of points in the region. */
-#       unsigned count_;
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
+#       unsigned getCount () const
+
+
 ###
 
 # rgb_plane_coefficient_comparator.h
 # namespace pcl
-# {
-#   /** \brief RGBPlaneCoefficientComparator is a Comparator that operates on plane coefficients, 
-#     * for use in planar segmentation.  Also takes into account RGB, so we can segmented different colored co-planar regions.
-#     * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#     *
-#     * \author Alex Trevor
-#     */
-#   template<typename PointT, typename PointNT>
-#   class RGBPlaneCoefficientComparator: public PlaneCoefficientComparator<PointT, PointNT>
-#   {
+# /** \brief RGBPlaneCoefficientComparator is a Comparator that operates on plane coefficients, 
+#   * for use in planar segmentation.  Also takes into account RGB, so we can segmented different colored co-planar regions.
+#   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
+#   *
+#   * \author Alex Trevor
+#   */
+# template<typename PointT, typename PointNT>
+# class RGBPlaneCoefficientComparator: public PlaneCoefficientComparator<PointT, PointNT>
 #     public:
 #       typedef typename Comparator<PointT>::PointCloud PointCloud;
 #       typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
@@ -1751,11 +1448,8 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #                  && (normals_->points[idx1].getNormalVector3fMap ().dot (normals_->points[idx2].getNormalVector3fMap () ) > angular_threshold_ )
 #                  && (color_dist < color_threshold_));
 #       }
-#       
-#     protected:
-#       float color_threshold_;
-#   };
-# 
+
+
 ###
 
 # segment_differences.h
@@ -1775,6 +1469,8 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #     double threshold, const boost::shared_ptr<pcl::search::Search<PointT> > &tree,
 #     pcl::PointCloud<PointT> &output);
 
+# segment_differences.h
+# namespace pcl
 # /** \brief @b SegmentDifferences obtains the difference between two spatially
 #   * aligned point clouds and returns the difference between them for a maximum
 #   * given distance threshold.

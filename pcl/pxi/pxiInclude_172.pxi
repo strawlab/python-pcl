@@ -29,7 +29,7 @@ include "Filters/RadiusOutlierRemoval_172.pxi"
 include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
-include "Common/RangeImage/RangeImages.pxi"
+include "Common/RangeImage/RangeImages_172.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Features
