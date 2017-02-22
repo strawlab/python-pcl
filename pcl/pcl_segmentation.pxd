@@ -6,8 +6,6 @@ from libcpp.vector cimport vector
 from libcpp.string cimport string
 from libcpp cimport bool
 
-# NG
-# from libcpp.memory cimport shared_ptr
 from boost_shared_ptr cimport shared_ptr
 
 # main
@@ -21,9 +19,7 @@ from pcl_defs cimport PointXYZRGB
 from pcl_defs cimport PointXYZRGBA
 from pcl_defs cimport Normal
 from pcl_defs cimport PCLBase
-
 from pcl_sample_consensus cimport SacModel
-# cimport pcl_defs as cpp
 cimport pcl_surface as pclsf
 cimport pcl_kdtree as pclkdt
 
@@ -1848,18 +1844,6 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 ###############################################################################
 # Enum
 ###############################################################################
-
-# method_types.h
-cdef extern from "pcl/sample_consensus/method_types.h" namespace "pcl":
-    cdef enum:
-        SAC_RANSAC = 0
-        SAC_LMEDS = 1
-        SAC_MSAC = 2
-        SAC_RRANSAC = 3
-        SAC_RMSAC = 4
-        SAC_MLESAC = 5
-        SAC_PROSAC = 6
-###
 
 ###############################################################################
 # Activation

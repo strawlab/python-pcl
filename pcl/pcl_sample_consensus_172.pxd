@@ -17,7 +17,8 @@ from boost_shared_ptr cimport shared_ptr
 # sac_model.h
 # namespace pcl
 # template<class T> class ProgressiveSampleConsensus;
-# 
+
+# sac_model.h
 # namespace pcl
 # template <typename PointT>
 # class SampleConsensusModel
@@ -166,6 +167,7 @@ ctypedef shared_ptr[const SampleConsensusModel[cpp.PointXYZRGB]] SampleConsensus
 ctypedef shared_ptr[const SampleConsensusModel[cpp.PointXYZRGBA]] SampleConsensusModel_PointXYZRGBA_ConstPtr_t
 ###
 
+# sac_model.h
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelFromNormals
 cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
@@ -181,10 +183,12 @@ cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
         # * distance (0 to pi/2) between point normals and the plane normal.
         # * (The Euclidean distance will have weight 1-w.)
         # */
-        inline void setNormalDistanceWeight (const double w) 
+        # inline void setNormalDistanceWeight (const double w) 
+        void setNormalDistanceWeight (const double w) 
         
         # /** \brief Get the normal angular distance weight. */
-        inline double getNormalDistanceWeight ()
+        # inline double getNormalDistanceWeight ()
+        double getNormalDistanceWeight ()
         
         # /** \brief Provide a pointer to the input dataset that contains the point
         # * normals of the XYZ dataset.
@@ -218,39 +222,44 @@ cdef extern from "pcl/sample_consensus/sac.h" namespace "pcl":
     cdef cppclass SampleConsensus[T]:
         # SampleConsensus (const SampleConsensusModelPtr &model, bool random = false)
         # SampleConsensus (const SampleConsensusModelPtr &model, double threshold, bool random = false) : 
+        # \brief Constructor for base SAC.
+        # \param[in] model a Sample Consensus model
+        # \param[in] random if true set the random seed to the current time, else set to 12345 (default: false)
         SampleConsensus (const SampleConsensusModelPtr_t &model)
         SampleConsensus (const SampleConsensusModel_PointXYZI_Ptr_t &model)
         SampleConsensus (const SampleConsensusModel_PointXYZRGB_Ptr_t &model)
         SampleConsensus (const SampleConsensusModel_PointXYZRGBA_Ptr_t &model)
-
+        
         # public:
         # typedef boost::shared_ptr<SampleConsensus> Ptr;
         # typedef boost::shared_ptr<const SampleConsensus> ConstPtr;
-        # /** \brief Constructor for base SAC.
-        # * \param[in] model a Sample Consensus model
-        # * \param[in] random if true set the random seed to the current time, else set to 12345 (default: false)
-        # 
         # \brief Set the distance to model threshold.
         # \param[in] threshold distance to model threshold
-        inline void setDistanceThreshold (double threshold)
+        # inline void setDistanceThreshold (double threshold)
+        void setDistanceThreshold (double threshold)
         
         # /** \brief Get the distance to model threshold, as set by the user. */
-        inline double getDistanceThreshold ()
+        # inline double getDistanceThreshold ()
+        double getDistanceThreshold ()
         
         # /** \brief Set the maximum number of iterations.
         # * \param[in] max_iterations maximum number of iterations
-        inline void setMaxIterations (int max_iterations)
+        # inline void setMaxIterations (int max_iterations)
+        void setMaxIterations (int max_iterations)
         
         # /** \brief Get the maximum number of iterations, as set by the user. */
-        inline int getMaxIterations ()
+        # inline int getMaxIterations ()
+        int getMaxIterations ()
         
         # /** \brief Set the desired probability of choosing at least one sample free from outliers.
         # * \param[in] probability the desired probability of choosing at least one sample free from outliers
         # * \note internally, the probability is set to 99% (0.99) by default.
-        inline void setProbability (double probability)
+        # inline void setProbability (double probability)
+        void setProbability (double probability)
         
         # /** \brief Obtain the probability of choosing at least one sample free from outliers, as set by the user. */
-        inline double getProbability ()
+        # inline double getProbability ()
+        double getProbability ()
         
         # /** \brief Compute the actual model. Pure virtual. */
         # virtual bool computeModel (int debug_verbosity_level = 0) = 0;
@@ -291,21 +300,192 @@ ctypedef shared_ptr[const SampleConsensus[cpp.PointXYZRGBA]] SampleConsensus_Poi
 
 # template<typename _Scalar, int NX=Eigen::Dynamic, int NY=Eigen::Dynamic>
 # struct Functor
-# cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
-#     cdef cppclass Functor[_Scalar, int]:
-#         Functor ()
-#         # Functor (int m_data_points)
-#         # typedef _Scalar Scalar;
-#         # enum 
-#         # {
-#         #   InputsAtCompileTime = NX,
-#         #   ValuesAtCompileTime = NY
-#         # };
-#         # typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
-#         # typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
-#         # typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
-#         # /** \brief Get the number of values. */ 
-#         # int values () const
+cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
+    cdef cppclass Functor[_Scalar]:
+        Functor ()
+        # Functor (int m_data_points)
+        # typedef _Scalar Scalar;
+        # enum 
+        # {
+        #   InputsAtCompileTime = NX,
+        #   ValuesAtCompileTime = NY
+        # };
+        # typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
+        # typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
+        # typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
+        # /** \brief Get the number of values. */ 
+        # int values () const
+
+
+###
+
+# sac_model_plane.h
+# namespace pcl
+# /** \brief Project a point on a planar model given by a set of normalized coefficients
+#   * \param[in] p the input point to project
+#   * \param[in] model_coefficients the coefficients of the plane (a, b, c, d) that satisfy ax+by+cz+d=0
+#   * \param[out] q the resultant projected point
+#   */
+# template <typename Point> inline void
+# projectPoint (const Point &p, const Eigen::Vector4f &model_coefficients, Point &q)
+# {
+#   // Calculate the distance from the point to the plane
+#   Eigen::Vector4f pp (p.x, p.y, p.z, 1);
+#   // use normalized coefficients to calculate the scalar projection 
+#   float distance_to_plane = pp.dot(model_coefficients);
+#  
+#   //TODO: Why doesn't getVector4Map work here?
+#   //Eigen::Vector4f q_e = q.getVector4fMap ();
+#   //q_e = pp - model_coefficients * distance_to_plane;
+#   
+#   Eigen::Vector4f q_e = pp - distance_to_plane * model_coefficients;
+#   q.x = q_e[0];
+#   q.y = q_e[1];
+#   q.z = q_e[2];
+# }
+# 
+# sac_model_plane.h
+# namespace pcl
+# /** \brief Get the distance from a point to a plane (signed) defined by ax+by+cz+d=0
+#   * \param p a point
+#   * \param a the normalized <i>a</i> coefficient of a plane
+#   * \param b the normalized <i>b</i> coefficient of a plane
+#   * \param c the normalized <i>c</i> coefficient of a plane
+#   * \param d the normalized <i>d</i> coefficient of a plane
+#   * \ingroup sample_consensus
+#   */
+# template <typename Point> inline double
+# pointToPlaneDistanceSigned (const Point &p, double a, double b, double c, double d)
+# 
+# sac_model_plane.h
+# namespace pcl
+# /** \brief Get the distance from a point to a plane (signed) defined by ax+by+cz+d=0
+#   * \param p a point
+#   * \param plane_coefficients the normalized coefficients (a, b, c, d) of a plane
+#   * \ingroup sample_consensus
+#   */
+# template <typename Point> inline double
+# pointToPlaneDistanceSigned (const Point &p, const Eigen::Vector4f &plane_coefficients)
+# 
+# sac_model_plane.h
+# namespace pcl
+# /** \brief Get the distance from a point to a plane (unsigned) defined by ax+by+cz+d=0
+#   * \param p a point
+#   * \param a the normalized <i>a</i> coefficient of a plane
+#   * \param b the normalized <i>b</i> coefficient of a plane
+#   * \param c the normalized <i>c</i> coefficient of a plane
+#   * \param d the normalized <i>d</i> coefficient of a plane
+#   * \ingroup sample_consensus
+#   */
+# template <typename Point> inline double
+# pointToPlaneDistance (const Point &p, double a, double b, double c, double d)
+# 
+# sac_model_plane.h
+# namespace pcl
+# /** \brief Get the distance from a point to a plane (unsigned) defined by ax+by+cz+d=0
+#   * \param p a point
+#   * \param plane_coefficients the normalized coefficients (a, b, c, d) of a plane
+#   * \ingroup sample_consensus
+#   */
+# template <typename Point> inline double
+# pointToPlaneDistance (const Point &p, const Eigen::Vector4f &plane_coefficients)
+# 
+# sac_model_plane.h
+# namespace pcl
+# /** \brief SampleConsensusModelPlane defines a model for 3D plane segmentation.
+#   * The model coefficients are defined as:
+#   *   - \b a : the X coordinate of the plane's normal (normalized)
+#   *   - \b b : the Y coordinate of the plane's normal (normalized)
+#   *   - \b c : the Z coordinate of the plane's normal (normalized)
+#   *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
+#   * 
+#   * \author Radu B. Rusu
+#   * \ingroup sample_consensus
+#   */
+# template <typename PointT>
+# class SampleConsensusModelPlane : public SampleConsensusModel<PointT>
+cdef extern from "pcl/sample_consensus/sac_model_plane.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelPlane[PointT](SampleConsensusModel[PointT]):
+        SampleConsensusModelPerpendicularPlane()
+        # public:
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelPlane> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelPlane (const PointCloudConstPtr &cloud) : SampleConsensusModel<PointT> (cloud) {};
+        # 
+        # /** \brief Constructor for base SampleConsensusModelPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
+        # 
+        # /** \brief Check whether the given index samples can form a valid plane model, compute the model coefficients from
+        # * these samples and store them internally in model_coefficients_. The plane coefficients are:
+        # * a, b, c, d (ax+by+cz+d=0)
+        # * \param[in] samples the point indices found as possible good candidates for creating a valid model
+        # * \param[out] model_coefficients the resultant model coefficients
+        # */
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given plane model.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Recompute the plane coefficients using the given inlier set and return them to the user.
+        # * @note: these are the coefficients of the plane model after refinement (eg. after SVD)
+        # * \param[in] inliers the data inliers found as supporting the model
+        # * \param[in] model_coefficients the initial guess for the model coefficients
+        # * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
+        # */
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, 
+        #                          const Eigen::VectorXf &model_coefficients, 
+        #                          Eigen::VectorXf &optimized_coefficients);
+        # 
+        # /** \brief Create a new point cloud with inliers projected onto the plane model.
+        # * \param[in] inliers the data inliers that we want to project on the plane model
+        # * \param[in] model_coefficients the *normalized* coefficients of a plane model
+        # * \param[out] projected_points the resultant projected points
+        # * \param[in] copy_data_fields set to true if we need to copy the other data fields
+        # */
+        # void projectPoints (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, PointCloud &projected_points, bool copy_data_fields = true);
+        # 
+        # /** \brief Verify whether a subset of indices verifies the given plane model coefficients.
+        # * \param[in] indices the data indices that need to be tested against the plane model
+        # * \param[in] model_coefficients the plane model coefficients
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # */
+        # bool doSamplesVerifyModel (const std::set<int> &indices, 
+        #                     const Eigen::VectorXf &model_coefficients, 
+        #                     const double threshold);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_PLANE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_PLANE); }
+
+
 ###
 
 ### Inheritance class ###
@@ -344,6 +524,8 @@ cdef extern from "pcl/sample_consensus/lmeds.h" namespace "pcl":
 cdef extern from "pcl/sample_consensus/mlesac.h" namespace "pcl":
     cdef cppclass MaximumLikelihoodSampleConsensus[T](SampleConsensus[T]):
         MaximumLikelihoodSampleConsensus ()
+        # \brief MLESAC (Maximum Likelihood Estimator SAmple Consensus) main constructor
+        # \param[in] model a Sample Consensus model
         # MaximumLikelihoodSampleConsensus (const SampleConsensusModelPtr &model)
         # MaximumLikelihoodSampleConsensus (const SampleConsensusModelPtr &model, double threshold)
         # using SampleConsensus<PointT>::max_iterations_;
@@ -357,16 +539,18 @@ cdef extern from "pcl/sample_consensus/mlesac.h" namespace "pcl":
         # typedef typename SampleConsensusModel<PointT>::Ptr SampleConsensusModelPtr;
         # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr; 
         # public:
-        # * \brief MLESAC (Maximum Likelihood Estimator SAmple Consensus) main constructor
-        # * \param[in] model a Sample Consensus model
-        # /** \brief Compute the actual model and find the inliers
-        # * \param[in] debug_verbosity_level enable/disable on-screen debug information and set the verbosity level
+        # \brief Compute the actual model and find the inliers
+        # \param[in] debug_verbosity_level enable/disable on-screen debug information and set the verbosity level
         # bool computeModel (int debug_verbosity_level = 0);
+        
         # /** \brief Set the number of EM iterations.
         # * \param[in] iterations the number of EM iterations
         # inline void setEMIterations (int iterations)
+        
         # /** \brief Get the number of EM iterations. */
         # inline int getEMIterations () const { return (iterations_EM_); }
+
+
 ###
 
 # msac.h
@@ -388,9 +572,8 @@ cdef extern from "pcl/sample_consensus/msac.h" namespace "pcl":
         # using SampleConsensus<PointT>::probability_;
         # typedef typename SampleConsensusModel<PointT>::Ptr SampleConsensusModelPtr;
         # public:
-        # /** \brief Compute the actual model and find the inliers
-        # * \param debug_verbosity_level enable/disable on-screen debug information and set the verbosity level
-        # */
+        # \brief Compute the actual model and find the inliers
+        # \param debug_verbosity_level enable/disable on-screen debug information and set the verbosity level
         # bool computeModel (int debug_verbosity_level = 0);
         bool computeModel (int debug_verbosity_level)
 
@@ -428,7 +611,7 @@ cdef extern from "pcl/sample_consensus/prosac.h" namespace "pcl":
 # namespace pcl
 # template <typename PointT>
 # class RandomSampleConsensus : public SampleConsensus<PointT>
-cdef extern from "pcl/sample_consensus/prosac.h" namespace "pcl":
+cdef extern from "pcl/sample_consensus/ransac.h" namespace "pcl":
     cdef cppclass RandomSampleConsensus[T](SampleConsensus[T]):
         RandomSampleConsensus ()
         # RandomSampleConsensus (const SampleConsensusModelPtr &model)
@@ -455,7 +638,7 @@ cdef extern from "pcl/sample_consensus/prosac.h" namespace "pcl":
 # namespace pcl
 # template <typename PointT>
 # class RandomizedMEstimatorSampleConsensus : public SampleConsensus<PointT>
-cdef extern from "pcl/sample_consensus/prosac.h" namespace "pcl":
+cdef extern from "pcl/sample_consensus/rmsac.h" namespace "pcl":
     cdef cppclass RandomizedMEstimatorSampleConsensus[T](SampleConsensus[T]):
         RandomizedMEstimatorSampleConsensus ()
         # RandomizedMEstimatorSampleConsensus (const SampleConsensusModelPtr &model)
@@ -514,15 +697,17 @@ cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
         # /** \brief Compute the actual model and find the inliers
         # * \param debug_verbosity_level enable/disable on-screen debug information and set the verbosity level
         # */
-        bool computeModel (int debug_verbosity_level = 0)
+        # bool computeModel (int debug_verbosity_level = 0)
+        bool computeModel (int debug_verbosity_level)
         
-        # /** \brief Set the percentage of points to pre-test.
-        # * \param nr_pretest percentage of points to pre-test
-        # */
-        inline void setFractionNrPretest (double nr_pretest)
+        # \brief Set the percentage of points to pre-test.
+        # \param nr_pretest percentage of points to pre-test
+        # inline void setFractionNrPretest (double nr_pretest)
+        void setFractionNrPretest (double nr_pretest)
         
         # /** \brief Get the percentage of points to pre-test. */
-        inline double getFractionNrPretest ()
+        # inline double getFractionNrPretest ()
+        double getFractionNrPretest ()
 
 
 ###
@@ -602,6 +787,8 @@ cdef extern from "pcl/sample_consensus/sac_model_circle.h" namespace "pcl":
         # /** \brief Check if a sample of indices results in a good sample of points indices.
         # * \param[in] samples the resultant index samples
         # bool isSampleGood(const std::vector<int> &samples) const;
+
+
 ###
 
 # namespace pcl
@@ -621,9 +808,10 @@ cdef extern from "pcl/sample_consensus/sac_model_circle.h" namespace "pcl":
 # namespace pcl
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelCone : public SampleConsensusModel<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
-#    cdef cppclass SampleConsensusModelCone[T, NT](SampleConsensusModel[T])(SampleConsensusModelFromNormals[T, NT]):
 cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
+    # cdef cppclass SampleConsensusModelCone[T, NT](SampleConsensusModel[T])(SampleConsensusModelFromNormals[T, NT]):
     cdef cppclass SampleConsensusModelCone[T, NT]:
+        SampleConsensusModelCone ()
         # Nothing
         # SampleConsensusModelCone ()
         # Use
@@ -719,6 +907,8 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
         # * indices. Pure virtual.
         # * \param[in] samples the resultant index samples
         # bool isSampleGood (const std::vector<int> &samples) const;
+
+
 ###
 
 # namespace pcl
@@ -734,575 +924,357 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 
 # sac_model_cylinder.h
 # namespace pcl
-# {
-#   /** \brief @b SampleConsensusModelCylinder defines a model for 3D cylinder segmentation.
-#     * The model coefficients are defined as:
-#     *   - \b point_on_axis.x  : the X coordinate of a point located on the cylinder axis
-#     *   - \b point_on_axis.y  : the Y coordinate of a point located on the cylinder axis
-#     *   - \b point_on_axis.z  : the Z coordinate of a point located on the cylinder axis
-#     *   - \b axis_direction.x : the X coordinate of the cylinder's axis direction
-#     *   - \b axis_direction.y : the Y coordinate of the cylinder's axis direction
-#     *   - \b axis_direction.z : the Z coordinate of the cylinder's axis direction
-#     *   - \b radius           : the cylinder's radius
-#     * 
-#     * \author Radu Bogdan Rusu
-#     * \ingroup sample_consensus
-#     */
-#   template <typename PointT, typename PointNT>
-#   class SampleConsensusModelCylinder : public SampleConsensusModel<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
-#   {
-#     using SampleConsensusModel<PointT>::input_;
-#     using SampleConsensusModel<PointT>::indices_;
-#     using SampleConsensusModel<PointT>::radius_min_;
-#     using SampleConsensusModel<PointT>::radius_max_;
-#     using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
-#     using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
-# 
-#     public:
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelCylinder> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelCylinder.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelCylinder (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModel<PointT> (cloud), 
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0),
-#         tmp_inliers_ ()
-#       {
-#       }
-# 
-#       /** \brief Constructor for base SampleConsensusModelCylinder.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelCylinder (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
-#         SampleConsensusModel<PointT> (cloud, indices), 
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0),
-#         tmp_inliers_ ()
-#       {
-#       }
-# 
-#       /** \brief Copy constructor.
-#         * \param[in] source the model to copy into this
-#         */
-#       SampleConsensusModelCylinder (const SampleConsensusModelCylinder &source) :
-#         SampleConsensusModel<PointT> (),
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0),
-#         tmp_inliers_ ()
-#       {
-#         *this = source;
-#       }
-# 
-#       /** \brief Copy constructor.
-#         * \param[in] source the model to copy into this
-#         */
-#       inline SampleConsensusModelCylinder&
-#       operator = (const SampleConsensusModelCylinder &source)
-#       {
-#         SampleConsensusModel<PointT>::operator=(source);
-#         axis_ = source.axis_;
-#         eps_angle_ = source.eps_angle_;
-#         tmp_inliers_ = source.tmp_inliers_;
-#         return (*this);
-#       }
-# 
-#       /** \brief Set the angle epsilon (delta) threshold.
-#         * \param[in] ea the maximum allowed difference between the cyilinder axis and the given axis.
-#         */
-#       inline void 
-#       setEpsAngle (const double ea) { eps_angle_ = ea; }
-# 
-#       /** \brief Get the angle epsilon (delta) threshold. */
-#       inline double 
-#       getEpsAngle () { return (eps_angle_); }
-# 
-#       /** \brief Set the axis along which we need to search for a cylinder direction.
-#         * \param[in] ax the axis along which we need to search for a cylinder direction
-#         */
-#       inline void 
-#       setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-# 
-#       /** \brief Get the axis along which we need to search for a cylinder direction. */
-#       inline Eigen::Vector3f 
-#       getAxis ()  { return (axis_); }
-# 
-#       /** \brief Check whether the given index samples can form a valid cylinder model, compute the model coefficients
-#         * from these samples and store them in model_coefficients. The cylinder coefficients are: point_on_axis,
-#         * axis_direction, cylinder_radius_R
-#         * \param[in] samples the point indices found as possible good candidates for creating a valid model
-#         * \param[out] model_coefficients the resultant model coefficients
-#         */
-#       bool 
-#       computeModelCoefficients (const std::vector<int> &samples, 
-#                                 Eigen::VectorXf &model_coefficients);
-# 
-#       /** \brief Compute all distances from the cloud data to a given cylinder model.
-#         * \param[in] model_coefficients the coefficients of a cylinder model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a cylinder model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Recompute the cylinder coefficients using the given inlier set and return them to the user.
-#         * @note: these are the coefficients of the cylinder model after refinement (eg. after SVD)
-#         * \param[in] inliers the data inliers found as supporting the model
-#         * \param[in] model_coefficients the initial guess for the optimization
-#         * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
-#         */
-#       void 
-#       optimizeModelCoefficients (const std::vector<int> &inliers, 
-#                                  const Eigen::VectorXf &model_coefficients, 
-#                                  Eigen::VectorXf &optimized_coefficients);
-# 
-# 
-#       /** \brief Create a new point cloud with inliers projected onto the cylinder model.
-#         * \param[in] inliers the data inliers that we want to project on the cylinder model
-#         * \param[in] model_coefficients the coefficients of a cylinder model
-#         * \param[out] projected_points the resultant projected points
-#         * \param[in] copy_data_fields set to true if we need to copy the other data fields
-#         */
-#       void 
-#       projectPoints (const std::vector<int> &inliers, 
-#                      const Eigen::VectorXf &model_coefficients, 
-#                      PointCloud &projected_points, 
-#                      bool copy_data_fields = true);
-# 
-#       /** \brief Verify whether a subset of indices verifies the given cylinder model coefficients.
-#         * \param[in] indices the data indices that need to be tested against the cylinder model
-#         * \param[in] model_coefficients the cylinder model coefficients
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         */
-#       bool 
-#       doSamplesVerifyModel (const std::set<int> &indices, 
-#                             const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_CYLINDER). */
-#       inline pcl::SacModel 
-#       getModelType () const { return (SACMODEL_CYLINDER); }
-# 
-#     protected:
-#       /** \brief Get the distance from a point to a line (represented by a point and a direction)
-#         * \param[in] pt a point
-#         * \param[in] model_coefficients the line coefficients (a point on the line, line direction)
-#         */
-#       double 
-#       pointToLineDistance (const Eigen::Vector4f &pt, const Eigen::VectorXf &model_coefficients);
-# 
-#       /** \brief Project a point onto a line given by a point and a direction vector
-#         * \param[in] pt the input point to project
-#         * \param[in] line_pt the point on the line (make sure that line_pt[3] = 0 as there are no internal checks!)
-#         * \param[in] line_dir the direction of the line (make sure that line_dir[3] = 0 as there are no internal checks!)
-#         * \param[out] pt_proj the resultant projected point
-#         */
-#       inline void
-#       projectPointToLine (const Eigen::Vector4f &pt, 
-#                           const Eigen::Vector4f &line_pt, 
-#                           const Eigen::Vector4f &line_dir,
-#                           Eigen::Vector4f &pt_proj)
-#       {
-#         float k = (pt.dot (line_dir) - line_pt.dot (line_dir)) / line_dir.dot (line_dir);
-#         // Calculate the projection of the point on the line
-#         pt_proj = line_pt + k * line_dir;
-#       }
-# 
-#       /** \brief Project a point onto a cylinder given by its model coefficients (point_on_axis, axis_direction,
-#         * cylinder_radius_R)
-#         * \param[in] pt the input point to project
-#         * \param[in] model_coefficients the coefficients of the cylinder (point_on_axis, axis_direction, cylinder_radius_R)
-#         * \param[out] pt_proj the resultant projected point
-#         */
-#       void 
-#       projectPointToCylinder (const Eigen::Vector4f &pt, 
-#                               const Eigen::VectorXf &model_coefficients, 
-#                               Eigen::Vector4f &pt_proj);
-# 
-#       /** \brief Get a string representation of the name of this class. */
-#       std::string 
-#       getName () const { return ("SampleConsensusModelCylinder"); }
-# 
-#     protected:
-#       /** \brief Check whether a model is valid given the user constraints.
-#         * \param[in] model_coefficients the set of model coefficients
-#         */
-#       bool 
-#       isModelValid (const Eigen::VectorXf &model_coefficients);
-# 
-#       /** \brief Check if a sample of indices results in a good sample of points
-#         * indices. Pure virtual.
-#         * \param[in] samples the resultant index samples
-#         */
-#       bool
-#       isSampleGood (const std::vector<int> &samples) const;
-# 
-#     private:
-#       /** \brief The axis along which we need to search for a plane perpendicular to. */
-#       Eigen::Vector3f axis_;
-#     
-#       /** \brief The maximum allowed difference between the plane normal and the given axis. */
-#       double eps_angle_;
-# 
-#       /** \brief temporary pointer to a list of given indices for optimizeModelCoefficients () */
-#       const std::vector<int> *tmp_inliers_;
-# 
-# #if defined BUILD_Maintainer && defined __GNUC__ && __GNUC__ == 4 && __GNUC_MINOR__ > 3
-# #pragma GCC diagnostic ignored "-Weffc++"
-# #endif
-#       /** \brief Functor for the optimization function */
-#       struct OptimizationFunctor : pcl::Functor<float>
-#       {
-#         /** Functor constructor
-#           * \param[in] m_data_points the number of data points to evaluate
-#           * \param[in] estimator pointer to the estimator object
-#           * \param[in] distance distance computation function pointer
-#           */
-#         OptimizationFunctor (int m_data_points, pcl::SampleConsensusModelCylinder<PointT, PointNT> *model) : 
-#           pcl::Functor<float> (m_data_points), model_ (model) {}
-# 
-#         /** Cost function to be minimized
-#           * \param[in] x variables array
-#           * \param[out] fvec resultant functions evaluations
-#           * \return 0
-#           */
-#         int 
-#         operator() (const Eigen::VectorXf &x, Eigen::VectorXf &fvec) const
-#         {
-#           Eigen::Vector4f line_pt  (x[0], x[1], x[2], 0);
-#           Eigen::Vector4f line_dir (x[3], x[4], x[5], 0);
-#           
-#           for (int i = 0; i < values (); ++i)
-#           {
-#             // dist = f - r
-#             Eigen::Vector4f pt (model_->input_->points[(*model_->tmp_inliers_)[i]].x,
-#                                 model_->input_->points[(*model_->tmp_inliers_)[i]].y,
-#                                 model_->input_->points[(*model_->tmp_inliers_)[i]].z, 0);
-# 
-#             fvec[i] = static_cast<float> (pcl::sqrPointToLineDistance (pt, line_pt, line_dir) - x[6]*x[6]);
-#           }
-#           return (0);
-#         }
-# 
-#         pcl::SampleConsensusModelCylinder<PointT, PointNT> *model_;
-#       };
+# \brief @b SampleConsensusModelCylinder defines a model for 3D cylinder segmentation.
+# The model coefficients are defined as:
+# \b point_on_axis.x  : the X coordinate of a point located on the cylinder axis
+# \b point_on_axis.y  : the Y coordinate of a point located on the cylinder axis
+# \b point_on_axis.z  : the Z coordinate of a point located on the cylinder axis
+# \b axis_direction.x : the X coordinate of the cylinder's axis direction
+# \b axis_direction.y : the Y coordinate of the cylinder's axis direction
+# \b axis_direction.z : the Z coordinate of the cylinder's axis direction
+# \b radius           : the cylinder's radius
+# \author Radu Bogdan Rusu
+# \ingroup sample_consensus
+# template <typename PointT, typename PointNT>
+# class SampleConsensusModelCylinder : public SampleConsensusModel<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
+# Multi Inheritance NG
+# cdef cppclass SampleConsensusModelCylinder[PointT](SampleConsensusModel[PointT]):
+cdef extern from "pcl/sample_consensus/sac_model_cylinder.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelCylinder[PointT]:
+        SampleConsensusModelCylinder()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModel<PointT>::radius_min_;
+        # using SampleConsensusModel<PointT>::radius_max_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelCylinder> Ptr;
+        # 
+        # \brief Constructor for base SampleConsensusModelCylinder.
+        # \param[in] cloud the input point cloud dataset
+        # SampleConsensusModelCylinder (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModel<PointT> (cloud), 
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0),
+        # tmp_inliers_ ()
+        # 
+        # \brief Constructor for base SampleConsensusModelCylinder.
+        # \param[in] cloud the input point cloud dataset
+        # \param[in] indices a vector of point indices to be used from \a cloud
+        # SampleConsensusModelCylinder (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModel<PointT> (cloud, indices), 
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0),
+        # tmp_inliers_ ()
+        # 
+        # \brief Copy constructor.
+        # \param[in] source the model to copy into this
+        # SampleConsensusModelCylinder (const SampleConsensusModelCylinder &source) :
+        # SampleConsensusModel<PointT> (),
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0),
+        # tmp_inliers_ ()
+        # 
+        # \brief Copy constructor.
+        # \param[in] source the model to copy into this
+        # inline SampleConsensusModelCylinder& operator = (const SampleConsensusModelCylinder &source)
+        # 
+        # \brief Set the angle epsilon (delta) threshold.
+        # \param[in] ea the maximum allowed difference between the cyilinder axis and the given axis.
+        # inline void setEpsAngle (const double ea) { eps_angle_ = ea; }
+        # 
+        # \brief Get the angle epsilon (delta) threshold.
+        # inline double getEpsAngle () { return (eps_angle_); }
+        # 
+        # \brief Set the axis along which we need to search for a cylinder direction.
+        # \param[in] ax the axis along which we need to search for a cylinder direction
+        # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+        # 
+        # \brief Get the axis along which we need to search for a cylinder direction.
+        # inline Eigen::Vector3f getAxis ()  { return (axis_); }
+        # 
+        # \brief Check whether the given index samples can form a valid cylinder model, compute the model coefficients
+        #  from these samples and store them in model_coefficients. The cylinder coefficients are: point_on_axis,
+        #  axis_direction, cylinder_radius_R
+        # \param[in] samples the point indices found as possible good candidates for creating a valid model
+        # \param[out] model_coefficients the resultant model coefficients
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # \brief Compute all distances from the cloud data to a given cylinder model.
+        # \param[in] model_coefficients the coefficients of a cylinder model that we need to compute distances to
+        # \param[out] distances the resultant estimated distances
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # \brief Select all the points which respect the given model coefficients as inliers.
+        # \param[in] model_coefficients the coefficients of a cylinder model that we need to compute distances to
+        # \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # \param[out] inliers the resultant model inliers
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # \brief Count all the points which respect the given model coefficients as inliers. 
+        # \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # \return the resultant number of inliers
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # \brief Recompute the cylinder coefficients using the given inlier set and return them to the user.
+        #  @note: these are the coefficients of the cylinder model after refinement (eg. after SVD)
+        # \param[in] inliers the data inliers found as supporting the model
+        # \param[in] model_coefficients the initial guess for the optimization
+        # \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients);
+        # 
+        # \brief Create a new point cloud with inliers projected onto the cylinder model.
+        # \param[in] inliers the data inliers that we want to project on the cylinder model
+        # \param[in] model_coefficients the coefficients of a cylinder model
+        # \param[out] projected_points the resultant projected points
+        # \param[in] copy_data_fields set to true if we need to copy the other data fields
+        # void projectPoints (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients,  PointCloud &projected_points, bool copy_data_fields = true);
+        # 
+        # \brief Verify whether a subset of indices verifies the given cylinder model coefficients.
+        # \param[in] indices the data indices that need to be tested against the cylinder model
+        # \param[in] model_coefficients the cylinder model coefficients
+        # \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # bool doSamplesVerifyModel (const std::set<int> &indices, const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_CYLINDER). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_CYLINDER); }
+
+
 ###
 
 # sac_model_line.h
 # namespace pcl
-# {
-#   /** \brief SampleConsensusModelLine defines a model for 3D line segmentation.
-#     * The model coefficients are defined as:
-#     *   - \b point_on_line.x  : the X coordinate of a point on the line
-#     *   - \b point_on_line.y  : the Y coordinate of a point on the line
-#     *   - \b point_on_line.z  : the Z coordinate of a point on the line
-#     *   - \b line_direction.x : the X coordinate of a line's direction
-#     *   - \b line_direction.y : the Y coordinate of a line's direction
-#     *   - \b line_direction.z : the Z coordinate of a line's direction
-#     *
-#     * \author Radu B. Rusu
-#     * \ingroup sample_consensus
-#     */
-#   template <typename PointT>
-#   class SampleConsensusModelLine : public SampleConsensusModel<PointT>
-#   {
-#     using SampleConsensusModel<PointT>::input_;
-#     using SampleConsensusModel<PointT>::indices_;
-# 
-#     public:
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelLine> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelLine.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelLine (const PointCloudConstPtr &cloud) : SampleConsensusModel<PointT> (cloud) {};
-# 
-#       /** \brief Constructor for base SampleConsensusModelLine.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelLine (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
-# 
-#       /** \brief Check whether the given index samples can form a valid line model, compute the model coefficients from
-#         * these samples and store them internally in model_coefficients_. The line coefficients are represented by a
-#         * point and a line direction
-#         * \param[in] samples the point indices found as possible good candidates for creating a valid model
-#         * \param[out] model_coefficients the resultant model coefficients
-#         */
-#       bool 
-#       computeModelCoefficients (const std::vector<int> &samples, 
-#                                 Eigen::VectorXf &model_coefficients);
-# 
-#       /** \brief Compute all squared distances from the cloud data to a given line model.
-#         * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
-#         * \param[out] distances the resultant estimated squared distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Recompute the line coefficients using the given inlier set and return them to the user.
-#         * @note: these are the coefficients of the line model after refinement (eg. after SVD)
-#         * \param[in] inliers the data inliers found as supporting the model
-#         * \param[in] model_coefficients the initial guess for the model coefficients
-#         * \param[out] optimized_coefficients the resultant recomputed coefficients after optimization
-#         */
-#       void 
-#       optimizeModelCoefficients (const std::vector<int> &inliers, 
-#                                  const Eigen::VectorXf &model_coefficients, 
-#                                  Eigen::VectorXf &optimized_coefficients);
-# 
-#       /** \brief Create a new point cloud with inliers projected onto the line model.
-#         * \param[in] inliers the data inliers that we want to project on the line model
-#         * \param[in] model_coefficients the *normalized* coefficients of a line model
-#         * \param[out] projected_points the resultant projected points
-#         * \param[in] copy_data_fields set to true if we need to copy the other data fields
-#         */
-#       void 
-#       projectPoints (const std::vector<int> &inliers, 
-#                      const Eigen::VectorXf &model_coefficients, 
-#                      PointCloud &projected_points, 
-#                      bool copy_data_fields = true);
-# 
-#       /** \brief Verify whether a subset of indices verifies the given line model coefficients.
-#         * \param[in] indices the data indices that need to be tested against the line model
-#         * \param[in] model_coefficients the line model coefficients
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         */
-#       bool 
-#       doSamplesVerifyModel (const std::set<int> &indices, 
-#                             const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_LINE). */
-#       inline pcl::SacModel 
-#       getModelType () const { return (SACMODEL_LINE); }
-# 
-#     protected:
-#       /** \brief Check whether a model is valid given the user constraints.
-#         * \param[in] model_coefficients the set of model coefficients
-#         */
-#       inline bool 
-#       isModelValid (const Eigen::VectorXf &model_coefficients)
-#       {
-#         if (model_coefficients.size () != 6)
-#         {
-#           PCL_ERROR ("[pcl::SampleConsensusModelLine::selectWithinDistance] Invalid number of model coefficients given (%zu)!\n", model_coefficients.size ());
-#           return (false);
-#         }
-# 
-#         return (true);
-#       }
-# 
-#       /** \brief Check if a sample of indices results in a good sample of points
-#         * indices.
-#         * \param[in] samples the resultant index samples
-#         */
-#       bool
-#       isSampleGood (const std::vector<int> &samples) const;
-# };
+# /** \brief SampleConsensusModelLine defines a model for 3D line segmentation.
+#   * The model coefficients are defined as:
+#   *   - \b point_on_line.x  : the X coordinate of a point on the line
+#   *   - \b point_on_line.y  : the Y coordinate of a point on the line
+#   *   - \b point_on_line.z  : the Z coordinate of a point on the line
+#   *   - \b line_direction.x : the X coordinate of a line's direction
+#   *   - \b line_direction.y : the Y coordinate of a line's direction
+#   *   - \b line_direction.z : the Z coordinate of a line's direction
+#   *
+#   * \author Radu B. Rusu
+#   * \ingroup sample_consensus
+#   */
+# template <typename PointT>
+# class SampleConsensusModelLine : public SampleConsensusModel<PointT>
+cdef extern from "pcl/sample_consensus/sac_model_line.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelLine[PointT](SampleConsensusModel[PointT]):
+        SampleConsensusModelLine()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelLine> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelLine.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelLine (const PointCloudConstPtr &cloud) : SampleConsensusModel<PointT> (cloud) {};
+        # 
+        # /** \brief Constructor for base SampleConsensusModelLine.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelLine (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
+        # 
+        # /** \brief Check whether the given index samples can form a valid line model, compute the model coefficients from
+        # * these samples and store them internally in model_coefficients_. The line coefficients are represented by a
+        # * point and a line direction
+        # * \param[in] samples the point indices found as possible good candidates for creating a valid model
+        # * \param[out] model_coefficients the resultant model coefficients
+        # */
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # /** \brief Compute all squared distances from the cloud data to a given line model.
+        # * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
+        # * \param[out] distances the resultant estimated squared distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Recompute the line coefficients using the given inlier set and return them to the user.
+        # * @note: these are the coefficients of the line model after refinement (eg. after SVD)
+        # * \param[in] inliers the data inliers found as supporting the model
+        # * \param[in] model_coefficients the initial guess for the model coefficients
+        # * \param[out] optimized_coefficients the resultant recomputed coefficients after optimization
+        # */
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, 
+        #                          const Eigen::VectorXf &model_coefficients, 
+        #                          Eigen::VectorXf &optimized_coefficients);
+        # 
+        # /** \brief Create a new point cloud with inliers projected onto the line model.
+        # * \param[in] inliers the data inliers that we want to project on the line model
+        # * \param[in] model_coefficients the *normalized* coefficients of a line model
+        # * \param[out] projected_points the resultant projected points
+        # * \param[in] copy_data_fields set to true if we need to copy the other data fields
+        # */
+        # void projectPoints (const std::vector<int> &inliers, 
+        #              const Eigen::VectorXf &model_coefficients, 
+        #              PointCloud &projected_points, 
+        #              bool copy_data_fields = true);
+        # 
+        # /** \brief Verify whether a subset of indices verifies the given line model coefficients.
+        # * \param[in] indices the data indices that need to be tested against the line model
+        # * \param[in] model_coefficients the line model coefficients
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # */
+        # bool doSamplesVerifyModel (const std::set<int> &indices, 
+        #                     const Eigen::VectorXf &model_coefficients, 
+        #                     const double threshold);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_LINE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_LINE); }
+
+
 ###
 
 # sac_model_normal_parallel_plane.h
 # namespace pcl
-# {
-#   /** \brief SampleConsensusModelNormalParallelPlane defines a model for 3D
-#     * plane segmentation using additional surface normal constraints. Basically
-#     * this means that checking for inliers will not only involve a "distance to
-#     * model" criterion, but also an additional "maximum angular deviation"
-#     * between the plane's normal and the inlier points normals. In addition,
-#     * the plane normal must lie parallel to an user-specified axis.
-#     *
-#     * The model coefficients are defined as:
-#     *   - \b a : the X coordinate of the plane's normal (normalized)
-#     *   - \b b : the Y coordinate of the plane's normal (normalized)
-#     *   - \b c : the Z coordinate of the plane's normal (normalized)
-#     *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
-#     *
-#     * To set the influence of the surface normals in the inlier estimation
-#     * process, set the normal weight (0.0-1.0), e.g.:
-#     * \code
-#     * SampleConsensusModelNormalPlane<pcl::PointXYZ, pcl::Normal> sac_model;
-#     * ...
-#     * sac_model.setNormalDistanceWeight (0.1);
-#     * ...
-#     * \endcode
-#     *
-#     * In addition, the user can specify more constraints, such as:
-#     * 
-#     *   - an axis along which we need to search for a plane perpendicular to (\ref setAxis);
-#     *   - an angle \a tolerance threshold between the plane's normal and the above given axis (\ref setEpsAngle);
-#     *   - a distance we expect the plane to be from the origin (\ref setDistanceFromOrigin);
-#     *   - a distance \a tolerance as the maximum allowed deviation from the above given distance from the origin (\ref setEpsDist).
-#     *
-#     * \note Please remember that you need to specify an angle > 0 in order to activate the axis-angle constraint!
-#     *
-#     * \author Radu B. Rusu and Jared Glover and Nico Blodow
-#     * \ingroup sample_consensus
-#     */
-#   template <typename PointT, typename PointNT>
-#   class SampleConsensusModelNormalParallelPlane : public SampleConsensusModelPlane<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
-#   {
-#     using SampleConsensusModel<PointT>::input_;
-#     using SampleConsensusModel<PointT>::indices_;
-#     using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
-#     using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
-# 
-#     public:
-# 
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNPtr PointCloudNPtr;
-#       typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNConstPtr PointCloudNConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelNormalParallelPlane> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelNormalParallelPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelNormalParallelPlane (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModelPlane<PointT> (cloud),
-#         axis_ (Eigen::Vector4f::Zero ()),
-#         distance_from_origin_ (0),
-#         eps_angle_ (-1.0), cos_angle_ (-1.0), eps_dist_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Constructor for base SampleConsensusModelNormalParallelPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelNormalParallelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
-#         SampleConsensusModelPlane<PointT> (cloud, indices),
-#         axis_ (Eigen::Vector4f::Zero ()),
-#         distance_from_origin_ (0),
-#         eps_angle_ (-1.0), cos_angle_ (-1.0), eps_dist_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Set the axis along which we need to search for a plane perpendicular to.
-#         * \param[in] ax the axis along which we need to search for a plane perpendicular to
-#         */
-#       inline void
-#       setAxis (const Eigen::Vector3f &ax) { axis_.head<3> () = ax; axis_.normalize ();}
-# 
-#       /** \brief Get the axis along which we need to search for a plane perpendicular to. */
-#       inline Eigen::Vector3f
-#       getAxis () { return (axis_.head<3> ()); }
-# 
-#       /** \brief Set the angle epsilon (delta) threshold.
-#         * \param[in] ea the maximum allowed deviation from 90 degrees between the plane normal and the given axis.
-#         * \note You need to specify an angle > 0 in order to activate the axis-angle constraint!
-#         */
-#       inline void
-#       setEpsAngle (const double ea) { eps_angle_ = ea; cos_angle_ = fabs (cos (ea));}
-# 
-#       /** \brief Get the angle epsilon (delta) threshold. */
-#       inline double
-#       getEpsAngle () { return (eps_angle_); }
-# 
-#       /** \brief Set the distance we expect the plane to be from the origin
-#         * \param[in] d distance from the template plane to the origin
-#         */
-#       inline void
-#       setDistanceFromOrigin (const double d) { distance_from_origin_ = d; }
-# 
-#       /** \brief Get the distance of the plane from the origin. */
-#       inline double
-#       getDistanceFromOrigin () { return (distance_from_origin_); }
-# 
-#       /** \brief Set the distance epsilon (delta) threshold.
-#         * \param[in] delta the maximum allowed deviation from the template distance from the origin
-#         */
-#       inline void
-#       setEpsDist (const double delta) { eps_dist_ = delta; }
-# 
-#       /** \brief Get the distance epsilon (delta) threshold. */
-#       inline double
-#       getEpsDist () { return (eps_dist_); }
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients,
-#                             const double threshold,
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers.
-#         *
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients,
-#                            const double threshold);
-# 
-#       /** \brief Compute all distances from the cloud data to a given plane model.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients,
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_NORMAL_PARALLEL_PLANE). */
-#       inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_PARALLEL_PLANE); }
+# /** \brief SampleConsensusModelNormalParallelPlane defines a model for 3D
+#   * plane segmentation using additional surface normal constraints. Basically
+#   * this means that checking for inliers will not only involve a "distance to
+#   * model" criterion, but also an additional "maximum angular deviation"
+#   * between the plane's normal and the inlier points normals. In addition,
+#   * the plane normal must lie parallel to an user-specified axis.
+#   * The model coefficients are defined as:
+#   *   - \b a : the X coordinate of the plane's normal (normalized)
+#   *   - \b b : the Y coordinate of the plane's normal (normalized)
+#   *   - \b c : the Z coordinate of the plane's normal (normalized)
+#   *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
+#   * To set the influence of the surface normals in the inlier estimation
+#   * process, set the normal weight (0.0-1.0), e.g.:
+#   * \code
+#   * SampleConsensusModelNormalPlane<pcl::PointXYZ, pcl::Normal> sac_model;
+#   * ...
+#   * sac_model.setNormalDistanceWeight (0.1);
+#   * ...
+#   * \endcode
+#   * In addition, the user can specify more constraints, such as:
+#   * 
+#   *   - an axis along which we need to search for a plane perpendicular to (\ref setAxis);
+#   *   - an angle \a tolerance threshold between the plane's normal and the above given axis (\ref setEpsAngle);
+#   *   - a distance we expect the plane to be from the origin (\ref setDistanceFromOrigin);
+#   *   - a distance \a tolerance as the maximum allowed deviation from the above given distance from the origin (\ref setEpsDist).
+#   *
+#   * \note Please remember that you need to specify an angle > 0 in order to activate the axis-angle constraint!
+#   * \author Radu B. Rusu and Jared Glover and Nico Blodow
+#   * \ingroup sample_consensus
+#   */
+# template <typename PointT, typename PointNT>
+# class SampleConsensusModelNormalParallelPlane : public SampleConsensusModelPlane<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
+cdef extern from "pcl/sample_consensus/sac_model_normal_parallel_plane.h" namespace "pcl":
+    # cdef cppclass SampleConsensusModelNormalParallelPlane[PointT](SampleConsensusModelPlane[PointT]):
+    cdef cppclass SampleConsensusModelNormalParallelPlane[PointT]:
+        SampleConsensusModelNormalParallelPlane()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNPtr PointCloudNPtr;
+        # typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNConstPtr PointCloudNConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelNormalParallelPlane> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelNormalParallelPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelNormalParallelPlane (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModelPlane<PointT> (cloud),
+        # axis_ (Eigen::Vector4f::Zero ()),
+        # distance_from_origin_ (0),
+        # eps_angle_ (-1.0), cos_angle_ (-1.0), eps_dist_ (0.0)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelNormalParallelPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelNormalParallelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModelPlane<PointT> (cloud, indices),
+        # axis_ (Eigen::Vector4f::Zero ()),
+        # distance_from_origin_ (0),
+        # eps_angle_ (-1.0), cos_angle_ (-1.0), eps_dist_ (0.0)
+        # 
+        # /** \brief Set the axis along which we need to search for a plane perpendicular to.
+        # * \param[in] ax the axis along which we need to search for a plane perpendicular to
+        # */
+        # inline void setAxis (const Eigen::Vector3f &ax) { axis_.head<3> () = ax; axis_.normalize ();}
+        # 
+        # /** \brief Get the axis along which we need to search for a plane perpendicular to. */
+        # inline Eigen::Vector3f getAxis () { return (axis_.head<3> ()); }
+        # 
+        # /** \brief Set the angle epsilon (delta) threshold.
+        # * \param[in] ea the maximum allowed deviation from 90 degrees between the plane normal and the given axis.
+        # * \note You need to specify an angle > 0 in order to activate the axis-angle constraint!
+        # */
+        # inline void setEpsAngle (const double ea) { eps_angle_ = ea; cos_angle_ = fabs (cos (ea));}
+        # 
+        # /** \brief Get the angle epsilon (delta) threshold. */
+        # inline double getEpsAngle () { return (eps_angle_); }
+        # 
+        # /** \brief Set the distance we expect the plane to be from the origin
+        # * \param[in] d distance from the template plane to the origin
+        # */
+        # inline void setDistanceFromOrigin (const double d) { distance_from_origin_ = d; }
+        # 
+        # /** \brief Get the distance of the plane from the origin. */
+        # inline double getDistanceFromOrigin () { return (distance_from_origin_); }
+        # 
+        # /** \brief Set the distance epsilon (delta) threshold.
+        # * \param[in] delta the maximum allowed deviation from the template distance from the origin
+        # */
+        # inline void setEpsDist (const double delta) { eps_dist_ = delta; }
+        # 
+        # /** \brief Get the distance epsilon (delta) threshold. */
+        # inline double getEpsDist () { return (eps_dist_); }
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers.
+        # *
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given plane model.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_NORMAL_PARALLEL_PLANE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_PARALLEL_PLANE); }
 
 
 ###
@@ -1320,7 +1292,6 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   *   - \b b : the Y coordinate of the plane's normal (normalized)
 #   *   - \b c : the Z coordinate of the plane's normal (normalized)
 #   *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
-#   *
 #   * To set the influence of the surface normals in the inlier estimation
 #   * process, set the normal weight (0.0-1.0), e.g.:
 #   * \code
@@ -1335,60 +1306,56 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   */
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelNormalPlane : public SampleConsensusModelPlane<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
-#       using SampleConsensusModel<PointT>::input_;
-#       using SampleConsensusModel<PointT>::indices_;
-#       using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
-#       using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
-#       public:
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNPtr PointCloudNPtr;
-#       typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNConstPtr PointCloudNConstPtr;
-#       typedef boost::shared_ptr<SampleConsensusModelNormalPlane> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelNormalPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelNormalPlane (const PointCloudConstPtr &cloud) : SampleConsensusModelPlane<PointT> (cloud)
-# 
-#       /** \brief Constructor for base SampleConsensusModelNormalPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelNormalPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModelPlane<PointT> (cloud, indices)
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Compute all distances from the cloud data to a given plane model.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_NORMAL_PLANE). */
-#       inline pcl::SacModel 
-#       getModelType () const { return (SACMODEL_NORMAL_PLANE); }
+cdef extern from "pcl/sample_consensus/sac_model_normal_plane.h" namespace "pcl":
+    # cdef cppclass SampleConsensusModelNormalPlane[PointT](SampleConsensusModelPlane[PointT]):
+    cdef cppclass SampleConsensusModelNormalPlane[PointT]:
+        SampleConsensusModelNormalPlane()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNPtr PointCloudNPtr;
+        # typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNConstPtr PointCloudNConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelNormalPlane> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelNormalPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelNormalPlane (const PointCloudConstPtr &cloud) : SampleConsensusModelPlane<PointT> (cloud)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelNormalPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelNormalPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModelPlane<PointT> (cloud, indices)
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given plane model.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_NORMAL_PLANE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_PLANE); }
 
 
 ###
@@ -1400,7 +1367,6 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   * means that checking for inliers will not only involve a "distance to
 #   * model" criterion, but also an additional "maximum angular deviation"
 #   * between the sphere's normal and the inlier points normals.
-#   *
 #   * The model coefficients are defined as:
 #   * <ul>
 #   * <li><b>a</b> : the X coordinate of the plane's normal (normalized)
@@ -1408,76 +1374,62 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   * <li><b>c</b> : the Z coordinate of the plane's normal (normalized)
 #   * <li><b>d</b> : radius of the sphere
 #   * </ul>
-#   *
 #   * \author Stefan Schrandt
 #   * \ingroup sample_consensus
 #   */
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelNormalSphere : public SampleConsensusModelSphere<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
-#     using SampleConsensusModel<PointT>::input_;
-#     using SampleConsensusModel<PointT>::indices_;
-#     using SampleConsensusModel<PointT>::radius_min_;
-#     using SampleConsensusModel<PointT>::radius_max_;
-#     using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
-#     using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
-# 
-#     public:
-# 
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNPtr PointCloudNPtr;
-#       typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNConstPtr PointCloudNConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelNormalSphere> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelNormalSphere.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelNormalSphere (const PointCloudConstPtr &cloud) : SampleConsensusModelSphere<PointT> (cloud)
-#       {
-#       }
-# 
-#       /** \brief Constructor for base SampleConsensusModelNormalSphere.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelNormalSphere (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModelSphere<PointT> (cloud, indices)
-#       {
-#       }
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Compute all distances from the cloud data to a given sphere model.
-#         * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_NORMAL_SPHERE). */
-#       inline pcl::SacModel 
-#       getModelType () const { return (SACMODEL_NORMAL_SPHERE); }
-# 
+cdef extern from "pcl/sample_consensus/sac_model_normal_sphere.h" namespace "pcl":
+    # cdef cppclass SampleConsensusModelNormalSphere[PointT](SampleConsensusModelSphere[PointT]):
+    cdef cppclass SampleConsensusModelNormalSphere[PointT]:
+        SampleConsensusModelNormalSphere()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModel<PointT>::radius_min_;
+        # using SampleConsensusModel<PointT>::radius_max_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normals_;
+        # using SampleConsensusModelFromNormals<PointT, PointNT>::normal_distance_weight_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNPtr PointCloudNPtr;
+        # typedef typename SampleConsensusModelFromNormals<PointT, PointNT>::PointCloudNConstPtr PointCloudNConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelNormalSphere> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelNormalSphere.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelNormalSphere (const PointCloudConstPtr &cloud) : SampleConsensusModelSphere<PointT> (cloud)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelNormalSphere.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelNormalSphere (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModelSphere<PointT> (cloud, indices)
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given sphere model.
+        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_NORMAL_SPHERE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_SPHERE); }
 
 
 ###
@@ -1493,89 +1445,76 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   *   - \b line_direction.x : the X coordinate of a line's direction
 #   *   - \b line_direction.y : the Y coordinate of a line's direction
 #   *   - \b line_direction.z : the Z coordinate of a line's direction
-#   * 
 #   * \author Radu B. Rusu
 #   * \ingroup sample_consensus
 #   */
 # template <typename PointT>
 # class SampleConsensusModelParallelLine : public SampleConsensusModelLine<PointT>
-#     public:
-#       typedef typename SampleConsensusModelLine<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModelLine<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModelLine<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelParallelLine> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelParallelLine.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelParallelLine (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModelLine<PointT> (cloud),
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Constructor for base SampleConsensusModelParallelLine.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelParallelLine (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
-#         SampleConsensusModelLine<PointT> (cloud, indices),
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Set the axis along which we need to search for a plane perpendicular to.
-#         * \param[in] ax the axis along which we need to search for a plane perpendicular to
-#         */
-#       inline void 
-#       setAxis (const Eigen::Vector3f &ax) { axis_ = ax; axis_.normalize (); }
-# 
-#       /** \brief Get the axis along which we need to search for a plane perpendicular to. */
-#       inline Eigen::Vector3f 
-#       getAxis ()  { return (axis_); }
-# 
-#       /** \brief Set the angle epsilon (delta) threshold.
-#         * \param[in] ea the maximum allowed difference between the plane normal and the given axis.
-#         */
-#       inline void 
-#       setEpsAngle (const double ea) { eps_angle_ = ea; }
-# 
-#       /** \brief Get the angle epsilon (delta) threshold. */
-#       inline double getEpsAngle () { return (eps_angle_); }
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Compute all squared distances from the cloud data to a given line model.
-#         * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
-#         * \param[out] distances the resultant estimated squared distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_PARALLEL_LINE). */
-#       inline pcl::SacModel getModelType () const { return (SACMODEL_PARALLEL_LINE); }
+cdef extern from "pcl/sample_consensus/sac_model_parallel_line.h" namespace "pcl":
+    # cdef cppclass SampleConsensusModelParallelLine[PointT](SampleConsensusModelLine[PointT]):
+    cdef cppclass SampleConsensusModelParallelLine[PointT]:
+        SampleConsensusModelParallelLine()
+        # public:
+        # typedef typename SampleConsensusModelLine<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModelLine<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModelLine<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelParallelLine> Ptr;
+        # /** \brief Constructor for base SampleConsensusModelParallelLine.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelParallelLine (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModelLine<PointT> (cloud),
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0.0)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelParallelLine.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelParallelLine (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModelLine<PointT> (cloud, indices),
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0.0)
+        # 
+        # /** \brief Set the axis along which we need to search for a plane perpendicular to.
+        # * \param[in] ax the axis along which we need to search for a plane perpendicular to
+        # */
+        # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; axis_.normalize (); }
+        # 
+        # /** \brief Get the axis along which we need to search for a plane perpendicular to. */
+        # inline Eigen::Vector3f getAxis ()  { return (axis_); }
+        # 
+        # /** \brief Set the angle epsilon (delta) threshold.
+        # * \param[in] ea the maximum allowed difference between the plane normal and the given axis.
+        # */
+        # inline void setEpsAngle (const double ea) { eps_angle_ = ea; }
+        # 
+        # /** \brief Get the angle epsilon (delta) threshold. */
+        # inline double getEpsAngle () { return (eps_angle_); }
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Compute all squared distances from the cloud data to a given line model.
+        # * \param[in] model_coefficients the coefficients of a line model that we need to compute distances to
+        # * \param[out] distances the resultant estimated squared distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_PARALLEL_LINE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_PARALLEL_LINE); }
 
 
 ###
@@ -1585,100 +1524,83 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 # /** \brief @b SampleConsensusModelParallelPlane defines a model for 3D plane segmentation using additional
 #   * angular constraints. The plane must be parallel to a user-specified axis
 #   * (\ref setAxis) within an user-specified angle threshold (\ref setEpsAngle).
-#   *
 #   * Code example for a plane model, parallel (within a 15 degrees tolerance) with the Z axis:
 #   * \code
 #   * SampleConsensusModelParallelPlane<pcl::PointXYZ> model (cloud);
 #   * model.setAxis (Eigen::Vector3f (0.0, 0.0, 1.0));
 #   * model.setEpsAngle (pcl::deg2rad (15));
 #   * \endcode
-#   *
 #   * \note Please remember that you need to specify an angle > 0 in order to activate the axis-angle constraint!
-#   *
 #   * \author Radu Bogdan Rusu, Nico Blodow
 #   * \ingroup sample_consensus
 #   */
 # template <typename PointT>
 # class SampleConsensusModelParallelPlane : public SampleConsensusModelPlane<PointT>
-#     public:
-#       typedef typename SampleConsensusModelPlane<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModelPlane<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModelPlane<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelParallelPlane> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelParallelPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelParallelPlane (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModelPlane<PointT> (cloud),
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0.0), sin_angle_ (-1.0)
-#       {
-#       }
-# 
-#       /** \brief Constructor for base SampleConsensusModelParallelPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelParallelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
-#         SampleConsensusModelPlane<PointT> (cloud, indices),
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0.0), sin_angle_ (-1.0)
-#       {
-#       }
-# 
-#       /** \brief Set the axis along which we need to search for a plane perpendicular to.
-#         * \param[in] ax the axis along which we need to search for a plane perpendicular to
-#         */
-#       inline void
-#       setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-# 
-#       /** \brief Get the axis along which we need to search for a plane perpendicular to. */
-#       inline Eigen::Vector3f
-#       getAxis ()  { return (axis_); }
-# 
-#       /** \brief Set the angle epsilon (delta) threshold.
-#         * \param[in] ea the maximum allowed difference between the plane normal and the given axis.
-#         * \note You need to specify an angle > 0 in order to activate the axis-angle constraint!
-#         */
-#       inline void
-#       setEpsAngle (const double ea) { eps_angle_ = ea; sin_angle_ = fabs (sin (ea));}
-# 
-#       /** \brief Get the angle epsilon (delta) threshold. */
-#       inline double
-#       getEpsAngle () { return (eps_angle_); }
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients,
-#                             const double threshold,
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers.
-#         *
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients,
-#                            const double threshold);
-# 
-#       /** \brief Compute all distances from the cloud data to a given plane model.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients,
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_PARALLEL_PLANE). */
-#       inline pcl::SacModel getModelType () const { return (SACMODEL_PARALLEL_PLANE); }
+cdef extern from "pcl/sample_consensus/sac_model_parallel_plane.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelParallelPlane[PointT](SampleConsensusModelPlane[PointT]):
+        SampleConsensusModelParallelLine()
+        # public:
+        # typedef typename SampleConsensusModelPlane<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModelPlane<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModelPlane<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelParallelPlane> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelParallelPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelParallelPlane (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModelPlane<PointT> (cloud),
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0.0), sin_angle_ (-1.0)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelParallelPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelParallelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModelPlane<PointT> (cloud, indices),
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0.0), sin_angle_ (-1.0)
+        # 
+        # /** \brief Set the axis along which we need to search for a plane perpendicular to.
+        # * \param[in] ax the axis along which we need to search for a plane perpendicular to
+        # */
+        # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+        # 
+        # /** \brief Get the axis along which we need to search for a plane perpendicular to. */
+        # inline Eigen::Vector3f getAxis ()  { return (axis_); }
+        # 
+        # /** \brief Set the angle epsilon (delta) threshold.
+        # * \param[in] ea the maximum allowed difference between the plane normal and the given axis.
+        # * \note You need to specify an angle > 0 in order to activate the axis-angle constraint!
+        # */
+        # inline void setEpsAngle (const double ea) { eps_angle_ = ea; sin_angle_ = fabs (sin (ea));}
+        # 
+        # /** \brief Get the angle epsilon (delta) threshold. */
+        # inline double getEpsAngle () { return (eps_angle_); }
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given plane model.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_PARALLEL_PLANE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_PARALLEL_PLANE); }
 
 
 ###
@@ -1692,273 +1614,83 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   *   - \b b : the Y coordinate of the plane's normal (normalized)
 #   *   - \b c : the Z coordinate of the plane's normal (normalized)
 #   *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
-#   * 
-#   * 
 #   * Code example for a plane model, perpendicular (within a 15 degrees tolerance) with the Z axis:
 #   * \code
 #   * SampleConsensusModelPerpendicularPlane<pcl::PointXYZ> model (cloud);
 #   * model.setAxis (Eigen::Vector3f (0.0, 0.0, 1.0));
 #   * model.setEpsAngle (pcl::deg2rad (15));
 #   * \endcode
-#   *
 #   * \note Please remember that you need to specify an angle > 0 in order to activate the axis-angle constraint!
-#   *
 #   * \author Radu B. Rusu
 #   * \ingroup sample_consensus
 #   */
 # template <typename PointT>
 # class SampleConsensusModelPerpendicularPlane : public SampleConsensusModelPlane<PointT>
-#     public:
-#       typedef typename SampleConsensusModelPlane<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModelPlane<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModelPlane<PointT>::PointCloudConstPtr PointCloudConstPtr;
-# 
-#       typedef boost::shared_ptr<SampleConsensusModelPerpendicularPlane> Ptr;
-# 
-#       /** \brief Constructor for base SampleConsensusModelPerpendicularPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelPerpendicularPlane (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModelPlane<PointT> (cloud), 
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Constructor for base SampleConsensusModelPerpendicularPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelPerpendicularPlane (const PointCloudConstPtr &cloud, 
-#                                               const std::vector<int> &indices) : 
-#         SampleConsensusModelPlane<PointT> (cloud, indices), 
-#         axis_ (Eigen::Vector3f::Zero ()),
-#         eps_angle_ (0.0)
-#       {
-#       }
-# 
-#       /** \brief Set the axis along which we need to search for a plane perpendicular to.
-#         * \param[in] ax the axis along which we need to search for a plane perpendicular to
-#         */
-#       inline void 
-#       setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-# 
-#       /** \brief Get the axis along which we need to search for a plane perpendicular to. */
-#       inline Eigen::Vector3f 
-#       getAxis ()  { return (axis_); }
-# 
-#       /** \brief Set the angle epsilon (delta) threshold.
-#         * \param[in] ea the maximum allowed difference between the plane normal and the given axis.
-#         * \note You need to specify an angle > 0 in order to activate the axis-angle constraint!
-#         */
-#       inline void 
-#       setEpsAngle (const double ea) { eps_angle_ = ea; }
-# 
-#       /** \brief Get the angle epsilon (delta) threshold. */
-#       inline double 
-#       getEpsAngle () { return (eps_angle_); }
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Compute all distances from the cloud data to a given plane model.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_PERPENDICULAR_PLANE). */
-#       inline pcl::SacModel getModelType () const { return (SACMODEL_PERPENDICULAR_PLANE); }
-
-
-###
-
-# sac_model_plane.h
-# namespace pcl
-# /** \brief Project a point on a planar model given by a set of normalized coefficients
-#   * \param[in] p the input point to project
-#   * \param[in] model_coefficients the coefficients of the plane (a, b, c, d) that satisfy ax+by+cz+d=0
-#   * \param[out] q the resultant projected point
-#   */
-# template <typename Point> inline void
-# projectPoint (const Point &p, const Eigen::Vector4f &model_coefficients, Point &q)
-# {
-#   // Calculate the distance from the point to the plane
-#   Eigen::Vector4f pp (p.x, p.y, p.z, 1);
-#   // use normalized coefficients to calculate the scalar projection 
-#   float distance_to_plane = pp.dot(model_coefficients);
-#  
-#   //TODO: Why doesn't getVector4Map work here?
-#   //Eigen::Vector4f q_e = q.getVector4fMap ();
-#   //q_e = pp - model_coefficients * distance_to_plane;
-#   
-#   Eigen::Vector4f q_e = pp - distance_to_plane * model_coefficients;
-#   q.x = q_e[0];
-#   q.y = q_e[1];
-#   q.z = q_e[2];
-# }
-# 
-# /** \brief Get the distance from a point to a plane (signed) defined by ax+by+cz+d=0
-#   * \param p a point
-#   * \param a the normalized <i>a</i> coefficient of a plane
-#   * \param b the normalized <i>b</i> coefficient of a plane
-#   * \param c the normalized <i>c</i> coefficient of a plane
-#   * \param d the normalized <i>d</i> coefficient of a plane
-#   * \ingroup sample_consensus
-#   */
-# template <typename Point> inline double
-# pointToPlaneDistanceSigned (const Point &p, double a, double b, double c, double d)
-# 
-# /** \brief Get the distance from a point to a plane (signed) defined by ax+by+cz+d=0
-#   * \param p a point
-#   * \param plane_coefficients the normalized coefficients (a, b, c, d) of a plane
-#   * \ingroup sample_consensus
-#   */
-# template <typename Point> inline double
-# pointToPlaneDistanceSigned (const Point &p, const Eigen::Vector4f &plane_coefficients)
-# 
-# /** \brief Get the distance from a point to a plane (unsigned) defined by ax+by+cz+d=0
-#   * \param p a point
-#   * \param a the normalized <i>a</i> coefficient of a plane
-#   * \param b the normalized <i>b</i> coefficient of a plane
-#   * \param c the normalized <i>c</i> coefficient of a plane
-#   * \param d the normalized <i>d</i> coefficient of a plane
-#   * \ingroup sample_consensus
-#   */
-# template <typename Point> inline double
-# pointToPlaneDistance (const Point &p, double a, double b, double c, double d)
-# 
-# /** \brief Get the distance from a point to a plane (unsigned) defined by ax+by+cz+d=0
-#   * \param p a point
-#   * \param plane_coefficients the normalized coefficients (a, b, c, d) of a plane
-#   * \ingroup sample_consensus
-#   */
-# template <typename Point> inline double
-# pointToPlaneDistance (const Point &p, const Eigen::Vector4f &plane_coefficients)
-# 
-# //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-# /** \brief SampleConsensusModelPlane defines a model for 3D plane segmentation.
-#   * The model coefficients are defined as:
-#   *   - \b a : the X coordinate of the plane's normal (normalized)
-#   *   - \b b : the Y coordinate of the plane's normal (normalized)
-#   *   - \b c : the Z coordinate of the plane's normal (normalized)
-#   *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
-#   * 
-#   * \author Radu B. Rusu
-#   * \ingroup sample_consensus
-#   */
-# template <typename PointT>
-# class SampleConsensusModelPlane : public SampleConsensusModel<PointT>
-#     public:
-#       using SampleConsensusModel<PointT>::input_;
-#       using SampleConsensusModel<PointT>::indices_;
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef boost::shared_ptr<SampleConsensusModelPlane> Ptr;
-#       
-#       /** \brief Constructor for base SampleConsensusModelPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelPlane (const PointCloudConstPtr &cloud) : SampleConsensusModel<PointT> (cloud) {};
-#       
-#       /** \brief Constructor for base SampleConsensusModelPlane.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
-#       
-#       /** \brief Check whether the given index samples can form a valid plane model, compute the model coefficients from
-#         * these samples and store them internally in model_coefficients_. The plane coefficients are:
-#         * a, b, c, d (ax+by+cz+d=0)
-#         * \param[in] samples the point indices found as possible good candidates for creating a valid model
-#         * \param[out] model_coefficients the resultant model coefficients
-#         */
-#       bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
-#       
-#       /** \brief Compute all distances from the cloud data to a given plane model.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-#       
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-#       
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-#       
-#       /** \brief Recompute the plane coefficients using the given inlier set and return them to the user.
-#         * @note: these are the coefficients of the plane model after refinement (eg. after SVD)
-#         * \param[in] inliers the data inliers found as supporting the model
-#         * \param[in] model_coefficients the initial guess for the model coefficients
-#         * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
-#         */
-#       void 
-#       optimizeModelCoefficients (const std::vector<int> &inliers, 
-#                                  const Eigen::VectorXf &model_coefficients, 
-#                                  Eigen::VectorXf &optimized_coefficients);
-#       
-#       /** \brief Create a new point cloud with inliers projected onto the plane model.
-#         * \param[in] inliers the data inliers that we want to project on the plane model
-#         * \param[in] model_coefficients the *normalized* coefficients of a plane model
-#         * \param[out] projected_points the resultant projected points
-#         * \param[in] copy_data_fields set to true if we need to copy the other data fields
-#         */
-#       void 
-#       projectPoints (const std::vector<int> &inliers, 
-#                      const Eigen::VectorXf &model_coefficients, 
-#                      PointCloud &projected_points, 
-#                      bool copy_data_fields = true);
-#       
-#       /** \brief Verify whether a subset of indices verifies the given plane model coefficients.
-#         * \param[in] indices the data indices that need to be tested against the plane model
-#         * \param[in] model_coefficients the plane model coefficients
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         */
-#       bool 
-#       doSamplesVerifyModel (const std::set<int> &indices, 
-#                             const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold);
-#       
-#       /** \brief Return an unique id for this model (SACMODEL_PLANE). */
-#       inline pcl::SacModel 
-#       getModelType () const { return (SACMODEL_PLANE); }
+cdef extern from "pcl/sample_consensus/sac_model_perpendicular_plane.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelPerpendicularPlane[PointT](SampleConsensusModelPlane[PointT]):
+        SampleConsensusModelPerpendicularPlane()
+        # public:
+        # typedef typename SampleConsensusModelPlane<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModelPlane<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModelPlane<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelPerpendicularPlane> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelPerpendicularPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelPerpendicularPlane (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModelPlane<PointT> (cloud), 
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0.0)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelPerpendicularPlane.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelPerpendicularPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModelPlane<PointT> (cloud, indices), 
+        # axis_ (Eigen::Vector3f::Zero ()),
+        # eps_angle_ (0.0)
+        # 
+        # /** \brief Set the axis along which we need to search for a plane perpendicular to.
+        # * \param[in] ax the axis along which we need to search for a plane perpendicular to
+        # */
+        # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
+        # 
+        # /** \brief Get the axis along which we need to search for a plane perpendicular to. */
+        # inline Eigen::Vector3f getAxis ()  { return (axis_); }
+        # 
+        # /** \brief Set the angle epsilon (delta) threshold.
+        # * \param[in] ea the maximum allowed difference between the plane normal and the given axis.
+        # * \note You need to specify an angle > 0 in order to activate the axis-angle constraint!
+        # */
+        # inline void setEpsAngle (const double ea) { eps_angle_ = ea; }
+        # 
+        # /** \brief Get the angle epsilon (delta) threshold. */
+        # inline double getEpsAngle () { return (eps_angle_); }
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given plane model.
+        # * \param[in] model_coefficients the coefficients of a plane model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_PERPENDICULAR_PLANE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_PERPENDICULAR_PLANE); }
 
 
 ###
@@ -1971,90 +1703,93 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   */
 # template <typename PointT>
 # class SampleConsensusModelRegistration : public SampleConsensusModel<PointT>
-#     using SampleConsensusModel<PointT>::input_;
-#     using SampleConsensusModel<PointT>::indices_;
-#     public:
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef boost::shared_ptr<SampleConsensusModelRegistration> Ptr;
-#       
-#       /** \brief Constructor for base SampleConsensusModelRegistration.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelRegistration (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModel<PointT> (cloud),
-#         target_ (),
-#         indices_tgt_ (),
-#         correspondences_ (),
-#         sample_dist_thresh_ (0)
-#       
-#       /** \brief Constructor for base SampleConsensusModelRegistration.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelRegistration (const PointCloudConstPtr &cloud, const std::vector<int> &indices) :
-#         SampleConsensusModel<PointT> (cloud, indices),
-#         target_ (),
-#         indices_tgt_ (),
-#         correspondences_ (),
-#         sample_dist_thresh_ (0)
-#       
-#       /** \brief Provide a pointer to the input dataset
-#         * \param[in] cloud the const boost shared pointer to a PointCloud message
-#         */
-#       inline virtual void setInputCloud (const PointCloudConstPtr &cloud)
-#       
-#       /** \brief Set the input point cloud target.
-#         * \param target the input point cloud target
-#         */
-#       inline void setInputTarget (const PointCloudConstPtr &target)
-#       
-#       /** \brief Set the input point cloud target.
-#         * \param[in] target the input point cloud target
-#         * \param[in] indices_tgt a vector of point indices to be used from \a target
-#         */
-#       inline void setInputTarget (const PointCloudConstPtr &target, const std::vector<int> &indices_tgt)
-#       
-#       /** \brief Compute a 4x4 rigid transformation matrix from the samples given
-#         * \param[in] samples the indices found as good candidates for creating a valid model
-#         * \param[out] model_coefficients the resultant model coefficients
-#         */
-#       bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
-#       
-#       /** \brief Compute all distances from the transformed points to their correspondences
-#         * \param[in] model_coefficients the 4x4 transformation matrix
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
-#       
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the 4x4 transformation matrix
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
-#       
-#       /** \brief Count all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
-#       
-#       /** \brief Recompute the 4x4 transformation using the given inlier set
-#         * \param[in] inliers the data inliers found as supporting the model
-#         * \param[in] model_coefficients the initial guess for the optimization
-#         * \param[out] optimized_coefficients the resultant recomputed transformation
-#         */
-#       void optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients);
-#       
-#       void projectPoints (const std::vector<int> &, const Eigen::VectorXf &, PointCloud &, bool = true)
-#       
-#       bool doSamplesVerifyModel (const std::set<int> &, const Eigen::VectorXf &, const double)
-#       
-#       /** \brief Return an unique id for this model (SACMODEL_REGISTRATION). */
-#       inline pcl::SacModel getModelType () const { return (SACMODEL_REGISTRATION); }
+cdef extern from "pcl/sample_consensus/sac_model_registration.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelRegistration[PointT](SampleConsensusModel[PointT]):
+        SampleConsensusModelRegistration()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelRegistration> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelRegistration.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelRegistration (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModel<PointT> (cloud),
+        # target_ (),
+        # indices_tgt_ (),
+        # correspondences_ (),
+        # sample_dist_thresh_ (0)
+        # 
+        # /** \brief Constructor for base SampleConsensusModelRegistration.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelRegistration (const PointCloudConstPtr &cloud, const std::vector<int> &indices) :
+        # SampleConsensusModel<PointT> (cloud, indices),
+        # target_ (),
+        # indices_tgt_ (),
+        # correspondences_ (),
+        # sample_dist_thresh_ (0)
+        # 
+        # /** \brief Provide a pointer to the input dataset
+        # * \param[in] cloud the const boost shared pointer to a PointCloud message
+        # */
+        # inline virtual void setInputCloud (const PointCloudConstPtr &cloud)
+        # 
+        # /** \brief Set the input point cloud target.
+        # * \param target the input point cloud target
+        # */
+        # inline void setInputTarget (const PointCloudConstPtr &target)
+        # 
+        # /** \brief Set the input point cloud target.
+        # * \param[in] target the input point cloud target
+        # * \param[in] indices_tgt a vector of point indices to be used from \a target
+        # */
+        # inline void setInputTarget (const PointCloudConstPtr &target, const std::vector<int> &indices_tgt)
+        # 
+        # /** \brief Compute a 4x4 rigid transformation matrix from the samples given
+        # * \param[in] samples the indices found as good candidates for creating a valid model
+        # * \param[out] model_coefficients the resultant model coefficients
+        # */
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # /** \brief Compute all distances from the transformed points to their correspondences
+        # * \param[in] model_coefficients the 4x4 transformation matrix
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the 4x4 transformation matrix
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Recompute the 4x4 transformation using the given inlier set
+        # * \param[in] inliers the data inliers found as supporting the model
+        # * \param[in] model_coefficients the initial guess for the optimization
+        # * \param[out] optimized_coefficients the resultant recomputed transformation
+        # */
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients);
+        # 
+        # void projectPoints (const std::vector<int> &, const Eigen::VectorXf &, PointCloud &, bool = true)
+        # 
+        # bool doSamplesVerifyModel (const std::set<int> &, const Eigen::VectorXf &, const double)
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_REGISTRATION). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_REGISTRATION); }
 
 
 ###
@@ -2073,116 +1808,104 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   */
 # template <typename PointT>
 # class SampleConsensusModelSphere : public SampleConsensusModel<PointT>
-#     public:
-#       using SampleConsensusModel<PointT>::input_;
-#       using SampleConsensusModel<PointT>::indices_;
-#       using SampleConsensusModel<PointT>::radius_min_;
-#       using SampleConsensusModel<PointT>::radius_max_;
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef boost::shared_ptr<SampleConsensusModelSphere> Ptr;
-#       
-#       /** \brief Constructor for base SampleConsensusModelSphere.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelSphere (const PointCloudConstPtr &cloud) : 
-#         SampleConsensusModel<PointT> (cloud), tmp_inliers_ ()
-#       
-#       /** \brief Constructor for base SampleConsensusModelSphere.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelSphere (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
-#         SampleConsensusModel<PointT> (cloud, indices), tmp_inliers_ ()
-#       {}
-#       
-#       /** \brief Copy constructor.
-#         * \param[in] source the model to copy into this
-#         */
-#       SampleConsensusModelSphere (const SampleConsensusModelSphere &source) :
-#         SampleConsensusModel<PointT> (), tmp_inliers_ () 
-# 
-#       /** \brief Copy constructor.
-#         * \param[in] source the model to copy into this
-#         */
-#       inline SampleConsensusModelSphere& operator = (const SampleConsensusModelSphere &source)
-# 
-#       /** \brief Check whether the given index samples can form a valid sphere model, compute the model 
-#         * coefficients from these samples and store them internally in model_coefficients. 
-#         * The sphere coefficients are: x, y, z, R.
-#         * \param[in] samples the point indices found as possible good candidates for creating a valid model
-#         * \param[out] model_coefficients the resultant model coefficients
-#         */
-#       bool 
-#       computeModelCoefficients (const std::vector<int> &samples, 
-#                                 Eigen::VectorXf &model_coefficients);
-# 
-#       /** \brief Compute all distances from the cloud data to a given sphere model.
-#         * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
-#         * \param[out] distances the resultant estimated distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-# 
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold, 
-#                             std::vector<int> &inliers);
-# 
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, 
-#                            const double threshold);
-# 
-#       /** \brief Recompute the sphere coefficients using the given inlier set and return them to the user.
-#         * @note: these are the coefficients of the sphere model after refinement (eg. after SVD)
-#         * \param[in] inliers the data inliers found as supporting the model
-#         * \param[in] model_coefficients the initial guess for the optimization
-#         * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
-#         */
-#       void 
-#       optimizeModelCoefficients (const std::vector<int> &inliers, 
-#                                  const Eigen::VectorXf &model_coefficients, 
-#                                  Eigen::VectorXf &optimized_coefficients);
-# 
-#       /** \brief Create a new point cloud with inliers projected onto the sphere model.
-#         * \param[in] inliers the data inliers that we want to project on the sphere model
-#         * \param[in] model_coefficients the coefficients of a sphere model
-#         * \param[out] projected_points the resultant projected points
-#         * \param[in] copy_data_fields set to true if we need to copy the other data fields
-#         * \todo implement this.
-#         */
-#       void 
-#       projectPoints (const std::vector<int> &inliers, 
-#                      const Eigen::VectorXf &model_coefficients, 
-#                      PointCloud &projected_points, 
-#                      bool copy_data_fields = true);
-# 
-#       /** \brief Verify whether a subset of indices verifies the given sphere model coefficients.
-#         * \param[in] indices the data indices that need to be tested against the sphere model
-#         * \param[in] model_coefficients the sphere model coefficients
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         */
-#       bool 
-#       doSamplesVerifyModel (const std::set<int> &indices, 
-#                             const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold);
-# 
-#       /** \brief Return an unique id for this model (SACMODEL_SPHERE). */
-#       inline pcl::SacModel getModelType () const { return (SACMODEL_SPHERE); }
-# 
+cdef extern from "pcl/sample_consensus/sac_model_sphere.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelSphere[PointT](SampleConsensusModel[PointT]):
+        SampleConsensusModelSphere()
+        # public:
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModel<PointT>::radius_min_;
+        # using SampleConsensusModel<PointT>::radius_max_;
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelSphere> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelSphere.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelSphere (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModel<PointT> (cloud), tmp_inliers_ ()
+        # 
+        # /** \brief Constructor for base SampleConsensusModelSphere.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelSphere (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModel<PointT> (cloud, indices), tmp_inliers_ ()
+        # 
+        # /** \brief Copy constructor.
+        # * \param[in] source the model to copy into this
+        # */
+        # SampleConsensusModelSphere (const SampleConsensusModelSphere &source) :
+        # SampleConsensusModel<PointT> (), tmp_inliers_ () 
+        # 
+        # /** \brief Copy constructor.
+        # * \param[in] source the model to copy into this
+        # */
+        # inline SampleConsensusModelSphere& operator = (const SampleConsensusModelSphere &source)
+        # 
+        # /** \brief Check whether the given index samples can form a valid sphere model, compute the model 
+        # * coefficients from these samples and store them internally in model_coefficients. 
+        # * The sphere coefficients are: x, y, z, R.
+        # * \param[in] samples the point indices found as possible good candidates for creating a valid model
+        # * \param[out] model_coefficients the resultant model coefficients
+        # */
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given sphere model.
+        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Recompute the sphere coefficients using the given inlier set and return them to the user.
+        # * @note: these are the coefficients of the sphere model after refinement (eg. after SVD)
+        # * \param[in] inliers the data inliers found as supporting the model
+        # * \param[in] model_coefficients the initial guess for the optimization
+        # * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
+        # */
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, 
+        #                          const Eigen::VectorXf &model_coefficients, 
+        #                          Eigen::VectorXf &optimized_coefficients);
+        # 
+        # /** \brief Create a new point cloud with inliers projected onto the sphere model.
+        # * \param[in] inliers the data inliers that we want to project on the sphere model
+        # * \param[in] model_coefficients the coefficients of a sphere model
+        # * \param[out] projected_points the resultant projected points
+        # * \param[in] copy_data_fields set to true if we need to copy the other data fields
+        # * \todo implement this.
+        # */
+        # void projectPoints (const std::vector<int> &inliers, 
+        #              const Eigen::VectorXf &model_coefficients, 
+        #              PointCloud &projected_points, 
+        #              bool copy_data_fields = true);
+        # 
+        # /** \brief Verify whether a subset of indices verifies the given sphere model coefficients.
+        # * \param[in] indices the data indices that need to be tested against the sphere model
+        # * \param[in] model_coefficients the sphere model coefficients
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # */
+        # bool doSamplesVerifyModel (const std::set<int> &indices, 
+        #                     const Eigen::VectorXf &model_coefficients, 
+        #                     const double threshold);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_SPHERE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_SPHERE); }
 
 
 ###
@@ -2204,100 +1927,84 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 #   */
 # template <typename PointT>
 # class SampleConsensusModelStick : public SampleConsensusModel<PointT>
-#       using SampleConsensusModel<PointT>::input_;
-#       using SampleConsensusModel<PointT>::indices_;
-#       using SampleConsensusModel<PointT>::radius_min_;
-#       using SampleConsensusModel<PointT>::radius_max_;
-#       
-#       public:
-#       typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-#       typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-#       typedef boost::shared_ptr<SampleConsensusModelStick> Ptr;
-#       
-#       /** \brief Constructor for base SampleConsensusModelStick.
-#         * \param[in] cloud the input point cloud dataset
-#         */
-#       SampleConsensusModelStick (const PointCloudConstPtr &cloud) : SampleConsensusModel<PointT> (cloud) {};
-#       
-#       /** \brief Constructor for base SampleConsensusModelStick.
-#         * \param[in] cloud the input point cloud dataset
-#         * \param[in] indices a vector of point indices to be used from \a cloud
-#         */
-#       SampleConsensusModelStick (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
-#       
-#       /** \brief Check whether the given index samples can form a valid stick model, compute the model coefficients from
-#         * these samples and store them internally in model_coefficients_. The stick coefficients are represented by a
-#         * point and a line direction
-#         * \param[in] samples the point indices found as possible good candidates for creating a valid model
-#         * \param[out] model_coefficients the resultant model coefficients
-#         */
-#       bool 
-#       computeModelCoefficients (const std::vector<int> &samples, 
-#                                 Eigen::VectorXf &model_coefficients);
-#       
-#       /** \brief Compute all squared distances from the cloud data to a given stick model.
-#         * \param[in] model_coefficients the coefficients of a stick model that we need to compute distances to
-#         * \param[out] distances the resultant estimated squared distances
-#         */
-#       void 
-#       getDistancesToModel (const Eigen::VectorXf &model_coefficients, 
-#                            std::vector<double> &distances);
-#       
-#       /** \brief Select all the points which respect the given model coefficients as inliers.
-#         * \param[in] model_coefficients the coefficients of a stick model that we need to compute distances to
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         * \param[out] inliers the resultant model inliers
-#         */
-#       void 
-#       selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
-#       
-#       /** \brief Count all the points which respect the given model coefficients as inliers. 
-#         * 
-#         * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-#         * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-#         * \return the resultant number of inliers
-#         */
-#       virtual int
-#       countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
-#       
-#       /** \brief Recompute the stick coefficients using the given inlier set and return them to the user.
-#         * @note: these are the coefficients of the stick model after refinement (eg. after SVD)
-#         * \param[in] inliers the data inliers found as supporting the model
-#         * \param[in] model_coefficients the initial guess for the model coefficients
-#         * \param[out] optimized_coefficients the resultant recomputed coefficients after optimization
-#         */
-#       void 
-#       optimizeModelCoefficients (const std::vector<int> &inliers, 
-#                                  const Eigen::VectorXf &model_coefficients, 
-#                                  Eigen::VectorXf &optimized_coefficients);
-#       
-#       /** \brief Create a new point cloud with inliers projected onto the stick model.
-#         * \param[in] inliers the data inliers that we want to project on the stick model
-#         * \param[in] model_coefficients the *normalized* coefficients of a stick model
-#         * \param[out] projected_points the resultant projected points
-#         * \param[in] copy_data_fields set to true if we need to copy the other data fields
-#         */
-#       void 
-#       projectPoints (const std::vector<int> &inliers, 
-#                      const Eigen::VectorXf &model_coefficients, 
-#                      PointCloud &projected_points, 
-#                      bool copy_data_fields = true);
-#       
-#       /** \brief Verify whether a subset of indices verifies the given stick model coefficients.
-#         * \param[in] indices the data indices that need to be tested against the plane model
-#         * \param[in] model_coefficients the plane model coefficients
-#         * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-#         */
-#       bool 
-#       doSamplesVerifyModel (const std::set<int> &indices, 
-#                             const Eigen::VectorXf &model_coefficients, 
-#                             const double threshold);
-#       
-#       /** \brief Return an unique id for this model (SACMODEL_STACK). */
-#       inline pcl::SacModel 
-#       getModelType () const { return (SACMODEL_STICK); }
-#       
+cdef extern from "pcl/sample_consensus/sac_model_stick.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelStick[PointT](SampleConsensusModel[PointT]):
+        SampleConsensusModelStick()
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModel<PointT>::radius_min_;
+        # using SampleConsensusModel<PointT>::radius_max_;
+        # public:
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelStick> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelStick.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelStick (const PointCloudConstPtr &cloud) : SampleConsensusModel<PointT> (cloud) {};
+        # 
+        # /** \brief Constructor for base SampleConsensusModelStick.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelStick (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
+        # 
+        # /** \brief Check whether the given index samples can form a valid stick model, compute the model coefficients from
+        # * these samples and store them internally in model_coefficients_. The stick coefficients are represented by a
+        # * point and a line direction
+        # * \param[in] samples the point indices found as possible good candidates for creating a valid model
+        # * \param[out] model_coefficients the resultant model coefficients
+        # */
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # /** \brief Compute all squared distances from the cloud data to a given stick model.
+        # * \param[in] model_coefficients the coefficients of a stick model that we need to compute distances to
+        # * \param[out] distances the resultant estimated squared distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a stick model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Recompute the stick coefficients using the given inlier set and return them to the user.
+        # * @note: these are the coefficients of the stick model after refinement (eg. after SVD)
+        # * \param[in] inliers the data inliers found as supporting the model
+        # * \param[in] model_coefficients the initial guess for the model coefficients
+        # * \param[out] optimized_coefficients the resultant recomputed coefficients after optimization
+        # */
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, Eigen::VectorXf &optimized_coefficients);
+        # 
+        # /** \brief Create a new point cloud with inliers projected onto the stick model.
+        # * \param[in] inliers the data inliers that we want to project on the stick model
+        # * \param[in] model_coefficients the *normalized* coefficients of a stick model
+        # * \param[out] projected_points the resultant projected points
+        # * \param[in] copy_data_fields set to true if we need to copy the other data fields
+        # */
+        # void projectPoints (const std::vector<int> &inliers, const Eigen::VectorXf &model_coefficients, PointCloud &projected_points, bool copy_data_fields = true);
+        # 
+        # /** \brief Verify whether a subset of indices verifies the given stick model coefficients.
+        # * \param[in] indices the data indices that need to be tested against the plane model
+        # * \param[in] model_coefficients the plane model coefficients
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # */
+        # bool doSamplesVerifyModel (const std::set<int> &indices, const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_STACK). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_STICK); }
 
 
 ###
@@ -2338,6 +2045,16 @@ cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
         SACMODEL_PARALLEL_PLANE
         SACMODEL_NORMAL_PARALLEL_PLANE
         SACMODEL_STICK
+###
+
+# cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
+#     cdef cppclass Functor[_Scalar]:
+#         # enum 
+#         # {
+#         #   InputsAtCompileTime = NX,
+#         #   ValuesAtCompileTime = NY
+#         # };
+
 
 # // Define the number of samples in SacModel needs
 # typedef std::map<pcl::SacModel, unsigned int>::value_type SampleSizeModel;
@@ -2361,8 +2078,7 @@ cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
 # 
 # namespace pcl
 # {
-#   const static std::map<pcl::SacModel, unsigned int> SAC_SAMPLE_SIZE (sample_size_pairs, sample_size_pairs
-#       + sizeof (sample_size_pairs) / sizeof (SampleSizeModel));
+#   const static std::map<pcl::SacModel, unsigned int> SAC_SAMPLE_SIZE (sample_size_pairs, sample_size_pairs + sizeof (sample_size_pairs) / sizeof (SampleSizeModel));
 # }
 ###
 

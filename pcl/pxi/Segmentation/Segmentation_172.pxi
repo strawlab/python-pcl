@@ -23,7 +23,7 @@ cdef class Segmentation:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -52,7 +52,7 @@ cdef class Segmentation_PointXYZI:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -80,7 +80,7 @@ cdef class Segmentation_PointXYZRGB:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -108,7 +108,7 @@ cdef class Segmentation_PointXYZRGBA:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
