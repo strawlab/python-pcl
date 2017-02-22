@@ -12,7 +12,7 @@ cimport pcl_sample_consensus as pcl_sc
 cimport pcl_features_172 as pcl_ftr
 cimport pcl_filters_172 as pcl_fil
 cimport pcl_range_image_172 as pcl_r_img
-# cimport pcl_segmentation as segmentation
+cimport pcl_segmentation_172 as pclseg
 
 cimport cython
 # from cython.operator import dereference as deref

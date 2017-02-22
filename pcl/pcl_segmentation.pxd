@@ -51,160 +51,86 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         #                       radius_min_ (-std::numeric_limits<double>::max()), radius_max_ (std::numeric_limits<double>::max()), samples_radius_ (0.0), eps_angle_ (0.0),
         #                       axis_ (Eigen::Vector3f::Zero ()), max_iterations_ (50), probability_ (0.99)
         # 
-        # /** \brief Get the type of SAC model used. */
+        # /** \brief Get the type of SAC model used.
         # inline int getModelType () const { return (model_type_); }
         int getModelType ()
         
-        # 
-        # /** \brief Get a pointer to the SAC method used. */
+        # \brief Get a pointer to the SAC method used.
         # inline SampleConsensusPtr getMethod () const { return (sac_); }
         # 
-        # /** \brief Get a pointer to the SAC model used. */
+        # \brief Get a pointer to the SAC model used.
         # inline SampleConsensusModelPtr getModel () const { return (model_); }
         # 
-        # /** \brief Get the type of sample consensus method used. */
+        # \brief Get the type of sample consensus method used.
         # inline int getMethodType () const { return (method_type_); }
         int getMethodType ()
         
-        # 
-        # /** \brief Get the distance to the model threshold. */
+        # \brief Get the distance to the model threshold.
         # inline double getDistanceThreshold () const { return (threshold_); }
-        # 
-        # /** \brief Get maximum number of iterations before giving up. */
+        double getDistanceThreshold ()
+        
+        # \brief Get maximum number of iterations before giving up.
         # inline int getMaxIterations () const { return (max_iterations_); }
-        # 
-        # /** \brief Set the probability of choosing at least one sample free from outliers.
-        #   * \param[in] probability the model fitting probability
-        #   */
+        int getMaxIterations ()
+        
+        # \brief Set the probability of choosing at least one sample free from outliers.
+        # \param[in] probability the model fitting probability
         # inline void setProbability (double probability) { probability_ = probability; }
-        # 
-        # /** \brief Get the probability of choosing at least one sample free from outliers. */
+        void setProbability (double probability)
+        
+        # \brief Get the probability of choosing at least one sample free from outliers.
         # inline double getProbability () const { return (probability_); }
-        # 
-        # /** \brief Get the coefficient refinement internal flag. */
+        double getProbability ()
+        
+        # \brief Get the coefficient refinement internal flag.
         # inline bool getOptimizeCoefficients () const { return (optimize_coefficients_); }
-        # /** \brief Set the minimum and maximum allowable radius limits for the model (applicable to models that estimate a radius)
-        #   * \param[in] min_radius the minimum radius model
-        #   * \param[in] max_radius the maximum radius model
-        #   */
+        bool getOptimizeCoefficients ()
+        
+        # \brief Set the minimum and maximum allowable radius limits for the model (applicable to models that estimate a radius)
+        # \param[in] min_radius the minimum radius model
+        # \param[in] max_radius the maximum radius model
         # inline void setRadiusLimits (const double &min_radius, const double &max_radius)
-        # 
-        # /** \brief Get the minimum and maximum allowable radius limits for the model as set by the user.
-        #   * \param[out] min_radius the resultant minimum radius model
-        #   * \param[out] max_radius the resultant maximum radius model
-        #   */
+        void setRadiusLimits (const double &min_radius, const double &max_radius)
+        
+        # \brief Get the minimum and maximum allowable radius limits for the model as set by the user.
+        # \param[out] min_radius the resultant minimum radius model
+        # \param[out] max_radius the resultant maximum radius model
         # inline void getRadiusLimits (double &min_radius, double &max_radius)
-        # /** \brief Set the maximum distance allowed when drawing random samples
-        #   * \param[in] radius the maximum distance (L2 norm)
-        #   */
+        void getRadiusLimits (double &min_radius, double &max_radius)
+        
+        # \brief Set the maximum distance allowed when drawing random samples
+        # \param[in] radius the maximum distance (L2 norm)
         # inline void setSamplesMaxDist (const double &radius, SearchPtr search)
-        # 
-        # /** \brief Get maximum distance allowed when drawing random samples
-        #   * \param[out] radius the maximum distance (L2 norm)
-        #   */
+        void setSamplesMaxDist (const double &radius, SearchPtr search)
+        
+        # \brief Get maximum distance allowed when drawing random samples
+        # \param[out] radius the maximum distance (L2 norm)
         # inline void getSamplesMaxDist (double &radius)
-        # 
-        # /** \brief Set the axis along which we need to search for a model perpendicular to.
-        #   * \param[in] ax the axis along which we need to search for a model perpendicular to
-        #   */
+        void getSamplesMaxDist (double &radius)
+        
+        # \brief Set the axis along which we need to search for a model perpendicular to.
+        # \param[in] ax the axis along which we need to search for a model perpendicular to
         # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-        # 
-        # /** \brief Get the axis along which we need to search for a model perpendicular to. */
+        void setAxis (const eigen3.Vector3f &ax)
+        
+        # \brief Get the axis along which we need to search for a model perpendicular to.
         # inline Eigen::Vector3f getAxis () const { return (axis_); }
-        # 
-        # /** \brief Set the angle epsilon (delta) threshold.
-        #   * \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
-        #   */
+        eigen3.Vector3f getAxis ()
+        
+        # \brief Set the angle epsilon (delta) threshold.
+        # \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
         # inline void setEpsAngle (double ea) { eps_angle_ = ea; }
-        # 
+        void setEpsAngle (double ea)
+        
         # /** \brief Get the epsilon (delta) model angle threshold in radians. */
         # inline double getEpsAngle () const { return (eps_angle_); }
+        double getEpsAngle ()
 
 
 ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
 ctypedef SACSegmentation[PointXYZI] SACSegmentation_PointXYZI_t
 ctypedef SACSegmentation[PointXYZRGB] SACSegmentation_PointXYZRGB_t
 ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation_PointXYZRGBA_t
-###
-
-# \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
-#  models that require the use of surface normals for estimation.
-# \ingroup segmentation
-cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
-    # cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T])
-    cdef cppclass SACSegmentationFromNormals[T, N]:
-        SACSegmentationFromNormals()
-        void setOptimizeCoefficients (bool)
-        void setModelType (SacModel)
-        void setMethodType (int)
-        void setNormalDistanceWeight (float)
-        void setMaxIterations (int)
-        void setDistanceThreshold (float)
-        void setRadiusLimits (float, float)
-        void setInputCloud (shared_ptr[PointCloud[T]])
-        void setInputNormals (shared_ptr[PointCloud[N]])
-        void setEpsAngle (double ea)
-        void segment (PointIndices, ModelCoefficients)
-        void setMinMaxOpeningAngle(double, double)
-        void getMinMaxOpeningAngle(double, double)
-        # Add
-        # /** \brief Empty constructor. */
-        # SACSegmentationFromNormals () : 
-        #   normals_ (), 
-        #   distance_weight_ (0.1), 
-        #   distance_from_origin_ (0), 
-        #   min_angle_ (), 
-        #   max_angle_ ()
-        # {};
-        # 
-        # /** \brief Provide a pointer to the input dataset that contains the point normals of 
-        #   * the XYZ dataset.
-        #   * \param[in] normals the const boost shared pointer to a PointCloud message
-        #   */
-        # inline void setInputNormals (const PointCloudNConstPtr &normals) { normals_ = normals; }
-        # void setInputNormals (const PointCloudNConstPtr &normals)
-        
-        # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
-        # inline PointCloudNConstPtr getInputNormals () const { return (normals_); }
-        # PointCloudNConstPtr getInputNormals ()
-        
-        # /** \brief Set the relative weight (between 0 and 1) to give to the angular 
-        #   * distance (0 to pi/2) between point normals and the plane normal.
-        #   * \param[in] distance_weight the distance/angular weight
-        #   */
-        # inline void setNormalDistanceWeight (double distance_weight) { distance_weight_ = distance_weight; }
-        # void setNormalDistanceWeight (double distance_weight)
-        
-        # /** \brief Get the relative weight (between 0 and 1) to give to the angular distance (0 to pi/2) between point
-        #   * normals and the plane normal. */
-        # inline double getNormalDistanceWeight () const { return (distance_weight_); }
-        # double getNormalDistanceWeight ()
-        
-        # /** \brief Set the minimum opning angle for a cone model.
-        #   * \param oa the opening angle which we need minumum to validate a cone model.
-        #   */
-        # inline void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
-        # void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
-        
-        # /** \brief Get the opening angle which we need minumum to validate a cone model. */
-        # inline void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
-        # void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
-        
-        # /** \brief Set the distance we expect a plane model to be from the origin
-        #   * \param[in] d distance from the template plane modl to the origin
-        #   */
-        # inline void setDistanceFromOrigin (const double d) { distance_from_origin_ = d; }
-        # void setDistanceFromOrigin (const double d)
-        
-        # /** \brief Get the distance of a plane model from the origin. */
-        # inline double getDistanceFromOrigin () const { return (distance_from_origin_); }
-        # double getDistanceFromOrigin ()
-
-
-ctypedef SACSegmentationFromNormals[PointXYZ, Normal] SACSegmentationFromNormals_t
-ctypedef SACSegmentationFromNormals[PointXYZI, Normal] SACSegmentationFromNormals_PointXYZI_t
-ctypedef SACSegmentationFromNormals[PointXYZRGB, Normal] SACSegmentationFromNormals_PointXYZRGB_t
-ctypedef SACSegmentationFromNormals[PointXYZRGBA, Normal] SACSegmentationFromNormals_PointXYZRGBA_t
 ###
 
 # comparator.h
@@ -297,6 +223,87 @@ cdef extern from "pcl/segmentation/plane_coefficient_comparator.h" namespace "pc
 ###
 
 ### Inheritance class ###
+
+# \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
+#  models that require the use of surface normals for estimation.
+# \ingroup segmentation
+cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
+    # cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T])
+    cdef cppclass SACSegmentationFromNormals[T, N]:
+        SACSegmentationFromNormals()
+        void setOptimizeCoefficients (bool)
+        void setModelType (SacModel)
+        void setMethodType (int)
+        void setNormalDistanceWeight (float)
+        void setMaxIterations (int)
+        void setDistanceThreshold (float)
+        void setRadiusLimits (float, float)
+        void setInputCloud (shared_ptr[PointCloud[T]])
+        void setInputNormals (shared_ptr[PointCloud[N]])
+        void setEpsAngle (double ea)
+        void segment (PointIndices, ModelCoefficients)
+        void setMinMaxOpeningAngle(double, double)
+        void getMinMaxOpeningAngle(double, double)
+        # Add
+        # /** \brief Empty constructor. */
+        # SACSegmentationFromNormals () : 
+        #   normals_ (), 
+        #   distance_weight_ (0.1), 
+        #   distance_from_origin_ (0), 
+        #   min_angle_ (), 
+        #   max_angle_ ()
+        # {};
+        # 
+        # /** \brief Provide a pointer to the input dataset that contains the point normals of 
+        #   * the XYZ dataset.
+        #   * \param[in] normals the const boost shared pointer to a PointCloud message
+        #   */
+        # inline void setInputNormals (const PointCloudNConstPtr &normals) { normals_ = normals; }
+        # void setInputNormals (const PointCloudNConstPtr &normals)
+        
+        # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
+        # inline PointCloudNConstPtr getInputNormals () const { return (normals_); }
+        # PointCloudNConstPtr getInputNormals ()
+        
+        # /** \brief Set the relative weight (between 0 and 1) to give to the angular 
+        #   * distance (0 to pi/2) between point normals and the plane normal.
+        #   * \param[in] distance_weight the distance/angular weight
+        #   */
+        # inline void setNormalDistanceWeight (double distance_weight) { distance_weight_ = distance_weight; }
+        # void setNormalDistanceWeight (double distance_weight)
+        
+        # /** \brief Get the relative weight (between 0 and 1) to give to the angular distance (0 to pi/2) between point
+        #   * normals and the plane normal. */
+        # inline double getNormalDistanceWeight () const { return (distance_weight_); }
+        # double getNormalDistanceWeight ()
+        
+        # /** \brief Set the minimum opning angle for a cone model.
+        #   * \param oa the opening angle which we need minumum to validate a cone model.
+        #   */
+        # inline void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
+        # void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
+        
+        # /** \brief Get the opening angle which we need minumum to validate a cone model. */
+        # inline void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
+        # void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
+        
+        # /** \brief Set the distance we expect a plane model to be from the origin
+        #   * \param[in] d distance from the template plane modl to the origin
+        #   */
+        # inline void setDistanceFromOrigin (const double d) { distance_from_origin_ = d; }
+        # void setDistanceFromOrigin (const double d)
+        
+        # /** \brief Get the distance of a plane model from the origin. */
+        # inline double getDistanceFromOrigin () const { return (distance_from_origin_); }
+        # double getDistanceFromOrigin ()
+
+
+ctypedef SACSegmentationFromNormals[PointXYZ, Normal] SACSegmentationFromNormals_t
+ctypedef SACSegmentationFromNormals[PointXYZI, Normal] SACSegmentationFromNormals_PointXYZI_t
+ctypedef SACSegmentationFromNormals[PointXYZRGB, Normal] SACSegmentationFromNormals_PointXYZRGB_t
+ctypedef SACSegmentationFromNormals[PointXYZRGBA, Normal] SACSegmentationFromNormals_PointXYZRGBA_t
+###
+
 
 # edge_aware_plane_comparator.h
 # namespace pcl

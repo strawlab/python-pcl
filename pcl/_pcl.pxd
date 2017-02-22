@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
-# Header for _pcl.pyx functionality that needs sharing with other
-# modules.
+# Header for _pcl.pyx functionality that needs sharing with other modules.
 
 cimport pcl_defs as cpp
 # KdTree
 cimport pcl_kdtree as pclkdt
 # RangeImage
 cimport pcl_range_image as pcl_rngimg
-
+# Features
 cimport pcl_features as pcl_ftr
 
 # class override(PointCloud)
@@ -131,12 +130,12 @@ cdef class KdTree:
 
 ## RangeImages
 # class override
-cdef class RangeImages:
-    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
-    
-    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying RangeImage.
-        return self.thisptr_shared.get()
+# cdef class RangeImages:
+#     cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
+#     
+#     cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
+#         # Shortcut to get raw pointer to underlying RangeImage.
+#         return self.thisptr_shared.get()
 
 
 ### Features

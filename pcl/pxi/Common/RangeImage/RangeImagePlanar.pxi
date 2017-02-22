@@ -9,25 +9,20 @@ from boost_shared_ptr cimport sp_assign
 
 from cython.operator cimport dereference as deref, preincrement as inc
 
-cdef class RangeImages:
+cdef class RangeImagePlanar:
     """
-    rangeImage
+    RangeImagePlanar
     """
-    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
-
-    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying RangeImage.
-        return self.thisptr_shared.get()
 
     def __cinit__(self):
-        # self.me = new pcl_r_img.RangeImage_t()
-        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
+        # self.me = new pcl_r_img.RangeImagePlanar_t()
+        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImagePlanar_t())
         pass
 
     def __cinit__(self, PointCloud pc not None):
-        # self.me = new pcl_r_img.RangeImage_t()
+        # self.me = new pcl_r_img.RangeImagePlanar_t()
         # self.point = pc.thisptr_shared
-        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage_t())
+        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImagePlanar_t())
         self.thisptr().setInputCloud(pc.thisptr_shared)
 
     def CreateFromPointCloud(self, PointCloud cloud, float angular_resolution, float max_angle_width, float max_angle_height, 

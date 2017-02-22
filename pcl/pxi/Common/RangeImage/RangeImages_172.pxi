@@ -7,23 +7,28 @@ cimport pcl_range_image_172 as pcl_r_img
 cimport eigen as eigen3
 from boost_shared_ptr cimport sp_assign
 
-# from cython.operator import dereference as deref
 from cython.operator cimport dereference as deref, preincrement as inc
 
 cdef class RangeImages:
     """
     rangeImage
     """
+    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
+
+    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying RangeImage.
+        return self.thisptr_shared.get()
 
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
-        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage())
+        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
         pass
 
     def __cinit__(self, PointCloud pc not None):
         # self.me = new pcl_r_img.RangeImage_t()
         # self.point = pc.thisptr_shared
-        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage())
+        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage_t())
+        self.thisptr().setInputCloud(pc.thisptr_shared)
 
     def CreateFromPointCloud(self, PointCloud cloud, float angular_resolution, float max_angle_width, float max_angle_height, 
         pcl_r_img.CoordinateFrame2 coordinate_frame, float noise_level, float min_range, int border_size):
@@ -73,12 +78,9 @@ cdef class RangeImages:
         self.thisptr()[0].setAngularResolution(angular_resolution_x, angular_resolution_y)
     
     def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
-    #   self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t> viewpoint.thisptr()[0])
-    #   self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_Ptr_t> viewpoint.thisptr()[0])
-        cdef pcl_r_img.RangeImage_t *user
-        # user = <pcl_r_img.RangeImage_t *> self.thisptr_shared
-        user = <pcl_r_img.RangeImage *> self.thisptr()
-        user.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
+        # cdef pcl_r_img.RangeImage_t *user
+        # (<pcl_r_img.RangeImage *> self.thisptr()).integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
+        self.thisptr().integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.thisprt()[0].integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
     
