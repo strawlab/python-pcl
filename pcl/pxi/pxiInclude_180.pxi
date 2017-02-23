@@ -16,10 +16,10 @@ include "Surface/MovingLeastSquares.pxi"
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 # Octree
-include "Octree/OctreePointCloud_172.pxi"
-include "Octree/OctreePointCloud2Buf_172.pxi"
-include "Octree/OctreePointCloudSearch_172.pxi"
-include "Octree/OctreePointCloudChangeDetector_172.pxi"
+include "Octree/OctreePointCloud_180.pxi"
+include "Octree/OctreePointCloud2Buf_180.pxi"
+include "Octree/OctreePointCloudSearch_180.pxi"
+include "Octree/OctreePointCloudChangeDetector_180.pxi"
 
 include "Vertices.pxi"
 include "Filters/CropHull_172.pxi"
@@ -31,6 +31,7 @@ include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages_172.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
+
 # Features
 include "Features/NormalEstimation_172.pxi"
 include "Features/VFHEstimation_172.pxi"

@@ -15,14 +15,14 @@ cdef class RangeImages:
     """
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
-        sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
+        # sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
         pass
 
-    def __cinit__(self, PointCloud pc not None):
-        # self.me = new pcl_r_img.RangeImage_t()
-        # self.point = pc.thisptr_shared
-        sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage_t())
-        self.thisptr().setInputCloud(pc.thisptr_shared)
+    # def __cinit__(self, PointCloud pc not None):
+    #     # self.me = new pcl_r_img.RangeImage_t()
+    #     # self.point = pc.thisptr_shared
+    #     # sp_assign(self.thisptr_shared,  new pcl_r_img.RangeImage_t())
+    #     # self.thisptr().setInputCloud(pc.thisptr_shared)
 
     def CreateFromPointCloud(self, PointCloud cloud, float angular_resolution, float max_angle_width, float max_angle_height, 
         pcl_r_img.CoordinateFrame2 coordinate_frame, float noise_level, float min_range, int border_size):

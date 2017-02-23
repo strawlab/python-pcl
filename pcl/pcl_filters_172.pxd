@@ -905,7 +905,7 @@ cdef extern from "pcl/filters/passthrough.h" namespace "pcl":
         bool getFilterLimitsNegative ()
         # call base Class(PCLBase)
         # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
-        void filter(cpp.PointCloud[T] c)
+        # void filter(cpp.PointCloud[T] c)
 
 
 ctypedef PassThrough[cpp.PointXYZ] PassThrough_t

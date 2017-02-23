@@ -35,90 +35,109 @@ from vector cimport vector as vector2
 
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     cdef cppclass SACSegmentation[T](PCLBase[T]):
-        void setOptimizeCoefficients (bool)
+        SACSegmentation()
         void setModelType (SacModel)
-        void setMethodType (int)
-        void setDistanceThreshold (float)
-        void setInputCloud (shared_ptr[PointCloud[T]])
-        void setMaxIterations (int)
-        void segment (PointIndices, ModelCoefficients)
-        # Add
         # /** \brief Empty constructor. */
         # SACSegmentation () :  model_ (), sac_ (), model_type_ (-1), method_type_ (0), 
         #                       threshold_ (0), optimize_coefficients_ (true), 
         #                       radius_min_ (-std::numeric_limits<double>::max()), radius_max_ (std::numeric_limits<double>::max()), samples_radius_ (0.0), eps_angle_ (0.0),
         #                       axis_ (Eigen::Vector3f::Zero ()), max_iterations_ (50), probability_ (0.99)
         # 
-        # /** \brief Get the type of SAC model used. */
+        # /** \brief Get the type of SAC model used.
         # inline int getModelType () const { return (model_type_); }
-        # 
-        # /** \brief Get a pointer to the SAC method used. */
+        int getModelType ()
+        
+        # \brief Get a pointer to the SAC method used.
         # inline SampleConsensusPtr getMethod () const { return (sac_); }
         # 
-        # /** \brief Get a pointer to the SAC model used. */
+        # \brief Get a pointer to the SAC model used.
         # inline SampleConsensusModelPtr getModel () const { return (model_); }
-        # 
-        # /** \brief Get the type of sample consensus method used. */
+        
+        void setMethodType (int)
+        # \brief Get the type of sample consensus method used.
         # inline int getMethodType () const { return (method_type_); }
-        # 
-        # /** \brief Get the distance to the model threshold. */
+        int getMethodType ()
+        
+        void setDistanceThreshold (float)
+        # \brief Get the distance to the model threshold.
         # inline double getDistanceThreshold () const { return (threshold_); }
-        # 
-        # /** \brief Get maximum number of iterations before giving up. */
+        double getDistanceThreshold ()
+        
+        # use PCLBase class function
+        # void setInputCloud (shared_ptr[PointCloud[T]])
+        
+        void setMaxIterations (int)
+        # \brief Get maximum number of iterations before giving up.
         # inline int getMaxIterations () const { return (max_iterations_); }
-        # 
-        # /** \brief Set the probability of choosing at least one sample free from outliers.
-        #   * \param[in] probability the model fitting probability
-        #   */
+        int getMaxIterations ()
+        
+        # \brief Set the probability of choosing at least one sample free from outliers.
+        # \param[in] probability the model fitting probability
         # inline void setProbability (double probability) { probability_ = probability; }
-        # 
-        # /** \brief Get the probability of choosing at least one sample free from outliers. */
+        void setProbability (double probability)
+        
+        # \brief Get the probability of choosing at least one sample free from outliers.
         # inline double getProbability () const { return (probability_); }
-        # 
-        # /** \brief Get the coefficient refinement internal flag. */
+        double getProbability ()
+        
+        void setOptimizeCoefficients (bool)
+        
+        # \brief Get the coefficient refinement internal flag.
         # inline bool getOptimizeCoefficients () const { return (optimize_coefficients_); }
-        # /** \brief Set the minimum and maximum allowable radius limits for the model (applicable to models that estimate a radius)
-        #   * \param[in] min_radius the minimum radius model
-        #   * \param[in] max_radius the maximum radius model
-        #   */
+        bool getOptimizeCoefficients ()
+        
+        # \brief Set the minimum and maximum allowable radius limits for the model (applicable to models that estimate a radius)
+        # \param[in] min_radius the minimum radius model
+        # \param[in] max_radius the maximum radius model
         # inline void setRadiusLimits (const double &min_radius, const double &max_radius)
-        # 
-        # /** \brief Get the minimum and maximum allowable radius limits for the model as set by the user.
-        #   * \param[out] min_radius the resultant minimum radius model
-        #   * \param[out] max_radius the resultant maximum radius model
-        #   */
+        void setRadiusLimits (const double &min_radius, const double &max_radius)
+        
+        # \brief Get the minimum and maximum allowable radius limits for the model as set by the user.
+        # \param[out] min_radius the resultant minimum radius model
+        # \param[out] max_radius the resultant maximum radius model
         # inline void getRadiusLimits (double &min_radius, double &max_radius)
-        # /** \brief Set the maximum distance allowed when drawing random samples
-        #   * \param[in] radius the maximum distance (L2 norm)
-        #   */
+        void getRadiusLimits (double &min_radius, double &max_radius)
+        
+        # \brief Set the maximum distance allowed when drawing random samples
+        # \param[in] radius the maximum distance (L2 norm)
         # inline void setSamplesMaxDist (const double &radius, SearchPtr search)
-        # 
-        # /** \brief Get maximum distance allowed when drawing random samples
-        #   * \param[out] radius the maximum distance (L2 norm)
-        #   */
+        # void setSamplesMaxDist (const double &radius, SearchPtr search)
+        
+        # \brief Get maximum distance allowed when drawing random samples
+        # \param[out] radius the maximum distance (L2 norm)
         # inline void getSamplesMaxDist (double &radius)
-        # 
-        # /** \brief Set the axis along which we need to search for a model perpendicular to.
-        #   * \param[in] ax the axis along which we need to search for a model perpendicular to
-        #   */
+        void getSamplesMaxDist (double &radius)
+        
+        # \brief Set the axis along which we need to search for a model perpendicular to.
+        # \param[in] ax the axis along which we need to search for a model perpendicular to
         # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-        # 
-        # /** \brief Get the axis along which we need to search for a model perpendicular to. */
+        # void setAxis (const eigen3.Vector3f &ax)
+        
+        # \brief Get the axis along which we need to search for a model perpendicular to.
         # inline Eigen::Vector3f getAxis () const { return (axis_); }
-        # /** \brief Set the angle epsilon (delta) threshold.
-        #   * \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
-        #   */
+        # eigen3.Vector3f getAxis ()
+        
+        # \brief Set the angle epsilon (delta) threshold.
+        # \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
         # inline void setEpsAngle (double ea) { eps_angle_ = ea; }
-        #       /** \brief Get the epsilon (delta) model angle threshold in radians. */
+        void setEpsAngle (double ea)
+        
+        # /** \brief Get the epsilon (delta) model angle threshold in radians. */
         # inline double getEpsAngle () const { return (eps_angle_); }
+        double getEpsAngle ()
+
+        void segment (PointIndices, ModelCoefficients)
 
 
+ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
+ctypedef SACSegmentation[PointXYZI] SACSegmentation_PointXYZI_t
+ctypedef SACSegmentation[PointXYZRGB] SACSegmentation_PointXYZRGB_t
+ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation_PointXYZRGBA_t
 ###
 
-# /** \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
-#   * models that require the use of surface normals for estimation.
-#   * \ingroup segmentation
-#   */
+# \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
+# models that require the use of surface normals for estimation.
+# \ingroup segmentation
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     # cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T])
     cdef cppclass SACSegmentationFromNormals[T, N]:
@@ -182,14 +201,10 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # inline double getDistanceFromOrigin () const { return (distance_from_origin_); }
 
 
-ctypedef SACSegmentation[PointXYZ] SACSegmentation_t
-ctypedef SACSegmentation[PointXYZI] SACSegmentation_PointXYZI_t
-ctypedef SACSegmentation[PointXYZRGB] SACSegmentation_PointXYZRGB_t
-ctypedef SACSegmentation[PointXYZRGBA] SACSegmentation_PointXYZRGBA_t
-ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationNormal_t
-ctypedef SACSegmentationFromNormals[PointXYZI,Normal] SACSegmentation_PointXYZI_Normal_t
-ctypedef SACSegmentationFromNormals[PointXYZRGB,Normal] SACSegmentation_PointXYZRGB_Normal_t
-ctypedef SACSegmentationFromNormals[PointXYZRGBA,Normal] SACSegmentation_PointXYZRGBA_Normal_t
+ctypedef SACSegmentationFromNormals[PointXYZ,Normal] SACSegmentationFromNormals_t
+ctypedef SACSegmentationFromNormals[PointXYZI,Normal] SACSegmentationFromNormals_PointXYZI_t
+ctypedef SACSegmentationFromNormals[PointXYZRGB,Normal] SACSegmentationFromNormals_PointXYZRGB_t
+ctypedef SACSegmentationFromNormals[PointXYZRGBA,Normal] SACSegmentationFromNormals_PointXYZRGBA_t
 ###
 
 # comparator.h
@@ -391,14 +406,14 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
         # virtual bool compare (int idx1, int idx2) const
 
 
-ctypedef EuclideanClusterComparator[PointXYZ, Normal, PoinxXYZ] EuclideanClusterComparator_t
-ctypedef EuclideanClusterComparator[PointXYZI, Normal, PoinxXYZ] EuclideanClusterComparator_PointXYZI_t
-ctypedef EuclideanClusterComparator[PointXYZRGB, Normal, PoinxXYZ] EuclideanClusterComparator_PointXYZRGB_t
-ctypedef EuclideanClusterComparator[PointXYZRGBA, Normal, PoinxXYZ] EuclideanClusterComparator_PointXYZRGBA_t
-ctypedef shared_ptr[EuclideanClusterComparator[PointXYZ, Normal, PoinxXYZ] EuclideanClusterComparatorPtr_t
-ctypedef shared_ptr[EuclideanClusterComparator[PointXYZI, Normal, PoinxXYZ] EuclideanClusterComparator_PointXYZI_Ptr_t
-ctypedef shared_ptr[EuclideanClusterComparator[PointXYZRGB, Normal, PoinxXYZ] EuclideanClusterComparator_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[EuclideanClusterComparator[PointXYZRGBA, Normal, PoinxXYZ] EuclideanClusterComparator_PointXYZRGBA_Ptr_t
+ctypedef EuclideanClusterComparator[PointXYZ, Normal, PointXYZ] EuclideanClusterComparator_t
+ctypedef EuclideanClusterComparator[PointXYZI, Normal, PointXYZ] EuclideanClusterComparator_PointXYZI_t
+ctypedef EuclideanClusterComparator[PointXYZRGB, Normal, PointXYZ] EuclideanClusterComparator_PointXYZRGB_t
+ctypedef EuclideanClusterComparator[PointXYZRGBA, Normal, PointXYZ] EuclideanClusterComparator_PointXYZRGBA_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZ, Normal, PointXYZ]] EuclideanClusterComparatorPtr_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZI, Normal, PointXYZ]] EuclideanClusterComparator_PointXYZI_Ptr_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZRGB, Normal, PointXYZ]] EuclideanClusterComparator_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZRGBA, Normal, PointXYZ]] EuclideanClusterComparator_PointXYZRGBA_Ptr_t
 ###
 
 # euclidean_plane_coefficient_comparator.h
