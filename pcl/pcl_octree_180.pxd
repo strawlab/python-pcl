@@ -15,36 +15,237 @@ from vector cimport vector as vector2
 
 ### base class ###
 
+# octree_container.h
+# namespace pcl
+# namespace octree
+# \brief @b Octree container class that can serve as a base to construct own leaf node container classes.
+# \author Julius Kammerl (julius@kammerl.de)
+# class OctreeContainerBase
+cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
+    cdef cppclass OctreeContainerBase:
+        OctreeContainerBase ()
+        # \brief Empty constructor.
+        
+        # \brief Empty constructor.
+        # OctreeContainerBase (const OctreeContainerBase&)
+        
+        # \brief Empty deconstructor.
+        # virtual ~OctreeContainerBase ()
+        
+        # \brief Equal comparison operator
+        # virtual bool operator== (const OctreeContainerBase&) const
+        
+        # \brief Inequal comparison operator
+        # \param[in] other OctreeContainerBase to compare with
+        # bool operator!= (const OctreeContainerBase& other) const
+        
+        # \brief Pure abstract method to get size of container (number of indices)
+        # \return number of points/indices stored in leaf node container.
+        # virtual size_t getSize () const
+        
+        # \brief Pure abstract reset leaf node implementation. */
+        # virtual void reset () = 0;
+        
+        # \brief Empty addPointIndex implementation. This leaf node does not store any point indices.
+        void addPointIndex (const int&)
+        
+        # \brief Empty getPointIndex implementation as this leaf node does not store any point indices.
+        # void getPointIndex (int&) const
+        
+        # \brief Empty getPointIndices implementation as this leaf node does not store any data.
+        # void getPointIndices (std::vector<int>&) const
+
+
+##
+
+# octree_container.h
+# namespace pcl
+# namespace octree
+# OctreeContainerEmpty : public OctreeContainerBase
+# class OctreeContainerEmpty
+cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
+    cdef cppclass OctreeContainerEmpty(OctreeContainerBase):
+        OctreeContainerEmpty()
+        # OctreeContainerEmpty (const OctreeContainerEmpty&)
+        # public:
+        # /** \brief Octree deep copy method */
+        # virtual OctreeContainerEmpty *deepCopy () const
+        # /** \brief Empty setData data implementation. This leaf node does not store any data.
+        # void setData (const DataT&)
+        # /** \brief Empty getData data vector implementation as this leaf node does not store any data.
+        # void getData (DataT&) const
+        # /** \brief Empty getData data vector implementation as this leaf node does not store any data. \
+        # * \param[in] dataVector_arg reference to dummy DataT vector that is extended with leaf node DataT elements.
+        # void getData (std::vector<DataT>&) const
+        # /** \brief Get size of container (number of DataT objects)
+        #  * \return number of DataT elements in leaf node container.
+        # size_t getSize () const
+        # /** \brief Empty reset leaf node implementation as this leaf node does not store any data. */
+        # void reset ()
+
+
+ctypedef OctreeContainerEmpty OctreeContainerEmpty_t
+# ctypedef shared_ptr[OctreeContainerEmpty] OctreeContainerEmptyPtr_t
+###
+
+
 # octree_base.h
 # namespace pcl
 # namespace octree
 # template<typename LeafContainerT = int, typename BranchContainerT = OctreeContainerEmpty >
 # class OctreeBase
+# pcl 1.7.2
+# cdef cppclass OctreeBase[DataT]:
+# template<typename LeafContainerT = int,
+#         typename BranchContainerT = OctreeContainerEmpty >
+# class OctreeBase
 cdef extern from "pcl/octree/octree_base.h" namespace "pcl::octree":
-    cdef cppclass OctreeBase[DataT]:
+     # cdef cppclass OctreeBase:
+     # cdef cppclass OctreeBase[LeafContainerT, BranchContainerT]:
+     cdef cppclass OctreeBase[int, OctreeContainerEmpty]:
         OctreeBase()
         # OctreeBase (const OctreeBase& source) :
         # inline OctreeBase& operator = (const OctreeBase &source)
         # public:
-        # typedef OctreeBase<DataT, OctreeContainerDataT<DataT>, OctreeContainerEmpty<DataT> > SingleObjLeafContainer;
-        # typedef OctreeBase<DataT, OctreeContainerDataTVector<DataT>, OctreeContainerEmpty<DataT> > MultipleObjsLeafContainer;
-        # typedef OctreeBase<DataT, LeafT, BranchT> OctreeT;
+        # typedef OctreeBase<LeafContainerT, BranchContainerT> OctreeT;
+        # typedef OctreeBranchNode<BranchContainerT> BranchNode;
+        # typedef OctreeLeafNode<LeafContainerT> LeafNode;
+        # typedef BranchContainerT BranchContainer;
+        # typedef LeafContainerT LeafContainer;
         # // iterators are friends
-        # friend class OctreeIteratorBase<DataT, OctreeT> ;
-        # friend class OctreeDepthFirstIterator<DataT, OctreeT> ;
-        # friend class OctreeBreadthFirstIterator<DataT, OctreeT> ;
-        # friend class OctreeLeafNodeIterator<DataT, OctreeT> ;
+        # friend class OctreeIteratorBase<OctreeT> ;
+        # friend class OctreeDepthFirstIterator<OctreeT> ;
+        # friend class OctreeBreadthFirstIterator<OctreeT> ;
+        # friend class OctreeLeafNodeIterator<OctreeT> ;
+        # 
+        # // Octree default iterators
+        # typedef OctreeDepthFirstIterator<OctreeT> Iterator;
+        # typedef const OctreeDepthFirstIterator<OctreeT> ConstIterator;
+        # Iterator begin(unsigned int max_depth_arg = 0) {return Iterator(this, max_depth_arg);};
+        # const Iterator end() {return Iterator();};
+        # 
+        # // Octree leaf node iterators
+        # typedef OctreeLeafNodeIterator<OctreeT> LeafNodeIterator;
+        # typedef const OctreeLeafNodeIterator<OctreeT> ConstLeafNodeIterator;
+        # LeafNodeIterator leaf_begin(unsigned int max_depth_arg = 0) {return LeafNodeIterator(this, max_depth_arg);};
+        # const LeafNodeIterator leaf_end() {return LeafNodeIterator();};
+        # 
+        # // Octree depth-first iterators
+        # typedef OctreeDepthFirstIterator<OctreeT> DepthFirstIterator;
+        # typedef const OctreeDepthFirstIterator<OctreeT> ConstDepthFirstIterator;
+        # DepthFirstIterator depth_begin(unsigned int max_depth_arg = 0) {return DepthFirstIterator(this, max_depth_arg);};
+        # const DepthFirstIterator depth_end() {return DepthFirstIterator();};
+        # 
+        # // Octree breadth-first iterators
+        # typedef OctreeBreadthFirstIterator<OctreeT> BreadthFirstIterator;
+        # typedef const OctreeBreadthFirstIterator<OctreeT> ConstBreadthFirstIterator;
+        # BreadthFirstIterator breadth_begin(unsigned int max_depth_arg = 0) {return BreadthFirstIterator(this, max_depth_arg);};
+        # const BreadthFirstIterator breadth_end() {return BreadthFirstIterator();};
+        # 
+        # /** \brief Empty constructor. */
+        # OctreeBase ();
+        # 
+        # /** \brief Empty deconstructor. */
+        # virtual ~OctreeBase ();
+        # 
+        # /** \brief Copy constructor. */
+        # OctreeBase (const OctreeBase& source)
+        # 
+        # /** \brief Copy operator. */
+        # OctreeBase& operator = (const OctreeBase &source)
+        # 
+        # /** \brief Set the maximum amount of voxels per dimension.
+        #   * \param[in] max_voxel_index_arg maximum amount of voxels per dimension
+        #   */
+        # void setMaxVoxelIndex (unsigned int max_voxel_index_arg);
+        # 
+        # /** \brief Set the maximum depth of the octree.
+        #  *  \param max_depth_arg: maximum depth of octree
+        #  * */
+        # void setTreeDepth (unsigned int max_depth_arg);
+        # 
+        # /** \brief Get the maximum depth of the octree.
+        #  *  \return depth_arg: maximum depth of octree
+        #  * */
+        # unsigned int getTreeDepth () const
+        # 
+        # /** \brief Create new leaf node at (idx_x_arg, idx_y_arg, idx_z_arg).
+        #  *  \note If leaf node already exist, this method returns the existing node
+        #  *  \param idx_x_arg: index of leaf node in the X axis.
+        #  *  \param idx_y_arg: index of leaf node in the Y axis.
+        #  *  \param idx_z_arg: index of leaf node in the Z axis.
+        #  *  \return pointer to new leaf node container.
+        #  * */
+        # LeafContainerT* createLeaf (unsigned int idx_x_arg, unsigned int idx_y_arg, unsigned int idx_z_arg);
+        # 
+        # /** \brief Find leaf node at (idx_x_arg, idx_y_arg, idx_z_arg).
+        #  *  \note If leaf node already exist, this method returns the existing node
+        #  *  \param idx_x_arg: index of leaf node in the X axis.
+        #  *  \param idx_y_arg: index of leaf node in the Y axis.
+        #  *  \param idx_z_arg: index of leaf node in the Z axis.
+        #  *  \return pointer to leaf node container if found, null pointer otherwise.
+        #  * */
+        # LeafContainerT* findLeaf (unsigned int idx_x_arg, unsigned int idx_y_arg, unsigned int idx_z_arg);
+        # 
+        # /** \brief idx_x_arg for the existence of leaf node at (idx_x_arg, idx_y_arg, idx_z_arg).
+        #  *  \param idx_x_arg: index of leaf node in the X axis.
+        #  *  \param idx_y_arg: index of leaf node in the Y axis.
+        #  *  \param idx_z_arg: index of leaf node in the Z axis.
+        #  *  \return "true" if leaf node search is successful, otherwise it returns "false".
+        #  * */
+        # bool existLeaf (unsigned int idx_x_arg, unsigned int idx_y_arg, unsigned int idx_z_arg) const ;
+        # 
+        # /** \brief Remove leaf node at (idx_x_arg, idx_y_arg, idx_z_arg).
+        #  *  \param idx_x_arg: index of leaf node in the X axis.
+        #  *  \param idx_y_arg: index of leaf node in the Y axis.
+        #  *  \param idx_z_arg: index of leaf node in the Z axis.
+        #  * */
+        # void removeLeaf (unsigned int idx_x_arg, unsigned int idx_y_arg, unsigned int idx_z_arg);
+        # 
+        # /** \brief Return the amount of existing leafs in the octree.
+        #  *  \return amount of registered leaf nodes.
+        #  * */
+        # std::size_t getLeafCount () const
+        # 
+        # /** \brief Return the amount of existing branch nodes in the octree.
+        #  *  \return amount of branch nodes.
+        #  * */
+        # std::size_t getBranchCount () const
+        # 
+        # /** \brief Delete the octree structure and its leaf nodes.
+        #  * */
+        # void deleteTree ( );
+        # 
+        # /** \brief Serialize octree into a binary output vector describing its branch node structure.
+        #  *  \param binary_tree_out_arg: reference to output vector for writing binary tree structure.
+        #  * */
+        # void serializeTree (std::vector<char>& binary_tree_out_arg);
+        # 
+        # /** \brief Serialize octree into a binary output vector describing its branch node structure and push all LeafContainerT elements stored in the octree to a vector.
+        #  * \param binary_tree_out_arg: reference to output vector for writing binary tree structure.
+        #  * \param leaf_container_vector_arg: pointer to all LeafContainerT objects in the octree
+        #  * */
+        # void serializeTree (std::vector<char>& binary_tree_out_arg, std::vector<LeafContainerT*>& leaf_container_vector_arg);
+        # 
+        # /** \brief Outputs a vector of all LeafContainerT elements that are stored within the octree leaf nodes.
+        #  *  \param leaf_container_vector_arg: pointers to LeafContainerT vector that receives a copy of all LeafContainerT objects in the octree.
+        #  * */
+        # void serializeLeafs (std::vector<LeafContainerT*>& leaf_container_vector_arg);
+        # 
+        # /** \brief Deserialize a binary octree description vector and create a corresponding octree structure. Leaf nodes are initialized with getDataTByKey(..).
+        #  *  \param binary_tree_input_arg: reference to input vector for reading binary tree structure.
+        #  * */
+        # void deserializeTree (std::vector<char>& binary_tree_input_arg);
+        # 
+        # /** \brief Deserialize a binary octree description and create a corresponding octree structure. Leaf nodes are initialized with LeafContainerT elements from the dataVector.
+        #  *  \param binary_tree_input_arg: reference to input vector for reading binary tree structure.
+        #  *  \param leaf_container_vector_arg: pointer to container vector.
+        #  * */
+        # void deserializeTree (std::vector<char>& binary_tree_input_arg, std::vector<LeafContainerT*>& leaf_container_vector_arg);
+        # 
         # typedef OctreeBranchNode<BranchT> BranchNode;
         # typedef OctreeLeafNode<LeafT> LeafNode;
         # // Octree iterators
-        # typedef OctreeDepthFirstIterator<DataT, OctreeT> Iterator;
-        # typedef const OctreeDepthFirstIterator<DataT, OctreeT> ConstIterator;
-        # typedef OctreeLeafNodeIterator<DataT, OctreeT> LeafNodeIterator;
-        # typedef const OctreeLeafNodeIterator<DataT, OctreeT> ConstLeafNodeIterator;
-        # typedef OctreeDepthFirstIterator<DataT, OctreeT> DepthFirstIterator;
-        # typedef const OctreeDepthFirstIterator<DataT, OctreeT> ConstDepthFirstIterator;
-        # typedef OctreeBreadthFirstIterator<DataT, OctreeT> BreadthFirstIterator;
-        # typedef const OctreeBreadthFirstIterator<DataT, OctreeT> ConstBreadthFirstIterator;
         
         # void setMaxVoxelIndex (unsigned int maxVoxelIndex_arg)
         void setMaxVoxelIndex (unsigned int maxVoxelIndex_arg)
@@ -117,25 +318,26 @@ cdef extern from "pcl/octree/octree_base.h" namespace "pcl::octree":
         # \param binaryTreeOut_arg: reference to output vector for writing binary tree structure.
         # \param dataVector_arg: reference of DataT vector that receives a copy of all DataT objects in the octree
         # void serializeTree (vector[char]& binaryTreeOut_arg, vector[DataT]& dataVector_arg);
-        void serializeTree (vector[char]& binaryTreeOut_arg, vector[DataT]& dataVector_arg)
+        # void serializeTree (vector[char]& binaryTreeOut_arg, vector[DataT]& dataVector_arg)
         
         # \brief Outputs a vector of all DataT elements that are stored within the octree leaf nodes.
         # \param dataVector_arg: reference to DataT vector that receives a copy of all DataT objects in the octree.
         # void serializeLeafs (std::vector<DataT>& dataVector_arg);
-        void serializeLeafs (vector[DataT]& dataVector_arg)
+        # void serializeLeafs (vector[DataT]& dataVector_arg)
         
         # \brief Deserialize a binary octree description vector and create a corresponding octree structure. Leaf nodes are initialized with getDataTByKey(..).
         # \param binaryTreeIn_arg: reference to input vector for reading binary tree structure.
         # void deserializeTree (std::vector<char>& binaryTreeIn_arg);
-        void deserializeTree (vector[char]& binaryTreeIn_arg)
+        # void deserializeTree (vector[char]& binaryTreeIn_arg)
         
         # \brief Deserialize a binary octree description and create a corresponding octree structure. Leaf nodes are initialized with DataT elements from the dataVector.
         # \param binaryTreeIn_arg: reference to input vector for reading binary tree structure.
         # \param dataVector_arg: reference to DataT vector that provides DataT objects for initializing leaf nodes.
         # void deserializeTree (std::vector<char>& binaryTreeIn_arg, std::vector<DataT>& dataVector_arg);
-        void deserializeTree (vector[char]& binaryTreeIn_arg, vector[DataT]& dataVector_arg)
+        # void deserializeTree (vector[char]& binaryTreeIn_arg, vector[DataT]& dataVector_arg)
 
 
+# ctypedef OctreeBase[int, OctreeContainerEmpty_t] OctreeBase_t
 ctypedef OctreeBase OctreeBase_t
 # ctypedef shared_ptr[OctreeBase] OctreeBasePtr_t
 ###
@@ -391,80 +593,6 @@ ctypedef Octree2BufBase[int] Octree2BufBase_t
 # ctypedef shared_ptr[Octree2BufBase[int]] Octree2BufBasePtr_t
 ###
 
-# octree_container.h
-# namespace pcl
-# namespace octree
-# /** \brief @b Octree container class that can serve as a base to construct own leaf node container classes.
-#  *  \author Julius Kammerl (julius@kammerl.de)
-#  */
-# class OctreeContainerBase
-cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
-    cdef cppclass OctreeContainerBase:
-        OctreeContainerBase ()
-        # \brief Empty constructor.
-        
-        # \brief Empty constructor.
-        # OctreeContainerBase (const OctreeContainerBase&)
-        
-        # \brief Empty deconstructor.
-        # virtual ~OctreeContainerBase ()
-        
-        # \brief Equal comparison operator
-        # virtual bool operator== (const OctreeContainerBase&) const
-        
-        # \brief Inequal comparison operator
-        # \param[in] other OctreeContainerBase to compare with
-        # bool operator!= (const OctreeContainerBase& other) const
-        
-        # \brief Pure abstract method to get size of container (number of indices)
-        # \return number of points/indices stored in leaf node container.
-        # virtual size_t getSize () const
-        
-        # \brief Pure abstract reset leaf node implementation. */
-        # virtual void reset () = 0;
-        
-        # \brief Empty addPointIndex implementation. This leaf node does not store any point indices.
-        void addPointIndex (const int&)
-        
-        # \brief Empty getPointIndex implementation as this leaf node does not store any point indices.
-        # void getPointIndex (int&) const
-        
-        # \brief Empty getPointIndices implementation as this leaf node does not store any data.
-        # void getPointIndices (std::vector<int>&) const
-
-
-##
-
-# octree_container.h
-# namespace pcl
-# namespace octree
-# OctreeContainerEmpty : public OctreeContainerBase
-# class OctreeContainerEmpty
-cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
-    cdef cppclass OctreeContainerEmpty(OctreeContainerBase):
-        OctreeContainerEmpty()
-        # OctreeContainerEmpty (const OctreeContainerEmpty&)
-        # public:
-        # /** \brief Octree deep copy method */
-        # virtual OctreeContainerEmpty *deepCopy () const
-        # /** \brief Empty setData data implementation. This leaf node does not store any data.
-        # void setData (const DataT&)
-        # /** \brief Empty getData data vector implementation as this leaf node does not store any data.
-        # void getData (DataT&) const
-        # /** \brief Empty getData data vector implementation as this leaf node does not store any data. \
-        # * \param[in] dataVector_arg reference to dummy DataT vector that is extended with leaf node DataT elements.
-        # void getData (std::vector<DataT>&) const
-        # /** \brief Get size of container (number of DataT objects)
-        #  * \return number of DataT elements in leaf node container.
-        # size_t getSize () const
-        # /** \brief Empty reset leaf node implementation as this leaf node does not store any data. */
-        # void reset ()
-
-
-ctypedef OctreeContainerEmpty OctreeContainerEmpty_t
-# ctypedef shared_ptr[OctreeContainerEmpty] OctreeContainerEmptyPtr_t
-###
-
 # nothing use PCL 1.8.0
 # template<typename DataT>
 # class OctreeContainerDataT
@@ -653,8 +781,12 @@ ctypedef OctreeContainerPointIndices OctreeContainerPointIndices_t
 # namespace octree
 #   template<typename DataT, typename OctreeT>
 #       class OctreeIteratorBase : public std::iterator<std::forward_iterator_tag, const OctreeNode, void, const OctreeNode*, const OctreeNode&>
+# pcl 1.8.0
+# template<typename OctreeT>
+# class OctreeIteratorBase : public std::iterator<std::forward_iterator_tag, const OctreeNode, void,
+# const OctreeNode*, const OctreeNode&>
 cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
-    cdef cppclass OctreeIteratorBase[DataT, OctreeT]:
+    cdef cppclass OctreeIteratorBase[OctreeT]:
         OctreeIteratorBase()
         # explicit OctreeIteratorBase (OctreeT& octree_arg)
         # OctreeIteratorBase (const OctreeIteratorBase& src) :
@@ -700,10 +832,11 @@ cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
 
 ###
 
+# pcl 1.7.2
 # template<typename DataT, typename OctreeT>
 # class OctreeDepthFirstIterator : public OctreeIteratorBase<DataT, OctreeT>
 cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
-    cdef cppclass OctreeDepthFirstIterator[DataT, OctreeT](OctreeIteratorBase[DataT, OctreeT]):
+    cdef cppclass OctreeDepthFirstIterator[OctreeT](OctreeIteratorBase[OctreeT]):
         OctreeDepthFirstIterator()
         # explicit OctreeDepthFirstIterator (OctreeT& octree_arg)
         # public:
@@ -728,11 +861,11 @@ cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
 
 ###
 
-
+# pcl 1.7.2
 # template<typename DataT, typename OctreeT>
 # class OctreeBreadthFirstIterator : public OctreeIteratorBase<DataT, OctreeT>
 cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
-    cdef cppclass OctreeBreadthFirstIterator[DataT, OctreeT](OctreeIteratorBase[DataT, OctreeT]):
+    cdef cppclass OctreeBreadthFirstIterator[OctreeT](OctreeIteratorBase[OctreeT]):
         OctreeDepthFirstIterator()
         # explicit OctreeBreadthFirstIterator (OctreeT& octree_arg);
         # // public typedefs
@@ -759,12 +892,14 @@ cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
         # void addChildNodesToFIFO (const OctreeNode* node);
         # /** FIFO list */
         # std::deque<FIFOElement> FIFO_;
+
+
 ###
 
 # template<typename DataT, typename OctreeT>
 # class OctreeLeafNodeIterator : public OctreeDepthFirstIterator<DataT, OctreeT>
 cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
-    cdef cppclass OctreeLeafNodeIterator[DataT, OctreeT](OctreeDepthFirstIterator[DataT, OctreeT]):
+    cdef cppclass OctreeLeafNodeIterator[OctreeT](OctreeDepthFirstIterator[OctreeT]):
         OctreeLeafNodeIterator()
         # explicit OctreeLeafNodeIterator (OctreeT& octree_arg)
         # typedef typename OctreeDepthFirstIterator<DataT, OctreeT>::BranchNode BranchNode;
@@ -783,6 +918,8 @@ cdef extern from "pcl/octree/octree_iterator.h" namespace "pcl::octree":
         # /** \brief *operator.
         #  * \return pointer to the current octree leaf node
         # OctreeNode* operator* () const
+
+
 ###
 
 # octree_key.h
@@ -1173,7 +1310,7 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         # \param[out] min_pt lower bound of voxel
         # \param[out] max_pt upper bound of voxel
         # inline void getVoxelBounds (OctreeIteratorBase<int, OctreeT>& iterator, Eigen::Vector3f &min_pt, Eigen::Vector3f &max_pt)
-        void getVoxelBounds (OctreeIteratorBase[int, OctreeT]& iterator, eig.Vector3f &min_pt, eig.Vector3f &max_pt)
+        void getVoxelBounds (OctreeIteratorBase[OctreeT]& iterator, eig.Vector3f &min_pt, eig.Vector3f &max_pt)
 
 
 ctypedef OctreePointCloud[cpp.PointXYZ, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t] OctreePointCloud_t
@@ -1189,9 +1326,7 @@ ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerPointIndices_t, Octre
 # pcl_1.7.2 use octree_pointcloud.h
 # namespace pcl
 # namespace octree
-# template<typename PointT, typename LeafT = OctreeContainerDataTVector<int>,
-# typename BranchT = OctreeContainerEmpty<int> >
-#     class OctreePointCloudChangeDetector : public OctreePointCloud<PointT, LeafT, BranchT, Octree2BufBase<int, LeafT, BranchT> >
+# pcl 1.8.0 Template Changed(OctreeContainerDataTVector to OctreeContainerPointIndices)
 # template<typename PointT,
 #         typename LeafContainerT = OctreeContainerPointIndices,
 #         typename BranchContainerT = OctreeContainerEmpty >
@@ -1203,10 +1338,10 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
         OctreePointCloudChangeDetector (const double resolution_arg)
         # public:
-        # /** \brief Get a indices from all leaf nodes that did not exist in previous buffer.
-        # * \param indicesVector_arg: results are written to this vector of int indices
-        # * \param minPointsPerLeaf_arg: minimum amount of points required within leaf node to become serialized.
-        # * \return number of point indices
+        # \brief Get a indices from all leaf nodes that did not exist in previous buffer.
+        # \param indicesVector_arg: results are written to this vector of int indices
+        # \param minPointsPerLeaf_arg: minimum amount of points required within leaf node to become serialized.
+        # \return number of point indices
         # int getPointIndicesFromNewVoxels (std::vector<int> &indicesVector_arg, const int minPointsPerLeaf_arg = 0)
         int getPointIndicesFromNewVoxels (vector[int] &indicesVector_arg, const int minPointsPerLeaf_arg)
 
@@ -1289,10 +1424,13 @@ ctypedef shared_ptr[OctreePointCloudDensity[cpp.PointXYZRGBA]] OctreePointCloudD
 
 # octree_pointcloud_occupancy.h
 ###
+
 # octree_pointcloud_pointvector.h
 ###
+
 # octree_pointcloud_singlepoint.h
 ###
+
 # octree_pointcloud_voxelcentroid.h
 ###
 
@@ -1300,12 +1438,12 @@ ctypedef shared_ptr[OctreePointCloudDensity[cpp.PointXYZRGBA]] OctreePointCloudD
 cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
     cdef cppclass OctreePointCloudSearch[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t]):
         OctreePointCloudSearch (const double resolution_arg)
-        int radiusSearch (cpp.PointXYZ, double, vector[int], vector[float], unsigned int)
-        int radiusSearch (cpp.PointXYZI, double, vector[int], vector[float], unsigned int)
-        int radiusSearch (cpp.PointXYZRGB, double, vector[int], vector[float], unsigned int)
-        int radiusSearch (cpp.PointXYZRGBA, double, vector[int], vector[float], unsigned int)
+        # int radiusSearch (cpp.PointXYZ, double, vector[int], vector[float], unsigned int)
+        # int radiusSearch (cpp.PointXYZI, double, vector[int], vector[float], unsigned int)
+        # int radiusSearch (cpp.PointXYZRGB, double, vector[int], vector[float], unsigned int)
+        # int radiusSearch (cpp.PointXYZRGBA, double, vector[int], vector[float], unsigned int)
         # PointT
-        # int radiusSearch (PointT, double, vector[int], vector[float], unsigned int)
+        int radiusSearch (PointT, double, vector[int], vector[float], unsigned int)
         
         # Add index(inline?)
         int radiusSearch (cpp.PointCloud[PointT], int, double, vector[int], vector[float], unsigned int)

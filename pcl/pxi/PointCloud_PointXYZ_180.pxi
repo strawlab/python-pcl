@@ -11,7 +11,7 @@ cimport pcl_features_172 as pclftr
 cimport pcl_filters_172 as pclfil
 cimport pcl_io_172 as pclio
 cimport pcl_kdtree_172 as pclkdt
-cimport pcl_octree_180 as pcloct
+# cimport pcl_octree_180 as pcloct
 cimport pcl_sample_consensus_172 as pcl_sc
 # cimport pcl_search_172 as pcl_sch
 cimport pcl_segmentation_172 as pclseg
@@ -354,30 +354,30 @@ cdef class PointCloud:
         """
         return KdTreeFLANN(self)
 
-    def make_octree(self, double resolution):
-        """
-        Return a pcl.octree object with this object set as the input-cloud
-        """
-        octree = OctreePointCloud(resolution)
-        octree.set_input_cloud(self)
-        return octree
-
-    def make_octreeSearch(self, double resolution):
-        """
-        Return a pcl.make_octreeSearch object with this object set as the input-cloud
-        """
-        octreeSearch = OctreePointCloudSearch(resolution)
-        octreeSearch.set_input_cloud(self)
-        return octreeSearch
-
-    # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
-    def make_octreeChangeDetector(self, double resolution):
-        """
-        Return a pcl.make_octreeSearch object with this object set as the input-cloud
-        """
-        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
-        octreeChangeDetector.set_input_cloud(self)
-        return octreeChangeDetector
+    # def make_octree(self, double resolution):
+    #     """
+    #     Return a pcl.octree object with this object set as the input-cloud
+    #     """
+    #     octree = OctreePointCloud(resolution)
+    #     octree.set_input_cloud(self)
+    #     return octree
+    # 
+    # def make_octreeSearch(self, double resolution):
+    #     """
+    #     Return a pcl.make_octreeSearch object with this object set as the input-cloud
+    #     """
+    #     octreeSearch = OctreePointCloudSearch(resolution)
+    #     octreeSearch.set_input_cloud(self)
+    #     return octreeSearch
+    # 
+    # # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
+    # def make_octreeChangeDetector(self, double resolution):
+    #     """
+    #     Return a pcl.make_octreeSearch object with this object set as the input-cloud
+    #     """
+    #     octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+    #     octreeChangeDetector.set_input_cloud(self)
+    #     return octreeChangeDetector
 
     def make_crophull(self):
         """

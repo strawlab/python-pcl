@@ -176,7 +176,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
         FilterIndices()
         # public:
         # ctypedef pcl::PointCloud<PointT> PointCloud;
-        void filter (cpp.PointCloud[T] &output)
+        # void filter (cpp.PointCloud[T] &output)
         
         # brief Calls the filtering method and returns the filtered point cloud indices.
         # param[out] indices the resultant filtered point cloud indices
@@ -1250,14 +1250,13 @@ ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval_P
 # voxel_grid.h
 # template <typename PointT>
 # class VoxelGrid : public Filter<PointT>
-#    cdef cppclass VoxelGrid[T](Filter[T]):
 cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
-    cdef cppclass VoxelGrid[T]:
+    cdef cppclass VoxelGrid[T](Filter[T]):
         VoxelGrid()
         # void setLeafSize (const Eigen::Vector4f &leaf_size) 
         void setLeafSize (float, float, float)
-        void setInputCloud (shared_ptr[cpp.PointCloud[T]])
-        void filter(cpp.PointCloud[T] c)
+        # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
+        # void filter(cpp.PointCloud[T] c)
         # /** \brief Set to true if all fields need to be downsampled, or false if just XYZ.
         #   * \param[in] downsample the new value (true/false)
         # void setDownsampleAllData (bool downsample)
