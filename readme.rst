@@ -119,9 +119,12 @@ set Environment variable
 1. PCL_ROOT
     $(PCL Install FolderPath)
 
-2. PKG_CONFIG_PATH
-    $(PCL_ROOT)/lib/pkgconfig;$(PCL_ROOT)/3rdParty/FLANN/lib/pkgconfig;$(PCL_ROOT)/3rdParty/Eigen/lib/pkgconfig;
+2. PATH
+    (pcl 1.6.0, 1.7.2?)
+    $(PCL_ROOT)/bin/;$(OPEN_NI_ROOT)/Tools;$(VTK_ROOT)/bin;
 
+    (pcl 1.8.0)
+    $(PCL_ROOT)/bin/;$(OPEN_NI2_ROOT)/Tools;$(VTK_ROOT)/bin;
 
 * use Cython 0.25.2 reason
 * `override method support version <http://cython.readthedocs.io/en/latest/src/userguide/wrapping_CPlusPlus.html/>`_

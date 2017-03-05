@@ -91,6 +91,7 @@ if platform.system() == "Windows":
             pass
         else:
             print('no building Python Version')
+            vtk_version = '5.2'
             sys.exit(1)
     elif pcl_version == '-1.7':
         # PCL 1.7.2 python Version >= 3.5
@@ -99,6 +100,7 @@ if platform.system() == "Windows":
             pass
         else:
             print('no building Python Version')
+            vtk_version = '6.0'
             sys.exit(1)
     elif pcl_version == '-1.8':
         # PCL 1.8.0 python Version >= 3.5
@@ -107,6 +109,7 @@ if platform.system() == "Windows":
             pass
         else:
             print('no building Python Version')
+            vtk_version = '7.0'
             sys.exit(1)
     else:
         print('pcl_version Unknown')
@@ -120,6 +123,19 @@ if platform.system() == "Windows":
     pcl_libs = ["common", "features", "filters", "kdtree", "octree",
                 "registration", "sample_consensus", "search", "segmentation",
                 "surface", "tracking", "visualization"]
+    
+    # pcl-1.7
+    # pcl_libs = ["common", "features", "filters", "geometry", 
+    #             "io", "kdtree", "keypoints", "octree", "outofcore", "people", 
+    #             "recognition", "registration", "sample_consensus", "search", 
+    #             "segmentation", "surface", "tracking", "visualization"]
+    
+    # pcl-1.8
+    # pcl_libs = ["2d", "common", "features", "filters", "geometry", 
+    #             "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people", 
+    #             "recognition", "registration", "sample_consensus", "search", 
+    #             "segmentation", "stereo", "surface", "tracking", "visualization"]
+    
     pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
     # pcl_libs += ['Eigen3']
     # print(pcl_libs)
@@ -182,7 +198,7 @@ if platform.system() == "Windows":
     
     # for flag in pkgconfig('--libs-only-L'):
     #     ext_args['library_dirs'].append(flag[2:])
-    #
+    # 
     # for flag in pkgconfig('--libs-only-other'):
     #     ext_args['extra_link_args'].append(flag)
     # end
@@ -213,7 +229,7 @@ if platform.system() == "Windows":
     #         ext_args['define_macros'].append((macro, value))
     #     else:
     #         ext_args['extra_compile_args'].append(flag)
-    #
+    # 
     # for flag in pkgconfig('--libs-only-l', '-l'):
     #     if flag == "-lflann_cpp-gd":
     #         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
@@ -238,15 +254,13 @@ if platform.system() == "Windows":
         # release
         # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
         # release + vtk
-        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
+        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_outofcore_release', 'pcl_people_release', 'pcl_recognition_release','pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_search_release', 'pcl_segmentation_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
     elif pcl_version == '-1.8':
         # release
         # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
-        # release + vtk
         # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
         # release + vtk7.0
-        # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
-        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkalglib-7.0', 'vtkChartsCore-7.0', 'vtkCommonColor-7.0', 'vtkCommonComputationalGeometry-7.0', 'vtkCommonCore-7.0', 'vtkCommonDataModel-7.0', 'vtkCommonExecutionModel-7.0', 'vtkCommonMath-7.0', 'vtkCommonMisc-7.0', 'vtkCommonSystem-7.0', 'vtkCommonTransforms-7.0', 'vtkDICOMParser-7.0', 'vtkDomainsChemistry-7.0', 'vtkexoIIc-7.0', 'vtkexpat-7.0', 'vtkFiltersAMR-7.0', 'vtkFiltersCore-7.0', 'vtkFiltersExtraction-7.0', 'vtkFiltersFlowPaths-7.0', 'vtkFiltersGeneral-7.0', 'vtkFiltersGeneric-7.0', 'vtkFiltersGeometry-7.0', 'vtkFiltersHybrid-7.0', 'vtkFiltersHyperTree-7.0', 'vtkFiltersImaging-7.0', 'vtkFiltersModeling-7.0', 'vtkFiltersParallel-7.0', 'vtkFiltersParallelImaging-7.0', 'vtkFiltersProgrammable-7.0', 'vtkFiltersSelection-7.0', 'vtkFiltersSMP-7.0', 'vtkFiltersSources-7.0', 'vtkFiltersStatistics-7.0', 'vtkFiltersTexture-7.0', 'vtkFiltersVerdict-7.0', 'vtkfreetype-7.0', 'vtkGeovisCore-7.0', 'vtkgl2ps-7.0', 'vtkhdf5-7.0', 'vtkhdf5_hl-7.0', 'vtkImagingColor-7.0', 'vtkImagingCore-7.0', 'vtkImagingFourier-7.0', 'vtkImagingGeneral-7.0', 'vtkImagingHybrid-7.0', 'vtkImagingMath-7.0', 'vtkImagingMorphological-7.0', 'vtkImagingSources-7.0', 'vtkImagingStatistics-7.0', 'vtkImagingStencil-7.0', 'vtkInfovisCore-7.0', 'vtkInfovisLayout-7.0', 'vtkInteractionImage-7.0', 'vtkInteractionStyle-7.0', 'vtkInteractionWidgets-7.0', 'vtkIOAMR-7.0', 'vtkIOCore-7.0', 'vtkIOEnSight-7.0', 'vtkIOExodus-7.0', 'vtkIOExport-7.0', 'vtkIOGeometry-7.0', 'vtkIOImage-7.0', 'vtkIOImport-7.0', 'vtkIOInfovis-7.0', 'vtkIOLegacy-7.0', 'vtkIOLSDyna-7.0', 'vtkIOMINC-7.0', 'vtkIOMovie-7.0', 'vtkIONetCDF-7.0', 'vtkIOParallel-7.0', 'vtkIOParallelXML-7.0', 'vtkIOPLY-7.0', 'vtkIOSQL-7.0', 'vtkIOVideo-7.0', 'vtkIOXML-7.0', 'vtkIOXMLParser-7.0', 'vtkjpeg-7.0', 'vtkjsoncpp-7.0', 'vtklibxml2-7.0', 'vtkmetaio-7.0', 'vtkNetCDF-7.0', 'vtkNetCDF_cxx-7.0', 'vtkoggtheora-7.0', 'vtkParallelCore-7.0', 'vtkpng-7.0', 'vtkproj4-7.0', 'vtkRenderingAnnotation-7.0', 'vtkRenderingContext2D-7.0', 'vtkRenderingContextOpenGL-7.0', 'vtkRenderingCore-7.0', 'vtkRenderingFreeType-7.0', 'vtkRenderingGL2PS-7.0', 'vtkRenderingImage-7.0', 'vtkRenderingLabel-7.0', 'vtkRenderingLIC-7.0', 'vtkRenderingLOD-7.0', 'vtkRenderingOpenGL-7.0', 'vtkRenderingVolume-7.0', 'vtkRenderingVolumeOpenGL-7.0', 'vtksqlite-7.0', 'vtksys-7.0', 'vtktiff-7.0', 'vtkverdict-7.0', 'vtkViewsContext2D-7.0', 'vtkViewsCore-7.0', 'vtkViewsInfovis-7.0', 'vtkzlib-7.0']
+        libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_ml_release', 'pcl_octree_release', 'pcl_outofcore_release', 'pcl_people_release', 'pcl_recognition_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_search_release', 'pcl_segmentation_release', 'pcl_stereo_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkalglib-7.0', 'vtkChartsCore-7.0', 'vtkCommonColor-7.0', 'vtkCommonComputationalGeometry-7.0', 'vtkCommonCore-7.0', 'vtkCommonDataModel-7.0', 'vtkCommonExecutionModel-7.0', 'vtkCommonMath-7.0', 'vtkCommonMisc-7.0', 'vtkCommonSystem-7.0', 'vtkCommonTransforms-7.0', 'vtkDICOMParser-7.0', 'vtkDomainsChemistry-7.0', 'vtkexoIIc-7.0', 'vtkexpat-7.0', 'vtkFiltersAMR-7.0', 'vtkFiltersCore-7.0', 'vtkFiltersExtraction-7.0', 'vtkFiltersFlowPaths-7.0', 'vtkFiltersGeneral-7.0', 'vtkFiltersGeneric-7.0', 'vtkFiltersGeometry-7.0', 'vtkFiltersHybrid-7.0', 'vtkFiltersHyperTree-7.0', 'vtkFiltersImaging-7.0', 'vtkFiltersModeling-7.0', 'vtkFiltersParallel-7.0', 'vtkFiltersParallelImaging-7.0', 'vtkFiltersProgrammable-7.0', 'vtkFiltersSelection-7.0', 'vtkFiltersSMP-7.0', 'vtkFiltersSources-7.0', 'vtkFiltersStatistics-7.0', 'vtkFiltersTexture-7.0', 'vtkFiltersVerdict-7.0', 'vtkfreetype-7.0', 'vtkGeovisCore-7.0', 'vtkgl2ps-7.0', 'vtkhdf5-7.0', 'vtkhdf5_hl-7.0', 'vtkImagingColor-7.0', 'vtkImagingCore-7.0', 'vtkImagingFourier-7.0', 'vtkImagingGeneral-7.0', 'vtkImagingHybrid-7.0', 'vtkImagingMath-7.0', 'vtkImagingMorphological-7.0', 'vtkImagingSources-7.0', 'vtkImagingStatistics-7.0', 'vtkImagingStencil-7.0', 'vtkInfovisCore-7.0', 'vtkInfovisLayout-7.0', 'vtkInteractionImage-7.0', 'vtkInteractionStyle-7.0', 'vtkInteractionWidgets-7.0', 'vtkIOAMR-7.0', 'vtkIOCore-7.0', 'vtkIOEnSight-7.0', 'vtkIOExodus-7.0', 'vtkIOExport-7.0', 'vtkIOGeometry-7.0', 'vtkIOImage-7.0', 'vtkIOImport-7.0', 'vtkIOInfovis-7.0', 'vtkIOLegacy-7.0', 'vtkIOLSDyna-7.0', 'vtkIOMINC-7.0', 'vtkIOMovie-7.0', 'vtkIONetCDF-7.0', 'vtkIOParallel-7.0', 'vtkIOParallelXML-7.0', 'vtkIOPLY-7.0', 'vtkIOSQL-7.0', 'vtkIOVideo-7.0', 'vtkIOXML-7.0', 'vtkIOXMLParser-7.0', 'vtkjpeg-7.0', 'vtkjsoncpp-7.0', 'vtklibxml2-7.0', 'vtkmetaio-7.0', 'vtkNetCDF-7.0', 'vtkNetCDF_cxx-7.0', 'vtkoggtheora-7.0', 'vtkParallelCore-7.0', 'vtkpng-7.0', 'vtkproj4-7.0', 'vtkRenderingAnnotation-7.0', 'vtkRenderingContext2D-7.0', 'vtkRenderingContextOpenGL-7.0', 'vtkRenderingCore-7.0', 'vtkRenderingFreeType-7.0', 'vtkRenderingGL2PS-7.0', 'vtkRenderingImage-7.0', 'vtkRenderingLabel-7.0', 'vtkRenderingLIC-7.0', 'vtkRenderingLOD-7.0', 'vtkRenderingOpenGL-7.0', 'vtkRenderingVolume-7.0', 'vtkRenderingVolumeOpenGL-7.0', 'vtksqlite-7.0', 'vtksys-7.0', 'vtktiff-7.0', 'vtkverdict-7.0', 'vtkViewsContext2D-7.0', 'vtkViewsCore-7.0', 'vtkViewsInfovis-7.0', 'vtkzlib-7.0']
         
         # add boost
         # dynamic lib
@@ -258,6 +272,9 @@ if platform.system() == "Windows":
     
     for librelease in libreleases:
         ext_args['libraries'].append(librelease)
+    
+    # Note : 
+    # vtk Version setting
     
     # use vtk need library(Windows base library)
     # http://public.kitware.com/pipermail/vtkusers/2008-July/047291.html
@@ -302,6 +319,9 @@ if platform.system() == "Windows":
     for opengl_librelease in win_opengl_libreleases:
         ext_args['libraries'].append(opengl_librelease)
     
+    # use OpenNI
+    # use OpenNI2
+    # add environment PATH : pcl/bin, OpenNI2/Tools
     
     # use CUDA?
     # CUDA_PATH
