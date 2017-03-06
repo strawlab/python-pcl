@@ -845,6 +845,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # void setBackgroundColor (const double &r, const double &g, const double &b, int viewport = 0);
         void setBackgroundColor (const double &r, const double &g, const double &b, int viewport)
         
+        ### addText function
         # brief Add a text to screen
         # param[in] text the text to add
         # param[in] xpos the X position on screen where the text should be added
@@ -869,6 +870,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool addText (const std::string &text, int xpos, int ypos, double r, double g, double b,
         #               const std::string &id = "", int viewport = 0);
         bool addText (const string &text, int xpos, int ypos, double r, double g, double b, const string &id, int viewport)
+        # bool addText_rgb "addText" (const string &text, int xpos, int ypos, double r, double g, double b, const string &id, int viewport)
         
         # brief Add a text to screen
         # param[in] text the text to add
@@ -883,7 +885,11 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool addText (const std::string &text, int xpos, int ypos, int fontsize, double r, double g, double b,
         #               const std::string &id = "", int viewport = 0);
         bool addText (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id, int viewport)
+        # bool addText_rgb_ftsize "addText" (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id, int viewport)
         
+        ### addText function
+        
+        ### updateText function
         # brief Update a text to screen
         # param[in] text the text to update
         # param[in] xpos the new X position on screen
@@ -903,6 +909,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                  int xpos, int ypos, double r, double g, double b,
         #                  const std::string &id = "");
         bool updateText (const string &text, int xpos, int ypos, double r, double g, double b, const string &id)
+        # bool updateText_rgb "updateText" (const string &text, int xpos, int ypos, double r, double g, double b, const string &id)
         
         # brief Update a text to screen
         # param[in] text the text to update
@@ -917,6 +924,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                  int xpos, int ypos, int fontsize, double r, double g, double b,
         #                  const std::string &id = "");
         bool updateText (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id)
+        # bool updateText_rgb_ftsize "updateText" (const string &text, int xpos, int ypos, int fontsize, double r, double g, double b, const string &id)
+        
+        ### updateText function
         
         # brief Set the pose of an existing shape. 
         # Returns false if the shape doesn't exist, true if the pose was succesfully 
@@ -967,8 +977,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                       int level = 100, double scale = 0.02, const std::string &id = "cloud", int viewport = 0);
         bool addPointCloudNormals [PointT, PointNT] (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[cpp.PointCloud[PointNT]] &normals, int level, double scale, const string &id, int viewport)
         
+        ### addPointCloudPrincipalCurvatures function ###
         ### PCL 1.6.0 NG (not define)
-        ### PCL 1.7.2
+        ### PCL 1.7.2 
         # brief Add the estimated principal curvatures of a Point Cloud to screen.
         # param[in] cloud the input point cloud dataset containing the XYZ data
         # param[in] normals the input point cloud dataset containing the normal data
@@ -989,6 +1000,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #             const shared_ptr[cpp.PointCloud[cpp.PrincipalCurvatures]] &pcs,
         #             int level, double scale, string &id, int viewport)
         
+        ### addPointCloudPrincipalCurvatures function ###
+        
         ### updatePointCloud Functions ###
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
@@ -1004,7 +1017,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # return false if no cloud with the specified ID was found
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const PointCloudGeometryHandler<PointT> &geometry_handler, const std::string &id = "cloud");
-        bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, string &id)
+        # bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, string &id)
+        bool updatePointCloud_GeometryHandler "updatePointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, string &id)
         
         # brief Updates the XYZ data for an existing cloud object id on screen.
         # param[in] cloud the input point cloud dataset
@@ -1013,7 +1027,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # return false if no cloud with the specified ID was found
         # template <typename PointT> bool
         # updatePointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const PointCloudColorHandler<PointT> &color_handler, const std::string &id = "cloud");
-        bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id)
+        # bool updatePointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id)
+        bool updatePointCloud_ColorHandler "updatePointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const string &id)
+        
+        ### updatePointCloud Functions ###
         
         ### addPointCloud Functions ###
         # typedef boost::shared_ptr<const PointCloudColorHandler<PointT> > ConstPtr;
@@ -1035,6 +1052,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
         # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
+        bool addPointCloud_GeometryHandler "addPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
         
         # \brief Add a Point Cloud (templated) to screen.
         # Because the geometry handler is given as a pointer, it will be pushed back to the list of available
@@ -1050,9 +1068,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # set BaseClass(use NG)
         # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandler[PointT]] &geometry_handler, const string &id, int viewport)
         # set InheritanceClass
-        bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerCustom[PointT]] &geometry_handler, const string &id, int viewport)
-        bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerSurfaceNormal[PointT]] &geometry_handler, const string &id, int viewport)
-        bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerXYZ[PointT]] &geometry_handler, const string &id, int viewport)
+        # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerCustom[PointT]] &geometry_handler, const string &id, int viewport)
+        # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerSurfaceNormal[PointT]] &geometry_handler, const string &id, int viewport)
+        # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerXYZ[PointT]] &geometry_handler, const string &id, int viewport)
+        bool addPointCloud_GeometryHandler2 "addPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandlerXYZ[PointT]] &geometry_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # param[in] cloud the input point cloud dataset
@@ -1069,6 +1088,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandlerHSVField[PointT] color_handler, const string &id, int viewport)
         # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandlerRandom[PointT] color_handler, const string &id, int viewport)
         # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandlerRGBField[PointT] color_handler, const string &id, int viewport)
+        bool addPointCloud_ColorHandler "addPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandlerCustom[PointT] &color_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # Because the color handler is given as a pointer, it will be pushed back to the list of available
@@ -1082,6 +1102,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # template <typename PointT> bool
         # addPointCloud (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, const ColorHandlerConstPtr &color_handler, const std::string &id = "cloud", int viewport = 0);
         # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
+        bool addPointCloud_ColorHandler2 "addPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # param[in] cloud the input point cloud dataset
@@ -1094,7 +1115,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                const PointCloudColorHandler<PointT> &color_handler,
         #                const PointCloudGeometryHandler<PointT> &geometry_handler,
         #                const std::string &id = "cloud", int viewport = 0);
-        # bool addPointCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
+        # bool addPointCloud [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
+        bool addPointCloud_ColorGeometryHandler "addPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const PointCloudColorHandler[PointT] &color_handler, const PointCloudGeometryHandler[PointT] &geometry_handler, const string &id, int viewport)
         
         # brief Add a Point Cloud (templated) to screen.
         # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of
@@ -1112,6 +1134,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                const ColorHandlerConstPtr &color_handler,
         #                const std::string &id = "cloud", int viewport = 0);
         # bool addPointCloud[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandler[PointT] &geometry_handler, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
+        # bool addPointCloud_ColorGeometryHandler2 "addPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const shared_ptr[PointCloudGeometryHandler[PointT] &geometry_handler, const shared_ptr[PointCloudColorHandler[PointT]] &color_handler, const string &id, int viewport)
         
         # brief Add a binary blob Point Cloud to screen.
         # Because the geometry/color handler is given as a pointer, it will be pushed back to the list of

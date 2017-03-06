@@ -14,9 +14,7 @@
 python examples\official\Filtering\PassThroughFilter.py
 python examples\official\Filtering\project_inliers.py
 python examples\official\Filtering\remove_outliers.py -r Radius
-# MemoryLeak?
 python examples\official\Filtering\remove_outliers.py -r Condition
-
 python examples\official\Filtering\VoxelGrid_160.py
 python examples\official\Filtering\statistical_removal.py
 

@@ -23,7 +23,7 @@ print ('set_NormalSmoothingSize: ')
 ne.set_NormalSmoothingSize(10.0)
 print ('set OK')
 print ('compute2 - start')
-normals = ne.compute2()
+normals = ne.compute2(cloud)
 print ('compute2 - end')
 print (str(normals.size))
 

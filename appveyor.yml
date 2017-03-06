@@ -41,14 +41,14 @@ environment:
   #  OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
   #  APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
   
-  #- PYTHON: "C:\\Python35-x64"
-  #  PYTHON_VERSION: "3.5.x"
-  #  PYTHON_ARCH: "64"
-  #  PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
-  #  PCL_VERSION: "1.7"
-  #  OPENNI_VERSION: "1.3.2"
-  #  OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
-  #  APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
+  - PYTHON: "C:\\Python35-x64"
+    PYTHON_VERSION: "3.5.x"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
+    PCL_VERSION: "1.7"
+    OPENNI_VERSION: "1.3.2"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
 
   # Version 1.8.0 Check
   # - PYTHON: "C:\\Python35"
@@ -239,5 +239,4 @@ artifacts:
 
 #on_success:
 #  - TODO: upload the content of dist/*.whl to a public wheelhouse
-#
 
