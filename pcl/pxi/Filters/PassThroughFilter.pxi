@@ -32,7 +32,10 @@ cdef class PassThroughFilter:
         a new pointcloud
         """
         cdef PointCloud pc = PointCloud()
-        self.me.filter(<vector[int]&> pc)
+        # cdef cpp.PointCloud_t *cCondAnd = <cpp.PointCloud_t *>pc.thisptr()[0]
+        # self.me.filter(<cpp.PointCloud_t*> pc.thisptr()[0])
+        # self.me.filter (<cpp.PointCloud_t*> pc.thisptr())
+        self.me.c_filter(pc.thisptr()[0])
         return pc
 
 
@@ -66,8 +69,7 @@ cdef class PassThroughFilter_PointXYZI:
         a new PointCloud_PointXYZI
         """
         cdef PointCloud_PointXYZI pc = PointCloud_PointXYZI()
-        # self.me.filter(pc.thisptr()[0])
-        self.me.filter(<vector[int]&> pc)
+        self.me.c_filter(pc.thisptr()[0])
         return pc
 
 
@@ -101,7 +103,7 @@ cdef class PassThroughFilter_PointXYZRGB:
         a new PointCloud_PointXYZRGB
         """
         cdef PointCloud_PointXYZRGB pc = PointCloud_PointXYZRGB()
-        self.me.filter(<vector[int]&> pc)
+        self.me.c_filter(pc.thisptr()[0])
         return pc
 
 
@@ -135,5 +137,5 @@ cdef class PassThroughFilter_PointXYZRGBA:
         a new PointCloud_PointXYZRGBA
         """
         cdef PointCloud_PointXYZRGBA pc = PointCloud_PointXYZRGBA()
-        self.me.filter(<vector[int]&> pc)
+        self.me.c_filter(pc.thisptr()[0])
         return pc

@@ -176,11 +176,20 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
         FilterIndices()
         # public:
         # ctypedef pcl::PointCloud<PointT> PointCloud;
+        
+        ## filter function
+        # same question
+        # http://stackoverflow.com/questions/37186861/sync-bool-compare-and-swap-with-different-parameter-types-in-cython
+        # taisaku : 
+        # Interfacing with External C Code
+        # http://cython-docs2.readthedocs.io/en/latest/src/userguide/external_C_code.html
         # void filter (cpp.PointCloud[T] &output)
+        void c_filter "filter" (cpp.PointCloud[T] &output)
         
         # brief Calls the filtering method and returns the filtered point cloud indices.
         # param[out] indices the resultant filtered point cloud indices
         void filter (vector[int] &indices)
+        ## filter function
         
         # \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
         # \param[in] negative false = normal filter behavior (default), true = inverted behavior.
