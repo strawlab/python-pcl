@@ -37,6 +37,10 @@ include "registration/IterativeClosestPointNonLinear.pxi"
 include "SampleConsensus/RandomSampleConsensus.pxi"
 include "SampleConsensus/SampleConsensusModelPlane.pxi"
 include "SampleConsensus/SampleConsensusModelSphere.pxi"
+include "SampleConsensus/SampleConsensusModelCylinder.pxi"
+include "SampleConsensus/SampleConsensusModelLine.pxi"
+include "SampleConsensus/SampleConsensusModelRegistration.pxi"
+include "SampleConsensus/SampleConsensusModelStick.pxi"
 # pcl 1.7.2?
 # include "registration/NormalDistributionsTransform.pxi"
 

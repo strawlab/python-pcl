@@ -642,6 +642,7 @@ ctypedef shared_ptr[const SampleConsensusModelSphere[cpp.PointXYZRGBA]] SampleCo
 cdef extern from "pcl/sample_consensus/lmeds.h" namespace "pcl":
     cdef cppclass LeastMedianSquares[T](SampleConsensus[T]):
         # LeastMedianSquares ()
+        LeastMedianSquares (shared_ptr[SampleConsensusModel[T]] model)
         # LeastMedianSquares (const SampleConsensusModelPtr &model)
         # LeastMedianSquares (const SampleConsensusModelPtr &model, double threshold)
         # using SampleConsensus<PointT>::max_iterations_;
@@ -669,6 +670,7 @@ cdef extern from "pcl/sample_consensus/lmeds.h" namespace "pcl":
 cdef extern from "pcl/sample_consensus/mlesac.h" namespace "pcl":
     cdef cppclass MaximumLikelihoodSampleConsensus[T](SampleConsensus[T]):
         MaximumLikelihoodSampleConsensus ()
+        MaximumLikelihoodSampleConsensus (shared_ptr[SampleConsensusModel[T]] model)
         # \brief MLESAC (Maximum Likelihood Estimator SAmple Consensus) main constructor
         # \param[in] model a Sample Consensus model
         # MaximumLikelihoodSampleConsensus (const SampleConsensusModelPtr &model)
@@ -705,6 +707,7 @@ cdef extern from "pcl/sample_consensus/mlesac.h" namespace "pcl":
 cdef extern from "pcl/sample_consensus/msac.h" namespace "pcl":
     cdef cppclass MEstimatorSampleConsensus[T](SampleConsensus[T]):
         MEstimatorSampleConsensus ()
+        MEstimatorSampleConsensus (shared_ptr[SampleConsensusModel[T]] model)
         # MEstimatorSampleConsensus (const SampleConsensusModelPtr &model)
         # MEstimatorSampleConsensus (const SampleConsensusModelPtr &model, double threshold)
         # using SampleConsensus<PointT>::max_iterations_;
@@ -803,6 +806,8 @@ cdef extern from "pcl/sample_consensus/rmsac.h" namespace "pcl":
         RandomizedMEstimatorSampleConsensus ()
         # RandomizedMEstimatorSampleConsensus (const SampleConsensusModelPtr &model)
         # RandomizedMEstimatorSampleConsensus (const SampleConsensusModelPtr &model, double threshold)
+        RandomizedMEstimatorSampleConsensus (shared_ptr[SampleConsensusModel[T]] model)
+        
         # using SampleConsensus<PointT>::max_iterations_;
         # using SampleConsensus<PointT>::threshold_;
         # using SampleConsensus<PointT>::iterations_;
@@ -851,7 +856,7 @@ ctypedef shared_ptr[const RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGBA]]
 cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
     cdef cppclass RandomizedRandomSampleConsensus[T](SampleConsensus[T]):
         RandomizedRandomSampleConsensus ()
-        # RandomizedRandomSampleConsensus (const SampleConsensusModelPtr &model)
+        RandomizedRandomSampleConsensus (shared_ptr[SampleConsensusModel[T]] model)
         # RandomizedRandomSampleConsensus (const SampleConsensusModelPtr &model)
         # RandomizedRandomSampleConsensus (const SampleConsensusModelPtr &model, double threshold)
         # using SampleConsensus<PointT>::max_iterations_;
@@ -1140,6 +1145,7 @@ ctypedef shared_ptr[SampleConsensusModelCone[cpp.PointXYZRGBA, cpp.Normal]] Samp
 cdef extern from "pcl/sample_consensus/sac_model_cylinder.h" namespace "pcl":
     cdef cppclass SampleConsensusModelCylinder[PointT, PointNT]:
         SampleConsensusModelCylinder()
+        SampleConsensusModelCylinder(shared_ptr[cpp.PointCloud[PointT]] cloud)
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
         # using SampleConsensusModel<PointT>::radius_min_;
@@ -1276,6 +1282,7 @@ ctypedef shared_ptr[const SampleConsensusModelCylinder[cpp.PointXYZRGBA, cpp.Nor
 cdef extern from "pcl/sample_consensus/sac_model_line.h" namespace "pcl":
     cdef cppclass SampleConsensusModelLine[PointT](SampleConsensusModel[PointT]):
         SampleConsensusModelLine()
+        SampleConsensusModelLine(shared_ptr[cpp.PointCloud[PointT]] cloud)
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
         # public:
@@ -1999,6 +2006,7 @@ ctypedef shared_ptr[const SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGB
 cdef extern from "pcl/sample_consensus/sac_model_registration.h" namespace "pcl":
     cdef cppclass SampleConsensusModelRegistration[PointT](SampleConsensusModel[PointT]):
         SampleConsensusModelRegistration()
+        SampleConsensusModelRegistration(shared_ptr[cpp.PointCloud[PointT]] cloud)
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
         # public:
@@ -2119,6 +2127,7 @@ ctypedef shared_ptr[const SampleConsensusModelRegistration[cpp.PointXYZRGBA]] Sa
 cdef extern from "pcl/sample_consensus/sac_model_stick.h" namespace "pcl":
     cdef cppclass SampleConsensusModelStick[PointT](SampleConsensusModel[PointT]):
         SampleConsensusModelStick()
+        SampleConsensusModelStick(shared_ptr[cpp.PointCloud[PointT]] cloud)
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
         # using SampleConsensusModel<PointT>::radius_min_;
