@@ -8,6 +8,6 @@ cdef class SampleConsensusModelCylinder:
 
     def __cinit__(self, PointCloud pc not None):
         # shared_ptr
-        sp_assign(self.thisptr_shared, new pcl_sac.SampleConsensusModelCylinder[cpp.PointXYZ](pc.thisptr_shared))
+        sp_assign(self.thisptr_shared, new pcl_sac.SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal](pc.thisptr_shared))
         pass
 

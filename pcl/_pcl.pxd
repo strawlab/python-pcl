@@ -176,8 +176,8 @@ cdef class SampleConsensusModelSphere:
 cdef class SampleConsensusModelCylinder:
     cdef pcl_sac.SampleConsensusModelCylinderPtr_t thisptr_shared     # SampleConsensusModelSphere
     
-    cdef inline pcl_sac.SampleConsensusModelCylinder[cpp.PointXYZ] *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelCylinder<pcl::PointXYZ>.
+    cdef inline pcl_sac.SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelCylinder<pcl::PointXYZ, pcl::Normal>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelLine:
