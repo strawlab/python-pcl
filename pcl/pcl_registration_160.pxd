@@ -404,15 +404,14 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
         # ctypedef PointIndices::ConstPtr PointIndicesConstPtr;
 
 
-# ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPoint_t
-# ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPoint_PointXYZI_t
-# ctypedef IterativeClosestPoint[cpp.PointXYZRGB, PointXYZRGB] IterativeClosestPoint_PointXYZRGB_t
-# ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, PointXYZRGBA] IterativeClosestPoint_PointXYZRGBA_t
-# 
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPoint_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PoiPointXYZIntXYZ, cpp.PointXYZI]] IterativeClosestPoint_PointXYZI_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPoint_PointXYZRGB_t
-# ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPoint_PointXYZRGBA_t
+ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPoint_t
+ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPoint_PointXYZI_t
+ctypedef IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB] IterativeClosestPoint_PointXYZRGB_t
+ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA] IterativeClosestPoint_PointXYZRGBA_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPointPtr_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI]] IterativeClosestPoint_PointXYZI_Ptr_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPoint_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPoint_PointXYZRGBA_Ptr_t
 ###
 
 # gicp.h
@@ -504,6 +503,14 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
         # int getMaximumOptimizerIterations ()
 
 
+ctypedef GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] GeneralizedIterativeClosestPoint_t
+ctypedef GeneralizedIterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] GeneralizedIterativeClosestPoint_PointXYZI_t
+ctypedef GeneralizedIterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB] GeneralizedIterativeClosestPoint_PointXYZRGB_t
+ctypedef GeneralizedIterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA] GeneralizedIterativeClosestPoint_PointXYZRGBA_t
+ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] GeneralizedIterativeClosestPointPtr_t
+ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI]] GeneralizedIterativeClosestPoint_PointXYZI_Ptr_t
+ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] GeneralizedIterativeClosestPoint_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] GeneralizedIterativeClosestPoint_PointXYZRGBA_Ptr_t
 ###
 
 # icp_nl.h
@@ -515,6 +522,14 @@ cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
         IterativeClosestPointNonLinear() except +
 
 
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPointNonLinear_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPointNonLinear_PointXYZI_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZRGB, cpp.PointXYZRGB] IterativeClosestPointNonLinear_PointXYZRGB_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXYZRGBA] IterativeClosestPointNonLinear_PointXYZRGBA_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPointNonLinearPtr_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZI, cpp.PointXYZI]] IterativeClosestPointNonLinear_PointXYZI_Ptr_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPointNonLinear_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPointNonLinear_PointXYZRGBA_Ptr_t
 ###
 
 # bfgs.h

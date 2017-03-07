@@ -593,7 +593,7 @@ ctypedef Octree2BufBase[int] Octree2BufBase_t
 # ctypedef shared_ptr[Octree2BufBase[int]] Octree2BufBasePtr_t
 ###
 
-# nothing use PCL 1.8.0
+# nothing use PCL 1.7.2/1.8.0
 # template<typename DataT>
 # class OctreeContainerDataT
 # cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
@@ -958,14 +958,14 @@ cdef extern from "pcl/octree/octree_key.h" namespace "pcl::octree":
         # unsigned int z;
 ###
 
-# pcl 1.8.0 nothing
+# pcl 1.7.2/1.8.0 nothing
 # octree_node_pool.h
 # namespace pcl
 # namespace octree
 # template<typename NodeT>
 # class OctreeNodePool
 # cdef extern from "pcl/octree/octree_node_pool.h" namespace "pcl::octree":
-#     cdef cppclass OctreeNodePool[T]:
+#     cdef cppclass OctreeNodePool[NodeT]:
 #         OctreeNodePool()
 #         # public:
 #         # /** \brief Push node to pool

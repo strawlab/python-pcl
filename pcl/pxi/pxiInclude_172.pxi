@@ -44,7 +44,7 @@ include "KeyPoint/HarrisKeypoint3D_172.pxi"
 # include "KeyPoint/UniformSampling_172.pxi"
 
 # Registration
-include "registration/NormalDistributionsTransform.pxi"
+include "registration/NormalDistributionsTransform_172.pxi"
 ###
 
 

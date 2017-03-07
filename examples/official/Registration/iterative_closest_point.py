@@ -6,7 +6,7 @@ import pcl
 import random
 import numpy as np
 
-from pcl.pcl_registration import icp, gicp, icp_nl
+# from pcl import icp, gicp, icp_nl
 
 cloud_in = pcl.PointCloud()
 cloud_out = pcl.PointCloud()
@@ -69,9 +69,12 @@ for i in range(0, cloud_out.size):
 # pcl::PointCloud<pcl::PointXYZ> Final;
 # icp.align(Final);
 icp = cloud_in.make_IterativeClosestPoint()
-Final = icp.align()
+# Final = icp.align()
+converged, transf, estimate, fitness = icp.icp(cloud_in, cloud_out)
 
 # std::cout << "has converged:" << icp.hasConverged() << " score: " << icp.getFitnessScore() << std::endl;
 # std::cout << icp.getFinalTransformation() << std::endl;
-print('has converged:' + strr(icp.hasConverged()) + ' score: ' + str(icp.getFitnessScore()) )
-print(str(icp.getFinalTransformation()))
+# print('has converged:' + str(icp.hasConverged()) + ' score: ' + str(icp.getFitnessScore()) )
+# print(str(icp.getFinalTransformation()))
+print('has converged:' + str(converged) + ' score: ' + str(fitness) )
+print(str(transf))

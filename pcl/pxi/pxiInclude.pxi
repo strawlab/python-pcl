@@ -29,6 +29,12 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages.pxi"
+# Registration
+include "registration/GeneralizedIterativeClosestPoint.pxi"
+include "registration/IterativeClosestPoint.pxi"
+include "registration/IterativeClosestPointNonLinear.pxi"
+# pcl 1.7.2?
+# include "registration/NormalDistributionsTransform.pxi"
 
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 

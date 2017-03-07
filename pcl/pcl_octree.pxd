@@ -384,7 +384,7 @@ cdef extern from "pcl/octree/octree2buf_base.h" namespace "pcl::octree":
         #  */
         # void deserializeTree (std::vector<char>& binaryTreeIn_arg, std::vector<DataT>& dataVector_arg, bool doXORDecoding_arg = false);
         void deserializeTree (vector[char]& binaryTreeIn_arg, vector[DataT]& dataVector_arg, bool doXORDecoding_arg)
-
+
 
 ctypedef Octree2BufBase[int] Octree2BufBase_t
 # ctypedef shared_ptr[Octree2BufBase[int]] Octree2BufBasePtr_t

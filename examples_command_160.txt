@@ -55,7 +55,7 @@ python examples\official\octree\octree_change_detection.py
 
 # Recognition
 # pcl 1.6 - NG (not Implement BOARDLocalReferenceFrameEstimation)
-# python examples\official\Recognition\correspondence_grouping.py pcldata/tutorials/correspondence_grouping/milk.pcd pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
+# python examples\official\Recognition\correspondence_grouping.py examples\pcldata/tutorials/correspondence_grouping/milk.pcd examples\pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
 # pcl 1.7.2
 # python examples\official\Recognition\global_hypothesis_verification.py
 # pcl 1.7.2
@@ -63,13 +63,12 @@ python examples\official\octree\octree_change_detection.py
 ###
 
 # Registration
+python examples\official\Registration\iterative_closest_point.py
 # pcl 1.7.2
 # python examples\official\Registration\alignment_prerejective.py
-python examples\official\Registration\iterative_closest_point.py
-python examples\official\Registration\iterative_closest_point.py
-# normal_distributions_transform.py
-# pairwise_incremental_registration.txt
-# pcl-interactive_icp.txt
+# python examples\official\Registration\normal_distributions_transform.py
+# python examples\official\Registration\pairwise_incremental_registration.txt
+# python examples\official\Registration\pcl-interactive_icp.txt
 ###
 
 # SampleConsensus

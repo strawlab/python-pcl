@@ -17,6 +17,7 @@ cimport pcl_sample_consensus as pcl_sc
 cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
 cimport pcl_range_image as pcl_r_img
+cimport pcl_registration_160 as pcl_reg
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -521,6 +522,25 @@ cdef class PointCloud:
         cdef pclseg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pclseg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
+
+    def make_GeneralizedIterativeClosestPoint(self):
+        generalizedIterativeClosestPoint = GeneralizedIterativeClosestPoint(self)
+        cdef pcl_reg.GeneralizedIterativeClosestPoint_t *cGeneralizedIterativeClosestPoint = <pcl_reg.GeneralizedIterativeClosestPoint_t *>generalizedIterativeClosestPoint.me
+        cGeneralizedIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return generalizedIterativeClosestPoint
+
+    def make_IterativeClosestPointNonLinear(self):
+        iterativeClosestPointNonLinear = IterativeClosestPointNonLinear(self)
+        cdef pcl_reg.IterativeClosestPointNonLinear_t *cIterativeClosestPointNonLinear = <pcl_reg.IterativeClosestPointNonLinear_t *>iterativeClosestPointNonLinear.me
+        cIterativeClosestPointNonLinear.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return iterativeClosestPointNonLinear
+
+    def make_IterativeClosestPoint(self):
+        iterativeClosestPoint = IterativeClosestPoint(self)
+        cdef pcl_reg.IterativeClosestPoint_t *cIterativeClosestPoint = <pcl_reg.IterativeClosestPoint_t *>iterativeClosestPoint.me
+        cIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return iterativeClosestPoint
+
 
 ###
 
