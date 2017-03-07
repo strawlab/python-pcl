@@ -33,6 +33,10 @@ include "Common/RangeImage/RangeImages.pxi"
 include "registration/GeneralizedIterativeClosestPoint.pxi"
 include "registration/IterativeClosestPoint.pxi"
 include "registration/IterativeClosestPointNonLinear.pxi"
+# SampleConsensus
+include "SampleConsensus/RandomSampleConsensus.pxi"
+include "SampleConsensus/SampleConsensusModelPlane.pxi"
+include "SampleConsensus/SampleConsensusModelSphere.pxi"
 # pcl 1.7.2?
 # include "registration/NormalDistributionsTransform.pxi"
 

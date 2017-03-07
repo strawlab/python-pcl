@@ -59,17 +59,17 @@ def main():
     # 
     # // Setting point cloud to be aligned.
     # ndt.setInputSource (filtered_cloud);
-    # // Setting point cloud to be aligned to.
+    # Setting point cloud to be aligned to.
     # ndt.setInputTarget (target_cloud);
     ##
     
-    # // Set initial alignment estimate found using robot odometry.
+    # Set initial alignment estimate found using robot odometry.
     # Eigen::AngleAxisf init_rotation (0.6931, Eigen::Vector3f::UnitZ ());
     # Eigen::Translation3f init_translation (1.79387, 0.720047, 0);
     # Eigen::Matrix4f init_guess = (init_translation * init_rotation).matrix ();
     ##
     
-    # // Calculating required rigid transform to align the input cloud to the target cloud.
+    # Calculating required rigid transform to align the input cloud to the target cloud.
     # pcl::PointCloud<pcl::PointXYZ>::Ptr output_cloud (new pcl::PointCloud<pcl::PointXYZ>);
     # ndt.align (*output_cloud, init_guess);
     ##

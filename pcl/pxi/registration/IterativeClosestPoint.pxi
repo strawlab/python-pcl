@@ -30,9 +30,6 @@ cdef class IterativeClosestPoint:
         self.me.setInputTarget (cloud.thisptr_shared)
         pass
 
-print('has converged:' + str(icp.hasConverged()) + ' score: ' + str(icp.getFitnessScore()) )
-print(str(icp.getFinalTransformation()))
-
     # def get_Resolution(self):
     #     return self.me.getResolution()
 

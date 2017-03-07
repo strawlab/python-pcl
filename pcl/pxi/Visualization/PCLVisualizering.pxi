@@ -118,7 +118,7 @@ cdef class PCLVisualizering:
     # def AddPointCloud (self, _pcl.PointCloud cloud, string id = 'cloud', int viewport = 0):
     # call (ex. id=b'range image')
     def AddPointCloud (self, _pcl.PointCloud cloud, id = b'cloud', int viewport = 0):
-        # self.thisptr().addPointCloud(cloud.thisptr_shared, <string> id, viewport)
+        self.thisptr().addPointCloud(cloud.thisptr_shared, <string> id, viewport)
         pass
 
     # <const shared_ptr[PointCloudColorHandler[PointT]]> 
@@ -151,8 +151,9 @@ cdef class PCLVisualizering:
     def InitCameraParameters(self):
         self.thisptr().initCameraParameters()
 
+    # return bool
     def WasStopped(self):
-        self.thisptr().wasStopped()
+        return self.thisptr().wasStopped()
 
     def ResetStoppedFlag(self):
         self.thisptr().resetStoppedFlag()

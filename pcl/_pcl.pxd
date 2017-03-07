@@ -8,6 +8,8 @@ cimport pcl_kdtree as pclkdt
 cimport pcl_range_image as pcl_rngimg
 # Features
 cimport pcl_features as pcl_ftr
+# SampleConsensus
+cimport pcl_sample_consensus as pcl_sac
 
 # class override(PointCloud)
 cdef class PointCloud:
@@ -147,4 +149,27 @@ cdef class IntegralImageNormalEstimation:
         # Shortcut to get raw pointer to underlying pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>.
         return self.thisptr_shared.get()
 
+
+## SampleConsensus
+# class override
+cdef class SampleConsensusModel:
+    cdef pcl_sac.SampleConsensusModelPtr_t thisptr_shared     # SampleConsensusModel
+    
+    cdef inline pcl_sac.SampleConsensusModel[cpp.PointXYZ] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying pcl::SampleConsensusModel<pcl::PointXYZ>.
+        return self.thisptr_shared.get()
+
+cdef class SampleConsensusModelPlane:
+    cdef pcl_sac.SampleConsensusModelPlanePtr_t thisptr_shared     # SampleConsensusModelPlane
+    
+    cdef inline pcl_sac.SampleConsensusModelPlane[cpp.PointXYZ] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelPlane<pcl::PointXYZ>.
+        return self.thisptr_shared.get()
+
+cdef class SampleConsensusModelSphere:
+    cdef pcl_sac.SampleConsensusModelSpherePtr_t thisptr_shared     # SampleConsensusModelSphere
+    
+    cdef inline pcl_sac.SampleConsensusModelSphere[cpp.PointXYZ] *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelSphere<pcl::PointXYZ>.
+        return self.thisptr_shared.get()
 

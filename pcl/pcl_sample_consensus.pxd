@@ -194,10 +194,11 @@ cdef extern from "pcl/sample_consensus/sac_model.h" namespace "pcl":
         # * normals of the XYZ dataset.
         # * \param[in] normals the const boost shared pointer to a PointCloud message
         # inline void setInputNormals (const PointCloudNConstPtr &normals) 
+        void setInputNormals (shared_ptr[cpp.PointCloud[NT]] normals) 
         
         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
         # inline PointCloudNConstPtr getInputNormals ()
-        ##
+        shared_ptr[cpp.PointCloud[NT]] getInputNormals () 
 
 
 # ctypedef SampleConsensusModelFromNormals[cpp.PointXYZ, cpp.Normal] SampleConsensusModelFromNormals_t
@@ -269,24 +270,27 @@ cdef extern from "pcl/sample_consensus/sac.h" namespace "pcl":
         # * \param[in] nr_samples the desired number of point indices to randomly select
         # * \param[out] indices_subset the resultant output set of randomly selected indices
         # inline void getRandomSamples (const boost::shared_ptr <std::vector<int> > &indices,  size_t nr_samples, std::set<int> &indices_subset)
+        # void getRandomSamples (shared_ptr [vector[int]] &indices,  size_t nr_samples, set[int] &indices_subset)
         
         # /** \brief Return the best model found so far. 
         # * \param[out] model the resultant model
         # inline void getModel (std::vector<int> &model)
+        void getModel (vector[int] &model)
         
         # /** \brief Return the best set of inliers found so far for this model. 
         # * \param[out] inliers the resultant set of inliers
         # inline void getInliers (std::vector<int> &inliers)
+        void getInliers (vector[int] &inliers)
         
         # /** \brief Return the model coefficients of the best model found so far. 
         # * \param[out] model_coefficients the resultant model coefficients
         # inline void  getModelCoefficients (Eigen::VectorXf &model_coefficients)
 
 
-# ctypedef SampleConsensus[cpp.PointXYZ] SampleConsensus_t
-# ctypedef SampleConsensus[cpp.PointXYZI] SampleConsensus_PointXYZI_t
-# ctypedef SampleConsensus[cpp.PointXYZRGB] SampleConsensus_PointXYZRGB_t
-# ctypedef SampleConsensus[cpp.PointXYZRGBA] SampleConsensus_PointXYZRGBA_t
+ctypedef SampleConsensus[cpp.PointXYZ] SampleConsensus_t
+ctypedef SampleConsensus[cpp.PointXYZI] SampleConsensus_PointXYZI_t
+ctypedef SampleConsensus[cpp.PointXYZRGB] SampleConsensus_PointXYZRGB_t
+ctypedef SampleConsensus[cpp.PointXYZRGBA] SampleConsensus_PointXYZRGBA_t
 ctypedef shared_ptr[SampleConsensus[cpp.PointXYZ]] SampleConsensusPtr_t
 ctypedef shared_ptr[SampleConsensus[cpp.PointXYZI]] SampleConsensus_PointXYZI_Ptr_t
 ctypedef shared_ptr[SampleConsensus[cpp.PointXYZRGB]] SampleConsensus_PointXYZRGB_Ptr_t
@@ -389,7 +393,8 @@ cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
 #   */
 # template <typename Point> inline double
 # pointToPlaneDistance (const Point &p, const Eigen::Vector4f &plane_coefficients)
-# 
+###
+
 # sac_model_plane.h
 # namespace pcl
 # /** \brief SampleConsensusModelPlane defines a model for 3D plane segmentation.
@@ -398,7 +403,6 @@ cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
 #   *   - \b b : the Y coordinate of the plane's normal (normalized)
 #   *   - \b c : the Z coordinate of the plane's normal (normalized)
 #   *   - \b d : the fourth <a href="http://mathworld.wolfram.com/HessianNormalForm.html">Hessian component</a> of the plane's equation
-#   * 
 #   * \author Radu B. Rusu
 #   * \ingroup sample_consensus
 #   */
@@ -406,7 +410,8 @@ cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
 # class SampleConsensusModelPlane : public SampleConsensusModel<PointT>
 cdef extern from "pcl/sample_consensus/sac_model_plane.h" namespace "pcl":
     cdef cppclass SampleConsensusModelPlane[PointT](SampleConsensusModel[PointT]):
-        SampleConsensusModelPerpendicularPlane()
+        SampleConsensusModelPlane()
+        SampleConsensusModelPlane(shared_ptr[cpp.PointCloud[PointT]] cloud)
         # public:
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
@@ -425,7 +430,7 @@ cdef extern from "pcl/sample_consensus/sac_model_plane.h" namespace "pcl":
         # * \param[in] indices a vector of point indices to be used from \a cloud
         # */
         # SampleConsensusModelPlane (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : SampleConsensusModel<PointT> (cloud, indices) {};
-        # 
+        
         # /** \brief Check whether the given index samples can form a valid plane model, compute the model coefficients from
         # * these samples and store them internally in model_coefficients_. The plane coefficients are:
         # * a, b, c, d (ax+by+cz+d=0)
@@ -486,6 +491,146 @@ cdef extern from "pcl/sample_consensus/sac_model_plane.h" namespace "pcl":
         # inline pcl::SacModel getModelType () const { return (SACMODEL_PLANE); }
 
 
+ctypedef SampleConsensusModelPlane[cpp.PointXYZ] SampleConsensusModelPlane_t
+ctypedef SampleConsensusModelPlane[cpp.PointXYZI] SampleConsensusModelPlane_PointXYZI_t
+ctypedef SampleConsensusModelPlane[cpp.PointXYZRGB] SampleConsensusModelPlane_PointXYZRGB_t
+ctypedef SampleConsensusModelPlane[cpp.PointXYZRGBA] SampleConsensusModelPlane_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelPlane[cpp.PointXYZ]] SampleConsensusModelPlanePtr_t
+ctypedef shared_ptr[SampleConsensusModelPlane[cpp.PointXYZI]] SampleConsensusModelPlane_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelPlane[cpp.PointXYZRGB]] SampleConsensusModelPlane_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelPlane[cpp.PointXYZRGBA]] SampleConsensusModelPlane_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelPlane[cpp.PointXYZ]] SampleConsensusModelPlaneConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelPlane[cpp.PointXYZI]] SampleConsensusModelPlane_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelPlane[cpp.PointXYZRGB]] SampleConsensusModelPlane_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelPlane[cpp.PointXYZRGBA]] SampleConsensusModelPlane_PointXYZRGBA_ConstPtr_t
+###
+
+# sac_model_sphere.h
+# namespace pcl
+# /** \brief SampleConsensusModelSphere defines a model for 3D sphere segmentation.
+#   * The model coefficients are defined as:
+#   *   - \b center.x : the X coordinate of the sphere's center
+#   *   - \b center.y : the Y coordinate of the sphere's center
+#   *   - \b center.z : the Z coordinate of the sphere's center
+#   *   - \b radius   : the sphere's radius
+#   * \author Radu B. Rusu
+#   * \ingroup sample_consensus
+#   */
+# template <typename PointT>
+# class SampleConsensusModelSphere : public SampleConsensusModel<PointT>
+cdef extern from "pcl/sample_consensus/sac_model_sphere.h" namespace "pcl":
+    cdef cppclass SampleConsensusModelSphere[PointT](SampleConsensusModel[PointT]):
+        # SampleConsensusModelSphere()
+        SampleConsensusModelSphere(shared_ptr[cpp.PointCloud[PointT]] cloud)
+        # public:
+        # using SampleConsensusModel<PointT>::input_;
+        # using SampleConsensusModel<PointT>::indices_;
+        # using SampleConsensusModel<PointT>::radius_min_;
+        # using SampleConsensusModel<PointT>::radius_max_;
+        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
+        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef boost::shared_ptr<SampleConsensusModelSphere> Ptr;
+        # 
+        # /** \brief Constructor for base SampleConsensusModelSphere.
+        # * \param[in] cloud the input point cloud dataset
+        # */
+        # SampleConsensusModelSphere (const PointCloudConstPtr &cloud) : 
+        # SampleConsensusModel<PointT> (cloud), tmp_inliers_ ()
+        # 
+        # /** \brief Constructor for base SampleConsensusModelSphere.
+        # * \param[in] cloud the input point cloud dataset
+        # * \param[in] indices a vector of point indices to be used from \a cloud
+        # */
+        # SampleConsensusModelSphere (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
+        # SampleConsensusModel<PointT> (cloud, indices), tmp_inliers_ ()
+        # 
+        # /** \brief Copy constructor.
+        # * \param[in] source the model to copy into this
+        # */
+        # SampleConsensusModelSphere (const SampleConsensusModelSphere &source) :
+        # SampleConsensusModel<PointT> (), tmp_inliers_ () 
+        # 
+        # /** \brief Copy constructor.
+        # * \param[in] source the model to copy into this
+        # */
+        # inline SampleConsensusModelSphere& operator = (const SampleConsensusModelSphere &source)
+        # 
+        # /** \brief Check whether the given index samples can form a valid sphere model, compute the model 
+        # * coefficients from these samples and store them internally in model_coefficients. 
+        # * The sphere coefficients are: x, y, z, R.
+        # * \param[in] samples the point indices found as possible good candidates for creating a valid model
+        # * \param[out] model_coefficients the resultant model coefficients
+        # */
+        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
+        # 
+        # /** \brief Compute all distances from the cloud data to a given sphere model.
+        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
+        # * \param[out] distances the resultant estimated distances
+        # */
+        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
+        # 
+        # /** \brief Select all the points which respect the given model coefficients as inliers.
+        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # * \param[out] inliers the resultant model inliers
+        # */
+        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
+        # 
+        # /** \brief Count all the points which respect the given model coefficients as inliers. 
+        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
+        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
+        # * \return the resultant number of inliers
+        # */
+        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
+        # 
+        # /** \brief Recompute the sphere coefficients using the given inlier set and return them to the user.
+        # * @note: these are the coefficients of the sphere model after refinement (eg. after SVD)
+        # * \param[in] inliers the data inliers found as supporting the model
+        # * \param[in] model_coefficients the initial guess for the optimization
+        # * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
+        # */
+        # void optimizeModelCoefficients (const std::vector<int> &inliers, 
+        #                          const Eigen::VectorXf &model_coefficients, 
+        #                          Eigen::VectorXf &optimized_coefficients);
+        # 
+        # /** \brief Create a new point cloud with inliers projected onto the sphere model.
+        # * \param[in] inliers the data inliers that we want to project on the sphere model
+        # * \param[in] model_coefficients the coefficients of a sphere model
+        # * \param[out] projected_points the resultant projected points
+        # * \param[in] copy_data_fields set to true if we need to copy the other data fields
+        # * \todo implement this.
+        # */
+        # void projectPoints (const std::vector<int> &inliers, 
+        #              const Eigen::VectorXf &model_coefficients, 
+        #              PointCloud &projected_points, 
+        #              bool copy_data_fields = true);
+        # 
+        # /** \brief Verify whether a subset of indices verifies the given sphere model coefficients.
+        # * \param[in] indices the data indices that need to be tested against the sphere model
+        # * \param[in] model_coefficients the sphere model coefficients
+        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
+        # */
+        # bool doSamplesVerifyModel (const std::set<int> &indices, 
+        #                     const Eigen::VectorXf &model_coefficients, 
+        #                     const double threshold);
+        # 
+        # /** \brief Return an unique id for this model (SACMODEL_SPHERE). */
+        # inline pcl::SacModel getModelType () const { return (SACMODEL_SPHERE); }
+
+
+ctypedef SampleConsensusModelSphere[cpp.PointXYZ] SampleConsensusModelSphere_t
+ctypedef SampleConsensusModelSphere[cpp.PointXYZI] SampleConsensusModelSphere_PointXYZI_t
+ctypedef SampleConsensusModelSphere[cpp.PointXYZRGB] SampleConsensusModelSphere_PointXYZRGB_t
+ctypedef SampleConsensusModelSphere[cpp.PointXYZRGBA] SampleConsensusModelSphere_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelSphere[cpp.PointXYZ]] SampleConsensusModelSpherePtr_t
+ctypedef shared_ptr[SampleConsensusModelSphere[cpp.PointXYZI]] SampleConsensusModelSphere_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelSphere[cpp.PointXYZRGB]] SampleConsensusModelSphere_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelSphere[cpp.PointXYZRGBA]] SampleConsensusModelSphere_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelSphere[cpp.PointXYZ]] SampleConsensusModelSphereConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelSphere[cpp.PointXYZI]] SampleConsensusModelSphere_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelSphere[cpp.PointXYZRGB]] SampleConsensusModelSphere_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelSphere[cpp.PointXYZRGBA]] SampleConsensusModelSphere_PointXYZRGBA_ConstPtr_t
 ###
 
 ### Inheritance class ###
@@ -613,7 +758,10 @@ cdef extern from "pcl/sample_consensus/prosac.h" namespace "pcl":
 # class RandomSampleConsensus : public SampleConsensus<PointT>
 cdef extern from "pcl/sample_consensus/ransac.h" namespace "pcl":
     cdef cppclass RandomSampleConsensus[T](SampleConsensus[T]):
-        RandomSampleConsensus ()
+        # RandomSampleConsensus ()
+        RandomSampleConsensus (shared_ptr[SampleConsensusModel[T]] model)
+        
+        # RandomSampleConsensus (shared_ptr[SampleConsensus[T]] model)
         # RandomSampleConsensus (const SampleConsensusModelPtr &model)
         # RandomSampleConsensus (const SampleConsensusModelPtr &model, double threshold)
         # using SampleConsensus<PointT>::max_iterations_;
@@ -632,6 +780,18 @@ cdef extern from "pcl/sample_consensus/ransac.h" namespace "pcl":
         bool computeModel (int debug_verbosity_level)
 
 
+ctypedef RandomSampleConsensus[cpp.PointXYZ] RandomSampleConsensus_t
+ctypedef RandomSampleConsensus[cpp.PointXYZI] RandomSampleConsensus_PointXYZI_t
+ctypedef RandomSampleConsensus[cpp.PointXYZRGB] RandomSampleConsensus_PointXYZRGB_t
+ctypedef RandomSampleConsensus[cpp.PointXYZRGBA] RandomSampleConsensus_PointXYZRGBA_t
+ctypedef shared_ptr[RandomSampleConsensus[cpp.PointXYZ]] RandomSampleConsensusPtr_t
+ctypedef shared_ptr[RandomSampleConsensus[cpp.PointXYZI]] RandomSampleConsensus_PointXYZI_Ptr_t
+ctypedef shared_ptr[RandomSampleConsensus[cpp.PointXYZRGB]] RandomSampleConsensus_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[RandomSampleConsensus[cpp.PointXYZRGBA]] RandomSampleConsensus_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const RandomSampleConsensus[cpp.PointXYZ]] RandomSampleConsensusConstPtr_t
+ctypedef shared_ptr[const RandomSampleConsensus[cpp.PointXYZI]] RandomSampleConsensus_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const RandomSampleConsensus[cpp.PointXYZRGB]] RandomSampleConsensus_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const RandomSampleConsensus[cpp.PointXYZRGBA]] RandomSampleConsensus_PointXYZRGBA_ConstPtr_t
 ###
 
 # rmsac.h
@@ -670,6 +830,18 @@ cdef extern from "pcl/sample_consensus/rmsac.h" namespace "pcl":
         double getFractionNrPretest ()
 
 
+ctypedef RandomizedMEstimatorSampleConsensus[cpp.PointXYZ] RandomizedMEstimatorSampleConsensus_t
+ctypedef RandomizedMEstimatorSampleConsensus[cpp.PointXYZI] RandomizedMEstimatorSampleConsensus_PointXYZI_t
+ctypedef RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGB] RandomizedMEstimatorSampleConsensus_PointXYZRGB_t
+ctypedef RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGBA] RandomizedMEstimatorSampleConsensus_PointXYZRGBA_t
+ctypedef shared_ptr[RandomizedMEstimatorSampleConsensus[cpp.PointXYZ]] RandomizedMEstimatorSampleConsensusPtr_t
+ctypedef shared_ptr[RandomizedMEstimatorSampleConsensus[cpp.PointXYZI]] RandomizedMEstimatorSampleConsensus_PointXYZI_Ptr_t
+ctypedef shared_ptr[RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGB]] RandomizedMEstimatorSampleConsensus_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGBA]] RandomizedMEstimatorSampleConsensus_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const RandomizedMEstimatorSampleConsensus[cpp.PointXYZ]] RandomizedMEstimatorSampleConsensusConstPtr_t
+ctypedef shared_ptr[const RandomizedMEstimatorSampleConsensus[cpp.PointXYZI]] RandomizedMEstimatorSampleConsensus_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGB]] RandomizedMEstimatorSampleConsensus_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const RandomizedMEstimatorSampleConsensus[cpp.PointXYZRGBA]] RandomizedMEstimatorSampleConsensus_PointXYZRGBA_ConstPtr_t
 ###
 
 # rransac.h
@@ -679,6 +851,7 @@ cdef extern from "pcl/sample_consensus/rmsac.h" namespace "pcl":
 cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
     cdef cppclass RandomizedRandomSampleConsensus[T](SampleConsensus[T]):
         RandomizedRandomSampleConsensus ()
+        # RandomizedRandomSampleConsensus (const SampleConsensusModelPtr &model)
         # RandomizedRandomSampleConsensus (const SampleConsensusModelPtr &model)
         # RandomizedRandomSampleConsensus (const SampleConsensusModelPtr &model, double threshold)
         # using SampleConsensus<PointT>::max_iterations_;
@@ -710,6 +883,18 @@ cdef extern from "pcl/sample_consensus/rransac.h" namespace "pcl":
         double getFractionNrPretest ()
 
 
+ctypedef RandomizedRandomSampleConsensus[cpp.PointXYZ] RandomizedRandomSampleConsensus_t
+ctypedef RandomizedRandomSampleConsensus[cpp.PointXYZI] RandomizedRandomSampleConsensus_PointXYZI_t
+ctypedef RandomizedRandomSampleConsensus[cpp.PointXYZRGB] RandomizedRandomSampleConsensus_PointXYZRGB_t
+ctypedef RandomizedRandomSampleConsensus[cpp.PointXYZRGBA] RandomizedRandomSampleConsensus_PointXYZRGBA_t
+ctypedef shared_ptr[RandomizedRandomSampleConsensus[cpp.PointXYZ]] RandomizedRandomSampleConsensusPtr_t
+ctypedef shared_ptr[RandomizedRandomSampleConsensus[cpp.PointXYZI]] RandomizedRandomSampleConsensus_PointXYZI_Ptr_t
+ctypedef shared_ptr[RandomizedRandomSampleConsensus[cpp.PointXYZRGB]] RandomizedRandomSampleConsensus_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[RandomizedRandomSampleConsensus[cpp.PointXYZRGBA]] RandomizedRandomSampleConsensus_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const RandomizedRandomSampleConsensus[cpp.PointXYZ]] RandomizedRandomSampleConsensusConstPtr_t
+ctypedef shared_ptr[const RandomizedRandomSampleConsensus[cpp.PointXYZI]] RandomizedRandomSampleConsensus_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const RandomizedRandomSampleConsensus[cpp.PointXYZRGB]] RandomizedRandomSampleConsensus_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const RandomizedRandomSampleConsensus[cpp.PointXYZRGBA]] RandomizedRandomSampleConsensus_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_circle.h
@@ -780,15 +965,20 @@ cdef extern from "pcl/sample_consensus/sac_model_circle.h" namespace "pcl":
         #                     const double threshold);
         # /** \brief Return an unique id for this model (SACMODEL_CIRCLE2D). */
         # inline pcl::SacModel getModelType () const
-        # protected:
-        # /** \brief Check whether a model is valid given the user constraints.
-        # * \param[in] model_coefficients the set of model coefficients
-        # bool isModelValid (const Eigen::VectorXf &model_coefficients);
-        # /** \brief Check if a sample of indices results in a good sample of points indices.
-        # * \param[in] samples the resultant index samples
-        # bool isSampleGood(const std::vector<int> &samples) const;
 
 
+ctypedef SampleConsensusModelCircle2D[cpp.PointXYZ] SampleConsensusModelCircle2D_t
+ctypedef SampleConsensusModelCircle2D[cpp.PointXYZI] SampleConsensusModelCircle2D_PointXYZI_t
+ctypedef SampleConsensusModelCircle2D[cpp.PointXYZRGB] SampleConsensusModelCircle2D_PointXYZRGB_t
+ctypedef SampleConsensusModelCircle2D[cpp.PointXYZRGBA] SampleConsensusModelCircle2D_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelCircle2D[cpp.PointXYZ]] SampleConsensusModelCircle2DPtr_t
+ctypedef shared_ptr[SampleConsensusModelCircle2D[cpp.PointXYZI]] SampleConsensusModelCircle2D_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelCircle2D[cpp.PointXYZRGB]] SampleConsensusModelCircle2D_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelCircle2D[cpp.PointXYZRGBA]] SampleConsensusModelCircle2D_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelCircle2D[cpp.PointXYZ]] SampleConsensusModelCircle2DConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelCircle2D[cpp.PointXYZI]] SampleConsensusModelCircle2D_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelCircle2D[cpp.PointXYZRGB]] SampleConsensusModelCircle2D_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelCircle2D[cpp.PointXYZRGBA]] SampleConsensusModelCircle2D_PointXYZRGBA_ConstPtr_t
 ###
 
 # namespace pcl
@@ -909,6 +1099,14 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
         # bool isSampleGood (const std::vector<int> &samples) const;
 
 
+ctypedef SampleConsensusModelCone[cpp.PointXYZ, cpp.Normal] SampleConsensusModelCone_t
+ctypedef SampleConsensusModelCone[cpp.PointXYZI, cpp.Normal] SampleConsensusModelCone_PointXYZI_t
+ctypedef SampleConsensusModelCone[cpp.PointXYZRGB, cpp.Normal] SampleConsensusModelCone_PointXYZRGB_t
+ctypedef SampleConsensusModelCone[cpp.PointXYZRGBA, cpp.Normal] SampleConsensusModelCone_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelCone[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelConePtr_t
+ctypedef shared_ptr[SampleConsensusModelCone[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelCone_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelCone[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelCone_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelCone[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelCone_PointXYZRGBA_Ptr_t
 ###
 
 # namespace pcl
@@ -938,9 +1136,9 @@ cdef extern from "pcl/sample_consensus/sac_model_cone.h" namespace "pcl":
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelCylinder : public SampleConsensusModel<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
 # Multi Inheritance NG
-# cdef cppclass SampleConsensusModelCylinder[PointT](SampleConsensusModel[PointT]):
+# cdef cppclass SampleConsensusModelCylinder[PointT](SampleConsensusModel[PointT])(SampleConsensusModelFromNormals[PointT, PointNT]):
 cdef extern from "pcl/sample_consensus/sac_model_cylinder.h" namespace "pcl":
-    cdef cppclass SampleConsensusModelCylinder[PointT]:
+    cdef cppclass SampleConsensusModelCylinder[PointT, PointNT]:
         SampleConsensusModelCylinder()
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
@@ -1045,6 +1243,18 @@ cdef extern from "pcl/sample_consensus/sac_model_cylinder.h" namespace "pcl":
         # inline pcl::SacModel getModelType () const { return (SACMODEL_CYLINDER); }
 
 
+ctypedef SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal] SampleConsensusModelCylinder_t
+ctypedef SampleConsensusModelCylinder[cpp.PointXYZI, cpp.Normal] SampleConsensusModelCylinder_PointXYZI_t
+ctypedef SampleConsensusModelCylinder[cpp.PointXYZRGB, cpp.Normal] SampleConsensusModelCylinder_PointXYZRGB_t
+ctypedef SampleConsensusModelCylinder[cpp.PointXYZRGBA, cpp.Normal] SampleConsensusModelCylinder_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelCylinderPtr_t
+ctypedef shared_ptr[SampleConsensusModelCylinder[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelCylinder_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelCylinder[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelCylinder_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelCylinder[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelCylinder_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelCylinderConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelCylinder[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelCylinder_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelCylinder[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelCylinder_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelCylinder[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelCylinder_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_line.h
@@ -1148,6 +1358,18 @@ cdef extern from "pcl/sample_consensus/sac_model_line.h" namespace "pcl":
         # inline pcl::SacModel getModelType () const { return (SACMODEL_LINE); }
 
 
+ctypedef SampleConsensusModelLine[cpp.PointXYZ] SampleConsensusModelLine_t
+ctypedef SampleConsensusModelLine[cpp.PointXYZI] SampleConsensusModelLine_PointXYZI_t
+ctypedef SampleConsensusModelLine[cpp.PointXYZRGB] SampleConsensusModelLine_PointXYZRGB_t
+ctypedef SampleConsensusModelLine[cpp.PointXYZRGBA] SampleConsensusModelLine_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelLine[cpp.PointXYZ]] SampleConsensusModelLinePtr_t
+ctypedef shared_ptr[SampleConsensusModelLine[cpp.PointXYZI]] SampleConsensusModelLine_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelLine[cpp.PointXYZRGB]] SampleConsensusModelLine_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelLine[cpp.PointXYZRGBA]] SampleConsensusModelLine_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelLine[cpp.PointXYZ]] SampleConsensusModelLineConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelLine[cpp.PointXYZI]] SampleConsensusModelLine_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelLine[cpp.PointXYZRGB]] SampleConsensusModelLine_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelLine[cpp.PointXYZRGBA]] SampleConsensusModelLine_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_normal_parallel_plane.h
@@ -1185,8 +1407,8 @@ cdef extern from "pcl/sample_consensus/sac_model_line.h" namespace "pcl":
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelNormalParallelPlane : public SampleConsensusModelPlane<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
 cdef extern from "pcl/sample_consensus/sac_model_normal_parallel_plane.h" namespace "pcl":
-    # cdef cppclass SampleConsensusModelNormalParallelPlane[PointT](SampleConsensusModelPlane[PointT]):
-    cdef cppclass SampleConsensusModelNormalParallelPlane[PointT]:
+    # cdef cppclass SampleConsensusModelNormalParallelPlane[PointT](SampleConsensusModelPlane[PointT])(SampleConsensusModelFromNormals[PointT, PointNT]):
+    cdef cppclass SampleConsensusModelNormalParallelPlane[PointT, PointNT]:
         SampleConsensusModelNormalParallelPlane()
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
@@ -1277,6 +1499,18 @@ cdef extern from "pcl/sample_consensus/sac_model_normal_parallel_plane.h" namesp
         # inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_PARALLEL_PLANE); }
 
 
+ctypedef SampleConsensusModelNormalParallelPlane[cpp.PointXYZ, cpp.Normal] SampleConsensusModelNormalParallelPlane_t
+ctypedef SampleConsensusModelNormalParallelPlane[cpp.PointXYZI, cpp.Normal] SampleConsensusModelNormalParallelPlane_PointXYZI_t
+ctypedef SampleConsensusModelNormalParallelPlane[cpp.PointXYZRGB, cpp.Normal] SampleConsensusModelNormalParallelPlane_PointXYZRGB_t
+ctypedef SampleConsensusModelNormalParallelPlane[cpp.PointXYZRGBA, cpp.Normal] SampleConsensusModelNormalParallelPlane_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelNormalParallelPlane[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelNormalParallelPlanePtr_t
+ctypedef shared_ptr[SampleConsensusModelNormalParallelPlane[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelNormalParallelPlane_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelNormalParallelPlane[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelNormalParallelPlane_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelNormalParallelPlane[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelNormalParallelPlane_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalParallelPlane[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelNormalParallelPlaneConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalParallelPlane[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelNormalParallelPlane_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalParallelPlane[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelNormalParallelPlane_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalParallelPlane[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelNormalParallelPlane_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_normal_plane.h
@@ -1300,15 +1534,14 @@ cdef extern from "pcl/sample_consensus/sac_model_normal_parallel_plane.h" namesp
 #   * sac_model.setNormalDistanceWeight (0.1);
 #   * ...
 #   * \endcode
-#   *
 #   * \author Radu B. Rusu and Jared Glover
 #   * \ingroup sample_consensus
 #   */
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelNormalPlane : public SampleConsensusModelPlane<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
 cdef extern from "pcl/sample_consensus/sac_model_normal_plane.h" namespace "pcl":
-    # cdef cppclass SampleConsensusModelNormalPlane[PointT](SampleConsensusModelPlane[PointT]):
-    cdef cppclass SampleConsensusModelNormalPlane[PointT]:
+    # cdef cppclass SampleConsensusModelNormalPlane[PointT, PointNT](SampleConsensusModelPlane[PointT])(SampleConsensusModelFromNormals[PointT, PointNT]):
+    cdef cppclass SampleConsensusModelNormalPlane[PointT, PointNT]:
         SampleConsensusModelNormalPlane()
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
@@ -1358,6 +1591,18 @@ cdef extern from "pcl/sample_consensus/sac_model_normal_plane.h" namespace "pcl"
         # inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_PLANE); }
 
 
+ctypedef SampleConsensusModelNormalPlane[cpp.PointXYZ, cpp.Normal] SampleConsensusModelNormalPlane_t
+ctypedef SampleConsensusModelNormalPlane[cpp.PointXYZI, cpp.Normal] SampleConsensusModelNormalPlane_PointXYZI_t
+ctypedef SampleConsensusModelNormalPlane[cpp.PointXYZRGB, cpp.Normal] SampleConsensusModelNormalPlane_PointXYZRGB_t
+ctypedef SampleConsensusModelNormalPlane[cpp.PointXYZRGBA, cpp.Normal] SampleConsensusModelNormalPlane_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelNormalPlane[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelNormalPlanePtr_t
+ctypedef shared_ptr[SampleConsensusModelNormalPlane[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelNormalPlane_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelNormalPlane[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelNormalPlane_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelNormalPlane[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelNormalPlane_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalPlane[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelNormalPlaneConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalPlane[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelNormalPlane_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalPlane[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelNormalPlane_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalPlane[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelNormalPlane_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_normal_sphere.h
@@ -1380,8 +1625,8 @@ cdef extern from "pcl/sample_consensus/sac_model_normal_plane.h" namespace "pcl"
 # template <typename PointT, typename PointNT>
 # class SampleConsensusModelNormalSphere : public SampleConsensusModelSphere<PointT>, public SampleConsensusModelFromNormals<PointT, PointNT>
 cdef extern from "pcl/sample_consensus/sac_model_normal_sphere.h" namespace "pcl":
-    # cdef cppclass SampleConsensusModelNormalSphere[PointT](SampleConsensusModelSphere[PointT]):
-    cdef cppclass SampleConsensusModelNormalSphere[PointT]:
+    # cdef cppclass SampleConsensusModelNormalSphere[PointT, PointNT](SampleConsensusModelSphere[PointT])(SampleConsensusModelFromNormals[PointT, PointNT]):
+    cdef cppclass SampleConsensusModelNormalSphere[PointT, PointNT]:
         SampleConsensusModelNormalSphere()
         # using SampleConsensusModel<PointT>::input_;
         # using SampleConsensusModel<PointT>::indices_;
@@ -1432,6 +1677,18 @@ cdef extern from "pcl/sample_consensus/sac_model_normal_sphere.h" namespace "pcl
         # inline pcl::SacModel getModelType () const { return (SACMODEL_NORMAL_SPHERE); }
 
 
+ctypedef SampleConsensusModelNormalSphere[cpp.PointXYZ, cpp.Normal] SampleConsensusModelNormalSphere_t
+ctypedef SampleConsensusModelNormalSphere[cpp.PointXYZI, cpp.Normal] SampleConsensusModelNormalSphere_PointXYZI_t
+ctypedef SampleConsensusModelNormalSphere[cpp.PointXYZRGB, cpp.Normal] SampleConsensusModelNormalSphere_PointXYZRGB_t
+ctypedef SampleConsensusModelNormalSphere[cpp.PointXYZRGBA, cpp.Normal] SampleConsensusModelNormalSphere_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelNormalSphere[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelNormalSpherePtr_t
+ctypedef shared_ptr[SampleConsensusModelNormalSphere[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelNormalSphere_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelNormalSphere[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelNormalSphere_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelNormalSphere[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelNormalSphere_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalSphere[cpp.PointXYZ, cpp.Normal]] SampleConsensusModelNormalSphereConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalSphere[cpp.PointXYZI, cpp.Normal]] SampleConsensusModelNormalSphere_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalSphere[cpp.PointXYZRGB, cpp.Normal]] SampleConsensusModelNormalSphere_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelNormalSphere[cpp.PointXYZRGBA, cpp.Normal]] SampleConsensusModelNormalSphere_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_parallel_line.h
@@ -1517,6 +1774,18 @@ cdef extern from "pcl/sample_consensus/sac_model_parallel_line.h" namespace "pcl
         # inline pcl::SacModel getModelType () const { return (SACMODEL_PARALLEL_LINE); }
 
 
+ctypedef SampleConsensusModelParallelLine[cpp.PointXYZ] SampleConsensusModelParallelLine_t
+ctypedef SampleConsensusModelParallelLine[cpp.PointXYZI] SampleConsensusModelParallelLine_PointXYZI_t
+ctypedef SampleConsensusModelParallelLine[cpp.PointXYZRGB] SampleConsensusModelParallelLine_PointXYZRGB_t
+ctypedef SampleConsensusModelParallelLine[cpp.PointXYZRGBA] SampleConsensusModelParallelLine_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelParallelLine[cpp.PointXYZ]] SampleConsensusModelParallelLinePtr_t
+ctypedef shared_ptr[SampleConsensusModelParallelLine[cpp.PointXYZI]] SampleConsensusModelParallelLine_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelParallelLine[cpp.PointXYZRGB]] SampleConsensusModelParallelLine_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelParallelLine[cpp.PointXYZRGBA]] SampleConsensusModelParallelLine_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelLine[cpp.PointXYZ]] SampleConsensusModelParallelLineConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelLine[cpp.PointXYZI]] SampleConsensusModelParallelLine_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelLine[cpp.PointXYZRGB]] SampleConsensusModelParallelLine_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelLine[cpp.PointXYZRGBA]] SampleConsensusModelParallelLine_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_parallel_plane.h
@@ -1603,6 +1872,18 @@ cdef extern from "pcl/sample_consensus/sac_model_parallel_plane.h" namespace "pc
         # inline pcl::SacModel getModelType () const { return (SACMODEL_PARALLEL_PLANE); }
 
 
+ctypedef SampleConsensusModelParallelPlane[cpp.PointXYZ] SampleConsensusModelParallelPlane_t
+ctypedef SampleConsensusModelParallelPlane[cpp.PointXYZI] SampleConsensusModelParallelPlane_PointXYZI_t
+ctypedef SampleConsensusModelParallelPlane[cpp.PointXYZRGB] SampleConsensusModelParallelPlane_PointXYZRGB_t
+ctypedef SampleConsensusModelParallelPlane[cpp.PointXYZRGBA] SampleConsensusModelParallelPlane_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelParallelPlane[cpp.PointXYZ]] SampleConsensusModelParallelPlanePtr_t
+ctypedef shared_ptr[SampleConsensusModelParallelPlane[cpp.PointXYZI]] SampleConsensusModelParallelPlane_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelParallelPlane[cpp.PointXYZRGB]] SampleConsensusModelParallelPlane_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelParallelPlane[cpp.PointXYZRGBA]] SampleConsensusModelParallelPlane_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelPlane[cpp.PointXYZ]] SampleConsensusModelParallelPlaneConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelPlane[cpp.PointXYZI]] SampleConsensusModelParallelPlane_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelPlane[cpp.PointXYZRGB]] SampleConsensusModelParallelPlane_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelParallelPlane[cpp.PointXYZRGBA]] SampleConsensusModelParallelPlane_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_perpendicular_plane.h
@@ -1693,6 +1974,18 @@ cdef extern from "pcl/sample_consensus/sac_model_perpendicular_plane.h" namespac
         # inline pcl::SacModel getModelType () const { return (SACMODEL_PERPENDICULAR_PLANE); }
 
 
+ctypedef SampleConsensusModelPerpendicularPlane[cpp.PointXYZ] SampleConsensusModelPerpendicularPlane_t
+ctypedef SampleConsensusModelPerpendicularPlane[cpp.PointXYZI] SampleConsensusModelPerpendicularPlane_PointXYZI_t
+ctypedef SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGB] SampleConsensusModelPerpendicularPlane_PointXYZRGB_t
+ctypedef SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGBA] SampleConsensusModelPerpendicularPlane_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelPerpendicularPlane[cpp.PointXYZ]] SampleConsensusModelPerpendicularPlanePtr_t
+ctypedef shared_ptr[SampleConsensusModelPerpendicularPlane[cpp.PointXYZI]] SampleConsensusModelPerpendicularPlane_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGB]] SampleConsensusModelPerpendicularPlane_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGBA]] SampleConsensusModelPerpendicularPlane_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelPerpendicularPlane[cpp.PointXYZ]] SampleConsensusModelPerpendicularPlaneConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelPerpendicularPlane[cpp.PointXYZI]] SampleConsensusModelPerpendicularPlane_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGB]] SampleConsensusModelPerpendicularPlane_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelPerpendicularPlane[cpp.PointXYZRGBA]] SampleConsensusModelPerpendicularPlane_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_registration.h
@@ -1792,122 +2085,18 @@ cdef extern from "pcl/sample_consensus/sac_model_registration.h" namespace "pcl"
         # inline pcl::SacModel getModelType () const { return (SACMODEL_REGISTRATION); }
 
 
-###
-
-# sac_model_sphere.h
-# namespace pcl
-# /** \brief SampleConsensusModelSphere defines a model for 3D sphere segmentation.
-#   * The model coefficients are defined as:
-#   *   - \b center.x : the X coordinate of the sphere's center
-#   *   - \b center.y : the Y coordinate of the sphere's center
-#   *   - \b center.z : the Z coordinate of the sphere's center
-#   *   - \b radius   : the sphere's radius
-#   *
-#   * \author Radu B. Rusu
-#   * \ingroup sample_consensus
-#   */
-# template <typename PointT>
-# class SampleConsensusModelSphere : public SampleConsensusModel<PointT>
-cdef extern from "pcl/sample_consensus/sac_model_sphere.h" namespace "pcl":
-    cdef cppclass SampleConsensusModelSphere[PointT](SampleConsensusModel[PointT]):
-        SampleConsensusModelSphere()
-        # public:
-        # using SampleConsensusModel<PointT>::input_;
-        # using SampleConsensusModel<PointT>::indices_;
-        # using SampleConsensusModel<PointT>::radius_min_;
-        # using SampleConsensusModel<PointT>::radius_max_;
-        # typedef typename SampleConsensusModel<PointT>::PointCloud PointCloud;
-        # typedef typename SampleConsensusModel<PointT>::PointCloudPtr PointCloudPtr;
-        # typedef typename SampleConsensusModel<PointT>::PointCloudConstPtr PointCloudConstPtr;
-        # typedef boost::shared_ptr<SampleConsensusModelSphere> Ptr;
-        # 
-        # /** \brief Constructor for base SampleConsensusModelSphere.
-        # * \param[in] cloud the input point cloud dataset
-        # */
-        # SampleConsensusModelSphere (const PointCloudConstPtr &cloud) : 
-        # SampleConsensusModel<PointT> (cloud), tmp_inliers_ ()
-        # 
-        # /** \brief Constructor for base SampleConsensusModelSphere.
-        # * \param[in] cloud the input point cloud dataset
-        # * \param[in] indices a vector of point indices to be used from \a cloud
-        # */
-        # SampleConsensusModelSphere (const PointCloudConstPtr &cloud, const std::vector<int> &indices) : 
-        # SampleConsensusModel<PointT> (cloud, indices), tmp_inliers_ ()
-        # 
-        # /** \brief Copy constructor.
-        # * \param[in] source the model to copy into this
-        # */
-        # SampleConsensusModelSphere (const SampleConsensusModelSphere &source) :
-        # SampleConsensusModel<PointT> (), tmp_inliers_ () 
-        # 
-        # /** \brief Copy constructor.
-        # * \param[in] source the model to copy into this
-        # */
-        # inline SampleConsensusModelSphere& operator = (const SampleConsensusModelSphere &source)
-        # 
-        # /** \brief Check whether the given index samples can form a valid sphere model, compute the model 
-        # * coefficients from these samples and store them internally in model_coefficients. 
-        # * The sphere coefficients are: x, y, z, R.
-        # * \param[in] samples the point indices found as possible good candidates for creating a valid model
-        # * \param[out] model_coefficients the resultant model coefficients
-        # */
-        # bool computeModelCoefficients (const std::vector<int> &samples, Eigen::VectorXf &model_coefficients);
-        # 
-        # /** \brief Compute all distances from the cloud data to a given sphere model.
-        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
-        # * \param[out] distances the resultant estimated distances
-        # */
-        # void getDistancesToModel (const Eigen::VectorXf &model_coefficients, std::vector<double> &distances);
-        # 
-        # /** \brief Select all the points which respect the given model coefficients as inliers.
-        # * \param[in] model_coefficients the coefficients of a sphere model that we need to compute distances to
-        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-        # * \param[out] inliers the resultant model inliers
-        # */
-        # void selectWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold, std::vector<int> &inliers);
-        # 
-        # /** \brief Count all the points which respect the given model coefficients as inliers. 
-        # * \param[in] model_coefficients the coefficients of a model that we need to compute distances to
-        # * \param[in] threshold maximum admissible distance threshold for determining the inliers from the outliers
-        # * \return the resultant number of inliers
-        # */
-        # virtual int countWithinDistance (const Eigen::VectorXf &model_coefficients, const double threshold);
-        # 
-        # /** \brief Recompute the sphere coefficients using the given inlier set and return them to the user.
-        # * @note: these are the coefficients of the sphere model after refinement (eg. after SVD)
-        # * \param[in] inliers the data inliers found as supporting the model
-        # * \param[in] model_coefficients the initial guess for the optimization
-        # * \param[out] optimized_coefficients the resultant recomputed coefficients after non-linear optimization
-        # */
-        # void optimizeModelCoefficients (const std::vector<int> &inliers, 
-        #                          const Eigen::VectorXf &model_coefficients, 
-        #                          Eigen::VectorXf &optimized_coefficients);
-        # 
-        # /** \brief Create a new point cloud with inliers projected onto the sphere model.
-        # * \param[in] inliers the data inliers that we want to project on the sphere model
-        # * \param[in] model_coefficients the coefficients of a sphere model
-        # * \param[out] projected_points the resultant projected points
-        # * \param[in] copy_data_fields set to true if we need to copy the other data fields
-        # * \todo implement this.
-        # */
-        # void projectPoints (const std::vector<int> &inliers, 
-        #              const Eigen::VectorXf &model_coefficients, 
-        #              PointCloud &projected_points, 
-        #              bool copy_data_fields = true);
-        # 
-        # /** \brief Verify whether a subset of indices verifies the given sphere model coefficients.
-        # * \param[in] indices the data indices that need to be tested against the sphere model
-        # * \param[in] model_coefficients the sphere model coefficients
-        # * \param[in] threshold a maximum admissible distance threshold for determining the inliers from the outliers
-        # */
-        # bool doSamplesVerifyModel (const std::set<int> &indices, 
-        #                     const Eigen::VectorXf &model_coefficients, 
-        #                     const double threshold);
-        # 
-        # /** \brief Return an unique id for this model (SACMODEL_SPHERE). */
-        # inline pcl::SacModel getModelType () const { return (SACMODEL_SPHERE); }
-
-
+ctypedef SampleConsensusModelRegistration[cpp.PointXYZ] SampleConsensusModelRegistration_t
+ctypedef SampleConsensusModelRegistration[cpp.PointXYZI] SampleConsensusModelRegistration_PointXYZI_t
+ctypedef SampleConsensusModelRegistration[cpp.PointXYZRGB] SampleConsensusModelRegistration_PointXYZRGB_t
+ctypedef SampleConsensusModelRegistration[cpp.PointXYZRGBA] SampleConsensusModelRegistration_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelRegistration[cpp.PointXYZ]] SampleConsensusModelRegistrationPtr_t
+ctypedef shared_ptr[SampleConsensusModelRegistration[cpp.PointXYZI]] SampleConsensusModelRegistration_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelRegistration[cpp.PointXYZRGB]] SampleConsensusModelRegistration_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelRegistration[cpp.PointXYZRGBA]] SampleConsensusModelRegistration_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelRegistration[cpp.PointXYZ]] SampleConsensusModelRegistrationConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelRegistration[cpp.PointXYZI]] SampleConsensusModelRegistration_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelRegistration[cpp.PointXYZRGB]] SampleConsensusModelRegistration_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelRegistration[cpp.PointXYZRGBA]] SampleConsensusModelRegistration_PointXYZRGBA_ConstPtr_t
 ###
 
 # sac_model_stick.h
@@ -2007,6 +2196,18 @@ cdef extern from "pcl/sample_consensus/sac_model_stick.h" namespace "pcl":
         # inline pcl::SacModel getModelType () const { return (SACMODEL_STICK); }
 
 
+ctypedef SampleConsensusModelStick[cpp.PointXYZ] SampleConsensusModelStick_t
+ctypedef SampleConsensusModelStick[cpp.PointXYZI] SampleConsensusModelStick_PointXYZI_t
+ctypedef SampleConsensusModelStick[cpp.PointXYZRGB] SampleConsensusModelStick_PointXYZRGB_t
+ctypedef SampleConsensusModelStick[cpp.PointXYZRGBA] SampleConsensusModelStick_PointXYZRGBA_t
+ctypedef shared_ptr[SampleConsensusModelStick[cpp.PointXYZ]] SampleConsensusModelStickPtr_t
+ctypedef shared_ptr[SampleConsensusModelStick[cpp.PointXYZI]] SampleConsensusModelStick_PointXYZI_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelStick[cpp.PointXYZRGB]] SampleConsensusModelStick_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[SampleConsensusModelStick[cpp.PointXYZRGBA]] SampleConsensusModelStick_PointXYZRGBA_Ptr_t
+ctypedef shared_ptr[const SampleConsensusModelStick[cpp.PointXYZ]] SampleConsensusModelStickConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelStick[cpp.PointXYZI]] SampleConsensusModelStick_PointXYZI_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelStick[cpp.PointXYZRGB]] SampleConsensusModelStick_PointXYZRGB_ConstPtr_t
+ctypedef shared_ptr[const SampleConsensusModelStick[cpp.PointXYZRGBA]] SampleConsensusModelStick_PointXYZRGBA_ConstPtr_t
 ###
 
 ###############################################################################

@@ -17,7 +17,6 @@ python examples\official\Filtering\remove_outliers.py -r Radius
 python examples\official\Filtering\remove_outliers.py -r Condition
 python examples\official\Filtering\VoxelGrid_160.py
 python examples\official\Filtering\statistical_removal.py
-
 ###
 
 # GPU
@@ -64,14 +63,16 @@ python examples\official\octree\octree_change_detection.py
 
 # Registration
 python examples\official\Registration\iterative_closest_point.py
-# pcl 1.7.2
+# pcl 1.7.2(pcl 1.6.0 NG)
 # python examples\official\Registration\alignment_prerejective.py
 # python examples\official\Registration\normal_distributions_transform.py
+# Unkwnon
 # python examples\official\Registration\pairwise_incremental_registration.txt
 # python examples\official\Registration\pcl-interactive_icp.txt
 ###
 
 # SampleConsensus
+python examples\official\SampleConsensus\random_sample_consensus.py
 ###
 
 # Segmentation
@@ -90,7 +91,7 @@ python examples\official\Segmentation\cylinder_segmentation.py
 
 # Surface
 python examples\official\surface\concave_hull_2d.py
-# ver1.7.2
+# Version 1.7.2
 # python examples\official\surface\greedy_projection_172.py
 # NG(process Function DLL Excetion)
 python examples\official\surface\resampling.py
