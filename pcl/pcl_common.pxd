@@ -1,5 +1,19 @@
 # -*- coding: utf-8 -*-
 
+cimport _pcl
+cimport pcl_defs as cpp
+cimport numpy as cnp
+
+cimport cython
+
+from libcpp.string cimport string
+from libcpp.vector cimport vector
+
+cimport eigen as eigen3
+
+from boost_shared_ptr cimport shared_ptr
+
+
 # common/angles.h
 # namespace pcl
 cdef extern from "pcl/common/angles.h" namespace "pcl":
@@ -32,132 +46,116 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
     # ingroup common
     # inline float normAngle (float alpha);
     cdef float normAngle (float alpha)
+
+
 ###
 
 # bivariate_polynomial.h
 # namespace pcl 
-# {
 # cdef extern from "pcl/common/bivariate_polynomial.h" namespace "pcl":
 #   # /** \brief This represents a bivariate polynomial and provides some functionality for it
 #   #   * \author Bastian Steder 
 #   #   * \ingroup common
 #   #   */
 #   template<typename real> class BivariatePolynomialT 
-#   {
-#     public:
-#       //-----CONSTRUCTOR&DESTRUCTOR-----
-#       /** Constructor */
-#       BivariatePolynomialT (int new_degree=0);
-#       /** Copy constructor */
-#       BivariatePolynomialT (const BivariatePolynomialT& other);
-#       /** Destructor */
-#       ~BivariatePolynomialT ();
-# 
-#       //-----OPERATORS-----
-#       /** = operator */
-#       BivariatePolynomialT&
-#       operator= (const BivariatePolynomialT& other) { deepCopy (other); return *this;}
-# 
-#       //-----METHODS-----
-#       /** Initialize members to default values */
-#       void setDegree (int new_degree);
-# 
-#       /** How many parametes has a bivariate polynomial with this degree */
-#       unsigned int getNoOfParameters () const { return getNoOfParametersFromDegree (degree);}
-# 
-#       /** Calculate the value of the polynomial at the given point */
-#       real getValue (real x, real y) const;  
-# 
-#       /** Calculate the gradient of this polynomial
-#        *  If forceRecalc is false, it will do nothing when the gradient already exists */
-#       void calculateGradient (bool forceRecalc=false);
-# 
-#       /** Calculate the value of the gradient at the given point */
-#       void getValueOfGradient (real x, real y, real& gradX, real& gradY);
-# 
-#       /** Returns critical points of the polynomial. type can be 0=maximum, 1=minimum, or 2=saddle point
-#        *  !!Currently only implemented for degree 2!! */
-#       void findCriticalPoints (std::vector<real>& x_values, std::vector<real>& y_values, std::vector<int>& types) const;
-#       
-#       /** write as binary to a stream */
-#       void writeBinary (std::ostream& os) const;
-# 
-#       /** write as binary into a file */
-#       void writeBinary (const char* filename) const;
-# 
-#       /** read binary from a stream */
-#       void readBinary (std::istream& os);
-# 
-#       /** read binary from a file */
-#       void readBinary (const char* filename);
-#       
-#       /** How many parametes has a bivariate polynomial of the given degree */
-#       static unsigned int getNoOfParametersFromDegree (int n) { return ((n+2)* (n+1))/2;}
-#
-#     protected:
-#       //-----METHODS-----
-#       /** Delete all members */
-#       void memoryCleanUp ();
-# 
-#       /** Create a deep copy of the given polynomial */
-#       void deepCopy (const BivariatePolynomialT<real>& other);
-# 
-#   template<typename real>
-#   std::ostream&
-#     operator<< (std::ostream& os, const BivariatePolynomialT<real>& p);
-# 
-#   typedef BivariatePolynomialT<double> BivariatePolynomiald;
-#   typedef BivariatePolynomialT<float>  BivariatePolynomial;
-# }  // end namespace
+# cdef extern from "pcl/common/bivariate_polynomial.h" namespace "pcl":
+#     class BivariatePolynomialT[real]
+#         BivariatePolynomialT()
+#         # public:
+#         # //-----CONSTRUCTOR&DESTRUCTOR-----
+#         # /** Constructor */
+#         # BivariatePolynomialT (int new_degree=0);
+#         # /** Copy constructor */
+#         # BivariatePolynomialT (const BivariatePolynomialT& other);
+#         # /** Destructor */
+#         # ~BivariatePolynomialT ();
+#         
+#         # //-----OPERATORS-----
+#         # /** = operator */
+#         # BivariatePolynomialT& operator= (const BivariatePolynomialT& other) { deepCopy (other); return *this;}
+#         
+#         # //-----METHODS-----
+#         # /** Initialize members to default values */
+#         # void setDegree (int new_degree);
+#         void setDegree (int new_degree)
+#         
+#         # /** How many parametes has a bivariate polynomial with this degree */
+#         # unsigned int getNoOfParameters () const { return getNoOfParametersFromDegree (degree);}
+#         int getNoOfParameters ()
+#         
+#         # /** Calculate the value of the polynomial at the given point */
+#         # real getValue (real x, real y) const;  
+#         # real getValue (real x, real y)
+#         
+#         # /** Calculate the gradient of this polynomial
+#         #  *  If forceRecalc is false, it will do nothing when the gradient already exists */
+#         # void calculateGradient (bool forceRecalc=false);
+#         void calculateGradient (bool forceRecalc)
+#         
+#         # /** Calculate the value of the gradient at the given point */
+#         # void getValueOfGradient (real x, real y, real& gradX, real& gradY);
+#         # void getValueOfGradient (real x, real y, real& gradX, real& gradY);
+#         
+#         # /** Returns critical points of the polynomial. type can be 0=maximum, 1=minimum, or 2=saddle point
+#         #  *  !!Currently only implemented for degree 2!! */
+#         # void findCriticalPoints (std::vector<real>& x_values, std::vector<real>& y_values, std::vector<int>& types) const;
+#         
+#         # /** write as binary to a stream */
+#         # void writeBinary (std::ostream& os) const;
+#         
+#         # /** write as binary into a file */
+#         # void writeBinary (const char* filename) const;
+#         
+#         # /** read binary from a stream */
+#         # void readBinary (std::istream& os);
+#         
+#         # /** read binary from a file */
+#         # void readBinary (const char* filename);
+#         
+#         # /** How many parametes has a bivariate polynomial of the given degree */
+#         # static unsigned int getNoOfParametersFromDegree (int n) { return ((n+2)* (n+1))/2;}
+#         
+#     # template<typename real> std::ostream& operator<< (std::ostream& os, const BivariatePolynomialT<real>& p);
+#     # typedef BivariatePolynomialT<double> BivariatePolynomiald;
+#     # typedef BivariatePolynomialT<float>  BivariatePolynomial;
+
+
 ###
 
-# # boost.h
+# boost.h
 # // Marking all Boost headers as system headers to remove warnings
-# #include <boost/fusion/sequence/intrinsic/at_key.hpp>
-# #include <boost/shared_ptr.hpp>
-# #include <boost/make_shared.hpp>
-# #include <boost/mpl/size.hpp>
-# #include <boost/date_time/posix_time/posix_time.hpp>
-# #include <boost/function.hpp>
-# //#include <boost/timer.hpp>
-# #include <boost/thread.hpp>
-# #include <boost/thread/condition.hpp>
-# #include <boost/signals2.hpp>
-# #include <boost/signals2/slot.hpp>
-# #include <boost/algorithm/string.hpp>
-# 
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
-# /** \brief Compute the 3D (X-Y-Z) centroid of a set of points and return it as a 3D vector.
-#   * \param[in] cloud_iterator an iterator over the input point cloud
-#   * \param[out] centroid the output centroid
-#   * \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
-#   * \note if return value is 0, the centroid is not changed, thus not valid.
-#   * The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
-#   * \ingroup common
-#   */
+# \brief Compute the 3D (X-Y-Z) centroid of a set of points and return it as a 3D vector.
+# \param[in] cloud_iterator an iterator over the input point cloud
+# \param[out] centroid the output centroid
+# \return number of valid point used to determine the centroid. In case of dense point clouds, this is the same as the size of input cloud.
+# \note if return value is 0, the centroid is not changed, thus not valid.
+#  The last compononent of the vector is set to 1, this allow to transform the centroid vector with 4x4 matrices.
+# \ingroup common
 # template <typename PointT, typename Scalar> inline unsigned int
-# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
-#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator, Eigen::Matrix<Scalar, 4, 1> &centroid);
+# centroid.h
+# namespace pcl
+# cdef extern from "pcl/common/centroid.h" namespace "pcl":
+#     unsigned int compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator, Eigen::Matrix<Scalar, 4, 1> &centroid);
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
-#                    Eigen::Vector4f &centroid)
+# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator, Eigen::Vector4f &centroid)
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator,
-#                    Eigen::Vector4d &centroid)
+# compute3DCentroid (ConstCloudIterator<PointT> &cloud_iterator, Eigen::Vector4d &centroid)
 ###
 
 # centroid.h
@@ -172,16 +170,14 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   * \ingroup common
 #   */
 # template <typename PointT, typename Scalar> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, Eigen::Matrix<Scalar, 4, 1> &centroid);
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                    Eigen::Vector4f &centroid)
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &centroid)
 ###
 
 
@@ -189,8 +185,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, 
-#                    Eigen::Vector4d &centroid)
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4d &centroid)
 ###
 
 # /** \brief Compute the 3D (X-Y-Z) centroid of a set of points using their indices and
@@ -204,27 +199,21 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   * \ingroup common
 #   */
 # template <typename PointT, typename Scalar> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-#                    const std::vector<int> &indices, 
-#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, Eigen::Matrix<Scalar, 4, 1> &centroid);
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-#                    const std::vector<int> &indices, 
-#                    Eigen::Vector4f &centroid)
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, Eigen::Vector4f &centroid)
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-#                    const std::vector<int> &indices, 
-#                    Eigen::Vector4d &centroid)
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, Eigen::Vector4d &centroid)
 ###
 
 # /** \brief Compute the 3D (X-Y-Z) centroid of a set of points using their indices and
@@ -238,27 +227,21 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   * \ingroup common
 #   */
 # template <typename PointT, typename Scalar> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-#                    const pcl::PointIndices &indices, 
-#                    Eigen::Matrix<Scalar, 4, 1> &centroid);
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices &indices, Eigen::Matrix<Scalar, 4, 1> &centroid);
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-#                    const pcl::PointIndices &indices, 
-#                    Eigen::Vector4f &centroid)
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices &indices, Eigen::Vector4f &centroid)
 ###
 
 # centroid.h
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 # template <typename PointT> inline unsigned int
-# compute3DCentroid (const pcl::PointCloud<PointT> &cloud,
-#                    const pcl::PointIndices &indices, 
-#                    Eigen::Vector4d &centroid)
+# compute3DCentroid (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices &indices, Eigen::Vector4d &centroid)
 ###
 
 # centroid.h
@@ -278,9 +261,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   * \ingroup common
 #   */
 # template <typename PointT, typename Scalar> inline unsigned int
-# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud,
-#                          const Eigen::Matrix<Scalar, 4, 1> &centroid,
-#                          Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
+# computeCovarianceMatrix (const pcl::PointCloud<PointT> &cloud, const Eigen::Matrix<Scalar, 4, 1> &centroid, Eigen::Matrix<Scalar, 3, 3> &covariance_matrix);
 ###
 
 # centroid.h
@@ -1174,7 +1155,6 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # namespace pcl
 # cdef extern from "pcl/common/centroid.h" namespace "pcl":
 #   /** A generic class that computes the centroid of points fed to it.
-#     *
 #     * Here by "centroid" we denote not just the mean of 3D point coordinates,
 #     * but also mean of values in the other data fields. The general-purpose
 #     * \ref computeNDCentroid() function also implements this sort of
@@ -1183,33 +1163,20 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     * certain cases (e.g. for \c x, \c y, \c z, \c intensity fields) this
 #     * behavior is reasonable, however in other cases (e.g. \c rgb, \c rgba,
 #     * \c label fields) this does not lead to meaningful results.
-#     *
 #     * This class is capable of computing the centroid in a "smart" way, i.e.
 #     * taking into account the meaning of the data inside fields. Currently the
 #     * following fields are supported:
-#     *
 #     * - XYZ (\c x, \c y, \c z)
-#     *
 #     *   Separate average for each field.
-#     *
 #     * - Normal (\c normal_x, \c normal_y, \c normal_z)
-#     *
 #     *   Separate average for each field, and the resulting vector is normalized.
-#     *
 #     * - Curvature (\c curvature)
-#     *
 #     *   Average.
-#     *
 #     * - RGB/RGBA (\c rgb or \c rgba)
-#     *
 #     *   Separate average for R, G, B, and alpha channels.
-#     *
 #     * - Intensity (\c intensity)
-#     *
 #     *   Average.
-#     *
 #     * - Label (\c label)
-#     *
 #     *   Majority vote. If several labels have the same largest support then the
 #     *   smaller label wins.
 #     *
@@ -1252,9 +1219,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     * \author Sergey Alexandrov */
 # template <typename PointT>
 # class CentroidPoint
-# 		
-#     	public:
-# 		
+#       
+#       public:
+#       
 #       CentroidPoint ()
 #       : num_points_ (0)
 #       {
@@ -1349,163 +1316,202 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 
 # common.h
 # namespace pcl
-# {
-#   /** \brief Compute the smallest angle between two vectors in the [ 0, PI ) interval in 3D.
-#     * \param v1 the first 3D vector (represented as a \a Eigen::Vector4f)
-#     * \param v2 the second 3D vector (represented as a \a Eigen::Vector4f)
-#     * \return the angle between v1 and v2
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Compute the smallest angle between two vectors in the [ 0, PI ) interval in 3D.
+#   * \param v1 the first 3D vector (represented as a \a Eigen::Vector4f)
+#   * \param v2 the second 3D vector (represented as a \a Eigen::Vector4f)
+#   * \return the angle between v1 and v2
+#   * \ingroup common
+#   */
+# inline double getAngle3D (const Eigen::Vector4f &v1, const Eigen::Vector4f &v2);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Compute both the mean and the standard deviation of an array of values
+#   * \param values the array of values
+#   * \param mean the resultant mean of the distribution
+#   * \param stddev the resultant standard deviation of the distribution
+#   * \ingroup common
+#   */
+# inline void getMeanStd (const std::vector<float> &values, double &mean, double &stddev);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get a set of points residing in a box given its bounds
+#   * \param cloud the point cloud data message
+#   * \param min_pt the minimum bounds
+#   * \param max_pt the maximum bounds
+#   * \param indices the resultant set of point indices residing in the box
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void 
+# getPointsInBox (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &min_pt,
+#                 Eigen::Vector4f &max_pt, std::vector<int> &indices);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the point at maximum distance from a given point and a given pointcloud
+#   * \param cloud the point cloud data message
+#   * \param pivot_pt the point from where to compute the distance
+#   * \param max_pt the point in cloud that is the farthest point away from pivot_pt
+#   * \ingroup common
+#   */
+# template<typename PointT> inline void
+# getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the point at maximum distance from a given point and a given pointcloud
+#   * \param cloud the point cloud data message
+#   * \param pivot_pt the point from where to compute the distance
+#   * \param indices the vector of point indices to use from \a cloud
+#   * \param max_pt the point in cloud that is the farthest point away from pivot_pt
+#   * \ingroup common
+#   */
+# template<typename PointT> inline void
+# getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, 
+#                 const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
+#   * \param cloud the point cloud data message
+#   * \param min_pt the resultant minimum bounds
+#   * \param max_pt the resultant maximum bounds
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void 
+# getMinMax3D (const pcl::PointCloud<PointT> &cloud, PointT &min_pt, PointT &max_pt);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
+#   * \param cloud the point cloud data message
+#   * \param min_pt the resultant minimum bounds
+#   * \param max_pt the resultant maximum bounds
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void 
+# getMinMax3D (const pcl::PointCloud<PointT> &cloud, 
+#              Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
+#   * \param cloud the point cloud data message
+#   * \param indices the vector of point indices to use from \a cloud
+#   * \param min_pt the resultant minimum bounds
+#   * \param max_pt the resultant maximum bounds
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void 
+# getMinMax3D (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, 
+#              Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
+#   * \param cloud the point cloud data message
+#   * \param indices the vector of point indices to use from \a cloud
+#   * \param min_pt the resultant minimum bounds
+#   * \param max_pt the resultant maximum bounds
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void 
+# getMinMax3D (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices &indices, 
+#              Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Compute the radius of a circumscribed circle for a triangle formed of three points pa, pb, and pc
+#   * \param pa the first point
+#   * \param pb the second point
+#   * \param pc the third point
+#   * \return the radius of the circumscribed circle
+#   * \ingroup common
+#   */
+# template <typename PointT> inline double 
+# getCircumcircleRadius (const PointT &pa, const PointT &pb, const PointT &pc);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the minimum and maximum values on a point histogram
+#   * \param histogram the point representing a multi-dimensional histogram
+#   * \param len the length of the histogram
+#   * \param min_p the resultant minimum 
+#   * \param max_p the resultant maximum 
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void 
+# getMinMax (const PointT &histogram, int len, float &min_p, float &max_p);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Calculate the area of a polygon given a point cloud that defines the polygon 
+#     * \param polygon point cloud that contains those vertices that comprises the polygon. Vertices are stored in counterclockwise.
+#     * \return the polygon area 
 #     * \ingroup common
 #     */
-#   inline double 
-#   getAngle3D (const Eigen::Vector4f &v1, const Eigen::Vector4f &v2);
+# template<typename PointT> inline float
+# calculatePolygonArea (const pcl::PointCloud<PointT> &polygon);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Get the minimum and maximum values on a point histogram
+#   * \param cloud the cloud containing multi-dimensional histograms
+#   * \param idx point index representing the histogram that we need to compute min/max for
+#   * \param field_name the field name containing the multi-dimensional histogram
+#   * \param min_p the resultant minimum 
+#   * \param max_p the resultant maximum 
+#   * \ingroup common
+#   */
+# PCL_EXPORTS void 
+# getMinMax (const pcl::PCLPointCloud2 &cloud, int idx, const std::string &field_name,
+#            float &min_p, float &max_p);
+###
+
+# common.h
+# namespace pcl
+# cdef extern from "pcl/common/common.h" namespace "pcl":
+# /** \brief Compute both the mean and the standard deviation of an array of values
+#   * \param values the array of values
+#   * \param mean the resultant mean of the distribution
+#   * \param stddev the resultant standard deviation of the distribution
+#   * \ingroup common
+#   */
+# PCL_EXPORTS void
+# getMeanStdDev (const std::vector<float> &values, double &mean, double &stddev);
 # 
-#   /** \brief Compute both the mean and the standard deviation of an array of values
-#     * \param values the array of values
-#     * \param mean the resultant mean of the distribution
-#     * \param stddev the resultant standard deviation of the distribution
-#     * \ingroup common
-#     */
-#   inline void 
-#   getMeanStd (const std::vector<float> &values, double &mean, double &stddev);
-# 
-#   /** \brief Get a set of points residing in a box given its bounds
-#     * \param cloud the point cloud data message
-#     * \param min_pt the minimum bounds
-#     * \param max_pt the maximum bounds
-#     * \param indices the resultant set of point indices residing in the box
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getPointsInBox (const pcl::PointCloud<PointT> &cloud, Eigen::Vector4f &min_pt,
-#                   Eigen::Vector4f &max_pt, std::vector<int> &indices);
-# 
-#   /** \brief Get the point at maximum distance from a given point and a given pointcloud
-#     * \param cloud the point cloud data message
-#     * \param pivot_pt the point from where to compute the distance
-#     * \param max_pt the point in cloud that is the farthest point away from pivot_pt
-#     * \ingroup common
-#     */
-#   template<typename PointT> inline void
-#   getMaxDistance (const pcl::PointCloud<PointT> &cloud, const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt);
-# 
-#   /** \brief Get the point at maximum distance from a given point and a given pointcloud
-#     * \param cloud the point cloud data message
-#     * \param pivot_pt the point from where to compute the distance
-#     * \param indices the vector of point indices to use from \a cloud
-#     * \param max_pt the point in cloud that is the farthest point away from pivot_pt
-#     * \ingroup common
-#     */
-#   template<typename PointT> inline void
-#   getMaxDistance (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, 
-#                   const Eigen::Vector4f &pivot_pt, Eigen::Vector4f &max_pt);
-# 
-#   /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
-#     * \param cloud the point cloud data message
-#     * \param min_pt the resultant minimum bounds
-#     * \param max_pt the resultant maximum bounds
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getMinMax3D (const pcl::PointCloud<PointT> &cloud, PointT &min_pt, PointT &max_pt);
-#   
-#   /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
-#     * \param cloud the point cloud data message
-#     * \param min_pt the resultant minimum bounds
-#     * \param max_pt the resultant maximum bounds
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getMinMax3D (const pcl::PointCloud<PointT> &cloud, 
-#                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
-# 
-#   /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
-#     * \param cloud the point cloud data message
-#     * \param indices the vector of point indices to use from \a cloud
-#     * \param min_pt the resultant minimum bounds
-#     * \param max_pt the resultant maximum bounds
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getMinMax3D (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, 
-#                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
-# 
-#   /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions in a given pointcloud
-#     * \param cloud the point cloud data message
-#     * \param indices the vector of point indices to use from \a cloud
-#     * \param min_pt the resultant minimum bounds
-#     * \param max_pt the resultant maximum bounds
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getMinMax3D (const pcl::PointCloud<PointT> &cloud, const pcl::PointIndices &indices, 
-#                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
-# 
-#   /** \brief Compute the radius of a circumscribed circle for a triangle formed of three points pa, pb, and pc
-#     * \param pa the first point
-#     * \param pb the second point
-#     * \param pc the third point
-#     * \return the radius of the circumscribed circle
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline double 
-#   getCircumcircleRadius (const PointT &pa, const PointT &pb, const PointT &pc);
-# 
-#   /** \brief Get the minimum and maximum values on a point histogram
-#     * \param histogram the point representing a multi-dimensional histogram
-#     * \param len the length of the histogram
-#     * \param min_p the resultant minimum 
-#     * \param max_p the resultant maximum 
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getMinMax (const PointT &histogram, int len, float &min_p, float &max_p);
-# 
-#   /** \brief Calculate the area of a polygon given a point cloud that defines the polygon 
-#       * \param polygon point cloud that contains those vertices that comprises the polygon. Vertices are stored in counterclockwise.
-#       * \return the polygon area 
-#       * \ingroup common
-#       */
-#   template<typename PointT> inline float
-#   calculatePolygonArea (const pcl::PointCloud<PointT> &polygon);
-# 
-#   /** \brief Get the minimum and maximum values on a point histogram
-#     * \param cloud the cloud containing multi-dimensional histograms
-#     * \param idx point index representing the histogram that we need to compute min/max for
-#     * \param field_name the field name containing the multi-dimensional histogram
-#     * \param min_p the resultant minimum 
-#     * \param max_p the resultant maximum 
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS void 
-#   getMinMax (const pcl::PCLPointCloud2 &cloud, int idx, const std::string &field_name,
-#              float &min_p, float &max_p);
-# 
-#   /** \brief Compute both the mean and the standard deviation of an array of values
-#     * \param values the array of values
-#     * \param mean the resultant mean of the distribution
-#     * \param stddev the resultant standard deviation of the distribution
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS void
-#   getMeanStdDev (const std::vector<float> &values, double &mean, double &stddev);
-# 
-# }
-# /*@}*/
-# #include <pcl/common/impl/common.hpp>
-# 
-# #endif  //#ifndef PCL_COMMON_H_
-# ###
-# 
-# # common_headers.h
-# # #include <pcl/common/common.h>
-# # #include <pcl/common/norms.h>
-# # #include <pcl/common/angles.h>
-# # #include <pcl/common/time.h>
-# # #include <pcl/common/file_io.h>
-# # #include <pcl/common/eigen.h>
-# ###
-# 
-# # concatenate.h
+###
+
+# common_headers.h
+###
+
+# concatenate.h
 # // We're doing a lot of black magic with Boost here, so disable warnings in Maintainer mode, as we will never
 # // be able to fix them anyway
 # #ifdef BUILD_Maintainer
@@ -1520,68 +1526,66 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # #    pragma warning(push, 1)
 # #  endif
 # #endif
-# 
+###
+
+# concatenate.h
 # namespace pcl
+# cdef extern from "pcl/common/concatenate.h" namespace "pcl":
+# /** \brief Helper functor structure for concatenate. 
+#   * \ingroup common
+#   */
+# template<typename PointInT, typename PointOutT>
+# struct NdConcatenateFunctor
 # {
-#   /** \brief Helper functor structure for concatenate. 
-#     * \ingroup common
-#     */
-#   template<typename PointInT, typename PointOutT>
-#   struct NdConcatenateFunctor
+#   typedef typename traits::POD<PointInT>::type PodIn;
+#   typedef typename traits::POD<PointOutT>::type PodOut;
+#   
+#   NdConcatenateFunctor (const PointInT &p1, PointOutT &p2)
+#     : p1_ (reinterpret_cast<const PodIn&> (p1))
+#     , p2_ (reinterpret_cast<PodOut&> (p2)) { }
+#      template<typename Key> inline void 
+#   operator () ()
 #   {
-#     typedef typename traits::POD<PointInT>::type PodIn;
-#     typedef typename traits::POD<PointOutT>::type PodOut;
-#     
-#     NdConcatenateFunctor (const PointInT &p1, PointOutT &p2)
-#       : p1_ (reinterpret_cast<const PodIn&> (p1))
-#       , p2_ (reinterpret_cast<PodOut&> (p2)) { }
-# 
-#     template<typename Key> inline void 
-#     operator () ()
-#     {
-#       // This sucks without Fusion :(
-#       //boost::fusion::at_key<Key> (p2_) = boost::fusion::at_key<Key> (p1_);
-#       typedef typename pcl::traits::datatype<PointInT, Key>::type InT;
-#       typedef typename pcl::traits::datatype<PointOutT, Key>::type OutT;
-#       // Note: don't currently support different types for the same field (e.g. converting double to float)
-#       BOOST_MPL_ASSERT_MSG ((boost::is_same<InT, OutT>::value),
-#                             POINT_IN_AND_POINT_OUT_HAVE_DIFFERENT_TYPES_FOR_FIELD,
-#                             (Key, PointInT&, InT, PointOutT&, OutT));
-#       memcpy (reinterpret_cast<uint8_t*>(&p2_) + pcl::traits::offset<PointOutT, Key>::value,
-#               reinterpret_cast<const uint8_t*>(&p1_) + pcl::traits::offset<PointInT, Key>::value,
-#               sizeof (InT));
-#     }
-# 
-#     private:
-#       const PodIn &p1_;
-#       PodOut &p2_;
-#   };
+#     // This sucks without Fusion :(
+#     //boost::fusion::at_key<Key> (p2_) = boost::fusion::at_key<Key> (p1_);
+#     typedef typename pcl::traits::datatype<PointInT, Key>::type InT;
+#     typedef typename pcl::traits::datatype<PointOutT, Key>::type OutT;
+#     // Note: don't currently support different types for the same field (e.g. converting double to float)
+#     BOOST_MPL_ASSERT_MSG ((boost::is_same<InT, OutT>::value),
+#                           POINT_IN_AND_POINT_OUT_HAVE_DIFFERENT_TYPES_FOR_FIELD,
+#                           (Key, PointInT&, InT, PointOutT&, OutT));
+#     memcpy (reinterpret_cast<uint8_t*>(&p2_) + pcl::traits::offset<PointOutT, Key>::value,
+#             reinterpret_cast<const uint8_t*>(&p1_) + pcl::traits::offset<PointInT, Key>::value,
+#             sizeof (InT));
+#   }
 # }
-# 
-# #ifdef BUILD_Maintainer
-# #  if defined __GNUC__
-# #    if __GNUC__ == 4 && __GNUC_MINOR__ > 3
-# #      pragma GCC diagnostic warning "-Weffc++"
-# #      pragma GCC diagnostic warning "-pedantic"
-# #    endif
-# #  elif defined _MSC_VER
-# #    pragma warning(pop)
-# #  endif
-# #endif
-# 
-# #endif // PCL_COMMON_CONCATENATE_H_
-# ###
-# 
-# # conversions.h
+###
+
+# concatenate.h
 # namespace pcl
+# cdef extern from "pcl/common/concatenate.h" namespace "pcl":
+#ifdef BUILD_Maintainer
+#  if defined __GNUC__
+#    if __GNUC__ == 4 && __GNUC_MINOR__ > 3
+#      pragma GCC diagnostic warning "-Weffc++"
+#      pragma GCC diagnostic warning "-pedantic"
+#    endif
+#  elif defined _MSC_VER
+#    pragma warning(pop)
+#  endif
+#endif
+###
+
+
+# conversions.h
+# namespace pcl
+# namespace detail
+# cdef extern from "pcl/common/conversions.h" namespace "pcl::detail":
+# // For converting template point cloud to message.
+# template<typename PointT>
+# struct FieldAdder
 # {
-#   namespace detail
-#   {
-#     // For converting template point cloud to message.
-#     template<typename PointT>
-#     struct FieldAdder
-#     {
-#       FieldAdder (std::vector<pcl::PCLPointField>& fields) : fields_ (fields) {};
+#     FieldAdder (std::vector<pcl::PCLPointField>& fields) : fields_ (fields) {};
 # 
 #       template<typename U> void operator() ()
 #       {
@@ -1630,425 +1634,177 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       std::vector<FieldMapping>& map_;
 #     };
 # 
-#     inline bool
-#     fieldOrdering (const FieldMapping& a, const FieldMapping& b)
-#     {
-#       return (a.serialized_offset < b.serialized_offset);
-#     }
+#     inline bool fieldOrdering (const FieldMapping& a, const FieldMapping& b)
 # 
-#   } //namespace detail
-# 
-#   template<typename PointT> void
-#   createMapping (const std::vector<pcl::PCLPointField>& msg_fields, MsgFieldMap& field_map)
-#   {
-#     // Create initial 1-1 mapping between serialized data segments and struct fields
-#     detail::FieldMapper<PointT> mapper (msg_fields, field_map);
-#     for_each_type< typename traits::fieldList<PointT>::type > (mapper);
-# 
-#     // Coalesce adjacent fields into single memcpy's where possible
-#     if (field_map.size() > 1)
-#     {
-#       std::sort(field_map.begin(), field_map.end(), detail::fieldOrdering);
-#       MsgFieldMap::iterator i = field_map.begin(), j = i + 1;
-#       while (j != field_map.end())
-#       {
-#         // This check is designed to permit padding between adjacent fields.
-#         /// @todo One could construct a pathological case where the struct has a
-#         /// field where the serialized data has padding
-#         if (j->serialized_offset - i->serialized_offset == j->struct_offset - i->struct_offset)
-#         {
-#           i->size += (j->struct_offset + j->size) - (i->struct_offset + i->size);
-#           j = field_map.erase(j);
-#         }
-#         else
-#         {
-#           ++i;
-#           ++j;
-#         }
-#       }
-#     }
-#   }
-# 
-#   /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object using a field_map.
-#     * \param[in] msg the PCLPointCloud2 binary blob
-#     * \param[out] cloud the resultant pcl::PointCloud<T>
-#     * \param[in] field_map a MsgFieldMap object
-#     *
-#     * \note Use fromPCLPointCloud2 (PCLPointCloud2, PointCloud<T>) directly or create you
-#     * own MsgFieldMap using:
-#     *
-#     * \code
-#     * MsgFieldMap field_map;
-#     * createMapping<PointT> (msg.fields, field_map);
-#     * \endcode
-#     */
-#   template <typename PointT> void
-#   fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud,
-#               const MsgFieldMap& field_map)
-#   {
-#     // Copy info fields
-#     cloud.header   = msg.header;
-#     cloud.width    = msg.width;
-#     cloud.height   = msg.height;
-#     cloud.is_dense = msg.is_dense == 1;
-# 
-#     // Copy point data
-#     uint32_t num_points = msg.width * msg.height;
-#     cloud.points.resize (num_points);
-#     uint8_t* cloud_data = reinterpret_cast<uint8_t*>(&cloud.points[0]);
-# 
-#     // Check if we can copy adjacent points in a single memcpy
-#     if (field_map.size() == 1 &&
-#         field_map[0].serialized_offset == 0 &&
-#         field_map[0].struct_offset == 0 &&
-#         msg.point_step == sizeof(PointT))
-#     {
-#       uint32_t cloud_row_step = static_cast<uint32_t> (sizeof (PointT) * cloud.width);
-#       const uint8_t* msg_data = &msg.data[0];
-#       // Should usually be able to copy all rows at once
-#       if (msg.row_step == cloud_row_step)
-#       {
-#         memcpy (cloud_data, msg_data, msg.data.size ());
-#       }
-#       else
-#       {
-#         for (uint32_t i = 0; i < msg.height; ++i, cloud_data += cloud_row_step, msg_data += msg.row_step)
-#           memcpy (cloud_data, msg_data, cloud_row_step);
-#       }
-# 
-#     }
-#     else
-#     {
-#       // If not, memcpy each group of contiguous fields separately
-#       for (uint32_t row = 0; row < msg.height; ++row)
-#       {
-#         const uint8_t* row_data = &msg.data[row * msg.row_step];
-#         for (uint32_t col = 0; col < msg.width; ++col)
-#         {
-#           const uint8_t* msg_data = row_data + col * msg.point_step;
-#           BOOST_FOREACH (const detail::FieldMapping& mapping, field_map)
-#           {
-#             memcpy (cloud_data + mapping.struct_offset, msg_data + mapping.serialized_offset, mapping.size);
-#           }
-#           cloud_data += sizeof (PointT);
-#         }
-#       }
-#     }
-#   }
-# 
-#   /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object.
-#     * \param[in] msg the PCLPointCloud2 binary blob
-#     * \param[out] cloud the resultant pcl::PointCloud<T>
-#     */
-#   template<typename PointT> void
-#   fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud)
-#   {
-#     MsgFieldMap field_map;
-#     createMapping<PointT> (msg.fields, field_map);
-#     fromPCLPointCloud2 (msg, cloud, field_map);
-#   }
-# 
-#   /** \brief Convert a pcl::PointCloud<T> object to a PCLPointCloud2 binary data blob.
-#     * \param[in] cloud the input pcl::PointCloud<T>
-#     * \param[out] msg the resultant PCLPointCloud2 binary blob
-#     */
-#   template<typename PointT> void
-#   toPCLPointCloud2 (const pcl::PointCloud<PointT>& cloud, pcl::PCLPointCloud2& msg)
-#   {
-#     // Ease the user's burden on specifying width/height for unorganized datasets
-#     if (cloud.width == 0 && cloud.height == 0)
-#     {
-#       msg.width  = static_cast<uint32_t>(cloud.points.size ());
-#       msg.height = 1;
-#     }
-#     else
-#     {
-#       assert (cloud.points.size () == cloud.width * cloud.height);
-#       msg.height = cloud.height;
-#       msg.width  = cloud.width;
-#     }
-# 
-#     // Fill point cloud binary data (padding and all)
-#     size_t data_size = sizeof (PointT) * cloud.points.size ();
-#     msg.data.resize (data_size);
-#     memcpy (&msg.data[0], &cloud.points[0], data_size);
-# 
-#     // Fill fields metadata
-#     msg.fields.clear ();
-#     for_each_type<typename traits::fieldList<PointT>::type> (detail::FieldAdder<PointT>(msg.fields));
-# 
-#     msg.header     = cloud.header;
-#     msg.point_step = sizeof (PointT);
-#     msg.row_step   = static_cast<uint32_t> (sizeof (PointT) * msg.width);
-#     msg.is_dense   = cloud.is_dense;
-#     /// @todo msg.is_bigendian = ?;
-#   }
-# 
-#    /** \brief Copy the RGB fields of a PointCloud into pcl::PCLImage format
-#      * \param[in] cloud the point cloud message
-#      * \param[out] msg the resultant pcl::PCLImage
-#      * CloudT cloud type, CloudT should be akin to pcl::PointCloud<pcl::PointXYZRGBA>
-#      * \note will throw std::runtime_error if there is a problem
-#      */
-#   template<typename CloudT> void
-#   toPCLPointCloud2 (const CloudT& cloud, pcl::PCLImage& msg)
-#   {
-#     // Ease the user's burden on specifying width/height for unorganized datasets
-#     if (cloud.width == 0 && cloud.height == 0)
-#       throw std::runtime_error("Needs to be a dense like cloud!!");
-#     else
-#     {
-#       if (cloud.points.size () != cloud.width * cloud.height)
-#         throw std::runtime_error("The width and height do not match the cloud size!");
-#       msg.height = cloud.height;
-#       msg.width = cloud.width;
-#     }
-# 
-#     // ensor_msgs::image_encodings::BGR8;
-#     msg.encoding = "bgr8";
-#     msg.step = msg.width * sizeof (uint8_t) * 3;
-#     msg.data.resize (msg.step * msg.height);
-#     for (size_t y = 0; y < cloud.height; y++)
-#     {
-#       for (size_t x = 0; x < cloud.width; x++)
-#       {
-#         uint8_t * pixel = &(msg.data[y * msg.step + x * 3]);
-#         memcpy (pixel, &cloud (x, y).rgb, 3 * sizeof(uint8_t));
-#       }
-#     }
-#   }
-# 
-#   /** \brief Copy the RGB fields of a PCLPointCloud2 msg into pcl::PCLImage format
-#     * \param cloud the point cloud message
-#     * \param msg the resultant pcl::PCLImage
-#     * will throw std::runtime_error if there is a problem
-#     */
-#   inline void
-#   toPCLPointCloud2 (const pcl::PCLPointCloud2& cloud, pcl::PCLImage& msg)
-#   {
-#     int rgb_index = -1;
-#     // Get the index we need
-#     for (size_t d = 0; d < cloud.fields.size (); ++d)
-#       if (cloud.fields[d].name == "rgb")
-#       {
-#         rgb_index = static_cast<int>(d);
-#         break;
-#       }
-# 
-#     if(rgb_index == -1)
-#       throw std::runtime_error ("No rgb field!!");
-#     if (cloud.width == 0 && cloud.height == 0)
-#       throw std::runtime_error ("Needs to be a dense like cloud!!");
-#     else
-#     {
-#       msg.height = cloud.height;
-#       msg.width = cloud.width;
-#     }
-#     int rgb_offset = cloud.fields[rgb_index].offset;
-#     int point_step = cloud.point_step;
-# 
-#     // pcl::image_encodings::BGR8;
-#     msg.encoding = "bgr8";
-#     msg.step = static_cast<uint32_t>(msg.width * sizeof (uint8_t) * 3);
-#     msg.data.resize (msg.step * msg.height);
-# 
-#     for (size_t y = 0; y < cloud.height; y++)
-#     {
-#       for (size_t x = 0; x < cloud.width; x++, rgb_offset += point_step)
-#       {
-#         uint8_t * pixel = &(msg.data[y * msg.step + x * 3]);
-#         memcpy (pixel, &(cloud.data[rgb_offset]), 3 * sizeof (uint8_t));
-#       }
-#     }
-#   }
-# }
-# 
-# #endif  //#ifndef PCL_CONVERSIONS_H_
-# ###
-# 
-# # copy_point.h
+# } //namespace detail
+###
+
+# conversions.h
 # namespace pcl
-# {
-# 
-#   /** \brief Copy the fields of a source point into a target point.
-#     *
-#     * If the source and the target point types are the same, then a complete
-#     * copy is made. Otherwise only those fields that the two point types share
-#     * in common are copied.
-#     *
-#     * \param[in]  point_in the source point
-#     * \param[out] point_out the target point
-#     *
-#     * \ingroup common */
-#   template <typename PointInT, typename PointOutT> void
-#   copyPoint (const PointInT& point_in, PointOutT& point_out);
-# 
-# }
-# 
-# #include <pcl/common/impl/copy_point.hpp>
-# #endif // PCL_COMMON_COPY_POINT_H_
-# ###
-# 
-# 
-# # distances.h
+# cdef extern from "pcl/common/conversions.h" namespace "pcl":
+# template<typename PointT> void createMapping (const std::vector<pcl::PCLPointField>& msg_fields, MsgFieldMap& field_map)
+###
+
+# conversions.h
 # namespace pcl
-# {
-#   /** \brief Get the shortest 3D segment between two 3D lines
-#     * \param line_a the coefficients of the first line (point, direction)
-#     * \param line_b the coefficients of the second line (point, direction)
-#     * \param pt1_seg the first point on the line segment
-#     * \param pt2_seg the second point on the line segment
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS void
-#   lineToLineSegment (const Eigen::VectorXf &line_a, const Eigen::VectorXf &line_b, 
-#                      Eigen::Vector4f &pt1_seg, Eigen::Vector4f &pt2_seg);
-# 
-#   /** \brief Get the square distance from a point to a line (represented by a point and a direction)
-#     * \param pt a point
-#     * \param line_pt a point on the line (make sure that line_pt[3] = 0 as there are no internal checks!)
-#     * \param line_dir the line direction
-#     * \ingroup common
-#     */
-#   double inline
-#   sqrPointToLineDistance (const Eigen::Vector4f &pt, const Eigen::Vector4f &line_pt, const Eigen::Vector4f &line_dir)
-#   {
-#     // Calculate the distance from the point to the line
-#     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p1-p0)) / norm(p2-p1)
-#     return (line_dir.cross3 (line_pt - pt)).squaredNorm () / line_dir.squaredNorm ();
-#   }
-# 
-#   /** \brief Get the square distance from a point to a line (represented by a point and a direction)
-#     * \note This one is useful if one has to compute many distances to a fixed line, so the vector length can be pre-computed
-#     * \param pt a point
-#     * \param line_pt a point on the line (make sure that line_pt[3] = 0 as there are no internal checks!)
-#     * \param line_dir the line direction
-#     * \param sqr_length the squared norm of the line direction
-#     * \ingroup common
-#     */
-#   double inline
-#   sqrPointToLineDistance (const Eigen::Vector4f &pt, const Eigen::Vector4f &line_pt, const Eigen::Vector4f &line_dir, const double sqr_length)
-#   {
-#     // Calculate the distance from the point to the line
-#     // D = ||(P2-P1) x (P1-P0)|| / ||P2-P1|| = norm (cross (p2-p1, p1-p0)) / norm(p2-p1)
-#     return (line_dir.cross3 (line_pt - pt)).squaredNorm () / sqr_length;
-#   }
-# 
-#   /** \brief Obtain the maximum segment in a given set of points, and return the minimum and maximum points.
-#     * \param[in] cloud the point cloud dataset
-#     * \param[out] pmin the coordinates of the "minimum" point in \a cloud (one end of the segment)
-#     * \param[out] pmax the coordinates of the "maximum" point in \a cloud (the other end of the segment)
-#     * \return the length of segment length
-#     * \ingroup common
-#     */
-#   template <typename PointT> double inline
-#   getMaxSegment (const pcl::PointCloud<PointT> &cloud, 
-#                  PointT &pmin, PointT &pmax)
-#   {
-#     double max_dist = std::numeric_limits<double>::min ();
-#     int i_min = -1, i_max = -1;
-# 
-#     for (size_t i = 0; i < cloud.points.size (); ++i)
-#     {
-#       for (size_t j = i; j < cloud.points.size (); ++j)
-#       {
-#         // Compute the distance 
-#         double dist = (cloud.points[i].getVector4fMap () - 
-#                        cloud.points[j].getVector4fMap ()).squaredNorm ();
-#         if (dist <= max_dist)
-#           continue;
-# 
-#         max_dist = dist;
-#         i_min = i;
-#         i_max = j;
-#       }
-#     }
-# 
-#     if (i_min == -1 || i_max == -1)
-#       return (max_dist = std::numeric_limits<double>::min ());
-# 
-#     pmin = cloud.points[i_min];
-#     pmax = cloud.points[i_max];
-#     return (std::sqrt (max_dist));
-#   }
-#  
-#   /** \brief Obtain the maximum segment in a given set of points, and return the minimum and maximum points.
-#     * \param[in] cloud the point cloud dataset
-#     * \param[in] indices a set of point indices to use from \a cloud
-#     * \param[out] pmin the coordinates of the "minimum" point in \a cloud (one end of the segment)
-#     * \param[out] pmax the coordinates of the "maximum" point in \a cloud (the other end of the segment)
-#     * \return the length of segment length
-#     * \ingroup common
-#     */
-#   template <typename PointT> double inline
-#   getMaxSegment (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices,
-#                  PointT &pmin, PointT &pmax)
-#   {
-#     double max_dist = std::numeric_limits<double>::min ();
-#     int i_min = -1, i_max = -1;
-# 
-#     for (size_t i = 0; i < indices.size (); ++i)
-#     {
-#       for (size_t j = i; j < indices.size (); ++j)
-#       {
-#         // Compute the distance 
-#         double dist = (cloud.points[indices[i]].getVector4fMap () - 
-#                        cloud.points[indices[j]].getVector4fMap ()).squaredNorm ();
-#         if (dist <= max_dist)
-#           continue;
-# 
-#         max_dist = dist;
-#         i_min = i;
-#         i_max = j;
-#       }
-#     }
-# 
-#     if (i_min == -1 || i_max == -1)
-#       return (max_dist = std::numeric_limits<double>::min ());
-# 
-#     pmin = cloud.points[indices[i_min]];
-#     pmax = cloud.points[indices[i_max]];
-#     return (std::sqrt (max_dist));
-#   }
-# 
-#   /** \brief Calculate the squared euclidean distance between the two given points.
-#     * \param[in] p1 the first point
-#     * \param[in] p2 the second point
-#     */
-#   template<typename PointType1, typename PointType2> inline float
-#   squaredEuclideanDistance (const PointType1& p1, const PointType2& p2)
-#   {
-#     float diff_x = p2.x - p1.x, diff_y = p2.y - p1.y, diff_z = p2.z - p1.z;
-#     return (diff_x*diff_x + diff_y*diff_y + diff_z*diff_z);
-#   }
-# 
-#   /** \brief Calculate the squared euclidean distance between the two given points.
-#     * \param[in] p1 the first point
-#     * \param[in] p2 the second point
-#     */
-#   template<> inline float
-#   squaredEuclideanDistance (const PointXY& p1, const PointXY& p2)
-#   {
-#     float diff_x = p2.x - p1.x, diff_y = p2.y - p1.y;
-#     return (diff_x*diff_x + diff_y*diff_y);
-#   }
-# 
-#    /** \brief Calculate the euclidean distance between the two given points.
-#     * \param[in] p1 the first point
-#     * \param[in] p2 the second point
-#     */
-#   template<typename PointType1, typename PointType2> inline float
-#   euclideanDistance (const PointType1& p1, const PointType2& p2)
-#   {
-#     return (sqrtf (squaredEuclideanDistance (p1, p2)));
-#   }
-# }
-# /*@*/
-# #endif  //#ifndef PCL_DISTANCES_H_
-# ###
-# 
-# 
-# # eigen.h
+# cdef extern from "pcl/common/conversions.h" namespace "pcl":
+# /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object using a field_map.
+#   * \param[in] msg the PCLPointCloud2 binary blob
+#   * \param[out] cloud the resultant pcl::PointCloud<T>
+#   * \param[in] field_map a MsgFieldMap object
+#   * \note Use fromPCLPointCloud2 (PCLPointCloud2, PointCloud<T>) directly or create you
+#   * own MsgFieldMap using:
+#   * \code
+#   * MsgFieldMap field_map;
+#   * createMapping<PointT> (msg.fields, field_map);
+#   * \endcode
+#   */
+# template <typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud, const MsgFieldMap& field_map)
+###
+
+# conversions.h
+# namespace pcl
+# cdef extern from "pcl/common/conversions.h" namespace "pcl":
+# /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object.
+#   * \param[in] msg the PCLPointCloud2 binary blob
+#   * \param[out] cloud the resultant pcl::PointCloud<T>
+#   */
+# template<typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud)
+###
+
+# conversions.h
+# namespace pcl
+# cdef extern from "pcl/common/conversions.h" namespace "pcl":
+# /** \brief Convert a pcl::PointCloud<T> object to a PCLPointCloud2 binary data blob.
+#   * \param[in] cloud the input pcl::PointCloud<T>
+#   * \param[out] msg the resultant PCLPointCloud2 binary blob
+#   */
+# template<typename PointT> void toPCLPointCloud2 (const pcl::PointCloud<PointT>& cloud, pcl::PCLPointCloud2& msg)
+###
+
+# conversions.h
+# namespace pcl
+# cdef extern from "pcl/common/conversions.h" namespace "pcl":
+#  /** \brief Copy the RGB fields of a PointCloud into pcl::PCLImage format
+#    * \param[in] cloud the point cloud message
+#    * \param[out] msg the resultant pcl::PCLImage
+#    * CloudT cloud type, CloudT should be akin to pcl::PointCloud<pcl::PointXYZRGBA>
+#    * \note will throw std::runtime_error if there is a problem
+#    */
+# template<typename CloudT> void toPCLPointCloud2 (const CloudT& cloud, pcl::PCLImage& msg)
+###
+
+# conversions.h
+# namespace pcl
+# cdef extern from "pcl/common/conversions.h" namespace "pcl":
+# /** \brief Copy the RGB fields of a PCLPointCloud2 msg into pcl::PCLImage format
+#   * \param cloud the point cloud message
+#   * \param msg the resultant pcl::PCLImage
+#   * will throw std::runtime_error if there is a problem
+#   */
+# inline void toPCLPointCloud2 (const pcl::PCLPointCloud2& cloud, pcl::PCLImage& msg)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Get the shortest 3D segment between two 3D lines
+#   * \param line_a the coefficients of the first line (point, direction)
+#   * \param line_b the coefficients of the second line (point, direction)
+#   * \param pt1_seg the first point on the line segment
+#   * \param pt2_seg the second point on the line segment
+#   * \ingroup common
+#   */
+# PCL_EXPORTS void lineToLineSegment (const Eigen::VectorXf &line_a, const Eigen::VectorXf &line_b, Eigen::Vector4f &pt1_seg, Eigen::Vector4f &pt2_seg);
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Get the square distance from a point to a line (represented by a point and a direction)
+#   * \param pt a point
+#   * \param line_pt a point on the line (make sure that line_pt[3] = 0 as there are no internal checks!)
+#   * \param line_dir the line direction
+#   * \ingroup common
+#   */
+# double inline sqrPointToLineDistance (const Eigen::Vector4f &pt, const Eigen::Vector4f &line_pt, const Eigen::Vector4f &line_dir)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Get the square distance from a point to a line (represented by a point and a direction)
+#   * \note This one is useful if one has to compute many distances to a fixed line, so the vector length can be pre-computed
+#   * \param pt a point
+#   * \param line_pt a point on the line (make sure that line_pt[3] = 0 as there are no internal checks!)
+#   * \param line_dir the line direction
+#   * \param sqr_length the squared norm of the line direction
+#   * \ingroup common
+#   */
+# double inline sqrPointToLineDistance (const Eigen::Vector4f &pt, const Eigen::Vector4f &line_pt, const Eigen::Vector4f &line_dir, const double sqr_length)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Obtain the maximum segment in a given set of points, and return the minimum and maximum points.
+#   * \param[in] cloud the point cloud dataset
+#   * \param[out] pmin the coordinates of the "minimum" point in \a cloud (one end of the segment)
+#   * \param[out] pmax the coordinates of the "maximum" point in \a cloud (the other end of the segment)
+#   * \return the length of segment length
+#   * \ingroup common
+#   */
+# template <typename PointT> double inline getMaxSegment (const pcl::PointCloud<PointT> &cloud, PointT &pmin, PointT &pmax)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Obtain the maximum segment in a given set of points, and return the minimum and maximum points.
+#   * \param[in] cloud the point cloud dataset
+#   * \param[in] indices a set of point indices to use from \a cloud
+#   * \param[out] pmin the coordinates of the "minimum" point in \a cloud (one end of the segment)
+#   * \param[out] pmax the coordinates of the "maximum" point in \a cloud (the other end of the segment)
+#   * \return the length of segment length
+#   * \ingroup common
+#   */
+# template <typename PointT> double inline getMaxSegment (const pcl::PointCloud<PointT> &cloud, const std::vector<int> &indices, PointT &pmin, PointT &pmax)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Calculate the squared euclidean distance between the two given points.
+#   * \param[in] p1 the first point
+#   * \param[in] p2 the second point
+#   */
+# template<typename PointType1, typename PointType2> inline float
+# squaredEuclideanDistance (const PointType1& p1, const PointType2& p2)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Calculate the squared euclidean distance between the two given points.
+#   * \param[in] p1 the first point
+#   * \param[in] p2 the second point
+#   */
+# template<> inline float
+# squaredEuclideanDistance (const PointXY& p1, const PointXY& p2)
+###
+
+# distances.h
+# namespace pcl
+# cdef extern from "pcl/common/distances.h" namespace "pcl":
+# /** \brief Calculate the euclidean distance between the two given points.
+#   * \param[in] p1 the first point
+#   * \param[in] p2 the second point
+#   */
+# template<typename PointType1, typename PointType2> inline float
+# euclideanDistance (const PointType1& p1, const PointType2& p2)
+###
+
+# eigen.h
 # #ifndef NOMINMAX
 # #define NOMINMAX
 # #endif
@@ -2071,312 +1827,369 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # #include <Eigen/Dense>
 # #include <Eigen/Eigenvalues>
 # 
+
+# eigen.h
 # namespace pcl
-# {
-#   /** \brief Compute the roots of a quadratic polynom x^2 + b*x + c = 0
-#     * \param[in] b linear parameter
-#     * \param[in] c constant parameter
-#     * \param[out] roots solutions of x^2 + b*x + c = 0
-#     */
-#   template <typename Scalar, typename Roots> void
-#   computeRoots2 (const Scalar &b, const Scalar &c, Roots &roots);
-# 
-#   /** \brief computes the roots of the characteristic polynomial of the input matrix m, which are the eigenvalues
-#     * \param[in] m input matrix
-#     * \param[out] roots roots of the characteristic polynomial of the input matrix m, which are the eigenvalues
-#     */
-#   template <typename Matrix, typename Roots> void
-#   computeRoots (const Matrix &m, Roots &roots);
-# 
-#   /** \brief determine the smallest eigenvalue and its corresponding eigenvector
-#     * \param[in] mat input matrix that needs to be symmetric and positive semi definite
-#     * \param[out] eigenvalue the smallest eigenvalue of the input matrix
-#     * \param[out] eigenvector the corresponding eigenvector to the smallest eigenvalue of the input matrix
-#     * \ingroup common
-#     */
-#   template <typename Matrix, typename Vector> void
-#   eigen22 (const Matrix &mat, typename Matrix::Scalar &eigenvalue, Vector &eigenvector);
-# 
-#   /** \brief determine the smallest eigenvalue and its corresponding eigenvector
-#     * \param[in] mat input matrix that needs to be symmetric and positive semi definite
-#     * \param[out] eigenvectors the corresponding eigenvector to the smallest eigenvalue of the input matrix
-#     * \param[out] eigenvalues the smallest eigenvalue of the input matrix
-#     * \ingroup common
-#     */
-#   template <typename Matrix, typename Vector> void
-#   eigen22 (const Matrix &mat, Matrix &eigenvectors, Vector &eigenvalues);
-# 
-#   /** \brief determines the corresponding eigenvector to the given eigenvalue of the symmetric positive semi definite input matrix
-#     * \param[in] mat symmetric positive semi definite input matrix
-#     * \param[in] eigenvalue the eigenvalue which corresponding eigenvector is to be computed
-#     * \param[out] eigenvector the corresponding eigenvector for the input eigenvalue
-#     * \ingroup common
-#     */
-#   template <typename Matrix, typename Vector> void
-#   computeCorrespondingEigenVector (const Matrix &mat, const typename Matrix::Scalar &eigenvalue, Vector &eigenvector);
-#   
-#   /** \brief determines the eigenvector and eigenvalue of the smallest eigenvalue of the symmetric positive semi definite input matrix
-#     * \param[in] mat symmetric positive semi definite input matrix
-#     * \param[out] eigenvalue smallest eigenvalue of the input matrix
-#     * \param[out] eigenvector the corresponding eigenvector for the input eigenvalue
-#     * \note if the smallest eigenvalue is not unique, this function may return any eigenvector that is consistent to the eigenvalue.
-#     * \ingroup common
-#     */
-#   template <typename Matrix, typename Vector> void
-#   eigen33 (const Matrix &mat, typename Matrix::Scalar &eigenvalue, Vector &eigenvector);
-# 
-#   /** \brief determines the eigenvalues of the symmetric positive semi definite input matrix
-#     * \param[in] mat symmetric positive semi definite input matrix
-#     * \param[out] evals resulting eigenvalues in ascending order
-#     * \ingroup common
-#     */
-#   template <typename Matrix, typename Vector> void
-#   eigen33 (const Matrix &mat, Vector &evals);
-# 
-#   /** \brief determines the eigenvalues and corresponding eigenvectors of the symmetric positive semi definite input matrix
-#     * \param[in] mat symmetric positive semi definite input matrix
-#     * \param[out] evecs resulting eigenvalues in ascending order
-#     * \param[out] evals corresponding eigenvectors in correct order according to eigenvalues
-#     * \ingroup common
-#     */
-#   template <typename Matrix, typename Vector> void
-#   eigen33 (const Matrix &mat, Matrix &evecs, Vector &evals);
-# 
-#   /** \brief Calculate the inverse of a 2x2 matrix
-#     * \param[in] matrix matrix to be inverted
-#     * \param[out] inverse the resultant inverted matrix
-#     * \note only the upper triangular part is taken into account => non symmetric matrices will give wrong results
-#     * \return determinant of the original matrix => if 0 no inverse exists => result is invalid
-#     * \ingroup common
-#     */
-#   template <typename Matrix> typename Matrix::Scalar
-#   invert2x2 (const Matrix &matrix, Matrix &inverse);
-# 
-#   /** \brief Calculate the inverse of a 3x3 symmetric matrix.
-#     * \param[in] matrix matrix to be inverted
-#     * \param[out] inverse the resultant inverted matrix
-#     * \note only the upper triangular part is taken into account => non symmetric matrices will give wrong results
-#     * \return determinant of the original matrix => if 0 no inverse exists => result is invalid
-#     * \ingroup common
-#     */
-#   template <typename Matrix> typename Matrix::Scalar
-#   invert3x3SymMatrix (const Matrix &matrix, Matrix &inverse);
-# 
-#   /** \brief Calculate the inverse of a general 3x3 matrix.
-#     * \param[in] matrix matrix to be inverted
-#     * \param[out] inverse the resultant inverted matrix
-#     * \return determinant of the original matrix => if 0 no inverse exists => result is invalid
-#     * \ingroup common
-#     */
-#   template <typename Matrix> typename Matrix::Scalar
-#   invert3x3Matrix (const Matrix &matrix, Matrix &inverse);
-# 
-#   /** \brief Calculate the determinant of a 3x3 matrix.
-#     * \param[in] matrix matrix
-#     * \return determinant of the matrix
-#     * \ingroup common
-#     */
-#   template <typename Matrix> typename Matrix::Scalar
-#   determinant3x3Matrix (const Matrix &matrix);
-#   
-#   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
-#     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] z_axis the z-axis
-#     * \param[in] y_direction the y direction
-#     * \param[out] transformation the resultant 3D rotation
-#     * \ingroup common
-#     */
-#   inline void
-#   getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, 
-#                              const Eigen::Vector3f& y_direction,
-#                              Eigen::Affine3f& transformation);
-# 
-#   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
-#     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] z_axis the z-axis
-#     * \param[in] y_direction the y direction
-#     * \return the resultant 3D rotation
-#     * \ingroup common
-#     */
-#   inline Eigen::Affine3f
-#   getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, 
-#                              const Eigen::Vector3f& y_direction);
-# 
-#   /** \brief Get the unique 3D rotation that will rotate \a x_axis into (1,0,0) and \a y_direction into a vector
-#     * with z=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] x_axis the x-axis
-#     * \param[in] y_direction the y direction
-#     * \param[out] transformation the resultant 3D rotation
-#     * \ingroup common
-#     */
-#   inline void
-#   getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, 
-#                              const Eigen::Vector3f& y_direction,
-#                              Eigen::Affine3f& transformation);
-# 
-#   /** \brief Get the unique 3D rotation that will rotate \a x_axis into (1,0,0) and \a y_direction into a vector
-#     * with z=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] x_axis the x-axis
-#     * \param[in] y_direction the y direction
-#     * \return the resulting 3D rotation
-#     * \ingroup common
-#     */
-#   inline Eigen::Affine3f
-#   getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, 
-#                              const Eigen::Vector3f& y_direction);
-# 
-#   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
-#     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] y_direction the y direction
-#     * \param[in] z_axis the z-axis
-#     * \param[out] transformation the resultant 3D rotation
-#     * \ingroup common
-#     */
-#   inline void
-#   getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, 
-#                                        const Eigen::Vector3f& z_axis,
-#                                        Eigen::Affine3f& transformation);
-# 
-#   /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
-#     * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] y_direction the y direction
-#     * \param[in] z_axis the z-axis
-#     * \return transformation the resultant 3D rotation
-#     * \ingroup common
-#     */
-#   inline Eigen::Affine3f
-#   getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, 
-#                                        const Eigen::Vector3f& z_axis);
-# 
-#   /** \brief Get the transformation that will translate \a orign to (0,0,0) and rotate \a z_axis into (0,0,1)
-#     * and \a y_direction into a vector with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
-#     * \param[in] y_direction the y direction
-#     * \param[in] z_axis the z-axis
-#     * \param[in] origin the origin
-#     * \param[in] transformation the resultant transformation matrix
-#     * \ingroup common
-#     */
-#   inline void
-#   getTransformationFromTwoUnitVectorsAndOrigin (const Eigen::Vector3f& y_direction, 
-#                                                 const Eigen::Vector3f& z_axis,
-#                                                 const Eigen::Vector3f& origin, 
-#                                                 Eigen::Affine3f& transformation);
-# 
-#   /** \brief Extract the Euler angles (XYZ-convention) from the given transformation
-#     * \param[in] t the input transformation matrix
-#     * \param[in] roll the resulting roll angle
-#     * \param[in] pitch the resulting pitch angle
-#     * \param[in] yaw the resulting yaw angle
-#     * \ingroup common
-#     */
-#   template <typename Scalar> void
-#   getEulerAngles (const Eigen::Transform<Scalar, 3, Eigen::Affine> &t, Scalar &roll, Scalar &pitch, Scalar &yaw);
-# 
-#   inline void
-#   getEulerAngles (const Eigen::Affine3f &t, float &roll, float &pitch, float &yaw)
-#   {
-#     getEulerAngles<float> (t, roll, pitch, yaw);
-#   }
-# 
-#   inline void
-#   getEulerAngles (const Eigen::Affine3d &t, double &roll, double &pitch, double &yaw)
-#   {
-#     getEulerAngles<double> (t, roll, pitch, yaw);
-#   }
-# 
-#   /** Extract x,y,z and the Euler angles (XYZ-convention) from the given transformation
-#     * \param[in] t the input transformation matrix
-#     * \param[out] x the resulting x translation
-#     * \param[out] y the resulting y translation
-#     * \param[out] z the resulting z translation
-#     * \param[out] roll the resulting roll angle
-#     * \param[out] pitch the resulting pitch angle
-#     * \param[out] yaw the resulting yaw angle
-#     * \ingroup common
-#     */
-#   template <typename Scalar> void
-#   getTranslationAndEulerAngles (const Eigen::Transform<Scalar, 3, Eigen::Affine> &t,
-#                                 Scalar &x, Scalar &y, Scalar &z,
-#                                 Scalar &roll, Scalar &pitch, Scalar &yaw);
-# 
-#   inline void
-#   getTranslationAndEulerAngles (const Eigen::Affine3f &t,
-#                                 float &x, float &y, float &z,
-#                                 float &roll, float &pitch, float &yaw)
-#   {
-#     getTranslationAndEulerAngles<float> (t, x, y, z, roll, pitch, yaw);
-#   }
-# 
-#   inline void
-#   getTranslationAndEulerAngles (const Eigen::Affine3d &t,
-#                                 double &x, double &y, double &z,
-#                                 double &roll, double &pitch, double &yaw)
-#   {
-#     getTranslationAndEulerAngles<double> (t, x, y, z, roll, pitch, yaw);
-#   }
-# 
-#   /** \brief Create a transformation from the given translation and Euler angles (XYZ-convention)
-#     * \param[in] x the input x translation
-#     * \param[in] y the input y translation
-#     * \param[in] z the input z translation
-#     * \param[in] roll the input roll angle
-#     * \param[in] pitch the input pitch angle
-#     * \param[in] yaw the input yaw angle
-#     * \param[out] t the resulting transformation matrix
-#     * \ingroup common
-#     */
-#   template <typename Scalar> void
-#   getTransformation (Scalar x, Scalar y, Scalar z, Scalar roll, Scalar pitch, Scalar yaw, 
-#                      Eigen::Transform<Scalar, 3, Eigen::Affine> &t);
-# 
-#   inline void
-#   getTransformation (float x, float y, float z, float roll, float pitch, float yaw, 
-#                      Eigen::Affine3f &t)
-#   {
-#     return (getTransformation<float> (x, y, z, roll, pitch, yaw, t));
-#   }
-# 
-#   inline void
-#   getTransformation (double x, double y, double z, double roll, double pitch, double yaw, 
-#                      Eigen::Affine3d &t)
-#   {
-#     return (getTransformation<double> (x, y, z, roll, pitch, yaw, t));
-#   }
-# 
-#   /** \brief Create a transformation from the given translation and Euler angles (XYZ-convention)
-#     * \param[in] x the input x translation
-#     * \param[in] y the input y translation
-#     * \param[in] z the input z translation
-#     * \param[in] roll the input roll angle
-#     * \param[in] pitch the input pitch angle
-#     * \param[in] yaw the input yaw angle
-#     * \return the resulting transformation matrix
-#     * \ingroup common
-#     */
-#   inline Eigen::Affine3f
-#   getTransformation (float x, float y, float z, float roll, float pitch, float yaw)
-#   {
-#     Eigen::Affine3f t;
-#     getTransformation<float> (x, y, z, roll, pitch, yaw, t);
-#     return (t);
-#   }
-# 
-#   /** \brief Write a matrix to an output stream
-#     * \param[in] matrix the matrix to output
-#     * \param[out] file the output stream
-#     * \ingroup common
-#     */
-#   template <typename Derived> void
-#   saveBinary (const Eigen::MatrixBase<Derived>& matrix, std::ostream& file);
-# 
-#   /** \brief Read a matrix from an input stream
-#     * \param[out] matrix the resulting matrix, read from the input stream
-#     * \param[in,out] file the input stream
-#     * \ingroup common
-#     */
-#   template <typename Derived> void
-#   loadBinary (Eigen::MatrixBase<Derived> const& matrix, std::istream& file);
-# 
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Compute the roots of a quadratic polynom x^2 + b*x + c = 0
+#   * \param[in] b linear parameter
+#   * \param[in] c constant parameter
+#   * \param[out] roots solutions of x^2 + b*x + c = 0
+#   */
+# template <typename Scalar, typename Roots> void computeRoots2 (const Scalar &b, const Scalar &c, Roots &roots);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief computes the roots of the characteristic polynomial of the input matrix m, which are the eigenvalues
+#   * \param[in] m input matrix
+#   * \param[out] roots roots of the characteristic polynomial of the input matrix m, which are the eigenvalues
+#   */
+# template <typename Matrix, typename Roots> void computeRoots (const Matrix &m, Roots &roots);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief determine the smallest eigenvalue and its corresponding eigenvector
+#   * \param[in] mat input matrix that needs to be symmetric and positive semi definite
+#   * \param[out] eigenvalue the smallest eigenvalue of the input matrix
+#   * \param[out] eigenvector the corresponding eigenvector to the smallest eigenvalue of the input matrix
+#   * \ingroup common
+#   */
+# template <typename Matrix, typename Vector> void
+# eigen22 (const Matrix &mat, typename Matrix::Scalar &eigenvalue, Vector &eigenvector);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief determine the smallest eigenvalue and its corresponding eigenvector
+#   * \param[in] mat input matrix that needs to be symmetric and positive semi definite
+#   * \param[out] eigenvectors the corresponding eigenvector to the smallest eigenvalue of the input matrix
+#   * \param[out] eigenvalues the smallest eigenvalue of the input matrix
+#   * \ingroup common
+#   */
+# template <typename Matrix, typename Vector> void eigen22 (const Matrix &mat, Matrix &eigenvectors, Vector &eigenvalues);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief determines the corresponding eigenvector to the given eigenvalue of the symmetric positive semi definite input matrix
+#   * \param[in] mat symmetric positive semi definite input matrix
+#   * \param[in] eigenvalue the eigenvalue which corresponding eigenvector is to be computed
+#   * \param[out] eigenvector the corresponding eigenvector for the input eigenvalue
+#   * \ingroup common
+#   */
+# template <typename Matrix, typename Vector> void computeCorrespondingEigenVector (const Matrix &mat, const typename Matrix::Scalar &eigenvalue, Vector &eigenvector);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief determines the eigenvector and eigenvalue of the smallest eigenvalue of the symmetric positive semi definite input matrix
+#   * \param[in] mat symmetric positive semi definite input matrix
+#   * \param[out] eigenvalue smallest eigenvalue of the input matrix
+#   * \param[out] eigenvector the corresponding eigenvector for the input eigenvalue
+#   * \note if the smallest eigenvalue is not unique, this function may return any eigenvector that is consistent to the eigenvalue.
+#   * \ingroup common
+#   */
+# template <typename Matrix, typename Vector> void eigen33 (const Matrix &mat, typename Matrix::Scalar &eigenvalue, Vector &eigenvector);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief determines the eigenvalues of the symmetric positive semi definite input matrix
+#   * \param[in] mat symmetric positive semi definite input matrix
+#   * \param[out] evals resulting eigenvalues in ascending order
+#   * \ingroup common
+#   */
+# template <typename Matrix, typename Vector> void eigen33 (const Matrix &mat, Vector &evals);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief determines the eigenvalues and corresponding eigenvectors of the symmetric positive semi definite input matrix
+#   * \param[in] mat symmetric positive semi definite input matrix
+#   * \param[out] evecs resulting eigenvalues in ascending order
+#   * \param[out] evals corresponding eigenvectors in correct order according to eigenvalues
+#   * \ingroup common
+#   */
+# template <typename Matrix, typename Vector> void eigen33 (const Matrix &mat, Matrix &evecs, Vector &evals);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Calculate the inverse of a 2x2 matrix
+#   * \param[in] matrix matrix to be inverted
+#   * \param[out] inverse the resultant inverted matrix
+#   * \note only the upper triangular part is taken into account => non symmetric matrices will give wrong results
+#   * \return determinant of the original matrix => if 0 no inverse exists => result is invalid
+#   * \ingroup common
+#   */
+# template <typename Matrix> typename Matrix::Scalar invert2x2 (const Matrix &matrix, Matrix &inverse);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Calculate the inverse of a 3x3 symmetric matrix.
+#   * \param[in] matrix matrix to be inverted
+#   * \param[out] inverse the resultant inverted matrix
+#   * \note only the upper triangular part is taken into account => non symmetric matrices will give wrong results
+#   * \return determinant of the original matrix => if 0 no inverse exists => result is invalid
+#   * \ingroup common
+#   */
+# template <typename Matrix> typename Matrix::Scalar invert3x3SymMatrix (const Matrix &matrix, Matrix &inverse);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Calculate the inverse of a general 3x3 matrix.
+#   * \param[in] matrix matrix to be inverted
+#   * \param[out] inverse the resultant inverted matrix
+#   * \return determinant of the original matrix => if 0 no inverse exists => result is invalid
+#   * \ingroup common
+#   */
+# template <typename Matrix> typename Matrix::Scalar
+# invert3x3Matrix (const Matrix &matrix, Matrix &inverse);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Calculate the determinant of a 3x3 matrix.
+#   * \param[in] matrix matrix
+#   * \return determinant of the matrix
+#   * \ingroup common
+#   */
+# template <typename Matrix> typename Matrix::Scalar determinant3x3Matrix (const Matrix &matrix);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
+#   * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] z_axis the z-axis
+#   * \param[in] y_direction the y direction
+#   * \param[out] transformation the resultant 3D rotation
+#   * \ingroup common
+#   */
+# inline void getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, const Eigen::Vector3f& y_direction, Eigen::Affine3f& transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
+#   * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] z_axis the z-axis
+#   * \param[in] y_direction the y direction
+#   * \return the resultant 3D rotation
+#   * \ingroup common
+#   */
+# inline Eigen::Affine3f getTransFromUnitVectorsZY (const Eigen::Vector3f& z_axis, const Eigen::Vector3f& y_direction);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the unique 3D rotation that will rotate \a x_axis into (1,0,0) and \a y_direction into a vector
+#   * with z=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] x_axis the x-axis
+#   * \param[in] y_direction the y direction
+#   * \param[out] transformation the resultant 3D rotation
+#   * \ingroup common
+#   */
+# inline void getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, const Eigen::Vector3f& y_direction, Eigen::Affine3f& transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the unique 3D rotation that will rotate \a x_axis into (1,0,0) and \a y_direction into a vector
+#   * with z=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] x_axis the x-axis
+#   * \param[in] y_direction the y direction
+#   * \return the resulting 3D rotation
+#   * \ingroup common
+#   */
+# inline Eigen::Affine3f getTransFromUnitVectorsXY (const Eigen::Vector3f& x_axis, const Eigen::Vector3f& y_direction);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
+#   * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] y_direction the y direction
+#   * \param[in] z_axis the z-axis
+#   * \param[out] transformation the resultant 3D rotation
+#   * \ingroup common
+#   */
+# inline void getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, const Eigen::Vector3f& z_axis, Eigen::Affine3f& transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the unique 3D rotation that will rotate \a z_axis into (0,0,1) and \a y_direction into a vector
+#   * with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] y_direction the y direction
+#   * \param[in] z_axis the z-axis
+#   * \return transformation the resultant 3D rotation
+#   * \ingroup common
+#   */
+# inline Eigen::Affine3f getTransformationFromTwoUnitVectors (const Eigen::Vector3f& y_direction, const Eigen::Vector3f& z_axis);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Get the transformation that will translate \a orign to (0,0,0) and rotate \a z_axis into (0,0,1)
+#   * and \a y_direction into a vector with x=0 (or into (0,1,0) should \a y_direction be orthogonal to \a z_axis)
+#   * \param[in] y_direction the y direction
+#   * \param[in] z_axis the z-axis
+#   * \param[in] origin the origin
+#   * \param[in] transformation the resultant transformation matrix
+#   * \ingroup common
+#   */
+# inline void
+# getTransformationFromTwoUnitVectorsAndOrigin (const Eigen::Vector3f& y_direction, const Eigen::Vector3f& z_axis, const Eigen::Vector3f& origin, Eigen::Affine3f& transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Extract the Euler angles (XYZ-convention) from the given transformation
+#   * \param[in] t the input transformation matrix
+#   * \param[in] roll the resulting roll angle
+#   * \param[in] pitch the resulting pitch angle
+#   * \param[in] yaw the resulting yaw angle
+#   * \ingroup common
+#   */
+# template <typename Scalar> void
+# getEulerAngles (const Eigen::Transform<Scalar, 3, Eigen::Affine> &t, Scalar &roll, Scalar &pitch, Scalar &yaw);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void getEulerAngles (const Eigen::Affine3f &t, float &roll, float &pitch, float &yaw)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# getEulerAngles (const Eigen::Affine3d &t, double &roll, double &pitch, double &yaw)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** Extract x,y,z and the Euler angles (XYZ-convention) from the given transformation
+#   * \param[in] t the input transformation matrix
+#   * \param[out] x the resulting x translation
+#   * \param[out] y the resulting y translation
+#   * \param[out] z the resulting z translation
+#   * \param[out] roll the resulting roll angle
+#   * \param[out] pitch the resulting pitch angle
+#   * \param[out] yaw the resulting yaw angle
+#   * \ingroup common
+#   */
+# template <typename Scalar> void
+# getTranslationAndEulerAngles (const Eigen::Transform<Scalar, 3, Eigen::Affine> &t, Scalar &x, Scalar &y, Scalar &z, Scalar &roll, Scalar &pitch, Scalar &yaw);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# getTranslationAndEulerAngles (const Eigen::Affine3f &t, float &x, float &y, float &z, float &roll, float &pitch, float &yaw)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# getTranslationAndEulerAngles (const Eigen::Affine3d &t, double &x, double &y, double &z, double &roll, double &pitch, double &yaw)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Create a transformation from the given translation and Euler angles (XYZ-convention)
+#   * \param[in] x the input x translation
+#   * \param[in] y the input y translation
+#   * \param[in] z the input z translation
+#   * \param[in] roll the input roll angle
+#   * \param[in] pitch the input pitch angle
+#   * \param[in] yaw the input yaw angle
+#   * \param[out] t the resulting transformation matrix
+#   * \ingroup common
+#   */
+# template <typename Scalar> void getTransformation (Scalar x, Scalar y, Scalar z, Scalar roll, Scalar pitch, Scalar yaw,  Eigen::Transform<Scalar, 3, Eigen::Affine> &t);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void getTransformation (float x, float y, float z, float roll, float pitch, float yaw, Eigen::Affine3f &t)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void getTransformation (double x, double y, double z, double roll, double pitch, double yaw, Eigen::Affine3d &t)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Create a transformation from the given translation and Euler angles (XYZ-convention)
+#   * \param[in] x the input x translation
+#   * \param[in] y the input y translation
+#   * \param[in] z the input z translation
+#   * \param[in] roll the input roll angle
+#   * \param[in] pitch the input pitch angle
+#   * \param[in] yaw the input yaw angle
+#   * \return the resulting transformation matrix
+#   * \ingroup common
+#   */
+# inline Eigen::Affine3f getTransformation (float x, float y, float z, float roll, float pitch, float yaw)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Write a matrix to an output stream
+#   * \param[in] matrix the matrix to output
+#   * \param[out] file the output stream
+#   * \ingroup common
+#   */
+# template <typename Derived> void saveBinary (const Eigen::MatrixBase<Derived>& matrix, std::ostream& file);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Read a matrix from an input stream
+#   * \param[out] matrix the resulting matrix, read from the input stream
+#   * \param[in,out] file the input stream
+#   * \ingroup common
+#   */
+# template <typename Derived> void
+# loadBinary (Eigen::MatrixBase<Derived> const& matrix, std::istream& file);
+###
+
 # // PCL_EIGEN_SIZE_MIN_PREFER_DYNAMIC gives the min between compile-time sizes. 0 has absolute priority, followed by 1,
 # // followed by Dynamic, followed by other finite values. The reason for giving Dynamic the priority over
 # // finite values is that min(3, Dynamic) should be Dynamic, since that could be anything between 0 and 3.
@@ -2384,41 +2197,49 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #                            : (int (a) == 1 || int (b) == 1) ? 1 \
 #                            : (int (a) == Eigen::Dynamic || int (b) == Eigen::Dynamic) ? Eigen::Dynamic \
 #                            : (int (a) <= int (b)) ? int (a) : int (b))
-# 
-#   /** \brief Returns the transformation between two point sets. 
-#     * The algorithm is based on: 
-#     * "Least-squares estimation of transformation parameters between two point patterns",
-#     * Shinji Umeyama, PAMI 1991, DOI: 10.1109/34.88573
-#     *
-#     * It estimates parameters \f$ c, \mathbf{R}, \f$ and \f$ \mathbf{t} \f$ such that
-#     * \f{align*}
-#     *   \frac{1}{n} \sum_{i=1}^n \vert\vert y_i - (c\mathbf{R}x_i + \mathbf{t}) \vert\vert_2^2
-#     * \f}
-#     * is minimized.
-#     *
-#     * The algorithm is based on the analysis of the covariance matrix
-#     * \f$ \Sigma_{\mathbf{x}\mathbf{y}} \in \mathbb{R}^{d \times d} \f$
-#     * of the input point sets \f$ \mathbf{x} \f$ and \f$ \mathbf{y} \f$ where
-#     * \f$d\f$ is corresponding to the dimension (which is typically small).
-#     * The analysis is involving the SVD having a complexity of \f$O(d^3)\f$
-#     * though the actual computational effort lies in the covariance
-#     * matrix computation which has an asymptotic lower bound of \f$O(dm)\f$ when
-#     * the input point sets have dimension \f$d \times m\f$.
-#     *
-#     * \param[in] src Source points \f$ \mathbf{x} = \left( x_1, \hdots, x_n \right) \f$
-#     * \param[in] dst Destination points \f$ \mathbf{y} = \left( y_1, \hdots, y_n \right) \f$.
-#     * \param[in] with_scaling Sets \f$ c=1 \f$ when <code>false</code> is passed. (default: false)
-#     * \return The homogeneous transformation 
-#     * \f{align*}
-#     *   T = \begin{bmatrix} c\mathbf{R} & \mathbf{t} \\ \mathbf{0} & 1 \end{bmatrix}
-#     * \f}
-#     * minimizing the resudiual above. This transformation is always returned as an
-#     * Eigen::Matrix.
-#     */
-#   template <typename Derived, typename OtherDerived> 
-#   typename Eigen::internal::umeyama_transform_matrix_type<Derived, OtherDerived>::type
-#   umeyama (const Eigen::MatrixBase<Derived>& src, const Eigen::MatrixBase<OtherDerived>& dst, bool with_scaling = false);
-# 
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# /** \brief Returns the transformation between two point sets. 
+#   * The algorithm is based on: 
+#   * "Least-squares estimation of transformation parameters between two point patterns",
+#   * Shinji Umeyama, PAMI 1991, DOI: 10.1109/34.88573
+#   *
+#   * It estimates parameters \f$ c, \mathbf{R}, \f$ and \f$ \mathbf{t} \f$ such that
+#   * \f{align*}
+#   *   \frac{1}{n} \sum_{i=1}^n \vert\vert y_i - (c\mathbf{R}x_i + \mathbf{t}) \vert\vert_2^2
+#   * \f}
+#   * is minimized.
+#   *
+#   * The algorithm is based on the analysis of the covariance matrix
+#   * \f$ \Sigma_{\mathbf{x}\mathbf{y}} \in \mathbb{R}^{d \times d} \f$
+#   * of the input point sets \f$ \mathbf{x} \f$ and \f$ \mathbf{y} \f$ where
+#   * \f$d\f$ is corresponding to the dimension (which is typically small).
+#   * The analysis is involving the SVD having a complexity of \f$O(d^3)\f$
+#   * though the actual computational effort lies in the covariance
+#   * matrix computation which has an asymptotic lower bound of \f$O(dm)\f$ when
+#   * the input point sets have dimension \f$d \times m\f$.
+#   *
+#   * \param[in] src Source points \f$ \mathbf{x} = \left( x_1, \hdots, x_n \right) \f$
+#   * \param[in] dst Destination points \f$ \mathbf{y} = \left( y_1, \hdots, y_n \right) \f$.
+#   * \param[in] with_scaling Sets \f$ c=1 \f$ when <code>false</code> is passed. (default: false)
+#   * \return The homogeneous transformation 
+#   * \f{align*}
+#   *   T = \begin{bmatrix} c\mathbf{R} & \mathbf{t} \\ \mathbf{0} & 1 \end{bmatrix}
+#   * \f}
+#   * minimizing the resudiual above. This transformation is always returned as an
+#   * Eigen::Matrix.
+#   */
+# template <typename Derived, typename OtherDerived> 
+# typename Eigen::internal::umeyama_transform_matrix_type<Derived, OtherDerived>::type
+# umeyama (const Eigen::MatrixBase<Derived>& src, const Eigen::MatrixBase<OtherDerived>& dst, bool with_scaling = false);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Transform a point using an affine matrix
 #   * \param[in] point_in the vector to be transformed
 #   * \param[out] point_out the transformed vector
@@ -2426,203 +2247,190 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   *
 #   * \note Can be used with \c point_in = \c point_out
 #   */
-#   template<typename Scalar> inline void
-#   transformPoint (const Eigen::Matrix<Scalar, 3, 1> &point_in,
-#                         Eigen::Matrix<Scalar, 3, 1> &point_out,
-#                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation)
-#   {
-#     Eigen::Matrix<Scalar, 4, 1> point;
-#     point << point_in, 1.0;
-#     point_out = (transformation * point).template head<3> ();
-#   }
-# 
-#   inline void
-#   transformPoint (const Eigen::Vector3f &point_in,
-#                         Eigen::Vector3f &point_out,
-#                   const Eigen::Affine3f &transformation)
-#   {
-#     transformPoint<float> (point_in, point_out, transformation);
-#   }
-# 
-#   inline void
-#   transformPoint (const Eigen::Vector3d &point_in,
-#                         Eigen::Vector3d &point_out,
-#                   const Eigen::Affine3d &transformation)
-#   {
-#     transformPoint<double> (point_in, point_out, transformation);
-#   }
-# 
+# template<typename Scalar> inline void transformPoint (const Eigen::Matrix<Scalar, 3, 1> &point_in, Eigen::Matrix<Scalar, 3, 1> &point_out, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void transformPoint (const Eigen::Vector3f &point_in, Eigen::Vector3f &point_out, const Eigen::Affine3f &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# transformPoint (const Eigen::Vector3d &point_in, Eigen::Vector3d &point_out, const Eigen::Affine3d &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Transform a vector using an affine matrix
 #   * \param[in] vector_in the vector to be transformed
 #   * \param[out] vector_out the transformed vector
 #   * \param[in] transformation the transformation matrix
-#   *
 #   * \note Can be used with \c vector_in = \c vector_out
 #   */
-#   template <typename Scalar> inline void
-#   transformVector (const Eigen::Matrix<Scalar, 3, 1> &vector_in,
-#                          Eigen::Matrix<Scalar, 3, 1> &vector_out,
-#                    const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation)
-#   {
-#     vector_out = transformation.linear () * vector_in;
-#   }
-# 
-#   inline void
-#   transformVector (const Eigen::Vector3f &vector_in,
-#                          Eigen::Vector3f &vector_out,
-#                    const Eigen::Affine3f &transformation)
-#   {
-#     transformVector<float> (vector_in, vector_out, transformation);
-#   }
-# 
-#   inline void
-#   transformVector (const Eigen::Vector3d &vector_in,
-#                          Eigen::Vector3d &vector_out,
-#                    const Eigen::Affine3d &transformation)
-#   {
-#     transformVector<double> (vector_in, vector_out, transformation);
-#   }
-# 
+# template <typename Scalar> inline void
+# transformVector (const Eigen::Matrix<Scalar, 3, 1> &vector_in, Eigen::Matrix<Scalar, 3, 1> &vector_out, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# transformVector (const Eigen::Vector3f &vector_in, Eigen::Vector3f &vector_out, const Eigen::Affine3f &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# transformVector (const Eigen::Vector3d &vector_in, Eigen::Vector3d &vector_out, const Eigen::Affine3d &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Transform a line using an affine matrix
 #   * \param[in] line_in the line to be transformed
 #   * \param[out] line_out the transformed line
 #   * \param[in] transformation the transformation matrix
-#   *
 #   * Lines must be filled in this form:\n
 #   * line[0-2] = Origin coordinates of the vector\n
 #   * line[3-5] = Direction vector
-#   *
 #   * \note Can be used with \c line_in = \c line_out
 #   */
-#   template <typename Scalar> bool
-#   transformLine (const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_in,
-#                        Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_out,
-#                  const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
-# 
-#   inline bool
-#   transformLine (const Eigen::VectorXf &line_in,
-#                        Eigen::VectorXf &line_out,
-#                  const Eigen::Affine3f &transformation)
-#   {
-#     return (transformLine<float> (line_in, line_out, transformation));
-#   }
-# 
-#   inline bool
-#   transformLine (const Eigen::VectorXd &line_in,
-#                        Eigen::VectorXd &line_out,
-#                  const Eigen::Affine3d &transformation)
-#   {
-#     return (transformLine<double> (line_in, line_out, transformation));
-#   }
-# 
+# template <typename Scalar> bool
+# transformLine (const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_in, Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_out, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# transformLine (const Eigen::VectorXf &line_in, Eigen::VectorXf &line_out, const Eigen::Affine3f &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# transformLine (const Eigen::VectorXd &line_in, Eigen::VectorXd &line_out, const Eigen::Affine3d &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Transform plane vectors using an affine matrix
 #   * \param[in] plane_in the plane coefficients to be transformed
 #   * \param[out] plane_out the transformed plane coefficients to fill
 #   * \param[in] transformation the transformation matrix
-#   *
 #   * The plane vectors are filled in the form ax+by+cz+d=0
 #   * Can be used with non Hessian form planes coefficients
 #   * Can be used with \c plane_in = \c plane_out
 #   */
-#   template <typename Scalar> void
-#   transformPlane (const Eigen::Matrix<Scalar, 4, 1> &plane_in,
-#                         Eigen::Matrix<Scalar, 4, 1> &plane_out,
-#                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
-# 
-#   inline void
-#   transformPlane (const Eigen::Matrix<double, 4, 1> &plane_in,
-#                         Eigen::Matrix<double, 4, 1> &plane_out,
-#                   const Eigen::Transform<double, 3, Eigen::Affine> &transformation)
-#   {
-#     transformPlane<double> (plane_in, plane_out, transformation);
-#   }
-# 
-#   inline void
-#   transformPlane (const Eigen::Matrix<float, 4, 1> &plane_in,
-#                         Eigen::Matrix<float, 4, 1> &plane_out,
-#                   const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-#   {
-#     transformPlane<float> (plane_in, plane_out, transformation);
-#   }
-# 
+# template <typename Scalar> void
+# transformPlane (const Eigen::Matrix<Scalar, 4, 1> &plane_in, Eigen::Matrix<Scalar, 4, 1> &plane_out, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# transformPlane (const Eigen::Matrix<double, 4, 1> &plane_in, Eigen::Matrix<double, 4, 1> &plane_out, const Eigen::Transform<double, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# transformPlane (const Eigen::Matrix<float, 4, 1> &plane_in, Eigen::Matrix<float, 4, 1> &plane_out,const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Transform plane vectors using an affine matrix
 #   * \param[in] plane_in the plane coefficients to be transformed
 #   * \param[out] plane_out the transformed plane coefficients to fill
 #   * \param[in] transformation the transformation matrix
-#   *
 #   * The plane vectors are filled in the form ax+by+cz+d=0
 #   * Can be used with non Hessian form planes coefficients
 #   * Can be used with \c plane_in = \c plane_out
 #   * \warning ModelCoefficients stores floats only !
 #   */
-#   template<typename Scalar> void
-#   transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
-#                         pcl::ModelCoefficients::Ptr plane_out,
-#                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
-# 
-#   inline void
-#   transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
-#                         pcl::ModelCoefficients::Ptr plane_out,
-#                   const Eigen::Transform<double, 3, Eigen::Affine> &transformation)
-#   {
-#     transformPlane<double> (plane_in, plane_out, transformation);
-#   }
-# 
-#   inline void
-#   transformPlane (const pcl::ModelCoefficients::Ptr plane_in,
-#                         pcl::ModelCoefficients::Ptr plane_out,
-#                   const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-#   {
-#     transformPlane<float> (plane_in, plane_out, transformation);
-#   }
-# 
+# template<typename Scalar> void
+# transformPlane (const pcl::ModelCoefficients::Ptr plane_in, pcl::ModelCoefficients::Ptr plane_out, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void
+# transformPlane (const pcl::ModelCoefficients::Ptr plane_in, pcl::ModelCoefficients::Ptr plane_out, const Eigen::Transform<double, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline void transformPlane (const pcl::ModelCoefficients::Ptr plane_in, pcl::ModelCoefficients::Ptr plane_out, const Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Check coordinate system integrity
 #   * \param[in] line_x the first axis
 #   * \param[in] line_y the second axis
 #   * \param[in] norm_limit the limit to ignore norm rounding errors
 #   * \param[in] dot_limit the limit to ignore dot product rounding errors
 #   * \return True if the coordinate system is consistent, false otherwise.
-#   *
 #   * Lines must be filled in this form:\n
 #   * line[0-2] = Origin coordinates of the vector\n
 #   * line[3-5] = Direction vector
-#   *
 #   * Can be used like this :\n
 #   * line_x = X axis and line_y = Y axis\n
 #   * line_x = Z axis and line_y = X axis\n
 #   * line_x = Y axis and line_y = Z axis\n
 #   * Because X^Y = Z, Z^X = Y and Y^Z = X.
 #   * Do NOT invert line order !
-#   *
 #   * Determine whether a coordinate system is consistent or not by checking :\n
 #   * Line origins: They must be the same for the 2 lines\n
 #   * Norm: The 2 lines must be normalized\n
 #   * Dot products: Must be 0 or perpendicular vectors
 #   */
-#   template<typename Scalar> bool
-#   checkCoordinateSystem (const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_x,
-#                          const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_y,
-#                          const Scalar norm_limit = 1e-3,
-#                          const Scalar dot_limit = 1e-3);
-# 
-#   inline bool
-#   checkCoordinateSystem (const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_x,
-#                          const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_y,
-#                          const double norm_limit = 1e-3,
-#                          const double dot_limit = 1e-3)
-#   {
-#     return (checkCoordinateSystem<double> (line_x, line_y, norm_limit, dot_limit));
-#   }
-# 
-#   inline bool
-#   checkCoordinateSystem (const Eigen::Matrix<float, Eigen::Dynamic, 1> &line_x,
-#                          const Eigen::Matrix<float, Eigen::Dynamic, 1> &line_y,
-#                          const float norm_limit = 1e-3,
-#                          const float dot_limit = 1e-3)
-#   {
-#     return (checkCoordinateSystem<float> (line_x, line_y, norm_limit, dot_limit));
-#   }
-# 
+# template<typename Scalar> bool
+# checkCoordinateSystem (const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_x,
+#                        const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> &line_y,
+#                        const Scalar norm_limit = 1e-3,
+#                        const Scalar dot_limit = 1e-3);
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# checkCoordinateSystem (const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_x,
+#                        const Eigen::Matrix<double, Eigen::Dynamic, 1> &line_y,
+#                        const double norm_limit = 1e-3,
+#                        const double dot_limit = 1e-3)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# checkCoordinateSystem (const Eigen::Matrix<float, Eigen::Dynamic, 1> &line_x,
+#                        const Eigen::Matrix<float, Eigen::Dynamic, 1> &line_y,
+#                        const float norm_limit = 1e-3,
+#                        const float dot_limit = 1e-3)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Check coordinate system integrity
 #   * \param[in] origin the origin of the coordinate system
 #   * \param[in] x_direction the first axis
@@ -2630,55 +2438,41 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   * \param[in] norm_limit the limit to ignore norm rounding errors
 #   * \param[in] dot_limit the limit to ignore dot product rounding errors
 #   * \return True if the coordinate system is consistent, false otherwise.
-#   *
 #   * Read the other variant for more information
 #   */
-#   template <typename Scalar> inline bool
-#   checkCoordinateSystem (const Eigen::Matrix<Scalar, 3, 1> &origin,
-#                          const Eigen::Matrix<Scalar, 3, 1> &x_direction,
-#                          const Eigen::Matrix<Scalar, 3, 1> &y_direction,
-#                          const Scalar norm_limit = 1e-3,
-#                          const Scalar dot_limit = 1e-3)
-#   {
-#     Eigen::Matrix<Scalar, Eigen::Dynamic, 1> line_x;
-#     Eigen::Matrix<Scalar, Eigen::Dynamic, 1> line_y;
-#     line_x << origin, x_direction;
-#     line_y << origin, y_direction;
-#     return (checkCoordinateSystem<Scalar> (line_x, line_y, norm_limit, dot_limit));
-#   }
-# 
-#   inline bool
-#   checkCoordinateSystem (const Eigen::Matrix<double, 3, 1> &origin,
-#                          const Eigen::Matrix<double, 3, 1> &x_direction,
-#                          const Eigen::Matrix<double, 3, 1> &y_direction,
-#                          const double norm_limit = 1e-3,
-#                          const double dot_limit = 1e-3)
-#   {
-#     Eigen::Matrix<double, Eigen::Dynamic, 1> line_x;
-#     Eigen::Matrix<double, Eigen::Dynamic, 1> line_y;
-#     line_x.resize (6);
-#     line_y.resize (6);
-#     line_x << origin, x_direction;
-#     line_y << origin, y_direction;
-#     return (checkCoordinateSystem<double> (line_x, line_y, norm_limit, dot_limit));
-#   }
-# 
-#   inline bool
-#   checkCoordinateSystem (const Eigen::Matrix<float, 3, 1> &origin,
-#                          const Eigen::Matrix<float, 3, 1> &x_direction,
-#                          const Eigen::Matrix<float, 3, 1> &y_direction,
-#                          const float norm_limit = 1e-3,
-#                          const float dot_limit = 1e-3)
-#   {
-#     Eigen::Matrix<float, Eigen::Dynamic, 1> line_x;
-#     Eigen::Matrix<float, Eigen::Dynamic, 1> line_y;
-#     line_x.resize (6);
-#     line_y.resize (6);
-#     line_x << origin, x_direction;
-#     line_y << origin, y_direction;
-#     return (checkCoordinateSystem<float> (line_x, line_y, norm_limit, dot_limit));
-#   }
-# 
+# template <typename Scalar> inline bool
+# checkCoordinateSystem (const Eigen::Matrix<Scalar, 3, 1> &origin,
+#                        const Eigen::Matrix<Scalar, 3, 1> &x_direction,
+#                        const Eigen::Matrix<Scalar, 3, 1> &y_direction,
+#                        const Scalar norm_limit = 1e-3,
+#                        const Scalar dot_limit = 1e-3)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# checkCoordinateSystem (const Eigen::Matrix<double, 3, 1> &origin,
+#                        const Eigen::Matrix<double, 3, 1> &x_direction,
+#                        const Eigen::Matrix<double, 3, 1> &y_direction,
+#                        const double norm_limit = 1e-3,
+#                        const double dot_limit = 1e-3)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# checkCoordinateSystem (const Eigen::Matrix<float, 3, 1> &origin,
+#                        const Eigen::Matrix<float, 3, 1> &x_direction,
+#                        const Eigen::Matrix<float, 3, 1> &y_direction,
+#                        const float norm_limit = 1e-3,
+#                        const float dot_limit = 1e-3)
+###
+
+# eigen.h
+# namespace pcl
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
 # /** \brief Compute the transformation between two coordinate systems
 #   * \param[in] from_line_x X axis from the origin coordinate system
 #   * \param[in] from_line_y Y axis from the origin coordinate system
@@ -2686,101 +2480,93 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   * \param[in] to_line_y Y axis from the destination coordinate system
 #   * \param[out] transformation the transformation matrix to fill
 #   * \return true if transformation was filled, false otherwise.
-#   *
 #   * Line must be filled in this form:\n
 #   * line[0-2] = Coordinate system origin coordinates \n
 #   * line[3-5] = Direction vector (norm doesn't matter)
 #   */
-#   template <typename Scalar> bool
-#   transformBetween2CoordinateSystems (const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> from_line_x,
-#                                       const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> from_line_y,
-#                                       const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> to_line_x,
-#                                       const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> to_line_y,
-#                                       Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
-# 
-#   inline bool
-#   transformBetween2CoordinateSystems (const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_x,
-#                                       const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_y,
-#                                       const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_x,
-#                                       const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_y,
-#                                       Eigen::Transform<double, 3, Eigen::Affine> &transformation)
-#   {
-#     return (transformBetween2CoordinateSystems<double> (from_line_x, from_line_y, to_line_x, to_line_y, transformation));
-#   }
-# 
-#   inline bool
-#   transformBetween2CoordinateSystems (const Eigen::Matrix<float, Eigen::Dynamic, 1> from_line_x,
-#                                       const Eigen::Matrix<float, Eigen::Dynamic, 1> from_line_y,
-#                                       const Eigen::Matrix<float, Eigen::Dynamic, 1> to_line_x,
-#                                       const Eigen::Matrix<float, Eigen::Dynamic, 1> to_line_y,
-#                                       Eigen::Transform<float, 3, Eigen::Affine> &transformation)
-#   {
-#     return (transformBetween2CoordinateSystems<float> (from_line_x, from_line_y, to_line_x, to_line_y, transformation));
-#   }
-# 
-# }
-# 
-# #include <pcl/common/impl/eigen.hpp>
-# 
-# #if defined __SUNPRO_CC
-# #  pragma enable_warn
-# #endif
-# 
-# #endif  //PCL_COMMON_EIGEN_H_
-# ###
-# 
-# # file_io.h
+# template <typename Scalar> bool
+# transformBetween2CoordinateSystems (const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> from_line_x,
+#                                     const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> from_line_y,
+#                                     const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> to_line_x,
+#                                     const Eigen::Matrix<Scalar, Eigen::Dynamic, 1> to_line_y,
+#                                     Eigen::Transform<Scalar, 3, Eigen::Affine> &transformation);
+###
+
+# eigen.h
 # namespace pcl
-# {
-#   /** \brief Find all *.pcd files in the directory and return them sorted
-#     * \param directory the directory to be searched
-#     * \param file_names the resulting (sorted) list of .pcd files
-#     */
-#   inline void 
-#   getAllPcdFilesInDirectory (const std::string& directory, std::vector<std::string>& file_names);
-#   
-#   /** \brief Remove the path from the given string and return only the filename (the remaining string after the 
-#     * last '/')
-#     * \param input the input filename (with full path)
-#     * \return the resulting filename, stripped of the path
-#     */
-#   inline std::string 
-#   getFilenameWithoutPath (const std::string& input);
-# 
-#   /** \brief Remove the extension from the given string and return only the filename (everything before the last '.')
-#     * \param input the input filename (with the file extension)
-#     * \return the resulting filename, stripped of its extension
-#     */
-#   inline std::string 
-#   getFilenameWithoutExtension (const std::string& input);
-# 
-#   /** \brief Get the file extension from the given string (the remaining string after the last '.')
-#     * \param input the input filename
-#     * \return \a input 's file extension
-#     */
-#   inline std::string 
-#   getFileExtension (const std::string& input);
-# }  // namespace end
-# /*@}*/
-# #include <pcl/common/impl/file_io.hpp>
-# 
-# #endif  //#ifndef PCL_FILE_IO_H_
-# ###
-# 
-# # gaussian.h
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# transformBetween2CoordinateSystems (const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_x,
+#                                     const Eigen::Matrix<double, Eigen::Dynamic, 1> from_line_y,
+#                                     const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_x,
+#                                     const Eigen::Matrix<double, Eigen::Dynamic, 1> to_line_y,
+#                                     Eigen::Transform<double, 3, Eigen::Affine> &transformation)
+###
+
+# eigen.h
 # namespace pcl
-# {
-#   /** Class GaussianKernel assembles all the method for computing, 
-#     * convolving, smoothing, gradients computing an image using
-#     * a gaussian kernel. The image is stored in point cloud elements 
-#     * intensity member or rgb or...
-#     * \author Nizar Sallem
-#     * \ingroup common
-#     */
-#   class PCL_EXPORTS GaussianKernel
-#   {
-#     public:
-# 
+# cdef extern from "pcl/common/eigen.h" namespace "pcl":
+# inline bool
+# transformBetween2CoordinateSystems (const Eigen::Matrix<float, Eigen::Dynamic, 1> from_line_x,
+#                                     const Eigen::Matrix<float, Eigen::Dynamic, 1> from_line_y,
+#                                     const Eigen::Matrix<float, Eigen::Dynamic, 1> to_line_x,
+#                                     const Eigen::Matrix<float, Eigen::Dynamic, 1> to_line_y,
+#                                     Eigen::Transform<float, 3, Eigen::Affine> &transformation)
+###
+
+# file_io.h
+# namespace pcl
+# cdef extern from "pcl/common/file_io.h" namespace "pcl":
+# /** \brief Find all *.pcd files in the directory and return them sorted
+#   * \param directory the directory to be searched
+#   * \param file_names the resulting (sorted) list of .pcd files
+#   */
+# inline void getAllPcdFilesInDirectory (const std::string& directory, std::vector<std::string>& file_names);
+###
+
+# file_io.h
+# namespace pcl
+# cdef extern from "pcl/common/file_io.h" namespace "pcl":
+# /** \brief Remove the path from the given string and return only the filename (the remaining string after the 
+#   * last '/')
+#   * \param input the input filename (with full path)
+#   * \return the resulting filename, stripped of the path
+#   */
+# inline std::string  getFilenameWithoutPath (const std::string& input);
+###
+
+# file_io.h
+# namespace pcl
+# cdef extern from "pcl/common/file_io.h" namespace "pcl":
+# /** \brief Remove the extension from the given string and return only the filename (everything before the last '.')
+#   * \param input the input filename (with the file extension)
+#   * \return the resulting filename, stripped of its extension
+#   */
+# inline std::string getFilenameWithoutExtension (const std::string& input);
+###
+
+# file_io.h
+# namespace pcl
+# cdef extern from "pcl/common/file_io.h" namespace "pcl":
+# /** \brief Get the file extension from the given string (the remaining string after the last '.')
+#   * \param input the input filename
+#   * \return \a input 's file extension
+#   */
+# inline std::string getFileExtension (const std::string& input)
+###
+
+# gaussian.h
+# namespace pcl
+# cdef extern from "pcl/common/gaussian.h" namespace "pcl":
+# /** Class GaussianKernel assembles all the method for computing, 
+#   * convolving, smoothing, gradients computing an image using
+#   * a gaussian kernel. The image is stored in point cloud elements 
+#   * intensity member or rgb or...
+#   * \author Nizar Sallem
+#   * \ingroup common
+#   */
+# class PCL_EXPORTS GaussianKernel
+# 		public:
 #       GaussianKernel () {}
 # 
 #       static const unsigned MAX_KERNEL_WIDTH = 71;
@@ -2791,8 +2577,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * \param[in] kernel_width the desired kernel width upper bond
 #         * \throws pcl::KernelWidthTooSmallException
 #         */
-#       void
-#       compute (float sigma, 
+#       void compute (float sigma, 
 #                Eigen::VectorXf &kernel,
 #                unsigned kernel_width = MAX_KERNEL_WIDTH) const;
 # 
@@ -2804,10 +2589,8 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * \param[in] kernel_width the desired kernel width upper bond
 #         * \throws pcl::KernelWidthTooSmallException
 #         */
-#       void
-#       compute (float sigma, 
-#                Eigen::VectorXf &kernel, 
-#                Eigen::VectorXf &derivative, 
+#       void compute (float sigma, 
+#                Eigen::VectorXf &kernel, Eigen::VectorXf &derivative, 
 #                unsigned kernel_width = MAX_KERNEL_WIDTH) const;
 # 
 #       /** Convolve a float image rows by a given kernel.
@@ -2817,10 +2600,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * \note if output doesn't fit in input i.e. output.rows () < input.rows () or
 #         * output.cols () < input.cols () then output is resized to input sizes.
 #         */
-#       void
-#       convolveRows (const pcl::PointCloud<float> &input,
-#                     const Eigen::VectorXf &kernel,
-#                     pcl::PointCloud<float> &output) const;
+#       void convolveRows (const pcl::PointCloud<float> &input, const Eigen::VectorXf &kernel, pcl::PointCloud<float> &output) const;
 # 
 #       /** Convolve a float image rows by a given kernel.
 #         * \param[in] input the image to convolve
@@ -2832,8 +2612,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         */
 #      template <typename PointT> void
 #      convolveRows (const pcl::PointCloud<PointT> &input,
-#                    boost::function <float (const PointT& p)> field_accessor,
-#                    const Eigen::VectorXf &kernel,
+#                    boost::function <float (const PointT& p)> field_accessor, const Eigen::VectorXf &kernel,
 #                    pcl::PointCloud<float> &output) const;
 # 
 #       /** Convolve a float image columns by a given kernel.
@@ -2843,10 +2622,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * \note if output doesn't fit in input i.e. output.rows () < input.rows () or
 #         * output.cols () < input.cols () then output is resized to input sizes.
 #         */
-#       void
-#       convolveCols (const pcl::PointCloud<float> &input,
-#                     const Eigen::VectorXf &kernel,
-#                     pcl::PointCloud<float> &output) const;
+#       void convolveCols (const pcl::PointCloud<float> &input, const Eigen::VectorXf &kernel, pcl::PointCloud<float> &output) const;
 # 
 #       /** Convolve a float image columns by a given kernel.
 #         * \param[in] input the image to convolve
@@ -2858,9 +2634,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         */
 #       template <typename PointT> void
 #       convolveCols (const pcl::PointCloud<PointT> &input,
-#                     boost::function <float (const PointT& p)> field_accessor,
-#                     const Eigen::VectorXf &kernel,
-#                     pcl::PointCloud<float> &output) const;
+#                     boost::function <float (const PointT& p)> field_accessor, const Eigen::VectorXf &kernel, pcl::PointCloud<float> &output) const;
 # 
 #       /** Convolve a float image in the 2 directions
 #         * \param[in] horiz_kernel kernel for convolving rows
@@ -2872,16 +2646,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         */
 #       inline void
 #       convolve (const pcl::PointCloud<float> &input,
-#                 const Eigen::VectorXf &horiz_kernel,
-#                 const Eigen::VectorXf &vert_kernel,
-#                 pcl::PointCloud<float> &output) const
-#       {
-#         std::cout << ">>> convolve cpp" << std::endl;
-#         pcl::PointCloud<float> tmp (input.width, input.height) ;
-#         convolveRows (input, horiz_kernel, tmp);        
-#         convolveCols (tmp, vert_kernel, output);
-#         std::cout << "<<< convolve cpp" << std::endl;
-#       }
+#                 const Eigen::VectorXf &horiz_kernel, const Eigen::VectorXf &vert_kernel, pcl::PointCloud<float> &output) const
 # 
 #       /** Convolve a float image in the 2 directions
 #         * \param[in] input image to convolve
@@ -2895,16 +2660,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       template <typename PointT> inline void
 #       convolve (const pcl::PointCloud<PointT> &input,
 #                 boost::function <float (const PointT& p)> field_accessor,
-#                 const Eigen::VectorXf &horiz_kernel,
-#                 const Eigen::VectorXf &vert_kernel,
-#                 pcl::PointCloud<float> &output) const
-#       {
-#         std::cout << ">>> convolve hpp" << std::endl;
-#         pcl::PointCloud<float> tmp (input.width, input.height);
-#         convolveRows<PointT>(input, field_accessor, horiz_kernel, tmp);
-#         convolveCols(tmp, vert_kernel, output);
-#         std::cout << "<<< convolve hpp" << std::endl;
-#       }
+#                 const Eigen::VectorXf &horiz_kernel, const Eigen::VectorXf &vert_kernel, pcl::PointCloud<float> &output) const
 #       
 #       /** Computes float image gradients using a gaussian kernel and gaussian kernel
 #         * derivative.
@@ -2918,14 +2674,8 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         */
 #       inline void
 #       computeGradients (const pcl::PointCloud<float> &input,
-#                         const Eigen::VectorXf &gaussian_kernel,
-#                         const Eigen::VectorXf &gaussian_kernel_derivative,
-#                         pcl::PointCloud<float> &grad_x,
-#                         pcl::PointCloud<float> &grad_y) const
-#       {
-#         convolve (input, gaussian_kernel_derivative, gaussian_kernel, grad_x);
-#         convolve (input, gaussian_kernel, gaussian_kernel_derivative, grad_y);
-#       }
+#                         const Eigen::VectorXf &gaussian_kernel, const Eigen::VectorXf &gaussian_kernel_derivative,
+#                         pcl::PointCloud<float> &grad_x, pcl::PointCloud<float> &grad_y) const
 # 
 #       /** Computes float image gradients using a gaussian kernel and gaussian kernel
 #         * derivative.
@@ -2939,16 +2689,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * output.cols () < input.cols () then output is resized to input sizes.
 #         */
 #       template <typename PointT> inline void
-#       computeGradients (const pcl::PointCloud<PointT> &input,
-#                         boost::function <float (const PointT& p)> field_accessor,
-#                         const Eigen::VectorXf &gaussian_kernel,
-#                         const Eigen::VectorXf &gaussian_kernel_derivative,
-#                         pcl::PointCloud<float> &grad_x,
-#                         pcl::PointCloud<float> &grad_y) const
-#       {
-#         convolve<PointT> (input, field_accessor, gaussian_kernel_derivative, gaussian_kernel, grad_x);
-#         convolve<PointT> (input, field_accessor, gaussian_kernel, gaussian_kernel_derivative, grad_y);
-#       }
+#       computeGradients (const pcl::PointCloud<PointT> &input, boost::function <float (const PointT& p)> field_accessor,
+#                         const Eigen::VectorXf &gaussian_kernel, const Eigen::VectorXf &gaussian_kernel_derivative,
+#                         pcl::PointCloud<float> &grad_x, pcl::PointCloud<float> &grad_y) const
 #       
 #       /** Smooth image using a gaussian kernel.
 #         * \param[in] input image
@@ -2957,13 +2700,8 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * \note if output doesn't fit in input i.e. output.rows () < input.rows () or
 #         * output.cols () < input.cols () then output is resized to input sizes.
 #         */
-#       inline void
-#       smooth (const pcl::PointCloud<float> &input,
-#               const Eigen::VectorXf &gaussian_kernel,
-#               pcl::PointCloud<float> &output) const
-#       {
-#         convolve (input, gaussian_kernel, gaussian_kernel, output);
-#       }
+#       inline void smooth (const pcl::PointCloud<float> &input,
+#               const Eigen::VectorXf &gaussian_kernel, pcl::PointCloud<float> &output) const
 # 
 #       /** Smooth image using a gaussian kernel.
 #         * \param[in] input image
@@ -2974,116 +2712,93 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         * output.cols () < input.cols () then output is resized to input sizes.
 #         */
 #       template <typename PointT> inline void
-#       smooth (const pcl::PointCloud<PointT> &input,
-#               boost::function <float (const PointT& p)> field_accessor,
-#               const Eigen::VectorXf &gaussian_kernel,
-#               pcl::PointCloud<float> &output) const
-#       {
-#         convolve<PointT> (input, field_accessor, gaussian_kernel, gaussian_kernel, output);
-#       }
+#       smooth (const pcl::PointCloud<PointT> &input, boost::function <float (const PointT& p)> field_accessor,
+#               const Eigen::VectorXf &gaussian_kernel, pcl::PointCloud<float> &output) const
 #   };
 # }
 # 
-# # #include <pcl/common/impl/gaussian.hpp>
-# # #endif // PCL_GAUSSIAN_KERNEL
-# ###
-# 
-# # generate.h
+###
+
+# generate.h
 # namespace pcl
+# namespace common
+# cdef extern from "pcl/common/generate.h" namespace "pcl::common":
+# /** \brief CloudGenerator class generates a point cloud using some randoom number generator.
+#   * Generators can be found in \file common/random.h and easily extensible.
+#   * \ingroup common
+#   * \author Nizar Sallem
+#   */
+# template <typename PointT, typename GeneratorT>
+# class CloudGenerator
 # {
+#     public:
+#     typedef typename GeneratorT::Parameters GeneratorParameters;
 # 
-#   namespace common
-#   {
-#     /** \brief CloudGenerator class generates a point cloud using some randoom number generator.
-#       * Generators can be found in \file common/random.h and easily extensible.
-#       *  
-#       * \ingroup common
-#       * \author Nizar Sallem
+#     /// Default constructor
+#     CloudGenerator ();
+# 
+#     /** Consttructor with single generator to ensure all X, Y and Z values are within same range
+#       * \param params paramteres for X, Y and Z values generation. Uniqueness is ensured through
+#       * seed incrementation
 #       */
-#     template <typename PointT, typename GeneratorT>
-#     class CloudGenerator
-#     {
-#       public:
-#       typedef typename GeneratorT::Parameters GeneratorParameters;
+#     CloudGenerator (const GeneratorParameters& params);
 # 
-#       /// Default constructor
-#       CloudGenerator ();
+#     /** Constructor with independant generators per axis
+#       * \param x_params parameters for x values generation
+#       * \param y_params parameters for y values generation
+#       * \param z_params parameters for z values generation
+#       */
+#     CloudGenerator (const GeneratorParameters& x_params,
+#                     const GeneratorParameters& y_params,
+#                     const GeneratorParameters& z_params);
 # 
-#       /** Consttructor with single generator to ensure all X, Y and Z values are within same range
-#         * \param params paramteres for X, Y and Z values generation. Uniqueness is ensured through
-#         * seed incrementation
-#         */
-#       CloudGenerator (const GeneratorParameters& params);
+#     /** Set parameters for x, y and z values. Uniqueness is ensured through seed incrementation.
+#       * \param params parameteres for X, Y and Z values generation. 
+#       */
+#     void setParameters (const GeneratorParameters& params);
 # 
-#       /** Constructor with independant generators per axis
-#         * \param x_params parameters for x values generation
-#         * \param y_params parameters for y values generation
-#         * \param z_params parameters for z values generation
-#         */
-#       CloudGenerator (const GeneratorParameters& x_params,
-#                       const GeneratorParameters& y_params,
-#                       const GeneratorParameters& z_params);
+#     /** Set parameters for x values generation
+#       * \param x_params paramters for x values generation
+#       */
+#     void setParametersForX (const GeneratorParameters& x_params);
 # 
-#       /** Set parameters for x, y and z values. Uniqueness is ensured through seed incrementation.
-#         * \param params parameteres for X, Y and Z values generation. 
-#         */
-#       void
-#       setParameters (const GeneratorParameters& params);
-#       
-#       /** Set parameters for x values generation
-#         * \param x_params paramters for x values generation
-#         */
-#       void
-#       setParametersForX (const GeneratorParameters& x_params);
+#     /** Set parameters for y values generation
+#       * \param y_params paramters for y values generation
+#       */
+#     void setParametersForY (const GeneratorParameters& y_params);
 # 
-#       /** Set parameters for y values generation
-#         * \param y_params paramters for y values generation
-#         */
-#       void
-#       setParametersForY (const GeneratorParameters& y_params);
-#       
-#       /** Set parameters for z values generation
-#         * \param z_params paramters for z values generation
-#         */
-#       void
-#       setParametersForZ (const GeneratorParameters& z_params);
+#     /** Set parameters for z values generation
+#       * \param z_params paramters for z values generation
+#       */
+#     void setParametersForZ (const GeneratorParameters& z_params);
 # 
-#       /// \return x values generation parameters
-#       const GeneratorParameters& 
-#       getParametersForX () const;
+#     /// \return x values generation parameters
+#     const GeneratorParameters& getParametersForX () const;
 # 
-#       /// \return y values generation parameters
-#       const GeneratorParameters& 
-#       getParametersForY () const;
+#     /// \return y values generation parameters
+#     const GeneratorParameters& getParametersForY () const;
 # 
-#       /// \return z values generation parameters
-#       const GeneratorParameters& 
-#       getParametersForZ () const;
-#       
-#       /// \return a single random generated point 
-#       PointT 
-#       get ();
-#         
-#       /** Generates a cloud with X Y Z picked within given ranges. This function assumes that
-#         * cloud is properly defined else it raises errors and does nothing.
-#         * \param[out] cloud cloud to generate coordinates for
-#         * \return 0 if generation went well else -1.
-#         */
-#       int
-#       fill (pcl::PointCloud<PointT>& cloud);
+#     /// \return z values generation parameters
+#     const GeneratorParameters& getParametersForZ () const;
 # 
-#       /** Generates a cloud of specified dimensions with X Y Z picked within given ranges. 
-#         * \param[in] width width of generated cloud
-#         * \param[in] height height of generated cloud
-#         * \param[out] cloud output cloud
-#         * \return 0 if generation went well else -1.
-#         */
-#       int 
-#       fill (int width, int height, pcl::PointCloud<PointT>& cloud);
-#       
-#       private:
-#         GeneratorT x_generator_, y_generator_, z_generator_;
-#     };
+#     /// \return a single random generated point 
+#     PointT get ();
+# 
+#     /** Generates a cloud with X Y Z picked within given ranges. This function assumes that
+#       * cloud is properly defined else it raises errors and does nothing.
+#       * \param[out] cloud cloud to generate coordinates for
+#       * \return 0 if generation went well else -1.
+#       */
+#     int fill (pcl::PointCloud<PointT>& cloud);
+# 
+#     /** Generates a cloud of specified dimensions with X Y Z picked within given ranges. 
+#       * \param[in] width width of generated cloud
+#       * \param[in] height height of generated cloud
+#       * \param[out] cloud output cloud
+#       * \return 0 if generation went well else -1.
+#       */
+#     int fill (int width, int height, pcl::PointCloud<PointT>& cloud);
+#   };
 # 
 #     template <typename GeneratorT>
 #     class CloudGenerator<pcl::PointXY, GeneratorT>
@@ -3095,64 +2810,37 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       
 #       CloudGenerator (const GeneratorParameters& params);
 # 
-#       CloudGenerator (const GeneratorParameters& x_params,
-#                       const GeneratorParameters& y_params);
+#       CloudGenerator (const GeneratorParameters& x_params, const GeneratorParameters& y_params);
 #       
-#       void
-#       setParameters (const GeneratorParameters& params);
+#       void setParameters (const GeneratorParameters& params);
 # 
-#       void
-#       setParametersForX (const GeneratorParameters& x_params);
+#       void setParametersForX (const GeneratorParameters& x_params);
 # 
-#       void
-#       setParametersForY (const GeneratorParameters& y_params);
+#       void setParametersForY (const GeneratorParameters& y_params);
 # 
-#       const GeneratorParameters& 
-#       getParametersForX () const;
+#       const GeneratorParameters& getParametersForX () const;
 # 
-#       const GeneratorParameters& 
-#       getParametersForY () const;
+#       const GeneratorParameters& getParametersForY () const;
 # 
-#       pcl::PointXY
-#       get ();
+#       pcl::PointXYget ();
 # 
-#       int 
-#       fill (pcl::PointCloud<pcl::PointXY>& cloud);
+#       int fill (pcl::PointCloud<pcl::PointXY>& cloud);
 # 
-#       int 
-#       fill (int width, int height, pcl::PointCloud<pcl::PointXY>& cloud);
+#       int fill (int width, int height, pcl::PointCloud<pcl::PointXY>& cloud);
 #       
-#       private:
-#         GeneratorT x_generator_;
-#         GeneratorT y_generator_;
 #     };
 #   }
 # }
-# 
-# # #include <pcl/common/impl/generate.hpp>
-# # #endif
-# ###
-# 
-# # geometry.h
+###
+
+# geometry.h
 # namespace pcl
-# {
-#   namespace geometry
-#   {
+# namespace geometry
 #     /** @return the euclidean distance between 2 points */
-#     template <typename PointT> inline float 
-#     distance (const PointT& p1, const PointT& p2)
-#     {
-#       Eigen::Vector3f diff = p1 -p2;
-#       return (diff.norm ());
-#     }
+#     template <typename PointT> inline float distance (const PointT& p1, const PointT& p2)
 # 
 #     /** @return the squared euclidean distance between 2 points */
-#     template<typename PointT> inline float 
-#     squaredDistance (const PointT& p1, const PointT& p2)
-#     {
-#       Eigen::Vector3f diff = p1 -p2;
-#       return (diff.squaredNorm ());
-#     }
+#     template<typename PointT> inline float squaredDistance (const PointT& p1, const PointT& p2)
 # 
 #     /** @return the point projection on a plane defined by its origin and normal vector 
 #       * \param[in] point Point to be projected
@@ -3161,14 +2849,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       * \param[out] projected The returned projected point
 #       */
 #     template<typename PointT, typename NormalT> inline void 
-#     project (const PointT& point, const PointT &plane_origin, 
-#              const NormalT& plane_normal, PointT& projected)
-#     {
-#       Eigen::Vector3f po = point - plane_origin;
-#       const Eigen::Vector3f normal = plane_normal.getVector3fMapConst ();
-#       float lambda = normal.dot(po);
-#       projected.getVector3fMap () = point.getVector3fMapConst () - (lambda * normal);
-#     }
+#     project (const PointT& point, const PointT &plane_origin, const NormalT& plane_normal, PointT& projected)
 # 
 #     /** @return the point projection on a plane defined by its origin and normal vector 
 #       * \param[in] point Point to be projected
@@ -3176,86 +2857,54 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       * \param[in] plane_normal The plane normal 
 #       * \param[out] projected The returned projected point
 #       */
-#     inline void 
-#     project (const Eigen::Vector3f& point, const Eigen::Vector3f &plane_origin, 
-#              const Eigen::Vector3f& plane_normal, Eigen::Vector3f& projected)
-#     {
-#       Eigen::Vector3f po = point - plane_origin;
-#       float lambda = plane_normal.dot(po);
-#       projected = point - (lambda * plane_normal);
-#     }
-#   }
-# }
-# 
-# /*@}*/
-# #endif  //#ifndef PCL_GEOMETRY_H_
-# ###
-# 
-# # intensity.h
+#     inline void project (const Eigen::Vector3f& point, const Eigen::Vector3f &plane_origin, const Eigen::Vector3f& plane_normal, Eigen::Vector3f& projected)
+
+
+###
+
+# intensity.h
 # namespace pcl
-# {
-#   namespace common
-#   {
+# namespace common
 #     /** \brief Intensity field accessor provides access to the inetnsity filed of a PoinT
 #       * implementation for specific types should be done in \file pcl/common/impl/intensity.hpp
 #       */
-#     template<typename PointT>
-#     struct IntensityFieldAccessor
+#     template<typename PointT> struct IntensityFieldAccessor
 #     {
 #       /** \brief get intensity field
 #         * \param[in] p point
 #         * \return p.intensity
 #         */
-#       inline float
-#       operator () (const PointT &p) const
-#       {
-#         return p.intensity;
-#       }
+#       inline float operator () (const PointT &p) const
+# 
 #       /** \brief gets the intensity value of a point
 #         * \param p point for which intensity to be get
 #         * \param[in] intensity value of the intensity field
 #         */
-#       inline void
-#       get (const PointT &p, float &intensity) const
-#       {
-#         intensity = p.intensity;
-#       }
+#       inline void get (const PointT &p, float &intensity) const
+#
 #       /** \brief sets the intensity value of a point
 #         * \param p point for which intensity to be set
 #         * \param[in] intensity value of the intensity field
 #         */
-#       inline void
-#       set (PointT &p, float intensity) const
-#       {
-#         p.intensity = intensity;
-#       }
+#       inline void set (PointT &p, float intensity) const
+# 
 #       /** \brief subtract value from intensity field
 #         * \param p point for which to modify inetnsity
 #         * \param[in] value value to be subtracted from point intensity
 #         */
-#       inline void
-#       demean (PointT& p, float value) const
-#       {
-#         p.intensity -= value;
-#       }
+#       inline void demean (PointT& p, float value) const
+# 
 #       /** \brief add value to intensity field
 #         * \param p point for which to modify inetnsity
 #         * \param[in] value value to be added to point intensity
 #         */
-#       inline void
-#       add (PointT& p, float value) const
-#       {
-#         p.intensity += value;
-#       }
+#       inline void add (PointT& p, float value) const
 #     };
 #   }
 # }
-# 
-# # #include <pcl/common/impl/intensity.hpp>
-# # #endif
-# ###
-# 
-# # intersections.h
+###
+
+# intersections.h
 # namespace pcl
 # {
 #   /** \brief Get the intersection of a two 3D lines in space as a 3D point
@@ -3265,11 +2914,11 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     * \param[in] sqr_eps maximum allowable squared distance to the true solution
 #     * \ingroup common
 #     */
-#   PCL_EXPORTS inline bool
-#   lineWithLineIntersection (const Eigen::VectorXf &line_a, 
-#                             const Eigen::VectorXf &line_b, 
-#                             Eigen::Vector4f &point,
-#                             double sqr_eps = 1e-4);
+#   PCL_EXPORTS inline bool lineWithLineIntersection (
+# 								const Eigen::VectorXf &line_a, 
+#                             	const Eigen::VectorXf &line_b, 
+#                             	Eigen::Vector4f &point,
+#                             	double sqr_eps = 1e-4);
 # 
 #   /** \brief Get the intersection of a two 3D lines in space as a 3D point
 #     * \param[in] line_a the coefficients of the first line (point, direction)
@@ -3355,918 +3004,752 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #                            Eigen::Vector3d &intersection_point,
 #                            double determinant_tolerance = 1e-6)
 #   {
-#     return (threePlanesIntersection<double> (plane_a, plane_b, plane_c,
-#                                             intersection_point, determinant_tolerance));
+#     return (threePlanesIntersection<double> (plane_a, plane_b, plane_c, intersection_point, determinant_tolerance));
 #   }
 # 
 # }
-# /*@}*/
-# 
-# #include <pcl/common/impl/intersections.hpp>
-# 
-# #endif  //#ifndef PCL_INTERSECTIONS_H_
-# ###
-# 
-# # io.h
+###
+
+# io.h
 # namespace pcl
+# /** \brief Get the index of a specified field (i.e., dimension/channel)
+#   * \param[in] cloud the the point cloud message
+#   * \param[in] field_name the string defining the field name
+#   * \ingroup common
+#   */
+# inline int getFieldIndex (const pcl::PCLPointCloud2 &cloud, const std::string &field_name)
+# 
+# /** \brief Get the index of a specified field (i.e., dimension/channel)
+#   * \param[in] cloud the the point cloud message
+#   * \param[in] field_name the string defining the field name
+#   * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
+#   * \ingroup common
+#   */
+# template <typename PointT> inline int getFieldIndex (const pcl::PointCloud<PointT> &cloud, const std::string &field_name, std::vector<pcl::PCLPointField> &fields);
+# 
+# /** \brief Get the index of a specified field (i.e., dimension/channel)
+#   * \param[in] field_name the string defining the field name
+#   * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
+#   * \ingroup common
+#   */
+# template <typename PointT> inline int getFieldIndex (const std::string &field_name, std::vector<pcl::PCLPointField> &fields);
+# 
+# /** \brief Get the list of available fields (i.e., dimension/channel)
+#   * \param[in] cloud the point cloud message
+#   * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void getFields (const pcl::PointCloud<PointT> &cloud, std::vector<pcl::PCLPointField> &fields);
+# 
+# /** \brief Get the list of available fields (i.e., dimension/channel)
+#   * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
+#   * \ingroup common
+#   */
+# template <typename PointT> inline void getFields (std::vector<pcl::PCLPointField> &fields);
+# 
+# /** \brief Get the list of all fields available in a given cloud
+#   * \param[in] cloud the the point cloud message
+#   * \ingroup common
+#   */
+# template <typename PointT> inline std::string  getFieldsList (const pcl::PointCloud<PointT> &cloud);
+# 
+# /** \brief Get the available point cloud fields as a space separated string
+#   * \param[in] cloud a pointer to the PointCloud message
+#   * \ingroup common
+#   */
+# inline std::string getFieldsList (const pcl::PCLPointCloud2 &cloud)
+# 
+# /** \brief Obtains the size of a specific field data type in bytes
+#   * \param[in] datatype the field data type (see PCLPointField.h)
+#   * \ingroup common
+#   */
+# inline int getFieldSize (const int datatype)
+# 
+# /** \brief Obtain a vector with the sizes of all valid fields (e.g., not "_")
+#   * \param[in] fields the input vector containing the fields
+#   * \param[out] field_sizes the resultant field sizes in bytes
+#   */
+# PCL_EXPORTS void getFieldsSizes (const std::vector<pcl::PCLPointField> &fields,std::vector<int> &field_sizes);
+# 
+# /** \brief Obtains the type of the PCLPointField from a specific size and type
+#   * \param[in] size the size in bytes of the data field
+#   * \param[in] type a char describing the type of the field  ('F' = float, 'I' = signed, 'U' = unsigned)
+#   * \ingroup common
+#   */
+# inline int getFieldType (const int size, char type)
+# 
+# /** \brief Obtains the type of the PCLPointField from a specific PCLPointField as a char
+#   * \param[in] type the PCLPointField field type
+#   * \ingroup common
+#   */
+# inline char getFieldType (const int type)
 # {
-#   /** \brief Get the index of a specified field (i.e., dimension/channel)
-#     * \param[in] cloud the the point cloud message
-#     * \param[in] field_name the string defining the field name
-#     * \ingroup common
-#     */
-#   inline int
-#   getFieldIndex (const pcl::PCLPointCloud2 &cloud, const std::string &field_name)
+#   switch (type)
 #   {
-#     // Get the index we need
-#     for (size_t d = 0; d < cloud.fields.size (); ++d)
-#       if (cloud.fields[d].name == field_name)
-#         return (static_cast<int>(d));
-#     return (-1);
-#   }
+#     case pcl::PCLPointField::INT8:
+#     case pcl::PCLPointField::INT16:
+#     case pcl::PCLPointField::INT32:
+#       return ('I');
 # 
-#   /** \brief Get the index of a specified field (i.e., dimension/channel)
-#     * \param[in] cloud the the point cloud message
-#     * \param[in] field_name the string defining the field name
-#     * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline int 
-#   getFieldIndex (const pcl::PointCloud<PointT> &cloud, const std::string &field_name, 
-#                  std::vector<pcl::PCLPointField> &fields);
+#     case pcl::PCLPointField::UINT8:
+#     case pcl::PCLPointField::UINT16:
+#     case pcl::PCLPointField::UINT32:
+#       return ('U');
 # 
-#   /** \brief Get the index of a specified field (i.e., dimension/channel)
-#     * \param[in] field_name the string defining the field name
-#     * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline int 
-#   getFieldIndex (const std::string &field_name, 
-#                  std::vector<pcl::PCLPointField> &fields);
-# 
-#   /** \brief Get the list of available fields (i.e., dimension/channel)
-#     * \param[in] cloud the point cloud message
-#     * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getFields (const pcl::PointCloud<PointT> &cloud, std::vector<pcl::PCLPointField> &fields);
-# 
-#   /** \brief Get the list of available fields (i.e., dimension/channel)
-#     * \param[out] fields a vector to the original \a PCLPointField vector that the raw PointCloud message contains
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline void 
-#   getFields (std::vector<pcl::PCLPointField> &fields);
-# 
-#   /** \brief Get the list of all fields available in a given cloud
-#     * \param[in] cloud the the point cloud message
-#     * \ingroup common
-#     */
-#   template <typename PointT> inline std::string 
-#   getFieldsList (const pcl::PointCloud<PointT> &cloud);
-# 
-#   /** \brief Get the available point cloud fields as a space separated string
-#     * \param[in] cloud a pointer to the PointCloud message
-#     * \ingroup common
-#     */
-#   inline std::string
-#   getFieldsList (const pcl::PCLPointCloud2 &cloud)
-#   {
-#     std::string result;
-#     for (size_t i = 0; i < cloud.fields.size () - 1; ++i)
-#       result += cloud.fields[i].name + " ";
-#     result += cloud.fields[cloud.fields.size () - 1].name;
-#     return (result);
-#   }
-# 
-#   /** \brief Obtains the size of a specific field data type in bytes
-#     * \param[in] datatype the field data type (see PCLPointField.h)
-#     * \ingroup common
-#     */
-#   inline int
-#   getFieldSize (const int datatype)
-#   {
-#     switch (datatype)
-#     {
-#       case pcl::PCLPointField::INT8:
-#       case pcl::PCLPointField::UINT8:
-#         return (1);
-# 
-#       case pcl::PCLPointField::INT16:
-#       case pcl::PCLPointField::UINT16:
-#         return (2);
-# 
-#       case pcl::PCLPointField::INT32:
-#       case pcl::PCLPointField::UINT32:
-#       case pcl::PCLPointField::FLOAT32:
-#         return (4);
-# 
-#       case pcl::PCLPointField::FLOAT64:
-#         return (8);
-# 
-#       default:
-#         return (0);
-#     }
-#   }
-# 
-#   /** \brief Obtain a vector with the sizes of all valid fields (e.g., not "_")
-#     * \param[in] fields the input vector containing the fields
-#     * \param[out] field_sizes the resultant field sizes in bytes
-#     */
-#   PCL_EXPORTS void
-#   getFieldsSizes (const std::vector<pcl::PCLPointField> &fields,
-#                   std::vector<int> &field_sizes);
-# 
-#   /** \brief Obtains the type of the PCLPointField from a specific size and type
-#     * \param[in] size the size in bytes of the data field
-#     * \param[in] type a char describing the type of the field  ('F' = float, 'I' = signed, 'U' = unsigned)
-#     * \ingroup common
-#     */
-#   inline int
-#   getFieldType (const int size, char type)
-#   {
-#     type = std::toupper (type, std::locale::classic ());
-#     switch (size)
-#     {
-#       case 1:
-#         if (type == 'I')
-#           return (pcl::PCLPointField::INT8);
-#         if (type == 'U')
-#           return (pcl::PCLPointField::UINT8);
-# 
-#       case 2:
-#         if (type == 'I')
-#           return (pcl::PCLPointField::INT16);
-#         if (type == 'U')
-#           return (pcl::PCLPointField::UINT16);
-# 
-#       case 4:
-#         if (type == 'I')
-#           return (pcl::PCLPointField::INT32);
-#         if (type == 'U')
-#           return (pcl::PCLPointField::UINT32);
-#         if (type == 'F')
-#           return (pcl::PCLPointField::FLOAT32);
-# 
-#       case 8:
-#         return (pcl::PCLPointField::FLOAT64);
-# 
-#       default:
-#         return (-1);
-#     }
-#   }
-# 
-#   /** \brief Obtains the type of the PCLPointField from a specific PCLPointField as a char
-#     * \param[in] type the PCLPointField field type
-#     * \ingroup common
-#     */
-#   inline char
-#   getFieldType (const int type)
-#   {
-#     switch (type)
-#     {
-#       case pcl::PCLPointField::INT8:
-#       case pcl::PCLPointField::INT16:
-#       case pcl::PCLPointField::INT32:
-#         return ('I');
-# 
-#       case pcl::PCLPointField::UINT8:
-#       case pcl::PCLPointField::UINT16:
-#       case pcl::PCLPointField::UINT32:
-#         return ('U');
-# 
-#       case pcl::PCLPointField::FLOAT32:
-#       case pcl::PCLPointField::FLOAT64:
-#         return ('F');
-#       default:
-#         return ('?');
-#     }
-#   }
-# 
-#   typedef enum
-#   {
-#     BORDER_CONSTANT = 0, BORDER_REPLICATE = 1,
-#     BORDER_REFLECT = 2, BORDER_WRAP = 3,
-#     BORDER_REFLECT_101 = 4, BORDER_TRANSPARENT = 5,
-#     BORDER_DEFAULT = BORDER_REFLECT_101
-#   } InterpolationType;
-# 
-#   /** \brief \return the right index according to the interpolation type.
-#     * \note this is adapted from OpenCV
-#     * \param p the index of point to interpolate
-#     * \param length the top/bottom row or left/right column index
-#     * \param type the requested interpolation
-#     * \throws pcl::BadArgumentException if type is unknown
-#     */
-#   PCL_EXPORTS int
-#   interpolatePointIndex (int p, int length, InterpolationType type);
-# 
-#   /** \brief Concatenate two pcl::PCLPointCloud2.
-#     * \param[in] cloud1 the first input point cloud dataset
-#     * \param[in] cloud2 the second input point cloud dataset
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \return true if successful, false if failed (e.g., name/number of fields differs)
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS bool 
-#   concatenatePointCloud (const pcl::PCLPointCloud2 &cloud1,
-#                          const pcl::PCLPointCloud2 &cloud2,
-#                          pcl::PCLPointCloud2 &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS void 
-#   copyPointCloud (const pcl::PCLPointCloud2 &cloud_in,
-#                   const std::vector<int> &indices, 
-#                   pcl::PCLPointCloud2 &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS void 
-#   copyPointCloud (const pcl::PCLPointCloud2 &cloud_in,
-#                   const std::vector<int, Eigen::aligned_allocator<int> > &indices, 
-#                   pcl::PCLPointCloud2 &cloud_out);
-# 
-#   /** \brief Copy fields and point cloud data from \a cloud_in to \a cloud_out
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS void 
-#   copyPointCloud (const pcl::PCLPointCloud2 &cloud_in,
-#                   pcl::PCLPointCloud2 &cloud_out);
-# 
-#   /** \brief Check if two given point types are the same or not. */
-#   template <typename Point1T, typename Point2T> inline bool
-#   isSamePointType ()
-#   {
-#     return (typeid (Point1T) == typeid (Point2T));
-#   }
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointT> void 
-#   copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                   const std::vector<int> &indices, 
-#                   pcl::PointCloud<PointT> &cloud_out);
-#  
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointT> void 
-#   copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                   const std::vector<int, Eigen::aligned_allocator<int> > &indices, 
-#                   pcl::PointCloud<PointT> &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the PointIndices structure representing the points to be copied from cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointT> void 
-#   copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                   const PointIndices &indices, 
-#                   pcl::PointCloud<PointT> &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointT> void 
-#   copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                   const std::vector<pcl::PointIndices> &indices, 
-#                   pcl::PointCloud<PointT> &cloud_out);
-# 
-#   /** \brief Copy all the fields from a given point cloud into a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \ingroup common
-#     */
-#   template <typename PointInT, typename PointOutT> void 
-#   copyPointCloud (const pcl::PointCloud<PointInT> &cloud_in, 
-#                   pcl::PointCloud<PointOutT> &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointInT, typename PointOutT> void 
-#   copyPointCloud (const pcl::PointCloud<PointInT> &cloud_in, 
-#                   const std::vector<int> &indices, 
-#                   pcl::PointCloud<PointOutT> &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointInT, typename PointOutT> void 
-#   copyPointCloud (const pcl::PointCloud<PointInT> &cloud_in, 
-#                   const std::vector<int, Eigen::aligned_allocator<int> > &indices, 
-#                   pcl::PointCloud<PointOutT> &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the PointIndices structure representing the points to be copied from cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointInT, typename PointOutT> void 
-#   copyPointCloud (const pcl::PointCloud<PointInT> &cloud_in, 
-#                   const PointIndices &indices, 
-#                   pcl::PointCloud<PointOutT> &cloud_out);
-# 
-#   /** \brief Extract the indices of a given point cloud as a new point cloud
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[in] indices the vector of indices representing the points to be copied from cloud_in
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \note Assumes unique indices.
-#     * \ingroup common
-#     */
-#   template <typename PointInT, typename PointOutT> void 
-#   copyPointCloud (const pcl::PointCloud<PointInT> &cloud_in, 
-#                   const std::vector<pcl::PointIndices> &indices, 
-#                   pcl::PointCloud<PointOutT> &cloud_out);
-# 
-#   /** \brief Copy a point cloud inside a larger one interpolating borders.
-#     * \param[in] cloud_in the input point cloud dataset
-#     * \param[out] cloud_out the resultant output point cloud dataset
-#     * \param top
-#     * \param bottom
-#     * \param left
-#     * \param right
-#     * Position of cloud_in inside cloud_out is given by \a top, \a left, \a bottom \a right.
-#     * \param[in] border_type the interpolating method (pcl::BORDER_XXX)
-#     *  BORDER_REPLICATE:     aaaaaa|abcdefgh|hhhhhhh
-#     *  BORDER_REFLECT:       fedcba|abcdefgh|hgfedcb
-#     *  BORDER_REFLECT_101:   gfedcb|abcdefgh|gfedcba
-#     *  BORDER_WRAP:          cdefgh|abcdefgh|abcdefg
-#     *  BORDER_CONSTANT:      iiiiii|abcdefgh|iiiiiii  with some specified 'i'
-#     *  BORDER_TRANSPARENT:   mnopqr|abcdefgh|tuvwxyz  where m-r and t-z are orignal values of cloud_out
-#     * \param value
-#     * \throw pcl::BadArgumentException if any of top, bottom, left or right is negative.
-#     * \ingroup common
-#     */
-#   template <typename PointT> void
-#   copyPointCloud (const pcl::PointCloud<PointT> &cloud_in,
-#                   pcl::PointCloud<PointT> &cloud_out,
-#                   int top, int bottom, int left, int right,
-#                   pcl::InterpolationType border_type, const PointT& value);
-# 
-#   /** \brief Concatenate two datasets representing different fields.
-#     *
-#     * \note If the input datasets have overlapping fields (i.e., both contain
-#     * the same fields), then the data in the second cloud (cloud2_in) will
-#     * overwrite the data in the first (cloud1_in).
-#     *
-#     * \param[in] cloud1_in the first input dataset
-#     * \param[in] cloud2_in the second input dataset (overwrites the fields of the first dataset for those that are shared)
-#     * \param[out] cloud_out the resultant output dataset created by the concatenation of all the fields in the input datasets
-#     * \ingroup common
-#     */
-#   template <typename PointIn1T, typename PointIn2T, typename PointOutT> void 
-#   concatenateFields (const pcl::PointCloud<PointIn1T> &cloud1_in, 
-#                      const pcl::PointCloud<PointIn2T> &cloud2_in, 
-#                      pcl::PointCloud<PointOutT> &cloud_out);
-# 
-#   /** \brief Concatenate two datasets representing different fields.
-#     *
-#     * \note If the input datasets have overlapping fields (i.e., both contain
-#     * the same fields), then the data in the second cloud (cloud2_in) will
-#     * overwrite the data in the first (cloud1_in).
-#     *
-#     * \param[in] cloud1_in the first input dataset
-#     * \param[in] cloud2_in the second input dataset (overwrites the fields of the first dataset for those that are shared)
-#     * \param[out] cloud_out the output dataset created by concatenating all the fields in the input datasets
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS bool
-#   concatenateFields (const pcl::PCLPointCloud2 &cloud1_in,
-#                      const pcl::PCLPointCloud2 &cloud2_in,
-#                      pcl::PCLPointCloud2 &cloud_out);
-# 
-#   /** \brief Copy the XYZ dimensions of a pcl::PCLPointCloud2 into Eigen format
-#     * \param[in] in the point cloud message
-#     * \param[out] out the resultant Eigen MatrixXf format containing XYZ0 / point
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS bool 
-#   getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out);
-# 
-#   /** \brief Copy the XYZ dimensions from an Eigen MatrixXf into a pcl::PCLPointCloud2 message
-#     * \param[in] in the Eigen MatrixXf format containing XYZ0 / point
-#     * \param[out] out the resultant point cloud message
-#     * \note the method assumes that the PCLPointCloud2 message already has the fields set up properly !
-#     * \ingroup common
-#     */
-#   PCL_EXPORTS bool 
-#   getEigenAsPointCloud (Eigen::MatrixXf &in, pcl::PCLPointCloud2 &out);
-#   
-#   namespace io 
-#   {
-#     /** \brief swap bytes order of a char array of length N
-#       * \param bytes char array to swap
-#       * \ingroup common
-#       */
-#     template <std::size_t N> void 
-#     swapByte (char* bytes);
-# 
-#    /** \brief specialization of swapByte for dimension 1
-#      * \param bytes char array to swap
-#      */
-#     template <> inline void 
-#     swapByte<1> (char* bytes) { bytes[0] = bytes[0]; }
-# 
-#   
-#    /** \brief specialization of swapByte for dimension 2
-#      * \param bytes char array to swap
-#      */
-#     template <> inline void 
-#     swapByte<2> (char* bytes) { std::swap (bytes[0], bytes[1]); }
-#   
-#    /** \brief specialization of swapByte for dimension 4
-#      * \param bytes char array to swap
-#      */
-#     template <> inline void 
-#     swapByte<4> (char* bytes)
-#     {
-#       std::swap (bytes[0], bytes[3]);
-#       std::swap (bytes[1], bytes[2]);
-#     }
-#   
-#    /** \brief specialization of swapByte for dimension 8
-#      * \param bytes char array to swap
-#      */
-#     template <> inline void 
-#     swapByte<8> (char* bytes)
-#     {
-#       std::swap (bytes[0], bytes[7]);
-#       std::swap (bytes[1], bytes[6]);
-#       std::swap (bytes[2], bytes[5]);
-#       std::swap (bytes[3], bytes[4]);
-#     }
-#   
-#     /** \brief swaps byte of an arbitrary type T casting it to char*
-#       * \param value the data you want its bytes swapped
-#       */
-#     template <typename T> void 
-#     swapByte (T& value)
-#     {
-#       pcl::io::swapByte<sizeof(T)> (reinterpret_cast<char*> (&value));
-#     }
+#     case pcl::PCLPointField::FLOAT32:
+#     case pcl::PCLPointField::FLOAT64:
+#       return ('F');
+#     default:
+#       return ('?');
 #   }
 # }
 # 
-# #include <pcl/common/impl/io.hpp>
-# 
-# #endif  //#ifndef PCL_COMMON_IO_H_
-# ###
-# 
-# # norms.h
-# namespace pcl
+# typedef enum
 # {
-#   /** \brief Enum that defines all the types of norms available.
-#    * \note Any new norm type should have its own enum value and its own case in the selectNorm () method
-#    * \ingroup common
+#   BORDER_CONSTANT = 0, BORDER_REPLICATE = 1,
+#   BORDER_REFLECT = 2, BORDER_WRAP = 3,
+#   BORDER_REFLECT_101 = 4, BORDER_TRANSPARENT = 5,
+#   BORDER_DEFAULT = BORDER_REFLECT_101
+# } InterpolationType;
+###
+
+# /** \brief \return the right index according to the interpolation type.
+#   * \note this is adapted from OpenCV
+#   * \param p the index of point to interpolate
+#   * \param length the top/bottom row or left/right column index
+#   * \param type the requested interpolation
+#   * \throws pcl::BadArgumentException if type is unknown
+#   */
+# PCL_EXPORTS int interpolatePointIndex (int p, int length, InterpolationType type);
+###
+
+# /** \brief Concatenate two pcl::PCLPointCloud2.
+#   * \param[in] cloud1 the first input point cloud dataset
+#   * \param[in] cloud2 the second input point cloud dataset
+#   * \param[out] cloud_out the resultant output point cloud dataset
+#   * \return true if successful, false if failed (e.g., name/number of fields differs)
+#   * \ingroup common
+#   */
+# PCL_EXPORTS bool concatenatePointCloud (const pcl::PCLPointCloud2 &cloud1, const pcl::PCLPointCloud2 &cloud2, pcl::PCLPointCloud2 &cloud_out);
+###
+
+# pcl1.6.0 NG
+# pcl1.7.2
+# copy_point.h
+# namespace pcl
+# \brief Copy the fields of a source point into a target point.
+#  If the source and the target point types are the same, then a complete
+#  copy is made. Otherwise only those fields that the two point types share
+#  in common are copied.
+# \param[in]  point_in the source point
+# \param[out] point_out the target point
+# \ingroup common
+# template <typename PointInT, typename PointOutT> void copyPoint (const PointInT& point_in, PointOutT& point_out);
+# PCL 1.7.2
+# cdef extern from "pcl/common/copy_point.h" namespace "pcl":
+# PCL 1.6.0
+cdef extern from "pcl/common/io.h" namespace "pcl":
+    void copyPointCloud [PointInT, PointOutT](const PointInT &cloud_in, const PointOutT &cloud_out)
+
+# void copyPointCloud [shared_ptr[cpp.PointCloud[cpp.PointXYZ]], shared_ptr[cpp.PointCloud[cpp.PointXYZ]] (hogehoge)
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# \brief Extract the indices of a given point cloud as a new point cloud
+# \param[in] cloud_in the input point cloud dataset
+# \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
+# \param[out] cloud_out the resultant output point cloud dataset
+# \note Assumes unique indices.
+# \ingroup common
+# PCL_EXPORTS void copyPointCloud (const pcl::PCLPointCloud2 &cloud_in, const std::vector<int> &indices, pcl::PCLPointCloud2 &cloud_out);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# \brief Extract the indices of a given point cloud as a new point cloud
+# \param[in] cloud_in the input point cloud dataset
+# \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
+# \param[out] cloud_out the resultant output point cloud dataset
+# \note Assumes unique indices.
+# \ingroup common
+# PCL_EXPORTS void copyPointCloud (const pcl::PCLPointCloud2 &cloud_in, const std::vector<int, Eigen::aligned_allocator<int> > &indices,  pcl::PCLPointCloud2 &cloud_out);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# \brief Copy fields and point cloud data from \a cloud_in to \a cloud_out
+# \param[in] cloud_in the input point cloud dataset
+# \param[out] cloud_out the resultant output point cloud dataset
+# \ingroup common
+# PCL_EXPORTS void copyPointCloud (const pcl::PCLPointCloud2 &cloud_in, pcl::PCLPointCloud2 &cloud_out);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Check if two given point types are the same or not. */
+# template <typename Point1T, typename Point2T> inline bool isSamePointType ()
+###
+
+# common/io.h
+# namespace pcl
+# \brief Extract the indices of a given point cloud as a new point cloud
+# \param[in] cloud_in the input point cloud dataset
+# \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
+# \param[out] cloud_out the resultant output point cloud dataset
+# \note Assumes unique indices.
+# \ingroup common
+# template <typename PointT> void copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, const std::vector<int> &indices, pcl::PointCloud<PointT> &cloud_out);
+cdef extern from "pcl/common/io.h" namespace "pcl":
+    # cdef void copyPointCloud [PointT](shared_ptr[cpp.PointCloud[PointT]] &cloud_in, const vector[int] &indices, shared_ptr[cpp.PointCloud[PointT]] &cloud_out)
+    # NG
+    # cdef void copyPointCloud_Indices "copyPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud_in, const vector[int] &indices, shared_ptr[cpp.PointCloud[PointT]] &cloud_out)
+    # cdef void copyPointCloud_Indices "pcl::copyPointCloud" [PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud_in, const vector[int] &indices, shared_ptr[cpp.PointCloud[PointT]] &cloud_out)
+    void copyPointCloud_Indices "pcl::copyPointCloud" [PointT](const cpp.PointCloud[PointT]* &cloud_in, const vector[int] &indices, cpp.PointCloud[PointT] &cloud_out)
+
+
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# \brief Extract the indices of a given point cloud as a new point cloud
+# \param[in] cloud_in the input point cloud dataset
+# \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
+# \param[out] cloud_out the resultant output point cloud dataset
+# \note Assumes unique indices.
+# \ingroup common
+# template <typename PointT> void copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, const std::vector<int, Eigen::aligned_allocator<int> > &indices, pcl::PointCloud<PointT> &cloud_out);
+cdef extern from "pcl/common/io.h" namespace "pcl":
+    cdef void copyPointCloud_Indices2 "pcl::copyPointCloud" [PointT](const cpp.PointCloud[PointT]* &cloud_in, const vector[int, eigen3.aligned_allocator_t] &indices, cpp.PointCloud[PointT] &cloud_out)
+
+
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Extract the indices of a given point cloud as a new point cloud
+#   * \param[in] cloud_in the input point cloud dataset
+#   * \param[in] indices the PointIndices structure representing the points to be copied from cloud_in
+#   * \param[out] cloud_out the resultant output point cloud dataset
+#   * \note Assumes unique indices.
+#   * \ingroup common
+#   */
+# template <typename PointT> void copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, const PointIndices &indices, pcl::PointCloud<PointT> &cloud_out);
+cdef extern from "pcl/common/io.h" namespace "pcl":
+    cdef void copyPointCloud_Indices3 "pcl::copyPointCloud" [PointT](const cpp.PointCloud[PointT]* &cloud_in, const cpp.PointIndices &indices, cpp.PointCloud[PointT] &cloud_out)
+
+
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Extract the indices of a given point cloud as a new point cloud
+#   * \param[in] cloud_in the input point cloud dataset
+#   * \param[in] indices the vector of indices representing the points to be copied from \a cloud_in
+#   * \param[out] cloud_out the resultant output point cloud dataset
+#   * \note Assumes unique indices.
+#   * \ingroup common
+#   */
+# template <typename PointT> void copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, const std::vector<pcl::PointIndices> &indices, pcl::PointCloud<PointT> &cloud_out);
+cdef extern from "pcl/common/io.h" namespace "pcl":
+    cdef void copyPointCloud_Indices4 "pcl::copyPointCloud" [PointT](const cpp.PointCloud[PointT]* &cloud_in, const vector[cpp.PointIndices] &indices, cpp.PointCloud[PointT] &cloud_out)
+
+
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Copy a point cloud inside a larger one interpolating borders.
+#   * \param[in] cloud_in the input point cloud dataset
+#   * \param[out] cloud_out the resultant output point cloud dataset
+#   * \param top
+#   * \param bottom
+#   * \param left
+#   * \param right
+#   * Position of cloud_in inside cloud_out is given by \a top, \a left, \a bottom \a right.
+#   * \param[in] border_type the interpolating method (pcl::BORDER_XXX)
+#   *  BORDER_REPLICATE:     aaaaaa|abcdefgh|hhhhhhh
+#   *  BORDER_REFLECT:       fedcba|abcdefgh|hgfedcb
+#   *  BORDER_REFLECT_101:   gfedcb|abcdefgh|gfedcba
+#   *  BORDER_WRAP:          cdefgh|abcdefgh|abcdefg
+#   *  BORDER_CONSTANT:      iiiiii|abcdefgh|iiiiiii  with some specified 'i'
+#   *  BORDER_TRANSPARENT:   mnopqr|abcdefgh|tuvwxyz  where m-r and t-z are orignal values of cloud_out
+#   * \param value
+#   * \throw pcl::BadArgumentException if any of top, bottom, left or right is negative.
+#   * \ingroup common
+#   */
+# template <typename PointT> void copyPointCloud (const pcl::PointCloud<PointT> &cloud_in, pcl::PointCloud<PointT> &cloud_out, int top, int bottom, int left, int right, pcl::InterpolationType border_type, const PointT& value);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Concatenate two datasets representing different fields.
+#   * \note If the input datasets have overlapping fields (i.e., both contain
+#   * the same fields), then the data in the second cloud (cloud2_in) will
+#   * overwrite the data in the first (cloud1_in).
+#   * \param[in] cloud1_in the first input dataset
+#   * \param[in] cloud2_in the second input dataset (overwrites the fields of the first dataset for those that are shared)
+#   * \param[out] cloud_out the resultant output dataset created by the concatenation of all the fields in the input datasets
+#   * \ingroup common
+#   */
+# template <typename PointIn1T, typename PointIn2T, typename PointOutT> void concatenateFields (const pcl::PointCloud<PointIn1T> &cloud1_in, const pcl::PointCloud<PointIn2T> &cloud2_in, pcl::PointCloud<PointOutT> &cloud_out);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Concatenate two datasets representing different fields.
+#   * \note If the input datasets have overlapping fields (i.e., both contain
+#   * the same fields), then the data in the second cloud (cloud2_in) will
+#   * overwrite the data in the first (cloud1_in).
+#   * \param[in] cloud1_in the first input dataset
+#   * \param[in] cloud2_in the second input dataset (overwrites the fields of the first dataset for those that are shared)
+#   * \param[out] cloud_out the output dataset created by concatenating all the fields in the input datasets
+#   * \ingroup common
+#   */
+# PCL_EXPORTS bool concatenateFields (const pcl::PCLPointCloud2 &cloud1_in,const pcl::PCLPointCloud2 &cloud2_in,pcl::PCLPointCloud2 &cloud_out);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Copy the XYZ dimensions of a pcl::PCLPointCloud2 into Eigen format
+#   * \param[in] in the point cloud message
+#   * \param[out] out the resultant Eigen MatrixXf format containing XYZ0 / point
+#   * \ingroup common
+#   */
+# PCL_EXPORTS bool getPointCloudAsEigen (const pcl::PCLPointCloud2 &in, Eigen::MatrixXf &out);
+###
+
+# common/io.h
+# namespace pcl
+# cdef extern from "pcl/common/io.h" namespace "pcl":
+# /** \brief Copy the XYZ dimensions from an Eigen MatrixXf into a pcl::PCLPointCloud2 message
+#   * \param[in] in the Eigen MatrixXf format containing XYZ0 / point
+#   * \param[out] out the resultant point cloud message
+#   * \note the method assumes that the PCLPointCloud2 message already has the fields set up properly !
+#   * \ingroup common
+#   */
+# PCL_EXPORTS bool getEigenAsPointCloud (Eigen::MatrixXf &in, pcl::PCLPointCloud2 &out);
+# 
+# namespace io 
+# {
+#   /** \brief swap bytes order of a char array of length N
+#     * \param bytes char array to swap
+#     * \ingroup common
+#     */
+#   template <std::size_t N> void swapByte (char* bytes);
+# 
+#  /** \brief specialization of swapByte for dimension 1
+#    * \param bytes char array to swap
 #    */
-#   enum NormType {L1, L2_SQR, L2, LINF, JM, B, SUBLINEAR, CS, DIV, PF, K, KL, HIK};
+#   template <> inline void swapByte<1> (char* bytes) { bytes[0] = bytes[0]; }
 # 
-#   /** \brief Method that calculates any norm type available, based on the norm_type variable
-#    * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#    * \ingroup common
-#    * */
-#   template <typename FloatVectorT> inline float
-#   selectNorm (FloatVectorT A, FloatVectorT B, int dim, NormType norm_type);
+#  /** \brief specialization of swapByte for dimension 2
+#    * \param bytes char array to swap
+#    */
+#   template <> inline void swapByte<2> (char* bytes) { std::swap (bytes[0], bytes[1]); }
 # 
-#   /** \brief Compute the L1 norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
+#  /** \brief specialization of swapByte for dimension 4
+#    * \param bytes char array to swap
+#    */
+#   template <> inline void swapByte<4> (char* bytes)
+# 
+#  /** \brief specialization of swapByte for dimension 8
+#    * \param bytes char array to swap
+#    */
+#   template <> inline void swapByte<8> (char* bytes)
+# 
+#   /** \brief swaps byte of an arbitrary type T casting it to char*
+#     * \param value the data you want its bytes swapped
 #     */
-#   template <typename FloatVectorT> inline float
-#   L1_Norm (FloatVectorT A, FloatVectorT B, int dim);
-#   
-#   /** \brief Compute the squared L2 norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   L2_Norm_SQR (FloatVectorT A, FloatVectorT B, int dim);
-#   
-#   /** \brief Compute the L2 norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   L2_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the L-infinity norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */  
-#   template <typename FloatVectorT> inline float
-#   Linf_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the JM norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   JM_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the B norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   B_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the sublinear norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   Sublinear_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the CS norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   CS_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the div norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   Div_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the PF norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \param P1 the first parameter
-#     * \param P2 the second parameter
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   PF_Norm (FloatVectorT A, FloatVectorT B, int dim, float P1, float P2);
-# 
-#   /** \brief Compute the K norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \param P1 the first parameter
-#     * \param P2 the second parameter
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   K_Norm (FloatVectorT A, FloatVectorT B, int dim, float P1, float P2);
-# 
-#   /** \brief Compute the KL between two discrete probability density functions
-#     * \param A the first discrete PDF
-#     * \param B the second discrete PDF
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   KL_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# 
-#   /** \brief Compute the HIK norm of the vector between two points
-#     * \param A the first point
-#     * \param B the second point
-#     * \param dim the number of dimensions in \a A and \a B (dimensions must match)
-#     * \note FloatVectorT is any type of vector with its values accessible via [ ]
-#     * \ingroup common
-#     */
-#   template <typename FloatVectorT> inline float
-#   HIK_Norm (FloatVectorT A, FloatVectorT B, int dim);
-# }
-# /*@}*/
-# #include <pcl/common/impl/norms.hpp>
-# 
-# #endif  //#ifndef PCL_NORMS_H_
-# ###
-# 
-# # pca.h
-# namespace pcl 
+#   template <typename T> void swapByte (T& value)
+
+
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Enum that defines all the types of norms available.
+#  * \note Any new norm type should have its own enum value and its own case in the selectNorm () method
+#  * \ingroup common
+#  */
+# enum NormType {L1, L2_SQR, L2, LINF, JM, B, SUBLINEAR, CS, DIV, PF, K, KL, HIK};
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Method that calculates any norm type available, based on the norm_type variable
+#  * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#  * \ingroup common
+#  * */
+# template <typename FloatVectorT> inline float
+# selectNorm (FloatVectorT A, FloatVectorT B, int dim, NormType norm_type);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the L1 norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# L1_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the squared L2 norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# L2_Norm_SQR (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the L2 norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# L2_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the L-infinity norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */  
+# template <typename FloatVectorT> inline float
+# Linf_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the JM norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# JM_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the B norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# B_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the sublinear norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# Sublinear_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the CS norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# CS_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the div norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# Div_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the PF norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \param P1 the first parameter
+#   * \param P2 the second parameter
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# PF_Norm (FloatVectorT A, FloatVectorT B, int dim, float P1, float P2);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the K norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \param P1 the first parameter
+#   * \param P2 the second parameter
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# K_Norm (FloatVectorT A, FloatVectorT B, int dim, float P1, float P2);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the KL between two discrete probability density functions
+#   * \param A the first discrete PDF
+#   * \param B the second discrete PDF
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# KL_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# norms.h
+# namespace pcl
+# cdef extern from "pcl/common/norms.h" namespace "pcl":
+# /** \brief Compute the HIK norm of the vector between two points
+#   * \param A the first point
+#   * \param B the second point
+#   * \param dim the number of dimensions in \a A and \a B (dimensions must match)
+#   * \note FloatVectorT is any type of vector with its values accessible via [ ]
+#   * \ingroup common
+#   */
+# template <typename FloatVectorT> inline float
+# HIK_Norm (FloatVectorT A, FloatVectorT B, int dim);
+###
+
+# pca.h
+# namespace pcl
+# cdef extern from "pcl/common/pca.h" namespace "pcl":
+# /** Principal Component analysis (PCA) class.\n
+#   *  Principal components are extracted by singular values decomposition on the 
+#   * covariance matrix of the centered input cloud. Available data after pca computation 
+#   * are the mean of the input data, the eigenvalues (in descending order) and 
+#   * corresponding eigenvectors.\n
+#   * Other methods allow projection in the eigenspace, reconstruction from eigenspace and 
+#   *  update of the eigenspace with a new datum (according Matej Artec, Matjaz Jogan and 
+#   * Ales Leonardis: "Incremental PCA for On-line Visual Learning and Recognition").
+#   * \author Nizar Sallem
+#   * \ingroup common
+#   */
+# template <typename PointT>
+# class PCA : public pcl::PCLBase <PointT>
 # {
-#   /** Principal Component analysis (PCA) class.\n
-#     *  Principal components are extracted by singular values decomposition on the 
-#     * covariance matrix of the centered input cloud. Available data after pca computation 
-#     * are the mean of the input data, the eigenvalues (in descending order) and 
-#     * corresponding eigenvectors.\n
-#     * Other methods allow projection in the eigenspace, reconstruction from eigenspace and 
-#     *  update of the eigenspace with a new datum (according Matej Artec, Matjaz Jogan and 
-#     * Ales Leonardis: "Incremental PCA for On-line Visual Learning and Recognition").
-#     *
-#     * \author Nizar Sallem
-#     * \ingroup common
-#     */
-#   template <typename PointT>
-#   class PCA : public pcl::PCLBase <PointT>
-#   {
-#     public:
-#       typedef pcl::PCLBase <PointT> Base;
-#       typedef typename Base::PointCloud PointCloud;
-#       typedef typename Base::PointCloudPtr PointCloudPtr;
-#       typedef typename Base::PointCloudConstPtr PointCloudConstPtr;
-#       typedef typename Base::PointIndicesPtr PointIndicesPtr;
-#       typedef typename Base::PointIndicesConstPtr PointIndicesConstPtr;
+#   public:
+#     typedef pcl::PCLBase <PointT> Base;
+#     typedef typename Base::PointCloud PointCloud;
+#     typedef typename Base::PointCloudPtr PointCloudPtr;
+#     typedef typename Base::PointCloudConstPtr PointCloudConstPtr;
+#     typedef typename Base::PointIndicesPtr PointIndicesPtr;
+#     typedef typename Base::PointIndicesConstPtr PointIndicesConstPtr;
 # 
-#       using Base::input_;
-#       using Base::indices_;
-#       using Base::initCompute;
-#       using Base::setInputCloud;
+#     using Base::input_;
+#     using Base::indices_;
+#     using Base::initCompute;
+#     using Base::setInputCloud;
 # 
-#       /** Updating method flag */
-#       enum FLAG 
-#       {
-#         /** keep the new basis vectors if possible */
-#         increase, 
-#         /** preserve subspace dimension */
-#         preserve
-#       };
+#     /** Updating method flag */
+#     enum FLAG 
+#     {
+#       /** keep the new basis vectors if possible */
+#       increase, 
+#       /** preserve subspace dimension */
+#       preserve
+#     };
+# 
+#     /** \brief Default Constructor
+#       * \param basis_only flag to compute only the PCA basis
+#       */
+#     PCA (bool basis_only = false)
+#       : Base ()
+#       , compute_done_ (false)
+#       , basis_only_ (basis_only) 
+#       , eigenvectors_ ()
+#       , coefficients_ ()
+#       , mean_ ()
+#       , eigenvalues_  ()
+#     {}
 #     
-#       /** \brief Default Constructor
-#         * \param basis_only flag to compute only the PCA basis
-#         */
-#       PCA (bool basis_only = false)
-#         : Base ()
-#         , compute_done_ (false)
-#         , basis_only_ (basis_only) 
-#         , eigenvectors_ ()
-#         , coefficients_ ()
-#         , mean_ ()
-#         , eigenvalues_  ()
-#       {}
-#       
-#       /** \brief Constructor with direct computation
-#         * X input m*n matrix (ie n vectors of R(m))
-#         * basis_only flag to compute only the PCA basis
-#         */
-#       PCL_DEPRECATED ("Use PCA (bool basis_only); setInputCloud (X.makeShared ()); instead")
-#       PCA (const pcl::PointCloud<PointT>& X, bool basis_only = false);
+#     /** \brief Constructor with direct computation
+#       * X input m*n matrix (ie n vectors of R(m))
+#       * basis_only flag to compute only the PCA basis
+#       */
+#     PCL_DEPRECATED ("Use PCA (bool basis_only); setInputCloud (X.makeShared ()); instead")
+#     PCA (const pcl::PointCloud<PointT>& X, bool basis_only = false);
 # 
-#       /** Copy Constructor
-#         * \param[in] pca PCA object
-#         */
-#       PCA (PCA const & pca) 
-#         : Base (pca)
-#         , compute_done_ (pca.compute_done_)
-#         , basis_only_ (pca.basis_only_) 
-#         , eigenvectors_ (pca.eigenvectors_)
-#         , coefficients_ (pca.coefficients_)
-#         , mean_ (pca.mean_)
-#         , eigenvalues_  (pca.eigenvalues_)
-#       {}
+#     /** Copy Constructor
+#       * \param[in] pca PCA object
+#       */
+#     PCA (PCA const & pca) 
+#       : Base (pca)
+#       , compute_done_ (pca.compute_done_)
+#       , basis_only_ (pca.basis_only_) 
+#       , eigenvectors_ (pca.eigenvectors_)
+#       , coefficients_ (pca.coefficients_)
+#       , mean_ (pca.mean_)
+#       , eigenvalues_  (pca.eigenvalues_)
+#     {}
 # 
-#       /** Assignment operator
-#         * \param[in] pca PCA object
-#         */
-#       inline PCA& 
-#       operator= (PCA const & pca) 
-#       {
-#         eigenvectors_ = pca.eigenvectors;
-#         coefficients_ = pca.coefficients;
-#         eigenvalues_  = pca.eigenvalues;
-#         mean_         = pca.mean;
-#         return (*this);
-#       }
-#       
-#       /** \brief Provide a pointer to the input dataset
-#         * \param cloud the const boost shared pointer to a PointCloud message
-#         */
-#       inline void 
-#       setInputCloud (const PointCloudConstPtr &cloud) 
-#       { 
-#         Base::setInputCloud (cloud);
-#         compute_done_ = false;
-#       }
+#     /** Assignment operator
+#       * \param[in] pca PCA object
+#       */
+#     inline PCA& operator= (PCA const & pca) 
 # 
-#       /** \brief Mean accessor
-#         * \throw InitFailedException
-#         */
-#       inline Eigen::Vector4f& 
-#       getMean () 
-#       {
-#         if (!compute_done_)
-#           initCompute ();
-#         if (!compute_done_)
-#           PCL_THROW_EXCEPTION (InitFailedException, 
-#                                "[pcl::PCA::getMean] PCA initCompute failed");
-#         return (mean_);
-#       }
+#     /** \brief Provide a pointer to the input dataset
+#       * \param cloud the const boost shared pointer to a PointCloud message
+#       */
+#     inline void setInputCloud (const PointCloudConstPtr &cloud) 
 # 
-#       /** Eigen Vectors accessor
-#         * \throw InitFailedException
-#         */
-#       inline Eigen::Matrix3f& 
-#       getEigenVectors () 
-#       {
-#         if (!compute_done_)
-#           initCompute ();
-#         if (!compute_done_)
-#           PCL_THROW_EXCEPTION (InitFailedException, 
-#                                "[pcl::PCA::getEigenVectors] PCA initCompute failed");
-#         return (eigenvectors_);
-#       }
-#       
-#       /** Eigen Values accessor
-#         * \throw InitFailedException
-#         */
-#       inline Eigen::Vector3f& 
-#       getEigenValues ()
-#       {
-#         if (!compute_done_)
-#           initCompute ();
-#         if (!compute_done_)
-#           PCL_THROW_EXCEPTION (InitFailedException, 
-#                                "[pcl::PCA::getEigenVectors] PCA getEigenValues failed");
-#         return (eigenvalues_);
-#       }
-#       
-#       /** Coefficients accessor
-#         * \throw InitFailedException
-#         */
-#       inline Eigen::MatrixXf& 
-#       getCoefficients () 
-#       {
-#         if (!compute_done_)
-#           initCompute ();
-#         if (!compute_done_)
-#           PCL_THROW_EXCEPTION (InitFailedException, 
-#                                "[pcl::PCA::getEigenVectors] PCA getCoefficients failed");
-#         return (coefficients_);
-#       }
-#             
-#       /** update PCA with a new point
-#         * \param[in] input input point 
-#         * \param[in] flag update flag
-#         * \throw InitFailedException
-#         */
-#       inline void 
-#       update (const PointT& input, FLAG flag = preserve);
-#       
-#       /** Project point on the eigenspace.
-#         * \param[in] input point from original dataset
-#         * \param[out] projection the point in eigen vectors space
-#         * \throw InitFailedException
-#         */
-#       inline void 
-#       project (const PointT& input, PointT& projection);
+#     /** \brief Mean accessor
+#       * \throw InitFailedException
+#       */
+#     inline Eigen::Vector4f& getMean () 
 # 
-#       /** Project cloud on the eigenspace.
-#         * \param[in] input cloud from original dataset
-#         * \param[out] projection the cloud in eigen vectors space
-#         * \throw InitFailedException
-#         */
-#       inline void
-#       project (const PointCloud& input, PointCloud& projection);
-#       
-#       /** Reconstruct point from its projection
-#         * \param[in] projection point from eigenvector space
-#         * \param[out] input reconstructed point
-#         * \throw InitFailedException
-#         */
-#       inline void 
-#       reconstruct (const PointT& projection, PointT& input);
+#     /** Eigen Vectors accessor
+#       * \throw InitFailedException
+#       */
+#     inline Eigen::Matrix3f& getEigenVectors () 
 # 
-#       /** Reconstruct cloud from its projection
-#         * \param[in] projection cloud from eigenvector space
-#         * \param[out] input reconstructed cloud
-#         * \throw InitFailedException
-#         */
-#       inline void
-#       reconstruct (const PointCloud& projection, PointCloud& input);
+#     /** Eigen Values accessor
+#       * \throw InitFailedException
+#       */
+#     inline Eigen::Vector3f& getEigenValues ()
 # 
-#     private:
-#       inline bool
-#       initCompute ();
+#     /** Coefficients accessor
+#       * \throw InitFailedException
+#       */
+#     inline Eigen::MatrixXf& getCoefficients () 
 # 
-#       bool compute_done_;
-#       bool basis_only_;
-#       Eigen::Matrix3f eigenvectors_;
-#       Eigen::MatrixXf coefficients_;
-#       Eigen::Vector4f mean_;
-#       Eigen::Vector3f eigenvalues_;
-#   }; // class PCA
-# } // namespace pcl
+#     /** update PCA with a new point
+#       * \param[in] input input point 
+#       * \param[in] flag update flag
+#       * \throw InitFailedException
+#       */
+#     inline void update (const PointT& input, FLAG flag = preserve);
 # 
-# #include <pcl/common/impl/pca.hpp>
+#     /** Project point on the eigenspace.
+#       * \param[in] input point from original dataset
+#       * \param[out] projection the point in eigen vectors space
+#       * \throw InitFailedException
+#       */
+#     inline void project (const PointT& input, PointT& projection);
 # 
-# #endif // PCL_PCA_H
-# ###
+#     /** Project cloud on the eigenspace.
+#       * \param[in] input cloud from original dataset
+#       * \param[out] projection the cloud in eigen vectors space
+#       * \throw InitFailedException
+#       */
+#     inline void project (const PointCloud& input, PointCloud& projection);
 # 
+#     /** Reconstruct point from its projection
+#       * \param[in] projection point from eigenvector space
+#       * \param[out] input reconstructed point
+#       * \throw InitFailedException
+#       */
+#     inline void reconstruct (const PointT& projection, PointT& input);
 # 
-# # piecewise_linear_function.h
-# namespace pcl 
-# {
-#   /**
-#     * \brief This provides functionalities to efficiently return values for piecewise linear function
-#     * \ingroup common
-#     */
-#   class PiecewiseLinearFunction
-#   {
-#     public:
+#     /** Reconstruct cloud from its projection
+#       * \param[in] projection cloud from eigenvector space
+#       * \param[out] input reconstructed cloud
+#       * \throw InitFailedException
+#       */
+#     inline void reconstruct (const PointCloud& projection, PointCloud& input);
+###
+
+# piecewise_linear_function.h
+# namespace pcl
+# cdef extern from "pcl/common/piecewise_linear_function.h" namespace "pcl":
+# /**
+#   * \brief This provides functionalities to efficiently return values for piecewise linear function
+#   * \ingroup common
+#   */
+# class PiecewiseLinearFunction
+#     	public:
 #       // =====CONSTRUCTOR & DESTRUCTOR=====
 #       //! Constructor
 #       PiecewiseLinearFunction (float factor, float offset);
 #       
 #       // =====PUBLIC METHODS=====
 #       //! Get the list of known data points
-#       std::vector<float>& 
-#       getDataPoints () 
-#       { 
-#         return data_points_;
-#       }
+#       std::vector<float>& getDataPoints () 
 #       
 #       //! Get the value of the function at the given point
-#       inline float 
-#       getValue (float point) const;
+#       inline float getValue (float point) const;
 #       
 #       // =====PUBLIC MEMBER VARIABLES=====
 #       
-#     protected:
-#       // =====PROTECTED MEMBER VARIABLES=====
-#       std::vector<float> data_points_;
-#       float factor_;
-#       float offset_;
-#   };
-# 
-# }  // end namespace pcl
-# 
-# #include <pcl/common/impl/piecewise_linear_function.hpp>
-# 
-# #endif  //#ifndef PCL_PIECEWISE_LINEAR_FUNCTION_H_
-# ###
-# 
-# 
-# # point_operators.h
-# ###
-# 
-# # point_tests.h
+###
+
+# point_operators.h
+###
+
+# point_tests.h
 # namespace pcl
 # {
 #   /** Tests if the 3D components of a point are all finite
@@ -4329,11 +3812,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     return (pcl_isfinite (n.normal_x) && pcl_isfinite (n.normal_y) && pcl_isfinite (n.normal_z));
 #   }
 # }
-# 
-# #endif    // PCL_COMMON_POINT_TESTS_H_
-# ###
-# 
-# # polynomial_calculations.h
+###
+
+# polynomial_calculations.h
 # namespace pcl 
 # {
 #   /** \brief This provides some functionality for polynomials,
@@ -4424,13 +3905,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   typedef PolynomialCalculationsT<float>  PolynomialCalculations;
 # 
 # }  // end namespace
-# 
-# #include <pcl/common/impl/polynomial_calculations.hpp>
-# #endif
-# ###
-# 
-# # poses_from_matches.h
-# 
+###
+
+# poses_from_matches.h
 # namespace pcl
 # {
 #   /**
@@ -4518,11 +3995,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   };
 # 
 # }  // end namespace pcl
-# 
-# #endif  //#ifndef PCL_POSES_FROM_MATCHES_H_
-# ###
-# 
-# # projection_matrix.h
+###
+
+# projection_matrix.h
 # namespace pcl
 # {
 #   template <typename T> class PointCloud;
@@ -4549,14 +4024,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   PCL_EXPORTS void
 #   getCameraMatrixFromProjectionMatrix (const Eigen::Matrix<float, 3, 4, Eigen::RowMajor>& projection_matrix, Eigen::Matrix3f& camera_matrix);  
 # }
-# 
-# #include <pcl/common/impl/projection_matrix.hpp>
-# 
-# #endif // __PCL_ORGANIZED_PROJECTION_MATRIX_H__
-# ###
-# 
-# 
-# # random.h
+###
+
+# random.h
 # namespace pcl 
 # {
 #   namespace common 
@@ -4733,12 +4203,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     };
 #   }
 # }
-# 
-# #include <pcl/common/impl/random.hpp>
-# #endif
-# ###
-# 
-# # register_point_struct.h
+###
+
+# register_point_struct.h
 # #include <pcl/pcl_macros.h>
 # #include <pcl/point_traits.h>
 # #include <boost/mpl/vector.hpp>
@@ -5051,12 +4518,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # #if defined _MSC_VER
 #   #pragma warning (pop)
 # #endif
-# 
-# #endif  //#ifndef PCL_REGISTER_POINT_STRUCT_H_
-# ###
-# 
-# # spring.h
-# 
+###
+
+# spring.h
 # namespace pcl
 # {
 #   namespace common
@@ -5141,14 +4605,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #                 const size_t& amount);
 #   };
 # }
-# 
-# #include <pcl/common/impl/spring.hpp>
-# 
-# #endif
-# ###
-# 
-# 
-# # synchronizer.h
+###
+
+# synchronizer.h
 # namespace pcl
 # {
 #   /** /brief This template class synchronizes two data streams of different types.
@@ -5287,12 +4746,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #     }
 #   } ;
 # } // namespace
-# 
-# #endif // __PCL_SYNCHRONIZER__
-# ###
-# 
-# 
-# # time.h
+###
+
+# time.h
 # namespace pcl
 # {
 #   /** \brief Simple stopwatch.
@@ -5370,9 +4826,6 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         double val = this->getTime ();
 #         std::cerr << title_ << " took " << val << "ms.\n";
 #       }
-# 
-#     private:
-#       std::string title_;
 #   };
 # 
 # 
@@ -5381,13 +4834,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #   ScopeTime scopeTime(__func__)
 # #endif
 # 
-# inline double 
-# getTime ()
-# {
-#   boost::posix_time::ptime epoch_time (boost::gregorian::date (1970, 1, 1));
-#   boost::posix_time::ptime current_time = boost::posix_time::microsec_clock::local_time ();
-#   return (static_cast<double>((current_time - epoch_time).total_nanoseconds ()) * 1.0e-9);
-# }
+# inline double getTime ()
 # 
 # /// Executes code, only if secs are gone since last exec.
 # #ifndef DO_EVERY_TS
@@ -5413,11 +4860,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 # 
 # }  // end namespace
 # /*@}*/
-# 
-# #endif  //#ifndef PCL_NORMS_H_
-# ###
-# 
-# # time_trigger.h
+###
+
+# time_trigger.h
 # namespace pcl
 # {
 #   /** \brief Timer class that invokes registered callback methods periodically.
@@ -5476,11 +4921,9 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #       boost::mutex condition_mutex_;
 #   };
 # }
-# 
-# #endif
-# ###
-# 
-# # transformation_from_correspondences.h
+###
+
+# transformation_from_correspondences.h
 # namespace pcl 
 # {
 #   /**
@@ -5526,436 +4969,313 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         
 #         //-----VARIABLES-----
 #         
-#      protected:
-#         //-----METHODS-----
-#         //-----VARIABLES-----
-#         unsigned int no_of_samples_;
-#         float accumulated_weight_;
-#         Eigen::Vector3f mean1_, mean2_;
-#         Eigen::Matrix<float, 3, 3> covariance_;
 #   };
 # 
 # }  // END namespace
-# 
-# #include <pcl/common/impl/transformation_from_correspondences.hpp>
-# 
-# #endif  // #ifndef PCL_TRANSFORMATION_FROM_CORRESPONDENCES_H
-# ###
-# 
-# 
-# # transforms.h
+###
+
+# transforms.h
 # namespace pcl
-# {
-#   /** \brief Apply an affine transform defined by an Eigen Transform
-#     * \param[in] cloud_in the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \note Can be used with cloud_in equal to cloud_out
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
+# /** \brief Apply an affine transform defined by an Eigen Transform
+#   * \param[in] cloud_in the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \note Can be used with cloud_in equal to cloud_out
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
 # 
-#   template <typename PointT> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Affine3f &transform)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Affine3f &transform)
 # 
-#   /** \brief Apply an affine transform defined by an Eigen Transform
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const std::vector<int> &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
+# /** \brief Apply an affine transform defined by an Eigen Transform
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const std::vector<int> &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
 # 
-#   template <typename PointT> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const std::vector<int> &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Affine3f &transform)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const std::vector<int> &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Affine3f &transform)
 # 
-#   /** \brief Apply an affine transform defined by an Eigen Transform
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const pcl::PointIndices &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform)
-#   {
-#     return (transformPointCloud<PointT, Scalar> (cloud_in, indices.indices, cloud_out, transform));
-#   }
+# /** \brief Apply an affine transform defined by an Eigen Transform
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const pcl::PointIndices &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform)
 # 
-#   template <typename PointT> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const pcl::PointIndices &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Affine3f &transform)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const pcl::PointIndices &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Affine3f &transform)
 # 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \note Can be used with cloud_in equal to cloud_out
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \note Can be used with cloud_in equal to cloud_out
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
 # 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Affine3f &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Affine3f &transform)
 # 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const std::vector<int> &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 const std::vector<int> &indices, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
 # 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const std::vector<int> &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Affine3f &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 const std::vector<int> &indices, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Affine3f &transform)
 # 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const pcl::PointIndices &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, Scalar> (cloud_in, indices.indices, cloud_out, transform));
-#   }
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 const pcl::PointIndices &indices, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform)
 # 
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 const pcl::PointIndices &indices, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Affine3f &transform)
 # 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const pcl::PointIndices &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Affine3f &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
+# /** \brief Apply a rigid transform defined by a 4x4 matrix
+#   * \param[in] cloud_in the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform a rigid transformation 
+#   * \note Can be used with cloud_in equal to cloud_out
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix<Scalar, 4, 4> &transform)
 # 
-#   /** \brief Apply a rigid transform defined by a 4x4 matrix
-#     * \param[in] cloud_in the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform a rigid transformation 
-#     * \note Can be used with cloud_in equal to cloud_out
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix<Scalar, 4, 4> &transform)
-#   {
-#     Eigen::Transform<Scalar, 3, Eigen::Affine> t (transform);
-#     return (transformPointCloud<PointT, Scalar> (cloud_in, cloud_out, t));
-#   }
+# template <typename PointT> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix4f &transform)
 # 
-#   template <typename PointT> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix4f &transform)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, cloud_out, transform));
-#   }
+# /** \brief Apply a rigid transform defined by a 4x4 matrix
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform a rigid transformation 
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const std::vector<int> &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix<Scalar, 4, 4> &transform)
 # 
-#   /** \brief Apply a rigid transform defined by a 4x4 matrix
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform a rigid transformation 
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const std::vector<int> &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix<Scalar, 4, 4> &transform)
-#   {
-#     Eigen::Transform<Scalar, 3, Eigen::Affine> t (transform);
-#     return (transformPointCloud<PointT, Scalar> (cloud_in, indices, cloud_out, t));
-#   }
+# template <typename PointT> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const std::vector<int> &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix4f &transform)
 # 
-#   template <typename PointT> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const std::vector<int> &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix4f &transform)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
+# /** \brief Apply a rigid transform defined by a 4x4 matrix
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform a rigid transformation 
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const pcl::PointIndices &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix<Scalar, 4, 4> &transform)
 # 
-#   /** \brief Apply a rigid transform defined by a 4x4 matrix
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform a rigid transformation 
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const pcl::PointIndices &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix<Scalar, 4, 4> &transform)
-#   {
-#     return (transformPointCloud<PointT, Scalar> (cloud_in, indices.indices, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
+#                      const pcl::PointIndices &indices, 
+#                      pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix4f &transform)
 # 
-#   template <typename PointT> void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        const pcl::PointIndices &indices, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix4f &transform)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \note Can be used with cloud_in equal to cloud_out
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix<Scalar, 4, 4> &transform)
 # 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \note Can be used with cloud_in equal to cloud_out
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix<Scalar, 4, 4> &transform)
-#   {
-#     Eigen::Transform<Scalar, 3, Eigen::Affine> t (transform);
-#     return (transformPointCloudWithNormals<PointT, Scalar> (cloud_in, cloud_out, t));
-#   }
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix4f &transform)
 # 
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \note Can be used with cloud_in equal to cloud_out
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 const std::vector<int> &indices, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix<Scalar, 4, 4> &transform)
 # 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix4f &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, cloud_out, transform));
-#   }
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
+#                                 const std::vector<int> &indices, 
+#                                 pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix4f &transform)
+###
+
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[in] indices the set of point indices to use from the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] transform an affine transformation (typically a rigid transformation)
+#   * \note Can be used with cloud_in equal to cloud_out
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, const pcl::PointIndices &indices, pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix<Scalar, 4, 4> &transform)
+###
+
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, const pcl::PointIndices &indices, pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix4f &transform)
+###
+
+# /** \brief Apply a rigid transform defined by a 3D offset and a quaternion
+#   * \param[in] cloud_in the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] offset the translation component of the rigid transformation
+#   * \param[in] rotation the rotation component of the rigid transformation
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Matrix<Scalar, 3, 1> &offset, const Eigen::Quaternion<Scalar> &rotation);
+###
+
+# template <typename PointT> inline void 
+# transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, pcl::PointCloud<PointT> &cloud_out, 
+#                      const Eigen::Vector3f &offset, const Eigen::Quaternionf &rotation)
+###
+
+# /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
+#   * \param[in] cloud_in the input point cloud
+#   * \param[out] cloud_out the resultant output point cloud
+#   * \param[in] offset the translation component of the rigid transformation
+#   * \param[in] rotation the rotation component of the rigid transformation
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Matrix<Scalar, 3, 1> &offset, const Eigen::Quaternion<Scalar> &rotation);
 # 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \note Can be used with cloud_in equal to cloud_out
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const std::vector<int> &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix<Scalar, 4, 4> &transform)
-#   {
-#     Eigen::Transform<Scalar, 3, Eigen::Affine> t (transform);
-#     return (transformPointCloudWithNormals<PointT, Scalar> (cloud_in, indices, cloud_out, t));
-#   }
+# template <typename PointT> void 
+# transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, pcl::PointCloud<PointT> &cloud_out, 
+#                                 const Eigen::Vector3f &offset, const Eigen::Quaternionf &rotation)
+###
+
+# /** \brief Transform a point with members x,y,z
+#   * \param[in] point the point to transform
+#   * \param[out] transform the transformation to apply
+#   * \return the transformed point
+#   * \ingroup common
+#   */
+# template <typename PointT, typename Scalar> inline PointT
+# transformPoint (const PointT &point, const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
+###
+
+# template <typename PointT> inline PointT transformPoint (const PointT &point, const Eigen::Affine3f &transform)
+###
+
+# /** \brief Calculates the principal (PCA-based) alignment of the point cloud
+#   * \param[in] cloud the input point cloud
+#   * \param[out] transform the resultant transform
+#   * \return the ratio lambda1/lambda2 or lambda2/lambda3, whatever is closer to 1.
+#   * \note If the return value is close to one then the transformation might be not unique -> two principal directions have
+#   * almost same variance (extend)
+#   */
+# template <typename PointT, typename Scalar> inline double
+# getPrincipalTransformation (const pcl::PointCloud<PointT> &cloud, Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
 # 
-# 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const std::vector<int> &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix4f &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
-# 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[in] indices the set of point indices to use from the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] transform an affine transformation (typically a rigid transformation)
-#     * \note Can be used with cloud_in equal to cloud_out
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const pcl::PointIndices &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix<Scalar, 4, 4> &transform)
-#   {
-#     Eigen::Transform<Scalar, 3, Eigen::Affine> t (transform);
-#     return (transformPointCloudWithNormals<PointT, Scalar> (cloud_in, indices, cloud_out, t));
-#   }
-# 
-# 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   const pcl::PointIndices &indices, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix4f &transform)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, indices, cloud_out, transform));
-#   }
-# 
-#   /** \brief Apply a rigid transform defined by a 3D offset and a quaternion
-#     * \param[in] cloud_in the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] offset the translation component of the rigid transformation
-#     * \param[in] rotation the rotation component of the rigid transformation
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> inline void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Matrix<Scalar, 3, 1> &offset, 
-#                        const Eigen::Quaternion<Scalar> &rotation);
-# 
-#   template <typename PointT> inline void 
-#   transformPointCloud (const pcl::PointCloud<PointT> &cloud_in, 
-#                        pcl::PointCloud<PointT> &cloud_out, 
-#                        const Eigen::Vector3f &offset, 
-#                        const Eigen::Quaternionf &rotation)
-#   {
-#     return (transformPointCloud<PointT, float> (cloud_in, cloud_out, offset, rotation));
-#   }
-# 
-#   /** \brief Transform a point cloud and rotate its normals using an Eigen transform.
-#     * \param[in] cloud_in the input point cloud
-#     * \param[out] cloud_out the resultant output point cloud
-#     * \param[in] offset the translation component of the rigid transformation
-#     * \param[in] rotation the rotation component of the rigid transformation
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> inline void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Matrix<Scalar, 3, 1> &offset, 
-#                                   const Eigen::Quaternion<Scalar> &rotation);
-# 
-#   template <typename PointT> void 
-#   transformPointCloudWithNormals (const pcl::PointCloud<PointT> &cloud_in, 
-#                                   pcl::PointCloud<PointT> &cloud_out, 
-#                                   const Eigen::Vector3f &offset, 
-#                                   const Eigen::Quaternionf &rotation)
-#   {
-#     return (transformPointCloudWithNormals<PointT, float> (cloud_in, cloud_out, offset, rotation));
-#   }
-# 
-#   /** \brief Transform a point with members x,y,z
-#     * \param[in] point the point to transform
-#     * \param[out] transform the transformation to apply
-#     * \return the transformed point
-#     * \ingroup common
-#     */
-#   template <typename PointT, typename Scalar> inline PointT
-#   transformPoint (const PointT &point, 
-#                   const Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
-#   
-#   template <typename PointT> inline PointT
-#   transformPoint (const PointT &point, 
-#                   const Eigen::Affine3f &transform)
-#   {
-#     return (transformPoint<PointT, float> (point, transform));
-#   }
-# 
-#   /** \brief Calculates the principal (PCA-based) alignment of the point cloud
-#     * \param[in] cloud the input point cloud
-#     * \param[out] transform the resultant transform
-#     * \return the ratio lambda1/lambda2 or lambda2/lambda3, whatever is closer to 1.
-#     * \note If the return value is close to one then the transformation might be not unique -> two principal directions have
-#     * almost same variance (extend)
-#     */
-#   template <typename PointT, typename Scalar> inline double
-#   getPrincipalTransformation (const pcl::PointCloud<PointT> &cloud, 
-#                               Eigen::Transform<Scalar, 3, Eigen::Affine> &transform);
-# 
-#   template <typename PointT> inline double
-#   getPrincipalTransformation (const pcl::PointCloud<PointT> &cloud, 
-#                               Eigen::Affine3f &transform)
-#   {
-#     return (getPrincipalTransformation<PointT, float> (cloud, transform));
-#   }
-# }
-# 
-# #include <pcl/common/impl/transforms.hpp>
-# 
-# #endif // PCL_TRANSFORMS_H_
-# ###
-# 
-# 
-# # utils.h
+# template <typename PointT> inline double getPrincipalTransformation (const pcl::PointCloud<PointT> &cloud, Eigen::Affine3f &transform)
+###
+
+# utils.h
 # namespace pcl
-# {
-#   namespace utils
-#   {
-#     /** \brief Check if val1 and val2 are equals to an epsilon extent
-#       * \param[in] val1 first number to check
-#       * \param[in] val2 second number to check
-#       * \param[in] eps epsilon
-#       * \return true if val1 is equal to val2, false otherwise.
-#       */
-#     template<typename T> bool 
-#     equal (T val1, T val2, T eps = std::numeric_limits<T>::min ())
-#     {
-#       return (fabs (val1 - val2) < eps);
-#     }
-#   }
-# }
-# 
-# #endif
-# ###
-# 
-# 
-# # vector_average.h
+# namespace utils
+# /** \brief Check if val1 and val2 are equals to an epsilon extent
+#   * \param[in] val1 first number to check
+#   * \param[in] val2 second number to check
+#   * \param[in] eps epsilon
+#   * \return true if val1 is equal to val2, false otherwise.
+#   */
+# template<typename T> bool equal (T val1, T val2, T eps = std::numeric_limits<T>::min ())
+###
+
+# vector_average.h
 # namespace pcl 
-# {
-#   /** \brief Calculates the weighted average and the covariance matrix
-#     *
-#     * A class to calculate the weighted average and the covariance matrix of a set of vectors with given weights.
-#     * The original data is not saved. Mean and covariance are calculated iteratively.
-#     * \author Bastian Steder
-#     * \ingroup common
-#     */
-#   template <typename real, int dimension>
-#   class VectorAverage 
-#   {
+# /** \brief Calculates the weighted average and the covariance matrix
+#   *
+#   * A class to calculate the weighted average and the covariance matrix of a set of vectors with given weights.
+#   * The original data is not saved. Mean and covariance are calculated iteratively.
+#   * \author Bastian Steder
+#   * \ingroup common
+#   */
+# template <typename real, int dimension>
+# class VectorAverage 
 #      public:
 #         //-----CONSTRUCTOR&DESTRUCTOR-----
 #         /** Constructor - dimension gives the size of the vectors to work with. */
@@ -5985,8 +5305,7 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #         getNoOfSamples () { return noOfSamples_;}
 #         
 #         /** Add a new sample */
-#         inline void
-#         add (const Eigen::Matrix<real, dimension, 1>& sample, real weight=1.0);
+#         inline void add (const Eigen::Matrix<real, dimension, 1>& sample, real weight=1.0);
 # 
 #         /** Do Principal component analysis */
 #         inline void
@@ -5994,32 +5313,18 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 #                Eigen::Matrix<real, dimension, 1>& eigen_vector2, Eigen::Matrix<real, dimension, 1>& eigen_vector3) const;
 #         
 #         /** Do Principal component analysis */
-#         inline void
-#         doPCA (Eigen::Matrix<real, dimension, 1>& eigen_values) const;
+#         inline void doPCA (Eigen::Matrix<real, dimension, 1>& eigen_values) const;
 #         
 #         /** Get the eigenvector corresponding to the smallest eigenvalue */
-#         inline void
-#         getEigenVector1 (Eigen::Matrix<real, dimension, 1>& eigen_vector1) const;
+#         inline void getEigenVector1 (Eigen::Matrix<real, dimension, 1>& eigen_vector1) const;
 #         
 #         //-----VARIABLES-----
-#         
-#      protected:
-#         //-----METHODS-----
-#         //-----VARIABLES-----
-#         unsigned int noOfSamples_;
-#         real accumulatedWeight_;
-#         Eigen::Matrix<real, dimension, 1> mean_;
-#         Eigen::Matrix<real, dimension, dimension> covariance_;
 #   };
 # 
 #   typedef VectorAverage<float, 2> VectorAverage2f;
 #   typedef VectorAverage<float, 3> VectorAverage3f;
 #   typedef VectorAverage<float, 4> VectorAverage4f;
 # }  // END namespace
-# 
-# #include <pcl/common/impl/vector_average.hpp>
-# 
-# #endif  // #ifndef PCL_VECTOR_AVERAGE_H
 ###
 
 

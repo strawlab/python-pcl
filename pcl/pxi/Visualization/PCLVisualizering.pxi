@@ -141,7 +141,6 @@ cdef class PCLVisualizering:
     #     self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudGeometryHandlerCustom[cpp.PointXYZ]> deref(geometry_handler.thisptr_shared.get()), <string> id, viewport)
     #     # pass
 
-    # def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, const string &id = 'cloud', int viewport = 0):
     def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, id = b'cloud', int viewport = 0):
         self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, level, scale, <string> id, viewport)
 
@@ -165,10 +164,9 @@ cdef class PCLVisualizering:
     def AddCube(self, double min_x, double max_x, double min_y, double max_y, double min_z, double max_z, double r, double g, double b, name):
         self.thisptr().addCube(min_x,  max_x,  min_y,  max_y,  min_z,  max_z, r, g, b, name, 0)
 
-    # def AddLine(self, _pcl.PointCloud center, _pcl.PointCloud axis, double x, double y, double z, string id)
     # def AddLine(self, _pcl.PointCloud center, _pcl.PointCloud axis, double x, double y, double z, id = b'minor eigen vector')
     #     # pcl::PointXYZ
-    #     self.thisptr().addLine(center, z_axis, 0.0, 0.0, 1.0, "minor eigen vector")
+    #     self.thisptr().addLine(center, z_axis, 0.0, 0.0, 1.0, id)
 
     def AddCone(self):
         # self.thisptr().addCone()

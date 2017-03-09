@@ -7,6 +7,8 @@ import pcl
 import random
 import pcl.pcl_visualization
 import math
+import sys # モジュール属性 argv を取得するため
+
 
 # boost::shared_ptr<pcl::visualization::PCLVisualizer> simpleVis (pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
 # {
@@ -20,12 +22,14 @@ import math
 #   return (viewer);
 # }
 
-
+argvs = sys.argv  # コマンドライン引数を格納したリストの取得
+argc = len(argvs) # 引数の個数
+# print(str(argc))
 # // initialize PointClouds
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 # pcl::PointCloud<pcl::PointXYZ>::Ptr final (new pcl::PointCloud<pcl::PointXYZ>);
 cloud = pcl.PointCloud()
-
+final = pcl.PointCloud()
 
 # // populate our PointCloud with points
 # cloud->width    = 500;
@@ -57,27 +61,38 @@ cloud = pcl.PointCloud()
 #       cloud->points[i].z = -1 * (cloud->points[i].x + cloud->points[i].y);
 #   }
 # }
-points = np.zeros((500, 3), dtype=np.float32)
+points = np.zeros((1000, 3), dtype=np.float32)
 RAND_MAX = 1024
-use_flag = False
 
-for i in range(0, 500):
-    if use_flag == True:
-        points[i][0] = 1024 * random.random () / (RAND_MAX + 1.0)
-        points[i][1] = 1024 * random.random () / (RAND_MAX + 1.0)
-        if i % 5 == 0:
-            points[i][2] = 1024 * random.random () / (RAND_MAX + 1.0)
-        elif i % 2 == 0:
-            points[i][2] = math.sqrt( 1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1]))
+for i in range(0, 1000):
+    if argc > 1:
+        if argvs[1] == "-s" or argvs[1] == "-sf":
+            points[i][0] = 1024 * random.random () / (RAND_MAX + 1.0)
+            points[i][1] = 1024 * random.random () / (RAND_MAX + 1.0)
+            # print("x : " + str(points[i][0]))
+            # print("y : " + str(points[i][1]))
+            if i % 5 == 0:
+                points[i][2] = 1024 * random.random () / (RAND_MAX + 1.0)
+            elif i % 2 == 0:
+                points[i][2] = math.sqrt(math.fabs(1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1])))
+                # points[i][2] = math.sqrt(1 )
+            else:
+                points[i][2] = -1 * math.sqrt(math.fabs(1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1])))
+                # points[i][2] = -1 * math.sqrt( 1 )
         else:
-            points[i][2] = -1 * math.sqrt( 1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1]))
+            points[i][0] = 1024 * random.random () / RAND_MAX
+            points[i][1] = 1024 * random.random () / RAND_MAX
+            if i % 2 == 0:
+                points[i][2] = 1024 * random.random () / RAND_MAX
+            else:
+                points[i][2] = -1 * (points[i][0] + points[i][1])
     else:
         points[i][0] = 1024 * random.random () / RAND_MAX
         points[i][1] = 1024 * random.random () / RAND_MAX
         if i % 2 == 0:
             points[i][2] = 1024 * random.random () / RAND_MAX
         else:
-            points[i][2] = -1 * (points[i][0] + points[i][1]);
+            points[i][2] = -1 * (points[i][0] + points[i][1])
 
 cloud.from_array(points)
 
@@ -101,24 +116,24 @@ cloud.from_array(points)
 # }
 model_s = pcl.SampleConsensusModelSphere(cloud)
 model_p = pcl.SampleConsensusModelPlane(cloud)
-# if "-f":
-if False:
-    ransac = pcl.RandomSampleConsensus (model_p)
-    ransac.set_DistanceThreshold (.01)
-    ransac.computeModel()
-    inliers = ransac.get_Inliers()
-elif "-sf":
-    ransac = pcl.RandomSampleConsensus (model_s)
-    ransac.set_DistanceThreshold (.01)
-    ransac.computeModel()
-    inliers = ransac.get_Inliers()
+if argc > 1:
+    if argvs[1] == "-f":
+        ransac = pcl.RandomSampleConsensus (model_p)
+        ransac.set_DistanceThreshold (.01)
+        ransac.computeModel()
+        inliers = ransac.get_Inliers()
+    elif argvs[1] == "-sf":
+        ransac = pcl.RandomSampleConsensus (model_s)
+        ransac.set_DistanceThreshold (.01)
+        ransac.computeModel()
+        inliers = ransac.get_Inliers()
 
 
 # // copies all inliers of the model computed to another PointCloud
 # pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
 # final = pcl.copyPointCloud(cloud, inliers)
-final = cloud
-
+pcl.copyPointCloud(cloud, inliers, final)
+cloud.copyPointCloud
 # // creates the visualization object and adds either our orignial cloud or all of the inliers
 # // depending on the command line arguments specified.
 # boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
@@ -126,12 +141,20 @@ final = cloud
 #   viewer = simpleVis(final);
 # else
 #   viewer = simpleVis(cloud);
-if True == True:
-    viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-    viewer.SetBackgroundColor (0, 0, 0)
-    viewer.AddPointCloud (final, b'sample cloud')
-    viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
-    viewer.InitCameraParameters ()
+
+if argc > 1:
+    if argvs[1] == "-f" or argvs[1] == "-sf":
+        viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
+        viewer.SetBackgroundColor (128, 0, 0)
+        viewer.AddPointCloud (final, b'sample cloud')
+        viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+        viewer.InitCameraParameters ()
+    else:
+        viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
+        viewer.SetBackgroundColor (128, 0, 0)
+        viewer.AddPointCloud (cloud, b'sample cloud')
+        viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+        viewer.InitCameraParameters ()
 else:
     viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
     viewer.SetBackgroundColor (0, 0, 0)

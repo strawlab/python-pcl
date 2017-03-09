@@ -7,6 +7,7 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
+cimport pcl_common as pcl_cmn
 cimport pcl_features as pclftr
 cimport pcl_filters as pclfil
 cimport pcl_io as pclio
@@ -273,6 +274,16 @@ cdef class PointCloud:
             # error = pclio.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
             error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
         return error
+
+    # def copyPointCloud(self, vector[int] indices):
+    #     cloud_out = PointCloud()
+    #     # NG : Function Override Error
+    #     # pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](self.thisptr_shared, <vector[int]> indices, <cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_out.thisptr_shared)
+    #     # pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](self.thisptr_shared.get(), <vector[int]> indices, cloud_out.thisptr_shared.get())
+    #     # pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](self.thisptr_shared.get(), <const vector[int]> &indices, deref(cloud_out.thisptr_shared.get()))
+    #     pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](<const shared_ptr[PointCloud[PointXYZ]]> self.thisptr_shared, <const vector[int]> &indices, deref(cloud_out.thisptr_shared))
+    #     
+    #     return cloud_out
 
     def make_segmenter(self):
         """

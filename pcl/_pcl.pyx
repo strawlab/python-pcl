@@ -156,3 +156,8 @@ def rad2deg(float alpha):
 # cdef float normAngle (float alpha):
 #     return pcl_cmn.normAngle(alpha)
 
+# Build NG
+# def copyPointCloud(_pcl.PointCloud cloud_in, indices, _pcl.PointCloud cloud_out):
+#     pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_in.thisptr_shared, <vector[int]> indices, <cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_out.thisptr_shared)
+
+
