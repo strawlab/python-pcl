@@ -1075,7 +1075,7 @@ ctypedef shared_ptr[OctreePointCloudChangeDetector[cpp.PointXYZRGBA]] OctreePoin
 # template<typename DataT>
 # class OctreePointCloudDensityContainer
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudDensityContainer[PointT]:
+    cdef cppclass OctreePointCloudDensityContainer[DataT]:
         OctreePointCloudDensityContainer ()
         # /** \brief deep copy function */
         # virtual OctreePointCloudDensityContainer * deepCopy () const
@@ -1102,21 +1102,15 @@ cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree
         void reset ()
 
 
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZ] OctreePointCloudDensityContainer_t
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZI] OctreePointCloudDensityContainer_PointXYZI_t
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZRGB] OctreePointCloudDensityContainer_PointXYZRGB_t
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZRGBA] OctreePointCloudDensityContainer_PointXYZRGBA_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZ]] OctreePointCloudDensityContainerPtr_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZI]] OctreePointCloudDensityContainer_PointXYZI_Ptr_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZRGB]] OctreePointCloudDensityContainer_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZRGBA]] OctreePointCloudDensityContainer_PointXYZRGBA_Ptr_t
+ctypedef OctreePointCloudDensityContainer[int] OctreePointCloudDensityContainer_t
+ctypedef shared_ptr[OctreePointCloudDensityContainer[int]] OctreePointCloudDensityContainerPtr_t
 ###
 
 # template<typename PointT, typename LeafT = OctreePointCloudDensityContainer<int> , typename BranchT = OctreeContainerEmpty<int> >
 # class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafT, BranchT>
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":
     # cdef cppclass OctreePointCloudDensity[PointT, LeafT, BranchT](OctreePointCloud[PointT, LeafT, BranchT]):
-    cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, OctreeBase_t]):
+    cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t, OctreeBase_t]):
         OctreePointCloudDensity (const double resolution_arg)
         # /** \brief Get the amount of points within a leaf node voxel which is addressed by a point
         #   * \param[in] point_arg: a point addressing a voxel

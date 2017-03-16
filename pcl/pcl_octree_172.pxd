@@ -1356,51 +1356,44 @@ ctypedef shared_ptr[OctreePointCloudChangeDetector[cpp.PointXYZRGBA]] OctreePoin
 # octree_pointcloud_density.h
 # namespace pcl
 # namespace octree
-# template<typename DataT>
-# class OctreePointCloudDensityContainer
+# class OctreePointCloudDensityContainer : public OctreeContainerBase
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudDensityContainer[PointT]:
+    cdef cppclass OctreePointCloudDensityContainer(OctreeContainerBase):
         OctreePointCloudDensityContainer ()
         # /** \brief deep copy function */
         # virtual OctreePointCloudDensityContainer * deepCopy () const
         
-        # /** \brief Get size of container (number of DataT objects)
-        #  * \return number of DataT elements in leaf node container.
-        # size_t getSize () const
+        /** \brief Equal comparison operator
+         * \param[in] other OctreePointCloudDensityContainer to compare with
+         */
+        virtual bool operator==(const OctreeContainerBase& other) const
         
-        # /** \brief Read input data. Only an internal counter is increased.
-        # void setData (const DataT&)
+        /** \brief Read input data. Only an internal counter is increased.
+          */
+        void addPointIndex (int)
         
-        # /** \brief Returns a null pointer as this leaf node does not store any data.
-        #   * \param[out] data_arg: reference to return pointer of leaf node DataT element (will be set to 0).
-        # void getData (const DataT*& data_arg) const
+        /** \brief Return point counter.
+          * \return Amount of points
+          */
+        unsigned int getPointCounter ()
         
-        # /** \brief Empty getData data vector implementation as this leaf node does not store any data. \
-        # void getData (std::vector<DataT>&) const
-        
-        # /** \brief Return point counter.
-        #   * \return Amaount of points
-        # unsigned int getPointCounter ()
-        
-        # /** \brief Empty reset leaf node implementation as this leaf node does not store any data. */
-        void reset ()
+        /** \brief Reset leaf node. */
+        virtual void reset ()
 
 
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZ] OctreePointCloudDensityContainer_t
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZI] OctreePointCloudDensityContainer_PointXYZI_t
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZRGB] OctreePointCloudDensityContainer_PointXYZRGB_t
-ctypedef OctreePointCloudDensityContainer[cpp.PointXYZRGBA] OctreePointCloudDensityContainer_PointXYZRGBA_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZ]] OctreePointCloudDensityContainerPtr_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZI]] OctreePointCloudDensityContainer_PointXYZI_Ptr_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZRGB]] OctreePointCloudDensityContainer_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[OctreePointCloudDensityContainer[cpp.PointXYZRGBA]] OctreePointCloudDensityContainer_PointXYZRGBA_Ptr_t
+ctypedef OctreePointCloudDensityContainer OctreePointCloudDensityContainer_t
+ctypedef shared_ptr[OctreePointCloudDensityContainer] OctreePointCloudDensityContainerPtr_t
 ###
 
 # template<typename PointT, typename LeafT = OctreePointCloudDensityContainer<int> , typename BranchT = OctreeContainerEmpty<int> >
 # class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafT, BranchT>
+# template<typename PointT, typename LeafContainerT = OctreePointCloudDensityContainer, typename BranchContainerT = OctreeContainerEmpty >
+# class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafContainerT, BranchContainerT>
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":
     # cdef cppclass OctreePointCloudDensity[PointT, LeafT, BranchT](OctreePointCloud[PointT, LeafT, BranchT]):
-    cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t]):
+    # cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t]):
+    # cdef cppclass OctreePointCloudDensity[PointT, LeafContainerT, BranchContainerT](OctreePointCloud[PointT, LeafT, BranchT]):
+    cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t, OctreeBase_t]):
         OctreePointCloudDensity (const double resolution_arg)
         # /** \brief Get the amount of points within a leaf node voxel which is addressed by a point
         #   * \param[in] point_arg: a point addressing a voxel
