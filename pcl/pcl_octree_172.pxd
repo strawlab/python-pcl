@@ -98,6 +98,70 @@ ctypedef shared_ptr[OctreeContainerEmpty] OctreeContainerEmptyPtr_t
 ###
 
 
+# octree_container.h
+# namespace pcl
+# namespace octree
+# \brief @b Octree container class that does store a vector of point indices.
+# \note Enables the octree to store multiple DataT elements within its leaf nodes.
+# \author Julius Kammerl (julius@kammerl.de)
+# class OctreeContainerPointIndices : public OctreeContainerBase
+cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
+    cdef cppclass OctreeContainerPointIndices(OctreeContainerBase):
+        OctreeContainerPointIndices()
+        #   /** \brief Empty constructor. */
+        #   OctreeContainerPointIndices () :
+        #     OctreeContainerBase (), leafDataTVector_ ()
+        # 
+        #   /** \brief Empty constructor. */
+        #   OctreeContainerPointIndices (const OctreeContainerPointIndices& source) :
+        #       OctreeContainerBase (), leafDataTVector_ (source.leafDataTVector_)
+        # 
+        #   /** \brief Empty deconstructor. */
+        #   virtual
+        #   ~OctreeContainerPointIndices ()
+        # 
+        #   /** \brief Octree deep copy method */
+        #   virtual OctreeContainerPointIndices *deepCopy () const
+        # 
+        #   /** \brief Equal comparison operator
+        #    * \param[in] other OctreeContainerDataTVector to compare with
+        #    */
+        #   virtual bool
+        #   operator== (const OctreeContainerBase& other) const
+        # 
+        #   /** \brief Add point index to container memory. This container stores a vector of point indices.
+        #    * \param[in] data_arg index to be stored within leaf node.
+        #    */
+        #   void addPointIndex (int data_arg)
+        # 
+        #   /** \brief Retrieve point index from container. This container stores a vector of point indices.
+        #    * \return index stored within container.
+        #    */
+        #   int getPointIndex ( ) const
+        # 
+        #   /** \brief Retrieve point indices from container. This container stores a vector of point indices.
+        #    * \param[out] data_vector_arg vector of point indices to be stored within data vector
+        #    */
+        #   void getPointIndices (std::vector<int>& data_vector_arg) const
+        # 
+        #   /** \brief Retrieve reference to point indices vector. This container stores a vector of point indices.
+        #    * \return reference to vector of point indices to be stored within data vector
+        #    */
+        #   std::vector<int>& getPointIndicesVector ()
+        # 
+        #   /** \brief Get size of container (number of indices)
+        #    * \return number of point indices in container.
+        #    */
+        #   size_t getSize () const
+        # 
+        #   /** \brief Reset leaf node. Clear DataT vector.*/
+        #   virtual void reset ()
+
+
+ctypedef OctreeContainerPointIndices OctreeContainerPointIndices_t
+# ctypedef shared_ptr[OctreeContainerPointIndices] OctreeContainerPointIndicesPtr_t
+###
+
 # octree_base.h
 # namespace pcl
 # namespace octree
@@ -106,8 +170,7 @@ ctypedef shared_ptr[OctreeContainerEmpty] OctreeContainerEmptyPtr_t
 # class OctreeBase
 cdef extern from "pcl/octree/octree_base.h" namespace "pcl::octree":
      # cdef cppclass OctreeBase:
-     # cdef cppclass OctreeBase[LeafContainerT, BranchContainerT]:
-     cdef cppclass OctreeBase[int, OctreeContainerEmpty_t]:
+     cdef cppclass OctreeBase[LeafContainerT, BranchContainerT]:
         OctreeBase()
         # OctreeBase (const OctreeBase& source) :
         # inline OctreeBase& operator = (const OctreeBase &source)
@@ -260,8 +323,14 @@ cdef extern from "pcl/octree/octree_base.h" namespace "pcl::octree":
         # // Octree iterators
 
 
-ctypedef OctreeBase OctreeBase_t
-ctypedef shared_ptr[OctreeBase] OctreeBasePtr_t
+ctypedef OctreeBase[int, OctreeContainerEmpty_t] OctreeBase_t
+ctypedef shared_ptr[OctreeBase[int, OctreeContainerEmpty_t]] OctreeBasePtr_t
+# use OctreePointCloud
+ctypedef OctreeBase[OctreeContainerPointIndices_t, OctreeContainerEmpty_t] OctreeBase_OctreeContainerPointIndices_t
+ctypedef shared_ptr[OctreeBase[OctreeContainerPointIndices_t, OctreeContainerEmpty_t]] OctreeBase_OctreeContainerPointIndicesPtr_t
+# use OctreePointCloudDensity
+ctypedef OctreeBase[OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t] OctreeBase_OctreePointCloudDensity_t
+ctypedef shared_ptr[OctreeBase[OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t]] OctreeBase_OctreePointCloudDensityPtr_t
 ###
 
 ### Inheritance class ###
@@ -337,12 +406,11 @@ ctypedef shared_ptr[OctreeBase] OctreeBasePtr_t
 #  * \ingroup octree
 #  * \author Julius Kammerl (julius@kammerl.de)
 #  */
-# template<typename DataT, typename LeafT = OctreeContainerDataT<DataT>,
-# typename BranchT = OctreeContainerEmpty<DataT> >
+# template<typename LeafContainerT = int,
+# typename BranchContainerT = OctreeContainerEmpty >
 # class Octree2BufBase
 cdef extern from "pcl/octree/octree2buf_base.h" namespace "pcl::octree":
-    # cdef cppclass Octree2BufBase[DataT, OctreeContainerDataT[DataT], OctreeContainerEmpty[DataT]]:
-    cdef cppclass Octree2BufBase[DataT]:
+    cdef cppclass Octree2BufBase[LeafContainerT, BranchContainerT]:
         Octree2BufBase()
         # public:
         # typedef Octree2BufBase<DataT, LeafT, BranchT> OctreeT;
@@ -511,8 +579,10 @@ cdef extern from "pcl/octree/octree2buf_base.h" namespace "pcl::octree":
 
 
 
-ctypedef Octree2BufBase[int] Octree2BufBase_t
-# ctypedef shared_ptr[Octree2BufBase[int]] Octree2BufBasePtr_t
+ctypedef Octree2BufBase[int, OctreeContainerEmpty_t] Octree2BufBase_t
+ctypedef shared_ptr[Octree2BufBase[int, OctreeContainerEmpty_t]] Octree2BufBasePtr_t
+ctypedef Octree2BufBase[OctreeContainerPointIndices_t, OctreeContainerEmpty_t] Octree2BufBase_OctreePointCloudChangeDetector_t
+ctypedef shared_ptr[Octree2BufBase[OctreeContainerPointIndices_t, OctreeContainerEmpty_t]] Octree2BufBasePtr_OctreePointCloudChangeDetector_t
 ###
 
 # nothing use PCL 1.7.2/1.8.0
@@ -590,70 +660,6 @@ cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
         # virtual void reset ()
 
 
-###
-
-# octree_container.h
-# namespace pcl
-# namespace octree
-# \brief @b Octree container class that does store a vector of point indices.
-# \note Enables the octree to store multiple DataT elements within its leaf nodes.
-# \author Julius Kammerl (julius@kammerl.de)
-# class OctreeContainerPointIndices : public OctreeContainerBase
-cdef extern from "pcl/octree/octree_container.h" namespace "pcl::octree":
-    cdef cppclass OctreeContainerPointIndices(OctreeContainerBase):
-        OctreeContainerPointIndices()
-        #   /** \brief Empty constructor. */
-        #   OctreeContainerPointIndices () :
-        #     OctreeContainerBase (), leafDataTVector_ ()
-        # 
-        #   /** \brief Empty constructor. */
-        #   OctreeContainerPointIndices (const OctreeContainerPointIndices& source) :
-        #       OctreeContainerBase (), leafDataTVector_ (source.leafDataTVector_)
-        # 
-        #   /** \brief Empty deconstructor. */
-        #   virtual
-        #   ~OctreeContainerPointIndices ()
-        # 
-        #   /** \brief Octree deep copy method */
-        #   virtual OctreeContainerPointIndices *deepCopy () const
-        # 
-        #   /** \brief Equal comparison operator
-        #    * \param[in] other OctreeContainerDataTVector to compare with
-        #    */
-        #   virtual bool
-        #   operator== (const OctreeContainerBase& other) const
-        # 
-        #   /** \brief Add point index to container memory. This container stores a vector of point indices.
-        #    * \param[in] data_arg index to be stored within leaf node.
-        #    */
-        #   void addPointIndex (int data_arg)
-        # 
-        #   /** \brief Retrieve point index from container. This container stores a vector of point indices.
-        #    * \return index stored within container.
-        #    */
-        #   int getPointIndex ( ) const
-        # 
-        #   /** \brief Retrieve point indices from container. This container stores a vector of point indices.
-        #    * \param[out] data_vector_arg vector of point indices to be stored within data vector
-        #    */
-        #   void getPointIndices (std::vector<int>& data_vector_arg) const
-        # 
-        #   /** \brief Retrieve reference to point indices vector. This container stores a vector of point indices.
-        #    * \return reference to vector of point indices to be stored within data vector
-        #    */
-        #   std::vector<int>& getPointIndicesVector ()
-        # 
-        #   /** \brief Get size of container (number of indices)
-        #    * \return number of point indices in container.
-        #    */
-        #   size_t getSize () const
-        # 
-        #   /** \brief Reset leaf node. Clear DataT vector.*/
-        #   virtual void reset ()
-
-
-ctypedef OctreeContainerPointIndices OctreeContainerPointIndices_t
-# ctypedef shared_ptr[OctreeContainerPointIndices] OctreeContainerPointIndicesPtr_t
 ###
 
 # no use pcl 1.8.0
@@ -985,16 +991,11 @@ cdef extern from "pcl/octree/octree_key.h" namespace "pcl::octree":
 # namespace octree
 # template<typename PointT, typename LeafT = OctreeContainerPointIndices,
 #       typename BranchT = OctreeContainerEmpty,
-#       typename OctreeT = OctreeBase<int, LeafT, BranchT> >
+#       typename OctreeT = OctreeBase<LeafT, BranchT> >
 # class OctreePointCloud : public OctreeT
 cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
-    # cdef cppclass OctreePointCloud[PointT]:
-    # cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT](OctreeBase[int, LeafT, BranchT]):
-    # cdef cppclass OctreePointCloud[PointT](OctreeBase[int]):
-    # cdef cppclass OctreePointCloud[PointT](Octree2BufBase[int]):
     # (cpp build LINK2019)
     cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT]:
-    # cdef cppclass OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeT]:
         OctreePointCloud(const double resolution_arg)
         # OctreePointCloud(double resolution_arg)
         
@@ -1235,26 +1236,22 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
         void getVoxelBounds (OctreeIteratorBase[OctreeT]& iterator, eig.Vector3f &min_pt, eig.Vector3f &max_pt)
 
 
-ctypedef OctreePointCloud[cpp.PointXYZ, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t] OctreePointCloud_t
-ctypedef OctreePointCloud[cpp.PointXYZI, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t] OctreePointCloud_PointXYZI_t
-ctypedef OctreePointCloud[cpp.PointXYZRGB, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t] OctreePointCloud_PointXYZRGB_t
-ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t] OctreePointCloud_PointXYZRGBA_t
-ctypedef OctreePointCloud[cpp.PointXYZ, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t] OctreePointCloud2Buf_t
-ctypedef OctreePointCloud[cpp.PointXYZI, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t] OctreePointCloud2Buf_PointXYZI_t
-ctypedef OctreePointCloud[cpp.PointXYZRGB, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t] OctreePointCloud2Buf_PointXYZRGB_t
-ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t] OctreePointCloud2Buf_PointXYZRGBA_t
+ctypedef OctreePointCloud[cpp.PointXYZ, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_t
+ctypedef OctreePointCloud[cpp.PointXYZI, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_PointXYZI_t
+ctypedef OctreePointCloud[cpp.PointXYZRGB, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_PointXYZRGB_t
+ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_PointXYZRGBA_t
 ###
 
-# pcl_1.7.2 use octree_pointcloud_changedetector.h
 # namespace pcl
 # namespace octree
-# pcl 1.8.0 Template Changed(OctreeContainerDataTVector to OctreeContainerPointIndices)
+# pcl_1.7.2 use octree_pointcloud_changedetector.h
+# pcl 1.7.2 Template Changed(OctreeContainerDataTVector to OctreeContainerPointIndices)
 # template<typename PointT,
 #         typename LeafContainerT = OctreeContainerPointIndices,
 #         typename BranchContainerT = OctreeContainerEmpty >
 cdef extern from "pcl/octree/octree_pointcloud_changedetector.h" namespace "pcl::octree":
     # pcl version 1.7.2
-    cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
+    cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_OctreePointCloudChangeDetector_t]):
         OctreePointCloudChangeDetector (const double resolution_arg)
         # public:
         # \brief Get a indices from all leaf nodes that did not exist in previous buffer.
@@ -1307,15 +1304,10 @@ ctypedef OctreePointCloudDensityContainer OctreePointCloudDensityContainer_t
 ctypedef shared_ptr[OctreePointCloudDensityContainer] OctreePointCloudDensityContainerPtr_t
 ###
 
-# template<typename PointT, typename LeafT = OctreePointCloudDensityContainer<int> , typename BranchT = OctreeContainerEmpty<int> >
-# class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafT, BranchT>
 # template<typename PointT, typename LeafContainerT = OctreePointCloudDensityContainer, typename BranchContainerT = OctreeContainerEmpty >
 # class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafContainerT, BranchContainerT>
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":
-    # cdef cppclass OctreePointCloudDensity[PointT, LeafT, BranchT](OctreePointCloud[PointT, LeafT, BranchT]):
-    # cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t]):
-    # cdef cppclass OctreePointCloudDensity[PointT, LeafContainerT, BranchContainerT](OctreePointCloud[PointT, LeafT, BranchT]):
-    cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t, OctreeBase_t]):
+    cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t, OctreeBase_OctreePointCloudDensity_t]):
         OctreePointCloudDensity (const double resolution_arg)
         # /** \brief Get the amount of points within a leaf node voxel which is addressed by a point
         #   * \param[in] point_arg: a point addressing a voxel
@@ -1348,7 +1340,7 @@ ctypedef shared_ptr[OctreePointCloudDensity[cpp.PointXYZRGBA]] OctreePointCloudD
 
 # octree_search.h
 cdef extern from "pcl/octree/octree_search.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudSearch[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_t]):
+    cdef cppclass OctreePointCloudSearch[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t]):
         OctreePointCloudSearch (const double resolution_arg)
         # int radiusSearch (cpp.PointXYZ, double, vector[int], vector[float], unsigned int)
         # int radiusSearch (cpp.PointXYZI, double, vector[int], vector[float], unsigned int)
