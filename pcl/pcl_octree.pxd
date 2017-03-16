@@ -1112,10 +1112,9 @@ cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree
     # cdef cppclass OctreePointCloudDensity[PointT, LeafT, BranchT](OctreePointCloud[PointT, LeafT, BranchT]):
     cdef cppclass OctreePointCloudDensity[PointT](OctreePointCloud[PointT, OctreePointCloudDensityContainer_t, OctreeContainerEmpty_t, OctreeBase_t]):
         OctreePointCloudDensity (const double resolution_arg)
-        # /** \brief Get the amount of points within a leaf node voxel which is addressed by a point
-        #   * \param[in] point_arg: a point addressing a voxel
-        #   * \return amount of points that fall within leaf node voxel
-        #   */
+        # \brief Get the amount of points within a leaf node voxel which is addressed by a point
+        # \param[in] point_arg: a point addressing a voxel
+        # \return amount of points that fall within leaf node voxel
         # unsigned int getVoxelDensityAtPoint (const PointT& point_arg) const
 
 
