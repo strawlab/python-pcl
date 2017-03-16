@@ -546,42 +546,59 @@ cdef extern from "pcl/octree/octree2buf_base.h" namespace "pcl::octree":
         # void deleteTree ( );
         void deleteTree ( )
         
+        # /** \brief Delete octree structure of previous buffer. */
+        # inline void deletePreviousBuffer ()
+        
+        # /** \brief Delete the octree structure in the current buffer. */
+        # inline void deleteCurrentBuffer ()
+        
+        # /** \brief Switch buffers and reset current octree structure. */
+        void switchBuffers ()
+        
         # \brief Serialize octree into a binary output vector describing its branch node structure.
         # \param binary_tree_out_arg: reference to output vector for writing binary tree structure.
         # void serializeTree (vector[char]& binary_tree_out_arg)
-        void serializeTree (vector[char]& binary_tree_out_arg)
-        
+        # void serializeTree (vector[char]& binary_tree_out_arg)
         # 
-        # /** \brief Serialize octree into a binary output vector describing its branch node structure and push all LeafContainerT elements stored in the octree to a vector.
+        # /** \brief Serialize octree into a binary output vector describing its branch node structure.
+        #  *  \param binary_tree_out_arg: reference to output vector for writing binary tree structure.
+        #  *  \param do_XOR_encoding_arg: select if binary tree structure should be generated based on current octree (false) of based on a XOR comparison between current and previous octree
+        #  * */
+        # void serializeTree (std::vector<char>& binary_tree_out_arg, bool do_XOR_encoding_arg = false);
+        # 
+        # /** \brief Serialize octree into a binary output vector describing its branch node structure and and push all DataT elements stored in the octree to a vector.
         #  * \param binary_tree_out_arg: reference to output vector for writing binary tree structure.
         #  * \param leaf_container_vector_arg: pointer to all LeafContainerT objects in the octree
+        #  * \param do_XOR_encoding_arg: select if binary tree structure should be generated based on current octree (false) of based on a XOR comparison between current and previous octree
         #  * */
-        # void serializeTree (std::vector<char>& binary_tree_out_arg, std::vector<LeafContainerT*>& leaf_container_vector_arg);
-        # void serializeTree (vector[char]& binary_tree_out_arg, vector[LeafContainerT]& leaf_container_vector_arg)
+        # void serializeTree (std::vector<char>& binary_tree_out_arg,
+        #                std::vector<LeafContainerT*>& leaf_container_vector_arg,
+        #                bool do_XOR_encoding_arg = false);
         # 
-        # /** \brief Outputs a vector of all LeafContainerT elements that are stored within the octree leaf nodes.
-        #  *  \param leaf_container_vector_arg: pointers to LeafContainerT vector that receives a copy of all LeafContainerT objects in the octree.
+        # /** \brief Outputs a vector of all DataT elements that are stored within the octree leaf nodes.
+        #  *  \param leaf_container_vector_arg: vector of pointers to all LeafContainerT objects in the octree
         #  * */
         # void serializeLeafs (std::vector<LeafContainerT*>& leaf_container_vector_arg);
-        # void serializeLeafs (vector[LeafContainerT]& leaf_container_vector_arg)
+        # 
+        # /** \brief Outputs a vector of all DataT elements from leaf nodes, that do not exist in the previous octree buffer.
+        #  *  \param leaf_container_vector_arg: vector of pointers to all LeafContainerT objects in the octree
+        #  * */
+        # void serializeNewLeafs (std::vector<LeafContainerT*>& leaf_container_vector_arg);
         # 
         # /** \brief Deserialize a binary octree description vector and create a corresponding octree structure. Leaf nodes are initialized with getDataTByKey(..).
-        #  *  \param binary_tree_input_arg: reference to input vector for reading binary tree structure.
+        #  *  \param binary_tree_in_arg: reference to input vector for reading binary tree structure.
+        #  *  \param do_XOR_decoding_arg: select if binary tree structure is based on current octree (false) of based on a XOR comparison between current and previous octree
         #  * */
-        # void deserializeTree (std::vector<char>& binary_tree_input_arg);
-        # void deserializeTree (vector[char]& binary_tree_input_arg)
+        # void deserializeTree (std::vector<char>& binary_tree_in_arg, bool do_XOR_decoding_arg = false);
         # 
-        # /** \brief Deserialize a binary octree description and create a corresponding octree structure. Leaf nodes are initialized with LeafContainerT elements from the dataVector.
-        #  *  \param binary_tree_input_arg: reference to input vector for reading binary tree structure.
-        #  *  \param leaf_container_vector_arg: pointer to container vector.
+        # /** \brief Deserialize a binary octree description and create a corresponding octree structure. Leaf nodes are initialized with DataT elements from the dataVector.
+        #  *  \param binary_tree_in_arg: reference to inpvectoream for reading binary tree structure.
+        #  *  \param leaf_container_vector_arg: vector of pointers to all LeafContainerT objects in the octree
+        #  *  \param do_XOR_decoding_arg: select if binary tree structure is based on current octree (false) of based on a XOR comparison between current and previous octree
         #  * */
-        # void deserializeTree (std::vector<char>& binary_tree_input_arg, std::vector<LeafContainerT*>& leaf_container_vector_arg);
-        # void deserializeTree (vector[char]& binary_tree_input_arg, vector[LeafContainerT]& leaf_container_vector_arg)
-        # 
-        # typedef OctreeBranchNode<BranchT> BranchNode;
-        # typedef OctreeLeafNode<LeafT> LeafNode;
-        # // Octree iterators
-
+        # void deserializeTree (std::vector<char>& binary_tree_in_arg,
+        #                  std::vector<LeafContainerT*>& leaf_container_vector_arg,
+        #                  bool do_XOR_decoding_arg = false);
 
 
 ctypedef Octree2BufBase[int, OctreeContainerEmpty_t] Octree2BufBase_t
