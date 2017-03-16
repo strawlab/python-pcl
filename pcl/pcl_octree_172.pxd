@@ -1363,22 +1363,22 @@ cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree
         # /** \brief deep copy function */
         # virtual OctreePointCloudDensityContainer * deepCopy () const
         
-        /** \brief Equal comparison operator
-         * \param[in] other OctreePointCloudDensityContainer to compare with
-         */
-        virtual bool operator==(const OctreeContainerBase& other) const
+        # /** \brief Equal comparison operator
+        #  * \param[in] other OctreePointCloudDensityContainer to compare with
+        #  */
+        # virtual bool operator==(const OctreeContainerBase& other) const
         
-        /** \brief Read input data. Only an internal counter is increased.
-          */
-        void addPointIndex (int)
+        # /** \brief Read input data. Only an internal counter is increased.
+        #   */
+        # void addPointIndex (int)
         
-        /** \brief Return point counter.
-          * \return Amount of points
-          */
-        unsigned int getPointCounter ()
+        # /** \brief Return point counter.
+        #   * \return Amount of points
+        #   */
+        # unsigned int getPointCounter ()
         
-        /** \brief Reset leaf node. */
-        virtual void reset ()
+        # /** \brief Reset leaf node. */
+        # virtual void reset ()
 
 
 ctypedef OctreePointCloudDensityContainer OctreePointCloudDensityContainer_t

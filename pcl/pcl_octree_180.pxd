@@ -1323,16 +1323,14 @@ ctypedef OctreePointCloud[cpp.PointXYZRGB, OctreeContainerPointIndices_t, Octree
 ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t] OctreePointCloud2Buf_PointXYZRGBA_t
 ###
 
-# pcl_1.7.2 use octree_pointcloud.h
+# pcl_1.7.2 use octree_pointcloud_changedetector.h
 # namespace pcl
 # namespace octree
 # pcl 1.8.0 Template Changed(OctreeContainerDataTVector to OctreeContainerPointIndices)
 # template<typename PointT,
 #         typename LeafContainerT = OctreeContainerPointIndices,
 #         typename BranchContainerT = OctreeContainerEmpty >
-cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
-    # cdef cppclass OctreePointCloudChangeDetector[T](OctreePointCloud[T]):
-    # cdef cppclass OctreePointCloudChangeDetector[T, LeafT, BranchT](OctreePointCloud[T, LeafT, BranchT, Octree2BufBase[int, LeafT, BranchT]]):
+cdef extern from "pcl/octree/octree_pointcloud_changedetector.h" namespace "pcl::octree":
     # pcl version 1.7.2
     cdef cppclass OctreePointCloudChangeDetector[PointT](OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_t]):
         OctreePointCloudChangeDetector (const double resolution_arg)
@@ -1358,10 +1356,9 @@ ctypedef shared_ptr[OctreePointCloudChangeDetector[cpp.PointXYZRGBA]] OctreePoin
 # octree_pointcloud_density.h
 # namespace pcl
 # namespace octree
-# template<typename DataT>
-# class OctreePointCloudDensityContainer
+# class OctreePointCloudDensityContainer : public OctreeContainerBase
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":
-    cdef cppclass OctreePointCloudDensityContainer[PointT]:
+    cdef cppclass OctreePointCloudDensityContainer(OctreeContainerBase):
         OctreePointCloudDensityContainer ()
         # /** \brief deep copy function */
         # virtual OctreePointCloudDensityContainer * deepCopy () const
