@@ -6,7 +6,7 @@ from Cython.Distutils import build_ext
 from distutils.core import setup
 from distutils.extension import Extension
 # from Cython.Build import cythonize    # MacOS NG
-from setuptools import setup, Extension
+from setuptools import setup, find_packages, Extension
 
 import subprocess
 import numpy
@@ -14,6 +14,9 @@ import sys
 import platform
 import os
 import time
+
+sys.path.append('./pcl')
+sys.path.append('./tests')
 
 setup_requires = []
 install_requires = [
@@ -367,6 +370,11 @@ if platform.system() == "Windows":
               author_email='john.stowers@gmail.com',
               license='BSD',
               packages=["pcl"],
+              # packages=find_packages(),
+              # NG
+              # test_suite = 'test.suite',
+              test_suite = 'test_pcl.suite',
+              # test_suite = 'test_registration.suite',
               zip_safe=False,
               setup_requires=setup_requires,
               install_requires=install_requires,
@@ -430,7 +438,6 @@ if platform.system() == "Windows":
     
 else:
     # Not 'Windows'
-    # sys.path.append('./tests')
 
     if platform.system() == "Darwin":
         os.environ['ARCHFLAGS'] = ''

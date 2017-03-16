@@ -72,8 +72,9 @@ install:
 # pcl base 1.7.2
 # - python examples\official\Recognition\cpython correspondence_grouping.py pcldata\tutorials\correspondence_grouping\milk.pcd pcldata\tutorials\correspondence_grouping\milk_cartoon_all_small_clorox.pcd
 script:
-  - coverage run --parallel-mode --source=tests/test.py
-  - coverage run --parallel-mode --source=tests/test_registration.py
+  - coverage run --source=pcl setup.py test
+  # - coverage run --parallel-mode --source=pcl setup.py test
+  # - coverage run --parallel-mode --source=tests/test_registration.py
   # # examples_command_172.txt
   # # Filtering
   # - python examples\official\Filtering\PassThroughFilter.py
@@ -95,6 +96,7 @@ script:
   # - python examples\official\surface\concave_hull_2d.py
   # - python examples\official\surface\resampling.py
 
+# - coverage combine
 after_success:
-  - coverage combine
   - coveralls
+

@@ -151,6 +151,13 @@ class TestICP_NL(unittest.TestCase):
         # print("Translation: ", transf[3, 0:3])
         # print("---------")
 
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTests(unittest.makeSuite(TestICP))
+    suite.addTests(unittest.makeSuite(TestGICP))
+    suite.addTests(unittest.makeSuite(TestICP_NL))
+    return suite
+
 if __name__ == '__main__':
     unittest.main()
 
