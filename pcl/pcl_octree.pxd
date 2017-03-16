@@ -49,89 +49,89 @@ cdef extern from "pcl/octree/octree_base.h" namespace "pcl::octree":
         # void setMaxVoxelIndex (unsigned int maxVoxelIndex_arg)
         void setMaxVoxelIndex (unsigned int maxVoxelIndex_arg)
         
-        # /** \brief Set the maximum depth of the octree.
-        #  *  \param depth_arg: maximum depth of octree
+        # \brief Set the maximum depth of the octree.
+        # \param depth_arg: maximum depth of octree
         # void setTreeDepth (unsigned int depth_arg);
         void setTreeDepth (unsigned int depth_arg)
         
-        # /** \brief Get the maximum depth of the octree.
-        #  *  \return depth_arg: maximum depth of octree
+        # \brief Get the maximum depth of the octree.
+        # \return depth_arg: maximum depth of octree
         # inline unsigned int getTreeDepth () const
         unsigned int getTreeDepth ()
         
-        # /** \brief Enable dynamic octree structure
-        #  *  \note Leaf nodes are kept as close to the root as possible and are only expanded if the number of DataT objects within a leaf node exceeds a fixed limit.
-        #  *  \return maxObjsPerLeaf: maximum number of DataT objects per leaf
+        # \brief Enable dynamic octree structure
+        # \note Leaf nodes are kept as close to the root as possible and are only expanded if the number of DataT objects within a leaf node exceeds a fixed limit.
+        # \return maxObjsPerLeaf: maximum number of DataT objects per leaf
         # inline void enableDynamicDepth ( size_t maxObjsPerLeaf )
         void enableDynamicDepth ( size_t maxObjsPerLeaf )
         
-        # /** \brief Add a const DataT element to leaf node at (idxX, idxY, idxZ). If leaf node does not exist, it is created and added to the octree.
-        #  *  \param idxX_arg: index of leaf node in the X axis.
-        #  *  \param idxY_arg: index of leaf node in the Y axis.
-        #  *  \param idxZ_arg: index of leaf node in the Z axis.
-        #  *  \param data_arg: const reference to DataT object to be added.
+        # \brief Add a const DataT element to leaf node at (idxX, idxY, idxZ). If leaf node does not exist, it is created and added to the octree.
+        # \param idxX_arg: index of leaf node in the X axis.
+        # \param idxY_arg: index of leaf node in the Y axis.
+        # \param idxZ_arg: index of leaf node in the Z axis.
+        # \param data_arg: const reference to DataT object to be added.
         # void addData (unsigned int idxX_arg, unsigned int idxY_arg, unsigned int idxZ_arg, const DataT& data_arg)
         
-        # /** \brief Retrieve a DataT element from leaf node at (idxX, idxY, idxZ). It returns false if leaf node does not exist.
-        #  *  \param idxX_arg: index of leaf node in the X axis.
-        #  *  \param idxY_arg: index of leaf node in the Y axis.
-        #  *  \param idxZ_arg: index of leaf node in the Z axis.
-        #  *  \param data_arg: reference to DataT object that contains content of leaf node if search was successful.
-        #  *  \return "true" if leaf node search is successful, otherwise it returns "false".
+        # \brief Retrieve a DataT element from leaf node at (idxX, idxY, idxZ). It returns false if leaf node does not exist.
+        # \param idxX_arg: index of leaf node in the X axis.
+        # \param idxY_arg: index of leaf node in the Y axis.
+        # \param idxZ_arg: index of leaf node in the Z axis.
+        # \param data_arg: reference to DataT object that contains content of leaf node if search was successful.
+        # \return "true" if leaf node search is successful, otherwise it returns "false".
         # bool getData (unsigned int idxX_arg, unsigned int idxY_arg, unsigned int idxZ_arg, DataT& data_arg) const 
         
-        # /** \brief Check for the existence of leaf node at (idxX, idxY, idxZ).
-        #  *  \param idxX_arg: index of leaf node in the X axis.
-        #  *  \param idxY_arg: index of leaf node in the Y axis.
-        #  *  \param idxZ_arg: index of leaf node in the Z axis.
-        #  *  \return "true" if leaf node search is successful, otherwise it returns "false".
+        # \brief Check for the existence of leaf node at (idxX, idxY, idxZ).
+        # \param idxX_arg: index of leaf node in the X axis.
+        # \param idxY_arg: index of leaf node in the Y axis.
+        # \param idxZ_arg: index of leaf node in the Z axis.
+        # \return "true" if leaf node search is successful, otherwise it returns "false".
         # bool existLeaf (unsigned int idxX_arg, unsigned int idxY_arg, unsigned int idxZ_arg) const 
         
-        # /** \brief Remove leaf node at (idxX_arg, idxY_arg, idxZ_arg).
-        #  *  \param idxX_arg: index of leaf node in the X axis.
-        #  *  \param idxY_arg: index of leaf node in the Y axis.
-        #  *  \param idxZ_arg: index of leaf node in the Z axis.
+        # \brief Remove leaf node at (idxX_arg, idxY_arg, idxZ_arg).
+        # \param idxX_arg: index of leaf node in the X axis.
+        # \param idxY_arg: index of leaf node in the Y axis.
+        # \param idxZ_arg: index of leaf node in the Z axis.
         # void removeLeaf (unsigned int idxX_arg, unsigned int idxY_arg, unsigned int idxZ_arg)
         
-        # /** \brief Return the amount of existing leafs in the octree.
-        #  *  \return amount of registered leaf nodes.
+        # \brief Return the amount of existing leafs in the octree.
+        # \return amount of registered leaf nodes.
         # inline std::size_t getLeafCount () const
         size_t getLeafCount ()
         
-        # /** \brief Return the amount of existing branches in the octree.
-        #  *  \return amount of branch nodes.
+        # \brief Return the amount of existing branches in the octree.
+        # \return amount of branch nodes.
         # inline std::size_t getBranchCount () const
         size_t getBranchCount ()
         
-        # /** \brief Delete the octree structure and its leaf nodes.
-        #  *  \param freeMemory_arg: if "true", allocated octree nodes are deleted, otherwise they are pushed to the octree node pool
+        # \brief Delete the octree structure and its leaf nodes.
+        # \param freeMemory_arg: if "true", allocated octree nodes are deleted, otherwise they are pushed to the octree node pool
         # void deleteTree ( bool freeMemory_arg = true )
         void deleteTree ( bool freeMemory_arg)
         
-        # /** \brief Serialize octree into a binary output vector describing its branch node structure.
-        #  *  \param binaryTreeOut_arg: reference to output vector for writing binary tree structure.
+        # \brief Serialize octree into a binary output vector describing its branch node structure.
+        # \param binaryTreeOut_arg: reference to output vector for writing binary tree structure.
         # void serializeTree (vector[char]& binaryTreeOut_arg)
         void serializeTree (vector[char]& binaryTreeOut_arg)
         
-        # /** \brief Serialize octree into a binary output vector describing its branch node structure and push all DataT elements stored in the octree to a vector.
-        #  * \param binaryTreeOut_arg: reference to output vector for writing binary tree structure.
-        #  * \param dataVector_arg: reference of DataT vector that receives a copy of all DataT objects in the octree
+        # \brief Serialize octree into a binary output vector describing its branch node structure and push all DataT elements stored in the octree to a vector.
+        # \param binaryTreeOut_arg: reference to output vector for writing binary tree structure.
+        # \param dataVector_arg: reference of DataT vector that receives a copy of all DataT objects in the octree
         # void serializeTree (vector[char]& binaryTreeOut_arg, vector[DataT]& dataVector_arg);
         void serializeTree (vector[char]& binaryTreeOut_arg, vector[DataT]& dataVector_arg)
         
-        # /** \brief Outputs a vector of all DataT elements that are stored within the octree leaf nodes.
-        #  *  \param dataVector_arg: reference to DataT vector that receives a copy of all DataT objects in the octree.
+        # \brief Outputs a vector of all DataT elements that are stored within the octree leaf nodes.
+        # \param dataVector_arg: reference to DataT vector that receives a copy of all DataT objects in the octree.
         # void serializeLeafs (std::vector<DataT>& dataVector_arg);
         void serializeLeafs (vector[DataT]& dataVector_arg)
         
-        # /** \brief Deserialize a binary octree description vector and create a corresponding octree structure. Leaf nodes are initialized with getDataTByKey(..).
-        #  *  \param binaryTreeIn_arg: reference to input vector for reading binary tree structure.
+        # \brief Deserialize a binary octree description vector and create a corresponding octree structure. Leaf nodes are initialized with getDataTByKey(..).
+        # \param binaryTreeIn_arg: reference to input vector for reading binary tree structure.
         # void deserializeTree (std::vector<char>& binaryTreeIn_arg);
         void deserializeTree (vector[char]& binaryTreeIn_arg)
         
-        # /** \brief Deserialize a binary octree description and create a corresponding octree structure. Leaf nodes are initialized with DataT elements from the dataVector.
-        #  *  \param binaryTreeIn_arg: reference to input vector for reading binary tree structure.
-        #  *  \param dataVector_arg: reference to DataT vector that provides DataT objects for initializing leaf nodes.
+        # \brief Deserialize a binary octree description and create a corresponding octree structure. Leaf nodes are initialized with DataT elements from the dataVector.
+        # \param binaryTreeIn_arg: reference to input vector for reading binary tree structure.
+        # \param dataVector_arg: reference to DataT vector that provides DataT objects for initializing leaf nodes.
         # void deserializeTree (std::vector<char>& binaryTreeIn_arg, std::vector<DataT>& dataVector_arg);
         void deserializeTree (vector[char]& binaryTreeIn_arg, vector[DataT]& dataVector_arg)
 

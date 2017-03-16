@@ -1061,8 +1061,8 @@ cdef extern from "pcl/octree/octree_key.h" namespace "pcl::octree":
 # octree_pointcloud.h
 # namespace pcl
 # namespace octree
-# template<typename PointT, typename LeafT = OctreeContainerDataTVector<int>,
-#       typename BranchT = OctreeContainerEmpty<int>,
+# template<typename PointT, typename LeafT = OctreeContainerPointIndices,
+#       typename BranchT = OctreeContainerEmpty,
 #       typename OctreeT = OctreeBase<int, LeafT, BranchT> >
 # class OctreePointCloud : public OctreeT
 cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
@@ -1071,8 +1071,8 @@ cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
     # cdef cppclass OctreePointCloud[PointT](OctreeBase[int]):
     # cdef cppclass OctreePointCloud[PointT](Octree2BufBase[int]):
     # (cpp build LINK2019)
-    # cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT]:
-    cdef cppclass OctreePointCloud[PointT, OctreeContainerDataTVector_t, OctreeContainerEmpty_t, OctreeT]:
+    cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT]:
+    # cdef cppclass OctreePointCloud[PointT, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeT]:
         OctreePointCloud(const double resolution_arg)
         # OctreePointCloud(double resolution_arg)
         
