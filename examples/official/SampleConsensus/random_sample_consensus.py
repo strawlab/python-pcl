@@ -114,6 +114,8 @@ cloud.from_array(points)
 # ransac.computeModel();
 # ransac.getInliers(inliers);
 # }
+###
+# inliers = vector[int]
 model_s = pcl.SampleConsensusModelSphere(cloud)
 model_p = pcl.SampleConsensusModelPlane(cloud)
 if argc > 1:
@@ -127,13 +129,28 @@ if argc > 1:
         ransac.set_DistanceThreshold (.01)
         ransac.computeModel()
         inliers = ransac.get_Inliers()
+    else:
+        inliers = []
+else:
+    inliers = []
 
 
 # // copies all inliers of the model computed to another PointCloud
 # pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
 # final = pcl.copyPointCloud(cloud, inliers)
-pcl.copyPointCloud(cloud, inliers, final)
-cloud.copyPointCloud
+# pcl.copyPointCloud(cloud, inliers, final)
+# final = cloud
+print(str(len(inliers)))
+if len(inliers) != 0:
+    finalpoints = np.zeros((len(inliers), 3), dtype=np.float32)
+    
+    for i in range(0, len(inliers)):
+        finalpoints[i][0] = cloud[inliers[i]][0]
+        finalpoints[i][1] = cloud[inliers[i]][1]
+        finalpoints[i][2] = cloud[inliers[i]][2]
+
+    final.from_array(finalpoints)
+
 # // creates the visualization object and adds either our orignial cloud or all of the inliers
 # // depending on the command line arguments specified.
 # boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
@@ -145,13 +162,13 @@ cloud.copyPointCloud
 if argc > 1:
     if argvs[1] == "-f" or argvs[1] == "-sf":
         viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-        viewer.SetBackgroundColor (128, 0, 0)
+        viewer.SetBackgroundColor (0, 0, 0)
         viewer.AddPointCloud (final, b'sample cloud')
         viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
         viewer.InitCameraParameters ()
     else:
         viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-        viewer.SetBackgroundColor (128, 0, 0)
+        viewer.SetBackgroundColor (0, 0, 0)
         viewer.AddPointCloud (cloud, b'sample cloud')
         viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
         viewer.InitCameraParameters ()

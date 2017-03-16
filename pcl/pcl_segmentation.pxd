@@ -37,6 +37,7 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     cdef cppclass SACSegmentation[T](PCLBase[T]):
         SACSegmentation()
         void setModelType (SacModel)
+        
         # /** \brief Empty constructor. */
         # SACSegmentation () :  model_ (), sac_ (), model_type_ (-1), method_type_ (0), 
         #                       threshold_ (0), optimize_coefficients_ (true), 
@@ -190,31 +191,43 @@ cdef extern from "pcl/segmentation/plane_coefficient_comparator.h" namespace "pc
         # using pcl::Comparator<PointT>::input_;
         # 
         # virtual void setInputCloud (const PointCloudConstPtr& cloud)
+        
         # /** \brief Provide a pointer to the input normals.
         #   * \param[in] normals the input normal cloud
         # inline void setInputNormals (const PointCloudNConstPtr &normals)
+        
         # /** \brief Get the input normals. */
         # inline PointCloudNConstPtr getInputNormals () const
+        
         # /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
         #   * \param[in] plane_coeff_d a pointer to the plane coefficients.
         # void setPlaneCoeffD (boost::shared_ptr<std::vector<float> >& plane_coeff_d)
-        # 
+        
         # /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
         #   * \param[in] plane_coeff_d a pointer to the plane coefficients.
         # void setPlaneCoeffD (std::vector<float>& plane_coeff_d)
+        
         # /** \brief Get a pointer to the vector of the d-coefficient of the planes' hessian normal form. */
         # const std::vector<float>& getPlaneCoeffD () const
+        
         # /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
         #   * \param[in] angular_threshold the tolerance in radians
         # virtual void setAngularThreshold (float angular_threshold)
+        
         # /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
         # inline float getAngularThreshold () const
+        float getAngularThreshold ()
+        
         # /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
         #   * \param[in] distance_threshold the tolerance in meters (at 1m)
         #   * \param[in] depth_dependent whether to scale the threshold based on range from the sensor (default: false)
         # void setDistanceThreshold (float distance_threshold, bool depth_dependent = false)
+        void setDistanceThreshold (float distance_threshold, bool depth_dependent)
+        
         # /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
         # inline float getDistanceThreshold () const
+        float getDistanceThreshold ()
+        
         # /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
         #   * and the difference between the d component of the normals is less than distance threshold, else false
         #   * \param idx1 The first index for the comparison
@@ -229,24 +242,11 @@ cdef extern from "pcl/segmentation/plane_coefficient_comparator.h" namespace "pc
 # \brief @b SACSegmentationFromNormals represents the PCL nodelet segmentation class for Sample Consensus methods and
 #  models that require the use of surface normals for estimation.
 # \ingroup segmentation
+# cdef cppclass SACSegmentationFromNormals[T, N]:
 cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
-    # cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T])
-    cdef cppclass SACSegmentationFromNormals[T, N]:
+    cdef cppclass SACSegmentationFromNormals[T, N](SACSegmentation[T]):
         SACSegmentationFromNormals()
-        void setOptimizeCoefficients (bool)
-        void setModelType (SacModel)
-        void setMethodType (int)
-        void setNormalDistanceWeight (float)
-        void setMaxIterations (int)
-        void setDistanceThreshold (float)
-        void setRadiusLimits (float, float)
-        void setInputCloud (shared_ptr[PointCloud[T]])
-        void setInputNormals (shared_ptr[PointCloud[N]])
-        void setEpsAngle (double ea)
-        void segment (PointIndices, ModelCoefficients)
-        void setMinMaxOpeningAngle(double, double)
-        void getMinMaxOpeningAngle(double, double)
-        # Add
+        
         # /** \brief Empty constructor. */
         # SACSegmentationFromNormals () : 
         #   normals_ (), 
@@ -255,13 +255,17 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         #   min_angle_ (), 
         #   max_angle_ ()
         # {};
-        # 
+        
+        # use PCLBase class function
+        # void setInputCloud (shared_ptr[PointCloud[T]])
+        
         # /** \brief Provide a pointer to the input dataset that contains the point normals of 
         #   * the XYZ dataset.
         #   * \param[in] normals the const boost shared pointer to a PointCloud message
         #   */
         # inline void setInputNormals (const PointCloudNConstPtr &normals) { normals_ = normals; }
         # void setInputNormals (const PointCloudNConstPtr &normals)
+        void setInputNormals (shared_ptr[PointCloud[N]])
         
         # /** \brief Get a pointer to the normals of the input XYZ point cloud dataset. */
         # inline PointCloudNConstPtr getInputNormals () const { return (normals_); }
@@ -272,32 +276,32 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         #   * \param[in] distance_weight the distance/angular weight
         #   */
         # inline void setNormalDistanceWeight (double distance_weight) { distance_weight_ = distance_weight; }
-        # void setNormalDistanceWeight (double distance_weight)
+        void setNormalDistanceWeight (double distance_weight)
         
         # /** \brief Get the relative weight (between 0 and 1) to give to the angular distance (0 to pi/2) between point
         #   * normals and the plane normal. */
         # inline double getNormalDistanceWeight () const { return (distance_weight_); }
-        # double getNormalDistanceWeight ()
+        double getNormalDistanceWeight ()
         
         # /** \brief Set the minimum opning angle for a cone model.
         #   * \param oa the opening angle which we need minumum to validate a cone model.
         #   */
         # inline void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
-        # void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
+        void setMinMaxOpeningAngle (const double &min_angle, const double &max_angle)
         
         # /** \brief Get the opening angle which we need minumum to validate a cone model. */
         # inline void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
-        # void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
+        void getMinMaxOpeningAngle (double &min_angle, double &max_angle)
         
         # /** \brief Set the distance we expect a plane model to be from the origin
         #   * \param[in] d distance from the template plane modl to the origin
         #   */
         # inline void setDistanceFromOrigin (const double d) { distance_from_origin_ = d; }
-        # void setDistanceFromOrigin (const double d)
+        void setDistanceFromOrigin (const double d)
         
         # /** \brief Get the distance of a plane model from the origin. */
         # inline double getDistanceFromOrigin () const { return (distance_from_origin_); }
-        # double getDistanceFromOrigin ()
+        double getDistanceFromOrigin ()
 
 
 ctypedef SACSegmentationFromNormals[PointXYZ, Normal] SACSegmentationFromNormals_t

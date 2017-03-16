@@ -1,5 +1,8 @@
 language: python 
 
+cache:
+  - pip
+  - ccache
 
 matrix:
   include:
@@ -39,7 +42,7 @@ before_install:
       brew install homebrew/boneyard/pyenv-pip-rehash;
       brew tap homebrew/science;
 
-      pyenv install -ks $PYTHON_VERSION;
+      PYTHON_CONFIGURE_OPTS="--enable-unicode=ucs2" pyenv install -ks $PYTHON_VERSION;
       pyenv global $PYTHON_VERSION;
       python --version;
 
@@ -62,14 +65,15 @@ install:
   - pip install --upgrade pip
   - pip install cython==0.25.2
   - pip install numpy
+  - pip install coveralls
   - python setup.py build_ext -i
   - python setup.py install
 
 # pcl base 1.7.2
 # - python examples\official\Recognition\cpython correspondence_grouping.py pcldata\tutorials\correspondence_grouping\milk.pcd pcldata\tutorials\correspondence_grouping\milk_cartoon_all_small_clorox.pcd
 script:
-  - python tests/test.py
-  - python tests/test_registration.py
+  - coverage run --parallel-mode --source=tests/test.py
+  - coverage run --parallel-mode --source=tests/test_registration.py
   # # examples_command_172.txt
   # # Filtering
   # - python examples\official\Filtering\PassThroughFilter.py
@@ -91,3 +95,6 @@ script:
   # - python examples\official\surface\concave_hull_2d.py
   # - python examples\official\surface\resampling.py
 
+after_success:
+  - coverage combine
+  - coveralls

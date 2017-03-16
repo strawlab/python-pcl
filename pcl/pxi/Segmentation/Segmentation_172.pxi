@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation as pclseg
-# cimport pcl_segmentation_172 as pclseg
+cimport pcl_segmentation_172 as pclseg
+cimport pcl_sample_consensus_172 as pcl_sc
 cimport pcl_defs as cpp
 
 cdef class Segmentation:

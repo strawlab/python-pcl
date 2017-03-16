@@ -589,7 +589,22 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 
 # Add ConditionAnd
 
-# 
+# def suite():
+#     suite = unittest.TestSuite()
+#     suite.addTests(unittest.makeSuite(TestListIO))
+#     suite.addTests(unittest.makeSuite(TestNumpyIO))
+#     suite.addTests(unittest.makeSuite(TestSegmentPlane))
+#     suite.addTests(unittest.makeSuite(TestSegmentCylinder))
+#     suite.addTests(unittest.makeSuite(TestSave))
+#     suite.addTests(unittest.makeSuite(TestFilter))
+#     suite.addTests(unittest.makeSuite(TestExtract))
+#     suite.addTests(unittest.makeSuite(TestExceptions))
+#     suite.addTests(unittest.makeSuite(TestSegmenterNormal))
+#     suite.addTests(unittest.makeSuite(TestVoxelGridFilter))
+#     suite.addTests(unittest.makeSuite(TestPassthroughFilter))
+#     suite.addTests(unittest.makeSuite(TestKdTree))
+#     suite.addTests(unittest.makeSuite(TestOctreePointCloudSearch))
+#     return suite
 
 if __name__ == '__main__':
     unittest.main()
