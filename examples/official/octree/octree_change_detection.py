@@ -88,7 +88,8 @@ print('Output from getPointIndicesFromNewVoxels:')
 cloudB.extract(newPointIdxVector)
 
 # count = newPointIdxVector.size
-for i in range(0, cloudB.size):
+for i in range(0, len(newPointIdxVector)):
     # print(str(i) + '# Index:' + str(newPointIdxVector[i]) + '  Point:' + str(cloudB[i * 3 + 0]) + ' ' + str(cloudB[i * 3 + 1]) + ' ' + str(cloudB[i * 3 + 2]) )
-    print(str(i) + '# Index:' + str(i) + '  Point:' + str(cloudB[i]))
+    # print(str(i) + '# Index:' + str(i) + '  Point:' + str(cloudB[i]))
+    print(str(i) + '# Index:' + str(newPointIdxVector[i]) + '  Point:' + str(cloudB[newPointIdxVector[i]][0]) + ' ' + str(cloudB[newPointIdxVector[i]][1]) + ' ' + str(cloudB[newPointIdxVector[i]][2]) )
 

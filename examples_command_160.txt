@@ -21,8 +21,6 @@ python examples\official\Filtering\statistical_removal.py
 
 # GPU
 # pcl1.6 - NG
-# Version 1.7.2
-# python examples\official\GPU\people_detect_172.txt
 ###
 
 # IO
@@ -54,7 +52,7 @@ python examples\official\octree\octree_change_detection.py
 
 # Recognition
 # pcl 1.6 - NG (not Implement BOARDLocalReferenceFrameEstimation)
-# python examples\official\Recognition\correspondence_grouping.py examples\pcldata/tutorials/correspondence_grouping/milk.pcd examples\pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
+# python examples\official\Recognition\correspondence_grouping.py examples/pcldata/tutorials/correspondence_grouping/milk.pcd examples\pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
 # pcl 1.7.2
 # python examples\official\Recognition\global_hypothesis_verification.py
 # pcl 1.7.2
@@ -63,23 +61,26 @@ python examples\official\octree\octree_change_detection.py
 
 # Registration
 python examples\official\Registration\iterative_closest_point.py
-# pcl 1.7.2(pcl 1.6.0 NG)
+# pcl 1.7.2(pcl 1.6 NG)
 # python examples\official\Registration\alignment_prerejective.py
-# python examples\official\Registration\normal_distributions_transform.py
 # Unkwnon
+# python examples\official\Registration\normal_distributions_transform.py
 # python examples\official\Registration\pairwise_incremental_registration.txt
 # python examples\official\Registration\pcl-interactive_icp.txt
 ###
 
 # SampleConsensus
 python examples\official\SampleConsensus\random_sample_consensus.py
-# NG
-python examples\official\SampleConsensus\random_sample_consensus.py -f
 python examples\official\SampleConsensus\random_sample_consensus.py -s
 python examples\official\SampleConsensus\random_sample_consensus.py -sf
+# NG
+python examples\official\SampleConsensus\random_sample_consensus.py -f
 ###
 
 # Segmentation
+python examples\official\Segmentation\cluster_extraction.py
+python examples\official\Segmentation\cylinder_segmentation.py
+python examples\official\Segmentation\Plane_model_segmentation.py
 # Version 1.7.2
 # python examples\official\Segmentation\bare_earth_172.txt
 # python examples\official\Segmentation\conditional_euclidean_clustering_172.txt
@@ -88,17 +89,13 @@ python examples\official\SampleConsensus\random_sample_consensus.py -sf
 # python examples\official\Segmentation\region_growing_rgb_segmentation_172.txt
 # python examples\official\Segmentation\region_growing_segmentation_172.txt
 # python examples\official\Segmentation\supervoxel_clustering_172.txt
-python examples\official\Segmentation\cluster_extraction.py
-python examples\official\Segmentation\cylinder_segmentation.py
-python examples\official\Segmentation\Plane_model_segmentation.py
 ###
 
 # Surface
 python examples\official\surface\concave_hull_2d.py
-# Version 1.7.2
-# python examples\official\surface\greedy_projection_172.py
-# NG(process Function DLL Excetion)
 python examples\official\surface\resampling.py
+# pcl 1.7.2
+# python examples\official\surface\greedy_projection_172.py
 ###
 
 # Visualization

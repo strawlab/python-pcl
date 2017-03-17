@@ -1016,7 +1016,6 @@ cdef extern from "pcl/octree/octree_key.h" namespace "pcl::octree":
 #       typename OctreeT = OctreeBase<LeafT, BranchT> >
 # class OctreePointCloud : public OctreeT
 cdef extern from "pcl/octree/octree_pointcloud.h" namespace "pcl::octree":
-    # (cpp build LINK2019)
     cdef cppclass OctreePointCloud[PointT, LeafT, BranchT, OctreeT]:
         OctreePointCloud(const double resolution_arg)
         # OctreePointCloud(double resolution_arg)
@@ -1262,7 +1261,6 @@ ctypedef OctreePointCloud[cpp.PointXYZ, OctreeContainerPointIndices_t, OctreeCon
 ctypedef OctreePointCloud[cpp.PointXYZI, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_PointXYZI_t
 ctypedef OctreePointCloud[cpp.PointXYZRGB, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_PointXYZRGB_t
 ctypedef OctreePointCloud[cpp.PointXYZRGBA, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, OctreeBase_OctreeContainerPointIndices_t] OctreePointCloud_PointXYZRGBA_t
-
 ctypedef OctreePointCloud[cpp.PointXYZ, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_OctreeContainerPointIndices_t] OctreePointCloud2Buf_t
 ctypedef OctreePointCloud[cpp.PointXYZI, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_OctreeContainerPointIndices_t] OctreePointCloud2Buf_PointXYZI_t
 ctypedef OctreePointCloud[cpp.PointXYZRGB, OctreeContainerPointIndices_t, OctreeContainerEmpty_t, Octree2BufBase_OctreeContainerPointIndices_t] OctreePointCloud2Buf_PointXYZRGB_t
@@ -1299,6 +1297,9 @@ ctypedef shared_ptr[OctreePointCloudChangeDetector[cpp.PointXYZRGB]] OctreePoint
 ctypedef shared_ptr[OctreePointCloudChangeDetector[cpp.PointXYZRGBA]] OctreePointCloudChangeDetector_PointXYZRGBA_Ptr_t
 ###
 
+# octree_pointcloud_density.h
+# namespace pcl
+# namespace octree
 # template<typename PointT, typename LeafContainerT = OctreePointCloudDensityContainer, typename BranchContainerT = OctreeContainerEmpty >
 # class OctreePointCloudDensity : public OctreePointCloud<PointT, LeafContainerT, BranchContainerT>
 cdef extern from "pcl/octree/octree_pointcloud_density.h" namespace "pcl::octree":

@@ -21,6 +21,9 @@
 .. image:: https://ci.appveyor.com/api/projects/status/ixcgmjb1x1713fde
         :target: https://ci.appveyor.com/project/Sirokujira/python-pcl
 
+.. image:: https://coveralls.io/repos/github/Sirokujira/python-pcl/badge.svg?branch=master
+        :target: https://coveralls.io/github/Sirokujira/python-pcl?branch=master
+
 Introduction
 ============
 

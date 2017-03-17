@@ -6,17 +6,16 @@ python examples\official\Applications\vfh_cluster_classifier.txt
 ###
 
 # Features
-# python examples\official\Features\moment_of_inertia.py
+python examples\official\Features\moment_of_inertia.py
+python examples\official\Features\rops_feature.py
 # pcl1.6 - NG(Leak Error)
 # python examples\official\Features\NormalEstimationUsingIntegralImages.py
-python examples\official\Features\rops_feature.py
 ###
 
 # Filtering
 python examples\official\Filtering\PassThroughFilter.py
 python examples\official\Filtering\project_inliers.py
 python examples\official\Filtering\remove_outliers.py -r Radius
-# MemoryLeak?
 python examples\official\Filtering\remove_outliers.py -r Condition
 
 # python examples\official\Filtering\VoxelGrid_172.py
@@ -47,40 +46,46 @@ python examples\official\keypoints\narf_keypoint_extraction.py
 # Exception ignored in: 'pcl._pcl.to_point_t'
 # TypeError: a float is required
 python examples\official\octree\octree_search.py
-python examples\official\octree\octree_change_detection_172.py
+python examples\official\octree\octree_change_detection.py
 ###
 
 # RangeImage
 # NG(RangeImage Link Error)
 python examples\official\RangeImage\range_image_border_extraction.py
+python examples\official\RangeImage\range_image_visualize.py
 ###
 
 # Recognition
 # pcl 1.7.2
-# python examples\official\Recognition\cpython correspondence_grouping.py pcldata\tutorials\correspondence_grouping\milk.pcd pcldata\tutorials\correspondence_grouping\milk_cartoon_all_small_clorox.pcd
+# python examples\official\Recognition\correspondence_grouping.py examples/pcldata/tutorials/correspondence_grouping/milk.pcd examples\pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
 # pcl 1.7.2
-# python examples\official\Recognition\global_hypothesis_verification.txt
+# python examples\official\Recognition\global_hypothesis_verification.py
 # pcl 1.7.2
-# python examples\official\Recognition\implicit_shape_model.txt
+# python examples\official\Recognition\implicit_shape_model.py
 ###
 
 # Registration
-# pcl 1.7.2
-python examples\official\Registration\alignment_prerejective.py
-
-# pcl 1.7.2
-# iterative_closest_point.txt
 python examples\official\Registration\iterative_closest_point.py
-
-# normal_distributions_transform.txt
-# pairwise_incremental_registration.txt
-# pcl-interactive_icp.txt
+# pcl 1.7.2(pcl 1.6 NG)
+python examples\official\Registration\alignment_prerejective.py
+# Unkwnon
+# python examples\official\Registration\normal_distributions_transform.py
+# python examples\official\Registration\pairwise_incremental_registration.txt
+# python examples\official\Registration\pcl-interactive_icp.txt
 ###
 
 # SampleConsensus
+python examples\official\SampleConsensus\random_sample_consensus.py
+python examples\official\SampleConsensus\random_sample_consensus.py -s
+python examples\official\SampleConsensus\random_sample_consensus.py -sf
+# NG
+python examples\official\SampleConsensus\random_sample_consensus.py -f
 ###
 
 # Segmentation
+python examples\official\Segmentation\cluster_extraction.py
+python examples\official\Segmentation\cylinder_segmentation.py
+python examples\official\Segmentation\Plane_model_segmentation.py
 # Version 1.7.2
 # python examples\official\Segmentation\bare_earth_172.txt
 # python examples\official\Segmentation\conditional_euclidean_clustering_172.txt
@@ -89,17 +94,14 @@ python examples\official\Registration\iterative_closest_point.py
 # python examples\official\Segmentation\region_growing_rgb_segmentation_172.txt
 # python examples\official\Segmentation\region_growing_segmentation_172.txt
 # python examples\official\Segmentation\supervoxel_clustering_172.txt
-python examples\official\Segmentation\cluster_extraction.py
-python examples\official\Segmentation\cylinder_segmentation.py
-# python examples\official\Segmentation\Plane_model_segmentation.txt
 ###
 
 # Surface
 python examples\official\surface\concave_hull_2d.py
-# ver1.7.2
-# python examples\official\surface\greedy_projection_172.py
 # NG(process Function DLL Excetion)
 python examples\official\surface\resampling.py
+# pcl 1.7.2
+# python examples\official\surface\greedy_projection_172.py
 ###
 
 # Visualization
