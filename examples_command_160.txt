@@ -37,9 +37,6 @@ python examples\official\kdtree\kdtree_search.py
 ###
 
 # octree
-# execute NG
-# Exception ignored in: 'pcl._pcl.to_point_t'
-# TypeError: a float is required
 python examples\official\octree\octree_search.py
 python examples\official\octree\octree_change_detection.py
 ###
@@ -74,7 +71,7 @@ python examples\official\SampleConsensus\random_sample_consensus.py
 python examples\official\SampleConsensus\random_sample_consensus.py -s
 python examples\official\SampleConsensus\random_sample_consensus.py -sf
 # NG
-python examples\official\SampleConsensus\random_sample_consensus.py -f
+# python examples\official\SampleConsensus\random_sample_consensus.py -f
 ###
 
 # Segmentation

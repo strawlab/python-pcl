@@ -13,6 +13,7 @@ from boost_shared_ptr cimport shared_ptr
 
 cimport eigen as eigen3
 
+# Windows Only?
 # FW: Link time errors in RangeImage (with /clr)
 # http://www.pcl-users.org/FW-Link-time-errors-in-RangeImage-with-clr-td3581422.html
 # Linking errors using RangeImagePlanar (no use /clr)

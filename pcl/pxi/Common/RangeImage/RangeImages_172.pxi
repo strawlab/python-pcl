@@ -15,6 +15,7 @@ cdef class RangeImages:
     """
     def __cinit__(self):
         # self.me = new pcl_r_img.RangeImage_t()
+        # NG : Compiler crash
         # sp_assign(self.thisptr_shared, new pcl_r_img.RangeImage_t())
         pass
 
@@ -67,17 +68,17 @@ cdef class RangeImages:
             noise_level, 
             min_range, 
             border_size)
-    
+
     def SetAngularResolution(self, float angular_resolution_x, float angular_resolution_y):
         self.thisptr()[0].setAngularResolution(angular_resolution_x, angular_resolution_y)
-    
+
     def IntegrateFarRanges(self, PointCloud_PointWithViewpoint viewpoint):
         # cdef pcl_r_img.RangeImage_t *user
         # (<pcl_r_img.RangeImage *> self.thisptr()).integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         self.thisptr().integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.thisprt()[0].integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> viewpoint.thisptr()[0])
         # self.me.integrateFarRanges(<cpp.PointCloud_PointWithViewpoint_t&> deref(viewpoint.thisptr()))
-    
+
     def SetUnseenToMaxRange(self):
         self.thisptr()[0].setUnseenToMaxRange()
 

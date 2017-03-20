@@ -59,7 +59,7 @@ setUnseenToMaxRange = args.UnseenToMaxRange
 # point_cloud = pcl.PointCloud()
 
 # Eigen::Affine3f scene_sensor_pose (Eigen::Affine3f::Identity ())
-scene_sensor_pose = (eigen3.Affine3f.Identity ())
+# scene_sensor_pose = (eigen3.Affine3f.Identity ())
 
 # vector[int] pcd_filename_indices = pcl::console::parse_file_extension_argument (argc, argv, pcd)
 # pcd_filename_indices = './examples/official/IO/test_pcd.pcd'
@@ -208,7 +208,7 @@ narf_keypoint_detector = pcl.NarfKeypoint(range_image_border_extractor)
 print("Found" + str(keypoint_indices.size) + "key points.\n")
 
 # Show keypoints in range image widget
-### Comment
+### Comment ###
 # for (size_t i=0; ikeypoint_indices.points.size (); ++i)
 # range_image_widget.markPoint (keypoint_indices.points[i] % range_image.width,
 #                               keypoint_indices.points[i], range_image.width);

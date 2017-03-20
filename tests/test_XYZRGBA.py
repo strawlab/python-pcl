@@ -138,7 +138,7 @@ DATA ascii
     with open(tmp_file, "w") as f:
         f.write(TMPL % {"npts": npts, "data": SEGDATA.replace(";", "")})
 
-    p = pcl.load(tmp_file)
+    p = pcl.load_XYZRGBA(tmp_file)
 
     assert p.width == npts
     assert p.height == 1
@@ -171,7 +171,7 @@ SEGCYLMOD = [0.0552167, 0.0547035, 0.757707,
 class TestSegmentCylinder(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 
     def testSegment(self):
         seg = self.p.make_segmenter_normals(50)
@@ -196,7 +196,7 @@ class TestSegmentCylinder(unittest.TestCase):
 class TestSave(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
         self.tmpdir = tempfile.mkdtemp(suffix='pcl-test')
 
     def tearDown(self):
@@ -206,14 +206,14 @@ class TestSave(unittest.TestCase):
         for ext in ["pcd", "ply"]:
             d = os.path.join(self.tmpdir, "foo." + ext)
             pcl.save(self.p, d)
-            p = pcl.load(d)
+            p = pcl.load_XYZRGBA(d)
             self.assertEqual(self.p.size, p.size)
 
 
 class TestFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.p = pcl.load_XYZRGBA("tests" + os.path.sep + "flydracyl.pcd")
 
     def testFilter(self):
         mls = self.p.make_moving_least_squares()
@@ -230,7 +230,7 @@ class TestFilter(unittest.TestCase):
 class TestExtract(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.p = pcl.load_XYZRGBA("tests" + os.path.sep + "flydracyl.pcd")
 
     def testExtractPos(self):
         p2 = self.p.extract([1, 2, 3], False)
@@ -263,7 +263,7 @@ class TestExceptions(unittest.TestCase):
 class TestSegmenterNormal(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 
     def _tpos(self, c):
         self.assertEqual(c.size, 22745)
@@ -310,7 +310,7 @@ class TestSegmenterNormal(unittest.TestCase):
 class TestVoxelGridFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 
     def testFilter(self):
         fil = self.p.make_voxel_grid_filter()
@@ -323,7 +323,7 @@ class TestVoxelGridFilter(unittest.TestCase):
 class TestPassthroughFilter(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load_XYZRGBA("tests/table_scene_mug_stereo_textured_noplane.pcd")
 
     def testFilter(self):
         fil = self.p.make_passthrough_filter()
@@ -377,27 +377,27 @@ class TestKdTree(unittest.TestCase):
                 self.assertGreaterEqual(d, 0)
 
 
-class TestOctreePointCloud(unittest.TestCase):
-
-    def setUp(self):
-        self.t = pcl.OctreePointCloud_PointXYZRGBA(0.1)
-
-    def testLoad(self):
-        pc = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
-        self.t.set_input_cloud(pc)
-        self.t.define_bounding_box()
-        self.t.add_points_from_input_cloud()
-        good_point = (0.035296999, -0.074322999, 1.2074)
-        rs = self.t.is_voxel_occupied_at_point(good_point)
-        self.assertTrue(rs)
-        bad_point = (0.5, 0.5, 0.5)
-        rs = self.t.is_voxel_occupied_at_point(bad_point)
-        self.assertFalse(rs)
-        voxels_len = 44
-        self.assertEqual(len(self.t.get_occupied_voxel_centers()), voxels_len)
-        self.t.delete_voxel_at_point(good_point)
-        self.assertEqual(
-            len(self.t.get_occupied_voxel_centers()), voxels_len - 1)
+# class TestOctreePointCloud(unittest.TestCase):
+# 
+#     def setUp(self):
+#         self.t = pcl.OctreePointCloud_PointXYZRGBA(0.1)
+# 
+#     def testLoad(self):
+#         pc = pcl.load_XYZRGBA("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+#         self.t.set_input_cloud(pc)
+#         self.t.define_bounding_box()
+#         self.t.add_points_from_input_cloud()
+#         good_point = (0.035296999, -0.074322999, 1.2074)
+#         rs = self.t.is_voxel_occupied_at_point(good_point)
+#         self.assertTrue(rs)
+#         bad_point = (0.5, 0.5, 0.5)
+#         rs = self.t.is_voxel_occupied_at_point(bad_point)
+#         self.assertFalse(rs)
+#         voxels_len = 44
+#         self.assertEqual(len(self.t.get_occupied_voxel_centers()), voxels_len)
+#         self.t.delete_voxel_at_point(good_point)
+#         self.assertEqual(
+#             len(self.t.get_occupied_voxel_centers()), voxels_len - 1)
 
 
 class TestOctreePointCloudSearch(unittest.TestCase):

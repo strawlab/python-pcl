@@ -1381,18 +1381,10 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 #       virtual ~Region3D () {}
 # 
 #       /** \brief Get the centroid of the region. */
-#       inline Eigen::Vector3f 
-#       getCentroid () const
-#       {
-#         return (centroid_);
-#       }
+#       inline Eigen::Vector3f getCentroid () const
 #       
 #       /** \brief Get the covariance of the region. */
-#       inline Eigen::Matrix3f
-#       getCovariance () const
-#       {
-#         return (covariance_);
-#       }
+#       inline Eigen::Matrix3f getCovariance () const
 #       
 #       /** \brief Get the number of points in the region. */
 #       unsigned getCount () const
@@ -1405,7 +1397,6 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 # /** \brief RGBPlaneCoefficientComparator is a Comparator that operates on plane coefficients, 
 #   * for use in planar segmentation.  Also takes into account RGB, so we can segmented different colored co-planar regions.
 #   * In conjunction with OrganizedConnectedComponentSegmentation, this allows planes to be segmented from organized data.
-#   *
 #   * \author Alex Trevor
 #   */
 # template<typename PointT, typename PointNT>
@@ -1582,18 +1573,660 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 
 ### pcl 1.7.2 ###
 # approximate_progressive_morphological_filter.h
+# namespace pcl
+# /** \brief
+# * Implements the Progressive Morphological Filter for segmentation of ground points.
+# * Description can be found in the article
+# * "A Progressive Morphological Filter for Removing Nonground Measurements from
+# * Airborne LIDAR Data"
+# * by K. Zhang, S. Chen, D. Whitman, M. Shyu, J. Yan, and C. Zhang.
+# */
+# template <typename PointT>
+# class PCL_EXPORTS ApproximateProgressiveMorphologicalFilter : public pcl::PCLBase<PointT>
+        # public:
+        # typedef pcl::PointCloud <PointT> PointCloud;
+        # using PCLBase <PointT>::input_;
+        # using PCLBase <PointT>::indices_;
+        # using PCLBase <PointT>::initCompute;
+        # using PCLBase <PointT>::deinitCompute;
+        # public:
+        # /** \brief Constructor that sets default values for member variables. */
+        # ApproximateProgressiveMorphologicalFilter ();
+        # 
+        # virtual ~ApproximateProgressiveMorphologicalFilter ();
+        # 
+        # /** \brief Get the maximum window size to be used in filtering ground returns. */
+        # inline int getMaxWindowSize () const { return (max_window_size_); }
+        # 
+        # /** \brief Set the maximum window size to be used in filtering ground returns. */
+        # inline void setMaxWindowSize (int max_window_size) { max_window_size_ = max_window_size; }
+        # 
+        # /** \brief Get the slope value to be used in computing the height threshold. */
+        # inline float getSlope () const { return (slope_); }
+        # 
+        # /** \brief Set the slope value to be used in computing the height threshold. */
+        # inline void setSlope (float slope) { slope_ = slope; }
+        # 
+        # /** \brief Get the maximum height above the parameterized ground surface to be considered a ground return. */
+        # inline float getMaxDistance () const { return (max_distance_); }
+        # 
+        # /** \brief Set the maximum height above the parameterized ground surface to be considered a ground return. */
+        # inline void setMaxDistance (float max_distance) { max_distance_ = max_distance; }
+        # 
+        # /** \brief Get the initial height above the parameterized ground surface to be considered a ground return. */
+        # inline float getInitialDistance () const { return (initial_distance_); }
+        # 
+        # /** \brief Set the initial height above the parameterized ground surface to be considered a ground return. */
+        # inline void setInitialDistance (float initial_distance) { initial_distance_ = initial_distance; }
+        # 
+        # /** \brief Get the cell size. */
+        # inline float getCellSize () const { return (cell_size_); }
+        # 
+        # /** \brief Set the cell size. */
+        # inline void setCellSize (float cell_size) { cell_size_ = cell_size; }
+        # 
+        # /** \brief Get the base to be used in computing progressive window sizes. */
+        # inline float getBase () const { return (base_); }
+        # 
+        # /** \brief Set the base to be used in computing progressive window sizes. */
+        # inline void setBase (float base) { base_ = base; }
+        # 
+        # /** \brief Get flag indicating whether or not to exponentially grow window sizes? */
+        # inline bool getExponential () const { return (exponential_); }
+        # 
+        # /** \brief Set flag indicating whether or not to exponentially grow window sizes? */
+        # inline void setExponential (bool exponential) { exponential_ = exponential; }
+        # 
+        # /** \brief Initialize the scheduler and set the number of threads to use.
+        # * \param nr_threads the number of hardware threads to use (0 sets the value back to automatic)
+        # */
+        # inline void setNumberOfThreads (unsigned int nr_threads = 0) { threads_ = nr_threads; }
+        # 
+        # /** \brief This method launches the segmentation algorithm and returns indices of
+        # * points determined to be ground returns.
+        # * \param[out] ground indices of points determined to be ground returns.
+        # */
+        # virtual void extract (std::vector<int>& ground);
+
+
+###
+
 # boost.h
-# comparator.h
+###
+
 # conditional_euclidean_clustering.h
+# namespace pcl
+# typedef std::vector<pcl::PointIndices> IndicesClusters;
+# typedef boost::shared_ptr<std::vector<pcl::PointIndices> > IndicesClustersPtr;
+# 
+# /** \brief @b ConditionalEuclideanClustering performs segmentation based on Euclidean distance and a user-defined clustering condition.
+#   * \details The condition that need to hold is currently passed using a function pointer.
+#   * For more information check the documentation of setConditionFunction() or the usage example below:
+#   * \code
+#   * bool
+#   * enforceIntensitySimilarity (const pcl::PointXYZI& point_a, const pcl::PointXYZI& point_b, float squared_distance)
+#   * {
+#   *   if (fabs (point_a.intensity - point_b.intensity) < 0.1f)
+#   *     return (true);
+#   *   else
+#   *     return (false);
+#   * }
+#   * // ...
+#   * // Somewhere down to the main code
+#   * // ...
+#   * pcl::ConditionalEuclideanClustering<pcl::PointXYZI> cec (true);
+#   * cec.setInputCloud (cloud_in);
+#   * cec.setConditionFunction (&enforceIntensitySimilarity);
+#   * // Points within this distance from one another are going to need to validate the enforceIntensitySimilarity function to be part of the same cluster:
+#   * cec.setClusterTolerance (0.09f);
+#   * // Size constraints for the clusters:
+#   * cec.setMinClusterSize (5);
+#   * cec.setMaxClusterSize (30);
+#   * // The resulting clusters (an array of pointindices):
+#   * cec.segment (*clusters);
+#   * // The clusters that are too small or too large in size can also be extracted separately:
+#   * cec.getRemovedClusters (small_clusters, large_clusters);
+#   * \endcode
+#   * \author Frits Florentinus
+#   * \ingroup segmentation
+#   */
+# template<typename PointT>
+# class ConditionalEuclideanClustering : public PCLBase<PointT>
+        # protected:
+        # typedef typename pcl::search::Search<PointT>::Ptr SearcherPtr;
+        # using PCLBase<PointT>::input_;
+        # using PCLBase<PointT>::indices_;
+        # using PCLBase<PointT>::initCompute;
+        # using PCLBase<PointT>::deinitCompute;
+        # 
+        # public:
+        # /** \brief Constructor.
+        # * \param[in] extract_removed_clusters Set to true if you want to be able to extract the clusters that are too large or too small (default = false)
+        # */
+        # ConditionalEuclideanClustering (bool extract_removed_clusters = false) :
+        #   searcher_ (),
+        #   condition_function_ (),
+        #   cluster_tolerance_ (0.0f),
+        #   min_cluster_size_ (1),
+        #   max_cluster_size_ (std::numeric_limits<int>::max ()),
+        #   extract_removed_clusters_ (extract_removed_clusters),
+        #   small_clusters_ (new pcl::IndicesClusters),
+        #   large_clusters_ (new pcl::IndicesClusters)
+		# 
+        # 
+        # /** \brief Set the condition that needs to hold for neighboring points to be considered part of the same cluster.
+        # * \details Any two points within a certain distance from one another will need to evaluate this condition in order to be made part of the same cluster.
+        # * The distance can be set using setClusterTolerance().
+        # * <br>
+        # * Note that for a point to be part of a cluster, the condition only needs to hold for at least 1 point pair.
+        # * To clarify, the following statement is false:
+        # * Any two points within a cluster always evaluate this condition function to true.
+        # * <br><br>
+        # * The input arguments of the condition function are:
+        # * <ul>
+        # *  <li>PointT The first point of the point pair</li>
+        # *  <li>PointT The second point of the point pair</li>
+        # *  <li>float The squared distance between the points</li>
+        # * </ul>
+        # * The output argument is a boolean, returning true will merge the second point into the cluster of the first point.
+        # * \param[in] condition_function The condition function that needs to hold for clustering
+        # */
+        # inline void setConditionFunction (bool (*condition_function) (const PointT&, const PointT&, float)) 
+        # 
+        # /** \brief Set the spatial tolerance for new cluster candidates.
+        # * \details Any two points within this distance from one another will need to evaluate a certain condition in order to be made part of the same cluster.
+        # * The condition can be set using setConditionFunction().
+        # * \param[in] cluster_tolerance The distance to scan for cluster candidates (default = 0.0)
+        # */
+        # inline void setClusterTolerance (float cluster_tolerance)
+        # 
+        # /** \brief Get the spatial tolerance for new cluster candidates.*/
+        # inline float getClusterTolerance ()
+        # 
+        # /** \brief Set the minimum number of points that a cluster needs to contain in order to be considered valid.
+        # * \param[in] min_cluster_size The minimum cluster size (default = 1)
+        # */
+        # inline void setMinClusterSize (int min_cluster_size)
+        # 
+        # /** \brief Get the minimum number of points that a cluster needs to contain in order to be considered valid.*/
+        # inline int getMinClusterSize ()
+        # 
+        # /** \brief Set the maximum number of points that a cluster needs to contain in order to be considered valid.
+        # * \param[in] max_cluster_size The maximum cluster size (default = unlimited)
+        # */
+        # inline void setMaxClusterSize (int max_cluster_size)
+        # 
+        # /** \brief Get the maximum number of points that a cluster needs to contain in order to be considered valid.*/
+        # inline int getMaxClusterSize ()
+        # 
+        # /** \brief Segment the input into separate clusters.
+        # * \details The input can be set using setInputCloud() and setIndices().
+        # * <br>
+        # * The size constraints for the resulting clusters can be set using setMinClusterSize() and setMaxClusterSize().
+        # * <br>
+        # * The region growing parameters can be set using setConditionFunction() and setClusterTolerance().
+        # * <br>
+        # * \param[out] clusters The resultant set of indices, indexing the points of the input cloud that correspond to the clusters
+        # */
+        # void segment (IndicesClusters &clusters);
+        # 
+        # /** \brief Get the clusters that are invalidated due to size constraints.
+        # * \note The constructor of this class needs to be initialized with true, and the segment method needs to have been called prior to using this method.
+        # * \param[out] small_clusters The resultant clusters that contain less than min_cluster_size points
+        # * \param[out] large_clusters The resultant clusters that contain more than max_cluster_size points
+        # */
+        # inline void getRemovedClusters (IndicesClustersPtr &small_clusters, IndicesClustersPtr &large_clusters)
+
+
+###
+
 # crf_normal_segmentation.h
-# edge_aware_plane_comparator.h
-# euclidean_cluster_comparator.h
-# euclidean_plane_coefficient_comparator.h
-# extract_clusters.h
-# extract_labeled_clusters.h
-# extract_polygonal_prism_data.h
+# namespace pcl
+# /** \brief
+# * \author Christian Potthast
+# * 
+# */
+# template <typename PointT>
+# class PCL_EXPORTS CrfNormalSegmentation
+        # public:
+        # 
+        # /** \brief Constructor that sets default values for member variables. */
+        # CrfNormalSegmentation ();
+        # 
+        # /** \brief Destructor that frees memory. */
+        # ~CrfNormalSegmentation ();
+        # 
+        # /** \brief This method sets the input cloud.
+        # * \param[in] input_cloud input point cloud
+        # */
+        # void setCloud (typename pcl::PointCloud<PointT>::Ptr input_cloud);
+        # 
+        # /** \brief This method simply launches the segmentation algorithm */
+        # void segmentPoints ();
+
+
+###
+
 # grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+# /** boost implementation of Boykov and Kolmogorov's maxflow algorithm doesn't support
+# * negative flows which makes it inappropriate for this conext.
+# * This implementation of Boykov and Kolmogorov's maxflow algorithm by Stephen Gould
+# * <stephen.gould@anu.edu.au> in DARWIN under BSD does the trick however solwer than original
+# * implementation.
+# */
+# class PCL_EXPORTS BoykovKolmogorov
+        # public:
+        # typedef int vertex_descriptor;
+        # typedef double edge_capacity_type;
+        # 
+        # /// construct a maxflow/mincut problem with estimated max_nodes
+        # BoykovKolmogorov (std::size_t max_nodes = 0);
+        # 
+        # /// destructor
+        # virtual ~BoykovKolmogorov () {}
+        # 
+        # /// get number of nodes in the graph
+        # size_t numNodes () const { return nodes_.size (); }
+        # 
+        # /// reset all edge capacities to zero (but don't free the graph)
+        # void reset ();
+        # 
+        # /// clear the graph and internal datastructures
+        # void clear ();
+        # 
+        # /// add nodes to the graph (returns the id of the first node added)
+        # int addNodes (std::size_t n = 1);
+        # 
+        # /// add constant flow to graph
+        # void addConstant (double c) { flow_value_ += c; }
+        # 
+        # /// add edge from s to nodeId
+        # void addSourceEdge (int u, double cap);
+        # 
+        # /// add edge from nodeId to t
+        # void addTargetEdge (int u, double cap);
+        # 
+        # /// add edge from u to v and edge from v to u
+        # /// (requires cap_uv + cap_vu >= 0)
+        # void addEdge (int u, int v, double cap_uv, double cap_vu = 0.0);
+        # 
+        # /// solve the max-flow problem and return the flow
+        # double solve ();
+        # 
+        # /// return true if \p u is in the s-set after calling \ref solve.
+        # bool inSourceTree (int u) const { return (cut_[u] == SOURCE); }
+        # 
+        # /// return true if \p u is in the t-set after calling \ref solve
+        # bool inSinkTree (int u) const { return (cut_[u] == TARGET); }
+        # 
+        # /// returns the residual capacity for an edge (use -1 for terminal (-1,-1) is the current flow
+        # double operator() (int u, int v) const;
+        # 
+        # double getSourceEdgeCapacity (int u) const;
+        # 
+        # double getTargetEdgeCapacity (int u) const;
+
+
+###
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+      	# /**\brief Structure to save RGB colors into floats */
+      	# struct Color
+      	# {
+      	#   Color () : r (0), g (0), b (0) {}
+      	#   Color (float _r, float _g, float _b) : r(_r), g(_g), b(_b) {}
+      	#   Color (const pcl::RGB& color) : r (color.r), g (color.g), b (color.b) {}
+		# 
+        # template<typename PointT> Color (const PointT& p);
+		# 
+        # template<typename PointT> operator PointT () const;
+		# 
+        # float r, g, b;
+      	# };
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+        # /// An Image is a point cloud of Color
+        # typedef pcl::PointCloud<Color> Image;
+        # 
+        # /** \brief Compute squared distance between two colors
+        # * \param[in] c1 first color
+        # * \param[in] c2 second color
+        # * \return the squared distance measure in RGB space
+        # */
+        # float colorDistance (const Color& c1, const Color& c2);
+        # 
+        # /// User supplied Trimap values
+        # enum TrimapValue { TrimapUnknown = -1, TrimapForeground, TrimapBackground };
+        # 
+        # /// Grabcut derived hard segementation values
+        # enum SegmentationValue { SegmentationForeground = 0, SegmentationBackground };
+        # 
+        # /// Gaussian structure
+        # struct Gaussian
+        # {
+        #     Gaussian () {}
+        #     /// mean of the gaussian
+        #     Color mu;
+        #     /// covariance matrix of the gaussian
+        #     Eigen::Matrix3f covariance;
+        #     /// determinant of the covariance matrix
+        #     float determinant;
+        #     /// inverse of the covariance matrix
+        #     Eigen::Matrix3f inverse;
+        #     /// weighting of this gaussian in the GMM.
+        #     float pi;
+        #     /// heighest eigenvalue of covariance matrix
+        #     float eigenvalue;
+        #     /// eigenvector corresponding to the heighest eigenvector
+        #     Eigen::Vector3f eigenvector;
+        # };
+
+
+###
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+# class PCL_EXPORTS GMM
+        # public:
+        #   /// Initialize GMM with ddesired number of gaussians.
+        #   GMM () : gaussians_ (0) {}
+        #   /// Initialize GMM with ddesired number of gaussians.
+        #   GMM (std::size_t K) : gaussians_ (K) {}
+        #   /// Destructor
+        #   ~GMM () {}
+        # 
+        # /// \return K
+        # std::size_t getK () const { return gaussians_.size (); }
+        # 
+        #   /// resize gaussians
+        #   void resize (std::size_t K) { gaussians_.resize (K); }
+        #   
+        #   /// \return a reference to the gaussian at a given position
+        #   Gaussian& operator[] (std::size_t pos) { return (gaussians_[pos]); }
+        # 
+        #   /// \return a const reference to the gaussian at a given position
+        #   const Gaussian& operator[] (std::size_t pos) const { return (gaussians_[pos]); }
+        # 
+        #   /// \brief \return the computed probability density of a color in this GMM
+        #   float probabilityDensity (const Color &c);
+        # 
+        #   /// \brief \return the computed probability density of a color in just one Gaussian
+        #   float probabilityDensity(std::size_t i, const Color &c);
+
+
+###
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+# /** Helper class that fits a single Gaussian to color samples */
+# class GaussianFitter
+        # public:
+        # GaussianFitter (float epsilon = 0.0001)
+        #   : sum_ (Eigen::Vector3f::Zero ())
+        #   , accumulator_ (Eigen::Matrix3f::Zero ())
+        #   , count_ (0)
+        #   , epsilon_ (epsilon)
+        # { }
+		# 
+        # /// Add a color sample
+        # void add (const Color &c);
+        # 
+        # /// Build the gaussian out of all the added color samples
+        # void fit (Gaussian& g, std::size_t total_count, bool compute_eigens = false) const;
+        # 
+        # /// \return epsilon
+        # float getEpsilon () { return (epsilon_); }
+        # 
+        # /** set epsilon which will be added to the covariance matrix diagonal which avoids singular
+        #   * covariance matrix
+        #   * \param[in] epsilon user defined epsilon
+        #   */
+        # void setEpsilon (float epsilon) { epsilon_ = epsilon; }
+
+
+###
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+      	# /** Build the initial GMMs using the Orchard and Bouman color clustering algorithm */
+      	# PCL_EXPORTS void buildGMMs (const Image &image,
+        #          const std::vector<int>& indices,
+        #          const std::vector<SegmentationValue> &hardSegmentation,
+        #          std::vector<std::size_t> &components,
+        #          GMM &background_GMM, GMM &foreground_GMM);
+
+
+###
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# namespace grabcut
+		# /** Iteratively learn GMMs using GrabCut updating algorithm */
+      	# PCL_EXPORTS void learnGMMs (const Image& image,
+        #          				const std::vector<int>& indices,
+        #          				const std::vector<SegmentationValue>& hard_segmentation,
+        #          				std::vector<std::size_t>& components,
+        #          				GMM& background_GMM, GMM& foreground_GMM);
+
+
+###
+
+# grabcut_segmentation.h
+# namespace pcl
+# namespace segmentation
+# /** \brief Implementation of the GrabCut segmentation in
+# * "GrabCut — Interactive Foreground Extraction using Iterated Graph Cuts" by
+# * Carsten Rother, Vladimir Kolmogorov and Andrew Blake.
+# * \author Justin Talbot, jtalbot@stanford.edu placed in Public Domain, 2010
+# * \author Nizar Sallem port to PCL and adaptation of original code.
+# * \ingroup segmentation
+# */
+# template <typename PointT>
+# class GrabCut : public pcl::PCLBase<PointT>
+        # public:
+        # typedef typename pcl::search::Search<PointT> KdTree;
+        # typedef typename pcl::search::Search<PointT>::Ptr KdTreePtr;
+        # typedef typename PCLBase<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename PCLBase<PointT>::PointCloudPtr PointCloudPtr;
+        # using PCLBase<PointT>::input_;
+        # using PCLBase<PointT>::indices_;
+        # using PCLBase<PointT>::fake_indices_;
+        # 
+        # /// Constructor
+        # GrabCut (uint32_t K = 5, float lambda = 50.f)
+        # : K_ (K)
+        # , lambda_ (lambda)
+        # , nb_neighbours_ (9)
+        # , initialized_ (false)
+        # {}
+        # 
+        # /// Desctructor
+        # virtual ~GrabCut () {};
+        # 
+        # // /// Set input cloud
+        # void setInputCloud (const PointCloudConstPtr& cloud);
+        # 
+        # /// Set background points, foreground points = points \ background points
+        # void setBackgroundPoints (const PointCloudConstPtr& background_points);
+        # 
+        # /// Set background indices, foreground indices = indices \ background indices
+        # void setBackgroundPointsIndices (int x1, int y1, int x2, int y2);
+        # 
+        # /// Set background indices, foreground indices = indices \ background indices
+        # void setBackgroundPointsIndices (const PointIndicesConstPtr& indices);
+        # 
+        # /// Run Grabcut refinement on the hard segmentation
+        # virtual void refine ();
+        # 
+        # /// \return the number of pixels that have changed from foreground to background or vice versa
+        # virtual int refineOnce ();
+        # 
+        # /// \return lambda
+        # float getLambda () { return (lambda_); }
+        # 
+        # /** Set lambda parameter to user given value. Suggested value by the authors is 50
+        # * \param[in] lambda
+        # */
+        # void setLambda (float lambda) { lambda_ = lambda; }
+        # 
+        # /// \return the number of components in the GMM
+        # uint32_t getK () { return (K_); }
+        # 
+        # /** Set K parameter to user given value. Suggested value by the authors is 5
+        # * \param[in] K the number of components used in GMM
+        # */
+        # void setK (uint32_t K) { K_ = K; }
+        # 
+        # /** \brief Provide a pointer to the search object.
+        # * \param tree a pointer to the spatial search object.
+        # */
+        # inline void setSearchMethod (const KdTreePtr &tree) { tree_ = tree; }
+        # 
+        # /** \brief Get a pointer to the search method used. */
+        # inline KdTreePtr getSearchMethod () { return (tree_); }
+        # 
+        # /** \brief Allows to set the number of neighbours to find.
+        # * \param[in] nb_neighbours new number of neighbours
+        # */
+        # void setNumberOfNeighbours (int nb_neighbours) { nb_neighbours_ = nb_neighbours; }
+        # 
+        # /** \brief Returns the number of neighbours to find. */
+        # int getNumberOfNeighbours () const { return (nb_neighbours_); }
+        # 
+        # /** \brief This method launches the segmentation algorithm and returns the clusters that were
+        # * obtained during the segmentation. The indices of points belonging to the object will be stored
+        # * in the cluster with index 1, other indices will be stored in the cluster with index 0.
+        # * \param[out] clusters clusters that were obtained. Each cluster is an array of point indices.
+        # */
+        # void extract (std::vector<pcl::PointIndices>& clusters);
+
+
+###
+
 # ground_plane_comparator.h
+# namespace pcl
+# /** \brief GroundPlaneComparator is a Comparator for detecting smooth surfaces suitable for driving.
+# * In conjunction with OrganizedConnectedComponentSegmentation, this allows smooth groundplanes / road surfaces to be segmented from point clouds.
+# * \author Alex Trevor
+# */
+# template<typename PointT, typename PointNT>
+# class GroundPlaneComparator: public Comparator<PointT>
+        # public:
+        # typedef typename Comparator<PointT>::PointCloud PointCloud;
+        # typedef typename Comparator<PointT>::PointCloudConstPtr PointCloudConstPtr;
+        # typedef typename pcl::PointCloud<PointNT> PointCloudN;
+        # typedef typename PointCloudN::Ptr PointCloudNPtr;
+        # typedef typename PointCloudN::ConstPtr PointCloudNConstPtr;
+        # typedef boost::shared_ptr<GroundPlaneComparator<PointT, PointNT> > Ptr;
+        # typedef boost::shared_ptr<const GroundPlaneComparator<PointT, PointNT> > ConstPtr;
+        # 
+        # using pcl::Comparator<PointT>::input_;
+        # 
+        # /** \brief Empty constructor for GroundPlaneComparator. */
+        # GroundPlaneComparator ()
+        # : normals_ ()
+        # , plane_coeff_d_ ()
+        # , angular_threshold_ (cosf (pcl::deg2rad (2.0f)))
+        # , road_angular_threshold_ ( cosf(pcl::deg2rad (10.0f)))
+        # , distance_threshold_ (0.1f)
+        # , depth_dependent_ (true)
+        # , z_axis_ (Eigen::Vector3f (0.0, 0.0, 1.0) )
+        # , desired_road_axis_ (Eigen::Vector3f(0.0, -1.0, 0.0))
+        # 
+        # /** \brief Constructor for GroundPlaneComparator.
+        # * \param[in] plane_coeff_d a reference to a vector of d coefficients of plane equations.  Must be the same size as the input cloud and input normals.  a, b, and c coefficients are in the input normals.
+        # */
+        # GroundPlaneComparator (boost::shared_ptr<std::vector<float> >& plane_coeff_d) 
+        # : normals_ ()
+        # , plane_coeff_d_ (plane_coeff_d)
+        # , angular_threshold_ (cosf (pcl::deg2rad (3.0f)))
+        # , distance_threshold_ (0.1f)
+        # , depth_dependent_ (true)
+        # , z_axis_ (Eigen::Vector3f (0.0f, 0.0f, 1.0f))
+        # , road_angular_threshold_ ( cosf(pcl::deg2rad (40.0f)))
+        # , desired_road_axis_ (Eigen::Vector3f(0.0, -1.0, 0.0))
+        # 
+        # /** \brief Destructor for GroundPlaneComparator. */
+        # virtual ~GroundPlaneComparator ()
+        # 
+        # /** \brief Provide the input cloud.
+        # * \param[in] cloud the input point cloud.
+        # */
+        # virtual void setInputCloud (const PointCloudConstPtr& cloud)
+        # 
+        # /** \brief Provide a pointer to the input normals.
+        # * \param[in] normals the input normal cloud.
+        # */
+        # inline void setInputNormals (const PointCloudNConstPtr &normals)
+        # 
+        # /** \brief Get the input normals. */
+        # inline PointCloudNConstPtr getInputNormals () const
+        # 
+        # /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
+        # * \param[in] plane_coeff_d a pointer to the plane coefficients.
+        # */
+        # void setPlaneCoeffD (boost::shared_ptr<std::vector<float> >& plane_coeff_d)
+        # 
+        # /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
+        # * \param[in] plane_coeff_d a pointer to the plane coefficients.
+        # */
+        # void setPlaneCoeffD (std::vector<float>& plane_coeff_d)
+        # 
+        # /** \brief Get a pointer to the vector of the d-coefficient of the planes' hessian normal form. */
+        # const std::vector<float>& getPlaneCoeffD () const
+        # 
+        # /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
+        # * \param[in] angular_threshold the tolerance in radians
+        # */
+        # virtual void setAngularThreshold (float angular_threshold)
+        # 
+        # /** \brief Set the tolerance in radians for difference in normal direction between a point and the expected ground normal.
+        # * \param[in] angular_threshold the
+        # */
+        # virtual void setGroundAngularThreshold (float angular_threshold)
+        # 
+        # /** \brief Set the expected ground plane normal with respect to the sensor.  Pixels labeled as ground must be within ground_angular_threshold radians of this normal to be labeled as ground.
+        # * \param[in] normal The normal direction of the expected ground plane.
+        # */
+        # void setExpectedGroundNormal (Eigen::Vector3f normal)
+        # 
+        # /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
+        # inline float getAngularThreshold () const
+        # 
+        # /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
+        # * \param[in] distance_threshold the tolerance in meters (at 1m)
+        # * \param[in] depth_dependent whether to scale the threshold based on range from the sensor (default: false)
+        # */
+        # void setDistanceThreshold (float distance_threshold, bool depth_dependent = false)
+        # 
+        # /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
+        # inline float getDistanceThreshold () const
+        # 
+        # /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
+        # * and the difference between the d component of the normals is less than distance threshold, else false
+        # * \param idx1 The first index for the comparison
+        # * \param idx2 The second index for the comparison
+        # */
+        # virtual bool compare (int idx1, int idx2) const
+
+
+###
 
 # min_cut_segmentation.h
 # namespace pcl
@@ -2267,6 +2900,9 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #  */
 # template <typename PointT>
 # class PCL_EXPORTS ProgressiveMorphologicalFilter : public pcl::PCLBase<PointT>
+cdef extern from "pcl/segmentation/progressive_morphological_filter.h" namespace "pcl":
+    cdef cppclass ProgressiveMorphologicalFilter[PointT](PCLBase[PointT]):
+        ProgressiveMorphologicalFilter()
         # public:
         # typedef pcl::PointCloud <PointT> PointCloud;
         # 
@@ -2281,53 +2917,72 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
         # 
         # /** \brief Get the maximum window size to be used in filtering ground returns. */
         # inline int getMaxWindowSize () const { return (max_window_size_); }
-        # 
+        int getMaxWindowSize ()
+        
         # /** \brief Set the maximum window size to be used in filtering ground returns. */
         # inline void setMaxWindowSize (int max_window_size) { max_window_size_ = max_window_size; }
-        # 
+        void setMaxWindowSize (int max_window_size)
+        
         # /** \brief Get the slope value to be used in computing the height threshold. */
         # inline float getSlope () const { return (slope_); }
-        # 
+        float getSlope ()
+        
         # /** \brief Set the slope value to be used in computing the height threshold. */
         # inline void setSlope (float slope) { slope_ = slope; }
-        # 
+        void setSlope (float slope)
+        
         # /** \brief Get the maximum height above the parameterized ground surface to be considered a ground return. */
         # inline float getMaxDistance () const { return (max_distance_); }
-        # 
+        float getMaxDistance ()
+        
         # /** \brief Set the maximum height above the parameterized ground surface to be considered a ground return. */
         # inline void setMaxDistance (float max_distance) { max_distance_ = max_distance; }
-        # 
+        void setMaxDistance (float max_distance)
+        
         # /** \brief Get the initial height above the parameterized ground surface to be considered a ground return. */
         # inline float getInitialDistance () const { return (initial_distance_); }
-        # 
+        float getInitialDistance ()
+        
         # /** \brief Set the initial height above the parameterized ground surface to be considered a ground return. */
         # inline void setInitialDistance (float initial_distance) { initial_distance_ = initial_distance; }
-        # 
+        void setInitialDistance (float initial_distance)
+        
         # /** \brief Get the cell size. */
         # inline float getCellSize () const { return (cell_size_); }
-        # 
+        float getCellSize ()
+        
         # /** \brief Set the cell size. */
         # inline void setCellSize (float cell_size) { cell_size_ = cell_size; }
-        # 
+        void setCellSize (float cell_size)
+        
         # /** \brief Get the base to be used in computing progressive window sizes. */
         # inline float getBase () const { return (base_); }
-        # 
+        float getBase ()
+        
         # /** \brief Set the base to be used in computing progressive window sizes. */
         # inline void setBase (float base) { base_ = base; }
-        # 
+        setBase (float base)
+        
         # /** \brief Get flag indicating whether or not to exponentially grow window sizes? */
         # inline bool getExponential () const { return (exponential_); }
-        # 
+        bool getExponential ()
+        
         # /** \brief Set flag indicating whether or not to exponentially grow window sizes? */
         # inline void setExponential (bool exponential) { exponential_ = exponential; }
-        # 
+        void setExponential (bool exponential)
+        
         # /** \brief This method launches the segmentation algorithm and returns indices of
         #   * points determined to be ground returns.
         #   * \param[out] ground indices of points determined to be ground returns.
         #   */
         # virtual void extract (std::vector<int>& ground);
+        # void extract (vector[int]& ground)
 
 
+ctypedef ProgressiveMorphologicalFilter[PointXYZ] ProgressiveMorphologicalFilter_t
+ctypedef ProgressiveMorphologicalFilter[PointXYZI] ProgressiveMorphologicalFilter_PointXYZI_t
+ctypedef ProgressiveMorphologicalFilter[PointXYZRGB] ProgressiveMorphologicalFilter_PointXYZRGB_t
+ctypedef ProgressiveMorphologicalFilter[PointXYZRGBA] ProgressiveMorphologicalFilter_PointXYZRGBA_t
 ###
 
 # region_3d.h
@@ -3376,8 +4031,7 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #       /** \brief Get a multimap which gives supervoxel adjacency
 #        *  \param[out] label_adjacency Multi-Map which maps a supervoxel label to all adjacent supervoxel labels
 #        */
-#       void 
-#       getSupervoxelAdjacency (std::multimap<uint32_t, uint32_t> &label_adjacency) const;
+#       void getSupervoxelAdjacency (std::multimap<uint32_t, uint32_t> &label_adjacency) const;
 #             
 #       /** \brief Static helper function which returns a pointcloud of normals for the input supervoxels 
 #        *  \param[in] supervoxel_clusters Supervoxel cluster map coming from this class
@@ -3388,8 +4042,7 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #       makeSupervoxelNormalCloud (std::map<uint32_t,typename Supervoxel<PointT>::Ptr > &supervoxel_clusters);
 #       
 #       /** \brief Returns the current maximum (highest) label */
-#       int
-#       getMaxLabel () const;
+#       int getMaxLabel () const;
 #   };
 # 
 # }

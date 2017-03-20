@@ -126,8 +126,12 @@ print ('Neighbors within radius search at (' + str(searchPoint[0][0]) + ' ' + st
 #                  << " " << cloud->points[ pointIdxRadiusSearch[i] ].z 
 #                  << " (squared distance: " << pointRadiusSquaredDistance[i] << ")" << std::endl;
 # }
+###
 # [ind, sqdist] = octree.radius_search_for_cloud (searchPoint, radius)
-[ind, sqdist] = octree.radius_search (searchPoint, radius, 10)
+# Exception ignored in: 'pcl._pcl.to_point_t'
+# [ind, sqdist] = octree.radius_search (searchPoint, radius, 10)
+searchPoints = (searchPoint[0][0], searchPoint[0][1], searchPoint[0][2])
+[ind, sqdist] = octree.radius_search (searchPoints, radius, 10)
 
 # Function radius_search
 for i in range(0, ind.size):

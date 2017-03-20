@@ -90,6 +90,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         if max_nn > 0:
             k_indices.resize(max_nn)
             k_sqr_distances.resize(max_nn)
+        
         cdef int k = (<pcloct.OctreePointCloudSearch_t*>self.me).radiusSearch(to_point_t(point), radius, k_indices, k_sqr_distances, max_nn)
         cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
         cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
@@ -301,6 +302,7 @@ cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
         Delete leaf node / voxel at given point.
         """
         self.me2.deleteVoxelAtPoint(to_point2_t(point))
+
 
 cdef class OctreePointCloudSearch_PointXYZRGB(OctreePointCloud_PointXYZRGB):
     """
