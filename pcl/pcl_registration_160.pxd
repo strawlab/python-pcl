@@ -2223,6 +2223,7 @@ cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl" 
         #    const cpp.PointCloudPtr_t &cloud_src,
         #    const cpp.PointCloudPtr_t &cloud_tgt,
         #    const Matrix4f &transformation_matrix) = 0;
+        # 
         # ctypedef shared_ptr[TransformationValidation[PointSource, PointTarget] ] Ptr;
         # ctypedef shared_ptr[const TransformationValidation[PointSource, PointTarget] ] ConstPtr;
 

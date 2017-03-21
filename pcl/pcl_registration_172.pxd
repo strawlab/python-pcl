@@ -4350,6 +4350,8 @@ cdef extern from "pcl/registration/warp_point_rigid_3d.h" namespace "pcl" nogil:
         WarpPointRigid3D ()
         # public:
         # virtual void setParam (const Eigen::VectorXf & p)
+
+
 ###
 
 # warp_point_rigid_6d.h

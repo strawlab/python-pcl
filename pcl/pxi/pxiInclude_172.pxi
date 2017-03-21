@@ -30,7 +30,22 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages_172.pxi"
-# include "Visualization/PointCloudColorHandlerCustoms.pxi"
+# Registration
+include "registration/GeneralizedIterativeClosestPoint_172.pxi"
+include "registration/IterativeClosestPoint_172.pxi"
+include "registration/IterativeClosestPointNonLinear_172.pxi"
+# SampleConsensus
+include "SampleConsensus/RandomSampleConsensus.pxi"
+include "SampleConsensus/SampleConsensusModelPlane.pxi"
+include "SampleConsensus/SampleConsensusModelSphere.pxi"
+include "SampleConsensus/SampleConsensusModelCylinder.pxi"
+include "SampleConsensus/SampleConsensusModelLine.pxi"
+include "SampleConsensus/SampleConsensusModelRegistration.pxi"
+include "SampleConsensus/SampleConsensusModelStick.pxi"
+# pcl 1.7.2?
+# include "registration/NormalDistributionsTransform.pxi"
+
+# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Features
 include "Features/NormalEstimation_172.pxi"

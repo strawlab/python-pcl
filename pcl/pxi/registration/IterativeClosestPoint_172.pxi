@@ -6,7 +6,7 @@ import numpy as np
 
 cimport _pcl
 cimport pcl_defs as cpp
-cimport pcl_registration_160 as pcl_reg
+cimport pcl_registration_172 as pcl_reg
 from boost_shared_ptr cimport shared_ptr
 
 from eigen cimport Matrix4f
@@ -29,9 +29,6 @@ cdef class IterativeClosestPoint:
     def set_InputTarget(self, _pcl.PointCloud cloud):
         self.me.setInputTarget (cloud.thisptr_shared)
         pass
-
-print('has converged:' + str(icp.hasConverged()) + ' score: ' + str(icp.getFitnessScore()) )
-print(str(icp.getFinalTransformation()))
 
     # def get_Resolution(self):
     #     return self.me.getResolution()
