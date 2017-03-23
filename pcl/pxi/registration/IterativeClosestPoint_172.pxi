@@ -51,7 +51,7 @@ cdef class IterativeClosestPoint:
     # def get_FinalNumIteration(self):
     #     return self.me.getFinalNumIteration()
 
-    cdef object run(self, pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+    cdef object run(self, pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, float] &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         reg.setInputTarget(target.thisptr_shared)
         
         if max_iter is not None:

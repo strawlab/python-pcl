@@ -635,7 +635,7 @@ cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class IterativeClosestPoint : public Registration<PointSource, PointTarget, Scalar>
 cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
-    cdef cppclass IterativeClosestPoint[Source, Target, float](Registration[Source, Target, float]):
+    cdef cppclass IterativeClosestPoint[Source, Target, Scalar](Registration[Source, Target, Scalar]):
         IterativeClosestPoint() except +
         # ctypedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
         # ctypedef typename PointCloudSource::Ptr PointCloudSourcePtr;
@@ -675,14 +675,14 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
         # inline bool getUseReciprocalCorrespondences () const
 
 
-ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPoint_t
-ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPoint_PointXYZI_t
-ctypedef IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB] IterativeClosestPoint_PointXYZRGB_t
-ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA] IterativeClosestPoint_PointXYZRGBA_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPointPtr_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI]] IterativeClosestPoint_PointXYZI_Ptr_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPoint_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPoint_PointXYZRGBA_Ptr_t
+ctypedef IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float] IterativeClosestPoint_t
+ctypedef IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPoint_PointXYZI_t
+ctypedef IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float] IterativeClosestPoint_PointXYZRGB_t
+ctypedef IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float] IterativeClosestPoint_PointXYZRGBA_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPointPtr_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPoint_PointXYZI_Ptr_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPoint_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPoint_PointXYZRGBA_Ptr_t
 ###
 
 # /** \brief @b IterativeClosestPointWithNormals is a special case of
@@ -695,7 +695,7 @@ ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] I
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class IterativeClosestPointWithNormals : public IterativeClosestPoint<PointSource, PointTarget, Scalar>
 cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
-    cdef cppclass IterativeClosestPointWithNormals[Source, Target, float](IterativeClosestPoint[Source, Target, float]):
+    cdef cppclass IterativeClosestPointWithNormals[Source, Target, Scalar](IterativeClosestPoint[Source, Target, Scalar]):
         IterativeClosestPointWithNormals() except +
         # public:
         # typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::PointCloudSource PointCloudSource;
@@ -714,14 +714,14 @@ cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
         # virtual ~IterativeClosestPointWithNormals () {}
 
 
-ctypedef IterativeClosestPointWithNormals[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPointWithNormals_t
-ctypedef IterativeClosestPointWithNormals[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPointWithNormals_PointXYZI_t
-ctypedef IterativeClosestPointWithNormals[cpp.PointXYZRGB, cpp.PointXYZRGB] IterativeClosestPointWithNormals_PointXYZRGB_t
-ctypedef IterativeClosestPointWithNormals[cpp.PointXYZRGBA, cpp.PointXYZRGBA] IterativeClosestPointWithNormals_PointXYZRGBA_t
-ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPointWithNormalsPtr_t
-ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZI, cpp.PointXYZI]] IterativeClosestPointWithNormals_PointXYZI_Ptr_t
-ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPointWithNormals_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPointWithNormals_PointXYZRGBA_Ptr_t
+ctypedef IterativeClosestPointWithNormals[cpp.PointXYZ, cpp.PointXYZ, float] IterativeClosestPointWithNormals_t
+ctypedef IterativeClosestPointWithNormals[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPointWithNormals_PointXYZI_t
+ctypedef IterativeClosestPointWithNormals[cpp.PointXYZRGB, cpp.PointXYZRGB, float] IterativeClosestPointWithNormals_PointXYZRGB_t
+ctypedef IterativeClosestPointWithNormals[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float] IterativeClosestPointWithNormals_PointXYZRGBA_t
+ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPointWithNormalsPtr_t
+ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPointWithNormals_PointXYZI_Ptr_t
+ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPointWithNormals_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPointWithNormals_PointXYZRGBA_Ptr_t
 ###
 
 # gicp.h
@@ -740,7 +740,7 @@ ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZRGBA, cpp.Point
 # template <typename PointSource, typename PointTarget>
 # class GeneralizedIterativeClosestPoint : public IterativeClosestPoint<PointSource, PointTarget>
 cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
-    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](IterativeClosestPoint[Source, Target, float]):
+    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](IterativeClosestPoint[Source, Target]):
         GeneralizedIterativeClosestPoint() except +
         # using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
         # using IterativeClosestPoint<PointSource, PointTarget>::getClassName;
@@ -866,9 +866,7 @@ ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZRGBA, cpp.Point
 # icp_nl.h
 # /** \brief @b IterativeClosestPointNonLinear is an ICP variant that uses Levenberg-Marquardt optimization 
 #     * backend. The resultant transformation is optimized as a quaternion.
-#     *
 #     * The algorithm has several termination criteria:
-#     *
 #     * <ol>
 #     * <li>Number of iterations has reached the maximum user imposed number of iterations 
 #     *     (via \ref setMaximumIterations)</li>
@@ -877,25 +875,24 @@ ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZRGBA, cpp.Point
 #     * <li>The sum of Euclidean squared errors is smaller than a user defined threshold 
 #     *     (via \ref setEuclideanFitnessEpsilon)</li>
 #     * </ol>
-#     *
 #     * \author Radu B. Rusu, Michael Dixon
 #     * \ingroup registration
 #     */
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class IterativeClosestPointNonLinear : public IterativeClosestPoint<PointSource, PointTarget, Scalar>
 cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
-    cdef cppclass IterativeClosestPointNonLinear[Source, Target, float](IterativeClosestPoint[Source, Target, float]):
+    cdef cppclass IterativeClosestPointNonLinear[Source, Target, Scalar](IterativeClosestPoint[Source, Target, Scalar]):
         IterativeClosestPointNonLinear() except +
 
 
-ctypedef IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] IterativeClosestPointNonLinear_t
-ctypedef IterativeClosestPointNonLinear[cpp.PointXYZI, cpp.PointXYZI] IterativeClosestPointNonLinear_PointXYZI_t
-ctypedef IterativeClosestPointNonLinear[cpp.PointXYZRGB, cpp.PointXYZRGB] IterativeClosestPointNonLinear_PointXYZRGB_t
-ctypedef IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXYZRGBA] IterativeClosestPointNonLinear_PointXYZRGBA_t
-ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ]] IterativeClosestPointNonLinearPtr_t
-ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZI, cpp.PointXYZI]] IterativeClosestPointNonLinear_PointXYZI_Ptr_t
-ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGB, cpp.PointXYZRGB]] IterativeClosestPointNonLinear_PointXYZRGB_Ptr_t
-ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] IterativeClosestPointNonLinear_PointXYZRGBA_Ptr_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ, float] IterativeClosestPointNonLinear_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZI, cpp.PointXYZI, float] IterativeClosestPointNonLinear_PointXYZI_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZRGB, cpp.PointXYZRGB, float] IterativeClosestPointNonLinear_PointXYZRGB_t
+ctypedef IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float] IterativeClosestPointNonLinear_PointXYZRGBA_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ, float]] IterativeClosestPointNonLinearPtr_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZI, cpp.PointXYZI, float]] IterativeClosestPointNonLinear_PointXYZI_Ptr_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGB, cpp.PointXYZRGB, float]] IterativeClosestPointNonLinear_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXYZRGBA, float]] IterativeClosestPointNonLinear_PointXYZRGBA_Ptr_t
 ###
 
 # bfgs.h
@@ -968,7 +965,6 @@ ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXY
 # public:
 #   typedef typename FunctorType::Scalar Scalar;
 #   typedef typename FunctorType::VectorType FVectorType;
-# 
 #   typedef Eigen::DenseIndex Index;
 # 
 #   struct Parameters {

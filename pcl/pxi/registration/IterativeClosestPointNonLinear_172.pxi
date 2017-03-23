@@ -21,7 +21,7 @@ cdef class IterativeClosestPointNonLinear:
     def __dealloc__(self):
         del self.me
 
-    cdef object run(self, pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ] &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+    cdef object run(self, pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ, float] &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         # 1.6.0 NG(No descrription)
         # reg.setInputSource(source.thisptr_shared)
         # PCLBase
