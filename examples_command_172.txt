@@ -6,9 +6,10 @@ python examples\official\Applications\vfh_cluster_classifier.txt
 ###
 
 # Features
-python examples\official\Features\moment_of_inertia.py
-python examples\official\Features\rops_feature.py
-# pcl1.6 - NG(Leak Error)
+# pcl 1.8?
+# python examples\official\Features\moment_of_inertia.py
+# python examples/official/Features/rops_feature.py examples/pcldata/tutorials/rops_tutorial/points.pcd examples/pcldata/tutorials/rops_tutorial/indices.txt examples/pcldata/tutorials/rops_tutorial/triangles.txt
+# NG(Leak Error)
 # python examples\official\Features\NormalEstimationUsingIntegralImages.py
 ###
 

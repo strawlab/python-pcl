@@ -431,54 +431,63 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
         # typedef Eigen::Matrix<double, 6, 1> Vector6d;
         # public:
         # /** \brief Provide a pointer to the input dataset
-        #   * \param cloud the const boost shared pointer to a PointCloud message
-        #   */
+        #  * \param cloud the const boost shared pointer to a PointCloud message
+        #  */
+        # void setInputCloud (cpp.PointCloudPtr_t ptcloud)
         # void setInputCloud (cpp.PointCloudPtr_t ptcloud)
         
         # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
-        #   * \param[in] target the input point cloud target
-        #   */
+        #  * \param[in] target the input point cloud target
+        #  */
         # inline void setInputTarget (const PointCloudTargetConstPtr &target)
+        # void setInputTarget (const PointCloudTargetConstPtr &target)
         
         # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using an iterative
-        #   * non-linear Levenberg-Marquardt approach.
-        #   * \param[in] cloud_src the source point cloud dataset
-        #   * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
-        #   * \param[in] cloud_tgt the target point cloud dataset
-        #   * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
-        #   * \param[out] transformation_matrix the resultant transformation matrix
-        #   */
+        #  * non-linear Levenberg-Marquardt approach.
+        #  * \param[in] cloud_src the source point cloud dataset
+        #  * \param[in] indices_src the vector of indices describing the points of interest in \a cloud_src
+        #  * \param[in] cloud_tgt the target point cloud dataset
+        #  * \param[in] indices_tgt the vector of indices describing the correspondences of the interst points from \a indices_src
+        #  * \param[out] transformation_matrix the resultant transformation matrix
+        #  */
         # void estimateRigidTransformationBFGS (
         #                                const PointCloudSource &cloud_src,
         #                                const std::vector<int> &indices_src,
         #                                const PointCloudTarget &cloud_tgt,
         #                                const std::vector<int> &indices_tgt,
         #                                Eigen::Matrix4f &transformation_matrix);
+        # void estimateRigidTransformationBFGS (
+        #                                 const PointCloudSource &cloud_src,
+        #                                 const std::vector<int> &indices_src,
+        #                                 const PointCloudTarget &cloud_tgt,
+        #                                 const vector[int] &indices_tgt, 
+        #                                 Matrix4f &transformation_matrix);
         
         # /** \brief \return Mahalanobis distance matrix for the given point index */
         # inline const Eigen::Matrix3d& mahalanobis(size_t index) const
+        # const Matrix3d& mahalanobis(size_t index)
         
         # /** \brief Computes rotation matrix derivative.
-        #   * rotation matrix is obtainded from rotation angles x[3], x[4] and x[5]
-        #   * \return d/d_rx, d/d_ry and d/d_rz respectively in g[3], g[4] and g[5]
-        #   * param x array representing 3D transformation
-        #   * param R rotation matrix
-        #   * param g gradient vector
-        #   */
+        #  * rotation matrix is obtainded from rotation angles x[3], x[4] and x[5]
+        #  * \return d/d_rx, d/d_ry and d/d_rz respectively in g[3], g[4] and g[5]
+        #  * param x array representing 3D transformation
+        #  * param R rotation matrix
+        #  * param g gradient vector
+        #  */
         # void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g) const;
-        # void computeRDerivative(const Vector6d &x, const Eigen::Matrix3d &R, Vector6d &g)
+        # void computeRDerivative(const Vector6d &x, const Matrix3d &R, Vector6d &g)
         
         # /** \brief Set the rotation epsilon (maximum allowable difference between two 
-        #   * consecutive rotations) in order for an optimization to be considered as having 
-        #   * converged to the final solution.
-        #   * \param epsilon the rotation epsilon
-        #   */
+        #  * consecutive rotations) in order for an optimization to be considered as having 
+        #  * converged to the final solution.
+        #  * \param epsilon the rotation epsilon
+        #  */
         # inline void setRotationEpsilon (double epsilon)
         void setRotationEpsilon (double epsilon)
         
         # /** \brief Get the rotation epsilon (maximum allowable difference between two 
-        #   * consecutive rotations) as set by the user.
-        #   */
+        #  * consecutive rotations) as set by the user.
+        #  */
         # inline double getRotationEpsilon ()
         double getRotationEpsilon ()
         
@@ -500,7 +509,7 @@ cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
         void setMaximumOptimizerIterations (int max)
         
         # ///\return maximum number of iterations at the optimization step
-        # int getMaximumOptimizerIterations ()
+        int getMaximumOptimizerIterations ()
 
 
 ctypedef GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] GeneralizedIterativeClosestPoint_t

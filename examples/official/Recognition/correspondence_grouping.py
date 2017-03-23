@@ -7,13 +7,13 @@ import pcl
 import numpy as np
 import random
 import argparse
+import sys
 
 # typedef pcl::PointXYZRGBA PointType;
 # typedef pcl::Normal NormalType;
 # typedef pcl::ReferenceFrame RFType;
 # typedef pcl::SHOT352 DescriptorType;
 
-# 
 # string model_filename_ = 'milk.pcd'
 # string scene_filename_ = 'milk_cartoon_all_small_clorox.pcd'
 
@@ -31,6 +31,16 @@ scene_filename_ = ''
 # float descr_rad_ (0.02f)
 # float cg_size_ (0.01f)
 # float cg_thresh_ (5.0f)
+show_keypoints_ = False
+show_correspondences_ = False
+use_cloud_resolution_ = False
+use_hough_ = True
+model_ss_ = 0.01
+scene_ss_ = 0.03
+rf_rad_ = 0.015
+descr_rad_ = 0.02
+cg_size_ = 0.01
+cg_thresh_ = 5.0
 
 # void showHelp (char *filename)
 # {
@@ -153,6 +163,14 @@ scene_filename_ = ''
 # int main (int argc, char *argv[])
 # parse
 # parseCommandLine (argc, argv);
+argvs = sys.argv  # コマンドライン引数を格納したリストの取得
+argc = len(argvs) # 引数の個数
+
+# string model_filename_ = 'milk.pcd'
+# string scene_filename_ = 'milk_cartoon_all_small_clorox.pcd'
+model_filename_ = argvs[1]
+scene_filename_ = argvs[2]
+
 parser = argparse.ArgumentParser(description='PointCloudLibrary example: correspondence_grouping correspondence_grouping')
 parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                     help='Setting unseen values in range image to maximum range readings')
@@ -216,6 +234,7 @@ model_normals = pcl.PointCloud_Normal()
 scene_normals = pcl.PointCloud_Normal()
 model_descriptors = pcl.PointCloud_SHOT352()
 scene_descriptors = pcl.PointCloud_SHOT352()
+
 
 # Load clouds
 model = pcl.load_XYZRGBA(model_filename_)

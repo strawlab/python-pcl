@@ -24,7 +24,7 @@ import sys # モジュール属性 argv を取得するため
 
 argvs = sys.argv  # コマンドライン引数を格納したリストの取得
 argc = len(argvs) # 引数の個数
-# print(str(argc))
+
 # // initialize PointClouds
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 # pcl::PointCloud<pcl::PointXYZ>::Ptr final (new pcl::PointCloud<pcl::PointXYZ>);

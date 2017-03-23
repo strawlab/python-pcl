@@ -10,13 +10,229 @@ from boost_shared_ptr cimport shared_ptr
 from eigen cimport Matrix4f
 
 # registration.h
+# /** \brief @b Registration represents the base registration class for general purpose, ICP-like methods.
+#  * \author Radu B. Rusu, Michael Dixon
+#  * \ingroup registration
+#  */
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class Registration : public PCLBase<PointSource>
 cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
-    cdef cppclass Registration[Source, Target]:
+    cdef cppclass Registration[PointSource, PointTarget, float](cpp.PCLBase[PointSource]):
         Registration()
-        cppclass Matrix4:
-            float *data()
+        # public:
+        # /** \brief Provide a pointer to the transformation estimation object.
+        #   * (e.g., SVD, point to plane etc.) 
+        #   * \param[in] te is the pointer to the corresponding transformation estimation object
+        #   * Code example:
+        #   * \code
+        #   * TransformationEstimationPointToPlaneLLS<PointXYZ, PointXYZ>::Ptr trans_lls (new TransformationEstimationPointToPlaneLLS<PointXYZ, PointXYZ>);
+        #   * icp.setTransformationEstimation (trans_lls);
+        #   * // or...
+        #   * TransformationEstimationSVD<PointXYZ, PointXYZ>::Ptr trans_svd (new TransformationEstimationSVD<PointXYZ, PointXYZ>);
+        #   * icp.setTransformationEstimation (trans_svd);
+        #   * \endcode
+        #   */
+        # void setTransformationEstimation (const TransformationEstimationPtr &te)
+        
+        # /** \brief Provide a pointer to the correspondence estimation object.
+        #   * (e.g., regular, reciprocal, normal shooting etc.) 
+        #   * \param[in] ce is the pointer to the corresponding correspondence estimation object
+        #   * Code example:
+        #   * \code
+        #   * CorrespondenceEstimation<PointXYZ, PointXYZ>::Ptr ce (new CorrespondenceEstimation<PointXYZ, PointXYZ>);
+        #   * ce->setInputSource (source);
+        #   * ce->setInputTarget (target);
+        #   * icp.setCorrespondenceEstimation (ce);
+        #   * // or...
+        #   * CorrespondenceEstimationNormalShooting<PointNormal, PointNormal, PointNormal>::Ptr cens (new CorrespondenceEstimationNormalShooting<PointNormal, PointNormal>);
+        #   * ce->setInputSource (source);
+        #   * ce->setInputTarget (target);
+        #   * ce->setSourceNormals (source);
+        #   * ce->setTargetNormals (target);
+        #   * icp.setCorrespondenceEstimation (cens);
+        #   * \endcode
+        #   */
+        # void setCorrespondenceEstimation (const CorrespondenceEstimationPtr &ce)
+        
+        # /** \brief Provide a pointer to the input source 
+        #   * (e.g., the point cloud that we want to align to the target)
+        #   * \param[in] cloud the input point cloud source
+        #   */
+        # PCL_DEPRECATED ("[pcl::registration::Registration::setInputCloud] setInputCloud is deprecated. Please use setInputSource instead.")
+        # void setInputCloud (const PointCloudSourceConstPtr &cloud);
+        void setInputCloud(cpp.PointCloudPtr_t ptcloud) except +
+        
+        
+        # /** \brief Get a pointer to the input point cloud dataset target. */
+        # PCL_DEPRECATED ("[pcl::registration::Registration::getInputCloud] getInputCloud is deprecated. Please use getInputSource instead.")
+        # PointCloudSourceConstPtr const getInputCloud ();
+        
+        # /** \brief Provide a pointer to the input source 
+        #   * (e.g., the point cloud that we want to align to the target)
+        #   * \param[in] cloud the input point cloud source
+        # virtual void setInputSource (const PointCloudSourceConstPtr &cloud)
+        void setInputSource(cpp.PointCloudPtr_t) except +
+        # void setInputSource(cpp.PointCloudPtr2_t pt2cloud) except +
+        
+        # /** \brief Get a pointer to the input point cloud dataset target. */
+        # inline PointCloudSourceConstPtr const getInputSource ()
+        
+        # /** \brief Provide a pointer to the input target (e.g., the point cloud that we want to align the input source to)
+        #   * \param[in] cloud the input point cloud target
+        #   */
+        # virtual inline void setInputTarget (const PointCloudTargetConstPtr &cloud); 
+        void setInputTarget(cpp.PointCloudPtr_t)
+        
+        # /** \brief Get a pointer to the input point cloud dataset target. */
+        # inline PointCloudTargetConstPtr const getInputTarget ()
+        cpp.PointCloudPtr_t getInputTarget ()
+        
+        # /** \brief Provide a pointer to the search object used to find correspondences in
+        #   * the target cloud.
+        #   * \param[in] tree a pointer to the spatial search object.
+        #   * \param[in] force_no_recompute If set to true, this tree will NEVER be 
+        #   * recomputed, regardless of calls to setInputTarget. Only use if you are 
+        #   * confident that the tree will be set correctly.
+        #   */
+        # inline void setSearchMethodTarget (const KdTreePtr &tree, bool force_no_recompute = false) 
+        # void setSearchMethodTarget (const KdTreePtr &tree, bool force_no_recompute) 
+        
+        # /** \brief Get a pointer to the search method used to find correspondences in the
+        #   * target cloud. */
+        # inline KdTreePtr getSearchMethodTarget () const
+        # KdTreePtr getSearchMethodTarget ()
+        
+        # /** \brief Provide a pointer to the search object used to find correspondences in
+        #   * the source cloud (usually used by reciprocal correspondence finding).
+        #   * \param[in] tree a pointer to the spatial search object.
+        #   * \param[in] force_no_recompute If set to true, this tree will NEVER be 
+        #   * recomputed, regardless of calls to setInputSource. Only use if you are 
+        #   * extremely confident that the tree will be set correctly.
+        #   */
+        # inline void setSearchMethodSource (const KdTreeReciprocalPtr &tree, bool force_no_recompute = false) 
+        # 
+        # /** \brief Get a pointer to the search method used to find correspondences in the
+        #   * source cloud. */
+        # inline KdTreeReciprocalPtr getSearchMethodSource () const
+        # 
+        # /** \brief Get the final transformation matrix estimated by the registration method. */
+        # inline Matrix4 getFinalTransformation ()
+        Matrix4f getFinalTransformation ()
+        
+        # /** \brief Get the last incremental transformation matrix estimated by the registration method. */
+        Matrix4f getLastIncrementalTransformation ()
+        
+        # Set the maximum number of iterations the internal optimization should run for.
+        # param nr_iterations the maximum number of iterations the internal optimization should run for
+        void setMaximumIterations (int nr_iterations) except +
+        
+        # /** \brief Get the maximum number of iterations the internal optimization should run for, as set by the user. */
+        int getMaximumIterations () 
+        
+        # /** \brief Set the number of iterations RANSAC should run for.
+        #   * \param[in] ransac_iterations is the number of iterations RANSAC should run for
+        #   */
+        void setRANSACIterations (int ransac_iterations)
+        
+        # /** \brief Get the number of iterations RANSAC should run for, as set by the user. */
+        # inline double getRANSACIterations ()
+        double getRANSACIterations ()
+        
+        # /** \brief Set the inlier distance threshold for the internal RANSAC outlier rejection loop.
+        #   * The method considers a point to be an inlier, if the distance between the target data index and the transformed 
+        #   * source index is smaller than the given inlier distance threshold. 
+        #   * The value is set by default to 0.05m.
+        #   * \param[in] inlier_threshold the inlier distance threshold for the internal RANSAC outlier rejection loop
+        #   */
+        # inline void setRANSACOutlierRejectionThreshold (double inlier_threshold) { inlier_threshold_ = inlier_threshold; }
+        void setRANSACOutlierRejectionThreshold (double inlier_threshold)
+        
+        # /** \brief Get the inlier distance threshold for the internal outlier rejection loop as set by the user. */
+        # inline double getRANSACOutlierRejectionThreshold ()
+        double getRANSACOutlierRejectionThreshold ()
+        
+        # /** \brief Set the maximum distance threshold between two correspondent points in source <-> target. If the 
+        #   * distance is larger than this threshold, the points will be ignored in the alignment process.
+        #   * \param[in] distance_threshold the maximum distance threshold between a point and its nearest neighbor 
+        #   * correspondent in order to be considered in the alignment process
+        #   */
+        # inline void setMaxCorrespondenceDistance (double distance_threshold)
+        void setMaxCorrespondenceDistance (double distance_threshold)
+        
+        # /** \brief Get the maximum distance threshold between two correspondent points in source <-> target. If the 
+        #   * distance is larger than this threshold, the points will be ignored in the alignment process.
+        #   */
+        # inline double getMaxCorrespondenceDistance ()
+        double getMaxCorrespondenceDistance ()
+        
+        # /** \brief Set the transformation epsilon (maximum allowable difference between two consecutive 
+        #   * transformations) in order for an optimization to be considered as having converged to the final 
+        #   * solution.
+        #   * \param[in] epsilon the transformation epsilon in order for an optimization to be considered as having 
+        #   * converged to the final solution.
+        #   */
+        # inline void setTransformationEpsilon (double epsilon)
+        void setTransformationEpsilon (double epsilon)
+        
+        # /** \brief Get the transformation epsilon (maximum allowable difference between two consecutive 
+        #   * transformations) as set by the user.
+        #   */
+        # inline double getTransformationEpsilon ()
+        double getTransformationEpsilon ()
+        
+        # /** \brief Set the maximum allowed Euclidean error between two consecutive steps in the ICP loop, before 
+        #   * the algorithm is considered to have converged. 
+        #   * The error is estimated as the sum of the differences between correspondences in an Euclidean sense, 
+        #   * divided by the number of correspondences.
+        #   * \param[in] epsilon the maximum allowed distance error before the algorithm will be considered to have
+        #   * converged
+        #   */
+        # inline void setEuclideanFitnessEpsilon (double epsilon)
+        void setEuclideanFitnessEpsilon (double epsilon)
+        
+        # /** \brief Get the maximum allowed distance error before the algorithm will be considered to have converged,
+        #   * as set by the user. See \ref setEuclideanFitnessEpsilon
+        #   */
+        # inline double getEuclideanFitnessEpsilon ()
+        double getEuclideanFitnessEpsilon ()
+        
+        # 
+        # /** \brief Provide a boost shared pointer to the PointRepresentation to be used when comparing points
+        #   * \param[in] point_representation the PointRepresentation to be used by the k-D tree
+        #   */
+        # inline void setPointRepresentation (const PointRepresentationConstPtr &point_representation)
+        # 
+        # /** \brief Register the user callback function which will be called from registration thread
+        #  * in order to update point cloud obtained after each iteration
+        #  * \param[in] visualizerCallback reference of the user callback function
+        #  */
+        # template<typename FunctionSignature> inline bool registerVisualizationCallback (boost::function<FunctionSignature> &visualizerCallback)
+        
+        # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
+        #   * \param[in] max_range maximum allowable distance between a point and its correspondence in the target 
+        #   * (default: double::max)
+        #   */
+        # double getFitnessScore (double max_range = numeric_limits[double]::max ());
+        # double getFitnessScore (double max_range)
+        double getFitnessScore()
+        
+        # /** \brief Obtain the Euclidean fitness score (e.g., sum of squared distances from the source to the target)
+        #   * from two sets of correspondence distances (distances between source and target points)
+        #   * \param[in] distances_a the first set of distances between correspondences
+        #   * \param[in] distances_b the second set of distances between correspondences
+        #   */
+        # inline double getFitnessScore (const std::vector<float> &distances_a, const std::vector<float> &distances_b);
+        double getFitnessScore (const vector[float] &distances_a, const vector[float] &distances_b)
+        
+        # /** \brief Return the state of convergence after the last align run */
+        # inline bool hasConverged ()
+        bool hasConverged ()
+        
+        # /** \brief Call the registration algorithm which estimates the transformation and returns the transformed source 
+        #   * (input) as \a output.
+        #   * \param[out] output the resultant input transfomed point cloud dataset
+        #   */
+        # inline void align (PointCloudSource &output);
         void align(cpp.PointCloud[Source] &) except +
         Matrix4 getFinalTransformation() except +
         double getFitnessScore() except +

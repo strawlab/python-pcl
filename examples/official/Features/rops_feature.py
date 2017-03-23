@@ -2,8 +2,15 @@
 # http://pointclouds.org/documentation/tutorials/rops_feature.php#rops-feature
 
 import pcl
-
+import sys
 # int main (int argc, char** argv)
+
+argvs = sys.argv  # コマンドライン引数を格納したリストの取得
+argc = len(argvs) # 引数の個数
+
+if argc != 4:
+	exit(-1)
+
 cloud = pcl.load('')
 
 # pcl::PointIndicesPtr indices = boost::shared_ptr <pcl::PointIndices> (new pcl::PointIndices ());
@@ -17,6 +24,9 @@ cloud = pcl.load('')
 #     indices->indices.push_back (index - 1);
 # }
 # indices_file.close ();
+###
+# indices = pcl.PointIndices()
+# argvs[2]
 
 # std::vector <pcl::Vertices> triangles;
 # std::ifstream triangles_file;
@@ -34,7 +44,9 @@ cloud = pcl.load('')
 # 	triangle.vertices.push_back (vertex - 1);
 # 	triangles.push_back (triangle);
 # }
-triangles = pcl.Vertices
+###
+#triangles = pcl.Vertices
+# argvs[3]
 
 # float support_radius = 0.0285f
 # unsigned int number_of_partition_bins = 5
