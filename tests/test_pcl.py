@@ -187,7 +187,7 @@ class TestSegmentCylinder(unittest.TestCase):
 
         indices, model = seg.segment()
 
-		# MAC NG
+        # MAC NG
         # self.assertEqual(len(indices), SEGCYLIN)
 
         # npexp = np.array(SEGCYLMOD)
@@ -460,15 +460,15 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #         filterCloud = pcl.PointCloud()
 #         vt = pcl.Vertices()
 #         # // inside point
-#         # cloud->push_back(pcl::PointXYZ(M_PI * 0.3, M_PI * 0.3, 0));
+#         # cloud->push_back(pcl::PointXYZ(M_PI * 0.3, M_PI * 0.3, 0))
 #         # // hull points
-#         # cloud->push_back(pcl::PointXYZ(0,0,0));
-#         # cloud->push_back(pcl::PointXYZ(M_PI,0,0));
-#         # cloud->push_back(pcl::PointXYZ(M_PI,M_PI*0.5,0));
-#         # cloud->push_back(pcl::PointXYZ(0,M_PI*0.5,0));
-#         # cloud->push_back(pcl::PointXYZ(0,0,0));
+#         # cloud->push_back(pcl::PointXYZ(0,0,0))
+#         # cloud->push_back(pcl::PointXYZ(M_PI,0,0))
+#         # cloud->push_back(pcl::PointXYZ(M_PI,M_PI*0.5,0))
+#         # cloud->push_back(pcl::PointXYZ(0,M_PI*0.5,0))
+#         # cloud->push_back(pcl::PointXYZ(0,0,0))
 #         # // outside point
-#         # cloud->push_back(pcl::PointXYZ(-M_PI * 0.3, -M_PI * 0.3, 0));
+#         # cloud->push_back(pcl::PointXYZ(-M_PI * 0.3, -M_PI * 0.3, 0))
 #         points_2 = np.array([
 #                         [1 * 0.3, 1 * 0.3, 0],
 #                         [0, 0, 0],
@@ -503,65 +503,346 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #         # crophull.setCropOutside(false)
 #         crophull.SetParameter(filterCloud, vt)
 #         # indices = vector[int]
-#         # cropHull.filter(indices);
-#         # outputCloud = cropHull.filter();
+#         # cropHull.filter(indices)
+#         # outputCloud = cropHull.filter()
 #         # print("before: " + outputCloud)
-#         crophull.Filtering(outputCloud)
+#         crophull.filter(outputCloud)
 #         # print(outputCloud)
 
 
 # Viewer
-# // pcl::visualization::CloudViewer viewer ("Cluster viewer");
-# // viewer.showCloud(colored_cloud);
+# // pcl::visualization::CloudViewer viewer ("Cluster viewer")
+# // viewer.showCloud(colored_cloud)
 
 # Write Point
 # pcl::PCDWriter writer;
 # std::stringstream ss;
 # ss << "min_cut_seg" << ".pcd";
-# // writer.write<pcl::PointXYZRGB> (ss.str (), *cloud, false);
-# pcl::io::savePCDFile(ss.str(), *outputCloud, false);
+# // writer.write<pcl::PointXYZRGB> (ss.str (), *cloud, false)
+# pcl::io::savePCDFile(ss.str(), *outputCloud, false)
+
+# base : pcl/tests cpp source code[TEST (CropBox, Filters)]
+class TestCropBox(unittest.TestCase):
+
+    def setUp(self):
+        input = pcl.PointCloud()
+        points = np.zeros((9, 3), dtype=np.float32)
+        points[0] = 0.0, 0.0, 0.0
+        points[1] = 0.9, 0.9, 0.9
+        points[2] = 0.9, 0.9, -0.9
+        points[3] = 0.9, -0.9, 0.9
+        points[4] = -0.9, 0.9, 0.9
+        points[5] = 0.9, -0.9, -0.9
+        points[6] = -0.9, -0.9, 0.9
+        points[7] = -0.9, 0.9, -0.9
+        points[8] = -0.9, -0.9, -0.9
+        input.from_array(points)
+        self.p = input
+
+    def testException(self):
+        self.assertRaises(TypeError, pcl.CropHull)
+
+    def testCrop(self):
+        cropBoxFilter = self.p.make_cropbox()
+        # Cropbox slighlty bigger then bounding box of points
+        cropBoxFilter.set_Min (-1.0, -1.0, -1.0, 1.0)
+        cropBoxFilter.set_Max ( 1.0,  1.0,  1.0, 1.0)
+        
+        # Indices
+        # vector<int> indices;
+        # cropBoxFilter.filter(indices)
+        
+        # Cloud
+        cloud_out = cropBoxFilter.filter()
+        
+        # Should contain all
+        # self.assertEqual(indices.size, 9)
+        self.assertEqual(cloud_out.size, 9)
+        self.assertEqual(cloud_out.width, 9)
+        self.assertEqual(cloud_out.height, 1)
+        
+        # IndicesConstPtr removed_indices;
+        # removed_indices = cropBoxFilter.get_RemovedIndices ()
+        # self.assertEqual(removed_indices.size, 0)
+        
+        # Test setNegative
+        cropBoxFilter.set_Negative (True)
+        cloud_out_negative = cropBoxFilter.filter()
+        self.assertEqual(cloud_out_negative.size, 0)
+        
+        # cropBoxFilter.filter(indices)
+        # self.assertEqual(indices.size, 0)
+        
+        cropBoxFilter.set_Negative (False)
+        cloud_out = cropBoxFilter.filter()
+        
+        # Translate crop box up by 1
+        tx = 0
+        ty = 1
+        tz = 0
+        cropBoxFilter.set_Translation(tx, ty, tz)
+        # indices = cropBoxFilter.filter()
+        cloud_out = cropBoxFilter.filter()
+        
+        # self.assertEqual(indices.size, 5)
+        self.assertEqual(cloud_out.size, 5)
+        
+        # removed_indices = cropBoxFilter.get_RemovedIndices ()
+        # self.assertEqual(removed_indices.size, 4)
+        
+        # // Test setNegative
+        cropBoxFilter.set_Negative (True)
+        cloud_out_negative = cropBoxFilter.filter()
+        self.assertEqual(cloud_out_negative.size, 4)
+        
+        # indices = cropBoxFilter.filter()
+        # self.assertEqual(indices.size, 4)
+        
+        cropBoxFilter.set_Negative (False)
+        cloud_out = cropBoxFilter.filter()
+        
+        #  Rotate crop box up by 45
+        # cropBoxFilter.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f))
+        # cropBoxFilter.filter(indices)
+        # cropBoxFilter.filter(cloud_out)
+        rx = 0.0
+        ry = 45.0 * (3.141592 / 180.0)
+        rz = 0.0
+        cropBoxFilter.setRotation(rx, ry, rz)
+        # indices = cropBoxFilter.filter()
+        cloud_out = cropBoxFilter.filter()
+        
+        # self.assertEqual(indices.size, 1)
+        self.assertEqual(cloud_out.size, 1)
+        self.assertEqual(cloud_out.width, 1)
+        self.assertEqual(cloud_out.height, 1)
+        
+        # removed_indices = cropBoxFilter.get_RemovedIndices ()
+        # self.assertEqual(removed_indices.size, 8)
+        
+        #  Test setNegative
+        cropBoxFilter.set_Negative (True)
+        cloud_out_negative = cropBoxFilter.filter()
+        self.assertEqual(cloud_out_negative.size, 8)
+        
+        # indices = cropBoxFilter.filter()
+        # self.assertEqual(indices.size, 8)
+        
+        cropBoxFilter.setNegative (False)
+        cloud_out = cropBoxFilter.filter()
+        
+        # // Rotate point cloud by -45
+        # cropBoxFilter.set_Transform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f))
+        # indices = cropBoxFilter.filter()
+        # cloud_out = cropBoxFilter.filter()
+        # 
+        # # self.assertEqual(indices.size, 3)
+        # self.assertEqual(cloud_out.size, 3)
+        # self.assertEqual(cloud_out.width, 3)
+        # self.assertEqual(cloud_out.height, 1)
+        ##
+        
+        # removed_indices = cropBoxFilter.get_RemovedIndices ()
+        # self.assertEqual(removed_indices.size, 6)
+        
+        # // Test setNegative
+        cropBoxFilter.setNegative (True)
+        cloud_out_negative = cropBoxFilter.filter()
+        self.assertEqual(cloud_out_negative.size, 6)
+        
+        # indices = cropBoxFilter.filter()
+        # self.assertEqual(indices.size, 6)
+        
+        cropBoxFilter.setNegative (False)
+        cloud_out = cropBoxFilter.filter()
+        
+        # Translate point cloud down by -1
+        # # cropBoxFilter.setTransform (getTransformation(0, -1, 0, 0, 0, -45.0 * float (M_PI) / 180.0))
+        # # cropBoxFilter.filter(indices)
+        # cropBoxFilter.filter(cloud_out)
+        # 
+        # # self.assertEqual(indices.size, 2)
+        # self.assertEqual(cloud_out.size, 2)
+        # self.assertEqual(cloud_out.width, 2)
+        # self.assertEqual(cloud_out.height, 1)
+        ##
+        
+        # removed_indices = cropBoxFilter.get_RemovedIndices ()
+        # self.assertEqual(removed_indices.size, 7)
+        
+        # Test setNegative
+        cropBoxFilter.set_Negative (True)
+        cloud_out_negative = cropBoxFilter.filter()
+        self.assertEqual(cloud_out_negative.size, 7)
+        
+        # indices = cropBoxFilter.filter()
+        # self.assertEqual(indices.size, 7)
+        
+        cropBoxFilter.set_Negative (False)
+        cloud_out = cropBoxFilter.filter()
+        
+        # // Remove point cloud rotation
+        cropBoxFilter.setTransform (getTransformation(0, -1, 0, 0, 0, 0))
+        # indices = cropBoxFilter.filter()
+        cloud_out = cropBoxFilter.filter()
+        
+        # self.assertEqual(indices.size, 0)
+        self.assertEqual(cloud_out.size, 0)
+        self.assertEqual(cloud_out.width, 0)
+        self.assertEqual(cloud_out.height, 1)
+        
+        # removed_indices = cropBoxFilter.get_RemovedIndices ()
+        # self.assertEqual(removed_indices.size, 9)
+        
+        # // Test setNegative
+        cropBoxFilter.set_Negative (True)
+        cloud_out_negative = cropBoxFilter.filter()
+        self.assertEqual(cloud_out_negative.size, 9)
+        
+        # indices = cropBoxFilter.filter()
+        # self.assertEqual(indices.size, 9)
+        
+        # // PCLPointCloud2
+        # // -------------------------------------------------------------------------
+        # 
+        # // Create cloud with center point and corner points
+        # PCLPointCloud2::Ptr input2 (new PCLPointCloud2)
+        # pcl::toPCLPointCloud2 (*input, *input2)
+        # 
+        # // Test the PointCloud<PointT> method
+        # CropBox<PCLPointCloud2> cropBoxFilter2(true)
+        # cropBoxFilter2.setInputCloud (input2)
+        # 
+        # // Cropbox slighlty bigger then bounding box of points
+        # cropBoxFilter2.setMin (min_pt)
+        # cropBoxFilter2.setMax (max_pt)
+        # 
+        # // Indices
+        # vector<int> indices2;
+        # cropBoxFilter2.filter (indices2)
+        # 
+        # // Cloud
+        # PCLPointCloud2 cloud_out2;
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # // Should contain all
+        # self.assertEqual(indices2.size, 9)
+        # self.assertEqual(indices2.size, int (cloud_out2.width * cloud_out2.height))
+        # 
+        # IndicesConstPtr removed_indices2;
+        # removed_indices2 = cropBoxFilter2.get_RemovedIndices ()
+        # self.assertEqual(removed_indices2.size, 0)
+        # 
+        # // Test setNegative
+        # PCLPointCloud2 cloud_out2_negative;
+        # cropBoxFilter2.setNegative (true)
+        # cropBoxFilter2.filter (cloud_out2_negative)
+        # self.assertEqual(cloud_out2_negative.width), 0)
+        # 
+        # cropBoxFilter2.filter (indices2)
+        # self.assertEqual(indices2.size, 0)
+        # 
+        # cropBoxFilter2.setNegative (false)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # // Translate crop box up by 1
+        # cropBoxFilter2.setTranslation (Eigen::Vector3f(0, 1, 0))
+        # cropBoxFilter2.filter (indices2)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # self.assertEqual(indices2.size, 5)
+        # self.assertEqual(indices2.size, int (cloud_out2.width * cloud_out2.height))
+        # 
+        # removed_indices2 = cropBoxFilter2.get_RemovedIndices ()
+        # self.assertEqual(removed_indices2.size, 4)
+        # 
+        # // Test setNegative
+        # cropBoxFilter2.setNegative (true)
+        # cropBoxFilter2.filter (cloud_out2_negative)
+        # self.assertEqual(cloud_out2_negative.width), 4)
+        # 
+        # cropBoxFilter2.filter (indices2)
+        # self.assertEqual(indices2.size, 4)
+        # 
+        # cropBoxFilter2.setNegative (false)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # // Rotate crop box up by 45
+        # cropBoxFilter2.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f))
+        # cropBoxFilter2.filter (indices2)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # self.assertEqual(indices2.size, 1)
+        # self.assertEqual(indices2.size, int (cloud_out2.width * cloud_out2.height))
+        # 
+        # // Rotate point cloud by -45
+        # cropBoxFilter2.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f))
+        # cropBoxFilter2.filter (indices2)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # self.assertEqual(indices2.size, 3)
+        # self.assertEqual(cloud_out2.width * cloud_out2.height), 3)
+        # 
+        # removed_indices2 = cropBoxFilter2.get_RemovedIndices ()
+        # self.assertEqual(removed_indices2.size, 6)
+        # 
+        # // Test setNegative
+        # cropBoxFilter2.setNegative (true)
+        # cropBoxFilter2.filter (cloud_out2_negative)
+        # self.assertEqual(cloud_out2_negative.width), 6)
+        # 
+        # cropBoxFilter2.filter (indices2)
+        # self.assertEqual(indices2.size, 6)
+        # 
+        # cropBoxFilter2.setNegative (false)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # // Translate point cloud down by -1
+        # cropBoxFilter2.setTransform (getTransformation (0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f))
+        # cropBoxFilter2.filter (indices2)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # self.assertEqual(indices2.size, 2)
+        # self.assertEqual(cloud_out2.width * cloud_out2.height), 2)
+        # 
+        # removed_indices2 = cropBoxFilter2.get_RemovedIndices ()
+        # self.assertEqual(removed_indices2.size, 7)
+        # 
+        # // Test setNegative
+        # cropBoxFilter2.setNegative (true)
+        # cropBoxFilter2.filter (cloud_out2_negative)
+        # self.assertEqual(cloud_out2_negative.width), 7)
+        # 
+        # cropBoxFilter2.filter (indices2)
+        # self.assertEqual(indices2.size, 7)
+        # 
+        # cropBoxFilter2.setNegative (false)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # // Remove point cloud rotation
+        # cropBoxFilter2.setTransform (getTransformation(0, -1, 0, 0, 0, 0))
+        # cropBoxFilter2.filter (indices2)
+        # cropBoxFilter2.filter (cloud_out2)
+        # 
+        # self.assertEqual(indices2.size, 0)
+        # self.assertEqual(cloud_out2.width * cloud_out2.height), 0)
+        # 
+        # removed_indices2 = cropBoxFilter2.get_RemovedIndices ()
+        # self.assertEqual(removed_indices2.size, 9)
+        # 
+        # // Test setNegative
+        # cropBoxFilter2.setNegative (true)
+        # cropBoxFilter2.filter (cloud_out2_negative)
+        # self.assertEqual(cloud_out2_negative.width), 9)
+        # 
+        # cropBoxFilter2.filter (indices2)
+        # self.assertEqual(indices2.size, 9)
+        # 
+        # cropBoxFilter2.setNegative (false)
+        # cropBoxFilter2.filter (cloud_out2)
 
 
-# class TestCropBox(unittest.TestCase):
-# 
-#     def setUp(self):
-#         # self.pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
-#         self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
-# 
-#     def testException(self):
-#         self.assertRaises(TypeError, pcl.CropHull)
-# 
-#     def testCrop(self):
-#         pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
-#         clipper = self.pc.make_cropbox()
-#         outcloud = pcl.PointCloud()
-#         self.assertEqual(outcloud.size, 0)
-#         
-#         # clipper.setTranslation(Eigen::Vector3f(pose->tx, pose->ty, pose->tz));
-#         # clipper.setRotation(Eigen::Vector3f(pose->rx, pose->ry, pose->rz));
-#         # clipper.setMin(-Eigen::Vector4f(tracklet->l/2, tracklet->w/2, 0, 0));
-#         # clipper.setMax(Eigen::Vector4f(tracklet->l/2, tracklet->w/2, tracklet->h, 0));
-#         # clipper.filter(*outcloud);
-#         tx = 0
-#         ty = 0
-#         tz = 0
-#         clipper.set_Translation(tx, ty, tz)
-#         rx = 0
-#         ry = 0
-#         rz = 0
-#         clipper.set_Rotation(rx, ry, rz)
-#         minx = -1.5
-#         miny = -1.5
-#         minz = 0
-#         mins = 0
-#         maxx = 3.5
-#         maxy = 3.5
-#         maxz = 2
-#         maxs = 0
-#         clipper.set_MinMax(minx, miny, minz, mins, maxx, maxy, maxz, maxs)
-#         clipper.Filtering(outcloud)
-#         # self.assertNotEqual(outcloud.size, 0)
-#         self.assertNotEqual(outcloud.size, self.pc.size)
+###
 
 # Add ProjectInlier
 # class TestProjectInlier(unittest.TestCase):

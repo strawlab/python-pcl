@@ -37,17 +37,13 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
         # brief Get a pointer to the search method used.
         # inline KdTreePtr getSearchMethod ()
         pclkdt.KdTreePtr_t getSearchMethod ()
+        
+        # /** \brief Base method for surface reconstruction for all points given in
+        #   * <setInputCloud (), setIndices ()> 
+        #   * \param[out] output the resultant reconstructed surface model
+        # virtual void reconstruct (pcl::PolygonMesh &output) = 0;
 
-#       /** \brief Base method for surface reconstruction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] output the resultant reconstructed surface model
-#       virtual void reconstruct (pcl::PolygonMesh &output) = 0;
 
-#       protected:
-#       /** \brief A pointer to the spatial search object. */
-#       KdTreePtr tree_;
-#       /** \brief Abstract class get name method. */
-#       virtual std::string getClassName () const { return (""); }
 ###
 
 # /** \brief SurfaceReconstruction represents a base surface reconstruction
@@ -66,43 +62,29 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
 cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
     cdef cppclass SurfaceReconstruction[In](PCLSurfaceBase[In]):
         SurfaceReconstruction()
-#       public:
-#       using PCLSurfaceBase<PointInT>::input_;
-#       using PCLSurfaceBase<PointInT>::indices_;
-#       using PCLSurfaceBase<PointInT>::initCompute;
-#       using PCLSurfaceBase<PointInT>::deinitCompute;
-#       using PCLSurfaceBase<PointInT>::tree_;
-#       using PCLSurfaceBase<PointInT>::getClassName;
-#       
-#       /** \brief Base method for surface reconstruction for all points given in
-#        * <setInputCloud (), setIndices ()> 
-#        * \param[out] output the resultant reconstructed surface model
-#        */
-#       virtual void reconstruct (pcl::PolygonMesh &output);
-#       /** \brief Base method for surface reconstruction for all points given in
-#         * <setInputCloud (), setIndices ()> 
-#         * \param[out] points the resultant points lying on the new surface
-#         * \param[out] polygons the resultant polygons, as a set of
-#         * vertices. The Vertices structure contains an array of point indices.
-#         */
-#       virtual void 
-#       reconstruct (pcl::PointCloud<PointInT> &points,
-#                    std::vector<pcl::Vertices> &polygons);
-#       protected:
-#       /** \brief A flag specifying whether or not the derived reconstruction
-#         * algorithm needs the search object \a tree.*/
-#       bool check_tree_;
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] output the output polygonal mesh 
-#         */
-#       virtual void performReconstruction (pcl::PolygonMesh &output) = 0;
-#       /** \brief Abstract surface reconstruction method. 
-#         * \param[out] points the resultant points lying on the surface
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       virtual void 
-#       performReconstruction (pcl::PointCloud<PointInT> &points, 
-#                              std::vector<pcl::Vertices> &polygons) = 0;
+        # public:
+        # using PCLSurfaceBase<PointInT>::input_;
+        # using PCLSurfaceBase<PointInT>::indices_;
+        # using PCLSurfaceBase<PointInT>::initCompute;
+        # using PCLSurfaceBase<PointInT>::deinitCompute;
+        # using PCLSurfaceBase<PointInT>::tree_;
+        # using PCLSurfaceBase<PointInT>::getClassName;
+        # 
+        # /** \brief Base method for surface reconstruction for all points given in
+        #  * <setInputCloud (), setIndices ()> 
+        #  * \param[out] output the resultant reconstructed surface model
+        #  */
+        # virtual void reconstruct (pcl::PolygonMesh &output);
+        # 
+        # /** \brief Base method for surface reconstruction for all points given in
+        #   * <setInputCloud (), setIndices ()> 
+        #   * \param[out] points the resultant points lying on the new surface
+        #   * \param[out] polygons the resultant polygons, as a set of
+        #   * vertices. The Vertices structure contains an array of point indices.
+        #   */
+        # virtual void reconstruct (pcl::PointCloud<PointInT> &points, std::vector<pcl::Vertices> &polygons);
+
+
 ###
 
 # brief MeshConstruction represents a base surface reconstruction
@@ -171,18 +153,17 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
 cdef extern from "pcl/surface/processing.h" namespace "pcl":
     cdef cppclass CloudSurfaceProcessing[In, Out](cpp.PCLBase[In]):
         CloudSurfaceProcessing()
-#       public:
-#       using PCLBase<PointInT>::input_;
-#       using PCLBase<PointInT>::indices_;
-#       using PCLBase<PointInT>::initCompute;
-#       using PCLBase<PointInT>::deinitCompute;
-#       public:
-#       /** \brief Process the input cloud and store the results
-#         * \param[out] output the cloud where the results will be stored
-#       virtual void process (pcl::PointCloud<PointOutT> &output);
-#       protected:
-#       /** \brief Abstract cloud processing method */
-#       virtual void performProcessing (pcl::PointCloud<PointOutT> &output) = 0;
+        # public:
+        # using PCLBase<PointInT>::input_;
+        # using PCLBase<PointInT>::indices_;
+        # using PCLBase<PointInT>::initCompute;
+        # using PCLBase<PointInT>::deinitCompute;
+        # public:
+        # /** \brief Process the input cloud and store the results
+        #   * \param[out] output the cloud where the results will be stored
+        # virtual void process (pcl::PointCloud<PointOutT> &output);
+
+
 ### 
 
 # /** \brief @b MeshProcessing represents the base class for mesh processing algorithms.
@@ -290,36 +271,46 @@ cdef extern from "pcl/surface/bilateral_upsampling.h" namespace "pcl":
         # using CloudSurfaceProcessing<PointInT, PointOutT>::process;
         # typedef pcl::PointCloud<PointOutT> PointCloudOut;
         # Eigen::Matrix3f KinectVGAProjectionMatrix, KinectSXGAProjectionMatrix;
+        # 
         # /** \brief Method that sets the window size for the filter
         #   * \param[in] window_size the given window size
         # inline void setWindowSize (int window_size)
+        void setWindowSize (int window_size)
+        
         # /** \brief Returns the filter window size */
         # inline int getWindowSize () const
+        int getWindowSize ()
+        
         # /** \brief Method that sets the sigma color parameter
         #   * \param[in] sigma_color the new value to be set
         # inline void setSigmaColor (const float &sigma_color)
+        void setSigmaColor (const float &sigma_color)
+        
         # /** \brief Returns the current sigma color value */
         # inline float getSigmaColor () const
+        
         # /** \brief Method that sets the sigma depth parameter
         #   * \param[in] sigma_depth the new value to be set
         # inline void setSigmaDepth (const float &sigma_depth)
+        
         # /** \brief Returns the current sigma depth value */
         # inline float getSigmaDepth () const
+        
         # /** \brief Method that sets the projection matrix to be used when unprojecting the points in the depth image
         #   * back to (x,y,z) positions.
         #   * \note There are 2 matrices already set in the class, used for the 2 modes available for the Kinect. They
         #   * are tuned to be the same as the ones in the OpenNiGrabber
         #   * \param[in] projection_matrix the new projection matrix to be set */
         # inline void setProjectionMatrix (const Eigen::Matrix3f &projection_matrix)
+        
         # /** \brief Returns the current projection matrix */
         # inline Eigen::Matrix3f getProjectionMatrix () const
+        
         # /** \brief Method that does the actual processing on the input cloud.
         #   * \param[out] output the container of the resulting upsampled cloud */
         # void process (pcl::PointCloud<PointOutT> &output)
-        # protected:
-        # void performProcessing (pcl::PointCloud<PointOutT> &output);
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
 ###
 
 # binary_node.h (1.6.0)
@@ -360,7 +351,7 @@ cdef extern from "pcl/surface/bilateral_upsampling.h" namespace "pcl":
 # template<typename PointInT>
 # class ConcaveHull : public MeshConstruction<PointInT>
 cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
-    cdef cppclass ConcaveHull[In](MeshConstruction[In]):
+    cdef cppclass ConcaveHull[PointInT](MeshConstruction[PointInT]):
         ConcaveHull()
         # public:
         # \brief Compute a concave hull for all points given 
@@ -376,6 +367,7 @@ cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
         void reconstruct (cpp.PointCloud_PointXYZI_t output)
         void reconstruct (cpp.PointCloud_PointXYZRGB_t output)
         void reconstruct (cpp.PointCloud_PointXYZRGBA_t output)
+        void reconstruct (PointInT output)
         
         # /** \brief Set the alpha value, which limits the size of the resultant
         #   * hull segments (the smaller the more detailed the hull).  
@@ -383,6 +375,7 @@ cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
         #   * from a vertex to the facet center (center of the voronoi cell).
         # inline void setAlpha (double alpha)
         void setAlpha (double alpha)
+        
         # Returns the alpha parameter, see setAlpha().
         # inline double getAlpha ()
         double getAlpha ()
@@ -395,43 +388,25 @@ cdef extern from "pcl/surface/concave_hull.h" namespace "pcl":
         # points keep other information like rgb, normals, ...
         # \param value where to keep the information or not, default is false
         # void setKeepInformation (bool value)
+        void setKeepInformation (bool value)
         
         # brief Returns the dimensionality (2 or 3) of the calculated hull.
         # inline int getDim () const
+        int getDim ()
+        
         # brief Returns the dimensionality (2 or 3) of the calculated hull.
         # inline int getDimension () const
+        int getDimension ()
+        
         # brief Sets the dimension on the input data, 2D or 3D.
         # param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
-        # void setDimension (int dimension)
-        
-        # protected:
-        # /** \brief The actual reconstruction method.
-        #   * \param points the resultant points lying on the concave hull 
-        #   * \param polygons the resultant concave hull polygons, as a set of
-        #   * vertices. The Vertices structure contains an array of point indices.
-        #   */
-        # void performReconstruction (PointCloud &points, 
-        #                        std::vector<pcl::Vertices> &polygons);
-        # virtual void performReconstruction (PolygonMesh &output);
-        # virtual void performReconstruction (std::vector<pcl::Vertices> &polygons);
-        # /** \brief The method accepts facets only if the distance from any vertex to the facet->center 
-        #   * (center of the voronoi cell) is smaller than alpha 
-        # double alpha_;
-        # /** \brief If set to true, the reconstructed point cloud describing the hull is obtained from 
-        #   * the original input cloud by performing a nearest neighbor search from Qhull output. 
-        # bool keep_information_;
-        # /** \brief the centers of the voronoi cells */
-        # PointCloudPtr voronoi_centers_;
-        # /** \brief the dimensionality of the concave hull */
-        # int dim_;
-        
+        void setDimension (int dimension)
 
 
 ctypedef ConcaveHull[cpp.PointXYZ] ConcaveHull_t
 ctypedef ConcaveHull[cpp.PointXYZI] ConcaveHull_PointXYZI_t
 ctypedef ConcaveHull[cpp.PointXYZRGB] ConcaveHull_PointXYZRGB_t
 ctypedef ConcaveHull[cpp.PointXYZRGBA] ConcaveHull_PointXYZRGBA_t
-
 ###
 
 # convex_hull.h
@@ -441,13 +416,14 @@ ctypedef ConcaveHull[cpp.PointXYZRGBA] ConcaveHull_PointXYZRGBA_t
 #   * \param p2 the second point
 #   * \ingroup surface
 #   */
-# inline bool
-# comparePoints2D (const std::pair<int, Eigen::Vector4f> & p1, const std::pair<int, Eigen::Vector4f> & p2)
+# inline bool comparePoints2D (const std::pair<int, Eigen::Vector4f> & p1, const std::pair<int, Eigen::Vector4f> & p2)
 # 
+# convex_hull.h
+# namespace pcl
 # template<typename PointInT>
 # class ConvexHull : public MeshConstruction<PointInT>
 cdef extern from "pcl/surface/convex_hull.h" namespace "pcl":
-    cdef cppclass ConvexHull[In](MeshConstruction[In]):
+    cdef cppclass ConvexHull[PointInT](MeshConstruction[PointInT]):
         ConvexHull()
         # protected:
         # using PCLBase<PointInT>::input_;
@@ -464,96 +440,35 @@ cdef extern from "pcl/surface/convex_hull.h" namespace "pcl":
         #   * \param[out] points the resultant points lying on the convex hull 
         #   * \param[out] polygons the resultant convex hull polygons, as a set of
         #   * vertices. The Vertices structure contains an array of point indices.
-        # void reconstruct (PointCloud &points, 
-        #              std::vector<pcl::Vertices> &polygons);
+        # void reconstruct (PointCloud &points, std::vector<pcl::Vertices> &polygons);
+        void reconstruct (PointInT &points, vector[cpp.Vertices] &polygons)
+        
         # /** \brief Compute a convex hull for all points given 
         #   * \param[out] output the resultant convex hull vertices
         # void reconstruct (PointCloud &output);
+        void reconstruct (PointInT &output)
+        
         # /** \brief If set to true, the qhull library is called to compute the total area and volume of the convex hull.
         #   * NOTE: When this option is activated, the qhull library produces output to the console.
         #   * \param[in] value wheter to compute the area and the volume, default is false
-        # void setComputeAreaVolume (bool value)
+        void setComputeAreaVolume (bool value)
+        
         # /** \brief Returns the total area of the convex hull. */
-        # double getTotalArea () const
+        double getTotalArea ()
+        
         # /** \brief Returns the total volume of the convex hull. Only valid for 3-dimensional sets.
         #   *  For 2D-sets volume is zero. 
-        # double getTotalVolume () const
+        double getTotalVolume ()
+        
         # /** \brief Sets the dimension on the input data, 2D or 3D.
         #   * \param[in] dimension The dimension of the input data.  If not set, this will be determined automatically.
-        # void setDimension (int dimension)
+        void setDimension (int dimension)
+        
         # /** \brief Returns the dimensionality (2 or 3) of the calculated hull. */
         # inline int getDimension () const
-        # 
-        # protected:
-        # /** \brief The actual reconstruction method. 
-        #   * \param[out] points the resultant points lying on the convex hull 
-        #   * \param[out] polygons the resultant convex hull polygons, as a set of
-        #   * vertices. The Vertices structure contains an array of point indices.
-        #   * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
-        #   */
-        # void
-        # performReconstruction (PointCloud &points, 
-        #                        std::vector<pcl::Vertices> &polygons, 
-        #                        bool fill_polygon_data = false);
-        # /** \brief The reconstruction method for 2D data.  Does not require dimension to be set. 
-        #   * \param[out] points the resultant points lying on the convex hull 
-        #   * \param[out] polygons the resultant convex hull polygons, as a set of
-        #   * vertices. The Vertices structure contains an array of point indices.
-        #   * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
-        # void
-        # performReconstruction2D (PointCloud &points, 
-        #                          std::vector<pcl::Vertices> &polygons, 
-        #                          bool fill_polygon_data = false);
-        # /** \brief The reconstruction method for 3D data.  Does not require dimension to be set. 
-        #   * \param[out] points the resultant points lying on the convex hull 
-        #   * \param[out] polygons the resultant convex hull polygons, as a set of
-        #   * vertices. The Vertices structure contains an array of point indices.
-        #   * \param[in] fill_polygon_data true if polygons should be filled, false otherwise
-        # void
-        # performReconstruction3D (PointCloud &points, 
-        #                          std::vector<pcl::Vertices> &polygons, 
-        #                          bool fill_polygon_data = false);
-        # /** \brief A reconstruction method that returns a polygonmesh.
-        #   *
-        #   * \param[out] output a PolygonMesh representing the convex hull of the input data.
-        #   */
-        # virtual void
-        # performReconstruction (PolygonMesh &output);
-        # 
-        # /** \brief A reconstruction method that returns the polygon of the convex hull.
-        #   *
-        #   * \param[out] polygons the polygon(s) representing the convex hull of the input data.
-        #   */
-        # virtual void
-        # performReconstruction (std::vector<pcl::Vertices> &polygons);
-        # 
-        # /** \brief Automatically determines the dimension of input data - 2D or 3D. */
-        # void 
-        # calculateInputDimension ();
-        # 
-        # /** \brief Class get name method. */
-        # std::string getClassName () const
-        # 
-        # /* \brief True if we should compute the area and volume of the convex hull. */
-        # bool compute_area_;
-        # /* \brief The area of the convex hull. */
-        # double total_area_;
-        # /* \brief The volume of the convex hull (only for 3D hulls, zero for 2D). */
-        # double total_volume_;
-        # /** \brief The dimensionality of the concave hull (2D or 3D). */
-        # int dimension_;
-        # /** \brief How close can a 2D plane's normal be to an axis to make projection problematic. */
-        # double projection_angle_thresh_;
-        # /** \brief Option flag string to be used calling qhull. */
-        # std::string qhull_flags;
-        # /* \brief x-axis - for checking valid projections. */
-        # const Eigen::Vector3f x_axis_;
-        # /* \brief y-axis - for checking valid projections. */
-        # const Eigen::Vector3f y_axis_;
-        # /* \brief z-axis - for checking valid projections. */
-        # const Eigen::Vector3f z_axis_;
-        # public:
-        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+        int getDimension ()
+
+
 ###
 
 # ear_clipping.h
@@ -964,100 +879,85 @@ cdef extern from "pcl/surface/convex_hull.h" namespace "pcl":
 cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
     cdef cppclass GreedyProjectionTriangulation[In](MeshConstruction[In]):
         GreedyProjectionTriangulation()
-#       public:
-#       using MeshConstruction<PointInT>::tree_;
-#       using MeshConstruction<PointInT>::input_;
-#       using MeshConstruction<PointInT>::indices_;
-#       typedef typename pcl::KdTree<PointInT> KdTree;
-#       typedef typename pcl::KdTree<PointInT>::Ptr KdTreePtr;
-#       typedef pcl::PointCloud<PointInT> PointCloudIn;
-#       typedef typename PointCloudIn::Ptr PointCloudInPtr;
-#       typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
-#       // FIXME this enum should have a type.  Not be anonymous. 
-#       // Otherplaces where consts are used probably should be fixed.
-#       enum 
-#       { 
-#         NONE = -1,    // not-defined
-#         FREE = 0,    
-#         FRINGE = 1,  
-#         BOUNDARY = 2,
-#         COMPLETED = 3
-#       };
-# 
-#       /** \brief Set the multiplier of the nearest neighbor distance to obtain the final search radius for each point
-#        *  (this will make the algorithm adapt to different point densities in the cloud).
-#        * \param[in] mu the multiplier
-#       inline void setMu (double mu)
-#       /** \brief Get the nearest neighbor distance multiplier. */
-#       inline double getMu ()
-#       /** \brief Set the maximum number of nearest neighbors to be searched for.
-#         * \param[in] nnn the maximum number of nearest neighbors
-#       inline void setMaximumNearestNeighbors (int nnn)
-#       /** \brief Get the maximum number of nearest neighbors to be searched for. */
-#       inline int getMaximumNearestNeighbors ()
-#       /** \brief Set the sphere radius that is to be used for determining the k-nearest neighbors used for triangulating.
-#         * \param[in] radius the sphere radius that is to contain all k-nearest neighbors
-#         * \note This distance limits the maximum edge length!
-#       inline void setSearchRadius (double radius)
-#       /** \brief Get the sphere radius used for determining the k-nearest neighbors. */
-#       inline double getSearchRadius ()
-#       /** \brief Set the minimum angle each triangle should have.
-#         * \param[in] minimum_angle the minimum angle each triangle should have
-#         * \note As this is a greedy approach, this will have to be violated from time to time
-#       inline void setMinimumAngle (double minimum_angle)
-#       /** \brief Get the parameter for distance based weighting of neighbors. */
-#       inline double getMinimumAngle ()
-#       /** \brief Set the maximum angle each triangle can have.
-#         * \param[in] maximum_angle the maximum angle each triangle can have
-#         * \note For best results, its value should be around 120 degrees
-#       inline void setMaximumAngle (double maximum_angle)
-#       /** \brief Get the parameter for distance based weighting of neighbors. */
-#       inline double getMaximumAngle ()
-#       /** \brief Don't consider points for triangulation if their normal deviates more than this value from the query point's normal.
-#         * \param[in] eps_angle maximum surface angle
-#         * \note As normal estimation methods usually give smooth transitions at sharp edges, this ensures correct triangulation
-#         *       by avoiding connecting points from one side to points from the other through forcing the use of the edge points.
-#       inline void setMaximumSurfaceAngle (double eps_angle)
-#       /** \brief Get the maximum surface angle. */
-#       inline double getMaximumSurfaceAngle ()
-#       /** \brief Set the flag if the input normals are oriented consistently.
-#         * \param[in] consistent set it to true if the normals are consistently oriented
-#       inline void setNormalConsistency (bool consistent)
-#       /** \brief Get the flag for consistently oriented normals. */
-#       inline bool getNormalConsistency ()
-#       /** \brief Set the flag to order the resulting triangle vertices consistently (positive direction around normal).
-#         * @note Assumes consistently oriented normals (towards the viewpoint) -- see setNormalConsistency ()
-#         * \param[in] consistent_ordering set it to true if triangle vertices should be ordered consistently
-#       inline void setConsistentVertexOrdering (bool consistent_ordering)
-#       /** \brief Get the flag signaling consistently ordered triangle vertices. */
-#       inline bool getConsistentVertexOrdering ()
-#       /** \brief Get the state of each point after reconstruction.
-#         * \note Options are defined as constants: FREE, FRINGE, COMPLETED, BOUNDARY and NONE
-#       inline std::vector<int> getPointStates ()
-#       /** \brief Get the ID of each point after reconstruction.
-#         * \note parts are numbered from 0, a -1 denotes unconnected points
-#       inline std::vector<int> getPartIDs ()
-#       /** \brief Get the sfn list. */
-#       inline std::vector<int> getSFN ()
-#       /** \brief Get the ffn list. */
-#       inline std::vector<int> getFFN ()
-#       protected:
-#       /** \brief The nearest neighbor distance multiplier to obtain the final search radius. */
-#       double mu_;
-#       /** \brief The nearest neighbors search radius for each point and the maximum edge length. */
-#       double search_radius_;
-#       /** \brief The maximum number of nearest neighbors accepted by searching. */
-#       int nnn_;
-#       /** \brief The preferred minimum angle for the triangles. */
-#       double minimum_angle_;
-#       /** \brief The maximum angle for the triangles. */
-#       double maximum_angle_;
-#       /** \brief Maximum surface angle. */
-#       double eps_angle_;
-#       /** \brief Set this to true if the normals of the input are consistently oriented. */
-#       bool consistent_;
-#       /** \brief Set this to true if the output triangle vertices should be consistently oriented. */
-#       bool consistent_ordering_;
+        # public:
+        # using MeshConstruction<PointInT>::tree_;
+        # using MeshConstruction<PointInT>::input_;
+        # using MeshConstruction<PointInT>::indices_;
+        # typedef typename pcl::KdTree<PointInT> KdTree;
+        # typedef typename pcl::KdTree<PointInT>::Ptr KdTreePtr;
+        # typedef pcl::PointCloud<PointInT> PointCloudIn;
+        # typedef typename PointCloudIn::Ptr PointCloudInPtr;
+        # typedef typename PointCloudIn::ConstPtr PointCloudInConstPtr;
+        # // FIXME this enum should have a type.  Not be anonymous. 
+        # // Otherplaces where consts are used probably should be fixed.
+        # enum 
+        # { 
+        #   NONE = -1,    // not-defined
+        #   FREE = 0,    
+        #   FRINGE = 1,  
+        #   BOUNDARY = 2,
+        #   COMPLETED = 3
+        # };
+        # 
+        # /** \brief Set the multiplier of the nearest neighbor distance to obtain the final search radius for each point
+        #  *  (this will make the algorithm adapt to different point densities in the cloud).
+        #  * \param[in] mu the multiplier
+        # inline void setMu (double mu)
+        # /** \brief Get the nearest neighbor distance multiplier. */
+        # inline double getMu ()
+        # /** \brief Set the maximum number of nearest neighbors to be searched for.
+        #   * \param[in] nnn the maximum number of nearest neighbors
+        # inline void setMaximumNearestNeighbors (int nnn)
+        # /** \brief Get the maximum number of nearest neighbors to be searched for. */
+        # inline int getMaximumNearestNeighbors ()
+        # /** \brief Set the sphere radius that is to be used for determining the k-nearest neighbors used for triangulating.
+        #   * \param[in] radius the sphere radius that is to contain all k-nearest neighbors
+        #   * \note This distance limits the maximum edge length!
+        # inline void setSearchRadius (double radius)
+        # /** \brief Get the sphere radius used for determining the k-nearest neighbors. */
+        # inline double getSearchRadius ()
+        # /** \brief Set the minimum angle each triangle should have.
+        #   * \param[in] minimum_angle the minimum angle each triangle should have
+        #   * \note As this is a greedy approach, this will have to be violated from time to time
+        # inline void setMinimumAngle (double minimum_angle)
+        # /** \brief Get the parameter for distance based weighting of neighbors. */
+        # inline double getMinimumAngle ()
+        # /** \brief Set the maximum angle each triangle can have.
+        #   * \param[in] maximum_angle the maximum angle each triangle can have
+        #   * \note For best results, its value should be around 120 degrees
+        # inline void setMaximumAngle (double maximum_angle)
+        # /** \brief Get the parameter for distance based weighting of neighbors. */
+        # inline double getMaximumAngle ()
+        # /** \brief Don't consider points for triangulation if their normal deviates more than this value from the query point's normal.
+        #   * \param[in] eps_angle maximum surface angle
+        #   * \note As normal estimation methods usually give smooth transitions at sharp edges, this ensures correct triangulation
+        #   *       by avoiding connecting points from one side to points from the other through forcing the use of the edge points.
+        # inline void setMaximumSurfaceAngle (double eps_angle)
+        # /** \brief Get the maximum surface angle. */
+        # inline double getMaximumSurfaceAngle ()
+        # /** \brief Set the flag if the input normals are oriented consistently.
+        #   * \param[in] consistent set it to true if the normals are consistently oriented
+        # inline void setNormalConsistency (bool consistent)
+        # /** \brief Get the flag for consistently oriented normals. */
+        # inline bool getNormalConsistency ()
+        # /** \brief Set the flag to order the resulting triangle vertices consistently (positive direction around normal).
+        #   * @note Assumes consistently oriented normals (towards the viewpoint) -- see setNormalConsistency ()
+        #   * \param[in] consistent_ordering set it to true if triangle vertices should be ordered consistently
+        # inline void setConsistentVertexOrdering (bool consistent_ordering)
+        # /** \brief Get the flag signaling consistently ordered triangle vertices. */
+        # inline bool getConsistentVertexOrdering ()
+        # /** \brief Get the state of each point after reconstruction.
+        #   * \note Options are defined as constants: FREE, FRINGE, COMPLETED, BOUNDARY and NONE
+        # inline std::vector<int> getPointStates ()
+        # /** \brief Get the ID of each point after reconstruction.
+        #   * \note parts are numbered from 0, a -1 denotes unconnected points
+        # inline std::vector<int> getPartIDs ()
+        # /** \brief Get the sfn list. */
+        # inline std::vector<int> getSFN ()
+        # /** \brief Get the ffn list. */
+        # inline std::vector<int> getFFN ()
+
+
 ###
 
 # grid_projection.h
@@ -1077,446 +977,110 @@ cdef extern from "pcl/surface/gp3.h" namespace "pcl::poisson":
 #   const int I_SHIFT_EDGE[3][2] = {
 #     {0,1}, {1,3}, {1,2}
 #   };
-# 
-# 
-#   /** \brief Grid projection surface reconstruction method.
-#     * \author Rosie Li
-#     *
-#     * \note If you use this code in any academic work, please cite:
-#     *   - Ruosi Li, Lu Liu, Ly Phan, Sasakthi Abeysinghe, Cindy Grimm, Tao Ju.
-#     *     Polygonizing extremal surfaces with manifold guarantees.
-#     *     In Proceedings of the 14th ACM Symposium on Solid and Physical Modeling, 2010.
-#      * \ingroup surface
-#     */
-#   template <typename PointNT>
-#   class GridProjection : public SurfaceReconstruction<PointNT>
-#   {
-#     public:
-#       using SurfaceReconstruction<PointNT>::input_;
-#       using SurfaceReconstruction<PointNT>::tree_;
-# 
-#       typedef typename pcl::PointCloud<PointNT>::Ptr PointCloudPtr;
-# 
-#       typedef typename pcl::KdTree<PointNT> KdTree;
-#       typedef typename pcl::KdTree<PointNT>::Ptr KdTreePtr;
-# 
-#       /** \brief Data leaf. */
-#       struct Leaf
-#       {
-#         Leaf () : data_indices (), pt_on_surface (), vect_at_grid_pt () {}
-# 
-#         std::vector<int> data_indices;
-#         Eigen::Vector4f pt_on_surface; 
-#         Eigen::Vector3f vect_at_grid_pt;
-#       };
-# 
-#       typedef boost::unordered_map<int, Leaf, boost::hash<int>, std::equal_to<int>, Eigen::aligned_allocator<int> > HashMap;
-# 
-#       /** \brief Constructor. */ 
-#       GridProjection ();
-# 
-#       /** \brief Constructor. 
-#         * \param in_resolution set the resolution of the grid
-#         */ 
-#       GridProjection (double in_resolution);
-# 
-#       /** \brief Destructor. */
-#       ~GridProjection ();
-# 
-#       /** \brief Set the size of the grid cell
-#         * \param resolution  the size of the grid cell
-#         */
-#       inline void 
-#       setResolution (double resolution)
-#       {
-#         leaf_size_ = resolution;
-#       }
-# 
-#       inline double 
-#       getResolution () const
-#       {
-#         return (leaf_size_);
-#       }
-# 
-#       /** \brief When averaging the vectors, we find the union of all the input data 
-#         *  points within the padding area,and do a weighted average. Say if the padding
-#         *  size is 1, when we process cell (x,y,z), we will find union of input data points
-#         *  from (x-1) to (x+1), (y-1) to (y+1), (z-1) to (z+1)(in total, 27 cells). In this
-#         *  way, even the cells itself doesnt contain any data points, we will stil process it
-#         *  because there are data points in the padding area. This can help us fix holes which 
-#         *  is smaller than the padding size.
-#         * \param padding_size The num of padding cells we want to create 
-#         */
-#       inline void 
-#       setPaddingSize (int padding_size)
-#       {
-#         padding_size_ = padding_size;
-#       }
-#       inline int 
-#       getPaddingSize () const
-#       {
-#         return (padding_size_);
-#       }
-# 
-#       /** \brief Set this only when using the k nearest neighbors search 
-#         * instead of finding the point union
-#         * \param k The number of nearest neighbors we are looking for
-#         */
-#       inline void 
-#       setNearestNeighborNum (int k)
-#       {
-#         k_ = k;
-#       }
-#       inline int 
-#       getNearestNeighborNum () const
-#       {
-#         return (k_);
-#       }
-# 
-#       /** \brief Binary search is used in projection. given a point x, we find another point
-#         *  which is 3*cell_size_ far away from x. Then we do a binary search between these 
-#         *  two points to find where the projected point should be.
-#         */
-#       inline void 
-#       setMaxBinarySearchLevel (int max_binary_search_level)
-#       {
-#         max_binary_search_level_ = max_binary_search_level;
-#       }
-#       inline int 
-#       getMaxBinarySearchLevel () const
-#       {
-#         return (max_binary_search_level_);
-#       }
-# 
-#       ///////////////////////////////////////////////////////////
-#       inline const HashMap& 
-#       getCellHashMap () const
-#       {
-#         return (cell_hash_map_);
-#       }
-# 
-#       inline const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> >& 
-#       getVectorAtDataPoint () const
-#       {
-#         return (vector_at_data_point_);
-#       }
-#       
-#       inline const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& 
-#       getSurface () const
-#       {
-#         return (surface_);
-#       }
-# 
-#     protected:
-#       /** \brief Get the bounding box for the input data points, also calculating the
-#         * cell size, and the gaussian scale factor
-#         */
-#       void 
-#       getBoundingBox ();
-# 
-#       /** \brief The actual surface reconstruction method.
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       bool
-#       reconstructPolygons (std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief Create the surface. 
-#         *
-#         * The 1st step is filling the padding, so that all the cells in the padding
-#         * area are in the hash map. The 2nd step is store the vector, and projected
-#         * point. The 3rd step is finding all the edges intersects the surface, and
-#         * creating surface.
-#         *
-#         * \param[out] output the resultant polygonal mesh
-#         */
-#       void 
-#       performReconstruction (pcl::PolygonMesh &output);
-# 
-#       /** \brief Create the surface. 
-#         *
-#         * The 1st step is filling the padding, so that all the cells in the padding
-#         * area are in the hash map. The 2nd step is store the vector, and projected
-#         * point. The 3rd step is finding all the edges intersects the surface, and
-#         * creating surface.
-#         *
-#         * \param[out] points the resultant points lying on the surface
-#         * \param[out] polygons the resultant polygons, as a set of vertices. The Vertices structure contains an array of point indices.
-#         */
-#       void 
-#       performReconstruction (pcl::PointCloud<PointNT> &points, 
-#                              std::vector<pcl::Vertices> &polygons);
-# 
-#       /** \brief When the input data points don't fill into the 1*1*1 box, 
-#         * scale them so that they can be filled in the unit box. Otherwise, 
-#         * it will be some drawing problem when doing visulization
-#         * \param scale_factor scale all the input data point by scale_factor
-#         */
-#       void 
-#       scaleInputDataPoint (double scale_factor);
-# 
-#       /** \brief Get the 3d index (x,y,z) of the cell based on the location of
-#         * the cell
-#         * \param p the coordinate of the input point
-#         * \param index the output 3d index
-#         */
-#       inline void 
-#       getCellIndex (const Eigen::Vector4f &p, Eigen::Vector3i& index) const
-#       {
-#         for (int i = 0; i < 3; ++i)
-#           index[i] = static_cast<int> ((p[i] - min_p_(i)) / leaf_size_);
-#       }
-# 
-#       /** \brief Given the 3d index (x, y, z) of the cell, get the 
-#         * coordinates of the cell center
-#         * \param index the output 3d index
-#         * \param center the resultant cell center
-#         */
-#       inline void
-#       getCellCenterFromIndex (const Eigen::Vector3i &index, Eigen::Vector4f &center) const
-#       {
-#         for (int i = 0; i < 3; ++i)
-#           center[i] = 
-#             min_p_[i] + static_cast<float> (index[i]) * 
-#             static_cast<float> (leaf_size_) + 
-#             static_cast<float> (leaf_size_) / 2.0f;
-#       }
-# 
-#       /** \brief Given cell center, caluate the coordinates of the eight vertices of the cell
-#         * \param cell_center the coordinates of the cell center
-#         * \param pts the coordinates of the 8 vertices
-#         */
-#       void 
-#       getVertexFromCellCenter (const Eigen::Vector4f &cell_center, 
-#                                std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > &pts) const;
-# 
-#       /** \brief Given an index (x, y, z) in 3d, translate it into the index 
-#         * in 1d
-#         * \param index the index of the cell in (x,y,z) 3d format
-#         */
-#       inline int 
-#       getIndexIn1D (const Eigen::Vector3i &index) const
-#       {
-#         //assert(data_size_ > 0);
-#         return (index[0] * data_size_ * data_size_ + 
-#                 index[1] * data_size_ + index[2]);
-#       }
-# 
-#       /** \brief Given an index in 1d, translate it into the index (x, y, z) 
-#         * in 3d
-#         * \param index_1d the input 1d index
-#         * \param index_3d the output 3d index
-#         */
-#       inline void 
-#       getIndexIn3D (int index_1d, Eigen::Vector3i& index_3d) const
-#       {
-#         //assert(data_size_ > 0);
-#         index_3d[0] = index_1d / (data_size_ * data_size_);
-#         index_1d -= index_3d[0] * data_size_ * data_size_;
-#         index_3d[1] = index_1d / data_size_;
-#         index_1d -= index_3d[1] * data_size_;
-#         index_3d[2] = index_1d;
-#       }
-# 
-#       /** \brief For a given 3d index of a cell, test whether the cells within its
-#         * padding area exist in the hash table, if no, create an entry for that cell.
-#         * \param index the index of the cell in (x,y,z) format
-#         */
-#       void 
-#       fillPad (const Eigen::Vector3i &index);
-# 
-#       /** \brief Obtain the index of a cell and the pad size.
-#         * \param index the input index
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         */
-#       void 
-#       getDataPtsUnion (const Eigen::Vector3i &index, std::vector <int> &pt_union_indices);
-# 
-#       /** \brief Given the index of a cell, exam it's up, left, front edges, and add
-#         * the vectices to m_surface list.the up, left, front edges only share 4
-#         * points, we first get the vectors at these 4 points and exam whether those
-#         * three edges are intersected by the surface \param index the input index
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         */
-#       void 
-#       createSurfaceForCell (const Eigen::Vector3i &index, std::vector <int> &pt_union_indices);
-# 
-# 
-#       /** \brief Given the coordinates of one point, project it onto the surface, 
-#         * return the projected point. Do a binary search between p and p+projection_distance 
-#         * to find the projected point
-#         * \param p the coordinates of the input point
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         * \param projection the resultant point projected
-#         */
-#       void
-#       getProjection (const Eigen::Vector4f &p, std::vector<int> &pt_union_indices, Eigen::Vector4f &projection);
-# 
-#       /** \brief Given the coordinates of one point, project it onto the surface,
-#         * return the projected point. Find the plane which fits all the points in
-#         *  pt_union_indices, projected p to the plane to get the projected point.
-#         * \param p the coordinates of the input point
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         * \param projection the resultant point projected
-#         */
-#       void 
-#       getProjectionWithPlaneFit (const Eigen::Vector4f &p, 
-#                                  std::vector<int> &pt_union_indices, 
-#                                  Eigen::Vector4f &projection);
-# 
-# 
-#       /** \brief Given the location of a point, get it's vector
-#         * \param p the coordinates of the input point
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         * \param vo the resultant vector
-#         */
-#       void
-#       getVectorAtPoint (const Eigen::Vector4f &p, 
-#                         std::vector <int> &pt_union_indices, Eigen::Vector3f &vo);
-# 
-#       /** \brief Given the location of a point, get it's vector
-#         * \param p the coordinates of the input point
-#         * \param k_indices the k nearest neighbors of the query point
-#         * \param k_squared_distances the squared distances of the k nearest 
-#         * neighbors to the query point
-#         * \param vo the resultant vector
-#         */
-#       void
-#       getVectorAtPointKNN (const Eigen::Vector4f &p, 
-#                            std::vector<int> &k_indices, 
-#                            std::vector<float> &k_squared_distances,
-#                            Eigen::Vector3f &vo);
-# 
-#       /** \brief Get the magnitude of the vector by summing up the distance.
-#         * \param p the coordinate of the input point
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         */
-#       double 
-#       getMagAtPoint (const Eigen::Vector4f &p, const std::vector <int> &pt_union_indices);
-# 
-#       /** \brief Get the 1st derivative
-#         * \param p the coordinate of the input point
-#         * \param vec the vector at point p
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         */
-#       double 
-#       getD1AtPoint (const Eigen::Vector4f &p, const Eigen::Vector3f &vec, 
-#                     const std::vector <int> &pt_union_indices);
-# 
-#       /** \brief Get the 2nd derivative
-#         * \param p the coordinate of the input point
-#         * \param vec the vector at point p
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         */
-#       double 
-#       getD2AtPoint (const Eigen::Vector4f &p, const Eigen::Vector3f &vec, 
-#                     const std::vector <int> &pt_union_indices);
-# 
-#       /** \brief Test whether the edge is intersected by the surface by 
-#         * doing the dot product of the vector at two end points. Also test 
-#         * whether the edge is intersected by the maximum surface by examing 
-#         * the 2nd derivative of the intersection point 
-#         * \param end_pts the two points of the edge
-#         * \param vect_at_end_pts 
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         */
-#       bool 
-#       isIntersected (const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > &end_pts, 
-#                      std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > &vect_at_end_pts, 
-#                      std::vector <int> &pt_union_indices);
-# 
-#       /** \brief Find point where the edge intersects the surface.
-#         * \param level binary search level
-#         * \param end_pts the two end points on the edge
-#         * \param vect_at_end_pts the vectors at the two end points
-#         * \param start_pt the starting point we use for binary search
-#         * \param pt_union_indices the union of input data points within the cell and padding cells
-#         * \param intersection the resultant intersection point
-#         */
-#       void
-#       findIntersection (int level, 
-#                         const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > &end_pts, 
-#                         const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > &vect_at_end_pts, 
-#                         const Eigen::Vector4f &start_pt, 
-#                         std::vector<int> &pt_union_indices,
-#                         Eigen::Vector4f &intersection);
-# 
-#       /** \brief Go through all the entries in the hash table and update the
-#        * cellData. 
-#        *
-#        * When creating the hash table, the pt_on_surface field store the center
-#        * point of the cell.After calling this function, the projection operator will
-#        * project the center point onto the surface, and the pt_on_surface field will
-#        * be updated using the projected point.Also the vect_at_grid_pt field will be
-#        * updated using the vector at the upper left front vertex of the cell.
-#        *
-#        * \param index_1d the index of the cell after flatting it's 3d index into a 1d array
-#        * \param index_3d the index of the cell in (x,y,z) 3d format
-#        * \param pt_union_indices the union of input data points within the cell and pads
-#        * \param cell_data information stored in the cell
-#        */
-#       void
-#       storeVectAndSurfacePoint (int index_1d, const Eigen::Vector3i &index_3d, 
-#                                 std::vector<int> &pt_union_indices, const Leaf &cell_data);
-# 
-#       /** \brief Go through all the entries in the hash table and update the cellData. 
-#         * When creating the hash table, the pt_on_surface field store the center point
-#         * of the cell.After calling this function, the projection operator will project the 
-#         * center point onto the surface, and the pt_on_surface field will be updated 
-#         * using the projected point.Also the vect_at_grid_pt field will be updated using 
-#         * the vector at the upper left front vertex of the cell. When projecting the point 
-#         * and calculating the vector, using K nearest neighbors instead of using the 
-#         * union of input data point within the cell and pads.
-#         *
-#         * \param index_1d the index of the cell after flatting it's 3d index into a 1d array
-#         * \param index_3d the index of the cell in (x,y,z) 3d format
-#         * \param cell_data information stored in the cell
-#         */
-#       void 
-#       storeVectAndSurfacePointKNN (int index_1d, const Eigen::Vector3i &index_3d, const Leaf &cell_data);
-# 
-#     private:
-#       /** \brief Map containing the set of leaves. */
-#       HashMap cell_hash_map_;
-# 
-#       /** \brief Min and max data points. */
-#       Eigen::Vector4f min_p_, max_p_;
-# 
-#       /** \brief The size of a leaf. */
-#       double leaf_size_;
-# 
-#       /** \brief Gaussian scale. */
-#       double gaussian_scale_;
-# 
-#       /** \brief Data size. */
-#       int data_size_;
-# 
-#       /** \brief Max binary search level. */
-#       int max_binary_search_level_;
-# 
-#       /** \brief Number of neighbors (k) to use. */
-#       int k_;
-# 
-#       /** \brief Padding size. */
-#       int padding_size_;
-# 
-#       /** \brief The point cloud input (XYZ+Normals). */
-#       PointCloudPtr data_;
-# 
-#       /** \brief Store the surface normal(vector) at the each input data point. */
-#       std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> > vector_at_data_point_;
-#       
-#       /** \brief An array of points which lay on the output surface. */
-#       std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> > surface_;
-# 
-#       /** \brief Bit map which tells if there is any input data point in the cell. */
-#       boost::dynamic_bitset<> occupied_cell_list_;
-# 
-#       /** \brief Class get name method. */
-#       std::string getClassName () const { return ("GridProjection"); }
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
+###
+
+# grid_projection.h
+# namespace pcl
+
+# grid_projection.h
+# namespace pcl
+# /** \brief Grid projection surface reconstruction method.
+#   * \author Rosie Li
+#   *
+#   * \note If you use this code in any academic work, please cite:
+#   *   - Ruosi Li, Lu Liu, Ly Phan, Sasakthi Abeysinghe, Cindy Grimm, Tao Ju.
+#   *     Polygonizing extremal surfaces with manifold guarantees.
+#   *     In Proceedings of the 14th ACM Symposium on Solid and Physical Modeling, 2010.
+#    * \ingroup surface
+#   */
+# template <typename PointNT>
+# class GridProjection : public SurfaceReconstruction<PointNT>
+cdef extern from "pcl/surface/grid_projection.h" namespace "pcl":
+    cdef cppclass GridProjection[PointNT](SurfaceReconstruction[PointNT]):
+        GridProjection()
+        GridProjection (double in_resolution)
+        # public:
+        # using SurfaceReconstruction<PointNT>::input_;
+        # using SurfaceReconstruction<PointNT>::tree_;
+        # typedef typename pcl::PointCloud<PointNT>::Ptr PointCloudPtr;
+        # typedef typename pcl::KdTree<PointNT> KdTree;
+        # typedef typename pcl::KdTree<PointNT>::Ptr KdTreePtr;
+        # 
+        # /** \brief Data leaf. */
+        # struct Leaf
+        # {
+        #   Leaf () : data_indices (), pt_on_surface (), vect_at_grid_pt () {}
+        # 
+        #   std::vector<int> data_indices;
+        #   Eigen::Vector4f pt_on_surface; 
+        #   Eigen::Vector3f vect_at_grid_pt;
+        # };
+        # 
+        # typedef boost::unordered_map<int, Leaf, boost::hash<int>, std::equal_to<int>, Eigen::aligned_allocator<int> > HashMap;
+        # 
+        # /** \brief Constructor. */ 
+        # GridProjection ();
+        # 
+        # /** \brief Constructor. 
+        #   * \param in_resolution set the resolution of the grid
+        #   */ 
+        # GridProjection (double in_resolution);
+        # 
+        # /** \brief Destructor. */
+        # ~GridProjection ();
+        # 
+        
+        # /** \brief Set the size of the grid cell
+        #   * \param resolution  the size of the grid cell
+        #   */
+        # inline void setResolution (double resolution)
+        void setResolution (double resolution)
+        
+        # inline double getResolution () const
+        double getResolution ()
+        
+        # /** \brief When averaging the vectors, we find the union of all the input data 
+        #   *  points within the padding area,and do a weighted average. Say if the padding
+        #   *  size is 1, when we process cell (x,y,z), we will find union of input data points
+        #   *  from (x-1) to (x+1), (y-1) to (y+1), (z-1) to (z+1)(in total, 27 cells). In this
+        #   *  way, even the cells itself doesnt contain any data points, we will stil process it
+        #   *  because there are data points in the padding area. This can help us fix holes which 
+        #   *  is smaller than the padding size.
+        #   * \param padding_size The num of padding cells we want to create 
+        #   */
+        # inline void setPaddingSize (int padding_size)
+        void setPaddingSize (int padding_size)
+        
+        # inline int getPaddingSize () const
+        int getPaddingSize ()
+        
+        # /** \brief Set this only when using the k nearest neighbors search 
+        #   * instead of finding the point union
+        #   * \param k The number of nearest neighbors we are looking for
+        #   */
+        # inline void setNearestNeighborNum (int k)
+        void setNearestNeighborNum (int k)
+        
+        # inline int getNearestNeighborNum () const
+        int getNearestNeighborNum ()
+        
+        # /** \brief Binary search is used in projection. given a point x, we find another point
+        #   *  which is 3*cell_size_ far away from x. Then we do a binary search between these 
+        #   *  two points to find where the projected point should be.
+        #   */
+        # inline void setMaxBinarySearchLevel (int max_binary_search_level)
+        void setMaxBinarySearchLevel (int max_binary_search_level)
+        
+        # inline int getMaxBinarySearchLevel () const
+        int getMaxBinarySearchLevel () const
+        
+        # inline const HashMap& getCellHashMap () const
+        # 
+        # inline const std::vector<Eigen::Vector3f, Eigen::aligned_allocator<Eigen::Vector3f> >& getVectorAtDataPoint () const
+        # 
+        # inline const std::vector<Eigen::Vector4f, Eigen::aligned_allocator<Eigen::Vector4f> >& getSurface () const
+
+
 ###
 
 # hash.h (1.6.0)

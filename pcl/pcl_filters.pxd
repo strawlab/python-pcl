@@ -633,15 +633,14 @@ ctypedef shared_ptr[const ConditionalRemoval[cpp.PointXYZRGBA]] ConditionalRemov
 cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
     cdef cppclass CropBox[T](FilterIndices[T]):
         CropBox()
+        
         # public:
         # \brief Set the minimum point of the box
         # \param[in] min_pt the minimum point of the box
         void setMin (const eigen3.Vector4f &min_pt)
         
-        # """
         # brief Get the value of the minimum point of the box, as set by the user
         # return the value of the internal \a min_pt parameter.
-        # """
         eigen3.Vector4f getMin ()
         
         # brief Set the maximum point of the box
@@ -650,28 +649,28 @@ cdef extern from "pcl/filters/crop_box.h" namespace "pcl":
         
         # brief Get the value of the maxiomum point of the box, as set by the user
         # return the value of the internal \a max_pt parameter.
-        eigen3.Vector4f getMax () const
+        eigen3.Vector4f getMax ()
         
         # brief Set a translation value for the box
-        # param[in] translation the (tx,ty,tz) values that the box should be translated by
+        # param[in] translation the (tx, ty, tz) values that the box should be translated by
         void setTranslation (const eigen3.Vector3f &translation)
         
-        # brief Get the value of the box translation parameter as set by the user. */
-        eigen3.Vector3f getTranslation () const
+        # brief Get the value of the box translation parameter as set by the user.
+        eigen3.Vector3f getTranslation ()
         
         # brief Set a rotation value for the box
-        # param[in] rotation the (rx,ry,rz) values that the box should be rotated by
+        # param[in] rotation the (rx, ry, rz) values that the box should be rotated by
         void setRotation (const eigen3.Vector3f &rotation)
         
-        # brief Get the value of the box rotatation parameter, as set by the user. */
-        eigen3.Vector3f getRotation () const
+        # brief Get the value of the box rotatation parameter, as set by the user.
+        eigen3.Vector3f getRotation ()
         
         # brief Set a transformation that should be applied to the cloud before filtering
         # param[in] transform an affine transformation that needs to be applied to the cloud before filtering
         void setTransform (const eigen3.Affine3f &transform)
         
-        # brief Get the value of the transformation parameter, as set by the user. */
-        eigen3.Affine3f getTransform () const
+        # brief Get the value of the transformation parameter, as set by the user.
+        eigen3.Affine3f getTransform ()
 
 
 ctypedef CropBox[cpp.PointXYZ] CropBox_t
