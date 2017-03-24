@@ -521,6 +521,24 @@ cdef class PointCloud:
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
 
+    def make_GeneralizedIterativeClosestPoint(self):
+        generalizedIterativeClosestPoint = GeneralizedIterativeClosestPoint(self)
+        cdef pcl_reg.GeneralizedIterativeClosestPoint_t *cGeneralizedIterativeClosestPoint = <pcl_reg.GeneralizedIterativeClosestPoint_t *>generalizedIterativeClosestPoint.me
+        cGeneralizedIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return generalizedIterativeClosestPoint
+
+    def make_IterativeClosestPointNonLinear(self):
+        iterativeClosestPointNonLinear = IterativeClosestPointNonLinear(self)
+        cdef pcl_reg.IterativeClosestPointNonLinear_t *cIterativeClosestPointNonLinear = <pcl_reg.IterativeClosestPointNonLinear_t *>iterativeClosestPointNonLinear.me
+        cIterativeClosestPointNonLinear.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return iterativeClosestPointNonLinear
+
+    def make_IterativeClosestPoint(self):
+        iterativeClosestPoint = IterativeClosestPoint(self)
+        cdef pcl_reg.IterativeClosestPoint_t *cIterativeClosestPoint = <pcl_reg.IterativeClosestPoint_t *>iterativeClosestPoint.me
+        cIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return iterativeClosestPoint
+
     def make_MomentOfInertiaEstimation(self):
         momentofinertiaestimation = MomentOfInertiaEstimation(self)
         cdef pclftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pclftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
