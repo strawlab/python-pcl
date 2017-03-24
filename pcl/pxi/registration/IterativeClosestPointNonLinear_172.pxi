@@ -86,7 +86,7 @@ cdef class IterativeClosestPointNonLinear:
         fitness : float
             Sum of squares error in the estimated transformation.
         """
-        cdef pcl_reg.IterativeClosestPointNonLinear[cpp.PointXYZ, cpp.PointXYZ] icp_nl
+        cdef pcl_reg.IterativeClosestPointNonLinear_t icp_nl
         icp_nl.setInputCloud(source.thisptr_shared)
         return self.run(icp_nl, source, target, max_iter)
 

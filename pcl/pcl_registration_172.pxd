@@ -740,7 +740,7 @@ ctypedef shared_ptr[IterativeClosestPointWithNormals[cpp.PointXYZRGBA, cpp.Point
 # template <typename PointSource, typename PointTarget>
 # class GeneralizedIterativeClosestPoint : public IterativeClosestPoint<PointSource, PointTarget>
 cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
-    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](IterativeClosestPoint[Source, Target]):
+    cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](IterativeClosestPoint[Source, Target, float]):
         GeneralizedIterativeClosestPoint() except +
         # using IterativeClosestPoint<PointSource, PointTarget>::reg_name_;
         # using IterativeClosestPoint<PointSource, PointTarget>::getClassName;

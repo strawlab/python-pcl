@@ -100,6 +100,6 @@ cdef class IterativeClosestPoint:
         fitness : float
             Sum of squares error in the estimated transformation.
         """
-        cdef pcl_reg.IterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] icp
+        cdef pcl_reg.IterativeClosestPoint_t icp
         icp.setInputCloud(source.thisptr_shared)
         return self.run(icp, source, target, max_iter)

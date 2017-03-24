@@ -85,7 +85,7 @@ cdef class GeneralizedIterativeClosestPoint:
         fitness : float
             Sum of squares error in the estimated transformation.
         """
-        cdef pcl_reg.GeneralizedIterativeClosestPoint[cpp.PointXYZ, cpp.PointXYZ] gicp
+        cdef pcl_reg.GeneralizedIterativeClosestPoint_t gicp
         gicp.setInputCloud(source.thisptr_shared)
         return self.run(gicp, source, target, max_iter)
 

@@ -6,15 +6,15 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
-cimport pcl_features_172 as pclftr
-cimport pcl_filters_172 as pclfil
-cimport pcl_io_172 as pclio
-cimport pcl_kdtree_172 as pclkdt
+cimport pcl_features_180 as pclftr
+cimport pcl_filters_180 as pclfil
+cimport pcl_io_180 as pclio
+cimport pcl_kdtree_180 as pclkdt
 # cimport pcl_octree_180 as pcloct
-# cimport pcl_sample_consensus_172 as pcl_sc
-# cimport pcl_search_172 as pcl_sch
-cimport pcl_segmentation_172 as pclseg
-cimport pcl_surface_172 as pclsf
+# cimport pcl_sample_consensus_180 as pcl_sc
+# cimport pcl_search_180 as pcl_sch
+cimport pcl_segmentation_180 as pclseg
+cimport pcl_surface_180 as pclsf
 
 from libcpp cimport bool
 cimport indexing as idx
