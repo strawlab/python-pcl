@@ -215,6 +215,9 @@ function DownloadPCL ($pcl_version, $platform_suffix)
 
 function DownloadGTKPlus ($gtk_version, $platform_suffix) 
 {
+    # $major, $minor, $micro = ParsePCLVersion $gtk_version
+    # $dir = "$major.$minor.$micro"
+
     $filename = "gtk+-bundle_3.10.4-20131202_" + "$platform_suffix.zip"
     $url = "http://win32builder.gnome.org/" + "gtk+-bundle_3.10.4-20131202_" + "$platform_suffix.zip"
 

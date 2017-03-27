@@ -22,12 +22,15 @@ from vector cimport vector as vector2
 
 # Array
 # cdef extern from "Eigen/Array" namespace "Eigen" nogil:
+###
 
 # Cholesky
 # cdef extern from "Eigen/Cholesky" namespace "Eigen" nogil:
+###
 
 # Core?
 # cdef extern from "Eigen/Core" namespace "Eigen" nogil:
+###
 
 # Dense
 # http://stackoverflow.com/questions/29913524/set-coefficient-element-of-eigenmatrix3d-in-cython
@@ -39,20 +42,29 @@ cdef extern from "Eigen/Dense" namespace "Eigen":
         # double coeff(int row, int col)
         double& element "operator()"(int row, int col)
 
+
+###
+
 # Eigen
 cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Matrix4f:
         Matrix4f() except +
         float *data()
     cdef cppclass Matrix3f:
+        Matrix3f() except +
         float coeff(int row, int col)
         float *data()
+        double& element "operator()"(int row,int col)
     cdef cppclass Vector4f:
         float *data()
     cdef cppclass Vector3f:
         float *data()
     cdef cppclass Vector3i:
         int *data()
+    cdef cppclass Vector3d: 
+        Vector3d() except + 
+        Vector3d(double c0, double c1, double c2) except + 
+        double coeff(int row, int col) 
     cdef cppclass Quaternionf:
         float w()
         float x()
@@ -63,6 +75,9 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float *data()
     cdef cppclass aligned_allocator[T]:
         pass
+
+
+###
 
 # VectorXf
 

@@ -154,7 +154,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
         
         # brief Calls the filtering method and returns the filtered point cloud indices.
         # param[out] indices the resultant filtered point cloud indices
-        void filter (vector[int] &indices)
+        void filter (vector[int]& indices)
         ## filter function
         
         # \brief Set whether the regular conditions for points filtering should apply, or the inverted conditions.
@@ -258,7 +258,7 @@ cdef extern from "pcl/filters/filter_indices.h" namespace "pcl":
 # NG ###
 
 # template <typename PointT>
-# class ApproximateVoxelGrid: public Filter<PointT>
+# class ApproximateVoxelGrid : public Filter<PointT>
 cdef extern from "pcl/filters/approximate_voxel_grid.h" namespace "pcl":
     cdef cppclass ApproximateVoxelGrid[T](Filter[T]):
         ApproximateVoxelGrid()
@@ -1228,9 +1228,13 @@ ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval_P
 cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
     cdef cppclass VoxelGrid[T](Filter[T]):
         VoxelGrid()
+        
         # void setLeafSize (const Eigen::Vector4f &leaf_size) 
         void setLeafSize (float, float, float)
+        
+        # Filter class function
         # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
+        
         # void filter(cpp.PointCloud[T] c)
         # /** \brief Set to true if all fields need to be downsampled, or false if just XYZ.
         #   * \param[in] downsample the new value (true/false)
@@ -1253,19 +1257,19 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
         
         # \brief Get the minimum coordinates of the bounding box (after filtering is performed). 
         # Eigen::Vector3i getMinBoxCoordinates () { return (min_b_.head<3> ()); }
-        # eigen3.Vector3i getMinBoxCoordinates ()
+        eigen3.Vector3i getMinBoxCoordinates ()
         
         # \brief Get the minimum coordinates of the bounding box (after filtering is performed). 
         # Eigen::Vector3i getMaxBoxCoordinates () { return (max_b_.head<3> ()); }
-        # eigen3.Vector3i getMaxBoxCoordinates ()
+        eigen3.Vector3i getMaxBoxCoordinates ()
         
         # \brief Get the number of divisions along all 3 axes (after filtering is performed). 
         # Eigen::Vector3i getNrDivisions () { return (div_b_.head<3> ()); }
-        # eigen3.Vector3i getNrDivisions ()
+        eigen3.Vector3i getNrDivisions ()
         
         # \brief Get the multipliers to be applied to the grid coordinates in order to find the centroid index (after filtering is performed). 
         # Eigen::Vector3i getDivisionMultiplier () { return (divb_mul_.head<3> ()); }
-        # eigen3.Vector3i getDivisionMultiplier ()
+        eigen3.Vector3i getDivisionMultiplier ()
         
         # /** \brief Returns the index in the resulting downsampled cloud of the specified point.
         #   * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering 
@@ -1293,12 +1297,12 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
         #   * \param[in] y the Y point coordinate to get the (i, j, k) index at
         #   * \param[in] z the Z point coordinate to get the (i, j, k) index at
         # Eigen::Vector3i getGridCoordinates (float x, float y, float z) 
-        # eigen3.Vector3i getGridCoordinates (float x, float y, float z) 
+        eigen3.Vector3i getGridCoordinates (float x, float y, float z) 
         
         # /** \brief Returns the index in the downsampled cloud corresponding to a given set of coordinates.
         #   * \param[in] ijk the coordinates (i,j,k) in the grid (-1 if empty)
         # int getCentroidIndexAt (const Eigen::Vector3i &ijk)
-        # int getCentroidIndexAt (const eigen3.Vector3i &ijk)
+        int getCentroidIndexAt (const eigen3.Vector3i &ijk)
         
         # /** \brief Provide the name of the field to be used for filtering data. In conjunction with  \a setFilterLimits,
         #   * points having values outside this interval will be discarded.

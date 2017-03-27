@@ -113,6 +113,10 @@ and Windows with
  * Cython 0.25.2
  * Gtk+
 
+`Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+
+`Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_ 
+
 `Windows Gtk+ Download <http://win32builder.gnome.org/>`_ 
 
 Copy bin Folder to pkg-config Folder

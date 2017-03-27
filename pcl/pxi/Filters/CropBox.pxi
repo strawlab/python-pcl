@@ -94,8 +94,9 @@ cdef class CropBox:
         # self.me.filter(deref(pc.thisptr()))
         # self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> pc.thisptr()[0])
         # Cython 0.24.1 NG(0.25.2 OK)
-        # self.me.filter(<vector[int]> pc)
-        self.me.filter(<vector[int]&> pc)
+        # self.me.filter(<vector[int]&> pc)
+        # print("filter: pc size = " + str(pc.size))
+        self.me.c_filter(pc.thisptr()[0])
         return pc
 
 

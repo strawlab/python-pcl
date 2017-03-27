@@ -11,9 +11,8 @@ from boost_shared_ptr cimport shared_ptr
 
 cdef class CropHull:
     """
-    
-    Must be constructed from the reference point cloud, which is copied, so
-    changed to pc are not reflected in CropHull(pc).
+    Must be constructed from the reference point cloud, which is copied, 
+    so changed to pc are not reflected in CropHull(pc).
     """
     cdef pclfil.CropHull_t *me
 
