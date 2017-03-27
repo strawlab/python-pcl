@@ -213,6 +213,15 @@ function DownloadPCL ($pcl_version, $platform_suffix)
     return $filepath
 }
 
+function DownloadGTKPlus ($gtk_version, $platform_suffix) 
+{
+    $filename = "gtk+-bundle_3.10.4-20131202_" + "$platform_suffix.zip"
+    $url = "http://win32builder.gnome.org/" + "gtk+-bundle_3.10.4-20131202_" + "$platform_suffix.zip"
+
+    $filepath = Download $filename $url
+    return $filepath
+}
+
 function ParsePythonVersion ($python_version) 
 {
     if ($python_version -match $PYTHON_PRERELEASE_REGEX) 

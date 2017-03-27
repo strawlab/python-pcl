@@ -9,6 +9,25 @@ import numpy as np
 
 from numpy.testing import assert_array_almost_equal, assert_array_equal
 
+# common
+###
+
+# features
+###
+
+# filters
+###
+
+# geometry
+# grabber_sequences
+# kdtree
+# keypoints
+# octree
+# outofcore
+# registration
+# sample_consensus
+# search
+# surface
 
 _data = [(i, 2 * i, 3 * i + 0.2) for i in range(5)]
 _DATA = """0.0, 0.0, 0.2;
@@ -427,6 +446,7 @@ class TestOctreePointCloudSearch(unittest.TestCase):
         self.assertEqual(len(rs[0]), 19730)
         self.assertEqual(len(rs[1]), 19730)
 
+
 # class TestOctreePointCloudChangeDetector(unittest.TestCase):
 # 
 #     def setUp(self):
@@ -447,6 +467,7 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #         rs = self.t.radius_search(good_point, 0.5)
 #         self.assertEqual(len(rs[0]), 19730)
 #         self.assertEqual(len(rs[1]), 19730)
+
 
 # class TestCropHull(unittest.TestCase):
 # 
@@ -509,10 +530,6 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #         crophull.filter(outputCloud)
 #         # print(outputCloud)
 
-
-# Viewer
-# // pcl::visualization::CloudViewer viewer ("Cluster viewer")
-# // viewer.showCloud(colored_cloud)
 
 # Write Point
 # pcl::PCDWriter writer;
@@ -844,6 +861,7 @@ class TestCropBox(unittest.TestCase):
 
 ###
 
+
 # Add ProjectInlier
 # class TestProjectInlier(unittest.TestCase):
 # 
@@ -865,10 +883,13 @@ class TestCropBox(unittest.TestCase):
 #             for d in sqdist:
 #                 self.assertGreaterEqual(d, 0)
 # 
+##
 
 # Add RadiusOutlierRemoval
+###
 
 # Add ConditionAnd
+###
 
 def suite():
     suite = unittest.TestSuite()

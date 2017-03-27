@@ -2,7 +2,7 @@ import numpy as np
 
 cimport _pcl
 cimport pcl_defs as cpp
-cimport pcl_registration_172 as pcl_reg
+cimport pcl_registration_180 as pcl_reg
 from boost_shared_ptr cimport shared_ptr
 
 from eigen cimport Matrix4f

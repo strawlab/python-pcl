@@ -2,21 +2,21 @@ import numpy as np
 
 cimport _pcl
 cimport pcl_defs as cpp
-cimport pcl_registration_172 as pcl_reg
+cimport pcl_registration_180 as pcl_reg
 from boost_shared_ptr cimport shared_ptr
 
 from eigen cimport Matrix4f
 
 np.import_array()
 
-cdef class IterativeClosestPointNonLinear:
+cdef class GeneralizedIterativeClosestPoint:
     """
-    Registration class for IterativeClosestPointNonLinear
+    Registration class for GeneralizedIterativeClosestPoint
     """
-    cdef pcl_reg.IterativeClosestPointNonLinear_t *me
+    cdef pcl_reg.GeneralizedIterativeClosestPoint_t *me
 
     def __cinit__(self):
-        self.me = new pcl_reg.IterativeClosestPointNonLinear_t()
+        self.me = new pcl_reg.GeneralizedIterativeClosestPoint_t()
 
     def __dealloc__(self):
         del self.me
@@ -60,9 +60,9 @@ cdef class IterativeClosestPointNonLinear:
         
         return reg.hasConverged(), transf, result, reg.getFitnessScore()
 
-    def icp_nl(self, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+    def gicp(self, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
         """
-        Align source to target using generalized non-linear ICP (ICP-NL).
+        Align source to target using generalized iterative closest point (GICP).
         
         Parameters
         ----------
@@ -70,7 +70,6 @@ cdef class IterativeClosestPointNonLinear:
             Source point cloud.
         target : PointCloud
             Target point cloud.
-        
         max_iter : integer, optional
             Maximum number of iterations. If not given, uses the default number
             hardwired into PCL.
@@ -86,7 +85,7 @@ cdef class IterativeClosestPointNonLinear:
         fitness : float
             Sum of squares error in the estimated transformation.
         """
-        cdef pcl_reg.IterativeClosestPointNonLinear_t icp_nl
-        icp_nl.setInputCloud(source.thisptr_shared)
-        return self.run(icp_nl, source, target, max_iter)
+        cdef pcl_reg.GeneralizedIterativeClosestPoint_t gicp
+        gicp.setInputCloud(source.thisptr_shared)
+        return self.run(gicp, source, target, max_iter)
 

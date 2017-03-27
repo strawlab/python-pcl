@@ -354,30 +354,30 @@ cdef class PointCloud:
         """
         return KdTreeFLANN(self)
 
-    # def make_octree(self, double resolution):
-    #     """
-    #     Return a pcl.octree object with this object set as the input-cloud
-    #     """
-    #     octree = OctreePointCloud(resolution)
-    #     octree.set_input_cloud(self)
-    #     return octree
-    # 
-    # def make_octreeSearch(self, double resolution):
-    #     """
-    #     Return a pcl.make_octreeSearch object with this object set as the input-cloud
-    #     """
-    #     octreeSearch = OctreePointCloudSearch(resolution)
-    #     octreeSearch.set_input_cloud(self)
-    #     return octreeSearch
-    # 
-    # # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
-    # def make_octreeChangeDetector(self, double resolution):
-    #     """
-    #     Return a pcl.make_octreeSearch object with this object set as the input-cloud
-    #     """
-    #     octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
-    #     octreeChangeDetector.set_input_cloud(self)
-    #     return octreeChangeDetector
+    def make_octree(self, double resolution):
+        """
+        Return a pcl.octree object with this object set as the input-cloud
+        """
+        octree = OctreePointCloud(resolution)
+        octree.set_input_cloud(self)
+        return octree
+
+    def make_octreeSearch(self, double resolution):
+        """
+        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+        """
+        octreeSearch = OctreePointCloudSearch(resolution)
+        octreeSearch.set_input_cloud(self)
+        return octreeSearch
+
+    # pcl 1.7.2, 1.8.0 (octree_pointcloud_changedetector.h(->octree_pointcloud.h) include headerfile comment octree2buf_base.h)
+    def make_octreeChangeDetector(self, double resolution):
+        """
+        Return a pcl.make_octreeSearch object with this object set as the input-cloud
+        """
+        octreeChangeDetector = OctreePointCloudChangeDetector(resolution)
+        octreeChangeDetector.set_input_cloud(self)
+        return octreeChangeDetector
 
     def make_crophull(self):
         """

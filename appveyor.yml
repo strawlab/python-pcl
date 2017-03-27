@@ -139,6 +139,11 @@ install:
   # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - ps : appveyor\install.ps1
 
+  # pkg-config Download?
+  - ps: Start-FileDownload "http://win32builder.gnome.org/gtk+-bundle_3.10.4-20131202_win64.zip"
+  - 7z x -y -o".\gtk" ./gtk+-bundle_3.10.4-20131202_win64.zip
+  - xcopy .\gtk\bin .\pkg-config
+
   # Check OpenNI Install
   # - dir "C:\Program Files" /x
   # - dir "C:\Program Files (x86)" /x
