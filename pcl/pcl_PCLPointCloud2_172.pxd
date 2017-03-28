@@ -46,14 +46,14 @@ cdef extern from "pcl/PCLImage.h" namespace "pcl":
 
 # inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PCLImage & v)
 
-ctypedef shared_ptr[PCLImage] ImagePtr_t
-ctypedef shared_ptr[const PCLImage] ImageConstPtr_t
+ctypedef shared_ptr[PCLImage] PCLImagePtr_t
+ctypedef shared_ptr[const PCLImage] PCLImageConstPtr_t
 ###
 
 # PCLPointField
 cdef extern from "pcl/PCLPointField.h" namespace "pcl":
-    cdef struct PointField:
-        PointField ()
+    cdef struct PCLPointField:
+        PCLPointField ()
         string name
         unsigned int offset
         unsigned char datatype
@@ -61,8 +61,8 @@ cdef extern from "pcl/PCLPointField.h" namespace "pcl":
 
 # inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PCLPointField & v)
 
-ctypedef shared_ptr[PCLPointField] PointFieldPtr_t
-ctypedef shared_ptr[const PCLPointField] PointFieldConstPtr_t
+ctypedef shared_ptr[PCLPointField] PCLPointFieldPtr_t
+ctypedef shared_ptr[const PCLPointField] PCLPointFieldConstPtr_t
 ###
 
 
@@ -71,7 +71,7 @@ ctypedef shared_ptr[const PCLPointField] PointFieldConstPtr_t
 cdef extern from "pcl/PCLPointCloud2.h" namespace "pcl":
     cdef struct PCLPointCloud2:
         PointCloud2 ()
-        Header header
+        PCLHeader header
         unsigned int height
         unsigned int width
         vector[PointField] fields
