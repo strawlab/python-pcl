@@ -95,32 +95,32 @@ ctypedef shared_ptr[cpp.PointCloud[PCLPointCloud2]] PointCloud_PCLPointCloud2Ptr
 # // For converting template point cloud to message.
 # template<typename PointT>
 # struct FieldAdder
-cdef extern from "pcl/conversions.h" namespace "pcl::detail":
-    cdef struct FieldAdder[PointT]:
-        FieldAdder (vector[PCLPointField]& fields)
-        # template<typename U> void operator()
-        vector[PCLPointField] &fields_
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl::detail":
+#     cdef struct FieldAdder[PointT]:
+#         FieldAdder (vector[PCLPointField]& fields)
+#         # template<typename U> void operator()
+#         vector[PCLPointField] &fields_
+# 
+# 
 ###
 
-cdef extern from "pcl/conversions.h" namespace "pcl::detail":
-    cdef struct FieldMapper[PointT]:
-        FieldMapper (const vector[PCLPointField] &fields, vector[FieldMapping] &map)
-        # template<typename Tag> void operator ()
-        const vector[PCLPointField] & fields_
-        vector[FieldMapping] & map_
-
+# cdef extern from "pcl/conversions.h" namespace "pcl::detail":
+#     cdef struct FieldMapper[PointT]:
+#         FieldMapper (const vector[PCLPointField] &fields, vector[FieldMapping] &map)
+#         # template<typename Tag> void operator ()
+#         const vector[PCLPointField] & fields_
+#         vector[FieldMapping] & map_
+# 
 #     inline bool fieldOrdering (const FieldMapping& a, const FieldMapping& b)
 ###
 
 # pcl/conversions.h
 # namespace pcl
 # template<typename PointT> void createMapping (const std::vector<pcl::PCLPointField>& msg_fields, MsgFieldMap& field_map)
-cdef extern from "pcl/conversions.h" namespace "pcl":
-    void createMapping [PointT](const vector[PCLPointField]& msg_fields, MsgFieldMap& field_map)
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl":
+#     void createMapping [PointT](const vector[PCLPointField]& msg_fields, MsgFieldMap& field_map)
+# 
+# 
 ###
 
 # pcl/conversions.h
@@ -137,23 +137,23 @@ cdef extern from "pcl/conversions.h" namespace "pcl":
 # * \endcode
 # */
 # template <typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud, const MsgFieldMap& field_map)
-cdef extern from "pcl/conversions.h" namespace "pcl":
-    void fromPCLPointCloud2 [PointT](const PCLPointCloud2& msg, PointCloud[PointT] & cloud, const MsgFieldMap& field_map)
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl":
+#     void fromPCLPointCloud2 [PointT](const PCLPointCloud2& msg, PointCloud[PointT] & cloud, const MsgFieldMap& field_map)
+# 
+# 
 ###
 
-# # pcl/conversions.h
-# # namespace pcl
+# pcl/conversions.h
+# namespace pcl
 # /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object.
 # * \param[in] msg the PCLPointCloud2 binary blob
 # * \param[out] cloud the resultant pcl::PointCloud<T>
 # */
 # template<typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud)
-cdef extern from "pcl/conversions.h" namespace "pcl":
-    void fromPCLPointCloud2 [PointT](const PCLPointCloud2& msg, PointCloud[PointT]& cloud)
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl":
+#     void fromPCLPointCloud2 [PointT](const PCLPointCloud2& msg, PointCloud[PointT]& cloud)
+# 
+# 
 ###
 
 # pcl/conversions.h
@@ -163,10 +163,10 @@ cdef extern from "pcl/conversions.h" namespace "pcl":
 # * \param[out] msg the resultant PCLPointCloud2 binary blob
 # */
 # template<typename PointT> void toPCLPointCloud2 (const pcl::PointCloud<PointT>& cloud, pcl::PCLPointCloud2& msg)
-cdef extern from "pcl/conversions.h" namespace "pcl":
-    void toPCLPointCloud2 [PointT](const PointCloud[PointT]& cloud, PCLPointCloud2& msg)
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl":
+#     void toPCLPointCloud2 [PointT](const PointCloud[PointT]& cloud, PCLPointCloud2& msg)
+# 
+# 
 ###
 
 # pcl/conversions.h
@@ -178,10 +178,10 @@ cdef extern from "pcl/conversions.h" namespace "pcl":
 #  * \note will throw std::runtime_error if there is a problem
 #  */
 # template<typename CloudT> void toPCLPointCloud2 (const CloudT& cloud, pcl::PCLImage& msg)
-cdef extern from "pcl/conversions.h" namespace "pcl":
-    void toPCLPointCloud2 [CloudT](const CloudT& cloud, PCLImage& msg)
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl":
+#     void toPCLPointCloud2 [CloudT](const CloudT& cloud, PCLImage& msg)
+# 
+# 
 ###
 
 # pcl/conversions.h
@@ -193,10 +193,10 @@ cdef extern from "pcl/conversions.h" namespace "pcl":
 # * will throw std::runtime_error if there is a problem
 # */
 # inline void toPCLPointCloud2 (const pcl::PCLPointCloud2& cloud, pcl::PCLImage& msg)
-cdef extern from "pcl/conversions.h" namespace "pcl":
-    void toPCLPointCloud2 (const PCLPointCloud2& cloud, PCLImage& msg)
-
-
+# cdef extern from "pcl/conversions.h" namespace "pcl":
+#     void toPCLPointCloud2 (const PCLPointCloud2& cloud, PCLImage& msg)
+# 
+# 
 ###
 
 ###############################################################################
