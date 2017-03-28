@@ -6,6 +6,7 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
+cimport pcl_common as pcl_cmn
 cimport pcl_features as pclftr
 cimport pcl_filters as pclfil
 cimport pcl_io as pclio
@@ -15,9 +16,12 @@ cimport pcl_sample_consensus as pcl_sc
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pclseg
 cimport pcl_surface as pclsf
+cimport pcl_range_image as pcl_r_img
+cimport pcl_registration_160 as pcl_reg
 
 from libcpp cimport bool
 cimport indexing as idx
+
 from boost_shared_ptr cimport sp_assign
 from _pcl cimport PointCloud_PointXYZI
 

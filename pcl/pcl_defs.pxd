@@ -503,29 +503,29 @@ ctypedef shared_ptr[PointCloud[PointNormal]] PointCloud_PointNormal_Ptr_t
 
 # definitions used everywhere
 ctypedef shared_ptr[vector[int]] IndicesPtr_t;
-# ctypedef shared_ptr[vector[int]] IndicesPtrConst_t;
+# ctypedef shared_ptr[vector[int]] IndicesConstPtr_t;
 
 
 # pcl_base.h
 # template <typename PointT>
 # class PCLBase
 cdef extern from "pcl/pcl_base.h" namespace "pcl":
-    cdef cppclass PCLBase[T]:
+    cdef cppclass PCLBase[PointT]:
         PCLBase ()
         # PCLBase (const PCLBase& base)
         # virtual void setInputCloud (PointCloudPtr_t cloud)
         # void setInputCloud (PointCloudPtr_t cloud)
-        void setInputCloud (shared_ptr[PointCloud[T]] cloud)
+        void setInputCloud (shared_ptr[PointCloud[PointT]] cloud)
         
         # PointCloudPtr_t getInputCloud ()
-        shared_ptr[PointCloud[T]] getInputCloud ()
+        shared_ptr[PointCloud[PointT]] getInputCloud ()
         
         void setIndices (IndicesPtr_t &indices)
-        # #  void setIndices (const IndicesConstPtr &indices)
-        
+        # void setIndices (IndicesConstPtr_t &indices)
         # void setIndices (const PointIndicesPtr_t &indices)
         # void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
-        # IndicesPtr_t const getIndices ()
+        
+        # IndicesConstPtr_t getIndices ()
         # # const PointT& operator[] (size_t pos)
 
 

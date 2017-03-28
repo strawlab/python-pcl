@@ -2,9 +2,9 @@
 from libcpp.vector cimport vector
 from libcpp cimport bool
 
-cimport pcl_filters as pclfil
-cimport pcl_segmentation as pclseg
 cimport pcl_defs as cpp
+cimport pcl_filters_172 as pclfil
+cimport pcl_segmentation_172 as pclseg
 
 cdef class RadiusOutlierRemoval:
     """

@@ -18,13 +18,13 @@ cdef class CropBox:
 
     def __cinit__(self, PointCloud pc not None):
         self.me = new pclfil.CropBox_t()
-        # NG(Build Error)
-        # self.me.setInputCloud [cpp.PointXYZ](pc.thisptr_shared)
-        # self.me.setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> deref(pc.thisptr_shared.get()))
-        # (<cpp.PCLBase_t*>self.me).setInputCloud [cpp.PointXYZ](<shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> pc.thisptr_shared)
+        (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def __dealloc__(self):
         del self.me
+
+    def set_InputCloud(self, PointCloud pc not None):
+        (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def set_Translation(self, tx, ty, tz):
         # Convert Eigen::Vector3f
@@ -82,11 +82,15 @@ cdef class CropBox:
         dataMax[3] = maxs
         self.me.setMax(originMax)
 
-    def set_Negative(self, flag):
+    def set_Negative(self, bool flag):
         self.me.setNegative(flag)
 
-    # def get_RemovedIndices(self):
-    #     return self.me.getRemovedIndices()
+    # bool
+    def get_Negative (self):
+        self.me.getNegative ()
+
+    def get_RemovedIndices(self):
+        self.me.getRemovedIndices()
 
     def filter(self):
         cdef PointCloud pc = PointCloud()
@@ -95,7 +99,6 @@ cdef class CropBox:
         # self.me.filter(<cpp.PointCloud[cpp.PointXYZ]> pc.thisptr()[0])
         # Cython 0.24.1 NG(0.25.2 OK)
         # self.me.filter(<vector[int]&> pc)
-        # print("filter: pc size = " + str(pc.size))
         self.me.c_filter(pc.thisptr()[0])
         return pc
 

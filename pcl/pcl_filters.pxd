@@ -101,6 +101,7 @@ cdef extern from "pcl/filters/filter.h" namespace "pcl":
         
         # /** \brief Get the point indices being removed */
         cpp.IndicesPtr_t getRemovedIndices ()
+        # [vector[int]]* getRemovedIndices ()
         
         # \brief Calls the filtering method and returns the filtered dataset in output.
         # \param[out] output the resultant filtered point cloud dataset
@@ -1167,15 +1168,17 @@ cdef extern from "pcl/filters/random_sample.h" namespace "pcl":
 # NG
 # cdef cppclass StatisticalOutlierRemoval[T](FilterIndices[T]):
 cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
-    cdef cppclass StatisticalOutlierRemoval[T]:
+    cdef cppclass StatisticalOutlierRemoval[T](FilterIndices[T]):
         StatisticalOutlierRemoval()
         int getMeanK()
         void setMeanK (int nr_k)
         double getStddevMulThresh()
         void setStddevMulThresh (double std_mul)
         bool getNegative()
-        void setNegative (bool negative)
-        void setInputCloud (shared_ptr[cpp.PointCloud[T]])
+        # use FilterIndices class function
+        # void setNegative (bool negative)
+        # use PCLBase class function
+        # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
         void filter(cpp.PointCloud[T] &c)
 
 

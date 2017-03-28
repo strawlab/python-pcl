@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_filters as pclfil
+cimport pcl_filters_172 as pclfil
 
 cdef class StatisticalOutlierRemovalFilter:
     """

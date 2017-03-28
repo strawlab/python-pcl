@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# main
 cimport pcl_defs as cpp
 import numpy as np
 cimport numpy as cnp
@@ -215,7 +214,7 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZ *p = idx.getptr_at2(self.thisptr(), row, col)
+        cdef cpp.PointXYZ *p = idx.getptr_at2 [cpp.PointXYZ](self.thisptr(), row, col)
         return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp nmidx):
@@ -310,10 +309,10 @@ cdef class PointCloud:
         """
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
         """
-        fil = StatisticalOutlierRemovalFilter()
-        cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
-        cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        return fil
+        # fil = StatisticalOutlierRemovalFilter()
+        # cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
+        # cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return StatisticalOutlierRemovalFilter(self)
 
     def make_voxel_grid_filter(self):
         """
