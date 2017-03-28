@@ -74,7 +74,7 @@ cdef extern from "pcl/PCLPointCloud2.h" namespace "pcl":
         PCLHeader header
         unsigned int height
         unsigned int width
-        vector[PointField] fields
+        vector[PCLPointField] fields
         unsigned char is_bigendian
         unsigned int point_step
         unsigned int row_step
@@ -89,10 +89,119 @@ ctypedef cpp.PointCloud[PCLPointCloud2] PointCloud_PCLPointCloud2_t
 ctypedef shared_ptr[cpp.PointCloud[PCLPointCloud2]] PointCloud_PCLPointCloud2Ptr_t
 ###
 
+# pcl/conversions.h
+# namespace pcl
+# name space detail
+# // For converting template point cloud to message.
+# template<typename PointT>
+# struct FieldAdder
+cdef extern from "pcl/conversions.h" namespace "pcl::detail":
+    cdef struct FieldAdder[PointT]:
+        FieldAdder (vector[PCLPointField]& fields)
+        # template<typename U> void operator()
+        vector[PCLPointField] &fields_
+
+
+###
+
+cdef extern from "pcl/conversions.h" namespace "pcl::detail":
+    cdef struct FieldMapper[PointT]:
+        FieldMapper (const vector[PCLPointField] &fields, vector[FieldMapping] &map)
+        # template<typename Tag> void operator ()
+        const vector[PCLPointField] & fields_
+        vector[FieldMapping] & map_
+
+#     inline bool fieldOrdering (const FieldMapping& a, const FieldMapping& b)
+###
+
+# pcl/conversions.h
+# namespace pcl
+# template<typename PointT> void createMapping (const std::vector<pcl::PCLPointField>& msg_fields, MsgFieldMap& field_map)
+cdef extern from "pcl/conversions.h" namespace "pcl":
+    void createMapping [PointT](const vector[PCLPointField]& msg_fields, MsgFieldMap& field_map)
+
+
+###
+
+# pcl/conversions.h
+# namespace pcl
+# /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object using a field_map.
+# * \param[in] msg the PCLPointCloud2 binary blob
+# * \param[out] cloud the resultant pcl::PointCloud<T>
+# * \param[in] field_map a MsgFieldMap object
+# * \note Use fromPCLPointCloud2 (PCLPointCloud2, PointCloud<T>) directly or create you
+# * own MsgFieldMap using:
+# * \code
+# * MsgFieldMap field_map;
+# * createMapping<PointT> (msg.fields, field_map);
+# * \endcode
+# */
+# template <typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud, const MsgFieldMap& field_map)
+cdef extern from "pcl/conversions.h" namespace "pcl":
+    void fromPCLPointCloud2 [PointT](const PCLPointCloud2& msg, PointCloud[PointT] & cloud, const MsgFieldMap& field_map)
+
+
+###
+
+# # pcl/conversions.h
+# # namespace pcl
+# /** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object.
+# * \param[in] msg the PCLPointCloud2 binary blob
+# * \param[out] cloud the resultant pcl::PointCloud<T>
+# */
+# template<typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud)
+cdef extern from "pcl/conversions.h" namespace "pcl":
+    void fromPCLPointCloud2 [PointT](const PCLPointCloud2& msg, PointCloud[PointT]& cloud)
+
+
+###
+
+# pcl/conversions.h
+# namespace pcl
+# /** \brief Convert a pcl::PointCloud<T> object to a PCLPointCloud2 binary data blob.
+# * \param[in] cloud the input pcl::PointCloud<T>
+# * \param[out] msg the resultant PCLPointCloud2 binary blob
+# */
+# template<typename PointT> void toPCLPointCloud2 (const pcl::PointCloud<PointT>& cloud, pcl::PCLPointCloud2& msg)
+cdef extern from "pcl/conversions.h" namespace "pcl":
+    void toPCLPointCloud2 [PointT](const PointCloud[PointT]& cloud, PCLPointCloud2& msg)
+
+
+###
+
+# pcl/conversions.h
+# namespace pcl
+# /** \brief Copy the RGB fields of a PointCloud into pcl::PCLImage format
+#  * \param[in] cloud the point cloud message
+#  * \param[out] msg the resultant pcl::PCLImage
+#  * CloudT cloud type, CloudT should be akin to pcl::PointCloud<pcl::PointXYZRGBA>
+#  * \note will throw std::runtime_error if there is a problem
+#  */
+# template<typename CloudT> void toPCLPointCloud2 (const CloudT& cloud, pcl::PCLImage& msg)
+cdef extern from "pcl/conversions.h" namespace "pcl":
+    void toPCLPointCloud2 [CloudT](const CloudT& cloud, PCLImage& msg)
+
+
+###
+
+# pcl/conversions.h
+# namespace pcl
+# /** 
+# * \brief Copy the RGB fields of a PCLPointCloud2 msg into pcl::PCLImage format
+# * \param cloud the point cloud message
+# * \param msg the resultant pcl::PCLImage
+# * will throw std::runtime_error if there is a problem
+# */
+# inline void toPCLPointCloud2 (const pcl::PCLPointCloud2& cloud, pcl::PCLImage& msg)
+cdef extern from "pcl/conversions.h" namespace "pcl":
+    void toPCLPointCloud2 (const PCLPointCloud2& cloud, PCLImage& msg)
+
+
+###
+
 ###############################################################################
 # Enum
 ###############################################################################
-
 
 cdef extern from "pcl/PCLPointField.h" namespace "pcl":
     cdef enum:
