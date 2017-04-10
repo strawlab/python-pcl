@@ -12,8 +12,8 @@ cimport eigen as eigen3
 
 # main
 cimport pcl_defs as cpp
-cimport pcl_kdtree_172 as pclkdt
-cimport pcl_range_image_172 as pcl_r_img
+cimport pcl_kdtree_180 as pclkdt
+cimport pcl_range_image_180 as pcl_r_img
 
 ###############################################################################
 # Types

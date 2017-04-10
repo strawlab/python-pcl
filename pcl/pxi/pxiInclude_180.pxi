@@ -9,8 +9,8 @@ include "Segmentation/SegmentationNormal.pxi"
 include "Segmentation/EuclideanClusterExtraction.pxi"
 # Filters
 include "Filters/StatisticalOutlierRemovalFilter.pxi"
-include "Filters/VoxelGridFilter_172.pxi"
-include "Filters/PassThroughFilter_172.pxi"
+include "Filters/VoxelGridFilter_180.pxi"
+include "Filters/PassThroughFilter_180.pxi"
 include "Filters/ApproximateVoxelGrid.pxi"
 include "Surface/MovingLeastSquares.pxi"
 # include "KdTree/KdTree.pxi"
@@ -22,10 +22,10 @@ include "KdTree/KdTree_FLANN.pxi"
 # include "Octree/OctreePointCloudChangeDetector_180.pxi"
 
 include "Vertices.pxi"
-include "Filters/CropHull_172.pxi"
-include "Filters/CropBox_172.pxi"
+include "Filters/CropHull_180.pxi"
+include "Filters/CropBox_180.pxi"
 include "Filters/ProjectInliers.pxi"
-include "Filters/RadiusOutlierRemoval_172.pxi"
+include "Filters/RadiusOutlierRemoval_180.pxi"
 include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
@@ -48,15 +48,15 @@ include "SampleConsensus/SampleConsensusModelStick.pxi"
 # include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Features
-include "Features/NormalEstimation_172.pxi"
-include "Features/VFHEstimation_172.pxi"
-include "Features/IntegralImageNormalEstimation_172.pxi"
-include "Features/MomentOfInertiaEstimation_172.pxi"
+include "Features/NormalEstimation_180.pxi"
+include "Features/VFHEstimation_180.pxi"
+include "Features/IntegralImageNormalEstimation_180.pxi"
+include "Features/MomentOfInertiaEstimation_180.pxi"
 
 # keyPoint
-include "KeyPoint/HarrisKeypoint3D_172.pxi"
+include "KeyPoint/HarrisKeypoint3D_180.pxi"
 # execute NG?
-# include "KeyPoint/UniformSampling_172.pxi"
+# include "KeyPoint/UniformSampling_180.pxi"
 
 # Registration
 include "registration/NormalDistributionsTransform_180.pxi"
