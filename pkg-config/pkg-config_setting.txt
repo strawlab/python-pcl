@@ -12,3 +12,16 @@ Windows Only
 2. Unzip the downloaded zip archive file.
 3. Move the expanded bin folder to the pkg-config folder.
 
+---
+
+Distribution file: "Install-GTKPlus.ps1"
+1. Start powershell with administrator privileges
+2. ps1 placement place (Set-Location)
+3. Change the execution policy
+   Set-ExecutionPolicy RemoteSigned ÅÀ yes
+4. Execute
+   .\Install-GTKPlus.ps1
+5. Return execution policy
+   Set-ExecutionPolicy Restricted ÅÀ yes
+
+* 4, when specifying the absolute path of hogehoge.ps1, 2 is unnecessary.
