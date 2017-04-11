@@ -1,8 +1,9 @@
-
-import grabber_callback
+# -*- coding: utf-8 -*-
+cimport pcl_defs as cpp
+cimport pcl_grabber as pcl_grb
 
 cdef class PyGrabberNode:
-    double d_prop
+    cdef double d_prop
 
     # def __cinit__(self):
     #     self.thisptr = new PyLibCallBack(callback, <void*>method)
