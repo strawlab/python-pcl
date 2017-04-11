@@ -11,6 +11,8 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport pcl_grabber as pcl_grb
 from boost_shared_ptr cimport shared_ptr
+from grabber_callback cimport PyLibCallBack
+from grabber_callback cimport callback
 
 
 ### Enum Setting ###

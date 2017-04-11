@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+# cimport pcl_defs as cpp
+from libcpp cimport bool
+
 cdef extern from "grabber_callback.h" namespace "grabber_callback":
     cdef cppclass PyLibCallBack:
         PyLibCallBack(Method method, void *user_data)
