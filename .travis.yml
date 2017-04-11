@@ -74,7 +74,7 @@ before_install:
       travis_wait 45 brew install pcl --without-qt;
     fi
 
-  - if [ "${TRAVIS_OS_NAME}" == "linux" && "${PCL_VERSION}" == "1.8" ]; then
+  - if [[ $TRAVIS_OS_NAME = "linux"] && [ $PCL_VERSION = "1.8" ]]; then
       sudo apt-get update -y;
       git clone https://github.com/PointCloudLibrary/pcl.git pcl-trunk;
       ln -s pcl-trunk pcl -y;
