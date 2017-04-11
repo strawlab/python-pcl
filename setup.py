@@ -537,7 +537,7 @@ else:
               tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
+                           Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],
@@ -558,7 +558,7 @@ else:
               tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
-                           # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
+                           Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],

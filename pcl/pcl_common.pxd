@@ -52,72 +52,71 @@ cdef extern from "pcl/common/angles.h" namespace "pcl":
 
 # bivariate_polynomial.h
 # namespace pcl 
-# cdef extern from "pcl/common/bivariate_polynomial.h" namespace "pcl":
-#   # /** \brief This represents a bivariate polynomial and provides some functionality for it
-#   #   * \author Bastian Steder 
-#   #   * \ingroup common
-#   #   */
-#   template<typename real> class BivariatePolynomialT 
+# /** \brief This represents a bivariate polynomial and provides some functionality for it
+#   * \author Bastian Steder 
+#   * \ingroup common
+#   */
+# template<typename real> class BivariatePolynomialT 
 # cdef extern from "pcl/common/bivariate_polynomial.h" namespace "pcl":
 #     class BivariatePolynomialT[real]
 #         BivariatePolynomialT()
-#         # public:
-#         # //-----CONSTRUCTOR&DESTRUCTOR-----
-#         # /** Constructor */
-#         # BivariatePolynomialT (int new_degree=0);
-#         # /** Copy constructor */
-#         # BivariatePolynomialT (const BivariatePolynomialT& other);
-#         # /** Destructor */
-#         # ~BivariatePolynomialT ();
-#         
-#         # //-----OPERATORS-----
-#         # /** = operator */
-#         # BivariatePolynomialT& operator= (const BivariatePolynomialT& other) { deepCopy (other); return *this;}
-#         
-#         # //-----METHODS-----
-#         # /** Initialize members to default values */
-#         # void setDegree (int new_degree);
-#         void setDegree (int new_degree)
-#         
-#         # /** How many parametes has a bivariate polynomial with this degree */
-#         # unsigned int getNoOfParameters () const { return getNoOfParametersFromDegree (degree);}
-#         int getNoOfParameters ()
-#         
-#         # /** Calculate the value of the polynomial at the given point */
-#         # real getValue (real x, real y) const;  
-#         # real getValue (real x, real y)
-#         
-#         # /** Calculate the gradient of this polynomial
-#         #  *  If forceRecalc is false, it will do nothing when the gradient already exists */
-#         # void calculateGradient (bool forceRecalc=false);
-#         void calculateGradient (bool forceRecalc)
-#         
-#         # /** Calculate the value of the gradient at the given point */
-#         # void getValueOfGradient (real x, real y, real& gradX, real& gradY);
-#         # void getValueOfGradient (real x, real y, real& gradX, real& gradY);
-#         
-#         # /** Returns critical points of the polynomial. type can be 0=maximum, 1=minimum, or 2=saddle point
-#         #  *  !!Currently only implemented for degree 2!! */
-#         # void findCriticalPoints (std::vector<real>& x_values, std::vector<real>& y_values, std::vector<int>& types) const;
-#         
-#         # /** write as binary to a stream */
-#         # void writeBinary (std::ostream& os) const;
-#         
-#         # /** write as binary into a file */
-#         # void writeBinary (const char* filename) const;
-#         
-#         # /** read binary from a stream */
-#         # void readBinary (std::istream& os);
-#         
-#         # /** read binary from a file */
-#         # void readBinary (const char* filename);
-#         
-#         # /** How many parametes has a bivariate polynomial of the given degree */
-#         # static unsigned int getNoOfParametersFromDegree (int n) { return ((n+2)* (n+1))/2;}
-#         
-#     # template<typename real> std::ostream& operator<< (std::ostream& os, const BivariatePolynomialT<real>& p);
-#     # typedef BivariatePolynomialT<double> BivariatePolynomiald;
-#     # typedef BivariatePolynomialT<float>  BivariatePolynomial;
+        # public:
+        # //-----CONSTRUCTOR&DESTRUCTOR-----
+        # /** Constructor */
+        # BivariatePolynomialT (int new_degree=0);
+        # /** Copy constructor */
+        # BivariatePolynomialT (const BivariatePolynomialT& other);
+        # /** Destructor */
+        # ~BivariatePolynomialT ();
+        # 
+        # //-----OPERATORS-----
+        # /** = operator */
+        # BivariatePolynomialT& operator= (const BivariatePolynomialT& other) { deepCopy (other); return *this;}
+        # 
+        # //-----METHODS-----
+        # /** Initialize members to default values */
+        # void setDegree (int new_degree);
+        # void setDegree (int new_degree)
+        # 
+        # /** How many parametes has a bivariate polynomial with this degree */
+        # unsigned int getNoOfParameters () const { return getNoOfParametersFromDegree (degree);}
+        # int getNoOfParameters ()
+        # 
+        # /** Calculate the value of the polynomial at the given point */
+        # real getValue (real x, real y) const;  
+        # real getValue (real x, real y)
+        # 
+        # /** Calculate the gradient of this polynomial
+        #  *  If forceRecalc is false, it will do nothing when the gradient already exists */
+        # void calculateGradient (bool forceRecalc=false);
+        # void calculateGradient (bool forceRecalc)
+        # 
+        # /** Calculate the value of the gradient at the given point */
+        # void getValueOfGradient (real x, real y, real& gradX, real& gradY);
+        # void getValueOfGradient (real x, real y, real& gradX, real& gradY);
+        # 
+        # /** Returns critical points of the polynomial. type can be 0=maximum, 1=minimum, or 2=saddle point
+        #  *  !!Currently only implemented for degree 2!! */
+        # void findCriticalPoints (std::vector<real>& x_values, std::vector<real>& y_values, std::vector<int>& types) const;
+        # 
+        # /** write as binary to a stream */
+        # void writeBinary (std::ostream& os) const;
+        # 
+        # /** write as binary into a file */
+        # void writeBinary (const char* filename) const;
+        # 
+        # /** read binary from a stream */
+        # void readBinary (std::istream& os);
+        # 
+        # /** read binary from a file */
+        # void readBinary (const char* filename);
+        # 
+        # /** How many parametes has a bivariate polynomial of the given degree */
+        # static unsigned int getNoOfParametersFromDegree (int n) { return ((n+2)* (n+1))/2;}
+        
+    # template<typename real> std::ostream& operator<< (std::ostream& os, const BivariatePolynomialT<real>& p);
+    # typedef BivariatePolynomialT<double> BivariatePolynomiald;
+    # typedef BivariatePolynomialT<float>  BivariatePolynomial;
 
 
 ###

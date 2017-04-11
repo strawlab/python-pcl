@@ -8,7 +8,9 @@ from libcpp.pair cimport pair
 # main
 cimport pcl_defs as cpp
 
-# from boost_shared_ptr cimport shared_ptr
+from boost_shared_ptr cimport shared_ptr
+# from boost_function cimport function
+# from boost_signal2_connection cimport connection
 
 ###############################################################################
 # Types
@@ -26,52 +28,49 @@ cimport pcl_defs as cpp
 cdef extern from "pcl/io/grabber.h" namespace "pcl":
     cdef cppclass Grabber:
         Grabber ()
-#       public:
-#       /** \brief registers a callback function/method to a signal with the corresponding signature
-#         * \param[in] callback: the callback function/method
-#         * \return Connection object, that can be used to disconnect the callback method from the signal again.
-#       template<typename T> boost::signals2::connection registerCallback (const boost::function<T>& callback);
-#       /** \brief indicates whether a signal with given parameter-type exists or not
-#         * \return true if signal exists, false otherwise
-#       template<typename T> bool providesCallback () const;
-#       /** \brief For devices that are streaming, the streams are started by calling this method.
-#         *        Trigger-based devices, just trigger the device once for each call of start.
-#       virtual void start () = 0;
-#       /** \brief For devices that are streaming, the streams are stopped.
-#         *        This method has no effect for triggered devices.
-#       virtual void stop () = 0;
-#       /** \brief returns the name of the concrete subclass.
-#         * \return the name of the concrete driver.
-#       virtual std::string getName () const = 0;
-#       /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
-#         * \return true if grabber is running / streaming. False otherwise.
-#       virtual bool isRunning () const = 0;
-#       /** \brief returns fps. 0 if trigger based. */
-#       virtual float getFramesPerSecond () const = 0;
-#       protected:
-#       virtual void signalsChanged () { }
-#       template<typename T> boost::signals2::signal<T>* find_signal () const;
-#       template<typename T> int num_slots () const;
-#       template<typename T> void disconnect_all_slots ();
-#       template<typename T> void block_signal ();
-#       template<typename T> void unblock_signal ();
-#       inline void block_signals ();
-#       inline void unblock_signals ();
-#       template<typename T> boost::signals2::signal<T>* createSignal ();
-#       std::map<std::string, boost::signals2::signal_base*> signals_;
-#       std::map<std::string, std::vector<boost::signals2::connection> > connections_;
-#       std::map<std::string, std::vector<boost::signals2::shared_connection_block> > shared_connections_;
-# 
-#   template<typename T> boost::signals2::signal<T>* Grabber::find_signal () const
-#   template<typename T> void Grabber::disconnect_all_slots ()
-#   template<typename T> void Grabber::block_signal ()
-#   template<typename T> void Grabber::unblock_signal ()
-#   void Grabber::block_signals ()
-#   void Grabber::unblock_signals ()
-#   template<typename T> int Grabber::num_slots () const
-#   template<typename T> boost::signals2::signal<T>* Grabber::createSignal ()
-#   template<typename T> boost::signals2::connection Grabber::registerCallback (const boost::function<T> & callback)
-#   template<typename T> bool Grabber::providesCallback () const
+        # public:
+        # /** \brief registers a callback function/method to a signal with the corresponding signature
+        #   * \param[in] callback: the callback function/method
+        #   * \return Connection object, that can be used to disconnect the callback method from the signal again.
+        # template<typename T> boost::signals2::connection registerCallback (const boost::function<T>& callback);
+        # connection registerCallback[T](function[T]& callback)
+        
+        # /** \brief indicates whether a signal with given parameter-type exists or not
+        #   * \return true if signal exists, false otherwise
+        # template<typename T> bool providesCallback () const;
+        # 
+        # /** \brief For devices that are streaming, the streams are started by calling this method.
+        #   *        Trigger-based devices, just trigger the device once for each call of start.
+        # virtual void start () = 0;
+        # 
+        # /** \brief For devices that are streaming, the streams are stopped.
+        #   *        This method has no effect for triggered devices.
+        # virtual void stop () = 0;
+        # 
+        # /** \brief returns the name of the concrete subclass.
+        #   * \return the name of the concrete driver.
+        # virtual std::string getName () const = 0;
+        # 
+        # /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
+        #   * \return true if grabber is running / streaming. False otherwise.
+        # virtual bool isRunning () const = 0;
+        # 
+        # /** \brief returns fps. 0 if trigger based. */
+        # virtual float getFramesPerSecond () const = 0;
+
+
+# template<typename T> boost::signals2::signal<T>* Grabber::find_signal () const
+# template<typename T> void Grabber::disconnect_all_slots ()
+# template<typename T> void Grabber::block_signal ()
+# template<typename T> void Grabber::unblock_signal ()
+# void Grabber::block_signals ()
+# void Grabber::unblock_signals ()
+# template<typename T> int Grabber::num_slots () const
+# template<typename T> boost::signals2::signal<T>* Grabber::createSignal ()
+# template<typename T> boost::signals2::connection Grabber::registerCallback (const boost::function<T> & callback)
+# template<typename T> bool Grabber::providesCallback () const
+
+
 ###
 
 # oni_grabber.h
@@ -80,7 +79,6 @@ cdef extern from "pcl/io/grabber.h" namespace "pcl":
 #     struct PointXYZRGB;
 #     struct PointXYZRGBA;
 #     struct PointXYZI;
-# 
 # template <typename T> class PointCloud;
 # /** \brief A simple ONI grabber.
 #  * \author Suat Gedikli
@@ -99,25 +97,29 @@ cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
         # typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
         # typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
         # typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-        #
+        
         # /** \brief For devices that are streaming, the streams are started by calling this method.
-        #   *        Trigger-based devices, just trigger the device once for each call of start.
+        #   * Trigger-based devices, just trigger the device once for each call of start.
         void start ()
+        
         # /** \brief For devices that are streaming, the streams are stopped.
         #  *        This method has no effect for triggered devices.
         #  */
         void stop ()
+        
         # /** \brief returns the name of the concrete subclass.
         #  * \return the name of the concrete driver.
         #  */
         string getName ()
+        
         # /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
         #  * \return true if grabber is running / streaming. False otherwise.
         #  */
         bool isRunning ()
+        
         # /** \brief returns the frames pre second. 0 if it is trigger based. */
         float getFramesPerSecond ()
-        # 
+        
         # protected:
         # /** \brief internal OpenNI (openni_wrapper) callback that handles image streams */
         # void imageCallback (boost::shared_ptr<openni_wrapper::Image> image, void* cookie);
@@ -177,6 +179,8 @@ cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
         # boost::signals2::signal<sig_cb_openni_point_cloud_rgba >*  point_cloud_rgba_signal_;
         # public:
         # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
 ###
 
 # openni_grabber.h
@@ -199,19 +203,6 @@ cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
         #                const Mode& depth_mode = OpenNI_Default_Mode,
         #                const Mode& image_mode = OpenNI_Default_Mode);
         # public:
-        # typedef enum
-        #   OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
-        #   OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
-        #   OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
-        #   OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
-        #   OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
-        #   OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
-        #   OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
-        #   OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-        #   OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-        #   OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
-        # } Mode;
-        # 
         # //define callback signature typedefs
         # typedef void (sig_cb_openni_image) (const boost::shared_ptr<openni_wrapper::Image>&);
         # typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<openni_wrapper::DepthImage>&);
@@ -226,13 +217,18 @@ cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
         # public:
         # /** \brief Start the data acquisition. */
         void start ()
+        
         # /** \brief Stop the data acquisition. */
         void stop ()
+        
         # /** \brief Check if the data acquisition is still running. */
         bool isRunning ()
+        
         string getName ()
+        
         # /** \brief Obtain the number of frames per second (FPS). */
         float getFramesPerSecond () const
+        
         # /** \brief Get a boost shared pointer to the \ref OpenNIDevice object. */
         # inline shared_ptr[openni_wrapper::OpenNIDevice] getDevice () const;
         # /** \brief Obtain a list of the available depth modes that this device supports. */
@@ -257,71 +253,74 @@ cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
 cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
     cdef cppclass PCDGrabberBase(Grabber):
         PCDGrabberBase ()
-#       # public:
-#       # /** \brief Constructor taking just one PCD file or one TAR file containing multiple PCD files.
-#       #   * \param[in] pcd_file path to the PCD file
-#       #   * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
-#       #   * \param[in] repeat whether to play PCD file in an endless loop or not.
-#       #   */
-#       # PCDGrabberBase (const std::string& pcd_file, float frames_per_second, bool repeat);
-#       # 
-#       # /** \brief Constructor taking a list of paths to PCD files, that are played in the order they appear in the list.
-#       #   * \param[in] pcd_files vector of paths to PCD files.
-#       #   * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
-#       #   * \param[in] repeat whether to play PCD file in an endless loop or not.
-#       #   */
-#       # PCDGrabberBase (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat);
-#       # 
-#       # /** \brief Copy constructor.
-#       #   * \param[in] src the PCD Grabber base object to copy into this
-#       #   */
-#       # PCDGrabberBase (const PCDGrabberBase &src) : impl_ ()
-#       # /** \brief Copy operator.
-#       #   * \param[in] src the PCD Grabber base object to copy into this
-#       #   */
-#       # PCDGrabberBase&
-#       # operator = (const PCDGrabberBase &src)
-#       # {
-#       #   impl_ = src.impl_;
-#       #   return (*this);
-#       # }
-#       # 
-#       # /** \brief Virtual destructor. */
-#       # virtual ~PCDGrabberBase () throw ();
-#       # 
-#       # /** \brief Starts playing the list of PCD files if frames_per_second is > 0. Otherwise it works as a trigger: publishes only the next PCD file in the list. */
-#       # virtual void 
-#       # start ();
-#       # 
-#       # /** \brief Stops playing the list of PCD files if frames_per_second is > 0. Otherwise the method has no effect. */
-#       # virtual void 
-#       # stop ();
-#       # 
-#       # /** \brief Triggers a callback with new data */
-#       # virtual void 
-#       # trigger ();
-#       # 
-#       # /** \brief whether the grabber is started (publishing) or not.
-#       #   * \return true only if publishing.
-#       #   */
-#       # virtual bool 
-#       # isRunning () const;
-#       # 
-#       # /** \return The name of the grabber */
-#       # virtual std::string 
-#       # getName () const;
-#       # 
-#       # /** \brief Rewinds to the first PCD file in the list.*/
-#       # virtual void 
-#       # rewind ();
-#       # 
-#       # /** \brief Returns the frames_per_second. 0 if grabber is trigger-based */
-#       # virtual float 
-#       # getFramesPerSecond () const;
-#       # 
-#       # /** \brief Returns whether the repeat flag is on */
-#       # bool 
-#       # isRepeatOn () const;
+        # public:
+        # /** \brief Constructor taking just one PCD file or one TAR file containing multiple PCD files.
+        #   * \param[in] pcd_file path to the PCD file
+        #   * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
+        #   * \param[in] repeat whether to play PCD file in an endless loop or not.
+        #   */
+        # PCDGrabberBase (const std::string& pcd_file, float frames_per_second, bool repeat);
+        # 
+        # /** \brief Constructor taking a list of paths to PCD files, that are played in the order they appear in the list.
+        #   * \param[in] pcd_files vector of paths to PCD files.
+        #   * \param[in] frames_per_second frames per second. If 0, start() functions like a trigger, publishing the next PCD in the list.
+        #   * \param[in] repeat whether to play PCD file in an endless loop or not.
+        #   */
+        # PCDGrabberBase (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat);
+        # 
+        # /** \brief Copy constructor.
+        #   * \param[in] src the PCD Grabber base object to copy into this
+        #   */
+        # PCDGrabberBase (const PCDGrabberBase &src) : impl_ ()
+        # /** \brief Copy operator.
+        #   * \param[in] src the PCD Grabber base object to copy into this
+        #   */
+        # PCDGrabberBase&
+        # operator = (const PCDGrabberBase &src)
+        # {
+        #   impl_ = src.impl_;
+        #   return (*this);
+        # }
+        # 
+        # /** \brief Virtual destructor. */
+        # virtual ~PCDGrabberBase () throw ();
+        # 
+        # /** \brief Starts playing the list of PCD files if frames_per_second is > 0. Otherwise it works as a trigger: publishes only the next PCD file in the list. */
+        # virtual void 
+        # start ();
+        # 
+        # /** \brief Stops playing the list of PCD files if frames_per_second is > 0. Otherwise the method has no effect. */
+        # virtual void 
+        # stop ();
+        # 
+        # /** \brief Triggers a callback with new data */
+        # virtual void 
+        # trigger ();
+        # 
+        # /** \brief whether the grabber is started (publishing) or not.
+        #   * \return true only if publishing.
+        #   */
+        # virtual bool 
+        # isRunning () const;
+        # 
+        # /** \return The name of the grabber */
+        # virtual std::string 
+        # getName () const;
+        # 
+        # /** \brief Rewinds to the first PCD file in the list.*/
+        # virtual void 
+        # rewind ();
+        # 
+        # /** \brief Returns the frames_per_second. 0 if grabber is trigger-based */
+        # virtual float 
+        # getFramesPerSecond () const;
+        # 
+        # /** \brief Returns whether the repeat flag is on */
+        # bool 
+        # isRepeatOn () const;
+
+
+###
 
 # template <typename PointT> class PCDGrabber : public PCDGrabberBase
 cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
@@ -395,18 +394,32 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
 # Enum
 ###############################################################################
 
+# cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
+#     cdef cppclass OpenNIGrabber(Grabber):
+#         # public:
+#         # typedef enum
+#         #   OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
+#         #   OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
+#         #   OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
+#         #   OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
+#         #   OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
+#         #   OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
+#         #   OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
+#         #   OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+#         #   OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+#         #   OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
+#         # } Mode;
 cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
-    cdef cppclass OpenNIGrabber(Grabber):
-        # public:
-        # typedef enum
-        #   OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
-        #   OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
-        #   OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
-        #   OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
-        #   OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
-        #   OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
-        #   OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
-        #   OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-        #   OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-        #   OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
-        # } Mode;
+    ctypedef enum cppclass Mode2 "pcl::OpenNIGrabber":
+        Grabber_OpenNI_Default_Mode "pcl::OpenNIGrabber::OpenNI_Default_Mode"   # = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
+        Grabber_OpenNI_SXGA_15Hz "pcl::OpenNIGrabber::OpenNI_SXGA_15Hz"         # = 1, // Only supported by the Kinect
+        Grabber_OpenNI_VGA_30Hz "pcl::OpenNIGrabber::OpenNI_VGA_30Hz"           # = 2, // Supported by PSDK, Xtion and Kinect
+        Grabber_OpenNI_VGA_25Hz "pcl::OpenNIGrabber::OpenNI_VGA_25Hz"           # = 3, // Supportged by PSDK and Xtion
+        Grabber_OpenNI_QVGA_25Hz "pcl::OpenNIGrabber::OpenNI_QVGA_25Hz"         # = 4, // Supported by PSDK and Xtion
+        Grabber_OpenNI_QVGA_30Hz "pcl::OpenNIGrabber::OpenNI_QVGA_30Hz"         # = 5, // Supported by PSDK, Xtion and Kinect
+        Grabber_OpenNI_QVGA_60Hz "pcl::OpenNIGrabber::OpenNI_QVGA_60Hz"         # = 6, // Supported by PSDK and Xtion
+        Grabber_OpenNI_QQVGA_25Hz "pcl::OpenNIGrabber::OpenNI_QQVGA_25Hz"       # = 7, // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        Grabber_OpenNI_QQVGA_30Hz "pcl::OpenNIGrabber::OpenNI_QQVGA_30Hz"       # = 8, // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        Grabber_OpenNI_QQVGA_60Hz "pcl::OpenNIGrabber::OpenNI_QQVGA_60Hz"       # = 9  // Not supported -> using software downsampling (only for integer scale factor and only NN)
+
+

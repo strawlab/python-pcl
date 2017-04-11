@@ -27,9 +27,6 @@ from boost_shared_ptr cimport shared_ptr
 # PCLVISUALIZER_IMMEDIATE_RENDERING = pcl_grb.PCL_VISUALIZER_IMMEDIATE_RENDERING
 ### Enum Setting(define Class InternalType) ###
 
-# Grabber Callback
-include "pxi/Grabber/GrabberCallback.pxi"
-
 # Grabber
 include "pxi/Grabber/ONIGrabber.pxi"
 include "pxi/Grabber/OpenNIGrabber.pxi"

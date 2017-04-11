@@ -5,14 +5,14 @@ class cpp_backend
 {
 public:
     // This is wrapper of Python fuction.
-    typedef double (*method_type)(void *param, void *callback_func);
+    typedef double (*Method)(void *param, void *callback_func);
 
     // Constructor
-    cpp_backend(method_type, void *user_data);
+    cpp_backend(Method, void *user_data);
     // Destructor
     virtual ~cpp_backend();
 
-    double callback_python(void *parameter);
+    double cy_execute(void *parameter);
 
 private:
     method_type method_;

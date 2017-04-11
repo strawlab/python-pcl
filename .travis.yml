@@ -87,7 +87,7 @@ matrix:
 # travis_wait 45 sudo make install;
 # https://github.com/hsean/Capstone-44-Object-Segmentation/wiki/PCL-1.8:-Ubuntu-14.04-Installation-Guide
 before_install:
-  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then
+  - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
       brew update >/dev/null;
       brew outdated pyenv || brew upgrade --quiet pyenv;
       brew install homebrew/boneyard/pyenv-pip-rehash;
@@ -101,34 +101,10 @@ before_install:
       travis_wait 45 brew install pcl --without-qt;
     fi
 
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
+  - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
+      sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
       sudo apt-get update -y;
-      git clone https://github.com/PointCloudLibrary/pcl.git pcl-trunk;
-      ln -s pcl-trunk pcl -y;
-      sudo apt-get install g++ -y;
-      sudo apt-get install cmake cmake-gui -y;
-      sudo apt-get install doxygen -y;
-      sudo apt-get install mpi-default-dev openmpi-bin openmpi-common -y;
-      sudo apt-get install libflann1.8 libflann-dev -y;
-      sudo apt-get install libeigen3-dev -y;
-      sudo apt-get install libboost-all-dev -y;
-      sudo apt-get install libvtk5.8-qt4 libvtk5.8 libvtk5-dev -y;
-      sudo apt-get install libqhull* -y;
-      sudo apt-get install libusb-dev -y;
-      sudo apt-get install libgtest-dev -y;
-      sudo apt-get install git-core freeglut3-dev pkg-config -y;
-      sudo apt-get install build-essential libxmu-dev libxi-dev -y;
-      sudo apt-get install libusb-1-0-dev graphviz mono-complete -y;
-      sudo apt-get install qt-sdk openjdk-7-jdk openjdk-7-jre -y;
-      sudo apt-get install phonon-backend-gstreamer -y;
-      sudo apt-get install phonon-backend-vlc -y;
-      sudo apt-get install libpcap-dev -y;
-      cd pcl;
-      mkdir build;
-      cd build;
-      cmake -DCMAKE_BUILD_TYPE=None -DBUILD_GPU=OFF -DBUILD_apps=ON -DBUILD_examples=ON .. ;
-      travis_wait 45 make;
-      travis_wait 45 sudo make install;
+      sudo apt-get install libpcl-all -y;
     fi
 
 
@@ -147,6 +123,8 @@ script:
   # - coverage run tests/test_pcl.py
   - coverage run --parallel-mode tests/test_pcl.py
   - coverage run --parallel-mode tests/test_registration.py
+  
+  - python examples/GrabberCallbackTest.py
   # # examples_command_172.txt
   # # Filtering
   # - python examples\official\Filtering\PassThroughFilter.py

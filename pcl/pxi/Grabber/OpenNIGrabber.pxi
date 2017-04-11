@@ -6,7 +6,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_grabber as pclgrb
+cimport pcl_grabber as pcl_grb
 
 cimport eigen as eigen3
 
@@ -29,32 +29,38 @@ cdef double scaffold(void *parameter, void *callback_func):
     return (<object>callback_func)(<object>parameter)
 
 
-cdef class SimpleNIGrabber:
+cdef class OpenNIGrabber:
     """
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in SimpleNIGrabber(pc).
     """
-    cdef cpp_backend *thisptr
+    # cdef cpp_backend *thisptr
+    cdef pclfil.ONIGrabber *me
 
-    def __cinit__(self, pycallback_func):
-        self.thisptr = new cpp_backend(scaffold, <void*>pycallback_func)
+    def __cinit__(self, string file_name, bool repeat, bool stream):
+        self.me = new pcl_grb.ONIGrabber(file_name, repeat, stream)
 
     def __dealloc__(self):
-        if self.thisptr:
-            del self.thisptr
+        del self.me
 
     cpdef double callback(self, parameter):
         return self.thisptr.callback_python(<void*>parameter)
 
-    def run():
-        cdef pclgrb.Grabber interface = pclgrb.OpenNIGrabber()
-        # boost::function<void (const PointCloud_PointXYZRGB_t)> f = 
-        #     boost::bind (&SimpleOpenNIViewer::cloud_cb_, this, _1)
-        # interface.registerCallback (f)
-        interface.start ()
+    def start():
+        self.start ()
 
-        while (!viewer.wasStopped())
-            sleep (1)
-        end
-        interface.stop ()
+    def stop():
+        self.stop ()
+
+    # string 
+    def getName ()
+        return self.getName ()
+
+    # bool 
+    def isRunning ()
+        return self.isRunning ()
+
+    # return float 
+    def getFramesPerSecond ()
+        return self.getFramesPerSecond ()
 
