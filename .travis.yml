@@ -87,7 +87,7 @@ matrix:
 # travis_wait 45 sudo make install;
 # https://github.com/hsean/Capstone-44-Object-Segmentation/wiki/PCL-1.8:-Ubuntu-14.04-Installation-Guide
 before_install:
-  - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
+  - if [[ $TRAVIS_OS_NAME == "osx" ]]; then
       brew update >/dev/null;
       brew outdated pyenv || brew upgrade --quiet pyenv;
       brew install homebrew/boneyard/pyenv-pip-rehash;
@@ -101,7 +101,7 @@ before_install:
       travis_wait 45 brew install pcl --without-qt;
     fi
 
-  - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
+  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
       sudo apt-get update -y;
       git clone https://github.com/PointCloudLibrary/pcl.git pcl-trunk;
       ln -s pcl-trunk pcl -y;
