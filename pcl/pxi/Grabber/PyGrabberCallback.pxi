@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 cimport pcl_grabber as pcl_grb
-from grabber_callback cimport PyLibCallBack
-from grabber_callback cimport callback
+from ../../grabber_callback cimport PyLibCallBack
+from ../../grabber_callback cimport callback
 
 cdef class PyGrabberCallback:
     cdef PyLibCallBack* thisptr
