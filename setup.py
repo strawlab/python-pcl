@@ -225,6 +225,9 @@ if platform.system() == "Windows":
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
     
+    # OpenNI2?
+    # %OPENNI2_REDIST64% %OPENNI2_REDIST%
+    
     # set compiler flags
     # for flag in pkgconfig('--cflags-only-other'):
     #     if flag.startswith('-D'):
@@ -556,7 +559,7 @@ else:
               setup_requires=setup_requires,
               install_requires=install_requires,
               tests_require=['mock', 'nose'],
-              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
+              ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                            Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx"], language="c++", **ext_args),
                            # debug

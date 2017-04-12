@@ -86,6 +86,17 @@ matrix:
 # travis_wait 45 make;
 # travis_wait 45 sudo make install;
 # https://github.com/hsean/Capstone-44-Object-Segmentation/wiki/PCL-1.8:-Ubuntu-14.04-Installation-Guide
+# Add OpenNI2?
+# sudo apt-get install -yV g++ python libusb-1.0.0-dev libudev-dev openjdk-6-jdk freeglut3-dev doxygen graphviz 
+# git clone https://github.com/OpenNI/OpenNI2.git
+# cd OpenNI2
+# make
+# cd Packaging
+# python ./ReleaseVersion.py x86
+# cd OpenNI-Linux-x86-2.2
+# cp -a Include /usr/local/include/ni2
+# cp -a Redist /usr/local/lib/ni2
+###
 before_install:
   - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
       brew update >/dev/null;
@@ -105,6 +116,15 @@ before_install:
       sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
       sudo apt-get update -y;
       sudo apt-get install libpcl-all -y;
+      sudo apt-get install -yV g++ python libusb-1.0.0-dev libudev-dev openjdk-6-jdk freeglut3-dev doxygen graphviz -y;
+      git clone https://github.com/OpenNI/OpenNI2.git;
+      cd OpenNI2;
+      make;
+      cd Packaging;
+      python ./ReleaseVersion.py x64;
+      cd OpenNI-Linux-x64-2.2;
+      cp -a Include /usr/local/include/ni2;
+      cp -a Redist /usr/local/lib/ni2;
     fi
 
 
@@ -123,8 +143,9 @@ script:
   # - coverage run tests/test_pcl.py
   - coverage run --parallel-mode tests/test_pcl.py
   - coverage run --parallel-mode tests/test_registration.py
-  
+  # examples
   - python examples/GrabberCallbackTest.py
+  # examples/official
   # # examples_command_172.txt
   # # Filtering
   # - python examples\official\Filtering\PassThroughFilter.py
