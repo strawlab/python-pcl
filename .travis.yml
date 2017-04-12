@@ -120,11 +120,6 @@ before_install:
       git clone https://github.com/OpenNI/OpenNI2.git;
       cd OpenNI2;
       make;
-      cd Packaging;
-      python ./ReleaseVersion.py x64;
-      cd OpenNI-Linux-x64-2.2;
-      cp -a Include /usr/local/include/ni2;
-      cp -a Redist /usr/local/lib/ni2;
     fi
 
 
