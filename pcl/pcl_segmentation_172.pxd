@@ -2991,10 +2991,10 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
         # void extract (vector[int]& ground)
 
 
-ctypedef ProgressiveMorphologicalFilter[PointXYZ] ProgressiveMorphologicalFilter_t
-ctypedef ProgressiveMorphologicalFilter[PointXYZI] ProgressiveMorphologicalFilter_PointXYZI_t
-ctypedef ProgressiveMorphologicalFilter[PointXYZRGB] ProgressiveMorphologicalFilter_PointXYZRGB_t
-ctypedef ProgressiveMorphologicalFilter[PointXYZRGBA] ProgressiveMorphologicalFilter_PointXYZRGBA_t
+# ctypedef ProgressiveMorphologicalFilter[PointXYZ] ProgressiveMorphologicalFilter_t
+# ctypedef ProgressiveMorphologicalFilter[PointXYZI] ProgressiveMorphologicalFilter_PointXYZI_t
+# ctypedef ProgressiveMorphologicalFilter[PointXYZRGB] ProgressiveMorphologicalFilter_PointXYZRGB_t
+# ctypedef ProgressiveMorphologicalFilter[PointXYZRGBA] ProgressiveMorphologicalFilter_PointXYZRGBA_t
 ###
 
 # region_3d.h

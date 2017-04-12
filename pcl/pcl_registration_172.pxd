@@ -2765,20 +2765,20 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
 
 ###
 
+# pcl 1.7.2 error(linux pcl package)
 # joint_icp.h
 # /** \brief @b JointIterativeClosestPoint extends ICP to multiple frames which
 #   *  share the same transform. This is particularly useful when solving for 
 #   *  camera extrinsics using multiple observations. When given a single pair of 
 #   *  clouds, this reduces to vanilla ICP.
-#   *
 #   * \author Stephen Miller
 #   * \ingroup registration
 #   */
 # template <typename PointSource, typename PointTarget, typename Scalar = float>
 # class JointIterativeClosestPoint : public IterativeClosestPoint<PointSource, PointTarget, Scalar>
-cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
-    cdef cppclass JointIterativeClosestPoint[Source, Target, float](IterativeClosestPoint[Source, Target, float]):
-        JointIterativeClosestPoint() except +
+# cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
+#     cdef cppclass JointIterativeClosestPoint[Source, Target, float](IterativeClosestPoint[Source, Target, float]):
+#         JointIterativeClosestPoint() except +
         # public:
         # typedef typename IterativeClosestPoint<PointSource, PointTarget, Scalar>::PointCloudSource PointCloudSource;
         # typedef typename PointCloudSource::Ptr PointCloudSourcePtr;
@@ -2946,7 +2946,7 @@ cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
 #   */
 # template<typename PointT>
 # class LUM
-cdef extern from "pcl/registration/joint_icp.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/lum.h" namespace "pcl" nogil:
     cdef cppclass LUM[Point]:
         LUM()
         # public:

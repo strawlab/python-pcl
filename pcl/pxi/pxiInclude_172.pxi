@@ -30,7 +30,8 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages_172.pxi"
-# Registration
+
+# Registration
 include "registration/GeneralizedIterativeClosestPoint_172.pxi"
 include "registration/IterativeClosestPoint_172.pxi"
 include "registration/IterativeClosestPointNonLinear_172.pxi"
@@ -51,7 +52,8 @@ include "SampleConsensus/SampleConsensusModelStick.pxi"
 include "Features/NormalEstimation_172.pxi"
 include "Features/VFHEstimation_172.pxi"
 include "Features/IntegralImageNormalEstimation_172.pxi"
-include "Features/MomentOfInertiaEstimation_172.pxi"
+# package ng
+# include "Features/MomentOfInertiaEstimation_172.pxi"
 
 # keyPoint
 include "KeyPoint/HarrisKeypoint3D_172.pxi"
