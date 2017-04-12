@@ -96,6 +96,7 @@ matrix:
 # cd OpenNI-Linux-x86-2.2
 # cp -a Include /usr/local/include/ni2
 # cp -a Redist /usr/local/lib/ni2
+# cd ../../..
 ###
 before_install:
   - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
@@ -120,6 +121,7 @@ before_install:
       git clone https://github.com/OpenNI/OpenNI2.git;
       cd OpenNI2;
       make;
+      cd ..
     fi
 
 
