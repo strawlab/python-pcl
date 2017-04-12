@@ -237,9 +237,8 @@ cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
         #   * \param[in] idx2 the index of the second point.
         #   */
         # virtual bool compare (int idx1, int idx2) const = 0;
-        # 
-        # protected:
-        #   PointCloudConstPtr input_;
+
+
 ###
 
 # plane_coefficient_comparator.h
@@ -263,31 +262,43 @@ cdef extern from "pcl/segmentation/plane_coefficient_comparator.h" namespace "pc
         # using pcl::Comparator<PointT>::input_;
         # 
         # virtual void setInputCloud (const PointCloudConstPtr& cloud)
+        
         # /** \brief Provide a pointer to the input normals.
         #   * \param[in] normals the input normal cloud
         # inline void setInputNormals (const PointCloudNConstPtr &normals)
+        
         # /** \brief Get the input normals. */
         # inline PointCloudNConstPtr getInputNormals () const
+        
         # /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
         #   * \param[in] plane_coeff_d a pointer to the plane coefficients.
         # void setPlaneCoeffD (boost::shared_ptr<std::vector<float> >& plane_coeff_d)
-        # 
+        
         # /** \brief Provide a pointer to a vector of the d-coefficient of the planes' hessian normal form.  a, b, and c are provided by the normal cloud.
         #   * \param[in] plane_coeff_d a pointer to the plane coefficients.
         # void setPlaneCoeffD (std::vector<float>& plane_coeff_d)
+        
         # /** \brief Get a pointer to the vector of the d-coefficient of the planes' hessian normal form. */
         # const std::vector<float>& getPlaneCoeffD () const
+        
         # /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
         #   * \param[in] angular_threshold the tolerance in radians
         # virtual void setAngularThreshold (float angular_threshold)
+        
         # /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
         # inline float getAngularThreshold () const
+        float getAngularThreshold ()
+        
         # /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
         #   * \param[in] distance_threshold the tolerance in meters (at 1m)
         #   * \param[in] depth_dependent whether to scale the threshold based on range from the sensor (default: false)
         # void setDistanceThreshold (float distance_threshold, bool depth_dependent = false)
+        void setDistanceThreshold (float distance_threshold, bool depth_dependent)
+        
         # /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
         # inline float getDistanceThreshold () const
+        float getDistanceThreshold ()
+        
         # /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
         #   * and the difference between the d component of the normals is less than distance threshold, else false
         #   * \param idx1 The first index for the comparison
@@ -2889,6 +2900,7 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 
 ###
 
+# 1.7.2 NG
 # progressive_morphological_filter.h
 # namespace pcl
 # /** \brief
@@ -2900,9 +2912,9 @@ cdef extern from "pcl/segmentation/organized_connected_component_segmentation.h"
 #  */
 # template <typename PointT>
 # class PCL_EXPORTS ProgressiveMorphologicalFilter : public pcl::PCLBase<PointT>
-cdef extern from "pcl/segmentation/progressive_morphological_filter.h" namespace "pcl":
-    cdef cppclass ProgressiveMorphologicalFilter[PointT](PCLBase[PointT]):
-        ProgressiveMorphologicalFilter()
+# cdef extern from "pcl/segmentation/progressive_morphological_filter.h" namespace "pcl":
+#     cdef cppclass ProgressiveMorphologicalFilter[PointT](PCLBase[PointT]):
+#         ProgressiveMorphologicalFilter()
         # public:
         # typedef pcl::PointCloud <PointT> PointCloud;
         # 
@@ -2917,60 +2929,60 @@ cdef extern from "pcl/segmentation/progressive_morphological_filter.h" namespace
         # 
         # /** \brief Get the maximum window size to be used in filtering ground returns. */
         # inline int getMaxWindowSize () const { return (max_window_size_); }
-        int getMaxWindowSize ()
-        
+        # int getMaxWindowSize ()
+        # 
         # /** \brief Set the maximum window size to be used in filtering ground returns. */
         # inline void setMaxWindowSize (int max_window_size) { max_window_size_ = max_window_size; }
-        void setMaxWindowSize (int max_window_size)
-        
+        # void setMaxWindowSize (int max_window_size)
+        # 
         # /** \brief Get the slope value to be used in computing the height threshold. */
         # inline float getSlope () const { return (slope_); }
-        float getSlope ()
-        
+        # float getSlope ()
+        # 
         # /** \brief Set the slope value to be used in computing the height threshold. */
         # inline void setSlope (float slope) { slope_ = slope; }
-        void setSlope (float slope)
-        
+        # void setSlope (float slope)
+        # 
         # /** \brief Get the maximum height above the parameterized ground surface to be considered a ground return. */
         # inline float getMaxDistance () const { return (max_distance_); }
-        float getMaxDistance ()
-        
+        # float getMaxDistance ()
+        # 
         # /** \brief Set the maximum height above the parameterized ground surface to be considered a ground return. */
         # inline void setMaxDistance (float max_distance) { max_distance_ = max_distance; }
-        void setMaxDistance (float max_distance)
-        
+        # void setMaxDistance (float max_distance)
+        # 
         # /** \brief Get the initial height above the parameterized ground surface to be considered a ground return. */
         # inline float getInitialDistance () const { return (initial_distance_); }
-        float getInitialDistance ()
-        
+        # float getInitialDistance ()
+        # 
         # /** \brief Set the initial height above the parameterized ground surface to be considered a ground return. */
         # inline void setInitialDistance (float initial_distance) { initial_distance_ = initial_distance; }
-        void setInitialDistance (float initial_distance)
-        
+        # void setInitialDistance (float initial_distance)
+        # 
         # /** \brief Get the cell size. */
         # inline float getCellSize () const { return (cell_size_); }
-        float getCellSize ()
-        
+        # float getCellSize ()
+        # 
         # /** \brief Set the cell size. */
         # inline void setCellSize (float cell_size) { cell_size_ = cell_size; }
-        void setCellSize (float cell_size)
-        
+        # void setCellSize (float cell_size)
+        # 
         # /** \brief Get the base to be used in computing progressive window sizes. */
         # inline float getBase () const { return (base_); }
-        float getBase ()
-        
+        # float getBase ()
+        # 
         # /** \brief Set the base to be used in computing progressive window sizes. */
         # inline void setBase (float base) { base_ = base; }
-        setBase (float base)
-        
+        # setBase (float base)
+        # 
         # /** \brief Get flag indicating whether or not to exponentially grow window sizes? */
         # inline bool getExponential () const { return (exponential_); }
-        bool getExponential ()
-        
+        # bool getExponential ()
+        # 
         # /** \brief Set flag indicating whether or not to exponentially grow window sizes? */
         # inline void setExponential (bool exponential) { exponential_ = exponential; }
-        void setExponential (bool exponential)
-        
+        # void setExponential (bool exponential)
+        # 
         # /** \brief This method launches the segmentation algorithm and returns indices of
         #   * points determined to be ground returns.
         #   * \param[out] ground indices of points determined to be ground returns.

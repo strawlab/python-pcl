@@ -7,4 +7,4 @@ def func(obj):
 
 n = pcl.pcl_grabber.PyGrabberNode()    # Custom class of my own
 cb = pcl.pcl_grabber.PyGrabberCallback(func)
-print cb.execute(n)
+print(cb.execute(n))

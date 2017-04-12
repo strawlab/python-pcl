@@ -37,7 +37,6 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
     cdef cppclass SACSegmentation[T](PCLBase[T]):
         SACSegmentation()
         void setModelType (SacModel)
-        
         # /** \brief Empty constructor. */
         # SACSegmentation () :  model_ (), sac_ (), model_type_ (-1), method_type_ (0), 
         #                       threshold_ (0), optimize_coefficients_ (true), 
@@ -373,35 +372,44 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
         # using pcl::Comparator<PointT>::input_;
         # 
         # virtual void setInputCloud (const PointCloudConstPtr& cloud)
+        
         # /** \brief Provide a pointer to the input normals.
         #   * \param[in] normals the input normal cloud
         # inline void setInputNormals (const PointCloudNConstPtr &normals)
-        # 
+        void setInputNormals (const shared_ptr[PointCloud[NT]] &normals)
+        
         # /** \brief Get the input normals. */
         # inline PointCloudNConstPtr getInputNormals () const
-        # 
+        const shared_ptr[PointCloud[NT]] getInputNormals ()
+        
         # /** \brief Set the tolerance in radians for difference in normal direction between neighboring points, to be considered part of the same plane.
         #   * \param[in] angular_threshold the tolerance in radians
         # virtual inline void setAngularThreshold (float angular_threshold)
         # 
         # /** \brief Get the angular threshold in radians for difference in normal direction between neighboring points, to be considered part of the same plane. */
         # inline float getAngularThreshold () const
-        # 
+        float getAngularThreshold ()
+        
         # /** \brief Set the tolerance in meters for difference in perpendicular distance (d component of plane equation) to the plane between neighboring points, to be considered part of the same plane.
         #   * \param[in] distance_threshold the tolerance in meters
         # inline void setDistanceThreshold (float distance_threshold, bool depth_dependent)
-        # 
+        void setDistanceThreshold (float distance_threshold, bool depth_dependent)
+        
         # /** \brief Get the distance threshold in meters (d component of plane equation) between neighboring points, to be considered part of the same plane. */
         # inline float getDistanceThreshold () const
-        # 
+        float getDistanceThreshold ()
+        
         # /** \brief Set label cloud
         #   * \param[in] labels The label cloud
         # void setLabels (PointCloudLPtr& labels)
+        void setLabels (shared_ptr[PointCloud[LT]] &labels)
+        
         # 
         # /** \brief Set labels in the label cloud to exclude.
         #   * \param exclude_labels a vector of bools corresponding to whether or not a given label should be considered
         # void setExcludeLabels (std::vector<bool>& exclude_labels)
-        # 
+        void setExcludeLabels (vector[bool]& exclude_labels)
+        
         # /** \brief Compare points at two indices by their plane equations.  True if the angle between the normals is less than the angular threshold,
         #   * and the difference between the d component of the normals is less than distance threshold, else false
         #   * \param idx1 The first index for the comparison
@@ -409,6 +417,14 @@ cdef extern from "pcl/segmentation/euclidean_cluster_comparator.h" namespace "pc
         # virtual bool compare (int idx1, int idx2) const
 
 
+ctypedef EuclideanClusterComparator[PointXYZ, Normal, PointXYZ] EuclideanClusterComparator_t
+ctypedef EuclideanClusterComparator[PointXYZI, Normal, PointXYZ] EuclideanClusterComparator_PointXYZI_t
+ctypedef EuclideanClusterComparator[PointXYZRGB, Normal, PointXYZ] EuclideanClusterComparator_PointXYZRGB_t
+ctypedef EuclideanClusterComparator[PointXYZRGBA, Normal, PointXYZ] EuclideanClusterComparator_PointXYZRGBA_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZ, Normal, PointXYZ]] EuclideanClusterComparatorPtr_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZI, Normal, PointXYZ]] EuclideanClusterComparator_PointXYZI_Ptr_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZRGB, Normal, PointXYZ]] EuclideanClusterComparator_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[EuclideanClusterComparator[PointXYZRGBA, Normal, PointXYZ]] EuclideanClusterComparator_PointXYZRGBA_Ptr_t
 ###
 
 # euclidean_plane_coefficient_comparator.h
@@ -434,6 +450,7 @@ cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" nam
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::normals_;
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::angular_threshold_;
         # using pcl::PlaneCoefficientComparator<PointT, PointNT>::distance_threshold_;
+        # 
         # /** \brief Compare two neighboring points, by using normal information, and euclidean distance information.
         #   * \param[in] idx1 The index of the first point.
         #   * \param[in] idx2 The index of the second point.
@@ -536,7 +553,6 @@ cdef extern from "pcl/segmentation/euclidean_plane_coefficient_comparator.h" nam
 # ingroup segmentation
 # template <typename PointT>
 # class EuclideanClusterExtraction: public PCLBase<PointT>
-# cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
 cdef extern from "pcl/segmentation/extract_clusters.h" namespace "pcl":
     cdef cppclass EuclideanClusterExtraction[T](PCLBase[T]):
         EuclideanClusterExtraction()
@@ -563,7 +579,7 @@ cdef extern from "pcl/segmentation/extract_clusters.h" namespace "pcl":
         
         # brief Get the spatial cluster tolerance as a measure in the L2 Euclidean space.
         # inline double getClusterTolerance () const 
-        double getClusterTolerance () const 
+        double getClusterTolerance ()
         
         # brief Set the minimum number of points that a cluster needs to contain in order to be considered valid.
         # param[in] min_cluster_size the minimum cluster size
