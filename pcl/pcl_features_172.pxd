@@ -997,6 +997,7 @@ cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
 # 
 ###
 
+# apt-get package ng(1.7 base?)
 # rops_estimation.h
 # namespace pcl
 # /** \brief
@@ -1006,9 +1007,9 @@ cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
 # */
 # template <typename PointInT, typename PointOutT>
 # class PCL_EXPORTS ROPSEstimation : public pcl::Feature <PointInT, PointOutT>
-cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
-    cdef cppclass ROPSEstimation[In, Out](Feature[In, Out]):
-        ROPSEstimation()
+# cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
+#     cdef cppclass ROPSEstimation[In, Out](Feature[In, Out]):
+#         ROPSEstimation()
         # public:
         # using Feature <PointInT, PointOutT>::input_;
         # using Feature <PointInT, PointOutT>::indices_;
