@@ -1,6 +1,4 @@
-﻿
-# -*- coding: utf-8 -*-
-# 
+﻿# -*- coding: utf-8 -*-
 # http://ros-robot.blogspot.jp/2011/08/point-cloud-librarykinect.html
 from libcpp.vector cimport vector
 from libcpp cimport bool
@@ -13,18 +11,13 @@ cimport _bind_defs as _bind
 
 from boost_shared_ptr cimport shared_ptr
 
-# callback
-from cython.operator cimport dereference as deref
-import sys
-# referenced from
-# http://stackoverflow.com/questions/5242051/cython-implementing-callbacks
 
 cdef class ONIGrabber:
     """
     Must be constructed from the reference point cloud, which is copied, so
-    changed to pc are not reflected in SimpleNIGrabber(pc).
+    changed to pc are not reflected in ONIGrabber(pc).
     """
-    cdef pclfil.ONIGrabber *me
+    cdef pcl_grb.ONIGrabber *me
 
     def __cinit__(self, string file_name, bool repeat, bool stream):
         self.me = new pcl_grb.ONIGrabber(file_name, repeat, stream)
@@ -34,8 +27,8 @@ cdef class ONIGrabber:
 
     def RegisterCallback (self, func):
         cdef _bind.arg _1
-        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](func, _1)
-        self.me.register_callback(callback)
+        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](<_bind.callback_t> func, _1)
+        self.me.register_callback(<_bind.function[callback_t]> callback)
 
     def Start(self):
         self.me.start ()
