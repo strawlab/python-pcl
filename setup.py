@@ -477,9 +477,16 @@ else:
         # decode() is required in Python 3. TODO how do know the encoding?
         return stdout.decode().split()
 
-
     for flag in pkgconfig('--cflags-only-I'):
         ext_args['include_dirs'].append(flag[2:])
+
+    # OpenNI?
+    # "-I/usr/include/openni"
+    # "-I/usr/include/openni"
+    # /usr/include/ni
+    ext_args['include_dirs'].append('/usr/include/ni')
+    # ext_args['library_dirs'].append()
+    # ext_args['libraries'].append()
 
     for flag in pkgconfig('--cflags-only-other'):
         if flag.startswith('-D'):

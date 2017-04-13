@@ -97,6 +97,8 @@ matrix:
 # cp -a Include /usr/local/include/ni2
 # cp -a Redist /usr/local/lib/ni2
 # cd ../../..
+# other
+# sudo apt-get install openni2-utils
 ###
 before_install:
   - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
@@ -114,14 +116,11 @@ before_install:
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
+      sudo apt-get install openni2-utils
+
       sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
       sudo apt-get update -y;
       sudo apt-get install libpcl-all -y;
-      sudo apt-get install -yV g++ python libusb-1.0.0-dev libudev-dev openjdk-6-jdk freeglut3-dev doxygen graphviz -y;
-      git clone https://github.com/OpenNI/OpenNI2.git;
-      cd OpenNI2;
-      make;
-      cd ..
     fi
 
 
