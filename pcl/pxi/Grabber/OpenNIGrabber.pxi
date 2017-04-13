@@ -36,7 +36,7 @@ cdef class OpenNIGrabber:
     def RegisterCallback (self, func):
         cdef _bind.arg _1
         cdef cpp.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](func, _1)
-  		self.me.register_callback(callback)
+        self.me.register_callback(callback)
 
     def Start(self):
         self.start ()
