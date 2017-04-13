@@ -11,7 +11,8 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport pcl_grabber as pcl_grb
 from boost_shared_ptr cimport shared_ptr
-from _bind_defs cimport 
+# https://groups.google.com/forum/#!topic/cython-users/Eeqp4NkbAAA
+cimport _bind_defs 
 
 # from grabber_callback cimport PyLibCallBack
 # from grabber_callback cimport callback
