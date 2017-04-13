@@ -506,6 +506,10 @@ else:
     for flag in pkgconfig('--libs-only-other'):
         ext_args['extra_link_args'].append(flag)
 
+    # grabber?
+    # -lboost_system
+    ext_args['extra_link_args'].append('-lboost_system')
+
     # Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).
     ext_args['define_macros'].append(
         ("EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET", "1"))
