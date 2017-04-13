@@ -7,7 +7,7 @@ PyLibCallBack::PyLibCallBack()
     is_cy_call = true;
 };
 
-PyLibCallBack::PyLibCallBack(method_type method, void *user_data)
+PyLibCallBack::PyLibCallBack(Method method, void *user_data)
 {
 	is_cy_call = true;
 	_method = method;

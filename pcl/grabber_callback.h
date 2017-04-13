@@ -11,7 +11,7 @@ namespace grabber_callback
 
         // Constructor
     	PyLibCallBack();
-        PyLibCallBack(Method, void *user_data);
+        PyLibCallBack(Method method, void *user_data);
         // Destructor
         virtual ~PyLibCallBack();
 
