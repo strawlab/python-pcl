@@ -509,6 +509,7 @@ else:
     # grabber?
     # -lboost_system
     ext_args['extra_link_args'].append('-lboost_system')
+    # ext_args['extra_link_args'].append('-lboost_bind')
 
     # Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).
     ext_args['define_macros'].append(

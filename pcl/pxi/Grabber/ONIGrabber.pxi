@@ -9,6 +9,7 @@ cimport pcl_defs as cpp
 cimport pcl_grabber as pcl_grb
 
 cimport eigen as eigen3
+cimport _bind_defs as _bind
 
 from boost_shared_ptr cimport shared_ptr
 
@@ -17,17 +18,6 @@ from cython.operator cimport dereference as deref
 import sys
 # referenced from
 # http://stackoverflow.com/questions/5242051/cython-implementing-callbacks
-
-ctypedef double (*method_type)(void *param, void *user_data)
-
-cdef extern from "grabber_callback.hpp":
-    cdef cppclass cpp_backend:
-        cpp_backend(method_type method, void *callback_func)
-        double callback_python(void *parameter)
-
-cdef double scaffold(void *parameter, void *callback_func):
-    return (<object>callback_func)(<object>parameter)
-
 
 cdef class ONIGrabber:
     """
@@ -43,13 +33,15 @@ cdef class ONIGrabber:
     def __dealloc__(self):
         del self.me
 
-    cpdef double callback(self, parameter):
-        return self.thisptr.callback_python(<void*>parameter)
+    def RegisterCallback (self, func):
+        cdef _bind.arg _1
+        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](func, _1)
+  		self.me.register_callback(callback)
 
-    def start():
+    def Start(self):
         self.start ()
 
-    def stop():
+    def Stop(self):
         self.stop ()
 
     # string 

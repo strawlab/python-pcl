@@ -11,8 +11,10 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport pcl_grabber as pcl_grb
 from boost_shared_ptr cimport shared_ptr
-from grabber_callback cimport PyLibCallBack
-from grabber_callback cimport callback
+from _bind_defs cimport 
+
+# from grabber_callback cimport PyLibCallBack
+# from grabber_callback cimport callback
 
 
 ### Enum Setting ###
@@ -35,42 +37,40 @@ from grabber_callback cimport callback
 
 # -*- coding: utf-8 -*-
 cimport pcl_grabber as pcl_grb
-# from ../../grabber_callback cimport PyLibCallBack
-# from ../../grabber_callback cimport callback
 
-cdef class PyGrabberCallback:
-    cdef PyLibCallBack* thisptr
-
-    def __cinit__(self, method):
-        # 'callback' :: The pattern/converter method to fire a Python 
-        #               object method from C typed infos
-        # 'method'   :: The effective method passed by the Python user 
-        self.thisptr = new PyLibCallBack(callback, <void*>method)
-
-    def __dealloc__(self):
-       if self.thisptr:
-           del self.thisptr
-
-    cpdef double execute(self, parameter):
-        # 'parameter' :: The parameter to be passed to the 'method'
-        return self.thisptr.cy_execute(<void*>parameter)
-
-cdef class PyGrabberNode:
-    cdef double d_prop
-
-    # def __cinit__(self):
-    #     self.thisptr = new PyLibCallBack(callback, <void*>method)
-
-    # def __dealloc__(self):
-    #    if self.thisptr:
-    #        del self.thisptr
-
-    def Test(self):
-        print('PyGrabberNode - Test')
-        d_prop = 10.0
+# cdef class PyGrabberCallback:
+#     cdef PyLibCallBack* thisptr
+# 
+#     def __cinit__(self, method):
+#         # 'callback' :: The pattern/converter method to fire a Python 
+#         #               object method from C typed infos
+#         # 'method'   :: The effective method passed by the Python user 
+#         self.thisptr = new PyLibCallBack(callback, <void*>method)
+# 
+#     def __dealloc__(self):
+#        if self.thisptr:
+#            del self.thisptr
+# 
+#     cpdef double execute(self, parameter):
+#         # 'parameter' :: The parameter to be passed to the 'method'
+#         return self.thisptr.cy_execute(<void*>parameter)
+# 
+# cdef class PyGrabberNode:
+#     cdef double d_prop
+# 
+#     # def __cinit__(self):
+#     #     self.thisptr = new PyLibCallBack(callback, <void*>method)
+# 
+#     # def __dealloc__(self):
+#     #    if self.thisptr:
+#     #        del self.thisptr
+# 
+#     def Test(self):
+#         print('PyGrabberNode - Test')
+#         d_prop = 10.0
 
 
 # Grabber
-# include "pxi/Grabber/ONIGrabber.pxi"
-# include "pxi/Grabber/OpenNIGrabber.pxi"
+include "pxi/Grabber/ONIGrabber.pxi"
+include "pxi/Grabber/OpenNIGrabber.pxi"
 
