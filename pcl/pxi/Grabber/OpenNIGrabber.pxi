@@ -24,7 +24,6 @@ cdef class OpenNIGrabber:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in SimpleNIGrabber(pc).
     """
-    # cdef cpp_backend *thisptr
     cdef pclfil.ONIGrabber *me
 
     def __cinit__(self, string file_name, bool repeat, bool stream):
@@ -35,24 +34,24 @@ cdef class OpenNIGrabber:
 
     def RegisterCallback (self, func):
         cdef _bind.arg _1
-        cdef cpp.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](func, _1)
+        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](func, _1)
         self.me.register_callback(callback)
 
     def Start(self):
-        self.start ()
+        self.me.start ()
 
     def Stop(self):
-        self.stop ()
+        self.me.stop ()
 
     # string 
-    def getName ()
-        return self.getName ()
+    # def getName ():
+    #     return self.me.getName ()
 
     # bool 
-    def isRunning ()
-        return self.isRunning ()
+    # def isRunning ():
+    #     return self.me.isRunning ()
 
     # return float 
-    def getFramesPerSecond ()
-        return self.getFramesPerSecond ()
+    # def getFramesPerSecond ():
+    #     return self.me.getFramesPerSecond ()
 
