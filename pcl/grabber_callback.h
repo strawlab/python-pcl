@@ -10,6 +10,7 @@ namespace grabber_callback
         typedef double (*Method)(void *param, void *user_data);
 
         // Constructor
+    	PyLibCallBack();
         PyLibCallBack(Method, void *user_data);
         // Destructor
         virtual ~PyLibCallBack();

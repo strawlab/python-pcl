@@ -7,8 +7,8 @@ cimport pcl_defs as cpp
 # Types
 ###############################################################################
 
-# cdef extern from "indexing.hpp" nogil:
-cdef extern from "indexing.hpp":
+cdef extern from "indexing.hpp" nogil:
+# cdef extern from "indexing.hpp":
     # Use these instead of operator[] or at.
     PointCloudType *getptr [PointCloudType](cpp.PointCloud[PointCloudType] *, size_t)
     PointCloudType *getptr_at [PointCloudType](cpp.PointCloud[PointCloudType] *, size_t) except +
