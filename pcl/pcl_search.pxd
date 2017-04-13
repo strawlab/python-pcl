@@ -309,94 +309,96 @@ cdef extern from "pcl/Search/flann_search.h" namespace "pcl":
 
 ###
 
-cdef extern from "pcl/Search/kdtree.h" namespace "pcl::search":
-    cdef cppclass KdTree[PointT](Search[PointT]):
-        # KdTree()
-        KdTree (bool)
-        # public:
-        # ctypedef typename Search<PointT>::PointCloud PointCloud;
-        # ctypedef typename Search<PointT>::PointCloudConstPtr PointCloudConstPtr;
-        
-        # ctypedef boost::shared_ptr<std::vector<int> > IndicesPtr;
-        # ctypedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
-        # using pcl::search::Search<PointT>::indices_;
-        # using pcl::search::Search<PointT>::input_;
-        # using pcl::search::Search<PointT>::getIndices;
-        # using pcl::search::Search<PointT>::getInputCloud;
-        # using pcl::search::Search<PointT>::nearestKSearch;
-        # using pcl::search::Search<PointT>::radiusSearch;
-        # using pcl::search::Search<PointT>::sorted_results_;
-        # typedef boost::shared_ptr<KdTree<PointT> > Ptr;
-        # typedef boost::shared_ptr<const KdTree<PointT> > ConstPtr;
-        # typedef boost::shared_ptr<pcl::KdTreeFLANN<PointT> > KdTreeFLANNPtr;
-        # typedef boost::shared_ptr<const pcl::KdTreeFLANN<PointT> > KdTreeFLANNConstPtr;
-        
-        void setSortedResults (bool sorted_results)
-        
-        void setEpsilon (float eps)
-        
-        float getEpsilon ()
-        
-        # void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr& indices = IndicesConstPtr ())
-        
-        # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
-        int nearestKSearch (const PointT &point, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
-        
-        int radiusSearch (const PointT& point, double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn)
-
-
+# Conflict pcl_kdtree ?
+# cdef extern from "pcl/Search/kdtree.h" namespace "pcl::search":
+#     cdef cppclass KdTree[PointT](Search[PointT]):
+#         # KdTree()
+#         KdTree (bool)
+#         # public:
+#         # ctypedef typename Search<PointT>::PointCloud PointCloud;
+#         # ctypedef typename Search<PointT>::PointCloudConstPtr PointCloudConstPtr;
+#         
+#         # ctypedef boost::shared_ptr<std::vector<int> > IndicesPtr;
+#         # ctypedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
+#         # using pcl::search::Search<PointT>::indices_;
+#         # using pcl::search::Search<PointT>::input_;
+#         # using pcl::search::Search<PointT>::getIndices;
+#         # using pcl::search::Search<PointT>::getInputCloud;
+#         # using pcl::search::Search<PointT>::nearestKSearch;
+#         # using pcl::search::Search<PointT>::radiusSearch;
+#         # using pcl::search::Search<PointT>::sorted_results_;
+#         # typedef boost::shared_ptr<KdTree<PointT> > Ptr;
+#         # typedef boost::shared_ptr<const KdTree<PointT> > ConstPtr;
+#         # typedef boost::shared_ptr<pcl::KdTreeFLANN<PointT> > KdTreeFLANNPtr;
+#         # typedef boost::shared_ptr<const pcl::KdTreeFLANN<PointT> > KdTreeFLANNConstPtr;
+#         
+#         void setSortedResults (bool sorted_results)
+#         
+#         void setEpsilon (float eps)
+#         
+#         float getEpsilon ()
+#         
+#         # void setInputCloud (const PointCloudConstPtr& cloud, const IndicesConstPtr& indices = IndicesConstPtr ())
+#         
+#         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+#         int nearestKSearch (const PointT &point, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
+#         
+#         int radiusSearch (const PointT& point, double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn)
+# 
+# 
 ###
 
-cdef extern from "pcl/Search/Octree.h" namespace "pcl::search":
-    cdef cppclass Octree[PointT](Search[PointT]):
-        # Octree (const double resolution)
-        Octree (double)
-        
-        # public:
-        # ctypedef boost::shared_ptr<std::vector<int> > IndicesPtr;
-        # ctypedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
-        # ctypedef pcl::PointCloud<PointT> PointCloud;
-        # ctypedef boost::shared_ptr<PointCloud> PointCloudPtr;
-        # ctypedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
-        # ctypedef boost::shared_ptr<pcl::octree::OctreePointCloudSearch<PointT, LeafTWrap, BranchTWrap> > Ptr;
-        # ctypedef boost::shared_ptr<const pcl::octree::OctreePointCloudSearch<PointT, LeafTWrap, BranchTWrap> > ConstPtr;
-        # Ptr tree_;
-        # using pcl::search::Search<PointT>::input_;
-        # using pcl::search::Search<PointT>::indices_;
-        # using pcl::search::Search<PointT>::sorted_results_;
-        
-        # void setInputCloud (const PointCloudConstPtr &cloud)
-        void setInputCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud)
-        
-        # void setInputCloud (const PointCloudConstPtr &cloud, const IndicesConstPtr& indices)
-        # void setInputCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const IndicesConstPtr& indices)
-        
-        int nearestKSearch (const cpp.PointCloud[PointT] &cloud, int index, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
-        
-        # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
-        int nearestKSearch (const PointT &point, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
-        
-        # int nearestKSearch (int index, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
-        int nearestKSearch (int index, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
-        
-        # int radiusSearch ( const PointCloud &cloud,  int index,  double radius, std::vector<int> &k_indices,  std::vector<float> &k_sqr_distances,  unsigned int max_nn = 0) const
-        int radiusSearch ( const cpp.PointCloud[PointT] &cloud,  int index,  double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn)
-        
-        # int radiusSearch (const PointT &p_q,  double radius,  std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,  unsigned int max_nn = 0) const
-        int radiusSearch (const PointT &p_q,  double radius,  vector[int] &k_indices, vector[float] &k_sqr_distances,  unsigned int max_nn)
-        
-        # cdef int radiusSearch (int index, double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn = 0) const
-        int radiusSearch (int index, double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn)
-        
-        # cdef void approxNearestSearch ( const PointCloudConstPtr &cloud, int query_index, int &result_index, float &sqr_distance)
-        void approxNearestSearch ( const shared_ptr[cpp.PointCloud[PointT]] &cloud, int query_index, int &result_index, float &sqr_distance)
-        
-        # cdef void approxNearestSearch ( const PointT &p_q, int &result_index, float &sqr_distance)
-        
-        # cdef void approxNearestSearch (int query_index, int &result_index, float &sqr_distance)
-
-
-###
+# Conflict pcl_Octree ?
+# cdef extern from "pcl/Search/Octree.h" namespace "pcl::search":
+#     cdef cppclass Octree[PointT](Search[PointT]):
+#         # Octree (const double resolution)
+#         Octree (double)
+#         
+#         # public:
+#         # ctypedef boost::shared_ptr<std::vector<int> > IndicesPtr;
+#         # ctypedef boost::shared_ptr<const std::vector<int> > IndicesConstPtr;
+#         # ctypedef pcl::PointCloud<PointT> PointCloud;
+#         # ctypedef boost::shared_ptr<PointCloud> PointCloudPtr;
+#         # ctypedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
+#         # ctypedef boost::shared_ptr<pcl::octree::OctreePointCloudSearch<PointT, LeafTWrap, BranchTWrap> > Ptr;
+#         # ctypedef boost::shared_ptr<const pcl::octree::OctreePointCloudSearch<PointT, LeafTWrap, BranchTWrap> > ConstPtr;
+#         # Ptr tree_;
+#         # using pcl::search::Search<PointT>::input_;
+#         # using pcl::search::Search<PointT>::indices_;
+#         # using pcl::search::Search<PointT>::sorted_results_;
+#         
+#         # void setInputCloud (const PointCloudConstPtr &cloud)
+#         void setInputCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud)
+#         
+#         # void setInputCloud (const PointCloudConstPtr &cloud, const IndicesConstPtr& indices)
+#         # void setInputCloud (const shared_ptr[cpp.PointCloud[PointT]] &cloud, const IndicesConstPtr& indices)
+#         
+#         int nearestKSearch (const cpp.PointCloud[PointT] &cloud, int index, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
+#         
+#         # int nearestKSearch (const PointT &point, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+#         int nearestKSearch (const PointT &point, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
+#         
+#         # int nearestKSearch (int index, int k, std::vector<int> &k_indices, std::vector<float> &k_sqr_distances) const
+#         int nearestKSearch (int index, int k, vector[int] &k_indices, vector[float] &k_sqr_distances)
+#         
+#         # int radiusSearch ( const PointCloud &cloud,  int index,  double radius, std::vector<int> &k_indices,  std::vector<float> &k_sqr_distances,  unsigned int max_nn = 0) const
+#         int radiusSearch ( const cpp.PointCloud[PointT] &cloud,  int index,  double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn)
+#         
+#         # int radiusSearch (const PointT &p_q,  double radius,  std::vector<int> &k_indices, std::vector<float> &k_sqr_distances,  unsigned int max_nn = 0) const
+#         int radiusSearch (const PointT &p_q,  double radius,  vector[int] &k_indices, vector[float] &k_sqr_distances,  unsigned int max_nn)
+#         
+#         # cdef int radiusSearch (int index, double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn = 0) const
+#         int radiusSearch (int index, double radius, vector[int] &k_indices, vector[float] &k_sqr_distances, unsigned int max_nn)
+#         
+#         # cdef void approxNearestSearch ( const PointCloudConstPtr &cloud, int query_index, int &result_index, float &sqr_distance)
+#         void approxNearestSearch ( const shared_ptr[cpp.PointCloud[PointT]] &cloud, int query_index, int &result_index, float &sqr_distance)
+#         
+#         # cdef void approxNearestSearch ( const PointT &p_q, int &result_index, float &sqr_distance)
+#         
+#         # cdef void approxNearestSearch (int query_index, int &result_index, float &sqr_distance)
+# 
+# 
+####
 
 cdef extern from "pcl/Search/organized.h" namespace "pcl::search":
     cdef cppclass OrganizedNeighbor[PointT](Search[PointT]):

@@ -14,7 +14,7 @@ double PyLibCallBack::callback_python(void *parameter)
     return this->method_(parameter, python_callback_pointer_);
 }
 
-void PyLibCallBack::cy_execute (void *parameter)
+double PyLibCallBack::cy_execute (void *parameter)
 {
 	return _method(parameter, _user_data);
 }
