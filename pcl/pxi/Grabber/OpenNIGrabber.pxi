@@ -12,7 +12,7 @@ cimport _bind_defs as _bind
 from boost_shared_ptr cimport shared_ptr
 
 
-cdef class OpenNIGrabber:
+cdef class OpenNIGrabber_:
     """
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in OpenNIGrabber().

@@ -12,7 +12,7 @@ cimport _bind_defs as _bind
 from boost_shared_ptr cimport shared_ptr
 
 
-cdef class ONIGrabber:
+cdef class ONIGrabber_:
     """
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in ONIGrabber(pc).
