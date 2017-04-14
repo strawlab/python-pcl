@@ -25,10 +25,10 @@ cdef class ONIGrabber_:
     def __dealloc__(self):
         del self.me
 
-    def RegisterCallback (self, func):
-        cdef _bind.arg _1
-        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](<_bind.callback_t> func, _1)
-        self.me.register_callback(<_bind.function[callback_t]> callback)
+    # def RegisterCallback (self, func):
+    #     cdef _bind.arg _1
+    #     cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](<_bind.callback_t> func, _1)
+    #     self.me.register_callback(<_bind.function[callback_t]> callback)
 
     def Start(self):
         self.me.start ()

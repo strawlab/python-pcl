@@ -19,7 +19,7 @@ cdef class OpenNIGrabber_:
     """
     cdef pcl_grb.OpenNIGrabber *me
 
-    cdef void some_callback(void* some_ptr):
+    cdef void some_callback(self, void* some_ptr):
         print('Hello from some_callback (Cython) !')
         # print 'some_ptr: ' + some_ptr
 
