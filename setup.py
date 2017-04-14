@@ -42,7 +42,7 @@ if platform.system() == "Windows":
     else:
         print("cannot find environment PCL_ROOT", file=sys.stderr)
         sys.exit(1)
-    
+
     # Add environment Value
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -572,7 +572,7 @@ else:
               tests_require=['mock', 'nose'],
               ext_modules=[Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language = "c++", **ext_args),
                            # Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
-                           Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
+                           Extension("pcl.pcl_grabber", ["pcl/pcl_grabber_180.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                            # debug
                            # gdb_debug=True,
                           ],

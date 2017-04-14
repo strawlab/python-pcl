@@ -72,6 +72,7 @@ cimport pcl_grabber as pcl_grb
 
 
 # Grabber
-include "pxi/Grabber/ONIGrabber.pxi"
+# pcl 1.8.0 no use
+# include "pxi/Grabber/ONIGrabber.pxi"
 include "pxi/Grabber/OpenNIGrabber.pxi"
 

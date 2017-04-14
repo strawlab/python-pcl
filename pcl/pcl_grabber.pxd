@@ -91,9 +91,9 @@ cdef extern from "pcl/io/grabber.h" namespace "pcl":
 # /** \brief A simple ONI grabber.
 #  * \author Suat Gedikli
 # class PCL_EXPORTS ONIGrabber : public Grabber
-cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
-    cdef cppclass ONIGrabber(Grabber):
-        ONIGrabber (string file_name, bool repeat, bool stream)
+# cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
+#     cdef cppclass ONIGrabber(Grabber):
+#         ONIGrabber (string file_name, bool repeat, bool stream)
         # public:
         # //define callback signature typedefs
         # typedef void (sig_cb_openni_image) (const boost::shared_ptr<openni_wrapper::Image>&);
@@ -105,29 +105,29 @@ cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
         # typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
         # typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
         # typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-        
+        # 
         # /** \brief For devices that are streaming, the streams are started by calling this method.
         #   * Trigger-based devices, just trigger the device once for each call of start.
-        void start ()
-        
+        # void start ()
+        # 
         # /** \brief For devices that are streaming, the streams are stopped.
         #  *        This method has no effect for triggered devices.
         #  */
-        void stop ()
-        
+        # void stop ()
+        #
         # /** \brief returns the name of the concrete subclass.
         #  * \return the name of the concrete driver.
         #  */
-        string getName ()
-        
+        # string getName ()
+        #
         # /** \brief Indicates whether the grabber is streaming or not. This value is not defined for triggered devices.
         #  * \return true if grabber is running / streaming. False otherwise.
         #  */
-        bool isRunning ()
-        
+        # bool isRunning ()
+        # 
         # /** \brief returns the frames pre second. 0 if it is trigger based. */
-        float getFramesPerSecond ()
-        
+        # float getFramesPerSecond ()
+        # 
         # protected:
         # /** \brief internal OpenNI (openni_wrapper) callback that handles image streams */
         # void imageCallback (boost::shared_ptr<openni_wrapper::Image> image, void* cookie);

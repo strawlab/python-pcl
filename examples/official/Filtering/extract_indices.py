@@ -9,16 +9,16 @@ import pcl
 # pcl::PCLPointCloud2::Ptr cloud_blob (new pcl::PCLPointCloud2), cloud_filtered_blob (new pcl::PCLPointCloud2);
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>), cloud_p (new pcl::PointCloud<pcl::PointXYZ>), cloud_f (new pcl::PointCloud<pcl::PointXYZ>);
 
-cloud_filtered = pcl.
+# cloud_filtered = pcl.
 
-// Fill in the cloud data
+# Fill in the cloud data
 # pcl::PCDReader reader;
 # reader.read ("table_scene_lms400.pcd", *cloud_blob);
 # std::cerr << "PointCloud before filtering: " << cloud_blob->width * cloud_blob->height << " data points." << std::endl;
 cloud_blob = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
 print("PointCloud before filtering: " + str(cloud_blob.width * cloud_blob.height) + " data points.")
 
-// Create the filtering object: downsample the dataset using a leaf size of 1cm
+# Create the filtering object: downsample the dataset using a leaf size of 1cm
 # pcl::VoxelGrid<pcl::PCLPointCloud2> sor;
 # sor.setInputCloud (cloud_blob);
 # sor.setLeafSize (0.01f, 0.01f, 0.01f);
@@ -31,9 +31,9 @@ cloud_filtered_blob = sor.filter()
 # pcl::fromPCLPointCloud2 (*cloud_filtered_blob, *cloud_filtered);
 # std::cerr << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height << " data points." << std::endl;
 cloud_filtered = cloud_filtered_blob.from___
-print("PointCloud after filtering: " + (cloud_filtered.width * cloud_filtered->height) + " data points.")
+print("PointCloud after filtering: " + (cloud_filtered.width * cloud_filtered.height) + " data points.")
 
-# // Write the downsampled version to disk
+# Write the downsampled version to disk
 # pcl::PCDWriter writer;
 # writer.write<pcl::PointXYZ> ("table_scene_lms400_downsampled.pcd", *cloud_filtered, false);
 pcl.save("table_scene_lms400_downsampled.pcd", cloud_filtered)

@@ -9,7 +9,7 @@ cimport numpy as np
 
 cimport _pcl
 cimport pcl_defs as cpp
-cimport pcl_grabber as pcl_grb
+cimport pcl_grabber_180 as pcl_grb
 from boost_shared_ptr cimport shared_ptr
 
 
@@ -28,6 +28,6 @@ from boost_shared_ptr cimport shared_ptr
 ### Enum Setting(define Class InternalType) ###
 
 # Grabber
-include "pxi/Grabber/ONIGrabber.pxi"
-include "pxi/Grabber/OpenNIGrabber.pxi"
+# include "pxi/Grabber/ONIGrabber.pxi"
+# include "pxi/Grabber/OpenNIGrabber.pxi"
 
