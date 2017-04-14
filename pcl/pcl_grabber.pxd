@@ -12,10 +12,10 @@ from boost_shared_ptr cimport shared_ptr
 # from boost_function cimport function
 # from boost_signal2_connection cimport connection
 # bind
-from _bind_defs.pxd cimport connection
-from _bind_defs.pxd cimport arg
-from _bind_defs.pxd cimport function
-from _bind_defs.pxd cimport callback_t
+from _bind_defs cimport connection
+from _bind_defs cimport arg
+from _bind_defs cimport function
+from _bind_defs cimport callback_t
 
 ###############################################################################
 # Types
@@ -207,7 +207,7 @@ cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
 cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
     cdef cppclass OpenNIGrabber(Grabber):
         # OpenNIGrabber ()
-        OpenNIGrabber (string device_id, Mode depth_mode, Mode image_mode)
+        OpenNIGrabber (string device_id, Mode2 depth_mode, Mode2 image_mode)
         # OpenNIGrabber (const std::string& device_id = "",
         #                const Mode& depth_mode = OpenNI_Default_Mode,
         #                const Mode& image_mode = OpenNI_Default_Mode);
