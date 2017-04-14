@@ -19,6 +19,10 @@ cdef class OpenNIGrabber_:
     """
     cdef pcl_grb.OpenNIGrabber *me
 
+    cdef void some_callback(void* some_ptr):
+        print('Hello from some_callback (Cython) !')
+        # print 'some_ptr: ' + some_ptr
+
     def __cinit__(self, string file_name, bool repeat, bool stream):
         self.me = new pcl_grb.OpenNIGrabber(file_name, repeat, stream)
 
@@ -27,8 +31,9 @@ cdef class OpenNIGrabber_:
 
     def RegisterCallback (self, func):
         cdef _bind.arg _1
-        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](<_bind.callback_t> func, _1)
-        self.me.register_callback(<_bind.function[callback_t]> callback)
+        # cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](<_bind.callback_t> func, _1)
+        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](some_callback, _1)
+        self.me.register_callback(callback)
 
     def Start(self):
         self.me.start ()

@@ -1,3 +1,5 @@
+# cimport pcl_defs as cpp
+
 cdef extern from "boost/function.hpp" namespace "boost":
   cdef cppclass function[T]:
     pass
@@ -13,7 +15,7 @@ cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
 
 # 
 ctypedef void callback_t(void*)
-# ctypedef void callback2_t(pcl.PointCloud_Ptr_t)
+# ctypedef void callback2_t(cpp.PointCloud_Ptr_t)
 
 cdef extern from "bind.h":
   cdef connection register_callback(function[callback_t] callback)
