@@ -198,7 +198,8 @@ cdef extern from "pcl/io/oni_grabber.h" namespace "pcl":
 # class PCL_EXPORTS OpenNIGrabber : public Grabber
 cdef extern from "pcl/io/openni_grabber.h" namespace "pcl":
     cdef cppclass OpenNIGrabber(Grabber):
-        OpenNIGrabber ()
+        # OpenNIGrabber ()
+        OpenNIGrabber (string device_id, Mode depth_mode, Mode image_mode)
         # OpenNIGrabber (const std::string& device_id = "",
         #                const Mode& depth_mode = OpenNI_Default_Mode,
         #                const Mode& image_mode = OpenNI_Default_Mode);

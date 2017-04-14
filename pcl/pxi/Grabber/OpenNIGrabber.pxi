@@ -11,7 +11,6 @@ cimport _bind_defs as _bind
 
 from boost_shared_ptr cimport shared_ptr
 
-
 cdef class OpenNIGrabber_:
     """
     Must be constructed from the reference point cloud, which is copied, so
@@ -23,8 +22,8 @@ cdef class OpenNIGrabber_:
         print('Hello from some_callback (Cython) !')
         # print 'some_ptr: ' + some_ptr
 
-    def __cinit__(self, string file_name, bool repeat, bool stream):
-        self.me = new pcl_grb.OpenNIGrabber(file_name, repeat, stream)
+    def __cinit__(self, device_id, depth_mode, image_mode):
+        self.me = new pcl_grb.OpenNIGrabber(device_id, depth_mode, image_mode)
 
     def __dealloc__(self):
         del self.me
@@ -32,7 +31,8 @@ cdef class OpenNIGrabber_:
     def RegisterCallback (self, func):
         cdef _bind.arg _1
         # cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](<_bind.callback_t> func, _1)
-        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](some_callback, _1)
+        cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](self.some_callback, _1)
+        # cdef _bind.function[_bind.callback_t] callback = _bind.bind[_bind.callback_t](some_callback, _1)
         self.me.register_callback(callback)
 
     def Start(self):
