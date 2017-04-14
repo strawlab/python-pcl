@@ -11,6 +11,11 @@ cimport pcl_defs as cpp
 from boost_shared_ptr cimport shared_ptr
 # from boost_function cimport function
 # from boost_signal2_connection cimport connection
+# bind
+from _bind_defs.pxd cimport connection
+from _bind_defs.pxd cimport arg
+from _bind_defs.pxd cimport function
+from _bind_defs.pxd cimport callback_t
 
 ###############################################################################
 # Types
@@ -34,10 +39,13 @@ cdef extern from "pcl/io/grabber.h" namespace "pcl":
         #   * \return Connection object, that can be used to disconnect the callback method from the signal again.
         # template<typename T> boost::signals2::connection registerCallback (const boost::function<T>& callback);
         # connection registerCallback[T](function[T]& callback)
+        connection registerCallback[T](function[T] callback)
         
         # /** \brief indicates whether a signal with given parameter-type exists or not
         #   * \return true if signal exists, false otherwise
         # template<typename T> bool providesCallback () const;
+        bool providesCallback[T]()
+        
         # 
         # /** \brief For devices that are streaming, the streams are started by calling this method.
         #   *        Trigger-based devices, just trigger the device once for each call of start.
