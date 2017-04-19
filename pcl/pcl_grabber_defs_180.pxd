@@ -265,171 +265,154 @@ cdef extern from "pcl/io/grabber.h" namespace "pcl":
 #include <libusb-1.0/libusb.h>
 #include <boost/circular_buffer.hpp>
 #
-#namespace pcl
-#{
-#  /** \brief Grabber for DINAST devices (i.e., IPA-1002, IPA-1110, IPA-2001)
-#    * \author Marco A. Gutierrez <marcog@unex.es>
-#    * \ingroup io
-#    */
-#  class PCL_EXPORTS DinastGrabber: public Grabber
-#  {
-#    // Define callback signature typedefs
-#    typedef void (sig_cb_dinast_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-#     
-#    public:
-#      /** \brief Constructor that sets up the grabber constants.
-#        * \param[in] device_position Number corresponding the device to grab
-#        */
-#      DinastGrabber (const int device_position=1);
-#
-#      /** \brief Destructor. It never throws. */
-#      virtual ~DinastGrabber () throw ();
-#
-#      /** \brief Check if the grabber is running
-#        * \return true if grabber is running / streaming. False otherwise.
-#        */
-#      virtual bool isRunning () const;
-#       
-#       /** \brief Returns the name of the concrete subclass, DinastGrabber.
-#         * \return DinastGrabber.
-#        */
-#      virtual std::string
-#      getName () const
-#      { return (std::string ("DinastGrabber")); }
-#      
-#      /** \brief Start the data acquisition process.
-#        */
-#      virtual void
-#      start ();
-#
-#      /** \brief Stop the data acquisition process.
-#        */
-#      virtual void stop ();
-#      
-#      /** \brief Obtain the number of frames per second (FPS). */
-#      virtual float 
-#      getFramesPerSecond () const;
-#
-#      /** \brief Get the version number of the currently opened device
-#        */
-#      std::string
-#      getDeviceVersion ();
-#      
-#    protected:  
-#      
-#      /** \brief On initialization processing. */
-#      void
-#      onInit (const int device_id);
-#      
-#      /** \brief Setup a Dinast 3D camera device
-#        * \param[in] device_position Number corresponding the device to grab
-#        * \param[in] id_vendor The ID of the camera vendor (should be 0x18d1)
-#        * \param[in] id_product The ID of the product (should be 0x1402)
-#        */
-#      void
-#      setupDevice (int device_position,
-#                  const int id_vendor = 0x18d1, 
-#                  const int id_product = 0x1402);
-#      
-#      /** \brief Send a RX data packet request
-#        * \param[in] req_code the request to send (the request field for the setup packet)
-#        * \param buffer
-#        * \param[in] length the length field for the setup packet. The data buffer should be at least this #size.
-#        */
-#      bool
-#      USBRxControlData (const unsigned char req_code,
-#                        unsigned char *buffer,
-#                        int length);
-#
-#      /** \brief Send a TX data packet request
-#        * \param[in] req_code the request to send (the request field for the setup packet)
-#        * \param buffer
-#        * \param[in] length the length field for the setup packet. The data buffer should be at least this size.
-#        */
-#      bool
-#      USBTxControlData (const unsigned char req_code,
-#                        unsigned char *buffer,
-#                        int length);
-#      
-#      /** \brief Check if we have a header in the global buffer, and return the position of the next valid image.
-#        * \note If the image in the buffer is partial, return -1, as we have to wait until we add more data to it.
-#        * \return the position of the next valid image (i.e., right after a valid header) or -1 in case the buffer 
-#        * either doesn't have an image or has a partial image
-#        */
-#      int
-#      checkHeader ();
-#      
-#      /** \brief Read image data and leaves it on image_
-#        */
-#      void
-#      readImage ();
-#      
-#      /** \brief Obtains XYZI Point Cloud from the image of the camera
-#        * \return the point cloud from the image data
-#        */
-#      pcl::PointCloud<pcl::PointXYZI>::Ptr
-#      getXYZIPointCloud ();
-#      
-#       /** \brief The function in charge of getting the data from the camera
-#        */     
-#      void 
-#      captureThreadFunction ();
-#      
-#      /** \brief Width of image */
-#      int image_width_;
-#      
-#      /** \brief Height of image */
-#      int image_height_;
-#      
-#      /** \brief Total size of image */
-#      int image_size_;
-#      
-#      /** \brief Length of a sync packet */
-#      int sync_packet_size_;
-#      
-#      double dist_max_2d_;
-#      
-#      /** \brief diagonal Field of View*/
-#      double fov_;
-#      
-#      /** \brief Size of pixel */
-#      enum pixel_size { RAW8=1, RGB16=2, RGB24=3, RGB32=4 };
-#      
-#      /** \brief The libusb context*/
-#      libusb_context *context_;
-#      
-#      /** \brief the actual device_handle for the camera */
-#      struct libusb_device_handle *device_handle_;
-#      
-#      /** \brief Temporary USB read buffer, since we read two RGB16 images at a time size is the double of two images
-#        * plus a sync packet.
-#        */
-#      unsigned char *raw_buffer_ ;
-#
-#      /** \brief Global circular buffer */
-#      boost::circular_buffer<unsigned char> g_buffer_;
-#
-#      /** \brief Bulk endpoint address value */
-#      unsigned char bulk_ep_;
-#      
-#      /** \brief Device command values */
-#      enum { CMD_READ_START=0xC7, CMD_READ_STOP=0xC8, CMD_GET_VERSION=0xDC, CMD_SEND_DATA=0xDE };
-#
-#      unsigned char *image_;
-#      
-#      /** \brief Since there is no header after the first image, we need to save the state */
-#      bool second_image_;
-#      
-#      bool running_;
-#      
-#      boost::thread capture_thread_;
-#      
-#      mutable boost::mutex capture_mutex_;
-#      boost::signals2::signal<sig_cb_dinast_point_cloud>* point_cloud_signal_;
-#  };
-#} //namespace pcl
-#
-##endif // PCL_IO_DINAST_GRABBER_
+# namespace pcl
+# /** \brief Grabber for DINAST devices (i.e., IPA-1002, IPA-1110, IPA-2001)
+#   * \author Marco A. Gutierrez <marcog@unex.es>
+#   * \ingroup io
+#   */
+# class PCL_EXPORTS DinastGrabber: public Grabber
+        # // Define callback signature typedefs
+        # typedef void (sig_cb_dinast_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        # 
+        # public:
+        # /** \brief Constructor that sets up the grabber constants.
+        #   * \param[in] device_position Number corresponding the device to grab
+        #   */
+        # DinastGrabber (const int device_position=1);
+        # 
+        # /** \brief Destructor. It never throws. */
+        # virtual ~DinastGrabber () throw ();
+        # 
+        # /** \brief Check if the grabber is running
+        #  * \return true if grabber is running / streaming. False otherwise.
+        #  */
+        # virtual bool isRunning () const;
+        # 
+        # /** \brief Returns the name of the concrete subclass, DinastGrabber.
+        #   * \return DinastGrabber.
+        #   */
+        # virtual std::string getName () const
+        # 
+        # /** \brief Start the data acquisition process.
+        #  */
+        # virtual void start ();
+        # 
+        # /** \brief Stop the data acquisition process.
+        #  */
+        # virtual void stop ();
+        # 
+        # /** \brief Obtain the number of frames per second (FPS). */
+        # virtual float getFramesPerSecond () const;
+        # 
+        # /** \brief Get the version number of the currently opened device
+        #  */
+        # std::string getDeviceVersion ();
+        # 
+        # protected:  
+        # /** \brief On initialization processing. */
+        # void onInit (const int device_id);
+        # 
+        # /** \brief Setup a Dinast 3D camera device
+        #   * \param[in] device_position Number corresponding the device to grab
+        #   * \param[in] id_vendor The ID of the camera vendor (should be 0x18d1)
+        #   * \param[in] id_product The ID of the product (should be 0x1402)
+        #   */
+        # void
+        # setupDevice (int device_position,
+        #            const int id_vendor = 0x18d1, 
+        #            const int id_product = 0x1402);
+        # 
+        # /** \brief Send a RX data packet request
+        #   * \param[in] req_code the request to send (the request field for the setup packet)
+        #   * \param buffer
+        #   * \param[in] length the length field for the setup packet. The data buffer should be at least this #size.
+        #   */
+        # bool
+        # USBRxControlData (const unsigned char req_code,
+        #                   unsigned char *buffer,
+        #                   int length);
+        # 
+        # /** \brief Send a TX data packet request
+        #   * \param[in] req_code the request to send (the request field for the setup packet)
+        #   * \param buffer
+        #   * \param[in] length the length field for the setup packet. The data buffer should be at least this size.
+        #   */
+        # bool
+        # USBTxControlData (const unsigned char req_code,
+        #                   unsigned char *buffer,
+        #                   int length);
+        # 
+        # /** \brief Check if we have a header in the global buffer, and return the position of the next valid image.
+        #   * \note If the image in the buffer is partial, return -1, as we have to wait until we add more data to it.
+        #   * \return the position of the next valid image (i.e., right after a valid header) or -1 in case the buffer 
+        #   * either doesn't have an image or has a partial image
+        #   */
+        # int checkHeader ();
+        # 
+        # /** \brief Read image data and leaves it on image_
+        #   */
+        # void readImage ();
+        # 
+        # /** \brief Obtains XYZI Point Cloud from the image of the camera
+        #   * \return the point cloud from the image data
+        #   */
+        # pcl::PointCloud<pcl::PointXYZI>::Ptr getXYZIPointCloud ();
+        # 
+        # /** \brief The function in charge of getting the data from the camera
+        #   */
+        # void captureThreadFunction ();
+        # 
+        # /** \brief Width of image */
+        # int image_width_;
+        # 
+        # /** \brief Height of image */
+        # int image_height_;
+        # 
+        # /** \brief Total size of image */
+        # int image_size_;
+        # 
+        # /** \brief Length of a sync packet */
+        # int sync_packet_size_;
+        # 
+        # double dist_max_2d_;
+        # 
+        # /** \brief diagonal Field of View*/
+        # double fov_;
+        # 
+        # /** \brief Size of pixel */
+        # enum pixel_size { RAW8=1, RGB16=2, RGB24=3, RGB32=4 };
+        # 
+        # /** \brief The libusb context*/
+        # libusb_context *context_;
+        # 
+        # /** \brief the actual device_handle for the camera */
+        # struct libusb_device_handle *device_handle_;
+        # 
+        # /** \brief Temporary USB read buffer, since we read two RGB16 images at a time size is the double of two images
+        #   * plus a sync packet.
+        #   */
+        # unsigned char *raw_buffer_ ;
+        # 
+        # /** \brief Global circular buffer */
+        # boost::circular_buffer<unsigned char> g_buffer_;
+        # 
+        # /** \brief Bulk endpoint address value */
+        # unsigned char bulk_ep_;
+        # 
+        # /** \brief Device command values */
+        # enum { CMD_READ_START=0xC7, CMD_READ_STOP=0xC8, CMD_GET_VERSION=0xDC, CMD_SEND_DATA=0xDE };
+        # 
+        # unsigned char *image_;
+        # 
+        # /** \brief Since there is no header after the first image, we need to save the state */
+        # bool second_image_;
+        # bool running_;
+        # boost::thread capture_thread_;
+        # 
+        # mutable boost::mutex capture_mutex_;
+        # boost::signals2::signal<sig_cb_dinast_point_cloud>* point_cloud_signal_;
+
+
 ###
 
 # pcd_grabber.h
@@ -465,47 +448,35 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
         #   */
         # PCDGrabberBase&
         # operator = (const PCDGrabberBase &src)
-        # {
-        #   impl_ = src.impl_;
-        #   return (*this);
-        # }
         # 
         # /** \brief Virtual destructor. */
         # virtual ~PCDGrabberBase () throw ();
         # 
         # /** \brief Starts playing the list of PCD files if frames_per_second is > 0. Otherwise it works as a trigger: publishes only the next PCD file in the list. */
-        # virtual void 
-        # start ();
+        # virtual void start ();
         # 
         # /** \brief Stops playing the list of PCD files if frames_per_second is > 0. Otherwise the method has no effect. */
-        # virtual void 
-        # stop ();
+        # virtual void stop ();
         # 
         # /** \brief Triggers a callback with new data */
-        # virtual void 
-        # trigger ();
+        # virtual void trigger ();
         # 
         # /** \brief whether the grabber is started (publishing) or not.
         #   * \return true only if publishing.
         #   */
-        # virtual bool 
-        # isRunning () const;
+        # virtual bool isRunning () const;
         # 
         # /** \return The name of the grabber */
-        # virtual std::string 
-        # getName () const;
+        # virtual std::string getName () const;
         # 
         # /** \brief Rewinds to the first PCD file in the list.*/
-        # virtual void 
-        # rewind ();
+        # virtual void rewind ();
         # 
         # /** \brief Returns the frames_per_second. 0 if grabber is trigger-based */
-        # virtual float 
-        # getFramesPerSecond () const;
+        # virtual float getFramesPerSecond () const;
         # 
         # /** \brief Returns whether the repeat flag is on */
-        # bool 
-        # isRepeatOn () const;
+        # bool isRepeatOn () const;
 
 
 ###
@@ -522,60 +493,19 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
         # #ifdef HAVE_OPENNI
         #   boost::signals2::signal<void (const boost::shared_ptr<openni_wrapper::DepthImage>&)>*     depth_image_signal_;
         # # #endif
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   template<typename PointT>
-#   PCDGrabber<PointT>::PCDGrabber (const std::string& pcd_path, float frames_per_second, bool repeat)
-#   : PCDGrabberBase (pcd_path, frames_per_second, repeat)
-#   {
-#     signal_ = createSignal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>();
-# #ifdef HAVE_OPENNI
-#     depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::DepthImage>&)> ();
-# #endif
-#   }
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   template<typename PointT>
-#   PCDGrabber<PointT>::PCDGrabber (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
-#     : PCDGrabberBase (pcd_files, frames_per_second, repeat), signal_ ()
-#   {
-#     signal_ = createSignal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>();
-# #ifdef HAVE_OPENNI
-#     depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::DepthImage>&)> ();
-# #endif
-#   }
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   template<typename PointT> void 
-#   PCDGrabber<PointT>::publish (const sensor_msgs::PointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const
-#   {
-#     typename pcl::PointCloud<PointT>::Ptr cloud (new pcl::PointCloud<PointT> ());
-#     pcl::fromROSMsg (blob, *cloud);
-#     cloud->sensor_origin_ = origin;
-#     cloud->sensor_orientation_ = orientation;
-# 
-#     signal_->operator () (cloud);
-# 
-# #ifdef HAVE_OPENNI
-#     // If dataset is not organized, return
-#     if (!cloud->isOrganized ())
-#       return;
-# 
-#     boost::shared_ptr<xn::DepthMetaData> depth_meta_data (new xn::DepthMetaData);
-#     depth_meta_data->AllocateData (cloud->width, cloud->height);
-#     XnDepthPixel* depth_map = depth_meta_data->WritableData ();
-#     uint32_t k = 0;
-#     for (uint32_t i = 0; i < cloud->height; ++i)
-#       for (uint32_t j = 0; j < cloud->width; ++j)
-#       {
-#         depth_map[k] = static_cast<XnDepthPixel> ((*cloud)[k].z * 1000);
-#         ++k;
-#       }
-# 
-#     boost::shared_ptr<openni_wrapper::DepthImage> depth_image (new openni_wrapper::DepthImage (depth_meta_data, 0.075f, 525, 0, 0));
-#     if (depth_image_signal_->num_slots() > 0)
-#       depth_image_signal_->operator()(depth_image);
-# #endif
+
+# template<typename PointT>
+# PCDGrabber<PointT>::PCDGrabber (const std::string& pcd_path, float frames_per_second, bool repeat)
+# : PCDGrabberBase (pcd_path, frames_per_second, repeat)
+###
+
+# template<typename PointT>
+# PCDGrabber<PointT>::PCDGrabber (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
+#   : PCDGrabberBase (pcd_files, frames_per_second, repeat), signal_ ()
+###
+
+# template<typename PointT> void 
+# PCDGrabber<PointT>::publish (const sensor_msgs::PointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const
 ###
 
 # pcl 1.8.0
@@ -586,38 +516,33 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
 #
 ##include <pcl/point_cloud.h>
 #
-#namespace pcl
-#{
-#  /** \brief FileGrabber provides a container-style interface for grabbers which operate on fixed-size input
-#    * \author Stephen Miller
-#    * \ingroup io
-#    */
-#  template <typename PointT>
-#  class PCL_EXPORTS FileGrabber
-#  {
-#  public:
-#
-#    /** \brief Empty destructor */
-#    virtual ~FileGrabber () {}
-#
-#    /** \brief operator[] Returns the idx-th cloud in the dataset, without bounds checking.
-#     *  Note that in the future, this could easily be modified to do caching
-#     *  \param[in] idx The frame to load
-#     */
-#    virtual const boost::shared_ptr< const pcl::PointCloud<PointT> >
-#    operator[] (size_t idx) const = 0;
-#
-#    /** \brief size Returns the number of clouds currently loaded by the grabber */
-#    virtual size_t
-#    size () const = 0;
-#    
-#    /** \brief at Returns the idx-th cloud in the dataset, with bounds checking
-#     *  \param[in] idx The frame to load
-#     */
-#    virtual const boost::shared_ptr< const pcl::PointCloud<PointT> > at (size_t idx) const
-#  };
-#}
-##endif//PCL_IO_FILE_GRABBER_H_
+# namespace pcl
+# /** \brief FileGrabber provides a container-style interface for grabbers which operate on fixed-size input
+#   * \author Stephen Miller
+#   * \ingroup io
+#   */
+# template <typename PointT>
+# class PCL_EXPORTS FileGrabber
+        # public:
+        # 
+        # /** \brief Empty destructor */
+        # virtual ~FileGrabber () {}
+        # 
+        # /** \brief operator[] Returns the idx-th cloud in the dataset, without bounds checking.
+        #   *  Note that in the future, this could easily be modified to do caching
+        #   *  \param[in] idx The frame to load
+        #   */
+        # virtual const boost::shared_ptr< const pcl::PointCloud<PointT> > operator[] (size_t idx) const = 0;
+        # 
+        # /** \brief size Returns the number of clouds currently loaded by the grabber */
+        # virtual size_t size () const = 0;
+        # 
+        # /** \brief at Returns the idx-th cloud in the dataset, with bounds checking
+        #  *  \param[in] idx The frame to load
+        #  */
+        # virtual const boost::shared_ptr< const pcl::PointCloud<PointT> > at (size_t idx) const
+
+
 ###
 
 # pcl 1.8.0
@@ -636,264 +561,189 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
 #
 ##define HDL_Grabber_toRadians(x) ((x) * M_PI / 180.0)
 #
-#namespace pcl
-#{
-#
-#  /** \brief Grabber for the Velodyne High-Definition-Laser (HDL)
+# namespace pcl
+# /** \brief Grabber for the Velodyne High-Definition-Laser (HDL)
 #   * \author Keven Ring <keven@mitre.org>
 #   * \ingroup io
 #   */
-#  class PCL_EXPORTS HDLGrabber : public Grabber
-#  {
-#    public:
-#      /** \brief Signal used for a single sector
-#       *         Represents 1 corrected packet from the HDL Velodyne
-#       */
-#      typedef void
-#      (sig_cb_velodyne_hdl_scan_point_cloud_xyz) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&,
-#                                                  float,
-#                                                  float);
-#      /** \brief Signal used for a single sector
-#       *         Represents 1 corrected packet from the HDL Velodyne.  Each laser has a different RGB
-#       */
-#      typedef void
-#      (sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&,
-#                                                     float,
-#                                                     float);
-#      /** \brief Signal used for a single sector
-#       *         Represents 1 corrected packet from the HDL Velodyne with the returned intensity.
-#       */
-#      typedef void
-#      (sig_cb_velodyne_hdl_scan_point_cloud_xyzi) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&,
-#                                                   float startAngle,
-#                                                   float);
-#      /** \brief Signal used for a 360 degree sweep
-#       *         Represents multiple corrected packets from the HDL Velodyne
-#       *         This signal is sent when the Velodyne passes angle "0"
-#       */
-#      typedef void
-#      (sig_cb_velodyne_hdl_sweep_point_cloud_xyz) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
-#      /** \brief Signal used for a 360 degree sweep
-#       *         Represents multiple corrected packets from the HDL Velodyne with the returned intensity
-#       *         This signal is sent when the Velodyne passes angle "0"
-#       */
-#      typedef void
-#      (sig_cb_velodyne_hdl_sweep_point_cloud_xyzi) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-#      /** \brief Signal used for a 360 degree sweep
-#       *         Represents multiple corrected packets from the HDL Velodyne
-#       *         This signal is sent when the Velodyne passes angle "0".  Each laser has a different RGB
-#       */
-#      typedef void
-#      (sig_cb_velodyne_hdl_sweep_point_cloud_xyzrgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
-#
-#      /** \brief Constructor taking an optional path to an HDL corrections file.  The Grabber will listen on the default IP/port for data packets [192.168.3.255/2368]
-#       * \param[in] correctionsFile Path to a file which contains the correction parameters for the HDL.  This parameter is mandatory for the HDL-64, optional for the HDL-32
-#       * \param[in] pcapFile Path to a file which contains previously captured data packets.  This parameter is optional
-#       */
-#      HDLGrabber (const std::string& correctionsFile = "",
-#                  const std::string& pcapFile = "");
-#
-#      /** \brief Constructor taking a pecified IP/port and an optional path to an HDL corrections file.
-#       * \param[in] ipAddress IP Address that should be used to listen for HDL packets
-#       * \param[in] port UDP Port that should be used to listen for HDL packets
-#       * \param[in] correctionsFile Path to a file which contains the correction parameters for the HDL.  This field is mandatory for the HDL-64, optional for the HDL-32
-#       */
-#      HDLGrabber (const boost::asio::ip::address& ipAddress,
-#                  const unsigned short port,
-#                  const std::string& correctionsFile = “”);
-#
-#      /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
-#      virtual ~HDLGrabber () throw ();
-#
-#      /** \brief Starts processing the Velodyne packets, either from the network or PCAP file. */
-#      virtual void
-#      start ();
-#
-#      /** \brief Stops processing the Velodyne packets, either from the network or PCAP file */
-#      virtual void
-#      stop ();
-#
-#      /** \brief Obtains the name of this I/O Grabber
-#       *  \return The name of the grabber
-#       */
-#      virtual std::string
-#      getName () const;
-#
-#      /** \brief Check if the grabber is still running.
-#       *  \return TRUE if the grabber is running, FALSE otherwise
-#       */
-#      virtual bool
-#      isRunning () const;
-#
-#      /** \brief Returns the number of frames per second.
-#       */
-#      virtual float
-#      getFramesPerSecond () const;
-#
-#      /** \brief Allows one to filter packets based on the SOURCE IP address and PORT
-#       *         This can be used, for instance, if multiple HDL LIDARs are on the same network
-#       */
-#      void
-#      filterPackets (const boost::asio::ip::address& ipAddress,
-#                     const unsigned short port = 443);
-#
-#      /** \brief Allows one to customize the colors used for each of the lasers.
-#       */
-#      void
-#      setLaserColorRGB (const pcl::RGB& color,
-#                        unsigned int laserNumber);
-#
-#      /** \brief Any returns from the HDL with a distance less than this are discarded.
-#       *         This value is in meters
-#       *         Default: 0.0
-#       */
-#      void
-#      setMinimumDistanceThreshold (float & minThreshold);
-#
-#      /** \brief Any returns from the HDL with a distance greater than this are discarded.
-#       *         This value is in meters
-#       *         Default: 10000.0
-#       */
-#      void
-#      setMaximumDistanceThreshold (float & maxThreshold);
-#
-#      /** \brief Returns the current minimum distance threshold, in meters
-#       */
-#
-#      float getMinimumDistanceThreshold ();
-#
-#      /** \brief Returns the current maximum distance threshold, in meters
-#       */
-#      float getMaximumDistanceThreshold ();
-#
-#    protected:
-#      static const int HDL_DATA_PORT = 2368;
-#      static const int HDL_NUM_ROT_ANGLES = 36001;
-#      static const int HDL_LASER_PER_FIRING = 32;
-#      static const int HDL_MAX_NUM_LASERS = 64;
-#      static const int HDL_FIRING_PER_PKT = 12;
-#
-#      enum HDLBlock
-#      {
-#        BLOCK_0_TO_31 = 0xeeff, BLOCK_32_TO_63 = 0xddff
-#      };
-#
-##pragma pack(push, 1)
-#      typedef struct HDLLaserReturn
-#      {
-#          unsigned short distance;
-#          unsigned char intensity;
-#      } HDLLaserReturn;
-##pragma pack(pop)
-#
-#      struct HDLFiringData
-#      {
-#          unsigned short blockIdentifier;
-#          unsigned short rotationalPosition;
-#          HDLLaserReturn laserReturns[HDL_LASER_PER_FIRING];
-#      };
-#
-#      struct HDLDataPacket
-#      {
-#          HDLFiringData firingData[HDL_FIRING_PER_PKT];
-#          unsigned int gpsTimestamp;
-#          unsigned char mode;
-#          unsigned char sensorType;
-#      };
-#
-#      struct HDLLaserCorrection
-#      {
-#          double azimuthCorrection;
-#          double verticalCorrection;
-#          double distanceCorrection;
-#          double verticalOffsetCorrection;
-#          double horizontalOffsetCorrection;
-#          double sinVertCorrection;
-#          double cosVertCorrection;
-#          double sinVertOffsetCorrection;
-#          double cosVertOffsetCorrection;
-#      };
-#
-#      HDLLaserCorrection laser_corrections_[HDL_MAX_NUM_LASERS];
-#      unsigned int last_azimuth_;
-#      boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> > current_scan_xyz_, current_sweep_xyz_;
-#      boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> > current_scan_xyzi_, current_sweep_xyzi_;
-#      boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> > current_scan_xyzrgb_, current_sweep_xyzrgb_;
-#      boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyz>* sweep_xyz_signal_;
-#      boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyzrgb>* sweep_xyzrgb_signal_;
-#      boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyzi>* sweep_xyzi_signal_;
-#      boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyz>* scan_xyz_signal_;
-#      boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb>* scan_xyzrgb_signal_;
-#      boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzi>* scan_xyzi_signal_;
-#
-#      void
-#      fireCurrentSweep ();
-#
-#      void
-#      fireCurrentScan (const unsigned short startAngle,
-#                       const unsigned short endAngle);
-#      void
-#      computeXYZI (pcl::PointXYZI& pointXYZI,
-#                   int azimuth,
-#                   HDLLaserReturn laserReturn,
-#                   HDLLaserCorrection correction);
-#
-#
-#    private:
-#      static double *cos_lookup_table_;
-#      static double *sin_lookup_table_;
-#      pcl::SynchronizedQueue<unsigned char *> hdl_data_;
-#      boost::asio::ip::udp::endpoint udp_listener_endpoint_;
-#      boost::asio::ip::address source_address_filter_;
-#      unsigned short source_port_filter_;
-#      boost::asio::io_service hdl_read_socket_service_;
-#      boost::asio::ip::udp::socket *hdl_read_socket_;
-#      std::string pcap_file_name_;
-#      boost::thread *queue_consumer_thread_;
-#      boost::thread *hdl_read_packet_thread_;
-#      bool terminate_read_packet_thread_;
-#      pcl::RGB laser_rgb_mapping_[HDL_MAX_NUM_LASERS];
-#      float min_distance_threshold_;
-#      float max_distance_threshold_;
-#
-#      virtual void
-#      toPointClouds (HDLDataPacket *dataPacket);
-#
-#      virtual boost::asio::ip::address
-#      getDefaultNetworkAddress ();
-#
-#      void
-#      initialize (const std::string& correctionsFile = "");
-#
-#      void
-#      processVelodynePackets ();
-#
-#      void
-#      enqueueHDLPacket (const unsigned char *data,
-#                        std::size_t bytesReceived);
-#
-#      void
-#      loadCorrectionsFile (const std::string& correctionsFile);
-#
-#      void
-#      loadHDL32Corrections ();
-#
-#      void
-#      readPacketsFromSocket ();
-#
-##ifdef HAVE_PCAP
-#      void
-#      readPacketsFromPcap();
-#
-##endif //#ifdef HAVE_PCAP
-#
-#      bool
-#      isAddressUnspecified (const boost::asio::ip::address& ip_address);
-#
-#  };
-#}
-#
-##endif /* PCL_IO_HDL_GRABBER_H_ */
+# class PCL_EXPORTS HDLGrabber : public Grabber
+        # public:
+        # /** \brief Signal used for a single sector
+        #   *         Represents 1 corrected packet from the HDL Velodyne
+        #   */
+        # typedef void
+        # (sig_cb_velodyne_hdl_scan_point_cloud_xyz) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&,
+        #                                             float,
+        #                                             float);
+        # /** \brief Signal used for a single sector
+        #   *         Represents 1 corrected packet from the HDL Velodyne.  Each laser has a different RGB
+        #   */
+        # typedef void
+        # (sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&,
+        #                                                float,
+        #                                                float);
+        # /** \brief Signal used for a single sector
+        #   *         Represents 1 corrected packet from the HDL Velodyne with the returned intensity.
+        #   */
+        # typedef void
+        # (sig_cb_velodyne_hdl_scan_point_cloud_xyzi) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&,
+        #                                              float startAngle,
+        #                                              float);
+        # /** \brief Signal used for a 360 degree sweep
+        #   *         Represents multiple corrected packets from the HDL Velodyne
+        #   *         This signal is sent when the Velodyne passes angle "0"
+        #   */
+        # typedef void
+        # (sig_cb_velodyne_hdl_sweep_point_cloud_xyz) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
+        # /** \brief Signal used for a 360 degree sweep
+        #   *         Represents multiple corrected packets from the HDL Velodyne with the returned intensity
+        #   *         This signal is sent when the Velodyne passes angle "0"
+        #   */
+        # typedef void
+        # (sig_cb_velodyne_hdl_sweep_point_cloud_xyzi) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        # /** \brief Signal used for a 360 degree sweep
+        #   *         Represents multiple corrected packets from the HDL Velodyne
+        #   *         This signal is sent when the Velodyne passes angle "0".  Each laser has a different RGB
+        #   */
+        # typedef void
+        # (sig_cb_velodyne_hdl_sweep_point_cloud_xyzrgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
+        # 
+        # /** \brief Constructor taking an optional path to an HDL corrections file.  The Grabber will listen on the default IP/port for data packets [192.168.3.255/2368]
+        #   * \param[in] correctionsFile Path to a file which contains the correction parameters for the HDL.  This parameter is mandatory for the HDL-64, optional for the HDL-32
+        #   * \param[in] pcapFile Path to a file which contains previously captured data packets.  This parameter is optional
+        #   */
+        # HDLGrabber (const std::string& correctionsFile = "", const std::string& pcapFile = "");
+        # 
+        # /** \brief Constructor taking a pecified IP/port and an optional path to an HDL corrections file.
+        #   * \param[in] ipAddress IP Address that should be used to listen for HDL packets
+        #   * \param[in] port UDP Port that should be used to listen for HDL packets
+        #   * \param[in] correctionsFile Path to a file which contains the correction parameters for the HDL.  This field is mandatory for the HDL-64, optional for the HDL-32
+        #   */
+        # HDLGrabber (const boost::asio::ip::address& ipAddress, const unsigned short port, const std::string& correctionsFile = "?");
+        # 
+        # /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
+        # virtual ~HDLGrabber () throw ();
+        # 
+        # /** \brief Starts processing the Velodyne packets, either from the network or PCAP file. */
+        # virtual void start ();
+        # 
+        # /** \brief Stops processing the Velodyne packets, either from the network or PCAP file */
+        # virtual void stop ();
+        # 
+        # /** \brief Obtains the name of this I/O Grabber
+        #  *  \return The name of the grabber
+        #  */
+        # virtual std::string getName () const;
+        # 
+        # /** \brief Check if the grabber is still running.
+        #  *  \return TRUE if the grabber is running, FALSE otherwise
+        #  */
+        # virtual bool isRunning () const;
+        # 
+        # /** \brief Returns the number of frames per second.
+        # */
+        # virtual float getFramesPerSecond () const;
+        # 
+        # /** \brief Allows one to filter packets based on the SOURCE IP address and PORT
+        # *         This can be used, for instance, if multiple HDL LIDARs are on the same network
+        # */
+        # void
+        # filterPackets (const boost::asio::ip::address& ipAddress, const unsigned short port = 443);
+        # 
+        # /** \brief Allows one to customize the colors used for each of the lasers.
+        # */
+        # void
+        # setLaserColorRGB (const pcl::RGB& color, unsigned int laserNumber);
+        # 
+        # /** \brief Any returns from the HDL with a distance less than this are discarded.
+        #   *         This value is in meters
+        #   *         Default: 0.0
+        #   */
+        # void setMinimumDistanceThreshold (float & minThreshold);
+        # 
+        # /** \brief Any returns from the HDL with a distance greater than this are discarded.
+        #   *         This value is in meters
+        #   *         Default: 10000.0
+        #   */
+        # void setMaximumDistanceThreshold (float & maxThreshold);
+        # 
+        # /** \brief Returns the current minimum distance threshold, in meters
+        #   */
+        # float getMinimumDistanceThreshold ();
+        # 
+        # /** \brief Returns the current maximum distance threshold, in meters
+        #   */
+        # float getMaximumDistanceThreshold ();
+        # 
+        # protected:
+        # static const int HDL_DATA_PORT = 2368;
+        # static const int HDL_NUM_ROT_ANGLES = 36001;
+        # static const int HDL_LASER_PER_FIRING = 32;
+        # static const int HDL_MAX_NUM_LASERS = 64;
+        # static const int HDL_FIRING_PER_PKT = 12;
+        # 
+        # enum HDLBlock
+        # {
+        #   BLOCK_0_TO_31 = 0xeeff, BLOCK_32_TO_63 = 0xddff
+        # };
+        # 
+        # #pragma pack(push, 1)
+        # typedef struct HDLLaserReturn
+        # {
+        #    unsigned short distance;
+        #    unsigned char intensity;
+        # } HDLLaserReturn;
+        # #pragma pack(pop)
+        # 
+        # struct HDLFiringData
+        # {
+        #   unsigned short blockIdentifier;
+        #   unsigned short rotationalPosition;
+        #   HDLLaserReturn laserReturns[HDL_LASER_PER_FIRING];
+        # };
+        # 
+        # struct HDLDataPacket
+        # {
+        #   HDLFiringData firingData[HDL_FIRING_PER_PKT];
+        #   unsigned int gpsTimestamp;
+        #   unsigned char mode;
+        #   unsigned char sensorType;
+        # };
+        # 
+        # struct HDLLaserCorrection
+        # {
+        #     double azimuthCorrection;
+        #     double verticalCorrection;
+        #     double distanceCorrection;
+        #     double verticalOffsetCorrection;
+        #     double horizontalOffsetCorrection;
+        #     double sinVertCorrection;
+        #     double cosVertCorrection;
+        #     double sinVertOffsetCorrection;
+        #     double cosVertOffsetCorrection;
+        # };
+        # 
+        # HDLLaserCorrection laser_corrections_[HDL_MAX_NUM_LASERS];
+        # unsigned int last_azimuth_;
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> > current_scan_xyz_, current_sweep_xyz_;
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> > current_scan_xyzi_, current_sweep_xyzi_;
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> > current_scan_xyzrgb_, current_sweep_xyzrgb_;
+        # boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyz>* sweep_xyz_signal_;
+        # boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyzrgb>* sweep_xyzrgb_signal_;
+        # boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyzi>* sweep_xyzi_signal_;
+        # boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyz>* scan_xyz_signal_;
+        # boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb>* scan_xyzrgb_signal_;
+        # boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzi>* scan_xyzi_signal_;
+        # 
+        # void fireCurrentSweep ();
+        # 
+        # void fireCurrentScan (const unsigned short startAngle, const unsigned short endAngle);
+        # void computeXYZI (pcl::PointXYZI& pointXYZI,
+        #                   int azimuth,
+        #                   HDLLaserReturn laserReturn,
+        #                   HDLLaserCorrection correction);
+
+
 ###
 
 ###############################################################################

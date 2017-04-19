@@ -291,49 +291,36 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
         # /** \brief Copy operator.
         #   * \param[in] src the PCD Grabber base object to copy into this
         #   */
-        # PCDGrabberBase&
-        # operator = (const PCDGrabberBase &src)
-        # {
-        #   impl_ = src.impl_;
-        #   return (*this);
-        # }
+        # PCDGrabberBase& operator = (const PCDGrabberBase &src)
         # 
         # /** \brief Virtual destructor. */
         # virtual ~PCDGrabberBase () throw ();
         # 
         # /** \brief Starts playing the list of PCD files if frames_per_second is > 0. Otherwise it works as a trigger: publishes only the next PCD file in the list. */
-        # virtual void 
-        # start ();
+        # virtual void start ();
         # 
         # /** \brief Stops playing the list of PCD files if frames_per_second is > 0. Otherwise the method has no effect. */
-        # virtual void 
-        # stop ();
+        # virtual void stop ();
         # 
         # /** \brief Triggers a callback with new data */
-        # virtual void 
-        # trigger ();
+        # virtual void trigger ();
         # 
         # /** \brief whether the grabber is started (publishing) or not.
         #   * \return true only if publishing.
         #   */
-        # virtual bool 
-        # isRunning () const;
+        # virtual bool isRunning () const;
         # 
         # /** \return The name of the grabber */
-        # virtual std::string 
-        # getName () const;
+        # virtual std::string getName () const;
         # 
         # /** \brief Rewinds to the first PCD file in the list.*/
-        # virtual void 
-        # rewind ();
+        # virtual void rewind ();
         # 
         # /** \brief Returns the frames_per_second. 0 if grabber is trigger-based */
-        # virtual float 
-        # getFramesPerSecond () const;
+        # virtual float getFramesPerSecond () const;
         # 
         # /** \brief Returns whether the repeat flag is on */
-        # bool 
-        # isRepeatOn () const;
+        # bool isRepeatOn () const;
 
 
 ###
@@ -350,60 +337,22 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
         # #ifdef HAVE_OPENNI
         #   boost::signals2::signal<void (const boost::shared_ptr<openni_wrapper::DepthImage>&)>*     depth_image_signal_;
         # # #endif
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   template<typename PointT>
-#   PCDGrabber<PointT>::PCDGrabber (const std::string& pcd_path, float frames_per_second, bool repeat)
-#   : PCDGrabberBase (pcd_path, frames_per_second, repeat)
-#   {
-#     signal_ = createSignal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>();
-# #ifdef HAVE_OPENNI
-#     depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::DepthImage>&)> ();
-# #endif
-#   }
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   template<typename PointT>
-#   PCDGrabber<PointT>::PCDGrabber (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
-#     : PCDGrabberBase (pcd_files, frames_per_second, repeat), signal_ ()
-#   {
-#     signal_ = createSignal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>();
-# #ifdef HAVE_OPENNI
-#     depth_image_signal_ = createSignal <void (const boost::shared_ptr<openni_wrapper::DepthImage>&)> ();
-# #endif
-#   }
-# 
-#   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#   template<typename PointT> void 
-#   PCDGrabber<PointT>::publish (const sensor_msgs::PointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const
-#   {
-#     typename pcl::PointCloud<PointT>::Ptr cloud (new pcl::PointCloud<PointT> ());
-#     pcl::fromROSMsg (blob, *cloud);
-#     cloud->sensor_origin_ = origin;
-#     cloud->sensor_orientation_ = orientation;
-# 
-#     signal_->operator () (cloud);
-# 
-# #ifdef HAVE_OPENNI
-#     // If dataset is not organized, return
-#     if (!cloud->isOrganized ())
-#       return;
-# 
-#     boost::shared_ptr<xn::DepthMetaData> depth_meta_data (new xn::DepthMetaData);
-#     depth_meta_data->AllocateData (cloud->width, cloud->height);
-#     XnDepthPixel* depth_map = depth_meta_data->WritableData ();
-#     uint32_t k = 0;
-#     for (uint32_t i = 0; i < cloud->height; ++i)
-#       for (uint32_t j = 0; j < cloud->width; ++j)
-#       {
-#         depth_map[k] = static_cast<XnDepthPixel> ((*cloud)[k].z * 1000);
-#         ++k;
-#       }
-# 
-#     boost::shared_ptr<openni_wrapper::DepthImage> depth_image (new openni_wrapper::DepthImage (depth_meta_data, 0.075f, 525, 0, 0));
-#     if (depth_image_signal_->num_slots() > 0)
-#       depth_image_signal_->operator()(depth_image);
-# #endif
+
+
+###
+
+# template<typename PointT>
+# PCDGrabber<PointT>::PCDGrabber (const std::string& pcd_path, float frames_per_second, bool repeat)
+# : PCDGrabberBase (pcd_path, frames_per_second, repeat)
+###
+
+# template<typename PointT>
+# PCDGrabber<PointT>::PCDGrabber (const std::vector<std::string>& pcd_files, float frames_per_second, bool repeat)
+#   : PCDGrabberBase (pcd_files, frames_per_second, repeat), signal_ ()
+###
+
+# template<typename PointT> void 
+# PCDGrabber<PointT>::publish (const sensor_msgs::PointCloud2& blob, const Eigen::Vector4f& origin, const Eigen::Quaternionf& orientation) const
 ###
 
 # file_grabber.h
@@ -454,9 +403,9 @@ cdef extern from "pcl/io/pcd_grabber.h" namespace "pcl":
 #   * \ingroup io
 #   */
 # class PCL_EXPORTS FotonicGrabber : public Grabber
-cdef extern from "pcl/io/fotonic_grabber.h" namespace "pcl":
-    cdef cppclass FotonicGrabber(Grabber):
-        FotonicGrabber()
+# cdef extern from "pcl/io/fotonic_grabber.h" namespace "pcl":
+#     cdef cppclass FotonicGrabber(Grabber):
+#         FotonicGrabber()
         # public:
         # typedef enum
         # {
@@ -693,52 +642,6 @@ cdef extern from "pcl/io/fotonic_grabber.h" namespace "pcl":
         #     double cosVertOffsetCorrection;
         # };
         # 
-        # private:
-        # static double *cos_lookup_table_;
-        # static double *sin_lookup_table_;
-        # pcl::SynchronizedQueue<unsigned char *> hdl_data_;
-        # boost::asio::ip::udp::endpoint udp_listener_endpoint_;
-        # boost::asio::ip::address source_address_filter_;
-        # unsigned short source_port_filter_;
-        # boost::asio::io_service hdl_read_socket_service_;
-        # boost::asio::ip::udp::socket *hdl_read_socket_;
-        # std::string pcap_file_name_;
-        # boost::thread *queue_consumer_thread_;
-        # boost::thread *hdl_read_packet_thread_;
-        # HDLLaserCorrection laser_corrections_[HDL_MAX_NUM_LASERS];
-        # bool terminate_read_packet_thread_;
-        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> > current_scan_xyz_,
-        #     current_sweep_xyz_;
-        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> > current_scan_xyzi_,
-        #     current_sweep_xyzi_;
-        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZRGBA> > current_scan_xyzrgb_,
-        #     current_sweep_xyzrgb_;
-        # unsigned int last_azimuth_;
-        # boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyz>* sweep_xyz_signal_;
-        # boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyzrgb>* sweep_xyzrgb_signal_;
-        # boost::signals2::signal<sig_cb_velodyne_hdl_sweep_point_cloud_xyzi>* sweep_xyzi_signal_;
-        # boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyz>* scan_xyz_signal_;
-        # boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzrgb>* scan_xyzrgb_signal_;
-        # boost::signals2::signal<sig_cb_velodyne_hdl_scan_point_cloud_xyzi>* scan_xyzi_signal_;
-        # pcl::RGB laser_rgb_mapping_[HDL_MAX_NUM_LASERS];
-        # float min_distance_threshold_;
-        # float max_distance_threshold_;
-        # 
-        # void processVelodynePackets ();
-        # void enqueueHDLPacket (const unsigned char *data,
-        #     std::size_t bytesReceived);
-        # void initialize (const std::string& correctionsFile);
-        # void loadCorrectionsFile (const std::string& correctionsFile);
-        # void loadHDL32Corrections ();
-        # void readPacketsFromSocket ();
-        # #ifdef HAVE_PCAP
-        # void readPacketsFromPcap();
-        # #endif //#ifdef HAVE_PCAP
-        # void toPointClouds (HDLDataPacket *dataPacket);
-        # void fireCurrentSweep ();
-        # void fireCurrentScan (const unsigned short startAngle, const unsigned short endAngle);
-        # void computeXYZI (pcl::PointXYZI& pointXYZI, int azimuth, HDLLaserReturn laserReturn, HDLLaserCorrection correction);
-        # bool isAddressUnspecified (const boost::asio::ip::address& ip_address);
 
 
 ###
@@ -752,7 +655,6 @@ cdef extern from "pcl/io/fotonic_grabber.h" namespace "pcl":
 # cdef extern from "pcl/io/image_grabber.h" namespace "pcl":
 #     cdef cppclass ImageGrabberBase(Grabber):
 #         ImageGrabberBase()
-        # 
         # public:
         # /** \brief Constructor taking a folder of depth+[rgb] images.
         # * \param[in] directory Directory which contains an ordered set of images corresponding to an [RGB]D video, stored as TIFF, PNG, JPG, or PPM files. The naming convention is: frame_[timestamp]_["depth"/"rgb"].[extension]
@@ -873,42 +775,44 @@ cdef extern from "pcl/io/fotonic_grabber.h" namespace "pcl":
 
 ###
 
-# ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 # template <typename T> class PointCloud;
+# image_grabber.h
+# namespace pcl
 # template <typename PointT> class ImageGrabber : public ImageGrabberBase, public FileGrabber<PointT>
-cdef extern from "pcl/io/image_grabber.h" namespace "pcl":
-    cdef cppclass ImageGrabber(ImageGrabberBase, FileGrabber[T]):
-        ImageGrabber()
-    	public:
-#     	ImageGrabber (const std::string& dir, 
-#                   float frames_per_second = 0, 
-#                   bool repeat = false, 
-#                   bool pclzf_mode = false);
-# 		
-#     	ImageGrabber (const std::string& depth_dir, 
-#                   const std::string& rgb_dir, 
-#                   float frames_per_second = 0, 
-#                   bool repeat = false);
-# 		
-#     	ImageGrabber (const std::vector<std::string>& depth_image_files, 
-#                   float frames_per_second = 0, 
-#                   bool repeat = false);
-#       
-#     	/** \brief Empty destructor */
-#     	virtual ~ImageGrabber () throw () {}
-#     	
-#     	// Inherited from FileGrabber
-#     	const boost::shared_ptr< const pcl::PointCloud<PointT> > operator[] (size_t idx) const;
-# 		
-#     	// Inherited from FileGrabber
-#     	size_t size () const;
-# 		
-#     	protected:
-#     	virtual void 
-#     	publish (const pcl::PCLPointCloud2& blob,
-#              const Eigen::Vector4f& origin, 
-#              const Eigen::Quaternionf& orientation) const;
-#     	boost::signals2::signal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>* signal_;
+# cdef extern from "pcl/io/image_grabber.h" namespace "pcl":
+#     cdef cppclass ImageGrabber(ImageGrabberBase, FileGrabber[T]):
+#         ImageGrabber()
+        # public:
+        # ImageGrabber (const std::string& dir, 
+        #             float frames_per_second = 0, 
+        #             bool repeat = false, 
+        #             bool pclzf_mode = false);
+        # 
+        # ImageGrabber (const std::string& depth_dir, 
+        #             const std::string& rgb_dir, 
+        #             float frames_per_second = 0, 
+        #             bool repeat = false);
+        # 
+        # ImageGrabber (const std::vector<std::string>& depth_image_files, 
+        #             float frames_per_second = 0, 
+        #             bool repeat = false);
+        # 
+        # /** \brief Empty destructor */
+        # virtual ~ImageGrabber () throw () {}
+        # 
+        # // Inherited from FileGrabber
+        # const boost::shared_ptr< const pcl::PointCloud<PointT> > operator[] (size_t idx) const;
+        # 
+        # // Inherited from FileGrabber
+        # size_t size () const;
+        # 
+        # protected:
+        # virtual void publish (const pcl::PCLPointCloud2& blob,
+        #        const Eigen::Vector4f& origin, 
+        #        const Eigen::Quaternionf& orientation) const;
+        # boost::signals2::signal<void (const boost::shared_ptr<const pcl::PointCloud<PointT> >&)>* signal_;
+
+
 ###
 
 # image_grabber.h
@@ -982,640 +886,499 @@ cdef extern from "pcl/io/image_grabber.h" namespace "pcl":
 #   * \ingroup io
 #   */
 # class PCL_EXPORTS OpenNI2Grabber : public Grabber
-cdef extern from "pcl/io/image_grabber.h" namespace "pcl::io":
-    cdef cppclass ImageGrabber(ImageGrabberBase, FileGrabber[T]):
-        ImageGrabber()
+# cdef extern from "pcl/io/openni2_grabber.h" namespace "pcl::io":
+#     cdef cppclass OpenNI2Grabber(Grabber):
+#         OpenNI2Grabber()
+        # public:
+        # typedef boost::shared_ptr<OpenNI2Grabber> Ptr;
+        # typedef boost::shared_ptr<const OpenNI2Grabber> ConstPtr;
+        # 
+        # // Templated images
+        # typedef pcl::io::DepthImage DepthImage;
+        # typedef pcl::io::IRImage IRImage;
+        # typedef pcl::io::Image Image;
+        # 
+        # /** \brief Basic camera parameters placeholder. */
+        # struct CameraParameters
+        #     /** fx */
+        #     double focal_length_x;
+        #     /** fy */
+        #     double focal_length_y;
+        #     /** cx */
+        #     double principal_point_x;
+        #     /** cy */
+        #     double principal_point_y;
+        #   
+        #     CameraParameters (double initValue)
+        #       : focal_length_x (initValue), focal_length_y (initValue),
+        #       principal_point_x (initValue),  principal_point_y (initValue)
+        #     {}
+        #   
+        #     CameraParameters (double fx, double fy, double cx, double cy)
+        #       : focal_length_x (fx), focal_length_y (fy), principal_point_x (cx), principal_point_y (cy)
+        #     { }
+        ###
+        # 
+        # typedef enum
+        # {
+        #     OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
+        #     OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
+        #     OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
+        #     OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
+        #     OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
+        #     OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
+        #     OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
+        #     OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        #     OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        #     OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
+        # } Mode;
+        # 
+        # //define callback signature typedefs
+        # typedef void (sig_cb_openni_image) (const boost::shared_ptr<Image>&);
+        # typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<DepthImage>&);
+        # typedef void (sig_cb_openni_ir_image) (const boost::shared_ptr<IRImage>&);
+        # typedef void (sig_cb_openni_image_depth_image) (const boost::shared_ptr<Image>&, const boost::shared_ptr<DepthImage>&, float reciprocalFocalLength) ;
+        # typedef void (sig_cb_openni_ir_depth_image) (const boost::shared_ptr<IRImage>&, const boost::shared_ptr<DepthImage>&, float reciprocalFocalLength) ;
+        # typedef void (sig_cb_openni_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
+        # typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
+        # typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
+        # typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        # 
+        # public:
+        # /** \brief Constructor
+        #   * \param[in] device_id ID of the device, which might be a serial number, bus@address or the index of the device.
+        #   * \param[in] depth_mode the mode of the depth stream
+        #   * \param[in] image_mode the mode of the image stream
+        # */
+        # OpenNI2Grabber (const std::string& device_id = "",
+        #   const Mode& depth_mode = OpenNI_Default_Mode,
+        #     const Mode& image_mode = OpenNI_Default_Mode);
+        # 
+        # /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
+        # virtual ~OpenNI2Grabber () throw ();
+        # 
+        # /** \brief Start the data acquisition. */
+        # virtual void start ();
+        # 
+        # /** \brief Stop the data acquisition. */
+        # virtual void stop ();
+        # 
+        # /** \brief Check if the data acquisition is still running. */
+        # virtual bool isRunning () const;
+        # 
+        # virtual std::string getName () const;
+        # 
+        # /** \brief Obtain the number of frames per second (FPS). */
+        # virtual float getFramesPerSecond () const;
+        # 
+        # /** \brief Get a boost shared pointer to the \ref OpenNIDevice object. */
+        # inline boost::shared_ptr<pcl::io::openni2::OpenNI2Device> getDevice () const;
+        # 
+        # /** \brief Obtain a list of the available depth modes that this device supports. */
+        # std::vector<std::pair<int, pcl::io::openni2::OpenNI2VideoMode> > getAvailableDepthModes () const;
+        # 
+        # /** \brief Obtain a list of the available image modes that this device supports. */
+        # std::vector<std::pair<int, pcl::io::openni2::OpenNI2VideoMode> > getAvailableImageModes () const;
+        # 
+        # /** \brief Set the RGB camera parameters (fx, fy, cx, cy)
+        #   * \param[in] rgb_focal_length_x the RGB focal length (fx)
+        #   * \param[in] rgb_focal_length_y the RGB focal length (fy)
+        #   * \param[in] rgb_principal_point_x the RGB principal point (cx)
+        #   * \param[in] rgb_principal_point_y the RGB principal point (cy)
+        #   * Setting the parameters to non-finite values (e.g., NaN, Inf) invalidates them
+        #   * and the grabber will use the default values from the camera instead.
+        # */
+        # inline void
+        # setRGBCameraIntrinsics (const double rgb_focal_length_x,
+        #     const double rgb_focal_length_y,
+        #     const double rgb_principal_point_x,
+        #     const double rgb_principal_point_y)
+        # 
+        # /** \brief Get the RGB camera parameters (fx, fy, cx, cy)
+        #   * \param[out] rgb_focal_length_x the RGB focal length (fx)
+        #   * \param[out] rgb_focal_length_y the RGB focal length (fy)
+        #   * \param[out] rgb_principal_point_x the RGB principal point (cx)
+        #   * \param[out] rgb_principal_point_y the RGB principal point (cy)
+        #   */
+        # inline void
+        # getRGBCameraIntrinsics (double &rgb_focal_length_x,
+        #     double &rgb_focal_length_y,
+        #     double &rgb_principal_point_x,
+        #     double &rgb_principal_point_y) const
+        # 
+        # /** \brief Set the RGB image focal length (fx = fy).
+        #   * \param[in] rgb_focal_length the RGB focal length (assumes fx = fy)
+        #   * Setting the parameter to a non-finite value (e.g., NaN, Inf) invalidates it
+        #   * and the grabber will use the default values from the camera instead.
+        #   * These parameters will be used for XYZRGBA clouds.
+        #   */
+        # inline void
+        # setRGBFocalLength (const double rgb_focal_length)
+        # 
+        # /** \brief Set the RGB image focal length
+        #   * \param[in] rgb_focal_length_x the RGB focal length (fx)
+        #   * \param[in] rgb_focal_ulength_y the RGB focal length (fy)
+        #   * Setting the parameters to non-finite values (e.g., NaN, Inf) invalidates them
+        #   * and the grabber will use the default values from the camera instead.
+        #   * These parameters will be used for XYZRGBA clouds.
+        #   */
+        # inline void
+        # setRGBFocalLength (const double rgb_focal_length_x, const double rgb_focal_length_y)
+        # 
+        # /** \brief Return the RGB focal length parameters (fx, fy)
+        #   * \param[out] rgb_focal_length_x the RGB focal length (fx)
+        #   * \param[out] rgb_focal_length_y the RGB focal length (fy)
+        #   */
+        # inline void
+        # getRGBFocalLength (double &rgb_focal_length_x, double &rgb_focal_length_y) const
+        # 
+        # /** \brief Set the Depth camera parameters (fx, fy, cx, cy)
+        #   * \param[in] depth_focal_length_x the Depth focal length (fx)
+        #   * \param[in] depth_focal_length_y the Depth focal length (fy)
+        #   * \param[in] depth_principal_point_x the Depth principal point (cx)
+        #   * \param[in] depth_principal_point_y the Depth principal point (cy)
+        #   * Setting the parameters to non-finite values (e.g., NaN, Inf) invalidates them
+        #   * and the grabber will use the default values from the camera instead.
+        #   */
+        # inline void
+        # setDepthCameraIntrinsics (const double depth_focal_length_x,
+        #     const double depth_focal_length_y,
+        #     const double depth_principal_point_x,
+        #     const double depth_principal_point_y)
+        # 
+        # /** \brief Get the Depth camera parameters (fx, fy, cx, cy)
+        #   * \param[out] depth_focal_length_x the Depth focal length (fx)
+        #   * \param[out] depth_focal_length_y the Depth focal length (fy)
+        #   * \param[out] depth_principal_point_x the Depth principal point (cx)
+        #   * \param[out] depth_principal_point_y the Depth principal point (cy)
+        #   */
+        # inline void
+        # getDepthCameraIntrinsics (double &depth_focal_length_x,
+        #     double &depth_focal_length_y,
+        #     double &depth_principal_point_x,
+        #     double &depth_principal_point_y) const
+        # 
+        # /** \brief Set the Depth image focal length (fx = fy).
+        #   * \param[in] depth_focal_length the Depth focal length (assumes fx = fy)
+        #   * Setting the parameter to a non-finite value (e.g., NaN, Inf) invalidates it
+        #   * and the grabber will use the default values from the camera instead.
+        #   */
+        # inline void
+        # setDepthFocalLength (const double depth_focal_length)
+        # 
+        # /** \brief Set the Depth image focal length
+        #   * \param[in] depth_focal_length_x the Depth focal length (fx)
+        #   * \param[in] depth_focal_length_y the Depth focal length (fy)
+        #   * Setting the parameter to non-finite values (e.g., NaN, Inf) invalidates them
+        #   * and the grabber will use the default values from the camera instead.
+        #   */
+        # inline void
+        # setDepthFocalLength (const double depth_focal_length_x, const double depth_focal_length_y)
+        # 
+        # /** \brief Return the Depth focal length parameters (fx, fy)
+        #   * \param[out] depth_focal_length_x the Depth focal length (fx)
+        #   * \param[out] depth_focal_length_y the Depth focal length (fy)
+        #   */
+        # inline void
+        # getDepthFocalLength (double &depth_focal_length_x, double &depth_focal_length_y) const
+        # 
+        # protected:
+        # /** \brief Sets up an OpenNI device. */
+        # void setupDevice (const std::string& device_id, const Mode& depth_mode, const Mode& image_mode);
+        # 
+        # /** \brief Update mode maps. */
+        # void updateModeMaps ();
+        # 
+        # /** \brief Start synchronization. */
+        # void startSynchronization ();
+        # 
+        # /** \brief Stop synchronization. */
+        # void stopSynchronization ();
+        # 
+        # // TODO: rename to mapMode2OniMode
+        # /** \brief Map config modes. */
+        # bool mapMode2XnMode (int mode, pcl::io::openni2::OpenNI2VideoMode& videoMode) const;
+        # 
+        # // callback methods
+        # /** \brief RGB image callback. */
+        # virtual void imageCallback (pcl::io::openni2::Image::Ptr image, void* cookie);
+        # 
+        # /** \brief Depth image callback. */
+        # virtual void depthCallback (pcl::io::openni2::DepthImage::Ptr depth_image, void* cookie);
+        # 
+        # /** \brief IR image callback. */
+        # virtual void irCallback (pcl::io::openni2::IRImage::Ptr ir_image, void* cookie);
+        # 
+        # /** \brief RGB + Depth image callback. */
+        # virtual void imageDepthImageCallback (const pcl::io::openni2::Image::Ptr &image, const pcl::io::openni2::DepthImage::Ptr &depth_image);
+        # 
+        # /** \brief IR + Depth image callback. */
+        # virtual void irDepthImageCallback (const pcl::io::openni2::IRImage::Ptr &image, const pcl::io::openni2::DepthImage::Ptr &depth_image);
+        # 
+        # /** \brief Process changed signals. */
+        # virtual void signalsChanged ();
+        # 
+        # // helper methods
+        # /** \brief Check if the RGB and Depth images are required to be synchronized or not. */
+        # virtual void checkImageAndDepthSynchronizationRequired ();
+        # 
+        # /** \brief Check if the RGB image stream is required or not. */
+        # virtual void checkImageStreamRequired ();
+        # 
+        # /** \brief Check if the depth stream is required or not. */
+        # virtual void checkDepthStreamRequired ();
+        # 
+        # /** \brief Check if the IR image stream is required or not. */
+        # virtual void checkIRStreamRequired ();
+        # 
+        # // Point cloud conversion ///////////////////////////////////////////////
+        # 
+        # /** \brief Convert a Depth image to a pcl::PointCloud<pcl::PointXYZ>
+        #   * \param[in] depth the depth image to convert
+        #   */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >
+        # convertToXYZPointCloud (const pcl::io::openni2::DepthImage::Ptr &depth);
+        # 
+        # /** \brief Convert a Depth + RGB image pair to a pcl::PointCloud<PointT>
+        #   * \param[in] image the RGB image to convert
+        #   * \param[in] depth_image the depth image to convert
+        #   */
+        # template <typename PointT> typename pcl::PointCloud<PointT>::Ptr
+        # convertToXYZRGBPointCloud (const pcl::io::openni2::Image::Ptr &image, const pcl::io::openni2::DepthImage::Ptr &depth_image);
+        # 
+        # /** \brief Convert a Depth + Intensity image pair to a pcl::PointCloud<pcl::PointXYZI>
+        #   * \param[in] image the IR image to convert
+        #   * \param[in] depth_image the depth image to convert
+        #   */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >
+        # convertToXYZIPointCloud (const pcl::io::openni2::IRImage::Ptr &image, const pcl::io::openni2::DepthImage::Ptr &depth_image);
+        # 
+        # std::vector<uint8_t> color_resize_buffer_;
+        # std::vector<uint16_t> depth_resize_buffer_;
+        # std::vector<uint16_t> ir_resize_buffer_;
+        # 
+        # // Stream callbacks /////////////////////////////////////////////////////
+        # void processColorFrame (openni::VideoStream& stream);
+        # void processDepthFrame (openni::VideoStream& stream);
+        # void processIRFrame (openni::VideoStream& stream);
+        # 
+        # Synchronizer<pcl::io::openni2::Image::Ptr, pcl::io::openni2::DepthImage::Ptr > rgb_sync_;
+        # Synchronizer<pcl::io::openni2::IRImage::Ptr, pcl::io::openni2::DepthImage::Ptr > ir_sync_;
+        # 
+        # /** \brief The actual openni device. */
+        # boost::shared_ptr<pcl::io::openni2::OpenNI2Device> device_;
+        # 
+        # std::string rgb_frame_id_;
+        # std::string depth_frame_id_;
+        # unsigned image_width_;
+        # unsigned image_height_;
+        # unsigned depth_width_;
+        # unsigned depth_height_;
+        # 
+        # bool image_required_;
+        # bool depth_required_;
+        # bool ir_required_;
+        # bool sync_required_;
+        # 
+        # boost::signals2::signal<sig_cb_openni_image>* image_signal_;
+        # boost::signals2::signal<sig_cb_openni_depth_image>* depth_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_ir_image>* ir_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_image_depth_image>* image_depth_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_ir_depth_image>* ir_depth_image_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud>* point_cloud_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud_i>* point_cloud_i_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud_rgb>* point_cloud_rgb_signal_;
+        # boost::signals2::signal<sig_cb_openni_point_cloud_rgba>* point_cloud_rgba_signal_;
+        # 
+        # struct modeComp
+        # {
+        #     bool operator () (const openni::VideoMode& mode1, const openni::VideoMode & mode2) const
+        # };
+        # 
+        # // Mapping from config (enum) modes to native OpenNI modes
+        # std::map<int, pcl::io::openni2::OpenNI2VideoMode> config2oni_map_;
+        # 
+        # pcl::io::openni2::OpenNI2Device::CallbackHandle depth_callback_handle_;
+        # pcl::io::openni2::OpenNI2Device::CallbackHandle image_callback_handle_;
+        # pcl::io::openni2::OpenNI2Device::CallbackHandle ir_callback_handle_;
+        # bool running_;
+        # 
+        # CameraParameters rgb_parameters_;
+        # CameraParameters depth_parameters_;
+        # 
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+ 
+# boost::shared_ptr<pcl::io::openni2::OpenNI2Device>
+# OpenNI2Grabber::getDevice () const
 
 
-#       public:
-#         typedef boost::shared_ptr<OpenNI2Grabber> Ptr;
-#         typedef boost::shared_ptr<const OpenNI2Grabber> ConstPtr;
-# 
-#         // Templated images
-#         typedef pcl::io::DepthImage DepthImage;
-#         typedef pcl::io::IRImage IRImage;
-#         typedef pcl::io::Image Image;
-# 
-#         /** \brief Basic camera parameters placeholder. */
-#         struct CameraParameters
-#         {
-#           /** fx */
-#           double focal_length_x;
-#           /** fy */
-#           double focal_length_y;
-#           /** cx */
-#           double principal_point_x;
-#           /** cy */
-#           double principal_point_y;
-# 
-#           CameraParameters (double initValue)
-#             : focal_length_x (initValue), focal_length_y (initValue),
-#             principal_point_x (initValue),  principal_point_y (initValue)
-#           {}
-# 
-#           CameraParameters (double fx, double fy, double cx, double cy)
-#             : focal_length_x (fx), focal_length_y (fy), principal_point_x (cx), principal_point_y (cy)
-#           { }
-#         };
-# 
-#         typedef enum
-#         {
-#           OpenNI_Default_Mode = 0, // This can depend on the device. For now all devices (PSDK, Xtion, Kinect) its VGA@30Hz
-#           OpenNI_SXGA_15Hz = 1,    // Only supported by the Kinect
-#           OpenNI_VGA_30Hz = 2,     // Supported by PSDK, Xtion and Kinect
-#           OpenNI_VGA_25Hz = 3,     // Supportged by PSDK and Xtion
-#           OpenNI_QVGA_25Hz = 4,    // Supported by PSDK and Xtion
-#           OpenNI_QVGA_30Hz = 5,    // Supported by PSDK, Xtion and Kinect
-#           OpenNI_QVGA_60Hz = 6,    // Supported by PSDK and Xtion
-#           OpenNI_QQVGA_25Hz = 7,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-#           OpenNI_QQVGA_30Hz = 8,   // Not supported -> using software downsampling (only for integer scale factor and only NN)
-#           OpenNI_QQVGA_60Hz = 9    // Not supported -> using software downsampling (only for integer scale factor and only NN)
-#         } Mode;
-# 
-#         //define callback signature typedefs
-#         typedef void (sig_cb_openni_image) (const boost::shared_ptr<Image>&);
-#         typedef void (sig_cb_openni_depth_image) (const boost::shared_ptr<DepthImage>&);
-#         typedef void (sig_cb_openni_ir_image) (const boost::shared_ptr<IRImage>&);
-#         typedef void (sig_cb_openni_image_depth_image) (const boost::shared_ptr<Image>&, const boost::shared_ptr<DepthImage>&, float reciprocalFocalLength) ;
-#         typedef void (sig_cb_openni_ir_depth_image) (const boost::shared_ptr<IRImage>&, const boost::shared_ptr<DepthImage>&, float reciprocalFocalLength) ;
-#         typedef void (sig_cb_openni_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
-#         typedef void (sig_cb_openni_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
-#         typedef void (sig_cb_openni_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
-#         typedef void (sig_cb_openni_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-# 
-#       public:
-#         /** \brief Constructor
-#         * \param[in] device_id ID of the device, which might be a serial number, bus@address or the index of the device.
-#         * \param[in] depth_mode the mode of the depth stream
-#         * \param[in] image_mode the mode of the image stream
-#         */
-#         OpenNI2Grabber (const std::string& device_id = "",
-#           const Mode& depth_mode = OpenNI_Default_Mode,
-#           const Mode& image_mode = OpenNI_Default_Mode);
-# 
-#         /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
-#         virtual ~OpenNI2Grabber () throw ();
-# 
-#         /** \brief Start the data acquisition. */
-#         virtual void
-#         start ();
-# 
-#         /** \brief Stop the data acquisition. */
-#         virtual void
-#         stop ();
-# 
-#         /** \brief Check if the data acquisition is still running. */
-#         virtual bool
-#         isRunning () const;
-# 
-#         virtual std::string
-#         getName () const;
-# 
-#         /** \brief Obtain the number of frames per second (FPS). */
-#         virtual float
-#         getFramesPerSecond () const;
-# 
-#         /** \brief Get a boost shared pointer to the \ref OpenNIDevice object. */
-#         inline boost::shared_ptr<pcl::io::openni2::OpenNI2Device>
-#         getDevice () const;
-# 
-#         /** \brief Obtain a list of the available depth modes that this device supports. */
-#         std::vector<std::pair<int, pcl::io::openni2::OpenNI2VideoMode> >
-#         getAvailableDepthModes () const;
-# 
-#         /** \brief Obtain a list of the available image modes that this device supports. */
-#         std::vector<std::pair<int, pcl::io::openni2::OpenNI2VideoMode> >
-#         getAvailableImageModes () const;
-# 
-#         /** \brief Set the RGB camera parameters (fx, fy, cx, cy)
-#         * \param[in] rgb_focal_length_x the RGB focal length (fx)
-#         * \param[in] rgb_focal_length_y the RGB focal length (fy)
-#         * \param[in] rgb_principal_point_x the RGB principal point (cx)
-#         * \param[in] rgb_principal_point_y the RGB principal point (cy)
-#         * Setting the parameters to non-finite values (e.g., NaN, Inf) invalidates them
-#         * and the grabber will use the default values from the camera instead.
-#         */
-#         inline void
-#         setRGBCameraIntrinsics (const double rgb_focal_length_x,
-#           const double rgb_focal_length_y,
-#           const double rgb_principal_point_x,
-#           const double rgb_principal_point_y)
-#         {
-#           rgb_parameters_ = CameraParameters (
-#             rgb_focal_length_x, rgb_focal_length_y,
-#             rgb_principal_point_x, rgb_principal_point_y);
-#         }
-# 
-#         /** \brief Get the RGB camera parameters (fx, fy, cx, cy)
-#         * \param[out] rgb_focal_length_x the RGB focal length (fx)
-#         * \param[out] rgb_focal_length_y the RGB focal length (fy)
-#         * \param[out] rgb_principal_point_x the RGB principal point (cx)
-#         * \param[out] rgb_principal_point_y the RGB principal point (cy)
-#         */
-#         inline void
-#         getRGBCameraIntrinsics (double &rgb_focal_length_x,
-#           double &rgb_focal_length_y,
-#           double &rgb_principal_point_x,
-#           double &rgb_principal_point_y) const
-#         {
-#           rgb_focal_length_x = rgb_parameters_.focal_length_x;
-#           rgb_focal_length_y = rgb_parameters_.focal_length_y;
-#           rgb_principal_point_x = rgb_parameters_.principal_point_x;
-#           rgb_principal_point_y = rgb_parameters_.principal_point_y;
-#         }
-# 
-# 
-#         /** \brief Set the RGB image focal length (fx = fy).
-#         * \param[in] rgb_focal_length the RGB focal length (assumes fx = fy)
-#         * Setting the parameter to a non-finite value (e.g., NaN, Inf) invalidates it
-#         * and the grabber will use the default values from the camera instead.
-#         * These parameters will be used for XYZRGBA clouds.
-#         */
-#         inline void
-#         setRGBFocalLength (const double rgb_focal_length)
-#         {
-#           rgb_parameters_.focal_length_x = rgb_focal_length;
-#           rgb_parameters_.focal_length_y = rgb_focal_length;
-#         }
-# 
-#         /** \brief Set the RGB image focal length
-#         * \param[in] rgb_focal_length_x the RGB focal length (fx)
-#         * \param[in] rgb_focal_ulength_y the RGB focal length (fy)
-#         * Setting the parameters to non-finite values (e.g., NaN, Inf) invalidates them
-#         * and the grabber will use the default values from the camera instead.
-#         * These parameters will be used for XYZRGBA clouds.
-#         */
-#         inline void
-#         setRGBFocalLength (const double rgb_focal_length_x, const double rgb_focal_length_y)
-#         {
-#           rgb_parameters_.focal_length_x = rgb_focal_length_x;
-#           rgb_parameters_.focal_length_y = rgb_focal_length_y;
-#         }
-# 
-#         /** \brief Return the RGB focal length parameters (fx, fy)
-#         * \param[out] rgb_focal_length_x the RGB focal length (fx)
-#         * \param[out] rgb_focal_length_y the RGB focal length (fy)
-#         */
-#         inline void
-#         getRGBFocalLength (double &rgb_focal_length_x, double &rgb_focal_length_y) const
-#         {
-#           rgb_focal_length_x = rgb_parameters_.focal_length_x;
-#           rgb_focal_length_y = rgb_parameters_.focal_length_y;
-#         }
-# 
-#         /** \brief Set the Depth camera parameters (fx, fy, cx, cy)
-#         * \param[in] depth_focal_length_x the Depth focal length (fx)
-#         * \param[in] depth_focal_length_y the Depth focal length (fy)
-#         * \param[in] depth_principal_point_x the Depth principal point (cx)
-#         * \param[in] depth_principal_point_y the Depth principal point (cy)
-#         * Setting the parameters to non-finite values (e.g., NaN, Inf) invalidates them
-#         * and the grabber will use the default values from the camera instead.
-#         */
-#         inline void
-#         setDepthCameraIntrinsics (const double depth_focal_length_x,
-#           const double depth_focal_length_y,
-#           const double depth_principal_point_x,
-#           const double depth_principal_point_y)
-#         {
-#           depth_parameters_ = CameraParameters (
-#             depth_focal_length_x, depth_focal_length_y,
-#             depth_principal_point_x, depth_principal_point_y);
-#         }
-# 
-#         /** \brief Get the Depth camera parameters (fx, fy, cx, cy)
-#         * \param[out] depth_focal_length_x the Depth focal length (fx)
-#         * \param[out] depth_focal_length_y the Depth focal length (fy)
-#         * \param[out] depth_principal_point_x the Depth principal point (cx)
-#         * \param[out] depth_principal_point_y the Depth principal point (cy)
-#         */
-#         inline void
-#         getDepthCameraIntrinsics (double &depth_focal_length_x,
-#           double &depth_focal_length_y,
-#           double &depth_principal_point_x,
-#           double &depth_principal_point_y) const
-#         {
-#           depth_focal_length_x = depth_parameters_.focal_length_x;
-#           depth_focal_length_y = depth_parameters_.focal_length_y;
-#           depth_principal_point_x = depth_parameters_.principal_point_x;
-#           depth_principal_point_y = depth_parameters_.principal_point_y;
-#         }
-# 
-#         /** \brief Set the Depth image focal length (fx = fy).
-#         * \param[in] depth_focal_length the Depth focal length (assumes fx = fy)
-#         * Setting the parameter to a non-finite value (e.g., NaN, Inf) invalidates it
-#         * and the grabber will use the default values from the camera instead.
-#         */
-#         inline void
-#         setDepthFocalLength (const double depth_focal_length)
-#         {
-#           depth_parameters_.focal_length_x = depth_focal_length;
-#           depth_parameters_.focal_length_y = depth_focal_length;
-#         }
-# 
-# 
-#         /** \brief Set the Depth image focal length
-#         * \param[in] depth_focal_length_x the Depth focal length (fx)
-#         * \param[in] depth_focal_length_y the Depth focal length (fy)
-#         * Setting the parameter to non-finite values (e.g., NaN, Inf) invalidates them
-#         * and the grabber will use the default values from the camera instead.
-#         */
-#         inline void
-#         setDepthFocalLength (const double depth_focal_length_x, const double depth_focal_length_y)
-#         {
-#           depth_parameters_.focal_length_x = depth_focal_length_x;
-#           depth_parameters_.focal_length_y = depth_focal_length_y;
-#         }
-# 
-#         /** \brief Return the Depth focal length parameters (fx, fy)
-#         * \param[out] depth_focal_length_x the Depth focal length (fx)
-#         * \param[out] depth_focal_length_y the Depth focal length (fy)
-#         */
-#         inline void
-#         getDepthFocalLength (double &depth_focal_length_x, double &depth_focal_length_y) const
-#         {
-#           depth_focal_length_x = depth_parameters_.focal_length_x;
-#           depth_focal_length_y = depth_parameters_.focal_length_y;
-#         }
-# 
-#       protected:
-# 
-#         /** \brief Sets up an OpenNI device. */
-#         void
-#         setupDevice (const std::string& device_id, const Mode& depth_mode, const Mode& image_mode);
-# 
-#         /** \brief Update mode maps. */
-#         void
-#         updateModeMaps ();
-# 
-#         /** \brief Start synchronization. */
-#         void
-#         startSynchronization ();
-# 
-#         /** \brief Stop synchronization. */
-#         void
-#         stopSynchronization ();
-# 
-#         // TODO: rename to mapMode2OniMode
-#         /** \brief Map config modes. */
-#         bool
-#         mapMode2XnMode (int mode, pcl::io::openni2::OpenNI2VideoMode& videoMode) const;
-# 
-#         // callback methods
-#         /** \brief RGB image callback. */
-#         virtual void
-#         imageCallback (pcl::io::openni2::Image::Ptr image, void* cookie);
-# 
-#         /** \brief Depth image callback. */
-#         virtual void
-#         depthCallback (pcl::io::openni2::DepthImage::Ptr depth_image, void* cookie);
-# 
-#         /** \brief IR image callback. */
-#         virtual void
-#         irCallback (pcl::io::openni2::IRImage::Ptr ir_image, void* cookie);
-# 
-#         /** \brief RGB + Depth image callback. */
-#         virtual void
-#         imageDepthImageCallback (const pcl::io::openni2::Image::Ptr &image,
-#         const pcl::io::openni2::DepthImage::Ptr &depth_image);
-# 
-#         /** \brief IR + Depth image callback. */
-#         virtual void
-#         irDepthImageCallback (const pcl::io::openni2::IRImage::Ptr &image,
-#         const pcl::io::openni2::DepthImage::Ptr &depth_image);
-# 
-#         /** \brief Process changed signals. */
-#         virtual void
-#         signalsChanged ();
-# 
-#         // helper methods
-# 
-#         /** \brief Check if the RGB and Depth images are required to be synchronized or not. */
-#         virtual void
-#         checkImageAndDepthSynchronizationRequired ();
-# 
-#         /** \brief Check if the RGB image stream is required or not. */
-#         virtual void
-#         checkImageStreamRequired ();
-# 
-#         /** \brief Check if the depth stream is required or not. */
-#         virtual void
-#         checkDepthStreamRequired ();
-# 
-#         /** \brief Check if the IR image stream is required or not. */
-#         virtual void
-#         checkIRStreamRequired ();
-# 
-# 
-#         // Point cloud conversion ///////////////////////////////////////////////
-# 
-#         /** \brief Convert a Depth image to a pcl::PointCloud<pcl::PointXYZ>
-#         * \param[in] depth the depth image to convert
-#         */
-#         boost::shared_ptr<pcl::PointCloud<pcl::PointXYZ> >
-#         convertToXYZPointCloud (const pcl::io::openni2::DepthImage::Ptr &depth);
-# 
-#         /** \brief Convert a Depth + RGB image pair to a pcl::PointCloud<PointT>
-#         * \param[in] image the RGB image to convert
-#         * \param[in] depth_image the depth image to convert
-#         */
-#         template <typename PointT> typename pcl::PointCloud<PointT>::Ptr
-#         convertToXYZRGBPointCloud (const pcl::io::openni2::Image::Ptr &image,
-#           const pcl::io::openni2::DepthImage::Ptr &depth_image);
-# 
-#         /** \brief Convert a Depth + Intensity image pair to a pcl::PointCloud<pcl::PointXYZI>
-#         * \param[in] image the IR image to convert
-#         * \param[in] depth_image the depth image to convert
-#         */
-#         boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> >
-#         convertToXYZIPointCloud (const pcl::io::openni2::IRImage::Ptr &image,
-#           const pcl::io::openni2::DepthImage::Ptr &depth_image);
-# 
-#         std::vector<uint8_t> color_resize_buffer_;
-#         std::vector<uint16_t> depth_resize_buffer_;
-#         std::vector<uint16_t> ir_resize_buffer_;
-# 
-#         // Stream callbacks /////////////////////////////////////////////////////
-#         void
-#         processColorFrame (openni::VideoStream& stream);
-# 
-#         void
-#         processDepthFrame (openni::VideoStream& stream);
-# 
-#         void
-#         processIRFrame (openni::VideoStream& stream);
-# 
-# 
-#         Synchronizer<pcl::io::openni2::Image::Ptr, pcl::io::openni2::DepthImage::Ptr > rgb_sync_;
-#         Synchronizer<pcl::io::openni2::IRImage::Ptr, pcl::io::openni2::DepthImage::Ptr > ir_sync_;
-# 
-#         /** \brief The actual openni device. */
-#         boost::shared_ptr<pcl::io::openni2::OpenNI2Device> device_;
-# 
-#         std::string rgb_frame_id_;
-#         std::string depth_frame_id_;
-#         unsigned image_width_;
-#         unsigned image_height_;
-#         unsigned depth_width_;
-#         unsigned depth_height_;
-# 
-#         bool image_required_;
-#         bool depth_required_;
-#         bool ir_required_;
-#         bool sync_required_;
-# 
-#         boost::signals2::signal<sig_cb_openni_image>* image_signal_;
-#         boost::signals2::signal<sig_cb_openni_depth_image>* depth_image_signal_;
-#         boost::signals2::signal<sig_cb_openni_ir_image>* ir_image_signal_;
-#         boost::signals2::signal<sig_cb_openni_image_depth_image>* image_depth_image_signal_;
-#         boost::signals2::signal<sig_cb_openni_ir_depth_image>* ir_depth_image_signal_;
-#         boost::signals2::signal<sig_cb_openni_point_cloud>* point_cloud_signal_;
-#         boost::signals2::signal<sig_cb_openni_point_cloud_i>* point_cloud_i_signal_;
-#         boost::signals2::signal<sig_cb_openni_point_cloud_rgb>* point_cloud_rgb_signal_;
-#         boost::signals2::signal<sig_cb_openni_point_cloud_rgba>* point_cloud_rgba_signal_;
-# 
-#         struct modeComp
-#         {
-#           bool operator () (const openni::VideoMode& mode1, const openni::VideoMode & mode2) const
-#           {
-#             if (mode1.getResolutionX () < mode2.getResolutionX ())
-#               return true;
-#             else if (mode1.getResolutionX () > mode2.getResolutionX ())
-#               return false;
-#             else if (mode1.getResolutionY () < mode2.getResolutionY ())
-#               return true;
-#             else if (mode1.getResolutionY () > mode2.getResolutionY ())
-#               return false;
-#             else if (mode1.getFps () < mode2.getFps () )
-#               return true;
-#             else
-#               return false;
-#           }
-#         };
-# 
-#         // Mapping from config (enum) modes to native OpenNI modes
-#         std::map<int, pcl::io::openni2::OpenNI2VideoMode> config2oni_map_;
-# 
-#         pcl::io::openni2::OpenNI2Device::CallbackHandle depth_callback_handle_;
-#         pcl::io::openni2::OpenNI2Device::CallbackHandle image_callback_handle_;
-#         pcl::io::openni2::OpenNI2Device::CallbackHandle ir_callback_handle_;
-#         bool running_;
-# 
-# 
-#         CameraParameters rgb_parameters_;
-#         CameraParameters depth_parameters_;
-# 
-#       public:
-#         EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#     };
-# 
-#     boost::shared_ptr<pcl::io::openni2::OpenNI2Device>
-#     OpenNI2Grabber::getDevice () const
-#     {
-#       return device_;
-#     }
-# 
-#   } // namespace
-# }
-###endif // PCL_IO_OPENNI2_GRABBER_H_
-
+###
 
 # pxc_grabber.h
 # namespace pcl
-# {
-#   struct PointXYZ;
-#   struct PointXYZRGB;
-#   struct PointXYZRGBA;
-#   struct PointXYZI;
-#   template <typename T> class PointCloud;
 # 
+# struct PointXYZ;
+# struct PointXYZRGB;
+# struct PointXYZRGBA;
+# struct PointXYZI;
+# template <typename T> class PointCloud;
 # 
-#   /** \brief Grabber for PXC devices
-#     * \author Stefan Holzer <holzers@in.tum.de>
-#     * \ingroup io
-#     */
-#   class PCL_EXPORTS PXCGrabber : public Grabber
-#   {
-#     public:
-# 
-#       /** \brief Supported modes for grabbing from a PXC device. */
-#       typedef enum
-#       {
-#         PXC_Default_Mode = 0, 
-#       } Mode;
-# 
-#       //define callback signature typedefs
-#       typedef void (sig_cb_pxc_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
-#       typedef void (sig_cb_pxc_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
-#       typedef void (sig_cb_pxc_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
-#       typedef void (sig_cb_pxc_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-# 
-#     public:
-#       /** \brief Constructor */
-#       PXCGrabber ();
-# 
-#       /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
-#       virtual ~PXCGrabber () throw ();
-# 
-#       /** \brief Start the data acquisition. */
-#       virtual void
-#       start ();
-# 
-#       /** \brief Stop the data acquisition. */
-#       virtual void
-#       stop ();
-# 
-#       /** \brief Check if the data acquisition is still running. */
-#       virtual bool
-#       isRunning () const;
-# 
-#       /** \brief Returns the name of the grabber. */
-#       virtual std::string
-#       getName () const;
-# 
-#       /** \brief Obtain the number of frames per second (FPS). */
-#       virtual float 
-#       getFramesPerSecond () const;
-# 
-#     protected:
-# 
-#       /** \brief Initializes the PXC grabber and the grabbing pipeline. */
-#       bool
-#       init ();
-# 
-#       /** \brief Closes the grabbing pipeline. */
-#       void
-#       close ();
-# 
-#       /** \brief Continously asks for data from the device and publishes it if available. */
-#       void
-#       processGrabbing ();
-# 
-#       // signals to indicate whether new clouds are available
-#       boost::signals2::signal<sig_cb_pxc_point_cloud>* point_cloud_signal_;
-#       //boost::signals2::signal<sig_cb_fotonic_point_cloud_i>* point_cloud_i_signal_;
-#       boost::signals2::signal<sig_cb_pxc_point_cloud_rgb>* point_cloud_rgb_signal_;
-#       boost::signals2::signal<sig_cb_pxc_point_cloud_rgba>* point_cloud_rgba_signal_;
-# 
-#     protected:
-#       // utiliy object for accessing PXC camera
-#       UtilPipeline pp_;
-#       // indicates whether grabbing is running
-#       bool running_;
-# 
-#       // FPS computation
-#       mutable float fps_;
-#       mutable boost::mutex fps_mutex_;
-# 
-#       // thread where the grabbing takes place
-#       boost::thread grabber_thread_;
-# 
-#     public:
-#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-#   };
-# 
-# } // namespace pcl
-###endif // __PCL_IO_PXC_GRABBER__
-
-
+# pxc_grabber.h
 # namespace pcl
-# {
-# 
-#   /** \brief Grabber for the Ocular Robotics RobotEye sensor.
-#    * \ingroup io
-#    */
-#   class PCL_EXPORTS RobotEyeGrabber : public Grabber
-#   {
-#     public:
-# 
-#       /** \brief Signal used for the point cloud callback.
-#        * This signal is sent when the accumulated number of points reaches
-#        * the limit specified by setSignalPointCloudSize().
-#        */
-#       typedef void (sig_cb_robot_eye_point_cloud_xyzi) (
-#           const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
-# 
-#       /** \brief RobotEyeGrabber default constructor. */
-#       RobotEyeGrabber ();
-# 
-#       /** \brief RobotEyeGrabber constructor taking a specified IP address and data port. */
-#       RobotEyeGrabber (const boost::asio::ip::address& ipAddress, unsigned short port=443);
-# 
-#       /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
-#       virtual ~RobotEyeGrabber () throw ();
-# 
-#       /** \brief Starts the RobotEye grabber.
-#        * The grabber runs on a separate thread, this call will return without blocking. */
-#       virtual void start ();
-# 
-#       /** \brief Stops the RobotEye grabber. */
-#       virtual void stop ();
-# 
-#       /** \brief Obtains the name of this I/O Grabber
-#        *  \return The name of the grabber
-#        */
-#       virtual std::string getName () const;
-# 
-#       /** \brief Check if the grabber is still running.
-#        *  \return TRUE if the grabber is running, FALSE otherwise
-#        */
-#       virtual bool isRunning () const;
-# 
-#       /** \brief Returns the number of frames per second.
-#        */
-#       virtual float getFramesPerSecond () const;
-# 
-#       /** \brief Set/get ip address of the sensor that sends the data.
-#        * The default is address_v4::any ().
-#        */
-#       void setSensorAddress (const boost::asio::ip::address& ipAddress);
-#       const boost::asio::ip::address& getSensorAddress () const;
-# 
-#       /** \brief Set/get the port number which receives data from the sensor.
-#        * The default is 443.
-#        */
-#       void setDataPort (unsigned short port);
-#       unsigned short getDataPort () const;
-# 
-#       /** \brief Set/get the number of points to accumulate before the grabber
-#        * callback is signaled.  The default is 1000.
-#        */
-#       void setSignalPointCloudSize (std::size_t numerOfPoints);
-#       std::size_t getSignalPointCloudSize () const;
-# 
-#       /** \brief Returns the point cloud with point accumulated by the grabber.
-#        * It is not safe to access this point cloud except if the grabber is
-#        * stopped or during the grabber callback.
-#        */
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> > getPointCloud() const;
-# 
-#     private:
-# 
-#       bool terminate_thread_;
-#       size_t signal_point_cloud_size_;
-#       unsigned short data_port_;
-#       unsigned char receive_buffer_[500];
-# 
-#       boost::asio::ip::address sensor_address_;
-#       boost::asio::ip::udp::endpoint sender_endpoint_;
-#       boost::asio::io_service io_service_;
-#       boost::shared_ptr<boost::asio::ip::udp::socket> socket_;
-#       boost::shared_ptr<boost::thread> socket_thread_;
-#       boost::shared_ptr<boost::thread> consumer_thread_;
-# 
-#       pcl::SynchronizedQueue<boost::shared_array<unsigned char> > packet_queue_;
-#       boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> > point_cloud_xyzi_;
-#       boost::signals2::signal<sig_cb_robot_eye_point_cloud_xyzi>* point_cloud_signal_;
-# 
-#       void consumerThreadLoop ();
-#       void socketThreadLoop ();
-#       void asyncSocketReceive ();
-#       void resetPointCloud ();
-#       void socketCallback (const boost::system::error_code& error, std::size_t numberOfBytes);
-#       void convertPacketData (unsigned char *dataPacket, size_t length);
-#       void computeXYZI (pcl::PointXYZI& pointXYZI, unsigned char* pointData);
-#   };
-# }
-###endif /* PCL_IO_ROBOT_EYE_GRABBER_H_ */
+# /** \brief Grabber for PXC devices
+#   * \author Stefan Holzer <holzers@in.tum.de>
+#   * \ingroup io
+#   */
+# class PCL_EXPORTS PXCGrabber : public Grabber
+# cdef extern from "pcl/io/pxc_grabber.h" namespace "pcl":
+#     cdef cppclass PXCGrabber(Grabber):
+#         PXCGrabber()
+        # public:
+        # 
+        # /** \brief Supported modes for grabbing from a PXC device. */
+        # typedef enum
+        # {
+        #   PXC_Default_Mode = 0, 
+        # } Mode;
+        # 
+        # //define callback signature typedefs
+        # typedef void (sig_cb_pxc_point_cloud) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZ> >&);
+        # typedef void (sig_cb_pxc_point_cloud_rgb) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGB> >&);
+        # typedef void (sig_cb_pxc_point_cloud_rgba) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZRGBA> >&);
+        # typedef void (sig_cb_pxc_point_cloud_i) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        # 
+        # public:
+        # /** \brief Constructor */
+        # PXCGrabber ();
+        # 
+        # /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
+        # virtual ~PXCGrabber () throw ();
+        # 
+        # /** \brief Start the data acquisition. */
+        # virtual void start ();
+        # 
+        # /** \brief Stop the data acquisition. */
+        # virtual void stop ();
+        # 
+        # /** \brief Check if the data acquisition is still running. */
+        # virtual bool isRunning () const;
+        # 
+        # /** \brief Returns the name of the grabber. */
+        # virtual std::string getName () const;
+        # 
+        # /** \brief Obtain the number of frames per second (FPS). */
+        # virtual float getFramesPerSecond () const;
+        # 
+        # protected:
+        # /** \brief Initializes the PXC grabber and the grabbing pipeline. */
+        # bool init ();
+        # 
+        # /** \brief Closes the grabbing pipeline. */
+        # void close ();
+        # 
+        # /** \brief Continously asks for data from the device and publishes it if available. */
+        # void processGrabbing ();
+        # 
+        # // signals to indicate whether new clouds are available
+        # boost::signals2::signal<sig_cb_pxc_point_cloud>* point_cloud_signal_;
+        # //boost::signals2::signal<sig_cb_fotonic_point_cloud_i>* point_cloud_i_signal_;
+        # boost::signals2::signal<sig_cb_pxc_point_cloud_rgb>* point_cloud_rgb_signal_;
+        # boost::signals2::signal<sig_cb_pxc_point_cloud_rgba>* point_cloud_rgba_signal_;
+        # 
+        # protected:
+        # // utiliy object for accessing PXC camera
+        # UtilPipeline pp_;
+        # // indicates whether grabbing is running
+        # bool running_;
+        # 
+        # // FPS computation
+        # mutable float fps_;
+        # mutable boost::mutex fps_mutex_;
+        # 
+        # // thread where the grabbing takes place
+        # boost::thread grabber_thread_;
+        # 
+        # public:
+        # EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+
+
+###
+
+
+# robot_eye_grabber.h
+# namespace pcl
+# /** \brief Grabber for the Ocular Robotics RobotEye sensor.
+#  * \ingroup io
+#  */
+# class PCL_EXPORTS RobotEyeGrabber : public Grabber
+# cdef extern from "pcl/io/robot_eye_grabber.h" namespace "pcl":
+#     cdef cppclass RobotEyeGrabber(Grabber):
+#         RobotEyeGrabber()
+        # public:
+        # 
+        # /** \brief Signal used for the point cloud callback.
+        #  * This signal is sent when the accumulated number of points reaches
+        #  * the limit specified by setSignalPointCloudSize().
+        #  */
+        # typedef void (sig_cb_robot_eye_point_cloud_xyzi) (const boost::shared_ptr<const pcl::PointCloud<pcl::PointXYZI> >&);
+        # 
+        # /** \brief RobotEyeGrabber default constructor. */
+        # RobotEyeGrabber ();
+        # 
+        # /** \brief RobotEyeGrabber constructor taking a specified IP address and data port. */
+        # RobotEyeGrabber (const boost::asio::ip::address& ipAddress, unsigned short port=443);
+        # 
+        # /** \brief virtual Destructor inherited from the Grabber interface. It never throws. */
+        # virtual ~RobotEyeGrabber () throw ();
+        # 
+        # /** \brief Starts the RobotEye grabber.
+        #  * The grabber runs on a separate thread, this call will return without blocking. */
+        # virtual void start ();
+        # 
+        # /** \brief Stops the RobotEye grabber. */
+        # virtual void stop ();
+        # 
+        # /** \brief Obtains the name of this I/O Grabber
+        #  *  \return The name of the grabber
+        #  */
+        # virtual std::string getName () const;
+        # 
+        # /** \brief Check if the grabber is still running.
+        #  *  \return TRUE if the grabber is running, FALSE otherwise
+        #  */
+        # virtual bool isRunning () const;
+        # 
+        # /** \brief Returns the number of frames per second.
+        #  */
+        # virtual float getFramesPerSecond () const;
+        # 
+        # /** \brief Set/get ip address of the sensor that sends the data.
+        #  * The default is address_v4::any ().
+        #  */
+        # void setSensorAddress (const boost::asio::ip::address& ipAddress);
+        # const boost::asio::ip::address& getSensorAddress () const;
+        # 
+        # /** \brief Set/get the port number which receives data from the sensor.
+        #  * The default is 443.
+        #  */
+        # void setDataPort (unsigned short port);
+        # unsigned short getDataPort () const;
+        # 
+        # /** \brief Set/get the number of points to accumulate before the grabber
+        #  * callback is signaled.  The default is 1000.
+        #  */
+        # void setSignalPointCloudSize (std::size_t numerOfPoints);
+        # std::size_t getSignalPointCloudSize () const;
+        # 
+        # /** \brief Returns the point cloud with point accumulated by the grabber.
+        #  * It is not safe to access this point cloud except if the grabber is
+        #  * stopped or during the grabber callback.
+        #  */
+        # boost::shared_ptr<pcl::PointCloud<pcl::PointXYZI> > getPointCloud() const;
+
+
+###
 
 
 ###############################################################################
@@ -1649,5 +1412,4 @@ cdef extern from "pcl/io/image_grabber.h" namespace "pcl::io":
 #         Grabber_OpenNI_QQVGA_25Hz "pcl::OpenNIGrabber::OpenNI_QQVGA_25Hz"       # = 7, // Not supported -> using software downsampling (only for integer scale factor and only NN)
 #         Grabber_OpenNI_QQVGA_30Hz "pcl::OpenNIGrabber::OpenNI_QQVGA_30Hz"       # = 8, // Not supported -> using software downsampling (only for integer scale factor and only NN)
 #         Grabber_OpenNI_QQVGA_60Hz "pcl::OpenNIGrabber::OpenNI_QQVGA_60Hz"       # = 9  // Not supported -> using software downsampling (only for integer scale factor and only NN)
-
 
