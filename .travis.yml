@@ -142,7 +142,7 @@ script:
   # examples
   # - python examples/GrabberCallbackTest.py
   # examples/official
-  - python examples/official/openni_grabber.py
+  # - python examples/official/grabber/openni_grabber.py
   # # examples_command_172.txt
   # # Filtering
   # - python examples/official/Filtering/PassThroughFilter.py
