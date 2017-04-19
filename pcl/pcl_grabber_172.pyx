@@ -28,7 +28,7 @@ from boost_shared_ptr cimport shared_ptr
 ### Enum Setting(define Class InternalType) ###
 
 # Grabber Callback
-include "pxi/Grabber/GrabberCallback.pxi"
+# include "pxi/Grabber/PyGrabberCallback.pxi"
 
 # Grabber
 # include "pxi/Grabber/ONIGrabber.pxi"
