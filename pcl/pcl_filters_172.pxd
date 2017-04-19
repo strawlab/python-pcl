@@ -1256,50 +1256,158 @@ ctypedef StatisticalOutlierRemoval[cpp.PointXYZRGBA] StatisticalOutlierRemoval_P
 #       void applyFilter (PointCloud2 &output);
 ###
 
+# pcl 1.7.2
+# voxel_grid.h
+# namespace pcl
+# /** \brief Obtain the maximum and minimum points in 3D from a given point cloud.
+#   * \param[in] cloud the pointer to a pcl::PCLPointCloud2 dataset
+#   * \param[in] x_idx the index of the X channel
+#   * \param[in] y_idx the index of the Y channel
+#   * \param[in] z_idx the index of the Z channel
+#   * \param[out] min_pt the minimum data point 
+#   * \param[out] max_pt the maximum data point
+#   */
+#   PCL_EXPORTS void 
+#   getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx, int z_idx,
+#                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt);
+###
+
+# pcl 1.7.2
+# voxel_grid.h
+# namespace pcl
+#   /** \brief Obtain the maximum and minimum points in 3D from a given point cloud. 
+#     * \note Performs internal data filtering as well.
+#     * \param[in] cloud the pointer to a pcl::PCLPointCloud2 dataset
+#     * \param[in] x_idx the index of the X channel
+#     * \param[in] y_idx the index of the Y channel
+#     * \param[in] z_idx the index of the Z channel
+#     * \param[in] distance_field_name the name of the dimension to filter data along to
+#     * \param[in] min_distance the minimum acceptable value in \a distance_field_name data
+#     * \param[in] max_distance the maximum acceptable value in \a distance_field_name data
+#     * \param[out] min_pt the minimum data point 
+#     * \param[out] max_pt the maximum data point
+#     * \param[in] limit_negative \b false if data \b inside of the [min_distance; max_distance] interval should be
+#     * considered, \b true otherwise.
+#     */
+#   PCL_EXPORTS void 
+#   getMinMax3D (const pcl::PCLPointCloud2ConstPtr &cloud, int x_idx, int y_idx, int z_idx,
+#                const std::string &distance_field_name, float min_distance, float max_distance, 
+#                Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative = false);
+###
+
+# pcl 1.7.2
+# voxel_grid.h
+# namespace pcl
+# /** \brief Get the relative cell indices of the "upper half" 13 neighbors.
+#   * \note Useful in combination with getNeighborCentroidIndices() from \ref VoxelGrid
+#   * \ingroup filters
+#   */
+# inline Eigen::MatrixXi getHalfNeighborCellIndices ()
+###
+
+# pcl 1.7.2
+# voxel_grid.h
+# namespace pcl
+# /** \brief Get the relative cell indices of all the 26 neighbors.
+#   * \note Useful in combination with getNeighborCentroidIndices() from \ref VoxelGrid
+#   * \ingroup filters
+#   */
+# inline Eigen::MatrixXi getAllNeighborCellIndices ()
+###
+
+# pcl 1.7.2
+# voxel_grid.h
+# namespace pcl
+# /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions
+#   * in a given pointcloud, without considering points outside of a distance threshold from the laser origin
+#   * \param[in] cloud the point cloud data message
+#   * \param[in] distance_field_name the field name that contains the distance values
+#   * \param[in] min_distance the minimum distance a point will be considered from
+#   * \param[in] max_distance the maximum distance a point will be considered to
+#   * \param[out] min_pt the resultant minimum bounds
+#   * \param[out] max_pt the resultant maximum bounds
+#   * \param[in] limit_negative if set to true, then all points outside of the interval (min_distance;max_distace) are considered
+#   * \ingroup filters
+#   */
+# template <typename PointT> void 
+# getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, 
+#              const std::string &distance_field_name, float min_distance, float max_distance,
+#              Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative = false);
+###
+
+# pcl 1.7.2
+# voxel_grid.h
+# namespace pcl
+# /** \brief Get the minimum and maximum values on each of the 3 (x-y-z) dimensions
+#   * in a given pointcloud, without considering points outside of a distance threshold from the laser origin
+#   * \param[in] cloud the point cloud data message
+#   * \param[in] indices the vector of indices to use
+#   * \param[in] distance_field_name the field name that contains the distance values
+#   * \param[in] min_distance the minimum distance a point will be considered from
+#   * \param[in] max_distance the maximum distance a point will be considered to
+#   * \param[out] min_pt the resultant minimum bounds
+#   * \param[out] max_pt the resultant maximum bounds
+#   * \param[in] limit_negative if set to true, then all points outside of the interval (min_distance;max_distace) are considered
+#   * \ingroup filters
+#   */
+# template <typename PointT> void 
+# getMinMax3D (const typename pcl::PointCloud<PointT>::ConstPtr &cloud, 
+#              const std::vector<int> &indices,
+#              const std::string &distance_field_name, float min_distance, float max_distance,
+#              Eigen::Vector4f &min_pt, Eigen::Vector4f &max_pt, bool limit_negative = false);
+###
+
 # voxel_grid.h
 # template <typename PointT>
 # class VoxelGrid : public Filter<PointT>
 cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
     cdef cppclass VoxelGrid[T](Filter[T]):
         VoxelGrid()
-        # void setLeafSize (const Eigen::Vector4f &leaf_size) 
+        
         void setLeafSize (float, float, float)
+        # void "setLeafSize" setLeafSize_Eigen(const Eigen::Vector4f &leaf_size) 
+        
+        # inline Eigen::Vector3f getLeafSize ()
+        
+        # use base Class
         # void setInputCloud (shared_ptr[cpp.PointCloud[T]])
         # void filter(cpp.PointCloud[T] c)
         # /** \brief Set to true if all fields need to be downsampled, or false if just XYZ.
         #   * \param[in] downsample the new value (true/false)
-        # void setDownsampleAllData (bool downsample)
         void setDownsampleAllData (bool downsample)
         
         # /** \brief Get the state of the internal downsampling parameter (true if
         #   * all fields need to be downsampled, false if just XYZ). 
-        # bool getDownsampleAllData ()
         bool getDownsampleAllData ()
+        
+        # inline void setMinimumPointsNumberPerVoxel (unsigned int min_points_per_voxel)
+        void setMinimumPointsNumberPerVoxel (unsigned int min_points_per_voxel)
+        
+        # inline unsigned int getMinimumPointsNumberPerVoxel ()
+        unsigned int getMinimumPointsNumberPerVoxel ()
         
         # /** \brief Set to true if leaf layout information needs to be saved for later access.
         #   * \param[in] save_leaf_layout the new value (true/false)
-        # void setSaveLeafLayout (bool save_leaf_layout)
         void setSaveLeafLayout (bool save_leaf_layout)
         
         # /** \brief Returns true if leaf layout information will to be saved for later access. */
-        # bool getSaveLeafLayout () { return (save_leaf_layout_); }
         bool getSaveLeafLayout ()
         
         # \brief Get the minimum coordinates of the bounding box (after filtering is performed). 
         # Eigen::Vector3i getMinBoxCoordinates () { return (min_b_.head<3> ()); }
-        # eigen3.Vector3i getMinBoxCoordinates ()
+        eigen3.Vector3i getMinBoxCoordinates ()
         
         # \brief Get the minimum coordinates of the bounding box (after filtering is performed). 
         # Eigen::Vector3i getMaxBoxCoordinates () { return (max_b_.head<3> ()); }
-        # eigen3.Vector3i getMaxBoxCoordinates ()
+        eigen3.Vector3i getMaxBoxCoordinates ()
         
         # \brief Get the number of divisions along all 3 axes (after filtering is performed). 
         # Eigen::Vector3i getNrDivisions () { return (div_b_.head<3> ()); }
-        # eigen3.Vector3i getNrDivisions ()
+        eigen3.Vector3i getNrDivisions ()
         
         # \brief Get the multipliers to be applied to the grid coordinates in order to find the centroid index (after filtering is performed). 
         # Eigen::Vector3i getDivisionMultiplier () { return (divb_mul_.head<3> ()); }
-        # eigen3.Vector3i getDivisionMultiplier ()
+        eigen3.Vector3i getDivisionMultiplier ()
         
         # /** \brief Returns the index in the resulting downsampled cloud of the specified point.
         #   * \note for efficiency, user must make sure that the saving of the leaf layout is enabled and filtering 
@@ -1327,12 +1435,12 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
         #   * \param[in] y the Y point coordinate to get the (i, j, k) index at
         #   * \param[in] z the Z point coordinate to get the (i, j, k) index at
         # Eigen::Vector3i getGridCoordinates (float x, float y, float z) 
-        # eigen3.Vector3i getGridCoordinates (float x, float y, float z) 
+        eigen3.Vector3i getGridCoordinates (float x, float y, float z) 
         
         # /** \brief Returns the index in the downsampled cloud corresponding to a given set of coordinates.
         #   * \param[in] ijk the coordinates (i,j,k) in the grid (-1 if empty)
         # int getCentroidIndexAt (const Eigen::Vector3i &ijk)
-        # int getCentroidIndexAt (const eigen3.Vector3i &ijk)
+        int getCentroidIndexAt (const eigen3.Vector3i &ijk)
         
         # /** \brief Provide the name of the field to be used for filtering data. In conjunction with  \a setFilterLimits,
         #   * points having values outside this interval will be discarded.
@@ -1374,6 +1482,7 @@ cdef extern from "pcl/filters/voxel_grid.h" namespace "pcl":
 
 
 ###
+
 
 # template <>
 # class PCL_EXPORTS VoxelGrid<sensor_msgs::PointCloud2> : public Filter<sensor_msgs::PointCloud2>
