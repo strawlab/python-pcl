@@ -142,7 +142,6 @@ class TestICP_NL(unittest.TestCase):
         # mss = (np.linalg.norm(estimate.to_array()
         #                       - self.source.to_array(), axis=1) ** 2).mean()
         # self.assertLess(mss, 1)
-        
         # print("------", algo)
         # print("Converged: ", converged, "Estimate: ", estimate,
         #       "Fitness: ", fitness)
@@ -160,5 +159,4 @@ def suite():
 
 if __name__ == '__main__':
     unittest.main()
-
 

@@ -1,4 +1,4 @@
-﻿# XXX do a more specific import!
+# XXX do a more specific import!
 from ._pcl import *
 # vtkSmartPointer.h error (Linux)
 # from .pcl_visualization import *

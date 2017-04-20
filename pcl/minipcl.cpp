@@ -231,7 +231,7 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 /*
 // pcl1.6 
 #include <pcl/keypoints/harris_keypoint3D.h>
-// use 1.7`
+// use 1.7ï¿½`
 #include <pcl/keypoints/harris_3d.h>
 
 // HarrisKeypoint3D
@@ -302,10 +302,9 @@ void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstima
 {
     // NG : out Variant Function end error
     printf("compute start.\n");
-    // QÆƒJƒEƒ“ƒg‚ÅNG?(ŠÖ””²‚¯‚½‚ÉƒGƒ‰[)
+    // ï¿½Qï¿½ÆƒJï¿½Eï¿½ï¿½ï¿½gï¿½ï¿½NG?(ï¿½Öï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒGï¿½ï¿½ï¿½[)
     ne.compute (out);
     // pcl 1.7.2 error
     // printf("out = %p.\n", out);
     printf("compute end.\n");
 }
-
