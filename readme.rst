@@ -14,16 +14,6 @@
       })();
     </script>
 
-
-.. image:: https://travis-ci.org/Sirokujira/python-pcl.png?branch=master
-        :target: https://travis-ci.org/Sirokujira/python-pcl
-
-.. image:: https://ci.appveyor.com/api/projects/status/ixcgmjb1x1713fde
-        :target: https://ci.appveyor.com/project/Sirokujira/python-pcl
-
-.. image:: https://coveralls.io/repos/github/Sirokujira/python-pcl/badge.svg?branch=master
-        :target: https://coveralls.io/github/Sirokujira/python-pcl?branch=master
-
 Introduction
 ============
 
@@ -92,7 +82,7 @@ This release has been tested on Linux Ubuntu 14.04 with
 
 and MacOS with
  * Python 2.7.6, 3.4.0, 3.5.2
- * pcl 1.7.2
+ * pcl 1.8.0
  * Cython 0.25.2
 
 and Windows with
@@ -166,4 +156,5 @@ For deficiencies in this documentation, please consult the
 .. automodule:: pcl
    :members:
    :undoc-members:
+
 
