@@ -106,18 +106,18 @@ before_install:
       brew outdated pyenv || brew upgrade --quiet pyenv;
       brew install homebrew/boneyard/pyenv-pip-rehash;
       brew tap homebrew/science;
-
+      
       PYTHON_CONFIGURE_OPTS="--enable-unicode=ucs2" pyenv install -ks $PYTHON_VERSION;
       pyenv global $PYTHON_VERSION;
       python --version;
-
+      
       brew search versions/pcl;
       travis_wait 45 brew install pcl --without-qt;
     fi
 
   - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
       sudo apt-get install openni2-utils
-
+      
       sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
       sudo apt-get update -y;
       sudo apt-get install libpcl-all -y;
