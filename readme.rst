@@ -74,17 +74,57 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 Requirements
 ------------
 
-This release has been tested on Linux Mint 17 with
+This release has been tested on Linux Ubuntu 14.04 with
 
- * Python 2.7.6
+ * Python 2.7.6, 3.4.0, 3.5.2
  * pcl 1.7.2
- * Cython 0.21.2
+ * Cython 0.25.2
 
-and CentOS 6.5 with
+and MacOS with
+ * Python 2.7.6, 3.4.0, 3.5.2
+ * pcl 1.8.0
+ * Cython 0.25.2
 
- * Python 2.6.6
- * pcl 1.6.0
- * Cython 0.21
+and Windows with
+ * (Miniconda/Anaconda) - Python 3.4
+ * pcl 1.6.0(VS2010)
+ * Cython 0.25.2
+ * Gtk+
+
+and Windows with
+ * (Miniconda/Anaconda) - Python 3.5
+ * pcl 1.7.2(VS2015)
+ * Cython 0.25.2
+ * Gtk+
+
+and Windows with
+ * (Miniconda/Anaconda) - Python 3.5
+ * pcl 1.8.0(VS2015)
+ * Cython 0.25.2
+ * Gtk+
+
+`Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+
+`Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_ 
+
+`Windows Gtk+ Download <http://win32builder.gnome.org/>`_ 
+
+Copy bin Folder to pkg-config Folder
+
+set Environment variable
+
+1. PCL_ROOT
+    $(PCL Install FolderPath)
+
+2. PATH
+    (pcl 1.6.0, 1.7.2?)
+    $(PCL_ROOT)/bin/;$(OPEN_NI_ROOT)/Tools;$(VTK_ROOT)/bin;
+
+    (pcl 1.8.0)
+    $(PCL_ROOT)/bin/;$(OPEN_NI2_ROOT)/Tools;$(VTK_ROOT)/bin;
+
+* use Cython 0.25.2 reason
+* `override method support version <http://cython.readthedocs.io/en/latest/src/userguide/wrapping_CPlusPlus.html/>`_
 
 A note about types
 ------------------
@@ -116,4 +156,5 @@ For deficiencies in this documentation, please consult the
 .. automodule:: pcl
    :members:
    :undoc-members:
+
 

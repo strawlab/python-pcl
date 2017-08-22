@@ -1,11 +1,12 @@
-#port of
-#http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php
-#you need to download
-#http://svn.pointclouds.org/data/tutorials/table_scene_mug_stereo_textured.pcd
+# -*- coding: utf-8 -*-
+# port of
+# http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php
+# you need to download
+# http://svn.pointclouds.org/data/tutorials/table_scene_mug_stereo_textured.pcd
 
 import pcl
 
-cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
+cloud = pcl.load('table_scene_mug_stereo_textured.pcd')
 
 print(cloud.size)
 
@@ -28,7 +29,9 @@ indices, model = seg.segment()
 print(model)
 
 cloud_plane = cloud_filtered.extract(indices, negative=False)
-cloud_plane.to_file("table_scene_mug_stereo_textured_plane.pcd")
+# NG : const char* not str
+# cloud_plane.to_file('table_scene_mug_stereo_textured_plane.pcd')
+pcl.save(cloud_plane, 'table_scene_mug_stereo_textured_plane.pcd')
 
 cloud_cyl = cloud_filtered.extract(indices, negative=True)
 
@@ -45,4 +48,6 @@ indices, model = seg.segment()
 print(model)
 
 cloud_cylinder = cloud_cyl.extract(indices, negative=False)
-cloud_cylinder.to_file("table_scene_mug_stereo_textured_cylinder.pcd")
+# NG : const char* not str
+# cloud_cylinder.to_file("table_scene_mug_stereo_textured_cylinder.pcd")
+pcl.save(cloud_cylinder, 'table_scene_mug_stereo_textured_cylinder.pcd')

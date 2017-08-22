@@ -1,0 +1,170 @@
+language: python 
+
+cache:
+  - pip
+  - ccache
+
+matrix:
+  include:
+    # - os: linux
+    #   python: "2.7"
+    #   env:
+    #   - PCL_VERSION="1.7"
+    # - os: linux
+    #   python: "3.4"
+    #   env:
+    #   - PCL_VERSION="1.7"
+    # - os: linux
+    #   python: "3.5"
+    #   env:
+    #   - PCL_VERSION="1.7"
+    - os: linux
+      python: "2.7"
+      env:
+      - PCL_VERSION="1.8"
+    - os: linux
+      python: "3.4"
+      env:
+      - PCL_VERSION="1.8"
+    - os: linux
+      python: "3.5"
+      env:
+      - PCL_VERSION="1.8"
+
+    # TravisCI TimeLimit 50min
+    # numpy error
+    # - os: osx
+    #   language: generic
+    #   env:
+    #   - PYTHON_VERSION=2.7.10
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    # - os: osx
+    #   language: generic
+    #   env:
+    #   - PYTHON_VERSION=3.4.3
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    # - os: osx
+    #   language: generic
+    #   env:
+    #   - PYTHON_VERSION=3.5.1
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+
+# travis_wait 45 brew install pcl --without-vtk --without-qt;
+# use pcl version 1.7
+#   sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+#   sudo apt-get update -y;
+#   sudo apt-get install libpcl-all -y;
+# use pcl 1.8(Ubuntu)
+# sudo apt-get update -y;
+# git clone https://github.com/PointCloudLibrary/pcl.git pcl-trunk;
+# ln -s pcl-trunk pcl -y;
+# sudo apt-get install g++ -y;
+# sudo apt-get install cmake cmake-gui -y;
+# sudo apt-get install doxygen -y;
+# sudo apt-get install mpi-default-dev openmpi-bin openmpi-common -y;
+# sudo apt-get install libflann1.8 libflann-dev -y;
+# sudo apt-get install libeigen3-dev -y;
+# sudo apt-get install libboost-all-dev -y;
+# sudo apt-get install libvtk5.8-qt4 libvtk5.8 libvtk5-dev -y;
+# sudo apt-get install libqhull* -y;
+# sudo apt-get install libusb-dev -y;
+# sudo apt-get install libgtest-dev -y;
+# sudo apt-get install git-core freeglut3-dev pkg-config -y;
+# sudo apt-get install build-essential libxmu-dev libxi-dev -y;
+# sudo apt-get install libusb-1-0-dev graphviz mono-complete -y;
+# sudo apt-get install qt-sdk openjdk-7-jdk openjdk-7-jre -y;
+# sudo apt-get install phonon-backend-gstreamer -y;
+# sudo apt-get install phonon-backend-vlc -y;
+# sudo apt-get install libpcap-dev -y;
+# cd pcl;
+# mkdir build;
+# cd build;
+# cmake -DCMAKE_BUILD_TYPE=None -DBUILD_GPU=OFF -DBUILD_apps=ON -DBUILD_examples=ON .. ;
+# travis_wait 45 make;
+# travis_wait 45 sudo make install;
+# https://github.com/hsean/Capstone-44-Object-Segmentation/wiki/PCL-1.8:-Ubuntu-14.04-Installation-Guide
+# Add OpenNI2?
+# sudo apt-get install -yV g++ python libusb-1.0.0-dev libudev-dev openjdk-6-jdk freeglut3-dev doxygen graphviz 
+# git clone https://github.com/OpenNI/OpenNI2.git
+# cd OpenNI2
+# make
+# cd Packaging
+# python ./ReleaseVersion.py x86
+# cd OpenNI-Linux-x86-2.2
+# cp -a Include /usr/local/include/ni2
+# cp -a Redist /usr/local/lib/ni2
+# cd ../../..
+# other
+# sudo apt-get install openni2-utils
+###
+before_install:
+  - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
+      brew update >/dev/null;
+      brew outdated pyenv || brew upgrade --quiet pyenv;
+      brew install homebrew/boneyard/pyenv-pip-rehash;
+      brew tap homebrew/science;
+      
+      PYTHON_CONFIGURE_OPTS="--enable-unicode=ucs2" pyenv install -ks $PYTHON_VERSION;
+      pyenv global $PYTHON_VERSION;
+      python --version;
+      
+      brew search versions/pcl;
+      travis_wait 45 brew install pcl --without-qt;
+    fi
+
+  - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
+      sudo apt-get install openni2-utils
+      
+      sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      sudo apt-get update -y;
+      sudo apt-get install libpcl-all -y;
+    fi
+
+
+install:
+  - pip install --upgrade pip
+  - pip install cython==0.25.2
+  - pip install numpy
+  - pip install coveralls
+  - python setup.py build_ext -i
+  - python setup.py install
+
+# pcl base 1.7.2
+# - python examples/official/Recognition/cpython correspondence_grouping.py pcldata/tutorials/correspondence_grouping/milk.pcd pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
+script:
+  # - coverage run --source=test_pcl setup.py test
+  # - coverage run tests/test_pcl.py
+  - coverage run --parallel-mode tests/test_pcl.py
+  - coverage run --parallel-mode tests/test_registration.py
+  # examples
+  # - python examples/GrabberCallbackTest.py
+  # examples/official
+  # - python examples/official/grabber/openni_grabber.py
+  # # examples_command_172.txt
+  # # Filtering
+  # - python examples/official/Filtering/PassThroughFilter.py
+  # - python examples/official/Filtering/project_inliers.py
+  # - python examples/official/Filtering/remove_outliers.py -r Radius
+  # - python examples/official/Filtering/remove_outliers.py -r Condition
+  # - python examples/official/Filtering/VoxelGrid_160.py
+  # - python examples/official/Filtering/statistical_removal.py
+  # - python examples/official/IO/pcd_read.py
+  # # KdTree
+  # - python examples/official/kdtree/kdtree_search.py
+  # # keypoints
+  # # NG(RangeImage Link Error)
+  # - python examples/official/keypoints/narf_keypoint_extraction.py
+  # # octree
+  # - python examples/official/octree/octree_search.py
+  # - python examples/official/Segmentation/cluster_extraction.py
+  # - python examples/official/Segmentation/cylinder_segmentation.py
+  # - python examples/official/surface/concave_hull_2d.py
+  # - python examples/official/surface/resampling.py
+
+after_success:
+  - coverage combine
+  - coveralls
+

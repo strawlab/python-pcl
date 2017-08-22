@@ -1,0 +1,10 @@
+# https://github.com/r9y9/pylibfreenect2
+
+1. libfreenect2 & pylibfreenect2 install 
+git clone https://github.com/r9y9/pylibfreenect2.git
+python setup.py install
+
+2. 
+
+
+

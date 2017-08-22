@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+# The CloudViewer
+# http://pointclouds.org/documentation/tutorials/cloud_viewer.php#cloud-viewer
+
+#include <pcl/visualization/cloud_viewer.h>
+#include <iostream>
+#include <pcl/io/io.h>
+#include <pcl/io/pcd_io.h>
+
+import pcl
+
+# int user_data;
+user_data = 0
+
+cdef viewerOneOff (pcl.visualization.PCLVisualizer viewer)
+    viewer.set_BackgroundColor (1.0, 0.5, 1.0)
+    o = pcl.PointCloud()
+    o.x = 1.0;
+    o.y = 0;
+    o.z = 0;
+    viewer.addSphere (o, 0.25, "sphere", 0);
+    print('i only run once')
+
+
+cdef viewerPsycho (pcl::visualization::PCLVisualizer& viewer)
+    # static unsigned count = 0;
+    count = 0
+    print('Once per viewer loop: ' + str(count++))
+    viewer.removeShape ('text', 0)
+    viewer.addText (ss.str(), 200, 300, 'text', 0)
+    user_data++;
+
+
+# pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>);
+# pcl::io::loadPCDFile ("my_point_cloud.pcd", *cloud);
+cloud = pcl.load('./examples/pcldata/tutorials/my_point_cloud.pcd')
+
+# pcl::visualization::CloudViewer viewer("Cloud Viewer");
+# //blocks until the cloud is actually rendered
+# viewer.showCloud(cloud);
+viewer = pcl.visualization.CloudViewing('Cloud Viewer')
+
+# //use the following functions to get access to the underlying more advanced/powerful
+# //PCLVisualizer
+# //This will only get called once
+# viewer.runOnVisualizationThreadOnce (viewerOneOff);
+# //This will get called once per visualization iteration
+# viewer.runOnVisualizationThread (viewerPsycho);
+viewer.runOnVisualizationThreadOnce(viewerOneOff)
+viewer.runOnVisualizationThreadOnce(viewerPsycho)
+
+# while (!viewer.wasStopped ())
+# {
+# //you can also do cool processing here
+# //FIXME: Note that this is running in a separate thread from viewerPsycho
+# //and you should guard against race conditions yourself...
+# user_data++;
+# }
+
+flag = True
+flag != viewer.wasStopped()
+while flag:
+    user_data = user_data + 1
+end
+
+
