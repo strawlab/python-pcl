@@ -302,7 +302,6 @@ void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstima
 {
     // NG : out Variant Function end error
     printf("compute start.\n");
-    // 参照カウントでNG?(関数抜けた時にエラー)
     ne.compute (out);
     // pcl 1.7.2 error
     // printf("out = %p.\n", out);
