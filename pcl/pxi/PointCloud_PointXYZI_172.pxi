@@ -151,7 +151,7 @@ cdef class PointCloud_PointXYZI:
         cdef cpp.PointXYZI *p
         for i in range(npts):
             p = idx.getptr(self.thisptr(), i)
-            p.x, p.y, p.z, p.intensity = arr[i, 0], arr[i, 1], arr[i, 2], <unsigned long>arr[i, 3]
+            p.x, p.y, p.z, p.intensity = arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3]
 
     @cython.boundscheck(False)
     def to_array(self):
