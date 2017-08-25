@@ -231,7 +231,7 @@ void mpcl_extract_VFH(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 /*
 // pcl1.6 
 #include <pcl/keypoints/harris_keypoint3D.h>
-// use 1.7Å`
+// use 1.7
 #include <pcl/keypoints/harris_3d.h>
 
 // HarrisKeypoint3D
@@ -307,4 +307,3 @@ void mpcl_features_NormalEstimationMethod_compute(pcl::IntegralImageNormalEstima
     // printf("out = %p.\n", out);
     printf("compute end.\n");
 }
-
