@@ -58,7 +58,7 @@ class TestNumpyIO(unittest.TestCase):
         b = np.asarray(p)
         del b
 
-        self.assertRaises(ValueError, p.resize, 2 * len(p))
+        self.assertRaises(ValueError, p.resize, 2 * p.size)
 
     def test_pickle(self):
         """Test pickle support."""
