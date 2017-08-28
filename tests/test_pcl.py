@@ -72,6 +72,13 @@ class TestNumpyIO(unittest.TestCase):
         a[:] += 6
         assert_array_almost_equal(p[0], a[0])
 
+        # Regression test: deleting a second view would previously
+        # reset the view count to zero.
+        b = np.asarray(p)
+        del b
+
+        self.assertRaises(ValueError, p.resize, 2 * p.size)
+
     def test_pickle(self):
         """Test pickle support."""
         # In this testcase because picking reduces to pickling NumPy arrays.
@@ -225,9 +232,7 @@ class TestSave(unittest.TestCase):
         shutil.rmtree(self.tmpdir)
 
     def testSave(self):
-        # for ext in ["pcd", "ply"]:
-        # Mac ply read/write NG
-        for ext in ["pcd"]:
+        for ext in ["pcd", "ply"]:
             d = os.path.join(self.tmpdir, "foo." + ext)
             pcl.save(self.p, d)
             p = pcl.load(d)
@@ -277,12 +282,11 @@ class TestExceptions(unittest.TestCase):
         self.assertRaises(IndexError, self.p.__getitem__, self.p.size)
         self.assertRaises(Exception, self.p.get_point, self.p.size, 1)
 
-    # Mac resize method NG
-    # def testResize(self):
-    #    # XXX MemoryError isn't actually the prettiest exception for a
-    #    # negative argument. Don't hesitate to change this test to reflect
-    #    # better exceptions.
-    #    self.assertRaises(MemoryError, self.p.resize, -1)
+    def testResize(self):
+        # XXX MemoryError isn't actually the prettiest exception for a
+        # negative argument. Don't hesitate to change this test to reflect
+        # better exceptions.
+        self.assertRaises(MemoryError, self.p.resize, -1)
 
 
 class TestSegmenterNormal(unittest.TestCase):
@@ -370,7 +374,6 @@ class TestPassthroughFilter(unittest.TestCase):
 
 
 class TestKdTree(unittest.TestCase):
-
     def setUp(self):
         rng = np.random.RandomState(42)
         # Define two dense sets of points of sizes 30 and 170, resp.
@@ -446,7 +449,6 @@ class TestOctreePointCloudSearch(unittest.TestCase):
         self.assertEqual(len(rs[0]), 19730)
         self.assertEqual(len(rs[1]), 19730)
 
-
 # class TestOctreePointCloudChangeDetector(unittest.TestCase):
 # 
 #     def setUp(self):
@@ -467,7 +469,6 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 #         rs = self.t.radius_search(good_point, 0.5)
 #         self.assertEqual(len(rs[0]), 19730)
 #         self.assertEqual(len(rs[1]), 19730)
-
 
 # class TestCropHull(unittest.TestCase):
 # 
