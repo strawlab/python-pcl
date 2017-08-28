@@ -205,7 +205,7 @@ test_script:
   # - dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\*.pyd" /b /a-d /s
   # - "%CMD_IN_ENV% python tests\\test.py"
   - python sys_path_check.py
-  - python tests\test.py
+  - python tests\test_pcl.py
   # examples_command_160.txt
   # Filtering
   - python examples\official\Filtering\PassThroughFilter.py
