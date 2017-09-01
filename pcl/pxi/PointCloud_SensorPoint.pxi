@@ -107,9 +107,9 @@ cdef class PointCloud2:
         cdef Py_ssize_t npoints = self.thisptr().size()
         
         if self._view_count == 0:
-            self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 3
+        self._view_count += 1
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
@@ -567,7 +567,8 @@ include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
 include "Surface/ConcaveHull.pxi"
 include "Common/RangeImage/RangeImages.pxi"
-# include "Visualization/PointCloudColorHandlerCustoms.pxi"
+
+# include "Visualization/PointCloudColorHandlerCustoms.pxi"
 
 # Features
 include "Features/NormalEstimation.pxi"

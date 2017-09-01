@@ -9,74 +9,24 @@ environment:
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-  # Version 1.6.0 Check
-  # Test.py -NG
-  # - PYTHON: "C:\\Python34"
-  #   PYTHON_VERSION: "3.4.x"
-  #   PYTHON_ARCH: "32"
-  #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.6.0"
-  #   PCL_ROOT_83: "C:\\PROGRA~2\\PCL16~1.0"
-  #   PCL_VERSION: "1.6"
-  #   OPENNI_VERSION: "1.3.2"
-  #   OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
-  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
-
-  - PYTHON: "C:\\Python34-x64"
-    PYTHON_VERSION: "3.4.x"
+  - PYTHON: "C:\\Miniconda3-x64"
+    PYTHON_VERSION: "3.4"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
-    PCL_ROOT_83: "C:\\PROGRA~1\\PCL16~1.0"
     PCL_VERSION: "1.6"
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
 
-  # Version 1.7.2 Check
-  #- PYTHON: "C:\\Python35"
-  #  PYTHON_VERSION: "3.5.x"
-  #  PYTHON_ARCH: "32"
-  #  PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.7.2"
-  #  PCL_VERSION: "1.7"
-  #  OPENNI_VERSION: "1.3.2"
-  #  OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI\\Bin"
-  #  APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\Win32\\Bin"
-  
-  # - PYTHON: "C:\\Python35-x64"
-  #   PYTHON_VERSION: "3.5.x"
-  #   PYTHON_ARCH: "64"
-  #   PCL_ROOT: "C:\\Program Files\\PCL 1.7.2"
-  #   PCL_VERSION: "1.7"
-  #   OPENNI_VERSION: "1.3.2"
-  #   OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
-  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
-
-  # Version 1.8.0 Check
-  # - PYTHON: "C:\\Python35"
-  #   PYTHON_VERSION: "3.5.x"
-  #   PYTHON_ARCH: "32"
-  #   PCL_ROOT: "C:\\Program Files (x86)\\PCL 1.8.0"
-  #   PCL_VERSION: "1.8"
-  #   OPENNI_VERSION: "2.1.0"
-  #   OPENNI_ROOT: "C:\\Program Files (x86)\\OpenNI2\\Redist"
-  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\Win32\\Redist"
-  #   UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
-  #   UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x86\\ucrt"
-
-  # - PYTHON: "C:\\Python35-x64"
-  #   PYTHON_VERSION: "3.5.x"
-  #   PYTHON_ARCH: "64"
-  #   PCL_ROOT: "C:\\Program Files\\PCL 1.8.0"
-  #   PCL_VERSION: "1.8"
-  #   OPENNI_VERSION: "2.1.0"
-  #   OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist"
-  #   APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
-  #   UCRT_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\Redist\\ucrt\\DLLs\\x86"
-  #   UCRT_DEBUG_PATH : "C:\\Program Files (x86)\\Windows Kits\\10\\bin\\x64\\ucrt"
-
-branches: 
-  only: 
-    - master 
-
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PYTHON: "C:\\Miniconda35-x64"
+    PYTHON_VERSION: "3.5"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.8.1"
+    PCL_VERSION: "1.8"
+    OPENNI_VERSION: "2.2"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist\\"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
@@ -89,41 +39,7 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
-  # Check ShortPath
-  # - dir "C:\" /x
-  # - dir "C:\Program Files" /x
-  # - dir "C:\Program Files (x86)" /x
-
-  # - ECHO "Filesystem root:"
-  # - ps: "ls \"C:/\""
-  # - ECHO "Installed SDKs:"
-  # - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  # - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
-
-  # Prepend newly installed Python to the PATH of this build (this cannot be
-  # done from inside the powershell script as it would require to restart
-  # the parent CMD process).
-  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  # Add PCLPath
-  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
-  # setParameter
-  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%PATH%"
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%;"
-
-  # debug(ParameterCheck)
-  - "SET PATH"
-  # - "SET PYTHONPATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;"
-  # - "SET PYTHONPATH"
-  # - "SET PKG_CONFIG_PATH"
-
-  # Check that we have the expected version and architecture for Python
-  - "python --version"
-  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
-
-  # Upgrade to the latest version of pip to avoid it displaying warnings
-  # about it being out of date.
   - "pip install --disable-pip-version-check --user --upgrade pip"
   
   # Install the build dependencies of the project. If some dependencies contain
@@ -131,120 +47,67 @@ install:
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
-  - "pip install wheel"
+  # - "pip install wheel"
+  - "conda install -y -q wheel"
+  
+  # Mini-conda ng
+  # - "pip install --upgrade setuptools"
+  # - conda install -y -q setuptools
+  # use Visual Studio 2017?(over 34.4.0.)
+  # under 36.2.2
+  - conda install -y -q setuptools
   
   # PCL Install
-  # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe"
-  # - ps: Start-FileDownload "http://jaist.dl.sourceforge.net/project/pointclouds/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe"
-  # - ps: Start-FileDownload "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
   - ps : appveyor\install.ps1
 
-  # pkg-config Download?
-  # - ps: Start-FileDownload "http://win32builder.gnome.org/gtk+-bundle_3.10.4-20131202_win64.zip"
-  # - 7z x -y -o".\gtk" ./gtk+-bundle_3.10.4-20131202_win64.zip
-  # - xcopy .\gtk\bin .\pkg-config
+  # pkg-config Download
   - cd pkg-config
   - ps : .\Install-GTKPlus.ps1
   - cd ..
 
-  # Check OpenNI Install
-  # - dir "C:\Program Files" /x
-  # - dir "C:\Program Files (x86)" /x
-
 build_script:
-  - copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
-  - copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+  - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
+  - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
   
-  - ls "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration"
-  - ls "%PCL_ROOT%\bin"
-  - ls "%PCL_ROOT%\3rdParty"
-  - ls "%PYTHON%"
-  - ls "%PYTHON%\DLLs"
-  
-  - "%CMD_IN_ENV% pip install Cython==0.25.2"
-  - "%CMD_IN_ENV% pip install numpy"
-  
-  - "%CMD_IN_ENV% python sys_path_check.py"
-  - "%CMD_IN_ENV% python setup.py build_ext -i"
-  - "%CMD_IN_ENV% python setup.py install"
-  - "%CMD_IN_ENV% python setup.py bdist_wheel"
-  - "%CMD_IN_ENV% python -m pip list"
-  
-  - copy "%PCL_ROOT%\bin" .
-  - copy "%PCL_ROOT%\bin" "%PYTHON%"
-  - copy "%PCL_ROOT%\bin" "%PYTHON%\DLLs"
-  - copy "%PCL_ROOT%\bin" "%PYTHON%\Lib\site-packages"
-  
-  - copy "%PCL_ROOT%\3rdParty\Boost\lib" .
-  - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%"
-  - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\DLLs"
-  - copy "%PCL_ROOT%\3rdParty\Boost\lib" "%PYTHON%\Lib\site-packages"
-  
-  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" .
-  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%"
-  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\DLLs"
-  - copy "%PCL_ROOT%\3rdParty\FLANN\bin" "%PYTHON%\Lib\site-packages"
-  
-  - copy "%APPVEYOR_OPENNI_ROOT%" .
-  - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%"
-  - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\DLLs"
-  - copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
-  
-  # - copy "%UCRT_PATH%" .
-  # - copy "%UCRT_PATH%" "%PYTHON%"
-  # - copy "%UCRT_PATH%" "%PYTHON%\DLLs"
-  # - copy "%UCRT_PATH%" "%PYTHON%\Lib\site-packages"
+  # conda 
+  - conda install -y -q Cython=0.25.2
+  - conda install -y -q numpy
+
+  - python setup.py build_ext -i
+  - python setup.py install
+  - python setup.py bdist_wheel
+  - python -m pip list
+
+  - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" .
+  - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%"
+  - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\DLLs"
+  - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
 
 test_script:
-  # Run the project tests
-  # Path Check(NG)
-  # - pcd_viewer_release.exe
-  # Path Check(ErrorLog)
-  # - pcd_viewer_release2.exe
-  # - "%CMD_IN_ENV% python setup.py nosetests"
-  # - dir "%PYTHON%\Lib\site-packages\python_pcl-0.2-py3.4-win32.egg\*.pyd" /b /a-d /s
-  # - "%CMD_IN_ENV% python tests\\test.py"
-  - python sys_path_check.py
   - python tests\test_pcl.py
-  # examples_command_160.txt
-  # Filtering
-  - python examples\official\Filtering\PassThroughFilter.py
-  - python examples\official\Filtering\project_inliers.py
-  - python examples\official\Filtering\remove_outliers.py -r Radius
-  # MemoryLeak?
-  - python examples\official\Filtering\remove_outliers.py -r Condition
-  - python examples\official\Filtering\VoxelGrid_160.py
-  - python examples\official\Filtering\statistical_removal.py
-  - python examples\official\IO\pcd_read.py
-  # KdTree
-  - python examples\official\kdtree\kdtree_search.py
-  # keypoints
-  # NG(RangeImage Link Error)
-  # - python examples\official\keypoints\narf_keypoint_extraction.py
-  # octree
+  - python tests\test_registration.py
+
+  # - python examples\official\Filtering\PassThroughFilter.py
+  # - python examples\official\Filtering\project_inliers.py
+  # - python examples\official\Filtering\remove_outliers.py -r Radius
+  # # MemoryLeak?
+  # - python examples\official\Filtering\remove_outliers.py -r Condition
+  # - python examples\official\Filtering\VoxelGrid_160.py
+  # - python examples\official\Filtering\statistical_removal.py
+  # - python examples\official\IO\pcd_read.py
+  # # KdTree
+  # - python examples\official\kdtree\kdtree_search.py
+  # # keypoints
+  # # NG(RangeImage Link Error)
+  # # - python examples\official\keypoints\narf_keypoint_extraction.py
+  # # octree
   # execute NG
   # Exception ignored in: 'pcl._pcl.to_point_t'
   # TypeError: a float is required
-  - python examples\official\octree\octree_search.py
-  - python examples\official\Segmentation\cluster_extraction.py
-  - python examples\official\Segmentation\cylinder_segmentation.py
-  - python examples\official\surface\concave_hull_2d.py
-  - python examples\official\surface\resampling.py
+  # - python examples\official\octree\octree_search.py
+  # - python examples\official\Segmentation\cluster_extraction.py
+  # - python examples\official\Segmentation\cylinder_segmentation.py
+  # - python examples\official\surface\concave_hull_2d.py
+  # - python examples\official\surface\resampling.py
 
-
-#after_test:
-#  # If tests are successful, create binary packages for the project.
-#  # - "%CMD_IN_ENV% python setup.py bdist_wheel"
-#  # - "%CMD_IN_ENV% python setup.py bdist_wininst"
-#  # - "%CMD_IN_ENV% python setup.py bdist_msi"
-#  # - ps: "ls dist"
-
-
-artifacts:
-# Archive the generated packages in the ci.appveyor.com build report.
-  - path: dist\*
-  - path: pcl\*.pyd
-
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
 

@@ -2,9 +2,8 @@
 # Authors: Olivier Grisel, Jonathan Helmus, Kyle Kastner, and Alex Willmer
 # License: CC0 1.0 Universal: http://creativecommons.org/publicdomain/zero/1.0/
 
-$BASE_PCL_URL = "http://jaist.dl.sourceforge.net/project/pointclouds/"
-$BASE_NUMPY_WHL_URL = "http://www.lfd.uci.edu/~gohlke/pythonlibs/"
-$NUMPY_DOWNLOAD_URL = "djcobkfp"
+$BASE_PCL16_URL = "http://jaist.dl.sourceforge.net/project/pointclouds/"
+$BASE_PCL_URL = "https://github.com/PointCloudLibrary/pcl/releases/download"
 
 $PYTHON_PRERELEASE_REGEX = @"
 (?x)
@@ -13,7 +12,6 @@ $PYTHON_PRERELEASE_REGEX = @"
 (?<minor>\d+)
 \.
 (?<micro>\d+)
-(?<prerelease>[a-z]{1,2}\d+)
 "@
 
 
@@ -24,7 +22,6 @@ $PCL_PRERELEASE_REGEX = @"
 (?<minor>\d+)
 \.
 (?<micro>\d+)
-(?<prerelease>[a-z]{1,2}\d+)
 "@
 
 
@@ -83,8 +80,8 @@ function ParsePCLVersion ($pcl_version)
 {
     if ($pcl_version -match $PCL_PRERELEASE_REGEX) 
     {
-        # return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
-        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro, $matches.prerelease)
+        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro)
+        # return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro, $matches.prerelease)
     }
     
     # Convert NG
@@ -95,17 +92,11 @@ function ParsePCLVersion ($pcl_version)
 
 function InstallPCLEXE ($exepath, $pcl_home, $install_log)
 {
-    # old
-    # $install_args = "/quiet InstallAllUsers=1 TargetDir=$pcl_home"
-    # RunCommand $exepath $install_args
-    
     # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
     $install_args = "/S /v/qn /v/norestart"
-    # RunCommand schtasks /create /tn pclinstall /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
-    # RunCommand schtasks /run /tn pclinstall
-    # RunCommand schtasks /delete /tn pclinstall /f
-    # RunCommand sleep 600
     RunCommand "schtasks" "/create /tn pclinstall /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
+    # Check TaskList
+    RunCommand "schtasks" "/query /v"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn pclinstall"
     RunCommand "sleep" "600"
@@ -131,7 +122,7 @@ function RunCommand ($command, $command_args)
     Start-Process -FilePath $command -ArgumentList $command_args -Wait -Passthru
 }
 
-function DownloadPCL ($pcl_version, $platform_suffix) 
+function DownloadPCL ($pcl_version, $platform_suffix, $msvc_version) 
 {
     # $major, $minor, $micro, $prerelease = ParsePCLVersion $pcl_version
     $major, $minor, $micro = ParsePCLVersion $pcl_version
@@ -144,60 +135,34 @@ function DownloadPCL ($pcl_version, $platform_suffix)
         $msvcver = "msvc2010"
         
         $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-        $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-    }
-    elseif ($major -le 1 -and $minor -eq 7)
-    {
-        # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
-        # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
-        # $dir = "$major.$minor.$micro"
-        $dir = "$major.$minor.2"
-        $msvcver = "msvc2015"
-        
-        if ($platform_suffix -eq "win32") 
-        {
-            # NG : バイナリの Download まではいかない
-            # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
-            # 直接リンクを設定しても一定時間超えるとNG
-            # Note : 外部サービスに exeを置いて Download する?(チェック用に)
-            $url = "https://6gjmvg-ch3302.files.1drv.com/y3mINszazs-p2iitS2ZEzuvPRAqgqppQIAvM17aMB-S2y4iQ_jTyq0HVmZYBXZ1FAAl9VHzYCoQ6g_fRWaZMkA8AgvrfDvK5AZLy0s-guH9DPAYAlaTJo9-Hnr1xOeeA2t6u0uw9SHvO8CSZWnS5VwC-g/PCL-1.7.2-AllInOne-msvc2015-win32.exe?download&psid=1"
-        }
-        else 
-        {
-            # NG : バイナリの Download まではいかない
-            # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51248&authkey=!AOPBX-WypndUncw&ithint=file%2cexe"
-            # 直接リンクを設定しても一定時間超えるとNG
-            # Note : 外部サービスに exeを置いて Download する?(チェック用に)
-            $url = "https://6gjnvg-ch3302.files.1drv.com/y3mY7SSNjvbvx74d4JIAMAob0A87UF5PNGI6sqJJVR7_QQ453NyhBlvXDpjHW49fHJl4D6nCKJ8CWHS7J_D734Mr2zQS32uT7kUqn6vE0cbNj_ISISKJZ28CPvOpbgKfRSMvCqrpQAXR3yBddzAY3kvSg/PCL-1.7.2-AllInOne-msvc2015-win64.exe?download&psid=1"
-        }
-        
-        $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+        $url = "$BASE_PCL16_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
     }
     elseif ($major -le 1 -and $minor -eq 8)
     {
-        # $url = "https://onedrive.live.com/hogehoge"
+        # 1.8.0 NG
         # $dir = "$major.$minor.$micro"
-        $dir = "$major.$minor.0"
-        $msvcver = "msvc2015"
+        # fix 1.8.1
+        $dir = "$major.$minor.1"
         
-        if ($platform_suffix -eq "win32") 
-        {
-            # NG : バイナリの Download まではいかない
-            # $url = "https://onedrive.live.com/redir?resid=EC9EBB2646FF189A!51249&authkey=!ABJC39YpCnE4So8&ithint=file%2cexe"
-            # 直接リンクを設定しても一定時間超えるとNG
-            # Note : 外部サービスにインストーラを置いて Download する?(チェック用に)
-            $url = "https://6gjgdw-ch3302.files.1drv.com/y3m4fhIqdKOvjS4UfVakYyeZML0quorktQkKIWELuJCtxWh1jVFvzB0XcH5NlSsHrWVsgVlTMvbZkDyGv6FWix_pu24ORHI065W224v-gtAZmUrjBdbnda8AR1D-ehuHMWj-bhY2SHQmgo9LUXuAAcvOw/PCL-1.8.0-AllInOne-msvc2015-win32.exe?download&psid=1"
-        }
-        else 
-        {
-            # NG : バイナリの Download まではいかない
-            # $url = "https://onedrive.live.com/?authkey=%21AINUVKSzTRdWdS4&id=EC9EBB2646FF189A%2151744&cid=EC9EBB2646FF189A"
-            # 直接リンクを設定しても一定時間超えるとNG
-            # Note : 外部サービスにインストーラを置いて Download する?(チェック用に)
-            $url = "https://6gi8dw-ch3302.files.1drv.com/y3mbO30Vy-o-tHwr_TFCfdEtcGx2zOi4X-S74Oun4BqvPejbSd8arDm-32QXDkram4hLMCXEunFnANWw2NMCcG4BYtBqZOrkJ2EsAZ4_lH4U08ne8v5U_nWLJAj2anBNjZF59NER9m5D03wax0BNZHaZwmEk3TkpyIhIUjGQoFlIdI/PCL-1.8.0-AllInOne-msvc2015-win64.exe?download&psid=1"
-        }
+        # $msvcver = "msvc2015"
+        # 2015 or 2017
+        $msvcver = "msvc" + "$msvc_version"
         
         $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+        
+        $url = "$BASE_PCL_URL" + "/pcl-" + "$dir" + "/" + "$filename"
+    }
+    elseif ($major -le 1 -and $minor -eq 9)
+    {
+        $dir = "$major.$minor.micro"
+        # 2015? or 2017?
+        $msvcver = "msvc" + "$msvc_version"
+        
+        $msvcver = "msvc" + "$msvc_version"
+        
+        $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
+        
+        $url = "$BASE_PCL_URL" + "/pcl-" + "$dir" + "/" + "$filename"
     }
     else
     {
@@ -205,96 +170,26 @@ function DownloadPCL ($pcl_version, $platform_suffix)
         $msvcver = "msvc2015"
     }
 
-    # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-    # $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-
     # (plan modified function)
     $filepath = Download $filename $url
     return $filepath
 }
 
-function DownloadGTKPlus ($gtk_version, $platform_suffix) 
+function InstallPCL ($pcl_version, $architecture, $pcl_home, $build_worker_image) 
 {
-    # $major, $minor, $micro = ParsePCLVersion $gtk_version
-    # $dir = "$major.$minor.$micro"
-
-    $filename = "gtk+-bundle_3.10.4-20131202_" + "$platform_suffix.zip"
-    $url = "http://win32builder.gnome.org/" + "gtk+-bundle_3.10.4-20131202_" + "$platform_suffix.zip"
-
-    $filepath = Download $filename $url
-    return $filepath
-}
-
-function ParsePythonVersion ($python_version) 
-{
-    if ($python_version -match $PYTHON_PRERELEASE_REGEX) 
+    if ($build_worker_image -eq "Visual Studio 2015")
     {
-        return ([int]$matches.major, [int]$matches.minor, [int]$matches.micro, $matches.prerelease)
+        $msvc_version = "2015"
     }
-    
-    # Convert NG
-    $version_obj = [version]$python_version
-    return ($version_obj.major, $version_obj.minor, $version_obj.build, "")
-}
-
-function InstallNumpy ($python_version, $architecture, $python_home) 
-{
-    $major, $minor, $micro, $prerelease = ParsePythonVersion $python_version
-
-    $cp_ver = "cp$major$minor"
-
-    if ($architecture -eq "32") {
-        $platform_suffix = "win32"
-    } else {
-        $platform_suffix = "win_amd64"
-    }
-
-    $mathLib = "mkl"
-    if ($mathLib -eq "mkl")
+    elseif ($build_worker_image -eq "Visual Studio 2017")
     {
-        $cp_last_ver = $cp_ver + "m"
+        $msvc_version = "2017"
     }
     else
     {
-        $cp_last_ver = "none"
+        $msvc_version = "2015"
     }
-    
-    $numpy_ver = "1.10.4"
 
-    Write-Host "Installing Python" $python_version "for" $architecture "bit architecture to" $python_home
-    # if (Test-Path $python_home) 
-    # {
-    #     Write-Host $python_home "already exists, skipping."
-    #     return $false
-    # }
-
-    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp27-cp27m-win32.whl
-    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp27-cp27m-win_amd64.whl
-    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp34-cp34m-win32.whl
-    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp34-cp34m-win_amd64.whl
-    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp35-cp35m-win32.whl
-    # http://www.lfd.uci.edu/~gohlke/pythonlibs/tugyrhqo/numpy-1.10.4+mkl-cp35-cp35m-win_amd64.whl
-    # numpy-1.10.4+vanilla-cp27-none-win32.whl
-    # numpy-1.10.4+vanilla-cp27-none-win_amd64.whl
-    # numpy-1.10.4+vanilla-cp34-none-win32.whl
-    # numpy-1.10.4+vanilla-cp34-none-win_amd64.whl
-    # numpy-1.10.4+vanilla-cp35-none-win32.whl
-    # numpy-1.10.4+vanilla-cp35-none-win_amd64.whl
-    # numpy-1.11.0rc1+mkl-cp27-cp27m-win32.whl
-    # numpy-1.11.0rc1+mkl-cp27-cp27m-win_amd64.whl
-    # numpy-1.11.0rc1+mkl-cp34-cp34m-win32.whl
-    # numpy-1.11.0rc1+mkl-cp34-cp34m-win_amd64.whl
-    # numpy-1.11.0rc1+mkl-cp35-cp35m-win32.whl
-    # numpy-1.11.0rc1+mkl-cp35-cp35m-win_amd64.whl
-    $filename = "numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" +"-" + "$platform_suffix.whl"
-    $url = "$BASE_NUMPY_WHL_URL" + "$NUMPY_DOWNLOAD_URL" + "/numpy-" + "$numpy_ver" + "+" + "$mathLib" + "-" + "$cp_ver" + "-" + "$cp_last_ver" + "-" + "$platform_suffix.whl"
-    # replace another function
-    $filepath = Download $filename $url
-    return $filepath
-}
-
-function InstallPCL ($pcl_version, $architecture, $pcl_home) 
-{
     if ($architecture -eq "32")
     {
         $platform_suffix = "win32"
@@ -304,7 +199,7 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
         $platform_suffix = "win64"
     }
     
-    $installer_path = DownloadPCL $pcl_version $platform_suffix
+    $installer_path = DownloadPCL $pcl_version $platform_suffix $msvc_version
     $installer_ext = [System.IO.Path]::GetExtension($installer_path)
     Write-Host "Installing $installer_path to $pcl_home"
     $install_log = $pcl_home + "install.log"
@@ -327,49 +222,26 @@ function InstallPCL ($pcl_version, $architecture, $pcl_home)
         # Get-Content -Path $install_log
         # Exit 1
     }
+    
+    # use 1.6 only
+    CopyPCLHeader ($pcl_version, $pcl_home)
 }
 
-# function DownloadOpenNI ($openni_version, $platform_suffix) 
-# {
-#     # $major, $minor, $micro, $prerelease = ParsePCLVersion $openni_version
-#     $major, $minor, $micro = ParsePCLVersion $openni_version
-# 
-#     if ($major -eq 1 -and $minor -eq 5 and $minor -eq 7)
-#     {
-#         if ($platform_suffix -eq "win32") 
-#         {
-#             $url = "https://6qjmvg.bn1304.livefilestore.com/y3mi0KDkRbdIuOAXcGR3CNpXQZpmrSWltVYkTeL2qYl3Ag0fmxgTgtlxqOziG_Y55DoM7I8bLuVPxMYiZ94vCEZxBgQzCpWFaGS61rB9iP1trpLEStK8OH8VQ_v7HVrLQaQE2UgpunA3tZGEcxclHvD6g/OpenNI-Win32-1.5.7.10-Dev.zip?download&psid=1"
-#         }
-#         else
-#         {
-#             $url = "https://6qjmvg.bn1303.livefilestore.com/y3mEZfnt7ecywLJeAFqeZC0CdqIegwWqae5CHypCheKcyQv00BB4qMGhUW03FAJlubPymQz1hFHKLgRdE-2TO8b6VAZ4s_pe-FL-FY6I2RqCi8vcwOvEx1REMcZo_8Iz_bxNwEREtNH9M5TX8uo1yl9ZA/OpenNI-Win64-1.5.7.10-Dev.zip?download&psid=1"
-#         }
-#         
-#         # OpenNI-Win32-1.5.7.10-Dev.zip
-#         # OpenNI-Win64-1.5.7.10-Dev.zip
-#         $filename = "OpenNI-" + "$platform_suffix" + "$major" + "." + "$minor" + "." + "$micro" + "." + "$msvcver" + "-" + "Dev.exe"
-#     }
-#     elseif ($major -eq 2 -and $minor -eq 8)
-#     {
-#         # $url = "https://onedrive.live.com/hogehoge"
-#         # $dir = "$major.$minor.$micro"
-#         $dir = "$major.$minor.0"
-#         $msvcver = "msvc2015"
-#     }
-#     else
-#     {
-#         $dir = "$major.$minor.$micro"
-#     }
-# 
-#     # $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-#     # $url = "$BASE_PCL_URL" + "$dir" + "/PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-# 
-#     # (plan modified function)
-#     $filepath = Download $filename $url
-#     return $filepath
-# }
+function CopyPCLHeader ($pcl_version, $pcl_home) 
+{
+    $major, $minor, $micro = ParsePCLVersion $pcl_version
 
-function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home) 
+    if ($major -le 1 -and $minor -eq 6) 
+    {
+        # - copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
+        # - copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
+        $current_dir =  [System.IO.Directory]::GetCurrentDirectory()
+        Copy-Item $current_dir\appveyor\bfgs.h $pcl_home\include\pcl-1.6\pcl\registration
+        Copy-Item $current_dir\appveyor\eigen.h $pcl_home\include\pcl-1.6\pcl\registration
+    }
+}
+
+function InstallOpenNI ($openni_version, $architecture, $pcl_home, $openni_root)
 {
     if ($architecture -eq "32")
     {
@@ -380,26 +252,31 @@ function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home)
         $platform_suffix = "win64"
     }
     
-    $installer_path = $pcl_home + "\3rdParty\OpenNI\OpenNI-" + "$platform_suffix" + "-" + "$openni_version" + "-Dev.msi"
-    $installer_ext = [System.IO.Path]::GetExtension($installer_path)
-    Write-Host "Installing $installer_path to $openni_home"
-    $install_log = $openni_home + "\install.log"
+
+    $installer_filename = "OpenNI-" + "$platform_suffix" + "-" + "$openni_version" + "-Dev.msi"
+    $installer_path = $pcl_home + "\3rdParty\OpenNI\" + $installer_filename
+        
+    $current_dir =  [System.IO.Directory]::GetCurrentDirectory()
+    Copy-Item $installer_path $current_dir
+
+    Write-Host "Installing $installer_filename to $openni_root"
+    $install_log = $openni_root + "\install.log"
     if ($installer_ext -eq '.msi')
     {
-        InstallOpenNIMSI $installer_path $openni_home $install_log
+        InstallOpenNIMSI $installer_filename $openni_root $install_log
     }
     else
     {
-        InstallOpenNIEXE $installer_path $openni_home $install_log
+        InstallOpenNIEXE $installer_filename $openni_root $install_log
     }
     
-    if (Test-Path $openni_home) 
+    if (Test-Path $openni_root) 
     {
         Write-Host "OpenNI $openni_version ($architecture) installation complete"
     }
     else 
     {
-        Write-Host "Failed to install OpenNI in $openni_home"
+        Write-Host "Failed to install OpenNI in $openni_root"
         # Get-Content -Path $install_log
         # Exit 1
     }
@@ -408,57 +285,94 @@ function InstallOpenNI ($pcl_home, $openni_version, $architecture, $openni_home)
 
 function InstallOpenNIMSI ($msipath, $openni_home, $install_log)
 {
-    # # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
-    # $install_args = "/S /v/qn /v/norestart"
-    # # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
-    # # RunCommand schtasks /run /tn openni_install
-    # # RunCommand schtasks /delete /tn openni_install /f
-    # # RunCommand sleep 90
-    # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
-    # RunCommand "sleep" "10"
-    # RunCommand "schtasks" "/run /tn openni_install"
-    # RunCommand "sleep" "90"
-    # RunCommand "schtasks" "/delete /tn openni_install /f"
-
-    # $install_args = "/qn /log $install_log /i $msipath TARGETDIR=$openni_home"
-    # $install_args = "/qn /i `\`"$msipath`\`""
-    # $uninstall_args = "/qn /x `\`"$msipath`\`""
-    # $install_args = "/qn /i `"$msipath`""
-    # $uninstall_args = "/qn /x `"$msipath`""
-    $install_args = "/qn /norestart"
+    $install_args = "/qn /norestart /lv install.log"
     $uninstall_args = "$msipath /qn /x"
 
-    # RunCommand "msiexec.exe" $install_args
-    # task use
-    # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe $install_args`" /sc once /st 23:59"
     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe /i $msipath $install_args`" /sc once /st 23:59"
     RunCommand "sleep" "10"
     RunCommand "schtasks" "/run /tn openni_install"
     RunCommand "sleep" "90"
     RunCommand "schtasks" "/delete /tn openni_install /f"
-    # if (-not(Test-Path $openni_home)) 
-    # {
-    #     Write-Host "OpenNI seems to be installed else-where, reinstalling."
-    #     # RunCommand "msiexec.exe" $uninstall_args
-    #     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
-    #     RunCommand "sleep" "10"
-    #     RunCommand "schtasks" "/run /tn openni_install"
-    #     RunCommand "sleep" "90"
-    #     RunCommand "schtasks" "/delete /tn openni_install /f"
-    # 
-    #     # RunCommand "msiexec.exe" $install_args
-    #     RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$install_args`" /sc once /st 23:59"
-    #     RunCommand "sleep" "10"
-    #     RunCommand "schtasks" "/run /tn openni_install"
-    #     RunCommand "sleep" "90"
-    #     RunCommand "schtasks" "/delete /tn openni_install /f"
-    # }
 }
 
 function InstallOpenNIEXE ($exepath, $openni_home, $install_log)
 {
+    $install_args = "/S /v/qn /v/norestart"
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"$exepath $install_args`" /sc once /st 23:59"
+    RunCommand "sleep" "10"
+    RunCommand "schtasks" "/run /tn openni_install"
+    RunCommand "sleep" "90"
+    RunCommand "schtasks" "/delete /tn openni_install /f"
+}
+
+function InstallOpenNI2 ($openni_version, $architecture, $pcl_home, $openni2_root)
+{
+    if ($architecture -eq "32")
+    {
+        $platform_suffix = "win32"
+    }
+    else
+    {
+        $platform_suffix = "x64"
+    }
+    
+    $installer_filename = "OpenNI-Windows-" + "$platform_suffix" + "-" + "$openni_version" + ".msi"
+    # $installer_path = $pcl_home + "\3rdParty\OpenNI2\OpenNI-Windows-" + "$platform_suffix" + "-" + "$openni_version" + ".msi"
+    $installer_path = $pcl_home + "\3rdParty\OpenNI2\" + $installer_filename
+    # Copy-Item $installer_path $installer_filename
+    $current_dir =  [System.IO.Directory]::GetCurrentDirectory()
+    Copy-Item $installer_path $current_dir
+    
+    $installer_ext = [System.IO.Path]::GetExtension($installer_path)
+    Write-Host "Installing $installer_path"
+    $install_log = $pcl_home + "\install.log"
+    if ($installer_ext -eq '.msi')
+    {
+        # InstallOpenNI2MSI $installer_path $install_log
+        InstallOpenNI2MSI $installer_filename $install_log
+    }
+    else
+    {
+        InstallOpenNI2EXE $installer_path $install_log
+    }
+    
+    if (Test-Path $openni2_root) 
+    {
+        Write-Host "OpenNI2 $openni_version ($architecture) installation complete"
+    }
+    else 
+    {
+        Write-Host "Failed to install OpenNI2 in $openni2_root"
+        # Exit 1
+    }
+}
+
+
+function InstallOpenNI2MSI ($msipath, $install_log)
+{
+    # # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
+    # $install_args = "/qn /norestart"
+    # optput log
+    # $install_args = "/qn /norestart /lv $install_log"
+    $install_args = "/qn /norestart /lv install.log"
+    $uninstall_args = "$msipath /qn /x"
+
+    RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe /i $msipath $install_args`" /sc once /st 23:59"
+    # NG
+    # RunCommand "schtasks" "/create /tn openni_install /RL HIGHEST /tr `"msiexec.exe /i `"$msipath`" $install_args`" /sc once /st 23:59"
+    # NG
+    # RunCommand "schtasks" "/create /tn openni_install /rl HIGHEST /tr `"$msipath $install_args`" /sc once /st 23:59"
+    RunCommand "sleep" "10"
+    RunCommand "schtasks" "/run /tn openni_install"
+    RunCommand "sleep" "180"
+    RunCommand "schtasks" "/delete /tn openni_install /f"
+}
+
+function InstallOpenNI2EXE ($exepath, $install_log)
+{
     # http://www.ibm.com/support/knowledgecenter/SS2RWS_2.1.0/com.ibm.zsecure.doc_2.1/visual_client/responseexamples.html?lang=ja
     $install_args = "/S /v/qn /v/norestart"
+    
     # RunCommand schtasks /create /tn openni_install /RL HIGHEST /tr $exepath /S /v/norestart /v/qn /sc once /st 23:59
     # RunCommand schtasks /run /tn openni_install
     # RunCommand schtasks /delete /tn openni_install /f
@@ -472,11 +386,17 @@ function InstallOpenNIEXE ($exepath, $openni_home, $install_log)
 
 function main () 
 {
-    # InstallPython $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
     # http://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
-    # InstallNumpy $env:PYTHON_VERSION $env:PYTHON_ARCH $env:PYTHON
-    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT
-    # InstallOpenNI $env:PCL_ROOT_83 $env:OPENNI_VERSION $env:PYTHON_ARCH $env:OPENNI_ROOT
+    InstallPCL $env:PCL_VERSION $env:PYTHON_ARCH $env:PCL_ROOT $env:APPVEYOR_BUILD_WORKER_IMAGE
+    $major, $minor, $micro = ParsePCLVersion $env:PCL_VERSION
+    if ($major -le 1 -and $minor -eq 6) 
+    {
+        InstallOpenNI $env:OPENNI_VERSION $env:PYTHON_ARCH $env:PCL_ROOT $env:OPENNI_ROOT
+    }
+    else
+    {
+        InstallOpenNI2 $env:OPENNI_VERSION $env:PYTHON_ARCH $env:PCL_ROOT $env:OPENNI_ROOT
+    }
 }
 
 main
