@@ -19,6 +19,8 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass VectorXf:
         float *data()
     cdef cppclass Quaternionf:
+        Quaternionf()
+        Quaternionf(float, float, float, float)
         float w()
         float x()
         float y()
@@ -183,7 +185,7 @@ cdef extern from "pcl/sample_consensus/model_types.h" namespace "pcl":
         SACMODEL_PERPENDICULAR_PLANE
         SACMODEL_PARALLEL_LINES
         SACMODEL_NORMAL_PLANE
-        #SACMODEL_NORMAL_SPHERE
+        SACMODEL_NORMAL_SPHERE
         SACMODEL_REGISTRATION
         SACMODEL_PARALLEL_PLANE
         SACMODEL_NORMAL_PARALLEL_PLANE
