@@ -208,6 +208,9 @@ cdef class PointCloud:
         if self._view_count > 0:
             raise ValueError("can't resize PointCloud while there are"
                              " arrays/memoryviews referencing it")
+        if x < 0:
+            raise MemoryError("can't resize PointCloud to negative size")
+
         self.thisptr().resize(x)
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):

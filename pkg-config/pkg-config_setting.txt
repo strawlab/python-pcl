@@ -18,10 +18,10 @@ Distribution file: "Install-GTKPlus.ps1"
 1. Start powershell with administrator privileges
 2. ps1 placement place (Set-Location)
 3. Change the execution policy
-   Set-ExecutionPolicy RemoteSigned ÅÀ yes
+   Set-ExecutionPolicy RemoteSigned
 4. Execute
    .\Install-GTKPlus.ps1
 5. Return execution policy
-   Set-ExecutionPolicy Restricted ÅÀ yes
+   Set-ExecutionPolicy Restricted
 
-* 4, when specifying the absolute path of hogehoge.ps1, 2 is unnecessary.
+* 4, when specifying the absolute path of Install-GTKPlus.ps1, 2 is unnecessary.
