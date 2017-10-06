@@ -547,8 +547,8 @@ else:
     ext_args['include_dirs'].append('/usr/local/include/vtk')
     ext_args['library_dirs'].append('/usr/lib/vtk')
     ext_args['library_dirs'].append('/usr/lib64/vtk')
-    ext_args['include_dirs'].append('/usr/local/lib/vtk')
-    ext_args['include_dirs'].append('/usr/local/lib64/vtk')
+    ext_args['library_dirs'].append('/usr/local/lib/vtk')
+    ext_args['library_dirs'].append('/usr/local/lib64/vtk')
 
     for flag in pkgconfig('--cflags-only-other'):
         if flag.startswith('-D'):
