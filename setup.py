@@ -545,12 +545,12 @@ else:
     # VTK use?
     # ext_args['include_dirs'].append('/usr/include/vtk')
     # ext_args['include_dirs'].append('/usr/local/include/vtk')
+    # pcl 1.7(Ubuntu)
     ext_args['include_dirs'].append('/usr/include/vtk-5.8')
     ext_args['library_dirs'].append('/usr/lib')
-    # ext_args['library_dirs'].append('/usr/lib/vtk')
-    # ext_args['library_dirs'].append('/usr/lib64/vtk')
-    # ext_args['library_dirs'].append('/usr/local/lib/vtk')
-    # ext_args['library_dirs'].append('/usr/local/lib64/vtk')
+    # pcl 1.8.1(MacOSX)
+    ext_args['include_dirs'].append('/usr/include/vtk-8.0')
+    ext_args['library_dirs'].append('/usr/lib')
     # ext_args['libraries'].append('???')
 
     for flag in pkgconfig('--cflags-only-other'):
