@@ -541,6 +541,11 @@ else:
     ext_args['include_dirs'].append('/usr/include/ni')
     # ext_args['library_dirs'].append()
     # ext_args['libraries'].append()
+    
+    # VTK use?
+    ext_args['include_dirs'].append('/usr/include/vtk')
+    ext_args['library_dirs'].append('/usr/lib/vtk')
+    ext_args['library_dirs'].append('/usr/lib64/vtk')
 
     for flag in pkgconfig('--cflags-only-other'):
         if flag.startswith('-D'):
