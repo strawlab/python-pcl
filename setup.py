@@ -549,8 +549,8 @@ else:
     ext_args['include_dirs'].append('/usr/include/vtk-5.8')
     ext_args['library_dirs'].append('/usr/lib')
     # pcl 1.8.1(MacOSX)
-    ext_args['include_dirs'].append('/usr/include/vtk-8.0')
-    ext_args['library_dirs'].append('/usr/lib')
+    ext_args['include_dirs'].append('/usr/local/include/vtk-8.0')
+    ext_args['library_dirs'].append('/usr/local/lib')
     # ext_args['libraries'].append('???')
 
     for flag in pkgconfig('--cflags-only-other'):
