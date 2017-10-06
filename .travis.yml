@@ -72,8 +72,8 @@ before_install:
       
       travis_wait 45 brew install pcl --without-qt;
       
-      ls /usr/include;
-      ls /usr/include/pcl-1.8;
+      ls /usr/local/include;
+      ls /usr/local/include/pcl-1.8;
       
       cp -n ./travisCI/pcl_2d-1.8.pc /usr/local/lib/pkgconfig/pcl_2d-1.8.pc;
     fi
@@ -86,8 +86,8 @@ install:
       sudo apt-get update -y;
       sudo apt-get install libpcl-all -y;
       
-      ls /usr/include;
-      ls /usr/include/pcl-1.7;
+      ls /usr/local/include;
+      ls /usr/local/include/pcl-1.7;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
       sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
