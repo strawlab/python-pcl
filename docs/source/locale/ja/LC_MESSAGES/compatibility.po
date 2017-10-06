@@ -1,0 +1,327 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2015, Preferred Networks, inc. and Preferred Infrastructure,
+# inc.
+# This file is distributed under the same license as the python-pcl package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: python-pcl 0.0.1.dev0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-28 11:33+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: ../../source/compatibility.rst:2
+msgid "API Compatibility Policy"
+msgstr "API互換性ポリシー"
+
+#: ../../source/compatibility.rst:4
+msgid ""
+"This document expresses the design policy on compatibilities of pcl-"
+"python APIs. Development team should obey this policy on deciding to add,"
+" extend, and change APIs and their behaviors."
+msgstr "このドキュメントは、python-pcl APIの互換性に関する設計方針を表しています。 開発チームは、APIとその振る舞いの追加、拡張、変更を決定する際にこの方針に従うべきです。"
+
+#: ../../source/compatibility.rst:7
+msgid ""
+"This document is written for both users and developers. Users can decide "
+"the level of dependencies on python-pcl implementations in their codes "
+"based on this document. Developers should read through this document "
+"before creating pull requests that contain changes on the interface. Note"
+" that this document may contain ambiguities on the level of supported "
+"compatibilities."
+msgstr "このドキュメントは、ユーザーと開発者の両方のために書かれています。 ユーザーは、この文書に基づいてコード内のpython-pcl実装の依存関係のレベルを決定できます。 開発者は、インタフェースの変更を含むプル要求を作成する前に、このドキュメントを読む必要があります。 このドキュメントには、サポートされている互換性のレベルに関するあいまい性が含まれていることに注意してください。"
+
+#: ../../source/compatibility.rst:14
+msgid "Versioning and Backward Compatibilities"
+msgstr "バージョン管理と下位互換性について"
+
+#: ../../source/compatibility.rst:16
+msgid ""
+"The updates of python-pcl are classified into three levels: major, minor,"
+" and revision. These types have distinct levels of backward "
+"compatibilities."
+msgstr "python-pclの更新は、メジャー、マイナー、リビジョンの3つのレベルに分類されます。 これらのタイプには、後方互換性の異なるレベルがあります。"
+
+#: ../../source/compatibility.rst:19
+msgid ""
+"**Major update** contains disruptive changes that break the backward "
+"compatibility."
+msgstr "メジャーアップデートには、下位互換性を損なう破壊的な変更が含まれています。"
+
+#: ../../source/compatibility.rst:20
+msgid ""
+"**Minor update** contains addition and extension to the APIs keeping the "
+"supported backward compatibility."
+msgstr "マイナーアップデートには、サポートされている後方互換性を維持しながら、APIへの追加と拡張が含まれています。"
+
+#: ../../source/compatibility.rst:21
+msgid ""
+"**Revision update** contains improvements on the API implementations "
+"without changing any API specifications."
+msgstr "リビジョンの更新には、API仕様を変更することなく、API実装の改良が含まれています。"
+
+#: ../../source/compatibility.rst:23
+msgid ""
+"Note that we do not support full backward compatibility, which is almost "
+"infeasible for Python-based APIs, since there is no way to completely "
+"hide the implementation details."
+msgstr "完全な後方互換性はサポートしていないことに注意してください。これはPythonベースのAPIではほとんど実現不可能です。実装の詳細を完全に隠す方法がないからです。"
+
+#: ../../source/compatibility.rst:27
+msgid "Processes to Break Backward Compatibilities"
+msgstr "下位互換性を中断するプロセス"
+
+#: ../../source/compatibility.rst:30
+msgid "Deprecation, Dropping, and Its Preparation"
+msgstr "減価償却、減価償却およびその準備????"
+
+#: ../../source/compatibility.rst:32
+msgid ""
+"Any APIs may be *deprecated* at some minor updates. In such a case, the "
+"deprecation note is added to the API documentation, and the API "
+"implementation is changed to fire deprecation warning (if possible). "
+"There should be another way to reimplement the same things previously "
+"written with the deprecated APIs."
+msgstr "すべてのAPIは、マイナーな更新で廃止される可能性があります。???そのような場合は、非推奨の注釈がAPIのドキュメントに追加され、APIの実装が廃止予定警告に変更されます（可能な場合）。 以前は廃止予定のAPIで書かれたものと同じものを再実装する別の方法があるはずです。???"
+
+#: ../../source/compatibility.rst:36
+msgid ""
+"Any APIs may be marked as *to be dropped in the future*. In such a case, "
+"the dropping is stated in the documentation with the major version number"
+" on which the API is planned to be dropped, and the API implementation is"
+" changed to fire the future warning (if possible)."
+msgstr "どんなAPIも将来、ドロップされるようにマークされるかもしれません。 そのような場合、APIが削除される予定のメジャーバージョン番号のドキュメントにドロップダウンが記載され、API実装が将来の警告を発するように変更されます（可能な場合）。"
+
+#: ../../source/compatibility.rst:39
+msgid "The actual dropping should be done through the following steps:"
+msgstr "実際の落下???は、以下の手順で行う必要があります"
+
+#: ../../source/compatibility.rst:41
+msgid ""
+"Make the API deprecated. At this point, users should not need the "
+"deprecated API in their new application codes."
+msgstr "APIを非推奨にする。 この時点で、ユーザーは新しいアプリケーションコードで廃止予定APIを必要とすべきではありません。???"
+
+#: ../../source/compatibility.rst:43
+msgid ""
+"After that, mark the API as *to be dropped in the future*. It must be "
+"done in the minor update different from that of the deprecation."
+msgstr "その後、APIを今後削除するようにマークしてください。 これは、非推奨のものとは異なるマイナーアップデートで行う必要があります。"
+
+#: ../../source/compatibility.rst:45
+msgid "At the major version announced in the above update, drop the API."
+msgstr "上記アップデートで発表されたメジャーバージョンでAPIを削除してください。"
+
+#: ../../source/compatibility.rst:47
+msgid ""
+"Consequently, it takes at least two minor versions to drop any APIs after"
+" the first deprecation."
+msgstr "したがって、最初の非推奨版の後にAPIを削除するには、少なくとも2つのマイナーバージョンが必要です。???"
+
+#: ../../source/compatibility.rst:50
+msgid "API Changes and Its Preparation"
+msgstr "APIの変更とその準備"
+
+#: ../../source/compatibility.rst:52
+msgid ""
+"Any APIs may be marked as *to be changed in the future* for changes "
+"without backward compatibility. In such a case, the change is stated in "
+"the documentation with the version number on which the API is planned to "
+"be changed, and the API implementation is changed to fire the future "
+"warning on the certain usages."
+msgstr "今後の互換性のない変更については、すべてのAPIに変更が加えられているとマークされることがあります。 そのような場合、APIの変更予定のバージョン番号のドキュメントに変更が記載され、APIの実装が変更されて特定の用途についての将来の警告が発生します。"
+
+#: ../../source/compatibility.rst:55
+msgid "The actual change should be done in the following steps:"
+msgstr "実際の変更は、次の手順で行う必要があります。"
+
+#: ../../source/compatibility.rst:57
+msgid ""
+"Announce that the API will be changed in the future. At this point, the "
+"actual version of change need not be accurate."
+msgstr "APIが将来変更されることを発表します。 この時点で、実際の変更のバージョンは正確である必要はありません。"
+
+#: ../../source/compatibility.rst:59
+msgid ""
+"After the announcement, mark the API as *to be changed in the future* "
+"with version number of planned changes. At this point, users should not "
+"use the marked API in their new application codes."
+msgstr "アナウンスの後、今後変更が予定されているバージョン番号でAPIを変更してください。 この時点で、ユーザーは新しいアプリケーションコードでマークされたAPIを使用しないでください。"
+
+#: ../../source/compatibility.rst:61
+msgid "At the major update announced in the above update, change the API."
+msgstr "上記のアップデートで発表されたメジャーアップデートでは、APIを変更してください。"
+
+#: ../../source/compatibility.rst:65
+msgid "Supported Backward Compatibility"
+msgstr "サポートされている下位互換性"
+
+#: ../../source/compatibility.rst:67
+msgid ""
+"This section defines backward compatibilities that minor updates must "
+"maintain."
+msgstr "このセクションでは、マイナーな更新が維持しなければならない後方互換性を定義します。"
+
+#: ../../source/compatibility.rst:70
+msgid "Documented Interface"
+msgstr ""
+
+#: ../../source/compatibility.rst:72
+msgid ""
+"python-pcl has the official API documentation. Many applications can be "
+"written based on the documented features. We support backward "
+"compatibilities of documented features. In other words, codes only based "
+"on the documented features run correctly with minor/revision-updated "
+"versions."
+msgstr "python-pclには、公式のAPIドキュメントがあります。 多くのアプリケーションは、文書化された機能に基づいて記述することができます。 ドキュメント化された機能の後方互換性をサポートしています。 言い換えれば、文書化された機能のみに基づくコードは、マイナーバージョン/リビジョン更新バージョンで正しく動作します。"
+
+#: ../../source/compatibility.rst:77
+msgid ""
+"Developers are encouraged to use apparent names for objects of "
+"implementation details. For example, attributes outside of the documented"
+" APIs should have one or more underscores at the prefix of their names."
+msgstr "開発者は実装の詳細のオブジェクトに明白な名前を使用することが推奨されます。 たとえば、文書化されたAPIの外部の属性は、名前の接頭辞に1つ以上のアンダースコアを持つ必要があります。???"
+
+#: ../../source/compatibility.rst:83
+msgid "Undocumented behaviors"
+msgstr ""
+
+#: ../../source/compatibility.rst:85
+msgid ""
+"Behaviors of python-pcl implementation not stated in the documentation "
+"are undefined. Undocumented behaviors are not guaranteed to be stable "
+"between different minor/revision versions."
+msgstr ""
+
+#: ../../source/compatibility.rst:88
+msgid ""
+"Minor update may contain changes to undocumented behaviors. For example, "
+"suppose an API X is added at the minor update. In the previous version, "
+"attempts to use X cause AttributeError. This behavior is not stated in "
+"the documentation, so this is undefined. Thus, adding the API X in minor "
+"version is permissible."
+msgstr ""
+
+#: ../../source/compatibility.rst:94
+msgid ""
+"Revision update may also contain changes to undefined behaviors. Typical "
+"example is a bug fix. Another example is an improvement on "
+"implementation, which may change the internal object structures not shown"
+" in the documentation. As a consequence, **even revision updates do not "
+"support compatibility of pickling, unless the full layout of pickled "
+"objects is clearly documented.**"
+msgstr ""
+
+#: ../../source/compatibility.rst:100
+msgid "Documentation Error"
+msgstr ""
+
+#: ../../source/compatibility.rst:102
+msgid ""
+"Compatibility is basically determined based on the documentation, though "
+"it sometimes contains errors. It may make the APIs confusing to assume "
+"the documentation always stronger than the implementations. We therefore "
+"may fix the documentation errors in any updates that may break the "
+"compatibility in regard to the documentation."
+msgstr ""
+
+#: ../../source/compatibility.rst:107
+msgid ""
+"Developers MUST NOT fix the documentation and implementation of the same "
+"functionality at the same time in revision updates as \"bug fix\". Such a"
+" change completely breaks the backward compatibility. If you want to fix "
+"the bugs in both sides, first fix the documentation to fit it into the "
+"implementation, and start the API changing procedure described above."
+msgstr ""
+
+#: ../../source/compatibility.rst:112
+msgid "Object Attributes and Properties"
+msgstr ""
+
+#: ../../source/compatibility.rst:114
+msgid ""
+"Object attributes and properties are sometimes replaced by each other at "
+"minor updates. It does not break the user codes, except the codes depend "
+"on how the attributes and properties are implemented."
+msgstr ""
+
+#: ../../source/compatibility.rst:118
+msgid "Functions and Methods"
+msgstr ""
+
+#: ../../source/compatibility.rst:120
+msgid ""
+"Methods may be replaced by callable attributes keeping the compatibility "
+"of parameters and return values in minor updates. It does not break the "
+"user codes, except the codes depend on how the methods and callable "
+"attributes are implemented."
+msgstr ""
+
+#: ../../source/compatibility.rst:124
+msgid "Exceptions and Warnings"
+msgstr ""
+
+#: ../../source/compatibility.rst:126
+msgid ""
+"The specifications of raising exceptions are considered as a part of "
+"standard backward compatibilities. No exception is raised in the future "
+"versions with correct usages that the documentation allows, unless the "
+"API changing process is completed."
+msgstr ""
+
+#: ../../source/compatibility.rst:129
+msgid ""
+"On the other hand, warnings may be added at any minor updates for any "
+"APIs. It means minor updates do not keep backward compatibility of "
+"warnings."
+msgstr ""
+
+#: ../../source/compatibility.rst:134
+msgid "Installation Compatibility"
+msgstr ""
+
+#: ../../source/compatibility.rst:136
+msgid ""
+"The installation process is another concern of compatibilities. We "
+"support environmental compatibilities in the following ways."
+msgstr ""
+
+#: ../../source/compatibility.rst:139
+msgid ""
+"Any changes of dependent libraries that force modifications on the "
+"existing environments must be done in major updates. Such changes include"
+" following cases:"
+msgstr ""
+
+#: ../../source/compatibility.rst:142
+msgid ""
+"dropping supported versions of dependent libraries (e.g. dropping cuDNN "
+"v2)"
+msgstr ""
+
+#: ../../source/compatibility.rst:143
+msgid "adding new mandatory dependencies (e.g. adding h5py to setup_requires)"
+msgstr ""
+
+#: ../../source/compatibility.rst:145
+msgid ""
+"Supporting optional packages/libraries may be done in minor updates (e.g."
+" supporting h5py in optional features)."
+msgstr ""
+
+#: ../../source/compatibility.rst:148
+msgid ""
+"The installation compatibility does not guarantee that all the features "
+"of python-pcl correctly run on supported environments. It may contain "
+"bugs that only occurs in certain environments. Such bugs should be fixed "
+"in some updates."
+msgstr ""
+

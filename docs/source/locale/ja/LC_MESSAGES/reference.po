@@ -1,0 +1,1557 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2015, Preferred Networks, inc. and Preferred Infrastructure,
+# inc.
+# This file is distributed under the same license as the python-pcl package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: python-pcl 0.0.1.dev0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-31 13:18+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: ../../source/reference/common.rst:2
+msgid "Common Operations"
+msgstr ""
+
+#: ../../source/reference/common.rst:5
+msgid "Elementwise bit operations"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.bitwise_and <python-pcl.bitwise_and>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.bitwise_or <python-pcl.bitwise_or>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.bitwise_xor <python-pcl.bitwise_xor>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.invert <python-pcl.invert>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.left_shift <python-pcl.left_shift>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.right_shift <python-pcl.right_shift>`"
+msgstr ""
+
+#: ../../source/reference/common.rst:20
+msgid "Bit packing"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.packbits <python-pcl.packbits>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.unpackbits <python-pcl.unpackbits>`"
+msgstr ""
+
+#: ../../source/reference/common.rst:31
+msgid "Output formatting"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.binary_repr <python-pcl.binary_repr>`"
+msgstr ""
+
+#: ../../source/reference/environment.rst:2
+msgid "Environment variables"
+msgstr ""
+
+#: ../../source/reference/environment.rst:4
+msgid "Here are the environment variables python-pcl uses."
+msgstr ""
+
+#: ../../source/reference/environment.rst:8
+msgid "``PATH``"
+msgstr ""
+
+#: ../../source/reference/environment.rst:8
+msgid ""
+"Path to the directory to PointCloudLibrary dll/exe. See :ref:`overview` "
+"for details."
+msgstr ""
+
+#: ../../source/reference/environment.rst:14
+msgid "For install"
+msgstr ""
+
+#: ../../source/reference/environment.rst:16
+msgid "These environment variables are only used during installation."
+msgstr ""
+
+#: ../../source/reference/environment.rst:19
+msgid "``PCL_ROOT``"
+msgstr ""
+
+#: ../../source/reference/environment.rst:19
+msgid ""
+"Path to the directory containing PointCloudLibrary. The parent of the "
+"directory containing ``nvcc`` is used as default. See "
+":ref:`install_pointcloudlibrary` for details."
+msgstr ""
+
+#: ../../source/reference/features.rst:2
+msgid "Features Routines"
+msgstr ""
+
+#: ../../source/reference/features.rst:5
+msgid "Basic creation routines"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`DifferenceOfNormalsEstimation <DifferenceOfNormalsEstimation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`IntegralImageNormalEstimation <IntegralImageNormalEstimation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`MomentOfInertiaEstimation <MomentOfInertiaEstimation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`NormalEstimation <NormalEstimation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`NormalEstimationOMP <NormalEstimationOMP>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`RangeImageBorderExtractor <RangeImageBorderExtractor>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`ROPSEstimation <ROPSEstimation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`VFHEstimation <VFHEstimation>`"
+msgstr ""
+
+#: ../../source/reference/filters.rst:2
+msgid "Filters"
+msgstr ""
+
+#: ../../source/reference/filters.rst:5
+msgid "Device management"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.ApproximateVoxelGrid <python-pcl.ApproximateVoxelGrid>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.ConditionalRemoval <python-pcl.ConditionalRemoval>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.ConditionAnd <python-pcl.ConditionAnd>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.CropBox <python-pcl.CropBox>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.CropHull <python-pcl.CropHull>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.FieldComparison <python-pcl.FieldComparison>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.PassThroughFilter <python-pcl.PassThroughFilter>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.ProjectInliers <python-pcl.ProjectInliers>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.RadiusOutlierRemoval <python-pcl.RadiusOutlierRemoval>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.StatisticalOutlierRemovalFilter <pcl-"
+"python.StatisticalOutlierRemovalFilter>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.VoxelGridFilter <python-pcl.VoxelGridFilter>`"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.rst:2 ../../source/reference/pcl.rst:2
+msgid "pcl"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.rst:9 ../../source/reference/pcl.rst:9
+msgid "Functions"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`load <pcl.load>`\\ (path[, format])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid "Load pointcloud from path."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`load2 <pcl.load2>`\\ (path[, format])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`load_PointWithViewpoint <pcl.load_PointWithViewpoint>`\\ (path[, "
+"format])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`load_XYZI <pcl.load_XYZI>`\\ (path[, format])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`load_XYZRGB <pcl.load_XYZRGB>`\\ (path[, format])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`load_XYZRGBA <pcl.load_XYZRGBA>`\\ (path[, format])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`save <pcl.save>`\\ (cloud, path[, format, binary])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid "Save pointcloud to file."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`save2 <pcl.save2>`\\ (cloud, path[, format, binary])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid "Save PointCloud_PointCloud2 to file."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`save_PointNormal <pcl.save_PointNormal>`\\ (cloud, path[, format, "
+"binary])"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`save_XYZRGBA <pcl.save_XYZRGBA>`\\ (cloud, path[, format, binary])"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.rst:30
+#: ../../source/reference/pcl.rst:30
+msgid "Classes"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`VoxelGridFilter_PointXYZI <VoxelGridFilter_PointXYZI>`\\"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`VoxelGridFilter_PointXYZRGB <VoxelGridFilter_PointXYZRGB>`\\"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`VoxelGridFilter_PointXYZRGBA <VoxelGridFilter_PointXYZRGBA>`\\"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.IntegralImageNormalEstimation.rst:2
+msgid "pcl.IntegralImageNormalEstimation"
+msgstr ""
+
+#: ../../docstring of pcl.IntegralImageNormalEstimation:1
+msgid "IntegralImageNormalEstimation class for"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.IntegralImageNormalEstimation.rst:14
+#: ../../source/reference/generated/pcl.MomentOfInertiaEstimation.rst:14
+#: ../../source/reference/generated/pcl.NormalEstimation.rst:14
+#: ../../source/reference/generated/pcl.ROPSEstimation.rst:14
+#: ../../source/reference/generated/pcl.VFHEstimation.rst:14
+msgid "Methods"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.MomentOfInertiaEstimation.rst:2
+msgid "pcl.MomentOfInertiaEstimation"
+msgstr ""
+
+#: ../../docstring of pcl.MomentOfInertiaEstimation:1
+msgid "MomentOfInertiaEstimation class for"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.NormalEstimation.rst:2
+msgid "pcl.NormalEstimation"
+msgstr ""
+
+#: ../../docstring of pcl.NormalEstimation:1
+msgid "NormalEstimation class for"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.ROPSEstimation.rst:2
+msgid "pcl.ROPSEstimation"
+msgstr ""
+
+#: ../../docstring of pcl.ROPSEstimation:1
+msgid "ROPSEstimation class for"
+msgstr ""
+
+#: ../../source/reference/generated/pcl.VFHEstimation.rst:2
+msgid "pcl.VFHEstimation"
+msgstr ""
+
+#: ../../docstring of pcl.VFHEstimation:1
+msgid "VFHEstimation class for"
+msgstr ""
+
+#: ../../source/reference/grabber.rst:2
+msgid "Grabber"
+msgstr ""
+
+#: ../../source/reference/index.rst:5
+msgid "python-pcl Reference Manual"
+msgstr ""
+
+#: ../../source/reference/index.rst:7
+msgid ""
+"This is the official reference of python-pcl, a multi-dimensional array "
+"on CUDA with a subset of NumPy interface."
+msgstr ""
+
+#: ../../source/reference/index.rst:11
+msgid "Indices and tables"
+msgstr ""
+
+#: ../../source/reference/index.rst:13
+msgid ":ref:`genindex`"
+msgstr ""
+
+#: ../../source/reference/index.rst:14
+msgid ":ref:`modindex`"
+msgstr ""
+
+#: ../../source/reference/index.rst:17
+msgid "Reference"
+msgstr ""
+
+#: ../../source/reference/io.rst:2
+msgid "Input and Output"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.load <python-pcl.load>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.save <python-pcl.save>`"
+msgstr ""
+
+#: ../../source/reference/kdtree.rst:2
+msgid "KdTree"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.KdTree <python-pcl.KdTree>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.KdTree_FLANN <python-pcl.KdTree_FLANN>`"
+msgstr ""
+
+#: ../../source/reference/keypoint.rst:2
+msgid "KeyPoint"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.HarrisKeypoint3D <python-pcl.HarrisKeypoint3D>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.NarfKeypoint <python-pcl.NarfKeypoint>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.UniformSampling <python-pcl.UniformSampling>`"
+msgstr ""
+
+#: ../../source/reference/octree.rst:2
+msgid "Octree"
+msgstr ""
+
+#: ../../source/reference/octree.rst:5
+msgid "Truth value testing"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.Octree2BufBase <python-pcl.Octree2BufBase>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.OctreePointCloud <python-pcl.OctreePointCloud>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.OctreePointCloud2Buf <python-pcl.OctreePointCloud2Buf>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.OctreePointCloudChangeDetector <pcl-"
+"python.OctreePointCloudChangeDetector>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.OctreePointCloudSearch <pcl-"
+"python.OctreePointCloudSearch>`"
+msgstr ""
+
+#: ../../source/reference/registration.rst:2
+msgid "Registration"
+msgstr ""
+
+#: ../../source/reference/registration.rst:5
+msgid "Basic manipulations"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.GeneralizedIterativeClosestPoint <pcl-"
+"python.GeneralizedIterativeClosestPoint>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.IterativeClosestPoint <python-pcl.IterativeClosestPoint>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.IterativeClosestPointNonLinear <pcl-"
+"python.IterativeClosestPointNonLinear>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.NormalDistributionsTransform <pcl-"
+"python.NormalDistributionsTransform>`"
+msgstr ""
+
+#: ../../source/reference/sampleconsensus.rst:2
+msgid "SampleConsensus"
+msgstr ""
+
+#: ../../source/reference/sampleconsensus.rst:5
+msgid "Trigonometric functions"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.RandomSampleConsensus <python-pcl.RandomSampleConsensus>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.SampleConsensusModel <python-pcl.SampleConsensusModel>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.SampleConsensusModelCylinder <pcl-"
+"python.SampleConsensusModelCylinder>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.SampleConsensusModelLine <pcl-"
+"python.SampleConsensusModelLine>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.SampleConsensusModelPlane <pcl-"
+"python.SampleConsensusModelPlane>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.SampleConsensusModelRegistration <pcl-"
+"python.SampleConsensusModelRegistration>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.SampleConsensusModelSphere <pcl-"
+"python.SampleConsensusModelSphere>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.SampleConsensusModelStick <pcl-"
+"python.SampleConsensusModelStick>`"
+msgstr ""
+
+#: ../../source/reference/segmentation.rst:2
+msgid "Segmentation"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.ConditionalEuclideanClustering <pcl-"
+"python.ConditionalEuclideanClustering>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.EuclideanClusterExtraction <pcl-"
+"python.EuclideanClusterExtraction>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.MinCutSegmentation <python-pcl.MinCutSegmentation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.ProgressiveMorphologicalFilter <pcl-"
+"python.ProgressiveMorphologicalFilter>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.Segmentation <python-pcl.Segmentation>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.SegmentationNormal <python-pcl.SegmentationNormal>`"
+msgstr ""
+
+#: ../../source/reference/surface.rst:2
+msgid "Surface"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.ConcaveHull <python-pcl.ConcaveHull>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.MovingLeastSquares <python-pcl.MovingLeastSquares>`"
+msgstr ""
+
+#: ../../source/reference/testing.rst:2
+msgid "Testing Modules"
+msgstr ""
+
+#: ../../source/reference/testing.rst:6
+msgid ""
+"python-pcl offers testing utilities to support unit testing. They are "
+"under namespace :mod:`python-pcl.testing`."
+msgstr ""
+
+#: ../../source/reference/testing.rst:11
+msgid "Standard Assertions"
+msgstr ""
+
+#: ../../source/reference/testing.rst:13
+msgid ""
+"The assertions have same names as NumPy's ones. The difference from NumPy"
+" is that they can accept both :class:`numpy.ndarray` and :class:`pcl-"
+"python.ndarray`."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_allclose <pcl-"
+"python.testing.assert_allclose>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_array_almost_equal <pcl-"
+"python.testing.assert_array_almost_equal>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_array_almost_equal_nulp <pcl-"
+"python.testing.assert_array_almost_equal_nulp>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_array_max_ulp <pcl-"
+"python.testing.assert_array_max_ulp>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_array_equal <pcl-"
+"python.testing.assert_array_equal>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_array_list_equal <pcl-"
+"python.testing.assert_array_list_equal>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.assert_array_less <pcl-"
+"python.testing.assert_array_less>`"
+msgstr ""
+
+#: ../../source/reference/testing.rst:32
+msgid "NumPy-python-pcl Consistency Check"
+msgstr ""
+
+#: ../../source/reference/testing.rst:34
+msgid ""
+"The following decorators are for testing consistency between python-pcl's"
+" functions and corresponding NumPy's ones."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_allclose <python-pcl.testing"
+".numpy_python-pcl_allclose>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_array_almost_equal <pcl-"
+"python.testing.numpy_python-pcl_array_almost_equal>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_array_almost_equal_nulp <pcl-"
+"python.testing.numpy_python-pcl_array_almost_equal_nulp>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_array_max_ulp <pcl-"
+"python.testing.numpy_python-pcl_array_max_ulp>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_array_equal <python-pcl.testing"
+".numpy_python-pcl_array_equal>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_array_list_equal <pcl-"
+"python.testing.numpy_python-pcl_array_list_equal>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_array_less <python-pcl.testing"
+".numpy_python-pcl_array_less>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.numpy_python-pcl_raises <python-pcl.testing"
+".numpy_python-pcl_raises>`"
+msgstr ""
+
+#: ../../source/reference/testing.rst:52
+msgid "Parameterized dtype Test"
+msgstr ""
+
+#: ../../source/reference/testing.rst:54
+msgid ""
+"The following decorators offer the standard way for parameterized test "
+"with respect to single or the combination of dtype(s)."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.testing.for_dtypes <python-pcl.testing.for_dtypes>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_all_dtypes <pcl-"
+"python.testing.for_all_dtypes>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_float_dtypes <pcl-"
+"python.testing.for_float_dtypes>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_signed_dtypes <pcl-"
+"python.testing.for_signed_dtypes>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_unsigned_dtypes <pcl-"
+"python.testing.for_unsigned_dtypes>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_int_dtypes <pcl-"
+"python.testing.for_int_dtypes>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_dtypes_combination <pcl-"
+"python.testing.for_dtypes_combination>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_all_dtypes_combination <pcl-"
+"python.testing.for_all_dtypes_combination>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_signed_dtypes_combination <pcl-"
+"python.testing.for_signed_dtypes_combination>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_unsigned_dtypes_combination <pcl-"
+"python.testing.for_unsigned_dtypes_combination>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.testing.for_int_dtypes_combination <pcl-"
+"python.testing.for_int_dtypes_combination>`"
+msgstr ""
+
+#: ../../source/reference/testing.rst:76
+msgid "Parameterized order Test"
+msgstr ""
+
+#: ../../source/reference/testing.rst:77
+msgid ""
+"The following decorators offer the standard way to parameterize tests "
+"with orders."
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.testing.for_orders <python-pcl.testing.for_orders>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.testing.for_CF_orders <python-pcl.testing.for_CF_orders>`"
+msgstr ""
+
+#: ../../source/reference/tracking.rst:2
+msgid "Tracking"
+msgstr ""
+
+#: ../../source/reference/visualization.rst:2
+msgid "Visualization"
+msgstr ""
+
+#: ../../source/reference/visualization.rst:5
+msgid "viewer"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.CloudViewing <python-pcl.CloudViewing>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.PCLHistogramViewing <python-pcl.PCLHistogramViewing>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ":obj:`python-pcl.PCLVisualizering <python-pcl.PCLVisualizering>`"
+msgstr ""
+
+#: ../../<autosummary>:1
+msgid ""
+":obj:`python-pcl.RangeImageVisualization <pcl-"
+"python.RangeImageVisualization>`"
+msgstr ""
+
+#~ msgid ""
+#~ ":obj:`pcl.DifferenceOfNormalsEstimation "
+#~ "<pcl.DifferenceOfNormalsEstimation>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`pcl.NormalEstimationOMP <pcl.NormalEstimationOMP>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`pcl.RangeImageBorderExtractor <pcl.RangeImageBorderExtractor>`"
+#~ msgstr ""
+
+#~ msgid "Low-Level CUDA Support"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.Device <python-pcl.cuda.Device>`"
+#~ msgstr ""
+
+#~ msgid "Memory management"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.Memory <python-pcl.cuda.Memory>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.MemoryPointer <python-pcl.cuda.MemoryPointer>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.alloc <python-pcl.cuda.alloc>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.set_allocator <python-pcl.cuda.set_allocator>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.MemoryPool <python-pcl.cuda.MemoryPool>`"
+#~ msgstr ""
+
+#~ msgid "Streams and events"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.Stream <python-pcl.cuda.Stream>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.Event <python-pcl.cuda.Event>`"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":obj:`python-pcl.cuda.get_elapsed_time <pcl-"
+#~ "python.cuda.get_elapsed_time>`"
+#~ msgstr ""
+
+#~ msgid "Profiler"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.profile <python-pcl.cuda.profile>`"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":obj:`python-pcl.cuda.profiler.initialize <pcl-"
+#~ "python.cuda.profiler.initialize>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.profiler.start <python-pcl.cuda.profiler.start>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.profiler.stop <python-pcl.cuda.profiler.stop>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.nvtx.Mark <python-pcl.cuda.nvtx.Mark>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.nvtx.MarkC <python-pcl.cuda.nvtx.MarkC>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.nvtx.RangePush <python-pcl.cuda.nvtx.RangePush>`"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":obj:`python-pcl.cuda.nvtx.RangePushC <pcl-"
+#~ "python.cuda.nvtx.RangePushC>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cuda.nvtx.RangePop <python-pcl.cuda.nvtx.RangePop>`"
+#~ msgstr ""
+
+#~ msgid "Difference between python-pcl and NumPy"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The interface of python-pcl is "
+#~ "designed to obey that of NumPy. "
+#~ "However, there are some differeneces."
+#~ msgstr ""
+
+#~ msgid "Cast behavior from float to integer"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Some casting behaviors from float to "
+#~ "integer are not defined in C++ "
+#~ "specification. The casting from a "
+#~ "negative float to unsigned integer and"
+#~ " infinity to integer is one of "
+#~ "such eamples. The behavior of NumPy "
+#~ "depends on your CPU architecture. This"
+#~ " is Intel CPU result."
+#~ msgstr ""
+
+#~ msgid "Random methods support dtype argument"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "NumPy's random value generator does not"
+#~ " support dtype option and it always"
+#~ " resturns a ``float32`` value. We "
+#~ "support the option in python-pcl "
+#~ "because cuRAND, which is used in "
+#~ "python-pcl, supports any types of "
+#~ "float values."
+#~ msgstr ""
+
+#~ msgid "Out-of-bounds indices"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "python-pcl handles out-of-bounds "
+#~ "indices differently by default from "
+#~ "NumPy when using integer array indexing."
+#~ " NumPy handles them by raising an "
+#~ "error, but python-pcl wraps around "
+#~ "them."
+#~ msgstr ""
+
+#~ msgid "Duplicate values in indices"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "python-pcl's ``__setitem__`` behaves "
+#~ "differently from NumPy when integer "
+#~ "arrays reference the same location "
+#~ "multiple times. In that case, the "
+#~ "value that is actually stored is "
+#~ "undefined. Here is an example of "
+#~ "python-pcl."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "NumPy stores the value corresponding to"
+#~ " the last element among elements "
+#~ "referencing duplicate locations."
+#~ msgstr ""
+
+#~ msgid "NPZ files"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.savez <python-pcl.savez>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.savez_compressed <python-pcl.savez_compressed>`"
+#~ msgstr ""
+
+#~ msgid "String formatting"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.array_repr <python-pcl.array_repr>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.array_str <python-pcl.array_str>`"
+#~ msgstr ""
+
+#~ msgid "Base-n representations"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.base_repr <python-pcl.base_repr>`"
+#~ msgstr ""
+
+#~ msgid "NumPy-python-pcl Generic Code Support"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.get_array_module <python-pcl.get_array_module>`"
+#~ msgstr ""
+
+#~ msgid "Linear Algebra"
+#~ msgstr ""
+
+#~ msgid "Matrix and vector products"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.dot <python-pcl.dot>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.vdot <python-pcl.vdot>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.inner <python-pcl.inner>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.outer <python-pcl.outer>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.matmul <python-pcl.matmul>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.tensordot <python-pcl.tensordot>`"
+#~ msgstr ""
+
+#~ msgid "Decompositions"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.linalg.cholesky <python-pcl.linalg.cholesky>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.linalg.qr <python-pcl.linalg.qr>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.linalg.svd <python-pcl.linalg.svd>`"
+#~ msgstr ""
+
+#~ msgid "Matrix eigenvalues"
+#~ msgstr ""
+
+#~ msgid "Norms etc."
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.linalg.norm <python-pcl.linalg.norm>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.linalg.matrix_rank <python-pcl.linalg.matrix_rank>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.linalg.slogdet <python-pcl.linalg.slogdet>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.trace <python-pcl.trace>`"
+#~ msgstr ""
+
+#~ msgid "Logic Functions"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.all <python-pcl.all>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.any <python-pcl.any>`"
+#~ msgstr ""
+
+#~ msgid "Infinities and NaNs"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.isfinite <python-pcl.isfinite>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.isinf <python-pcl.isinf>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.isnan <python-pcl.isnan>`"
+#~ msgstr ""
+
+#~ msgid "Array type testing"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.isscalar <python-pcl.isscalar>`"
+#~ msgstr ""
+
+#~ msgid "Logic operations"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.logical_and <python-pcl.logical_and>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.logical_or <python-pcl.logical_or>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.logical_not <python-pcl.logical_not>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.logical_xor <python-pcl.logical_xor>`"
+#~ msgstr ""
+
+#~ msgid "Comparison operations"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.greater <python-pcl.greater>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.greater_equal <python-pcl.greater_equal>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.less <python-pcl.less>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.less_equal <python-pcl.less_equal>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.equal <python-pcl.equal>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.not_equal <python-pcl.not_equal>`"
+#~ msgstr ""
+
+#~ msgid "Array Manipulation Routines"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.copyto <python-pcl.copyto>`"
+#~ msgstr ""
+
+#~ msgid "Shape manipulation"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.reshape <python-pcl.reshape>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.ravel <python-pcl.ravel>`"
+#~ msgstr ""
+
+#~ msgid "Transposition"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.rollaxis <python-pcl.rollaxis>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.swapaxes <python-pcl.swapaxes>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.transpose <python-pcl.transpose>`"
+#~ msgstr ""
+
+#~ msgid "Edit dimensionalities"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.atleast_1d <python-pcl.atleast_1d>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.atleast_2d <python-pcl.atleast_2d>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.atleast_3d <python-pcl.atleast_3d>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.broadcast <python-pcl.broadcast>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.broadcast_arrays <python-pcl.broadcast_arrays>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.broadcast_to <python-pcl.broadcast_to>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.expand_dims <python-pcl.expand_dims>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.squeeze <python-pcl.squeeze>`"
+#~ msgstr ""
+
+#~ msgid "Changing kind of array"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.asarray <python-pcl.asarray>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.asanyarray <python-pcl.asanyarray>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.asfortranarray <python-pcl.asfortranarray>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.ascontiguousarray <python-pcl.ascontiguousarray>`"
+#~ msgstr ""
+
+#~ msgid "Joining arrays along axis"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.concatenate <python-pcl.concatenate>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.stack <python-pcl.stack>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.column_stack <python-pcl.column_stack>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.dstack <python-pcl.dstack>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.hstack <python-pcl.hstack>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.vstack <python-pcl.vstack>`"
+#~ msgstr ""
+
+#~ msgid "Splitting arrays along axis"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.split <python-pcl.split>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.array_split <python-pcl.array_split>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.dsplit <python-pcl.dsplit>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.hsplit <python-pcl.hsplit>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.vsplit <python-pcl.vsplit>`"
+#~ msgstr ""
+
+#~ msgid "Repeating part of arrays along axis"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.tile <python-pcl.tile>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.repeat <python-pcl.repeat>`"
+#~ msgstr ""
+
+#~ msgid "Rearranging elements"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.flip <python-pcl.flip>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.fliplr <python-pcl.fliplr>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.flipud <python-pcl.flipud>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.roll <python-pcl.roll>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.rot90 <python-pcl.rot90>`"
+#~ msgstr ""
+
+#~ msgid "Mathematical Functions"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.sin <python-pcl.sin>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cos <python-pcl.cos>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.tan <python-pcl.tan>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arcsin <python-pcl.arcsin>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arccos <python-pcl.arccos>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arctan <python-pcl.arctan>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.hypot <python-pcl.hypot>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arctan2 <python-pcl.arctan2>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.deg2rad <python-pcl.deg2rad>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.rad2deg <python-pcl.rad2deg>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.degrees <python-pcl.degrees>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.radians <python-pcl.radians>`"
+#~ msgstr ""
+
+#~ msgid "Hyperbolic functions"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.sinh <python-pcl.sinh>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cosh <python-pcl.cosh>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.tanh <python-pcl.tanh>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arcsinh <python-pcl.arcsinh>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arccosh <python-pcl.arccosh>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.arctanh <python-pcl.arctanh>`"
+#~ msgstr ""
+
+#~ msgid "Rounding"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.rint <python-pcl.rint>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.floor <python-pcl.floor>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.ceil <python-pcl.ceil>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.trunc <python-pcl.trunc>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.fix <python-pcl.fix>`"
+#~ msgstr ""
+
+#~ msgid "Sums and products"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.sum <python-pcl.sum>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.prod <python-pcl.prod>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cumsum <python-pcl.cumsum>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.cumprod <python-pcl.cumprod>`"
+#~ msgstr ""
+
+#~ msgid "Exponential and logarithm functions"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.exp <python-pcl.exp>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.expm1 <python-pcl.expm1>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.exp2 <python-pcl.exp2>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.log <python-pcl.log>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.log10 <python-pcl.log10>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.log2 <python-pcl.log2>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.log1p <python-pcl.log1p>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.logaddexp <python-pcl.logaddexp>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.logaddexp2 <python-pcl.logaddexp2>`"
+#~ msgstr ""
+
+#~ msgid "Floating point manipulations"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.signbit <python-pcl.signbit>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.copysign <python-pcl.copysign>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.ldexp <python-pcl.ldexp>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.frexp <python-pcl.frexp>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.nextafter <python-pcl.nextafter>`"
+#~ msgstr ""
+
+#~ msgid "Arithmetic operations"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.negative <python-pcl.negative>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.add <python-pcl.add>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.subtract <python-pcl.subtract>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.multiply <python-pcl.multiply>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.divide <python-pcl.divide>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.true_divide <python-pcl.true_divide>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.floor_divide <python-pcl.floor_divide>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.power <python-pcl.power>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.fmod <python-pcl.fmod>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.mod <python-pcl.mod>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.remainder <python-pcl.remainder>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.modf <python-pcl.modf>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.reciprocal <python-pcl.reciprocal>`"
+#~ msgstr ""
+
+#~ msgid "Miscellaneous"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.clip <python-pcl.clip>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.sqrt <python-pcl.sqrt>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.square <python-pcl.square>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.absolute <python-pcl.absolute>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.sign <python-pcl.sign>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.maximum <python-pcl.maximum>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.minimum <python-pcl.minimum>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.fmax <python-pcl.fmax>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.fmin <python-pcl.fmin>`"
+#~ msgstr ""
+
+#~ msgid "Kernel binary memoization"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.memoize <python-pcl.memoize>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.clear_memo <python-pcl.clear_memo>`"
+#~ msgstr ""
+
+#~ msgid "Multi-Dimensional Array (ndarray)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":class:`python-pcl.ndarray` is the pcl-"
+#~ "python counterpart of NumPy "
+#~ ":class:`numpy.ndarray`. It provides an "
+#~ "intuitive interface for a fixed-size "
+#~ "multidimensional array which resides in "
+#~ "a CUDA device."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "For the basic concept of ``ndarray``\\s,"
+#~ " please refer to the `NumPy "
+#~ "documentation "
+#~ "<https://docs.scipy.org/doc/numpy/reference/arrays.ndarray.html>`_."
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.ndarray <python-pcl.ndarray>`"
+#~ msgstr ""
+
+#~ msgid "Code compatibility features"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":class:`python-pcl.ndarray` is designed to "
+#~ "be interchangeable with :class:`numpy.ndarray` "
+#~ "in terms of code compatibility as "
+#~ "much as possible. But occasionally, you"
+#~ " will need to know whether the "
+#~ "arrays you're handling are :class:`pcl-"
+#~ "python.ndarray` or :class:`numpy.ndarray`. One "
+#~ "example is when invoking module-level"
+#~ " functions such as :meth:`python-pcl.sum`"
+#~ " or :meth:`numpy.sum`. In such situations,"
+#~ " :meth:`python-pcl.get_array_module` can be "
+#~ "used."
+#~ msgstr ""
+
+#~ msgid "Conversion to/from NumPy arrays"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":class:`python-pcl.ndarray` and "
+#~ ":class:`numpy.ndarray` are not implicitly "
+#~ "convertible to each other. That means,"
+#~ " NumPy functions cannot take :class"
+#~ ":`python-pcl.ndarray`\\s as inputs, and "
+#~ "vice versa."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "To convert :class:`numpy.ndarray` to :class"
+#~ ":`python-pcl.ndarray`, use :meth:`pcl-"
+#~ "python.array` or :meth:`python-pcl.asarray`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "To convert :class:`python-pcl.ndarray` to "
+#~ ":class:`numpy.ndarray`, use :meth:`pcl-"
+#~ "python.asnumpy` or :meth:`python-pcl.ndarray.get`."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Note that converting between :class:`pcl-"
+#~ "python.ndarray` and :class:`numpy.ndarray` incurs"
+#~ " data transfer between the host (CPU)"
+#~ " device and the GPU device, which "
+#~ "is costly in terms of performance."
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.array <python-pcl.array>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.asnumpy <python-pcl.asnumpy>`"
+#~ msgstr ""
+
+#~ msgid "Padding"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.pad <python-pcl.pad>`"
+#~ msgstr ""
+
+#~ msgid "Profiling"
+#~ msgstr ""
+
+#~ msgid "time range"
+#~ msgstr ""
+
+#~ msgid ""
+#~ ":obj:`python-pcl.prof.TimeRangeDecorator <pcl-"
+#~ "python.prof.TimeRangeDecorator>`"
+#~ msgstr ""
+
+#~ msgid ":obj:`python-pcl.prof.time_range <python-pcl.prof.time_range>`"
+#~ msgstr ""
+
