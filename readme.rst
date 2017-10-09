@@ -14,6 +14,7 @@
       })();
     </script>
 
+    <div align="center"><img src="docs/image/pcl_logo_958x309.png" width="309"/></div>
 
 Introduction
 ============
@@ -97,7 +98,7 @@ and Windows with
 and Windows with
 
  * (Miniconda/Anaconda) - Python 3.5
- * pcl 1.8.0(VS2015)
+ * pcl 1.8.1(VS2015)
  * Cython <= 0.25.2
  * Gtk+
 

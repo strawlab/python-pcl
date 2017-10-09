@@ -548,10 +548,13 @@ else:
     # pcl 1.7(Ubuntu)
     ext_args['include_dirs'].append('/usr/include/vtk-5.8')
     ext_args['library_dirs'].append('/usr/lib')
+    # ext_args['libraries'].append('libvtk*.so')
     # pcl 1.8.1(MacOSX)
     ext_args['include_dirs'].append('/usr/local/include/vtk-8.0')
     ext_args['library_dirs'].append('/usr/local/lib')
-    # ext_args['libraries'].append('???')
+    ext_args['include_dirs'].append('/usr/local/Cellar/vtk/8.0.1/include')
+    ext_args['library_dirs'].append('/usr/local/Cellar/vtk/8.0.1/lib')
+    # ext_args['libraries'].append('libvtk*.dylib')
 
     for flag in pkgconfig('--cflags-only-other'):
         if flag.startswith('-D'):
