@@ -16,6 +16,54 @@ _DATA = """0.0, 0.0, 0.2;
            3.0, 6.0, 9.2;
            4.0, 8.0, 12.2"""
 
+
+### local function ###
+def test_pcd_read():
+    TMPL = """# .PCD v.7 - Point Cloud Data file format
+VERSION .7
+FIELDS x y z
+SIZE 4 4 4
+TYPE F F F
+COUNT 1 1 1
+WIDTH %(npts)d
+HEIGHT 1
+VIEWPOINT 0.1 0 0.5 0 1 0 0
+POINTS %(npts)d
+DATA ascii
+%(data)s"""
+
+    a = np.array(np.mat(SEGDATA, dtype=np.float32))
+    npts = a.shape[0]
+    tmp_file =  tempfile.mkstemp(suffix='.pcd')[1]
+    with open(tmp_file, "w") as f:
+        f.write(TMPL % {"npts": npts, "data": SEGDATA.replace(";", "")})
+
+    p = pcl.load(tmp_file)
+
+    assert p.width == npts
+    assert p.height == 1
+
+    for i, row in enumerate(a):
+        pt = np.array(p[i])
+        ssd = sum((row - pt) ** 2)
+        assert ssd < 1e-6
+
+    assert_array_equal(p.sensor_orientation,
+                       np.array([0, 1, 0, 0], dtype=np.float32))
+    assert_array_equal(p.sensor_origin,
+                       np.array([.1, 0, .5, 0], dtype=np.float32))
+
+
+def test_copy():
+    a = np.random.randn(100, 3).astype(np.float32)
+    p1 = pcl.PointCloud(a)
+    p2 = pcl.PointCloud(p1)
+    assert_array_equal(p2.to_array(), a)
+
+
+### 
+
+
 # io
 class TestListIO(unittest.TestCase):
     def setUp(self):
@@ -122,49 +170,6 @@ class TestSegmentPlane(unittest.TestCase):
         indices, model = seg.segment()
         self.assertListEqual(indices, SEGINLIERSIDX)
         self.assertListEqual(model, SEGCOEFF)
-
-
-def test_pcd_read():
-    TMPL = """# .PCD v.7 - Point Cloud Data file format
-VERSION .7
-FIELDS x y z
-SIZE 4 4 4
-TYPE F F F
-COUNT 1 1 1
-WIDTH %(npts)d
-HEIGHT 1
-VIEWPOINT 0.1 0 0.5 0 1 0 0
-POINTS %(npts)d
-DATA ascii
-%(data)s"""
-
-    a = np.array(np.mat(SEGDATA, dtype=np.float32))
-    npts = a.shape[0]
-    tmp_file =  tempfile.mkstemp(suffix='.pcd')[1]
-    with open(tmp_file, "w") as f:
-        f.write(TMPL % {"npts": npts, "data": SEGDATA.replace(";", "")})
-
-    p = pcl.load(tmp_file)
-
-    assert p.width == npts
-    assert p.height == 1
-
-    for i, row in enumerate(a):
-        pt = np.array(p[i])
-        ssd = sum((row - pt) ** 2)
-        assert ssd < 1e-6
-
-    assert_array_equal(p.sensor_orientation,
-                       np.array([0, 1, 0, 0], dtype=np.float32))
-    assert_array_equal(p.sensor_origin,
-                       np.array([.1, 0, .5, 0], dtype=np.float32))
-
-
-def test_copy():
-    a = np.random.randn(100, 3).astype(np.float32)
-    p1 = pcl.PointCloud(a)
-    p2 = pcl.PointCloud(p1)
-    assert_array_equal(p2.to_array(), a)
 
 
 class TestSave(unittest.TestCase):

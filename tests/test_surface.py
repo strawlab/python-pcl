@@ -18,7 +18,18 @@ class TestConcaveHull(unittest.TestCase):
 ### MovingLeastSquares ###
 class TestMovingLeastSquares(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.PointCloud(_data)
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+
+    def testFilter(self):
+        mls = self.p.make_moving_least_squares()
+        mls.set_search_radius(0.5)
+        mls.set_polynomial_order(2)
+        mls.set_polynomial_fit(True)
+        f = mls.process()
+        # new instance is returned
+        self.assertNotEqual(self.p, f)
+        # mls filter retains the same number of points
+        self.assertEqual(self.p.size, f.size)
 
 
 def suite():

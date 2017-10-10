@@ -121,8 +121,10 @@ install:
   - python setup.py install
 
 script:
-  - coverage run --parallel-mode tests/test_pcl.py
-  - coverage run --parallel-mode tests/test_registration.py
+  # - coverage run --parallel-mode tests/test_pcl.py
+  # - coverage run --parallel-mode tests/test_registration.py
+  - nosetests --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  
   # examples
   # - python examples/GrabberCallbackTest.py
   # examples/official

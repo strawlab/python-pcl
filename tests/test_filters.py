@@ -19,10 +19,56 @@ _DATA = """0.0, 0.0, 0.2;
 class TestApproximateVoxelGrid(unittest.TestCase):
     def setUp(self):
         self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.fil = pcl.ApproximateVoxelGrid()
+        self.fil.set_InputCloud(self.p)
+
+    # def set_InputCloud(self, PointCloud pc not None):
+    #     (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
+
+    def test_VoxelGrid (self):
+        x = 1.0
+        y = 1.0
+        z = 1.0
+        self.fil.set_leaf_size (x, y, z)
+        result = self.fil.filter()
+        
+        # check
+        # new instance is returned
+        # self.assertNotEqual(self.p, result)
+        # filter retains the same number of points
+        # self.assertEqual(self.p.size, f.size)
+
+
 
 ### ConditionalRemoval ###
-### ConditionAnd ###
+class TestConditionalRemoval(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
 
+
+#     def set_KeepOrganized(self, flag):
+#         self.me.setKeepOrganized(flag)
+# 
+#     def filter(self):
+#         """
+#         Apply the filter according to the previously set parameters and return
+#         a new pointcloud
+#         """
+#         cdef PointCloud pc = PointCloud()
+#         self.me.filter(pc.thisptr()[0])
+#         return pc
+
+
+### ConditionAnd ###
+class TestConditionAnd(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+
+
+#     def add_Comparison2(self, field_name, CompareOp2 compOp, double thresh):
+
+
+### CropBox ###
 # base : pcl/tests cpp source code[TEST (CropBox, Filters)]
 class TestCropBox(unittest.TestCase):
 
@@ -107,7 +153,7 @@ class TestCropBox(unittest.TestCase):
         cloud_out = cropBoxFilter.filter()
         
         #  Rotate crop box up by 45
-        # cropBoxFilter.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f))
+        # cropBoxFilter.setRotation (Eigen::Vector3f (0.0, 45.0f * float (M_PI) / 180.0, 0.0f))
         # cropBoxFilter.filter(indices)
         # cropBoxFilter.filter(cloud_out)
         rx = 0.0
@@ -138,7 +184,7 @@ class TestCropBox(unittest.TestCase):
         cloud_out = cropBoxFilter.filter()
         
         # // Rotate point cloud by -45
-        # cropBoxFilter.set_Transform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f))
+        # cropBoxFilter.set_Transform (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, -45.0f * float (M_PI) / 180.0f))
         # indices = cropBoxFilter.filter()
         # cloud_out = cropBoxFilter.filter()
         # 
@@ -274,7 +320,7 @@ class TestCropBox(unittest.TestCase):
         # cropBoxFilter2.filter (cloud_out2)
         # 
         # // Rotate crop box up by 45
-        # cropBoxFilter2.setRotation (Eigen::Vector3f (0.0f, 45.0f * float (M_PI) / 180.0f, 0.0f))
+        # cropBoxFilter2.setRotation (Eigen::Vector3f (0.0, 45.0f * float (M_PI) / 180.0, 0.0f))
         # cropBoxFilter2.filter (indices2)
         # cropBoxFilter2.filter (cloud_out2)
         # 
@@ -282,7 +328,7 @@ class TestCropBox(unittest.TestCase):
         # self.assertEqual(indices2.size, int (cloud_out2.width * cloud_out2.height))
         # 
         # // Rotate point cloud by -45
-        # cropBoxFilter2.setTransform (getTransformation (0.0f, 0.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f))
+        # cropBoxFilter2.setTransform (getTransformation (0.0, 0.0, 0.0, 0.0, 0.0, -45.0f * float (M_PI) / 180.0f))
         # cropBoxFilter2.filter (indices2)
         # cropBoxFilter2.filter (cloud_out2)
         # 
@@ -304,7 +350,7 @@ class TestCropBox(unittest.TestCase):
         # cropBoxFilter2.filter (cloud_out2)
         # 
         # // Translate point cloud down by -1
-        # cropBoxFilter2.setTransform (getTransformation (0.0f, -1.0f, 0.0f, 0.0f, 0.0f, -45.0f * float (M_PI) / 180.0f))
+        # cropBoxFilter2.setTransform (getTransformation (0.0, -1.0, 0.0, 0.0, 0.0, -45.0f * float (M_PI) / 180.0f))
         # cropBoxFilter2.filter (indices2)
         # cropBoxFilter2.filter (cloud_out2)
         # 
@@ -348,17 +394,18 @@ class TestCropBox(unittest.TestCase):
         # cropBoxFilter2.filter (cloud_out2)
 
 
-# class TestCropHull(unittest.TestCase):
-# 
-#     def setUp(self):
-#         self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
-# 
-#     def testException(self):
-#         self.assertRaises(TypeError, pcl.CropHull)
-# 
-#     def testCropHull(self):
-#         filterCloud = pcl.PointCloud()
-#         vt = pcl.Vertices()
+### CropHull ###
+class TestCropHull(unittest.TestCase):
+
+    def setUp(self):
+        self.pc = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
+
+    def testException(self):
+        self.assertRaises(TypeError, pcl.CropHull)
+
+    def testCropHull(self):
+        filterCloud = pcl.PointCloud()
+        vt = pcl.Vertices()
 #         # // inside point
 #         # cloud->push_back(pcl::PointXYZ(M_PI * 0.3, M_PI * 0.3, 0))
 #         # // hull points
@@ -415,6 +462,10 @@ class TestFieldComparison(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        compare = CompareOp2
+        thresh = 1.0
+        self.fil = pcl.FieldComparison(compare, thresh)
+
 
 ### PassThroughFilter ###
 class TestPassthroughFilter(unittest.TestCase):
@@ -442,12 +493,77 @@ class TestPassthroughFilter(unittest.TestCase):
 
 
 ### ProjectInliers ###
+class TestProjectInliers(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.fil = pcl.ProjectInliers()
+
+    def test_model_type(self):
+        # param1
+        m = pclseg.SacModel
+        self.fil.set_model_type(m)
+        # result1
+        result_param = self.fil.getModelType()
+        
+        # param2
+        # result2
+        # :
+        pass
+
+
+    def test_copy_all_data(self):
+        self.fil.set_copy_all_data(True)
+        datas = self.fil.get_copy_all_data(self)
+        # result
+        
+        self.fil.set_copy_all_data(True)
+        datas = self.fil.get_copy_all_data(self)
+        # result2
+
+
 ### RadiusOutlierRemoval ###
+class TestRadiusOutlierRemoval(unittest.TestCase):
+
+    def setUp(self):
+        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.fil = self.p.make_statistical_outlier_filter()
+        # self.fil = pcl.RadiusOutlierRemoval()
+
+
+    def test_filter(self):
+        result_point = self.fil.filter()
+
+
+    def test_radius_seach(self):
+        radius = 1.0
+        self.fil.set_radius_search(radius)
+        result = self.fil.get_radius_search()
+        
+        # check
+        # new instance is returned
+        # self.assertNotEqual(self.p, result)
+        # filter retains the same number of points
+        # self.assertEqual(self.p.size, f.size)
+
+    def test_MinNeighborsInRadius(self):
+        min_pts = 10
+        self.fil.set_MinNeighborsInRadius(min_pts)
+        result = self.fil.get_MinNeighborsInRadius(self)
+        
+        # check
+        # new instance is returned
+        # self.assertNotEqual(self.p, result)
+        # filter retains the same number of points
+        # self.assertEqual(self.p.size, f.size)
+
+
 ### StatisticalOutlierRemovalFilter ###
-class TestSegmenterNormal(unittest.TestCase):
+class TestStatisticalOutlierRemovalFilter(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.fil
 
     def _tpos(self, c):
         self.assertEqual(c.size, 22745)
@@ -490,22 +606,6 @@ class TestSegmenterNormal(unittest.TestCase):
         c = fil.filter()
         self._tneg(c)
 
-# Surface?
-# class TestFilter(unittest.TestCase):
-# 
-#     def setUp(self):
-#         self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
-# 
-#     def testFilter(self):
-#         mls = self.p.make_moving_least_squares()
-#         mls.set_search_radius(0.5)
-#         mls.set_polynomial_order(2)
-#         mls.set_polynomial_fit(True)
-#         f = mls.process()
-#         # new instance is returned
-#         self.assertNotEqual(self.p, f)
-#         # mls filter retains the same number of points
-#         self.assertEqual(self.p.size, f.size)
 
 ### VoxelGridFilter ###
 class TestVoxelGridFilter(unittest.TestCase):
@@ -551,14 +651,14 @@ class TestVoxelGridFilter(unittest.TestCase):
 ##
 
 ### Official Test Base ###
-p_65558  = (-0.058448f, -0.189095f, 0.723415f), 
-p_84737  = (-0.088929f, -0.152957f, 0.746095f), 
-p_57966  = (0.123646f, -0.397528f, 1.393187f), 
-p_39543  = (0.560287f, -0.545020f, 1.602833f), 
-p_17766  = (0.557854f, -0.711976f, 1.762013f), 
-p_70202  = (0.150500f, -0.160329f, 0.646596f), 
-p_102219 = (0.175637f, -0.101353f, 0.661631f), 
-p_81765  = (0.223189f, -0.151714f, 0.708332f); 
+p_65558  = [-0.058448, -0.189095, 0.723415]
+p_84737  = [-0.088929, -0.152957, 0.746095]
+p_57966  = [0.123646, -0.397528, 1.393187]
+p_39543  = [0.560287, -0.545020, 1.602833]
+p_17766  = [0.557854, -0.711976, 1.762013]
+p_70202  = [0.150500, -0.160329, 0.646596]
+p_102219 = [0.175637, -0.101353, 0.661631]
+p_81765  = [0.223189, -0.151714, 0.708332]
 
 # class TESTFastBilateralFilter(unittest.TestCase):
 #     def setUp(self):
@@ -587,8 +687,8 @@ p_81765  = (0.223189f, -0.151714f, 0.708332f);
 #     def setUp(self):
 #         self.p = pcl.load("tests" + os.path.sep + "milk_cartoon_all_small_clorox.pcd")
 # 
-#         sigma_s = [2.341f,  5.2342f, 10.29380f]
-#         sigma_r = [0.0123f, 0.023f,  0.0345f]
+#         sigma_s = [2.341,  5.2342, 10.29380]
+#         sigma_r = [0.0123, 0.023,  0.0345]
 #         for (size_t i = 0; i < 3; i++) 
 #             FastBilateralFilter<PointXYZ> fbf; 
 #             fbf.setInputCloud (cloud); 

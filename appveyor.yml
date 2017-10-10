@@ -84,8 +84,9 @@ build_script:
   - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%\Lib\site-packages"
 
 test_script:
-  - python tests\test_pcl.py
-  - python tests\test_registration.py
+  # - python tests\test_pcl.py
+  # - python tests\test_registration.py
+  - nosetests
 
   # - python examples\official\Filtering\PassThroughFilter.py
   # - python examples\official\Filtering\project_inliers.py
