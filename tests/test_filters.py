@@ -497,28 +497,122 @@ class TestProjectInliers(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
-        self.fil = pcl.ProjectInliers()
+        self.fil = self.p.make_ProjectInliers()
+        # self.fil = pcl.ProjectInliers()
+        # self.fil.set_InputCloud(self.p)
 
     def test_model_type(self):
         # param1
-        m = pclseg.SacModel
+        m = pcl.SACMODEL_PLANE
         self.fil.set_model_type(m)
-        # result1
-        result_param = self.fil.getModelType()
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_PLANE)
         
         # param2
-        # result2
-        # :
+        m = pcl.SACMODEL_LINE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_LINE)
+        
+        # param3
+        m = pcl.SACMODEL_CIRCLE2D
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_CIRCLE2D)
+        
+        # param4
+        m = pcl.SACMODEL_CIRCLE3D
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_CIRCLE3D)
+        
+        # param5
+        m = pcl.SACMODEL_SPHERE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_SPHERE)
+        
+        # param6
+        m = pcl.SACMODEL_CYLINDER
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_CYLINDER)
+        
+        # param7
+        m = pcl.SACMODEL_CONE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_CONE)
+        
+        # param8
+        m = pcl.SACMODEL_TORUS
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_TORUS)
+        
+        # param9
+        m = pcl.SACMODEL_PARALLEL_LINE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_PARALLEL_LINE)
+        
+        # param10
+        m = pcl.SACMODEL_PERPENDICULAR_PLANE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_PERPENDICULAR_PLANE)
+        
+        # param11
+        m = pcl.SACMODEL_PARALLEL_LINES
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_PARALLEL_LINES)
+        
+        # param12
+        m = pcl.SACMODEL_NORMAL_PLANE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_NORMAL_PLANE)
+        
+        # param13
+        m = pcl.SACMODEL_NORMAL_SPHERE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_NORMAL_SPHERE)
+        
+        # param14
+        m = pcl.SACMODEL_REGISTRATION
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_REGISTRATION)
+        
+        # param15
+        m = pcl.SACMODEL_PARALLEL_PLANE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_PARALLEL_PLANE)
+        
+        # param16
+        m = pcl.SACMODEL_NORMAL_PARALLEL_PLANE
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_NORMAL_PARALLEL_PLANE)
+        
+        # param17
+        m = pcl.SACMODEL_STICK
+        self.fil.set_model_type(m)
+        result_param = self.fil.get_model_type()
+        self.assertEqual(result_param, pcl.SACMODEL_STICK)
         pass
 
 
     def test_copy_all_data(self):
         self.fil.set_copy_all_data(True)
-        datas = self.fil.get_copy_all_data(self)
+        datas = self.fil.get_copy_all_data()
         # result
         
-        self.fil.set_copy_all_data(True)
-        datas = self.fil.get_copy_all_data(self)
+        self.fil.set_copy_all_data(False)
+        datas = self.fil.get_copy_all_data()
         # result2
 
 
@@ -527,8 +621,9 @@ class TestRadiusOutlierRemoval(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
-        self.fil = self.p.make_statistical_outlier_filter()
+        self.fil = self.p.make_RadiusOutlierRemoval()
         # self.fil = pcl.RadiusOutlierRemoval()
+        # self.fil.set_InputCloud(self.p)
 
 
     def test_filter(self):
@@ -546,10 +641,12 @@ class TestRadiusOutlierRemoval(unittest.TestCase):
         # filter retains the same number of points
         # self.assertEqual(self.p.size, f.size)
 
+
     def test_MinNeighborsInRadius(self):
         min_pts = 10
         self.fil.set_MinNeighborsInRadius(min_pts)
-        result = self.fil.get_MinNeighborsInRadius(self)
+        result = self.fil.get_MinNeighborsInRadius()
+        self.assertEqual(result, min_pts)
         
         # check
         # new instance is returned
@@ -563,7 +660,10 @@ class TestStatisticalOutlierRemovalFilter(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
-        self.fil
+        self.fil = self.p.make_statistical_outlier_filter()
+        # self.fil = pcl.StatisticalOutlierRemovalFilter()
+        # self.fil.set_InputCloud(self.p)
+
 
     def _tpos(self, c):
         self.assertEqual(c.size, 22745)
@@ -571,11 +671,13 @@ class TestStatisticalOutlierRemovalFilter(unittest.TestCase):
         self.assertEqual(c.height, 1)
         self.assertTrue(c.is_dense)
 
+
     def _tneg(self, c):
         self.assertEqual(c.size, 1015)
         self.assertEqual(c.width, 1015)
         self.assertEqual(c.height, 1)
         self.assertTrue(c.is_dense)
+
 
     def testFilterPos(self):
         fil = self.p.make_statistical_outlier_filter()
@@ -586,6 +688,7 @@ class TestStatisticalOutlierRemovalFilter(unittest.TestCase):
         c = fil.filter()
         self._tpos(c)
 
+
     def testFilterNeg(self):
         fil = self.p.make_statistical_outlier_filter()
         fil.set_mean_k(50)
@@ -595,6 +698,7 @@ class TestStatisticalOutlierRemovalFilter(unittest.TestCase):
         self.assertEqual(fil.negative, True)
         c = fil.filter()
         self._tneg(c)
+
 
     def testFilterPosNeg(self):
         fil = self.p.make_statistical_outlier_filter()
@@ -612,43 +716,17 @@ class TestVoxelGridFilter(unittest.TestCase):
 
     def setUp(self):
         self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.fil = self.p.make_voxel_grid_filter()
+        # self.fil = pcl.VoxelGridFilter()
+        # self.fil.set_InputCloud(self.p)
+
 
     def testFilter(self):
-        fil = self.p.make_voxel_grid_filter()
-        fil.set_leaf_size(0.01, 0.01, 0.01)
-        c = fil.filter()
+        self.fil.set_leaf_size(0.01, 0.01, 0.01)
+        c = self.fil.filter()
         self.assertTrue(c.size < self.p.size)
         self.assertEqual(c.size, 719)
 
-
-# Write Point
-# pcl::PCDWriter writer;
-# std::stringstream ss;
-# ss << "min_cut_seg" << ".pcd";
-# // writer.write<pcl::PointXYZRGB> (ss.str (), *cloud, false)
-# pcl::io::savePCDFile(ss.str(), *outputCloud, false)
-
-# Add ProjectInlier
-# class TestProjectInlier(unittest.TestCase):
-#     def setUp(self):
-#         # TestData
-#         self.pc = pcl.PointCloud(a)
-#         self.kd = pcl.CropBox(self.pc)
-# 
-#     def testException(self):
-#         self.assertRaises(TypeError, pcl.CropHull)
-#         self.assertRaises(TypeError, self.kd.nearest_k_search_for_cloud, None)
-# 
-#     def testCrop(self):
-#         # Big cluster
-#         for ref, k in ((80, 1), (59, 3), (60, 10)):
-#             ind, sqdist = self.kd.nearest_k_search_for_point(self.pc, ref, k=k)
-#             for i in ind:
-#                 self.assertGreaterEqual(i, 30)
-#             for d in sqdist:
-#                 self.assertGreaterEqual(d, 0)
-# 
-##
 
 ### Official Test Base ###
 p_65558  = [-0.058448, -0.189095, 0.723415]
