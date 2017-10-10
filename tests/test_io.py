@@ -34,7 +34,7 @@ DATA ascii
 
     a = np.array(np.mat(SEGDATA, dtype=np.float32))
     npts = a.shape[0]
-    tmp_file =  tempfile.mkstemp(suffix='.pcd')[1]
+    tmp_file = tempfile.mkstemp(suffix='.pcd')[1]
     with open(tmp_file, "w") as f:
         f.write(TMPL % {"npts": npts, "data": SEGDATA.replace(";", "")})
 
@@ -61,7 +61,7 @@ def test_copy():
     assert_array_equal(p2.to_array(), a)
 
 
-### 
+###
 
 
 # io
@@ -113,6 +113,7 @@ class TestNumpyIO(unittest.TestCase):
         s = pickle.dumps(self.p)
         p = pickle.loads(s)
         self.assertTrue(np.all(self.a == p.to_array()))
+
 
 # copy the output of seg
 SEGDATA = """ 0.352222 -0.151883  2;
@@ -175,7 +176,10 @@ class TestSegmentPlane(unittest.TestCase):
 class TestSave(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "table_scene_mug_stereo_textured_noplane.pcd")
         self.tmpdir = tempfile.mkdtemp(suffix='pcl-test')
 
     def tearDown(self):
@@ -232,6 +236,6 @@ def suite():
     suite.addTests(unittest.makeSuite(TestExceptions))
     return suite
 
+
 if __name__ == '__main__':
     unittest.main()
-

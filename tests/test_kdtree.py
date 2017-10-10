@@ -7,6 +7,7 @@ import unittest
 import pcl
 import numpy as np
 
+
 class TestKdTree(unittest.TestCase):
     def setUp(self):
         rng = np.random.RandomState(42)
@@ -78,6 +79,6 @@ def suite():
     # suite.addTests(unittest.makeSuite(TestKdTreeFLANN))
     return suite
 
+
 if __name__ == '__main__':
     unittest.main()
-

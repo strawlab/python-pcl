@@ -15,10 +15,10 @@ _DATA = """0.0, 0.0, 0.2;
            4.0, 8.0, 12.2"""
 
 # class TestOctreePointCloud(unittest.TestCase):
-# 
+#
 #     def setUp(self):
 #         self.t = pcl.OctreePointCloud(0.1)
-# 
+#
 #     def testLoad(self):
 #         pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 #         self.t.set_input_cloud(pc)
@@ -41,7 +41,10 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 
     def setUp(self):
         self.t = pcl.OctreePointCloudSearch(0.1)
-        pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        pc = pcl.load(
+            "tests" +
+            os.path.sep +
+            "table_scene_mug_stereo_textured_noplane.pcd")
         self.t.set_input_cloud(pc)
         self.t.define_bounding_box()
         self.t.add_points_from_input_cloud()
@@ -59,17 +62,17 @@ class TestOctreePointCloudSearch(unittest.TestCase):
         self.assertEqual(len(rs[1]), 19730)
 
 # class TestOctreePointCloudChangeDetector(unittest.TestCase):
-# 
+#
 #     def setUp(self):
 #         self.t = pcl.OctreePointCloudSearch(0.1)
 #         pc = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 #         self.t.set_input_cloud(pc)
 #         self.t.define_bounding_box()
 #         self.t.add_points_from_input_cloud()
-# 
+#
 #     def testConstructor(self):
 #         self.assertRaises(ValueError, pcl.OctreePointCloudChangeDetector, 0.)
-# 
+#
 #     def testRadiusSearch(self):
 #         good_point = (0.035296999, -0.074322999, 1.2074)
 #         rs = self.t.radius_search(good_point, 0.5, 1)
@@ -88,6 +91,6 @@ def suite():
     suite.addTests(unittest.makeSuite(TestOctreePointCloudChangeDetector))
     return suite
 
+
 if __name__ == '__main__':
     unittest.main()
-

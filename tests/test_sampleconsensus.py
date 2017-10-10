@@ -10,6 +10,8 @@ import numpy as np
 # sample_consensus
 
 ### RandomSampleConsensus ###
+
+
 class TestRandomSampleConsensus(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
@@ -70,6 +72,6 @@ def suite():
 
     return suite
 
+
 if __name__ == '__main__':
     unittest.main()
-

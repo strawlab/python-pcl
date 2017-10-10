@@ -16,12 +16,13 @@ _DATA = """0.0, 0.0, 0.2;
 
 # recognition
 
+
 def suite():
     suite = unittest.TestSuite()
     # recognition
     # suite.addTests(unittest.makeSuite(...))
     return suite
 
+
 if __name__ == '__main__':
     unittest.main()
-

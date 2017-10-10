@@ -9,6 +9,8 @@ import numpy as np
 
 # segmentation
 ### ConditionalEuclideanClustering(1.7.2) ###
+
+
 class TestConditionalEuclideanClustering(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
@@ -58,4 +60,3 @@ def suite():
 
 if __name__ == '__main__':
     unittest.main()
-

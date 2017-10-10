@@ -39,6 +39,6 @@ def suite():
     suite.addTests(unittest.makeSuite(TestMovingLeastSquares))
     return suite
 
+
 if __name__ == '__main__':
     unittest.main()
-
