@@ -7,6 +7,7 @@ cimport pcl_sample_consensus as pcl_sac
 
 cdef class RandomSampleConsensus:
     """
+    represents an implementation of the RANSAC (RAndom SAmple Consensus) algorithm.
     """
     cdef pcl_sac.RandomSampleConsensus_t *me
 

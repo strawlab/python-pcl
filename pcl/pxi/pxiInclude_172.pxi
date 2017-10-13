@@ -52,8 +52,8 @@ include "SampleConsensus/SampleConsensusModelStick.pxi"
 include "Features/NormalEstimation_172.pxi"
 include "Features/VFHEstimation_172.pxi"
 include "Features/IntegralImageNormalEstimation_172.pxi"
-# package ng
-# include "Features/MomentOfInertiaEstimation_172.pxi"
+# package ng?
+include "Features/MomentOfInertiaEstimation_172.pxi"
 
 # keyPoint
 include "KeyPoint/HarrisKeypoint3D_172.pxi"

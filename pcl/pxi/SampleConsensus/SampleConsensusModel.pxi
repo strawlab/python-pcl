@@ -6,6 +6,7 @@ from boost_shared_ptr cimport sp_assign
 
 cdef class SampleConsensusModel:
     """
+    represents the base model class.
     """
     # cdef pcl_sac.SampleConsensusModel_t *me
 

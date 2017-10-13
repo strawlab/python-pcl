@@ -157,6 +157,68 @@ class TestICP_NL(unittest.TestCase):
         # print("---------")
 
 
+
+_data = [(i, 2 * i, 3 * i + 0.2) for i in range(5)]
+_DATA = """0.0, 0.0, 0.2;
+           1.0, 2.0, 3.2;
+           2.0, 4.0, 6.2;
+           3.0, 6.0, 9.2;
+           4.0, 8.0, 12.2"""
+
+# registration
+### GeneralizedIterativeClosestPoint ###
+class TestGeneralizedIterativeClosestPoint(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.reg = pcl.GeneralizedIterativeClosestPoint()
+
+
+### IterativeClosestPoint ###
+class TestIterativeClosestPoint(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.reg = pcl.IterativeClosestPoint()
+
+#     def set_InputTarget(self, _pcl.PointCloud cloud):
+#         self.me.setInputTarget (cloud.thisptr_shared)
+#         pass
+# 
+#     # def get_Resolution(self):
+#     #     return self.me.getResolution()
+# 
+#     # def get_StepSize(self):
+#     #     return self.me.getStepSize()
+# 
+#     # def set_StepSize(self, double step_size):
+#     #     self.me.setStepSize(step_size)
+# 
+#     # def get_OulierRatio(self):
+#     #     return self.me.getOulierRatio()
+# 
+#     # def set_OulierRatio(self, double outlier_ratio):
+#     #     self.me.setOulierRatio(outlier_ratio)
+# 
+#     # def get_TransformationProbability(self):
+#     #     return self.me.getTransformationProbability()
+# 
+#     # def get_FinalNumIteration(self):
+#     #     return self.me.getFinalNumIteration()
+
+
+### IterativeClosestPointNonLinear ###
+class TestIterativeClosestPointNonLinear(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.reg = pcl.IterativeClosestPointNonLinear()
+
+
+### NormalDistributionsTransform ###
+class TestNormalDistributionsTransform(unittest.TestCase):
+    def setUp(self):
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.reg = pcl.IterativeClosestPointNonLinear()
+
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTests(unittest.makeSuite(TestICP))

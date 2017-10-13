@@ -34,9 +34,11 @@ class TestMovingLeastSquares(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
+    
     # surface
     suite.addTests(unittest.makeSuite(TestConcaveHull))
     suite.addTests(unittest.makeSuite(TestMovingLeastSquares))
+    
     return suite
 
 
