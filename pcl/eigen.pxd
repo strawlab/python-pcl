@@ -50,21 +50,29 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
     cdef cppclass Matrix4f:
         Matrix4f() except +
         float *data()
+        float& element "operator()"(int row, int col)
     cdef cppclass Matrix3f:
         Matrix3f() except +
         float coeff(int row, int col)
         float *data()
-        double& element "operator()"(int row,int col)
+        float& element "operator()"(int row, int col)
     cdef cppclass Vector4f:
+        Vector4f() except +
         float *data()
+        float& element "operator()"(int row, int col)
     cdef cppclass Vector3f:
+        Vector3f() except +
         float *data()
+        float& element "operator()"(int row, int col)
     cdef cppclass Vector3i:
+        Vector3i() except +
         int *data()
+        int& element "operator()"(int row, int col)
     cdef cppclass Vector3d: 
         Vector3d() except + 
         Vector3d(double c0, double c1, double c2) except + 
-        double coeff(int row, int col) 
+        double coeff(int row, int col)
+        double& element "operator()"(int row, int col)
     cdef cppclass Quaternionf:
         float w()
         float x()

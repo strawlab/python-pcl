@@ -11,21 +11,35 @@ import numpy as np
 # surface
 ### ConcaveHull ###
 class TestConcaveHull(unittest.TestCase):
+
     def setUp(self):
-        self.p = pcl.PointCloud(_data)
+        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.surf = pcl.ConcaveHull()
+
+
+    def testreconstruct(self):
+        alpha = 1.0
+        self.surf.set_Alpha(alpha)
+        clonepc = self.surf.reconstruct()
+        # new instance is returned
+        self.assertNotEqual(self.p, clonepc)
+        # concavehull retains the same number of points?
+        self.assertEqual(self.p.size, clonepc.size)
 
 
 ### MovingLeastSquares ###
 class TestMovingLeastSquares(unittest.TestCase):
+
     def setUp(self):
         self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        self.surf = self.p.make_moving_least_squares()
+
 
     def testFilter(self):
-        mls = self.p.make_moving_least_squares()
-        mls.set_search_radius(0.5)
-        mls.set_polynomial_order(2)
-        mls.set_polynomial_fit(True)
-        f = mls.process()
+        self.surf.set_search_radius(0.5)
+        self.surf.set_polynomial_order(2)
+        self.surf.set_polynomial_fit(True)
+        f = self.surf.process()
         # new instance is returned
         self.assertNotEqual(self.p, f)
         # mls filter retains the same number of points

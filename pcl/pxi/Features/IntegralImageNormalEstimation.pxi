@@ -21,11 +21,9 @@ cdef class IntegralImageNormalEstimation:
     # cdef pcl_ftr.IntegralImageNormalEstimation_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        print ('__cinit__ start')
         sp_assign(self.thisptr_shared, new pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]())
         # NG : Reference Count 
         self.thisptr().setInputCloud(pc.thisptr_shared)
-        print ('__cinit__ end')
         # self.me = new pcl_ftr.IntegralImageNormalEstimation_t()
         # self.me.setInputCloud(pc.thisptr_shared)
         # pass
@@ -52,15 +50,12 @@ cdef class IntegralImageNormalEstimation:
     def set_NormalSmoothingSize(self, double param):
         self.thisptr().setNormalSmoothingSize(param)
 
-    def compute(self, PointCloud pc not None):
-        # cdef PointCloud_PointNormal normal = PointCloud_PointNormal()
-        # normal = PointCloud_PointNormal()
+    def compute(self):
         normal = PointCloud_Normal()
-        # NG : No Python object
-        # normal = PointCloud_Normal(pc)
         cdef cpp.PointCloud_Normal_t *cPointCloudNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
+        
         print ('3')
-        # print (str(self.thisptr().size))
+        print (cPointCloudNormal)
         
         # compute function based Features class
         # NG 
@@ -71,7 +66,8 @@ cdef class IntegralImageNormalEstimation:
         # self.thisptr().compute (<cpp.PointCloud[Normal]> deref(cPointCloudNormal.makeShared().get()))
         # NG : (Exception)
         # self.thisptr().compute (deref(cPointCloudNormal.makeShared().get()))
-        self.thisptr().compute (deref(cPointCloudNormal))
+        # self.thisptr().compute (deref(cPointCloudNormal))
+        self.thisptr().compute (cPointCloudNormal)
         print ('4')
         return normal
 
@@ -94,4 +90,5 @@ cdef class IntegralImageNormalEstimation:
         # mpcl_features_NormalEstimationMethod_compute(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()), deref(cPointCloudNormal))
         print ('4')
         return normal
+
 
