@@ -21,11 +21,9 @@ cdef class IntegralImageNormalEstimation:
     # cdef pcl_ftr.IntegralImageNormalEstimation_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        print ('__cinit__ start')
         sp_assign(self.thisptr_shared, new pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]())
         # NG : Reference Count 
         self.thisptr().setInputCloud(pc.thisptr_shared)
-        print ('__cinit__ end')
         # self.me = new pcl_ftr.IntegralImageNormalEstimation_t()
         # self.me.setInputCloud(pc.thisptr_shared)
         # pass
