@@ -514,9 +514,6 @@ cdef class PointCloud2:
 
     def make_VFHEstimation(self):
         vfhEstimation = VFHEstimation()
-        normalEstimation = self.make_NormalEstimation()
-        cloud_normals = normalEstimation.Compute()
-        # features
         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return vfhEstimation
