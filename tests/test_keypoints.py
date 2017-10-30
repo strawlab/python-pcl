@@ -39,25 +39,24 @@ class TestHarrisKeypoint3D(unittest.TestCase):
         keypoint_count = 51
         self.assertEqual(keypoints.size, keypoint_count)
 
-        # 
-        # count = 0
-        # points = np.zeros((keypoints.size, 3), dtype=np.float32)
-        # # Generate the data
-        # for i in range(0, keypoints.size):
-        #     # set Point Plane
-        #     points[i][0] = keypoints[i][0]
-        #     points[i][1] = keypoints[i][1]
-        #     points[i][2] = keypoints[i][2]
-        #     intensity = keypoints[i][3]
-        #     if intensity > max:
-        #         print("coords: " + str(keypoints[i][0]) + ";" + str(keypoints[i][1]) + ";" + str(keypoints[i][2]) )
-        #         max = intensity
-        #     
-        #     if intensity < min:
-        #         min = intensity
-        #     
-        #     count = count + 1
-        # 
+        count = 0
+        points = np.zeros((keypoints.size, 3), dtype=np.float32)
+        # Generate the data
+        for i in range(0, keypoints.size):
+            # set Point Plane
+            points[i][0] = keypoints[i][0]
+            points[i][1] = keypoints[i][1]
+            points[i][2] = keypoints[i][2]
+            intensity = keypoints[i][3]
+            if intensity > max:
+                print("coords: " + str(keypoints[i][0]) + ";" + str(keypoints[i][1]) + ";" + str(keypoints[i][2]) )
+                max = intensity
+
+            if intensity < min:
+                min = intensity
+
+            count = count + 1
+
         # points.resize(count, 3)
         # print(points)
         # keypoints3D.from_array(points)
@@ -70,7 +69,8 @@ class TestHarrisKeypoint3D(unittest.TestCase):
         # coords: -0.05888630822300911;0.1165248453617096;0.03698881343007088
         # coords: 0.04757949709892273;0.07463110238313675;0.018482372164726257
         # maximal responce: 0.0162825807929039 min responce:  0.0
-
+        self.assertEqual(max, 0.0162825807929039)
+        self.assertEqual(min, 0.0)
 
 ### NarfKeypoint ###
 class TestNarfKeypoint(unittest.TestCase):
