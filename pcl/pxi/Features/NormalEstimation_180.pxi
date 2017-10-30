@@ -15,6 +15,7 @@ cdef class NormalEstimation:
 
     def __cinit__(self):
         self.me = new pclftr.NormalEstimation_t()
+        # sp_assign(self.thisptr_shared, new pclftr.NormalEstimation[cpp.PointXYZ, cpp.Normal]())
 
     def __dealloc__(self):
         del self.me
@@ -29,8 +30,9 @@ cdef class NormalEstimation:
         self.me.setKSearch (param)
 
     def compute(self):
-        normal = PointCloud_Normal()
-        cdef cpp.PointCloud_Normal_t *cNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
-        self.me.compute (deref(cNormal))
-        return normal
+        normals = PointCloud_Normal()
+        sp_assign(normals.thisptr_shared, new cpp.PointCloud[cpp.Normal]())
+        cdef cpp.PointCloud_Normal_t *cNormal = <cpp.PointCloud_Normal_t*>normals.thisptr()
+        (<pclftr.Feature_t*>self.me).compute(deref(cNormal))
+        return normals
 

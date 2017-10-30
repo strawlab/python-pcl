@@ -73,6 +73,10 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # void computeEigen (cpp.PointCloud[Eigen::MatrixXf] &output);
 
 
+ctypedef Feature[cpp.PointXYZ, cpp.Normal] Feature_t
+ctypedef Feature[cpp.PointXYZI, cpp.Normal] Feature_PointXYZI_t
+ctypedef Feature[cpp.PointXYZRGB, cpp.Normal] Feature_PointXYZRGB_t
+ctypedef Feature[cpp.PointXYZRGBA, cpp.Normal] Feature_PointXYZRGBA_t
 ###
 
 # template <typename PointInT, typename PointNT, typename PointOutT>

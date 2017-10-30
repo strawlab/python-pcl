@@ -238,4 +238,5 @@ def suite():
 
 
 if __name__ == '__main__':
-    unittest.main()
+    testSuite = suite()
+    unittest.TextTestRunner().run(testSuite)

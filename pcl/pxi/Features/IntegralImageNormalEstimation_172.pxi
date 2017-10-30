@@ -21,11 +21,9 @@ cdef class IntegralImageNormalEstimation:
     # cdef pcl_ftr.IntegralImageNormalEstimation_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        print ('__cinit__ start')
         sp_assign(self.thisptr_shared, new pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]())
         # NG : Reference Count 
         self.thisptr().setInputCloud(pc.thisptr_shared)
-        print ('__cinit__ end')
         # self.me = new pcl_ftr.IntegralImageNormalEstimation_t()
         # self.me.setInputCloud(pc.thisptr_shared)
         # pass
@@ -52,46 +50,11 @@ cdef class IntegralImageNormalEstimation:
     def set_NormalSmoothingSize(self, double param):
         self.thisptr().setNormalSmoothingSize(param)
 
-    def compute(self, PointCloud pc not None):
-        # cdef PointCloud_PointNormal normal = PointCloud_PointNormal()
-        # normal = PointCloud_PointNormal()
+    def compute(self):
         normal = PointCloud_Normal()
-        # NG : No Python object
-        # normal = PointCloud_Normal(pc)
-        cdef cpp.PointCloud_Normal_t *cPointCloudNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
-        print ('3')
-        # print (str(self.thisptr().size))
-        
-        # compute function based Features class
-        # NG 
-        # self.thisptr().compute (cPointCloudNormal.makeShared())
-        # self.thisptr().compute (cPointCloudNormal.makeShared().get())
-        # from cython cimport address
-        # self.thisptr().compute (cython.address(cPointCloudNormal.makeShared().get()))
-        # self.thisptr().compute (<cpp.PointCloud[Normal]> deref(cPointCloudNormal.makeShared().get()))
-        # NG : (Exception)
-        # self.thisptr().compute (deref(cPointCloudNormal.makeShared().get()))
-        self.thisptr().compute (deref(cPointCloudNormal))
-        print ('4')
+        sp_assign(normal.thisptr_shared, new cpp.PointCloud[cpp.Normal]())
+        cdef cpp.PointCloud_Normal_t *cNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
+        (<pclftr.Feature_t*>self.thisptr()).compute(deref(cNormal))
         return normal
 
-    def compute2(self, PointCloud pc not None):
-        normal = PointCloud_Normal()
-        cdef cpp.PointCloud_Normal_t *cPointCloudNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
-        print ('3')
-        # OK
-        cdef cpp.PointCloud_Normal_t normals
-        mpcl_features_NormalEstimationMethod_compute(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()), normals)
-        print ('3a')
-        # Copy?
-        cPointCloudNormal = normals.makeShared().get()
-        print ('3b')
-        
-        # NG : Normal Pointer Nothing?
-        # mpcl_features_NormalEstimationMethod_compute(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()), deref(cPointCloudNormal.makeShared().get()))
-        # mpcl_features_NormalEstimationMethod_compute(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()), cPointCloudNormal.makeShared().get())
-        # NG : Normal Pointer Nothing?
-        # mpcl_features_NormalEstimationMethod_compute(<pcl_ftr.IntegralImageNormalEstimation_t> deref(self.thisptr()), deref(cPointCloudNormal))
-        print ('4')
-        return normal
 

@@ -134,7 +134,7 @@ include "pxi/PointCloud_PointXYZI_172.pxi"
 include "pxi/PointCloud_PointXYZRGB_172.pxi"
 include "pxi/PointCloud_PointXYZRGBA_172.pxi"
 include "pxi/PointCloud_PointWithViewpoint.pxi"
-# include "pxi/PointCloud_Normal.pxi"
+include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
 # Add PointCloud2
 include "pxi/PointCloud_PCLPointCloud2.pxi"

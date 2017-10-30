@@ -142,12 +142,20 @@ cdef class RangeImages:
 
 ### Features
 # class override
-cdef class IntegralImageNormalEstimation:
-    cdef pcl_ftr.IntegralImageNormalEstimationPtr_t thisptr_shared     # IntegralImageNormalEstimation
-    
-    cdef inline pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
-        # Shortcut to get raw pointer to underlying pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>.
-        return self.thisptr_shared.get()
+# cdef class IntegralImageNormalEstimation:
+#     cdef pcl_ftr.IntegralImageNormalEstimationPtr_t thisptr_shared     # IntegralImageNormalEstimation
+#     
+#     cdef inline pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
+#         # Shortcut to get raw pointer to underlying pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>.
+#         return self.thisptr_shared.get()
+
+
+# cdef class NormalEstimation:
+#     cdef pcl_ftr.NormalEstimationPtr_t thisptr_shared     # NormalEstimation
+#     
+#     cdef inline pcl_ftr.NormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
+#         # Shortcut to get raw pointer to underlying pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal>.
+#         return self.thisptr_shared.get()
 
 
 ## SampleConsensus
