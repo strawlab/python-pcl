@@ -14,41 +14,73 @@ _DATA = """0.0, 0.0, 0.2;
            3.0, 6.0, 9.2;
            4.0, 8.0, 12.2"""
 
+
+_data2 = np.array(
+    [[0.0080142, 0.694695,-0.26015],
+    [-0.342265,-0.446349, 0.214207],
+    [0.173687 ,-0.84253 ,-0.400481],
+    [-0.874475, 0.706127,-0.117635],
+    [0.908514 ,-0.598159, 0.744714]], dtype=np.float32)
+
+
 # Filter
 ### ApproximateVoxelGrid ###
 
 
 class TestApproximateVoxelGrid(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
-        self.fil = pcl.ApproximateVoxelGrid()
-        self.fil.set_InputCloud(self.p)
+        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_lms400.pcd")
+        self.fil = self.p.make_ApproximateVoxelGrid()
+        # self.fil = pcl.ApproximateVoxelGrid()
+        # self.fil.set_InputCloud(self.p)
 
-    # def set_InputCloud(self, PointCloud pc not None):
-    #     (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def test_VoxelGrid(self):
-        x = 1.0
-        y = 1.0
-        z = 1.0
+        x = 0.01
+        y = 0.01
+        z = 0.01
         self.fil.set_leaf_size(x, y, z)
         result = self.fil.filter()
-
         # check
-        # new instance is returned
-        # self.assertNotEqual(self.p, result)
-        # filter retains the same number of points
-        # self.assertEqual(self.p.size, f.size)
+        self.assertTrue(result.size < self.p.size)
+        # self.assertEqual(result.size, 719)
 
 
 ### ConditionalRemoval ###
 class TestConditionalRemoval(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        # self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
+        # self.p = pcl.PointCloud(_data)
+        self.p = pcl.PointCloud(_data2)
+        self.fil = self.p.make_ConditionalRemoval(pcl.ConditionAnd())
+
+    # result
+    # nan nan nan
+    # -0.342265 -0.446349 0.214207
+    # nan nan nan
+    # nan nan nan
+    # 0.908514 -0.598159 0.744714
+    def test_Condition(self):
+        range_cond = self.p.make_ConditionAnd()
+        range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.GT, 0.0)
+        range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.LT, 0.8)
+        # build the filter
+        self.fil.set_KeepOrganized(True)
+        # apply filter
+        cloud_filtered = self.fil.filter ()
+
+        # check
+        expected = np.array([-0.342265,-0.446349,0.214207])
+        datas = np.around(cloud_filtered.to_array()[1].tolist(), decimals=6)
+        self.assertEqual(datas.tolist(), expected.tolist())
+
+        expected2 = np.array([0.908514,-0.598159,0.744714])
+        datas = np.around(cloud_filtered.to_array()[4].tolist(), decimals=6)
+        self.assertEqual(datas.tolist(), expected2.tolist())
 
 
 #     def set_KeepOrganized(self, flag):
-#         self.me.setKeepOrganized(flag)
+#         self.fil.setKeepOrganized(flag)
 #
 #     def filter(self):
 #         """
@@ -56,7 +88,7 @@ class TestConditionalRemoval(unittest.TestCase):
 #         a new pointcloud
 #         """
 #         cdef PointCloud pc = PointCloud()
-#         self.me.filter(pc.thisptr()[0])
+#         self.fil.filter(pc.thisptr()[0])
 #         return pc
 
 
@@ -611,50 +643,50 @@ class TestProjectInliers(unittest.TestCase):
         self.assertEqual(result_param, pcl.SACMODEL_STICK)
         pass
 
+
     def test_copy_all_data(self):
         self.fil.set_copy_all_data(True)
         datas = self.fil.get_copy_all_data()
         # result
+        self.assertEqual(datas, True)
 
         self.fil.set_copy_all_data(False)
         datas = self.fil.get_copy_all_data()
         # result2
+        self.assertEqual(datas, False)
 
 
 ### RadiusOutlierRemoval ###
 class TestRadiusOutlierRemoval(unittest.TestCase):
 
     def setUp(self):
-        self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        # self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.PointCloud(_data2)
+        print(self.p.size)
         self.fil = self.p.make_RadiusOutlierRemoval()
         # self.fil = pcl.RadiusOutlierRemoval()
         # self.fil.set_InputCloud(self.p)
 
-    def test_filter(self):
-        result_point = self.fil.filter()
 
     def test_radius_seach(self):
-        radius = 1.0
+        radius = 15.8
         self.fil.set_radius_search(radius)
         result = self.fil.get_radius_search()
-
-        # check
-        # new instance is returned
-        # self.assertNotEqual(self.p, result)
-        # filter retains the same number of points
-        # self.assertEqual(self.p.size, f.size)
-
-    def test_MinNeighborsInRadius(self):
-        min_pts = 10
-        self.fil.set_MinNeighborsInRadius(min_pts)
+        self.assertEqual(radius, result)
+        
+        min_pts = 2
+        self.fil.set_MinNeighborsInRadius(2)
         result = self.fil.get_MinNeighborsInRadius()
-        self.assertEqual(result, min_pts)
-
+        self.assertEqual(min_pts, result)
+        
+        result_point = self.fil.filter()
+        
         # check
         # new instance is returned
         # self.assertNotEqual(self.p, result)
         # filter retains the same number of points
-        # self.assertEqual(self.p.size, f.size)
+        self.assertNotEqual(result_point.size, 0)
+        self.assertNotEqual(self.p.size, result_point.size)
 
 
 ### StatisticalOutlierRemovalFilter ###
@@ -731,14 +763,14 @@ class TestVoxelGridFilter(unittest.TestCase):
 
 
 ### Official Test Base ###
-p_65558 = [-0.058448, -0.189095, 0.723415]
-p_84737 = [-0.088929, -0.152957, 0.746095]
-p_57966 = [0.123646, -0.397528, 1.393187]
-p_39543 = [0.560287, -0.545020, 1.602833]
-p_17766 = [0.557854, -0.711976, 1.762013]
-p_70202 = [0.150500, -0.160329, 0.646596]
-p_102219 = [0.175637, -0.101353, 0.661631]
-p_81765 = [0.223189, -0.151714, 0.708332]
+p_65558  = np.array([-0.058448, -0.189095, 0.723415], dtype=np.float32)
+p_84737  = np.array([-0.088929, -0.152957, 0.746095], dtype=np.float32)
+p_57966  = np.array([0.123646, -0.397528, 1.393187], dtype=np.float32)
+p_39543  = np.array([0.560287, -0.545020, 1.602833], dtype=np.float32)
+p_17766  = np.array([0.557854, -0.711976, 1.762013], dtype=np.float32)
+p_70202  = np.array([0.150500, -0.160329, 0.646596], dtype=np.float32)
+p_102219 = np.array([0.175637, -0.101353, 0.661631], dtype=np.float32)
+p_81765  = np.array([0.223189, -0.151714, 0.708332], dtype=np.float32)
 
 # class TESTFastBilateralFilter(unittest.TestCase):
 #     def setUp(self):
@@ -806,15 +838,14 @@ def suite():
     # Filter
     suite.addTests(unittest.makeSuite(TestApproximateVoxelGrid))
     suite.addTests(unittest.makeSuite(TestConditionalRemoval))
-    suite.addTests(unittest.makeSuite(TestConditionAnd))
+    # suite.addTests(unittest.makeSuite(TestConditionAnd))
     suite.addTests(unittest.makeSuite(TestCropBox))
     suite.addTests(unittest.makeSuite(TestCropHull))
     suite.addTests(unittest.makeSuite(TestFieldComparison))
     suite.addTests(unittest.makeSuite(TestPassthroughFilter))
     suite.addTests(unittest.makeSuite(TestProjectInliers))
-    suite.addTests(unittest.makeSuite(TestRadiusOutlierRemoval))
-    suite.addTests(unittest.makeSuite(TestSegmenterNormal))
-    # suite.addTests(unittest.makeSuite(TestStatisticalOutlierRemovalFilter))
+    # suite.addTests(unittest.makeSuite(TestRadiusOutlierRemoval))
+    suite.addTests(unittest.makeSuite(TestStatisticalOutlierRemovalFilter))
     suite.addTests(unittest.makeSuite(TestVoxelGridFilter))
 
     # PointCloudLibrary Official Base Test?

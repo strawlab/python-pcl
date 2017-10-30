@@ -76,7 +76,7 @@ def suite():
     suite = unittest.TestSuite()
     # ketree
     suite.addTests(unittest.makeSuite(TestKdTree))
-    # suite.addTests(unittest.makeSuite(TestKdTreeFLANN))
+    suite.addTests(unittest.makeSuite(TestKdTreeFLANN))
     return suite
 
 

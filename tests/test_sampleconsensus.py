@@ -15,6 +15,8 @@ class TestRandomSampleConsensus(unittest.TestCase):
         self.p = pcl.PointCloud(_data)
         self.smp_con = pcl.RandomSampleConsensus()
 
+    def test_Test(self):
+        pass
 
 #   def test_computeModel
 #     def computeModel(self):
@@ -38,11 +40,19 @@ class TestSampleConsensus(unittest.TestCase):
         self.smp_con = pcl.RandomSampleConsensus()
 
 
+    def test_Test(self):
+        pass
+
+
 ### SampleConsensusModelCylinder ###
 class TestSampleConsensusModelCylinder(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
         self.smp_con = pcl.RandomSampleConsensus()
+
+
+    def test_Test(self):
+        pass
 
 
 ### SampleConsensusModelLine ###
@@ -52,11 +62,19 @@ class TestSampleConsensusModelLine(unittest.TestCase):
         self.smp_con = pcl.RandomSampleConsensus()
 
 
+    def test_Test(self):
+        pass
+
+
 ### SampleConsensusModelPlane ###
 class TestSampleConsensusModelPlane(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
         self.smp_con = pcl.RandomSampleConsensus()
+
+
+    def test_Test(self):
+        pass
 
 
 ### SampleConsensusModelRegistration ###
@@ -66,6 +84,10 @@ class TestSampleConsensusModelRegistration(unittest.TestCase):
         self.smp_con = pcl.RandomSampleConsensus()
 
 
+    def test_Test(self):
+        pass
+
+
 ### SampleConsensusModelSphere ###
 class TestSampleConsensusModelSphere(unittest.TestCase):
     def setUp(self):
@@ -73,11 +95,19 @@ class TestSampleConsensusModelSphere(unittest.TestCase):
         self.smp_con = pcl.RandomSampleConsensus()
 
 
+    def test_Test(self):
+        pass
+
+
 ### SampleConsensusModelStick ###
 class TestSampleConsensusModelStick(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
         self.smp_con = pcl.RandomSampleConsensus()
+
+
+    def test_Test(self):
+        pass
 
 
 def suite():
