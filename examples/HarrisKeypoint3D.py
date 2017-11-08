@@ -10,7 +10,8 @@ import pcl.pcl_visualization
 
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
 # pcl::io::loadPCDFile<pcl::PointXYZ> (argv[1], *cloud);
-cloud = pcl.load_XYZRGB('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+# cloud = pcl.load_XYZRGB('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
 
 # pcl::HarrisKeypoint3D<pcl::PointXYZ,pcl::PointXYZI> detector;
 # detector.setNonMaxSupression (true);
@@ -45,12 +46,14 @@ keypoints = detector.compute()
 # 
 # //show point cloud
 # pcl::visualization::PCLVisualizer viewer ("3D Viewer");
-viewer = PCLVisualizer("3D Viewer");
+viewer = pcl.pcl_visualization.PCLVisualizering(b"3D Viewer")
 
 # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> pccolor(cloud, 255, 255, 255);
 # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> kpcolor(keypoints3D, 255, 0, 0);
-pccolor = PointCloudColorHandlerCustom(cloud, 255, 255, 255)
-kpcolor = PointCloudColorHandlerCustom(keypoints3D, 255, 0, 0)
+pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(cloud, 255, 255, 255)
+# kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints3D, 255, 0, 0)
+kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints, 255, 0, 0)
+
 
 viewer.addPointCloud(cloud,pccolor,"testimg.png");
 viewer.addPointCloud(keypoints3D,kpcolor,"keypoints.png");
@@ -60,5 +63,5 @@ viewer.addPointCloud(keypoints3D,kpcolor,"keypoints.png");
 while True:
     # viewer.wasStopped()
     viewer.spinOnce()
-    pcl_sleep (0.01)
+    # pcl_sleep (0.01)
 end

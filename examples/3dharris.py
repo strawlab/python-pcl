@@ -21,9 +21,9 @@ print("cloud points : " + str(cloud.size))
 ###
 detector = cloud.make_HarrisKeypoint3D()
 detector.set_NonMaxSupression (True)
-detector.set_Radius (100)
+detector.set_Radius (0.01)
 # detector.set_NonMaxSupression (False)
-# detector.set_Radius (0.1)
+# detector.set_RadiusSearch (100)
 keypoints = detector.compute()
 
 # std::cout << "keypoints detected: " << keypoints->size() << std::endl;
@@ -44,9 +44,10 @@ print("keypoints detected: " + str(keypoints.size))
 # std::cout << "maximal responce: "<< max << " min responce:  "<< min<<std::endl;
 ###
 keypoints3D = pcl.PointCloud()
-max = 0
-min = 0
+max = -999
+min = 999
 
+count = 0
 points = np.zeros((keypoints.size, 3), dtype=np.float32)
 # Generate the data
 for i in range(0, keypoints.size):
@@ -58,12 +59,14 @@ for i in range(0, keypoints.size):
     if intensity > max:
         print("coords: " + str(keypoints[i][0]) + ";" + str(keypoints[i][1]) + ";" + str(keypoints[i][2]) )
         max = intensity
-    end
     
     if intensity < min:
         min = intensity
-    end
+    
+    count = count + 1
 
+points.resize(count, 3)
+print(points)
 keypoints3D.from_array(points)
 print("maximal responce: " + str(max) + " min responce:  " +  str(min) )
 
@@ -80,11 +83,12 @@ pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(cloud, 255, 255,
 kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints3D, 255, 0, 0)
 # OK
 viewer.AddPointCloud_ColorHandler(cloud, pccolor)
-viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor)
+viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor, b'keypoints')
+
 # viewer.AddPointCloud_ColorHandler(cloud, pccolor, "testimg.png", 0)
 # viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor, str('keypoints.png'), 0)
 # need? : AddPointCloud_ColorHandler Function Succeded
-# viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 7, 'keypoints.png')
+# viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 7, b'keypoints.png')
 ###
 
 
@@ -92,7 +96,7 @@ viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor)
 # {
 #     viewer.spinOnce();
 #     pcl_sleep (0.01);
-# } 
+# }
 flag = True
 while flag:
     flag != viewer.WasStopped()
