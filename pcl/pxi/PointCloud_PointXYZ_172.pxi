@@ -539,11 +539,11 @@ cdef class PointCloud:
         cIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return iterativeClosestPoint
 
-    # def make_MomentOfInertiaEstimation(self):
-    #     momentofinertiaestimation = MomentOfInertiaEstimation(self)
-    #     cdef pclftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pclftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
-    #     cMomentOfInertiaEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-    #     return momentofinertiaestimation
+    def make_MomentOfInertiaEstimation(self):
+        momentofinertiaestimation = MomentOfInertiaEstimation(self)
+        cdef pclftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pclftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
+        cMomentOfInertiaEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return momentofinertiaestimation
 
     # registration - icp?
     # def make_IterativeClosestPoint():
