@@ -363,9 +363,9 @@ cdef extern from "pcl/features/board.h" namespace "pcl":
 # */
 # template <typename PointInT, typename PointNT, typename PointOutT>
 # class CPPFEstimation : public FeatureFromNormals<PointInT, PointNT, PointOutT>
-# cdef extern from "pcl/features/cppf.h" namespace "pcl":
-#     cdef cppclass CPPFEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
-#         CPPFEstimation()
+cdef extern from "pcl/features/cppf.h" namespace "pcl":
+    cdef cppclass CPPFEstimation[In, NT, Out](FeatureFromNormals[In, NT, Out]):
+        CPPFEstimation()
         # public:
         # typedef boost::shared_ptr<CPPFEstimation<PointInT, PointNT, PointOutT> > Ptr;
         # typedef boost::shared_ptr<const CPPFEstimation<PointInT, PointNT, PointOutT> > ConstPtr;
@@ -644,9 +644,9 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
 #   */
 # template <typename PointT>
 # class PCL_EXPORTS MomentOfInertiaEstimation : public pcl::PCLBase <PointT>
-# cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
-#     cdef cppclass MomentOfInertiaEstimation[PointT](cpp.PCLBase[PointT]):
-#         MomentOfInertiaEstimation()
+cdef extern from "pcl/features/moment_of_inertia_estimation.h" namespace "pcl":
+    cdef cppclass MomentOfInertiaEstimation[PointT](cpp.PCLBase[PointT]):
+        MomentOfInertiaEstimation()
         # /** \brief Constructor that sets default values for member variables. */
         # MomentOfInertiaEstimation ();
         # public:
@@ -657,24 +657,24 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         # * \param[in] cloud the const boost shared pointer to a PointCloud message
         # */
         # virtual void setInputCloud (const PointCloudConstPtr& cloud)
-        # void setInputCloud (const cpp.PCLBase[PointT]& cloud)
-        # 
+        void setInputCloud (const cpp.PCLBase[PointT]& cloud)
+        
         # \brief Provide a pointer to the vector of indices that represents the input data.
         # \param[in] indices a pointer to the vector of indices that represents the input data.
         # virtual void setIndices (const IndicesPtr& indices);
         # void setIndices (const IndicesPtr& indices)
-        # 
+        
         # /** \brief Provide a pointer to the vector of indices that represents the input data.
         # * \param[in] indices a pointer to the vector of indices that represents the input data.
         # */
         # void setIndices (const IndicesConstPtr& indices)
-        # 
+        
         # /** \brief Provide a pointer to the vector of indices that represents the input data.
         # * \param[in] indices a pointer to the vector of indices that represents the input data.
         # */
         # virtual void setIndices (const PointIndicesConstPtr& indices);
         # void setIndices (const PointIndicesConstPtr& indices)
-        # 
+        
         # /** \brief Set the indices for the points laying within an interest region of 
         #   * the point cloud.
         #   * \note you shouldn't call this method on unorganized point clouds!
@@ -684,49 +684,50 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         #   * \param[in] nb_cols the number of columns to be considered col_start included
         #   */
         # virtual void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols);
-        # void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
-        # 
+        void setIndices (size_t row_start, size_t col_start, size_t nb_rows, size_t nb_cols)
+        
         # /** \brief This method allows to set the angle step. It is used for the rotation
         # * of the axis which is used for moment of inertia/eccentricity calculation.
         # * \param[in] step angle step
         # */
         # void setAngleStep (const float step);
-        # void setAngleStep (const float step)
-        # 
+        void setAngleStep (const float step)
+        
         # /** \brief Returns the angle step. */
         # float getAngleStep () const;
-        # float getAngleStep ()
-        # 
+        float getAngleStep ()
+        
         # /** \brief This method allows to set the normalize_ flag. If set to false, then
         # * point_mass_ will be used to scale the moment of inertia values. Otherwise,
         # * point_mass_ will be set to 1 / number_of_points. Default value is true.
         # * \param[in] need_to_normalize desired value
         # */
         # void setNormalizePointMassFlag (bool need_to_normalize);
-        # void setNormalizePointMassFlag (bool need_to_normalize)
-        # 
+        void setNormalizePointMassFlag (bool need_to_normalize)
+        
         # /** \brief Returns the normalize_ flag. */
         # bool getNormalizePointMassFlag () const;
-        # bool getNormalizePointMassFlag ()
-        # 
+        bool getNormalizePointMassFlag ()
+        
         # /** \brief This method allows to set point mass that will be used for
         # * moment of inertia calculation. It is needed to scale moment of inertia values.
         # * default value is 0.0001.
         # * \param[in] point_mass point mass
         # */
         # void setPointMass (const float point_mass);
-        # void setPointMass (const float point_mass)
-        # 
+        void setPointMass (const float point_mass)
+        
         # /** \brief Returns the mass of point. */
         # float getPointMass () const;
-        # float getPointMass ()
-        # 
+        float getPointMass ()
+        
         # /** \brief This method launches the computation of all features. After execution
         # * it sets is_valid_ flag to true and each feature can be accessed with the
         # * corresponding get method.
         # */
         # void compute ();
-        # void compute ()
+        void compute ()
+        
         # 
         # /** \brief This method gives access to the computed axis aligned bounding box. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
@@ -734,8 +735,8 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         # * \param[out] max_point max point of the AABB
         # */
         # bool getAABB (PointT& min_point, PointT& max_point) const;
-        # bool getAABB (PointT& min_point, PointT& max_point)
-        # 
+        bool getAABB (PointT& min_point, PointT& max_point)
+        
         # /** \brief This method gives access to the computed oriented bounding box. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         # * Note that in order to get the OBB, each vertex of the given AABB (specified with min_point and max_point)
@@ -748,8 +749,8 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         # * \param[out] rotational_matrix this matrix represents the rotation transform
         # */
         # bool getOBB (PointT& min_point, PointT& max_point, PointT& position, Eigen::Matrix3f& rotational_matrix) const;
-        # bool getOBB (PointT& min_point, PointT& max_point, PointT& position, eigen3.Matrix3f& rotational_matrix)
-        # 
+        bool getOBB (PointT& min_point, PointT& max_point, PointT& position, eigen3.Matrix3f& rotational_matrix)
+        
         # /** \brief This method gives access to the computed eigen values. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         # * \param[out] major major eigen value
@@ -757,8 +758,8 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         # * \param[out] minor minor eigen value
         # */
         # bool getEigenValues (float& major, float& middle, float& minor) const;
-        # bool getEigenValues (float& major, float& middle, float& minor)
-        # 
+        bool getEigenValues (float& major, float& middle, float& minor)
+        
         # /** \brief This method gives access to the computed eigen vectors. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         # * \param[out] major axis which corresponds to the eigen vector with the major eigen value
@@ -766,39 +767,39 @@ cdef extern from "pcl/features/linear_least_squares_normal.h" namespace "pcl":
         # * \param[out] minor axis which corresponds to the eigen vector with the minor eigen value
         # */
         # bool getEigenVectors (Eigen::Vector3f& major, Eigen::Vector3f& middle, Eigen::Vector3f& minor) const;
-        # bool getEigenVectors (eigen3.Vector3f& major, eigen3.Vector3f& middle, eigen3.Vector3f& minor)
-        # 
+        bool getEigenVectors (eigen3.Vector3f& major, eigen3.Vector3f& middle, eigen3.Vector3f& minor)
+        
         # /** \brief This method gives access to the computed moments of inertia. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         # * \param[out] moment_of_inertia computed moments of inertia
         # */
         # bool getMomentOfInertia (std::vector <float>& moment_of_inertia) const;
-        # bool getMomentOfInertia (vector [float]& moment_of_inertia)
-        # 
+        bool getMomentOfInertia (vector [float]& moment_of_inertia)
+        
         # /** \brief This method gives access to the computed ecentricities. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         # * \param[out] eccentricity computed eccentricities
         # */
         # bool getEccentricity (std::vector <float>& eccentricity) const;
-        # bool getEccentricity (vector [float]& eccentricity)
-        # 
+        bool getEccentricity (vector [float]& eccentricity)
+        
         # /** \brief This method gives access to the computed mass center. It returns true
         # * if the current values (eccentricity, moment of inertia etc) are valid and false otherwise.
         # * Note that when mass center of a cloud is computed, mass point is always considered equal 1.
         # * \param[out] mass_center computed mass center
         # */
         # bool getMassCenter (Eigen::Vector3f& mass_center) const;
-        # bool getMassCenter (eigen3.Vector3f& mass_center)
+        bool getMassCenter (eigen3.Vector3f& mass_center)
 
 
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZ] MomentOfInertiaEstimation_t
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZI] MomentOfInertiaEstimation_PointXYZI_t
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGB] MomentOfInertiaEstimation_PointXYZRGB_t
-# ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGBA] MomentOfInertiaEstimation_PointXYZRGBA_t
-# ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZ]] MomentOfInertiaEstimationPtr_t
-# ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZI]] MomentOfInertiaEstimation_PointXYZI_Ptr_t
-# ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZRGB]] MomentOfInertiaEstimation_PointXYZRGB_Ptr_t
-# ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZRGBA]] MomentOfInertiaEstimation_PointXYZRGBA_Ptr_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZ] MomentOfInertiaEstimation_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZI] MomentOfInertiaEstimation_PointXYZI_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGB] MomentOfInertiaEstimation_PointXYZRGB_t
+ctypedef MomentOfInertiaEstimation[cpp.PointXYZRGBA] MomentOfInertiaEstimation_PointXYZRGBA_t
+ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZ]] MomentOfInertiaEstimationPtr_t
+ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZI]] MomentOfInertiaEstimation_PointXYZI_Ptr_t
+ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZRGB]] MomentOfInertiaEstimation_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[MomentOfInertiaEstimation[cpp.PointXYZRGBA]] MomentOfInertiaEstimation_PointXYZRGBA_Ptr_t
 ###
 
 # our_cvfh.h
@@ -1001,7 +1002,6 @@ cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
 # 
 ###
 
-# apt-get package ng(1.7 base?)
 # rops_estimation.h
 # namespace pcl
 # /** \brief
@@ -1011,9 +1011,9 @@ cdef extern from "pcl/features/our_cvfh.h" namespace "pcl":
 # */
 # template <typename PointInT, typename PointOutT>
 # class PCL_EXPORTS ROPSEstimation : public pcl::Feature <PointInT, PointOutT>
-# cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
-#     cdef cppclass ROPSEstimation[In, Out](Feature[In, Out]):
-#         ROPSEstimation()
+cdef extern from "pcl/features/rops_estimation.h" namespace "pcl":
+    cdef cppclass ROPSEstimation[In, Out](Feature[In, Out]):
+        ROPSEstimation()
         # public:
         # using Feature <PointInT, PointOutT>::input_;
         # using Feature <PointInT, PointOutT>::indices_;
