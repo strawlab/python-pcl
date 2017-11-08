@@ -129,7 +129,8 @@ install:
 script:
   # - coverage run --parallel-mode tests/test_pcl.py
   # - coverage run --parallel-mode tests/test_registration.py
-  - nosetests -A $NOSEATTR --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  # - nosetests -A $NOSEATTR --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  - nosetests -A "not pcl_ver_0_4" --with-coverage --cover-erase --cover-package=python-pcl --verbose
   
   # examples
   # - python examples/GrabberCallbackTest.py

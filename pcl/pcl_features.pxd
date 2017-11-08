@@ -585,6 +585,7 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
 
+
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t

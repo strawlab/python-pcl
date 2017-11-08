@@ -44,12 +44,16 @@ install:
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%;"
   - "pip install --disable-pip-version-check --user --upgrade pip"
   
+  
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
   # target Python version and architecture
   # - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
   # - "pip install wheel"
+  
+  - if [%PCL_VERSION%]==[1.6] anaconda search -t conda vc 10.*
+  - if [%PCL_VERSION%]==[1.6] conda install anaconda-client
   - "conda install -y -q wheel"
   
   # Mini-conda ng
