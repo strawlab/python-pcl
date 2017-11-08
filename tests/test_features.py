@@ -143,7 +143,7 @@ class TestIntegralImageNormalEstimation(unittest.TestCase):
 class TestMomentOfInertiaEstimation(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.PointCloud(_data)
-        self.p = pcl.load("tests" + os.path.sep + "lamppost.pcd")
+        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "lamppost.pcd")
         # 1.8.0 
         # self.feat = pcl.MomentOfInertiaEstimation()
         self.feat = self.p.make_MomentOfInertiaEstimation()
