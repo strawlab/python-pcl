@@ -14,14 +14,17 @@ matrix:
       python: "2.7"
       env:
       - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4"
     - os: linux
       python: "3.4"
       env:
       - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4"
     - os: linux
       python: "3.5"
       env:
       - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4"
     # TravisCI TimeLimit 50min
     # - os: linux
     #   python: "2.7"
@@ -43,18 +46,21 @@ matrix:
       - PYTHON_VERSION=2.7.10
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
     - os: osx
       language: generic
       env:
       - PYTHON_VERSION=3.4.3
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
     - os: osx
       language: generic
       env:
       - PYTHON_VERSION=3.5.1
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
 
 
 # pcl 1.8.1 only(MacOSX/Ubuntu)
@@ -123,7 +129,7 @@ install:
 script:
   # - coverage run --parallel-mode tests/test_pcl.py
   # - coverage run --parallel-mode tests/test_registration.py
-  - nosetests --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  - nosetests -A $NOSEATTR --with-coverage --cover-erase --cover-package=python-pcl --verbose
   
   # examples
   # - python examples/GrabberCallbackTest.py
