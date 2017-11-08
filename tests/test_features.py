@@ -7,6 +7,9 @@ import unittest
 import pcl
 import numpy as np
 
+from nose.plugins.attrib import attr
+
+
 _data = [(i, 2 * i, 3 * i + 0.2) for i in range(5)]
 _DATA = """0.0, 0.0, 0.2;
            1.0, 2.0, 3.2;
@@ -17,6 +20,7 @@ _DATA = """0.0, 0.0, 0.2;
 
 # features
 ### DifferenceOfNormalsEstimation ###
+@attr('pcl_ver_0_4')
 class TestDifferenceOfNormalsEstimation(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
@@ -29,6 +33,7 @@ class TestDifferenceOfNormalsEstimation(unittest.TestCase):
 
 
 ### IntegralImageNormalEstimation ###
+@attr('pcl_ver_0_4')
 class TestIntegralImageNormalEstimation(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.PointCloud(_data)
@@ -246,6 +251,7 @@ class TestNormalEstimation(unittest.TestCase):
 
 
 ### RangeImageBorderExtractor ###
+@attr('pcl_ver_0_4')
 class TestRangeImageBorderExtractor(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
@@ -311,3 +317,4 @@ if __name__ == '__main__':
     # unittest.main()
     testSuite = suite()
     unittest.TextTestRunner().run(testSuite)
+

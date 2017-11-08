@@ -7,6 +7,8 @@ import unittest
 import pcl
 import numpy as np
 
+from nose.plugins.attrib import attr
+
 
 class TestKdTree(unittest.TestCase):
     def setUp(self):

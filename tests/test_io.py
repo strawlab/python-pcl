@@ -9,6 +9,9 @@ import numpy as np
 
 from numpy.testing import assert_array_almost_equal, assert_array_equal
 
+from nose.plugins.attrib import attr
+
+
 _data = [(i, 2 * i, 3 * i + 0.2) for i in range(5)]
 _DATA = """0.0, 0.0, 0.2;
            1.0, 2.0, 3.2;

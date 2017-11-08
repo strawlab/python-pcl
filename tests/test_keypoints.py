@@ -7,6 +7,10 @@ import unittest
 import pcl
 import numpy as np
 
+
+from nose.plugins.attrib import attr
+
+
 _data = [(i, 2 * i, 3 * i + 0.2) for i in range(5)]
 _DATA = """0.0, 0.0, 0.2;
            1.0, 2.0, 3.2;
@@ -40,6 +44,8 @@ class TestHarrisKeypoint3D(unittest.TestCase):
         self.assertEqual(keypoints.size, keypoint_count)
 
         count = 0
+        minIts = 999.00
+        maxIts = -999.00
         points = np.zeros((keypoints.size, 3), dtype=np.float32)
         # Generate the data
         for i in range(0, keypoints.size):
@@ -48,19 +54,19 @@ class TestHarrisKeypoint3D(unittest.TestCase):
             points[i][1] = keypoints[i][1]
             points[i][2] = keypoints[i][2]
             intensity = keypoints[i][3]
-            if intensity > max:
+            if intensity > maxIts:
                 print("coords: " + str(keypoints[i][0]) + ";" + str(keypoints[i][1]) + ";" + str(keypoints[i][2]) )
-                max = intensity
+                maxIts = intensity
 
-            if intensity < min:
-                min = intensity
+            if intensity < minIts:
+                minIts = intensity
 
             count = count + 1
 
         # points.resize(count, 3)
         # print(points)
         # keypoints3D.from_array(points)
-        # print("maximal responce: " + str(max) + " min responce:  " +  str(min) )
+        # print("maximal responce: " + str(maxIts) + " min responce:  " +  str(minIts) )
         ##
         # coords: 0.008801460266113281;0.12533344328403473;0.03247201442718506
         # coords: 0.02295708656311035;0.12180554866790771;0.029724061489105225
@@ -69,14 +75,16 @@ class TestHarrisKeypoint3D(unittest.TestCase):
         # coords: -0.05888630822300911;0.1165248453617096;0.03698881343007088
         # coords: 0.04757949709892273;0.07463110238313675;0.018482372164726257
         # maximal responce: 0.0162825807929039 min responce:  0.0
-        self.assertEqual(max, 0.0162825807929039)
-        self.assertEqual(min, 0.0)
+        self.assertEqual(maxIts, 0.0162825807929039)
+        self.assertEqual(minIts, 0.0)
+
 
 ### NarfKeypoint ###
+@attr('pcl_ver_0_4')
 class TestNarfKeypoint(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
-        self.kp = pcl.NarfKeypoint()
+        # self.kp = pcl.NarfKeypoint()
         # self.kp.setInputCloud(self.p)
 
 
@@ -85,10 +93,11 @@ class TestNarfKeypoint(unittest.TestCase):
 
 
 ### UniformSampling ###
+@attr('pcl_ver_0_4')
 class TestUniformSampling(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
-        self.kp = pcl.UniformSampling()
+        # self.kp = pcl.UniformSampling()
 
 
     def test_UniformSampling(self):
