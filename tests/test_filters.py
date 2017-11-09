@@ -50,6 +50,7 @@ class TestApproximateVoxelGrid(unittest.TestCase):
 
 
 ### ConditionalRemoval ###
+@attr('pcl_over_17')
 class TestConditionalRemoval(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
