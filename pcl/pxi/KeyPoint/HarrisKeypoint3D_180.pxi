@@ -43,7 +43,6 @@ cdef class HarrisKeypoint3D:
         self.me.setRadiusSearch (param)
 
     def compute(self):
-
         keypoints = PointCloud_PointXYZI()
         sp_assign(keypoints.thisptr_shared, new cpp.PointCloud[cpp.PointXYZI]())
         cdef cpp.PointCloud_PointXYZI_t *ckeypoints = <cpp.PointCloud_PointXYZI_t*>keypoints.thisptr()

@@ -91,7 +91,7 @@ build_script:
 test_script:
   # - python tests\test_pcl.py
   # - python tests\test_registration.py
-  - nosetests -A "%NOSEATTR%"
+  - nosetests -A "%NOSEATTR%" --verbose
 
   # - python examples\official\Filtering\PassThroughFilter.py
   # - python examples\official\Filtering\project_inliers.py
