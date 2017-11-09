@@ -14,17 +14,17 @@ matrix:
       python: "2.7"
       env:
       - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     - os: linux
       python: "3.4"
       env:
       - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     - os: linux
       python: "3.5"
       env:
       - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     # TravisCI TimeLimit 50min
     # - os: linux
     #   python: "2.7"
@@ -121,6 +121,7 @@ install:
     fi
   - pip install --upgrade pip
   - pip install cython==0.25.2
+  - pip install nose
   - pip install numpy
   - pip install coveralls
   - python setup.py build_ext -i
@@ -129,8 +130,8 @@ install:
 script:
   # - coverage run --parallel-mode tests/test_pcl.py
   # - coverage run --parallel-mode tests/test_registration.py
-  # - nosetests -A $NOSEATTR --with-coverage --cover-erase --cover-package=python-pcl --verbose
-  - nosetests -A "not pcl_ver_0_4" --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  # - nosetests -A "$NOSEATTR" --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --with-coverage --cover-erase --cover-package=python-pcl --verbose
   
   # examples
   # - python examples/GrabberCallbackTest.py

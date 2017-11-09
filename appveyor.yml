@@ -17,7 +17,7 @@ environment:
     OPENNI_VERSION: "1.3.2"
     OPENNI_ROOT: "C:\\Program Files\\OpenNI\\Bin64"
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI\\x64\\Bin64"
-    NOSEATTR: "not pcl_ver_0_4 and not pcl_over_17"
+    NOSEATTR: "not pcl_ver_0_4 and not pcl_over_17 and not pcl_over_18"
 
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     PYTHON: "C:\\Miniconda35-x64"
@@ -51,8 +51,7 @@ install:
   # target Python version and architecture
   # - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
   # - "pip install wheel"
-  
-  - if [%PCL_VERSION%]==[1.6] anaconda search -t conda vc 10.*
+  # - if [%PCL_VERSION%]==[1.6] anaconda search -t conda vc 10.*
   - if [%PCL_VERSION%]==[1.6] conda install anaconda-client
   - "conda install -y -q wheel"
   

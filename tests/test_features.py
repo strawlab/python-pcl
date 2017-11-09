@@ -140,6 +140,7 @@ class TestIntegralImageNormalEstimation(unittest.TestCase):
 
 
 ### MomentOfInertiaEstimation ###
+@attr('pcl_over_18')
 class TestMomentOfInertiaEstimation(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.PointCloud(_data)
