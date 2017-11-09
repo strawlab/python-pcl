@@ -52,7 +52,7 @@ install:
   # - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
   # - "pip install wheel"
   # - if [%PCL_VERSION%]==[1.6] anaconda search -t conda vc 10.*
-  - if [%PCL_VERSION%]==[1.6] conda install anaconda-client
+  - if [%PCL_VERSION%]==[1.6] conda install -y -q anaconda-client
   - "conda install -y -q wheel"
   
   # Mini-conda ng
