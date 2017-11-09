@@ -131,7 +131,8 @@ script:
   # - coverage run --parallel-mode tests/test_pcl.py
   # - coverage run --parallel-mode tests/test_registration.py
   # - nosetests -A "$NOSEATTR" --with-coverage --cover-erase --cover-package=python-pcl --verbose
-  - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  # - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
   
   # examples
   # - python examples/GrabberCallbackTest.py

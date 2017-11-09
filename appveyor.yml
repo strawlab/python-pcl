@@ -42,7 +42,7 @@ install:
           throw "There are newer queued builds for this pull request, failing early." }
 
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%;"
-  - "pip install --disable-pip-version-check --user --upgrade pip"
+  # - "pip install --disable-pip-version-check --user --upgrade pip"
   
   
   # Install the build dependencies of the project. If some dependencies contain
