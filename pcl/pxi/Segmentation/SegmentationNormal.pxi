@@ -147,13 +147,16 @@ cdef class Segmentation_PointXYZI_Normal:
 
     def set_axis(self, double ax1, double ax2, double ax3):
         vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_t*>self.me).setAxis(vec)
+        (<pclseg.SACSegmentation_PointXYZI_t*>self.me).setAxis(vec)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
-        """ Set the minimum and maximum cone opening angles in radians for a cone model.
+        """
+        Set the minimum and maximum cone opening angles in radians for a cone model.
         """
         self.me.setMinMaxOpeningAngle(min_angle, max_angle)
+
+
     def get_min_max_opening_angle(self):
         min_angle = 0.0
         max_angle = 0.0
@@ -173,8 +176,10 @@ cdef class Segmentation_PointXYZRGB_Normal:
     def __cinit__(self):
         self.me = new pclseg.SACSegmentationFromNormals_PointXYZRGB_t()
 
+
     def __dealloc__(self):
         del self.me
+
 
     def segment(self):
         cdef cpp.PointIndices ind
@@ -183,30 +188,55 @@ cdef class Segmentation_PointXYZRGB_Normal:
         return [ind.indices[i] for i in range(ind.indices.size())],\
                [coeffs.values[i] for i in range(coeffs.values.size())]
 
+
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
+
+
     def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
+
+
     def set_method_type(self, int m):
         self.me.setMethodType (m)
+
+
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
+
+
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients (b)
+
+
     def set_normal_distance_weight(self, float f):
         self.me.setNormalDistanceWeight (f)
+
+
     def set_max_iterations(self, int i):
         self.me.setMaxIterations (i)
+
+
     def set_radius_limits(self, float f1, float f2):
         self.me.setRadiusLimits (f1, f2)
+
+
     def set_eps_angle(self, double ea):
         self.me.setEpsAngle (ea)
-#     def set_axis(self, double ax, double ay, double az):
-#         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
+
+
+    def set_axis(self, double ax1, double ax2, double ax3):
+        vec = eigen.Vector3f(ax1, ax2, ax3)
+        (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(vec)
+
+
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
-        """ Set the minimum and maximum cone opening angles in radians for a cone model.
+        """
+        Set the minimum and maximum cone opening angles in radians for a cone model.
         """
         self.me.setMinMaxOpeningAngle(min_angle, max_angle)
+
+
     def get_min_max_opening_angle(self):
         min_angle = 0.0
         max_angle = 0.0
@@ -236,30 +266,55 @@ cdef class Segmentation_PointXYZRGBA_Normal:
         return [ind.indices[i] for i in range(ind.indices.size())],\
                [coeffs.values[i] for i in range(coeffs.values.size())]
 
+
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
+
+
     def set_model_type(self, pcl_sc.SacModel m):
         self.me.setModelType(m)
+
+
     def set_method_type(self, int m):
         self.me.setMethodType (m)
+
+
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
+
+
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients (b)
+
+
     def set_normal_distance_weight(self, float f):
         self.me.setNormalDistanceWeight (f)
+
+
     def set_max_iterations(self, int i):
         self.me.setMaxIterations (i)
+
+
     def set_radius_limits(self, float f1, float f2):
         self.me.setRadiusLimits (f1, f2)
+
+
     def set_eps_angle(self, double ea):
         self.me.setEpsAngle (ea)
-#     def set_axis(self, double ax, double ay, double az):
-#         mpcl_sacnormal_set_axis(deref(self.me),ax,ay,az)
+
+
+    def set_axis(self, double ax1, double ax2, double ax3):
+        vec = eigen.Vector3f(ax1, ax2, ax3)
+        (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(vec)
+
+
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
-        """ Set the minimum and maximum cone opening angles in radians for a cone model.
+        """
+        Set the minimum and maximum cone opening angles in radians for a cone model.
         """
         self.me.setMinMaxOpeningAngle(min_angle, max_angle)
+
+
     def get_min_max_opening_angle(self):
         min_angle = 0.0
         max_angle = 0.0

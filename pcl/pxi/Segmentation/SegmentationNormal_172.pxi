@@ -147,7 +147,7 @@ cdef class Segmentation_PointXYZI_Normal:
 
     def set_axis(self, double ax1, double ax2, double ax3):
         vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_t*>self.me).setAxis(vec)
+        (<pclseg.SACSegmentation_PointXYZI_t*>self.me).setAxis(vec)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -227,7 +227,7 @@ cdef class Segmentation_PointXYZRGB_Normal:
 
     def set_axis(self, double ax1, double ax2, double ax3):
         vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_t*>self.me).setAxis(vec)
+        (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(vec)
 
 
 	def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -305,7 +305,7 @@ cdef class Segmentation_PointXYZRGBA_Normal:
 
     def set_axis(self, double ax1, double ax2, double ax3):
         vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_t*>self.me).setAxis(vec)
+        (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(vec)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
