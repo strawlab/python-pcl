@@ -566,7 +566,10 @@ else:
     # clang?
     # https://github.com/strawlab/python-pcl/issues/129
     # gcc base libc++, clang base libstdc++
-    ext_args['extra_compile_args'].append("-stdlib=libstdc++")
+    # gcc5
+    # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
+    # gcc4?
+    ext_args['extra_compile_args'].append("-stdlib=libc++")
 
     for flag in pkgconfig('--libs-only-l'):
         if flag == "-lflann_cpp-gd":

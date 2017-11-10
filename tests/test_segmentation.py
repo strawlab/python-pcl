@@ -176,18 +176,18 @@ class TestSegmentationNormal(unittest.TestCase):
         self.assertEqual(npts, self.p.width)
         self.assertEqual(1, self.p.height)
 
+
     def testSegmentNormalPlaneObject(self):
-        seg = self.p.make_segmenter()
-        seg.set_optimize_coefficients(True)
-        seg.set_model_type(pcl.SACMODEL_PLANE)
-        seg.set_method_type(pcl.SAC_RANSAC)
-        seg.set_distance_threshold(0.01)
+        self.segment.set_optimize_coefficients(True)
+        self.segment.set_model_type(pcl.SACMODEL_PLANE)
+        self.segment.set_method_type(pcl.SAC_RANSAC)
+        self.segment.set_distance_threshold(0.01)
 
-        seg.set_Axis(0.0, 1.0, 0.0)
+        self.segment.set_axis(0.0, 1.0, 0.0)
         epsAngle = 30.0
-        seg.set_eps_angle(epsAngle / 180.0 * 3.14)
+        self.segment.set_eps_angle(epsAngle / 180.0 * 3.14)
 
-        indices, model = seg.segment()
+        indices, model = self.segment.segment()
         self.assertListEqual(indices, SEGINLIERSIDX)
         self.assertListEqual(model, SEGCOEFF)
         pass
