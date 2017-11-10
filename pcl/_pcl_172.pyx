@@ -69,7 +69,7 @@ cdef class _CythonCompareOp_Type:
         readonly int LT
         readonly int LE
         readonly int EQ
-
+
     def __cinit__(self):
         self.GT = pcl_fil.COMPAREOP_GT
         self.GE = pcl_fil.COMPAREOP_GE

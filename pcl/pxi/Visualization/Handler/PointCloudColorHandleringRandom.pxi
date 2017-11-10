@@ -19,5 +19,6 @@ cdef class PointCloudColorHandleringRandom:
         print('__dealloc__')
         # del self.me
         pass
-
+
+
 

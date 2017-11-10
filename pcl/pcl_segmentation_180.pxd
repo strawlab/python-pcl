@@ -19,9 +19,9 @@ from pcl_defs cimport PointXYZRGB
 from pcl_defs cimport PointXYZRGBA
 from pcl_defs cimport Normal
 from pcl_defs cimport PCLBase
-from pcl_sample_consensus cimport SacModel
-cimport pcl_surface as pclsf
-cimport pcl_kdtree as pclkdt
+from pcl_sample_consensus_180 cimport SacModel
+cimport pcl_surface_180 as pclsf
+cimport pcl_kdtree_180 as pclkdt
 
 ##
 
@@ -2033,7 +2033,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 # namespace pcl
 # namespace segmentation
 # /** \brief Implementation of the GrabCut segmentation in
-# * "GrabCut — Interactive Foreground Extraction using Iterated Graph Cuts" by
+# * "GrabCut - Interactive Foreground Extraction using Iterated Graph Cuts" by
 # * Carsten Rother, Vladimir Kolmogorov and Andrew Blake.
 # * \author Justin Talbot, jtalbot@stanford.edu placed in Public Domain, 2010
 # * \author Nizar Sallem port to PCL and adaptation of original code.

@@ -14,7 +14,7 @@ include "Filters/VoxelGridFilter.pxi"
 include "Filters/PassThroughFilter.pxi"
 include "Filters/ApproximateVoxelGrid.pxi"
 # Kdtree
-# same 1.6 Å` 1.8
+# same 1.6 ÔΩû 1.8
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 # Octree
@@ -34,12 +34,13 @@ include "Surface/ConcaveHull.pxi"
 include "Surface/MovingLeastSquares.pxi"
 # RangeImage
 include "Common/RangeImage/RangeImages.pxi"
-# Registration
+
+# Registration
 include "registration/GeneralizedIterativeClosestPoint.pxi"
 include "registration/IterativeClosestPoint.pxi"
 include "registration/IterativeClosestPointNonLinear.pxi"
 # SampleConsensus
-# same 1.6 Å` 1.8
+# same 1.6 ÔΩû 1.8
 include "SampleConsensus/RandomSampleConsensus.pxi"
 include "SampleConsensus/SampleConsensusModelPlane.pxi"
 include "SampleConsensus/SampleConsensusModelSphere.pxi"

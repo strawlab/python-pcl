@@ -14,7 +14,7 @@ include "Filters/VoxelGridFilter_172.pxi"
 include "Filters/PassThroughFilter_172.pxi"
 include "Filters/ApproximateVoxelGrid_172.pxi"
 # Kdtree
-# same 1.6 Å` 1.8
+# same 1.6 ÔΩû 1.8
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 # Octree
@@ -40,7 +40,7 @@ include "registration/GeneralizedIterativeClosestPoint_172.pxi"
 include "registration/IterativeClosestPoint_172.pxi"
 include "registration/IterativeClosestPointNonLinear_172.pxi"
 # SampleConsensus
-# same 1.6 Å` 1.8
+# same 1.6 ÔΩû 1.8
 include "SampleConsensus/RandomSampleConsensus.pxi"
 include "SampleConsensus/SampleConsensusModelPlane.pxi"
 include "SampleConsensus/SampleConsensusModelSphere.pxi"

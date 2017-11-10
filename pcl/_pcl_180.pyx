@@ -140,8 +140,7 @@ include "pxi/PointCloud_PointXYZRGBA_180.pxi"
 include "pxi/PointCloud_PointWithViewpoint.pxi"
 include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
-# Add PointCloud2
-# include "pxi/PointCloud_PCLPointCloud2.pxi"
+
 
 ### common ###
 def deg2rad(float alpha):

@@ -7,14 +7,14 @@ include "PointXYZtoPointXYZ.pxi"
 # Segmentation
 include "Segmentation/Segmentation_180.pxi"
 include "Segmentation/SegmentationNormal_180.pxi"
-include "Segmentation/EuclideanClusterExtraction_180x.pxi"
+include "Segmentation/EuclideanClusterExtraction_180.pxi"
 # Filters
 include "Filters/StatisticalOutlierRemovalFilter_180.pxi"
 include "Filters/VoxelGridFilter_180.pxi"
 include "Filters/PassThroughFilter_180.pxi"
 include "Filters/ApproximateVoxelGrid_180.pxi"
 # Kdtree
-# same 1.6 Å` 1.8
+# same 1.6 to 1.8
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 # Octree
@@ -41,7 +41,7 @@ include "registration/GeneralizedIterativeClosestPoint_180.pxi"
 include "registration/IterativeClosestPoint_180.pxi"
 include "registration/IterativeClosestPointNonLinear_180.pxi"
 # SampleConsensus
-# same 1.6 Å` 1.8
+# same 1.6 to 1.8
 include "SampleConsensus/RandomSampleConsensus.pxi"
 include "SampleConsensus/SampleConsensusModelPlane.pxi"
 include "SampleConsensus/SampleConsensusModelSphere.pxi"
