@@ -81,7 +81,7 @@ cdef class SegmentationNormal:
     def get_axis(self):
         vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
-        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -168,7 +168,7 @@ cdef class Segmentation_PointXYZI_Normal:
     def get_axis(self):
         vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
-        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -258,7 +258,7 @@ cdef class Segmentation_PointXYZRGB_Normal:
     def get_axis(self):
         vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
-        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
 	def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -346,7 +346,7 @@ cdef class Segmentation_PointXYZRGBA_Normal:
     def get_axis(self):
         vec = (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).getAxis()
         cdef float *data = vec.data()
-        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
