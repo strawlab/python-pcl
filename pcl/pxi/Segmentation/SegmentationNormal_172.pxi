@@ -261,7 +261,7 @@ cdef class Segmentation_PointXYZRGB_Normal:
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
-	def set_min_max_opening_angle(self, double min_angle, double max_angle):
+    def set_min_max_opening_angle(self, double min_angle, double max_angle):
         """
         Set the minimum and maximum cone opening angles in radians for a cone model.
         """
