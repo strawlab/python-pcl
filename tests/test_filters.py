@@ -54,6 +54,8 @@ class TestApproximateVoxelGrid(unittest.TestCase):
 
 
 ### ConditionalRemoval ###
+# Appveyor NG
+@attr('pcl_ver_0_4')
 @attr('pcl_over_17')
 class TestConditionalRemoval(unittest.TestCase):
     def setUp(self):
