@@ -66,12 +66,22 @@ cdef class SegmentationNormal:
 
 
     def set_eps_angle(self, double ea):
-        self.me.setEpsAngle (ea)
+        (<pclseg.SACSegmentation_t*>self.me).setEpsAngle (ea)
+
+
+    def get_eps_angle(self):
+        return (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
         (<pclseg.SACSegmentation_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -146,9 +156,19 @@ cdef class Segmentation_PointXYZI_Normal:
         self.me.setEpsAngle (ea)
 
 
+    def get_eps_angle(self):
+        return (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+
+
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
         (<pclseg.SACSegmentation_PointXYZI_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -226,9 +246,19 @@ cdef class Segmentation_PointXYZRGB_Normal:
         self.me.setEpsAngle (ea)
 
 
+    def get_eps_angle(self):
+        return (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+
+
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
         (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -301,12 +331,22 @@ cdef class Segmentation_PointXYZRGBA_Normal:
 
 
     def set_eps_angle(self, double ea):
-        self.me.setEpsAngle (ea)
+        vec = (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle(ea)
+
+
+    def get_eps_angle(self):
+        return (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
         (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2], data[3]], dtype=np.float32)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
