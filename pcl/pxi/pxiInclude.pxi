@@ -22,7 +22,7 @@ include "Octree/OctreePointCloud.pxi"
 include "Octree/OctreePointCloud2Buf.pxi"
 include "Octree/OctreePointCloudSearch.pxi"
 include "Octree/OctreePointCloudChangeDetector.pxi"
-include "Vertices.pxi"
+# Filters
 include "Filters/CropHull.pxi"
 include "Filters/CropBox.pxi"
 include "Filters/ProjectInliers.pxi"
@@ -39,6 +39,7 @@ include "registration/GeneralizedIterativeClosestPoint.pxi"
 include "registration/IterativeClosestPoint.pxi"
 include "registration/IterativeClosestPointNonLinear.pxi"
 # SampleConsensus
+# same 1.6 Å` 1.8
 include "SampleConsensus/RandomSampleConsensus.pxi"
 include "SampleConsensus/SampleConsensusModelPlane.pxi"
 include "SampleConsensus/SampleConsensusModelSphere.pxi"
