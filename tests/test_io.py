@@ -118,64 +118,6 @@ class TestNumpyIO(unittest.TestCase):
         self.assertTrue(np.all(self.a == p.to_array()))
 
 
-# copy the output of seg
-SEGDATA = """ 0.352222 -0.151883  2;
-             -0.106395 -0.397406  1;
-             -0.473106  0.292602  1;
-             -0.731898  0.667105 -2;
-              0.441304 -0.734766  1;
-              0.854581 -0.0361733 1;
-             -0.4607   -0.277468  4;
-             -0.916762  0.183749  1;
-              0.968809  0.512055  1;
-             -0.998983 -0.463871  1;
-              0.691785  0.716053  1;
-              0.525135 -0.523004  1;
-              0.439387  0.56706   1;
-              0.905417 -0.579787  1;
-              0.898706 -0.504929  1"""
-
-SEGINLIERS = """-0.106395 -0.397406  1;
-                -0.473106  0.292602  1;
-                 0.441304 -0.734766  1;
-                 0.854581 -0.0361733 1;
-                -0.916762  0.183749  1;
-                 0.968809  0.512055  1;
-                -0.998983 -0.463871  1;
-                 0.691785  0.716053  1;
-                 0.525135 -0.523004  1;
-                 0.439387  0.56706   1;
-                 0.905417 -0.579787  1;
-                 0.898706 -0.504929  1"""
-SEGINLIERSIDX = [1, 2, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14]
-
-SEGCOEFF = [0.0, 0.0, 1.0, -1.0]
-
-
-class TestSegmentPlane(unittest.TestCase):
-    def setUp(self):
-        self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
-        self.p = pcl.PointCloud()
-        self.p.from_array(self.a)
-
-    def testLoad(self):
-        npts = self.a.shape[0]
-        self.assertEqual(npts, self.p.size)
-        self.assertEqual(npts, self.p.width)
-        self.assertEqual(1, self.p.height)
-
-    def testSegmentPlaneObject(self):
-        seg = self.p.make_segmenter()
-        seg.set_optimize_coefficients(True)
-        seg.set_model_type(pcl.SACMODEL_PLANE)
-        seg.set_method_type(pcl.SAC_RANSAC)
-        seg.set_distance_threshold(0.01)
-
-        indices, model = seg.segment()
-        self.assertListEqual(indices, SEGINLIERSIDX)
-        self.assertListEqual(model, SEGCOEFF)
-
-
 class TestSave(unittest.TestCase):
 
     def setUp(self):

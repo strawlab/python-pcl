@@ -21,13 +21,14 @@ _DATA = """0.0, 0.0, 0.2;
 # segmentation
 
 ### ConditionalEuclideanClustering(1.7.2/1.8.0) ###
+
+
 @attr('pcl_over_17')
 @attr('pcl_ver_0_4')
 class TestConditionalEuclideanClustering(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
         self.segment = pcl.ConditionalEuclideanClustering()
-
 
     def testInstance(self):
         assertIsInstance(type(self.segment), "ConditionalEuclideanClustering")
@@ -37,21 +38,21 @@ class TestConditionalEuclideanClustering(unittest.TestCase):
 class TestEuclideanClusterExtraction(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.PointCloud(_data)
-        self.p = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')
+        self.p = pcl.load(
+            './examples/pcldata/tutorials/table_scene_lms400.pcd')
         # self.segment = self.p
-
 
     def testTutorial(self):
         vg = self.p.make_voxel_grid_filter()
-        vg.set_leaf_size (0.01, 0.01, 0.01)
-        cloud_filtered = vg.filter ()
+        vg.set_leaf_size(0.01, 0.01, 0.01)
+        cloud_filtered = vg.filter()
         tree = cloud_filtered.make_kdtree()
 
         self.segment = cloud_filtered.make_EuclideanClusterExtraction()
-        self.segment.set_ClusterTolerance (0.02)
-        self.segment.set_MinClusterSize (100)
-        self.segment.set_MaxClusterSize (25000)
-        self.segment.set_SearchMethod (tree)
+        self.segment.set_ClusterTolerance(0.02)
+        self.segment.set_MinClusterSize(100)
+        self.segment.set_MaxClusterSize(25000)
+        self.segment.set_SearchMethod(tree)
         cluster_indices = self.segment.Extract()
 
         cloud_cluster = pcl.PointCloud()
@@ -61,14 +62,13 @@ class TestEuclideanClusterExtraction(unittest.TestCase):
         for j, indices in enumerate(cluster_indices):
             print('indices = ' + str(len(indices)))
             points = np.zeros((len(indices), 3), dtype=np.float32)
-            
+
             for i, indice in enumerate(indices):
                 points[i][0] = cloud_filtered[indice][0]
                 points[i][1] = cloud_filtered[indice][1]
                 points[i][2] = cloud_filtered[indice][2]
 
             cloud_cluster.from_array(points)
-
 
 
 ### MinCutSegmentation(1.7.2) ###
@@ -78,7 +78,6 @@ class TestMinCutSegmentation(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
         self.segment = pcl.MinCutSegmentation()
-
 
     def testTutorial(self):
         pass
@@ -92,30 +91,105 @@ class TestProgressiveMorphologicalFilter(unittest.TestCase):
         self.p = pcl.PointCloud(_data)
         self.segment = pcl.ProgressiveMorphologicalFilter()
 
-
     def testTutorial(self):
         pass
 
 
+# copy the output of seg
+SEGDATA = """ 0.352222 -0.151883  2;
+             -0.106395 -0.397406  1;
+             -0.473106  0.292602  1;
+             -0.731898  0.667105 -2;
+              0.441304 -0.734766  1;
+              0.854581 -0.0361733 1;
+             -0.4607   -0.277468  4;
+             -0.916762  0.183749  1;
+              0.968809  0.512055  1;
+             -0.998983 -0.463871  1;
+              0.691785  0.716053  1;
+              0.525135 -0.523004  1;
+              0.439387  0.56706   1;
+              0.905417 -0.579787  1;
+              0.898706 -0.504929  1"""
+
+SEGINLIERS = """-0.106395 -0.397406  1;
+                -0.473106  0.292602  1;
+                 0.441304 -0.734766  1;
+                 0.854581 -0.0361733 1;
+                -0.916762  0.183749  1;
+                 0.968809  0.512055  1;
+                -0.998983 -0.463871  1;
+                 0.691785  0.716053  1;
+                 0.525135 -0.523004  1;
+                 0.439387  0.56706   1;
+                 0.905417 -0.579787  1;
+                 0.898706 -0.504929  1"""
+SEGINLIERSIDX = [1, 2, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14]
+
+SEGCOEFF = [0.0, 0.0, 1.0, -1.0]
+
 ### Segmentation ###
-class TestSegmentation(unittest.TestCase):
+# class TestSegmentation(unittest.TestCase):
+
+
+class TestSegmentPlane(unittest.TestCase):
+
     def setUp(self):
-        self.p = pcl.PointCloud(_data)
-        self.segment = pcl.Segmentation()
+        self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
+        self.p = pcl.PointCloud()
+        self.p.from_array(self.a)
+        self.segment = self.p.make_segmenter()
 
+    def testLoad(self):
+        npts = self.a.shape[0]
+        self.assertEqual(npts, self.p.size)
+        self.assertEqual(npts, self.p.width)
+        self.assertEqual(1, self.p.height)
 
-    def testTutorial(self):
+    def testSegmentPlaneObject(self):
+        seg = self.p.make_segmenter()
+        seg.set_optimize_coefficients(True)
+        seg.set_model_type(pcl.SACMODEL_PLANE)
+        seg.set_method_type(pcl.SAC_RANSAC)
+        seg.set_distance_threshold(0.01)
+
+        indices, model = seg.segment()
+        self.assertListEqual(indices, SEGINLIERSIDX)
+        self.assertListEqual(model, SEGCOEFF)
         pass
 
 
 ### SegmentationNormal ###
 class TestSegmentationNormal(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.PointCloud(_data)
-        self.segment = pcl.SegmentationNormal()
+        # self.p = pcl.PointCloud(_data2)
+        self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
+        self.p = pcl.PointCloud()
+        self.p.from_array(self.a)
+        self.segment = self.p.make_segmenter_normals(ksearch=50)
+        # self.segment = pcl.SegmentationNormal()
+        # self.segment.setInputCloud(self.p)
 
+    def testLoad(self):
+        npts = self.a.shape[0]
+        self.assertEqual(npts, self.p.size)
+        self.assertEqual(npts, self.p.width)
+        self.assertEqual(1, self.p.height)
 
-    def testTutorial(self):
+    def testSegmentNormalPlaneObject(self):
+        seg = self.p.make_segmenter()
+        seg.set_optimize_coefficients(True)
+        seg.set_model_type(pcl.SACMODEL_PLANE)
+        seg.set_method_type(pcl.SAC_RANSAC)
+        seg.set_distance_threshold(0.01)
+
+        seg.set_Axis(0.0, 1.0, 0.0)
+        epsAngle = 30.0
+        seg.set_eps_angle(epsAngle / 180.0 * 3.14)
+
+        indices, model = seg.segment()
+        self.assertListEqual(indices, SEGINLIERSIDX)
+        self.assertListEqual(model, SEGCOEFF)
         pass
 
 
@@ -124,7 +198,8 @@ def suite():
 
     # segmentation
     suite.addTests(unittest.makeSuite(TestEuclideanClusterExtraction))
-    suite.addTests(unittest.makeSuite(TestSegmentation))
+    # suite.addTests(unittest.makeSuite(TestSegmentation))
+    suite.addTests(unittest.makeSuite(TestSegmentPlane))
     suite.addTests(unittest.makeSuite(TestSegmentationNormal))
     # 1.7.2/1.8.0
     # suite.addTests(unittest.makeSuite(TestConditionalEuclideanClustering))

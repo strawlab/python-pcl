@@ -25,17 +25,21 @@ _DATA = """0.0, 0.0, 0.2;
 
 class TestHarrisKeypoint3D(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "bunny.pcd")
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "tutorials" +
+            os.path.sep +
+            "bunny.pcd")
         self.kp = self.p.make_HarrisKeypoint3D()
-
 
     def test_HarrisKeyPoint3D(self):
         # 397
         base_point_count = 397
         self.assertEqual(self.p.size, base_point_count)
 
-        self.kp.set_NonMaxSupression (True)
-        self.kp.set_Radius (0.01)
+        self.kp.set_NonMaxSupression(True)
+        self.kp.set_Radius(0.01)
         # self.kp.set_RadiusSearch (0.01)
         keypoints = self.kp.compute()
 
@@ -57,7 +61,12 @@ class TestHarrisKeypoint3D(unittest.TestCase):
             points[i][2] = keypoints[i][2]
             intensity = keypoints[i][3]
             if intensity > maxIts:
-                print("coords: " + str(keypoints[i][0]) + ";" + str(keypoints[i][1]) + ";" + str(keypoints[i][2]) )
+                print("coords: " +
+                      str(keypoints[i][0]) +
+                      ";" +
+                      str(keypoints[i][1]) +
+                      ";" +
+                      str(keypoints[i][2]))
                 maxIts = intensity
 
             if intensity < minIts:
@@ -77,7 +86,7 @@ class TestHarrisKeypoint3D(unittest.TestCase):
         # coords: -0.05888630822300911;0.1165248453617096;0.03698881343007088
         # coords: 0.04757949709892273;0.07463110238313675;0.018482372164726257
         # maximal responce: 0.0162825807929039 min responce:  0.0
-        
+
         # pcl 1.7 : 0.01632295921444893
         # self.assertEqual(maxIts, 0.0162825807929039)
         self.assertGreaterEqual(maxIts, 0.0)
@@ -92,7 +101,6 @@ class TestNarfKeypoint(unittest.TestCase):
         # self.kp = pcl.NarfKeypoint()
         # self.kp.setInputCloud(self.p)
 
-
     def test_NarfKeypoint(self):
         pass
 
@@ -103,7 +111,6 @@ class TestUniformSampling(unittest.TestCase):
     def setUp(self):
         self.p = pcl.PointCloud(_data)
         # self.kp = pcl.UniformSampling()
-
 
     def test_UniformSampling(self):
         pass

@@ -19,11 +19,11 @@ from nose.plugins.attrib import attr
 
 
 # class TestOctreePointCloud(unittest.TestCase):
-# 
+#
 #     def setUp(self):
 #         self.p = pcl.load("tests" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
 #         self.octree = pcl.OctreePointCloud(0.1)
-# 
+#
 #     def testLoad(self):
 #         self.octree.set_input_cloud(self.p)
 #         self.octree.define_bounding_box()
@@ -44,7 +44,12 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 
     def setUp(self):
         self.octree = pcl.OctreePointCloudSearch(0.1)
-        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "tutorials" +
+            os.path.sep +
+            "table_scene_mug_stereo_textured_noplane.pcd")
         self.octree.set_input_cloud(self.p)
         self.octree.define_bounding_box()
         self.octree.add_points_from_input_cloud()
@@ -64,19 +69,22 @@ class TestOctreePointCloudSearch(unittest.TestCase):
 
 class TestOctreePointCloudChangeDetector(unittest.TestCase):
 
-     def setUp(self):
+    def setUp(self):
         self.octree = pcl.OctreePointCloudSearch(0.1)
-        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured_noplane.pcd")
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "tutorials" +
+            os.path.sep +
+            "table_scene_mug_stereo_textured_noplane.pcd")
         self.octree.set_input_cloud(self.p)
         self.octree.define_bounding_box()
         self.octree.add_points_from_input_cloud()
 
-
-     def testConstructor(self):
+    def testConstructor(self):
         self.assertRaises(ValueError, pcl.OctreePointCloudChangeDetector, 0.)
 
-
-     def testRadiusSearch(self):
+    def testRadiusSearch(self):
         good_point = (0.035296999, -0.074322999, 1.2074)
         rs = self.octree.radius_search(good_point, 0.5, 1)
         self.assertEqual(len(rs[0]), 1)
@@ -100,4 +108,3 @@ if __name__ == '__main__':
     # unittest.main()
     testSuite = suite()
     unittest.TextTestRunner().run(testSuite)
-

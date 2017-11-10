@@ -26,7 +26,6 @@ class TestDifferenceOfNormalsEstimation(unittest.TestCase):
         self.p = pcl.PointCloud(_data)
         # self.feat = pcl.DifferenceOfNormalsEstimation()
 
-
     def testException(self):
         # self.assertRaises(TypeError, pcl.DifferenceOfNormalsEstimation)
         pass
@@ -37,10 +36,14 @@ class TestDifferenceOfNormalsEstimation(unittest.TestCase):
 class TestIntegralImageNormalEstimation(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.PointCloud(_data)
-        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_mug_stereo_textured.pcd")
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "tutorials" +
+            os.path.sep +
+            "table_scene_mug_stereo_textured.pcd")
         # self.feat = pcl.IntegralImageNormalEstimation(self.p)
         self.feat = self.p.make_IntegralImageNormalEstimation()
-
 
     # base : normal_estimation_using_integral_images.cpp
     # @unittest.skip
@@ -64,7 +67,7 @@ class TestIntegralImageNormalEstimation(unittest.TestCase):
         # self.assertEqual(self.p.size, normals.size)
 
         # 3. same Tutorial data
-        # size -> 
+        # size ->
         # self.assertEqual(self.p.size, normals.size)
         # for i in range(0, normals.size):
         #   print ('normal_x: '  + str(normals[i][0]) + ', normal_y : ' + str(normals[i][1])  + ', normal_z : ' + str(normals[i][2]))
@@ -76,62 +79,62 @@ class TestIntegralImageNormalEstimation(unittest.TestCase):
 #         self.feat.setMaxDepthChangeFactor(0.02f)
 #         self.feat.setNormalSmoothingSize(10.0)
 #         f = self.feat.compute(self.p)
-# 
+#
 #         # check
 #         # new instance is returned
 #         # self.assertNotEqual(self.p, f)
 #         # filter retains the same number of points
 #         # self.assertEqual(self.p.size, f.size)
-# 
-# 
+#
+#
 #     def test_set_NormalEstimation_Method_COVARIANCE_MATRIX(self):
 #         self.feat.set_NormalEstimation_Method_COVARIANCE_MATRIX()
 #         # f = self.feat.compute(self.p)
-# 
+#
 #         # check
 #         # new instance is returned
 #         # self.assertNotEqual(self.p, f)
 #         # filter retains the same number of points
 #         # self.assertEqual(self.p.size, f.size)
-# 
+#
 #     def test_set_NormalEstimation_Method_AVERAGE_DEPTH_CHANGE(self):
 #         self.feat.set_NormalEstimation_Method_AVERAGE_DEPTH_CHANGE()
 #         # f = self.feat.compute(self.p)
-# 
+#
 #         # check
 #         # new instance is returned
 #         # self.assertNotEqual(self.p, f)
 #         # filter retains the same number of points
 #         # self.assertEqual(self.p.size, f.size)
-# 
+#
 #     def test_set_NormalEstimation_Method_SIMPLE_3D_GRADIENT(self):
 #         self.feat.set_NormalEstimation_Method_SIMPLE_3D_GRADIENT()
 #         # f = self.feat.compute(self.p)
-# 
+#
 #         # check
 #         # new instance is returned
 #         # self.assertNotEqual(self.p, f)
 #         # filter retains the same number of points
 #         # self.assertEqual(self.p.size, f.size)
-# 
-#     # 
+#
+#     #
 #     def test_set_MaxDepthChange_Factor(self):
 #         param = 0.0
 #         self.feat.set_MaxDepthChange_Factor(param)
 #         # f = self.feat.compute(self.p)
-# 
+#
 #         # check
 #         # new instance is returned
 #         # self.assertNotEqual(self.p, f)
 #         # filter retains the same number of points
 #         # self.assertEqual(self.p.size, f.size)
-# 
+#
 #     def test_set_NormalSmoothingSize(self):
 #         param = 5.0  # default 10.0
 #         self.feat.set_NormalSmoothingSize(param)
 #         # f = self.feat.compute(self.p)
 #         # result point param?
-# 
+#
 #         # check
 #         # new instance is returned
 #         # self.assertNotEqual(self.p, f)
@@ -144,23 +147,28 @@ class TestIntegralImageNormalEstimation(unittest.TestCase):
 class TestMomentOfInertiaEstimation(unittest.TestCase):
     def setUp(self):
         # self.p = pcl.PointCloud(_data)
-        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "lamppost.pcd")
-        # 1.8.0 
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "tutorials" +
+            os.path.sep +
+            "lamppost.pcd")
+        # 1.8.0
         # self.feat = pcl.MomentOfInertiaEstimation()
         self.feat = self.p.make_MomentOfInertiaEstimation()
 
     def test_Tutorials(self):
         self.feat.Compute()
-        
+
         # Get Parameters
-        moment_of_inertia = self.feat.get_MomentOfInertia ()
-        eccentricity = self.feat.get_Eccentricity ()
-        [min_point_AABB, max_point_AABB] = self.feat.get_AABB ();
+        moment_of_inertia = self.feat.get_MomentOfInertia()
+        eccentricity = self.feat.get_Eccentricity()
+        [min_point_AABB, max_point_AABB] = self.feat.get_AABB()
         # [min_point_OBB, max_point_OBB, position_OBB, rotational_matrix_OBB] = self.feat.get_OBB ()
-        [major_value, middle_value, minor_value] = self.feat.get_EigenValues ()
-        [major_vector, middle_vector, minor_vector] = self.feat.get_EigenVectors ()
-        mass_center = self.feat.get_MassCenter ()
-        
+        [major_value, middle_value, minor_value] = self.feat.get_EigenValues()
+        [major_vector, middle_vector, minor_vector] = self.feat.get_EigenVectors()
+        mass_center = self.feat.get_MassCenter()
+
         # check parameter
         # printf("%f %f %f.\n", mass_center (0), mass_center (1), mass_center (2));
         # -10.104160 0.074005 -2.144748.
@@ -170,7 +178,7 @@ class TestMomentOfInertiaEstimation(unittest.TestCase):
         # 0.920083 -0.353143 0.169523.
         # printf("%f %f %f.\n", minor_vector (0), minor_vector (1), minor_vector (2));
         # -0.355608 -0.934488 -0.016622.
-        
+
         # expected = [-10.104160, 0.074005, -2.144748]
         expected = np.array([-10.104160, 0.074005, -2.144748])
         # print(str(mass_center[0][0].dtype))
@@ -194,13 +202,13 @@ class TestMomentOfInertiaEstimation(unittest.TestCase):
 
 #     def test_get_MomentOfInertia(self):
 #         param = self.feat.get_MomentOfInertia()
-# 
+#
 #     def test_get_Eccentricity(self):
 #         param = self.feat.get_Eccentricity()
-# 
+#
 #     def test_get_AABB(self):
 #         param = self.feat.get_AABB()
-# 
+#
 #     def test_get_EigenValues(self):
 #         param = self.feat.get_EigenValues()
 
@@ -213,7 +221,6 @@ class TestNormalEstimation(unittest.TestCase):
         # self.feat.setInputCloud(selp.p)
         self.feat = self.p.make_NormalEstimation()
 
-
     def test_Tutorials_Radius(self):
         self.feat.set_RadiusSearch(0.03)
         normals = self.feat.compute()
@@ -225,12 +232,11 @@ class TestNormalEstimation(unittest.TestCase):
         self.assertEqual(self.p.size, normals.size)
 
         # 3. same Tutorial data
-        # size -> 
+        # size ->
         # self.assertEqual(self.p.size, normals.size)
         # for i in range(0, normals.size):
         #   print ('normal_x: '  + str(normals[i][0]) + ', normal_y : ' + str(normals[i][1])  + ', normal_z : ' + str(normals[i][2]))
         # print('end')
-
 
     def test_Tutorials_KSearch(self):
         tree = self.p.make_kdtree()
@@ -242,9 +248,9 @@ class TestNormalEstimation(unittest.TestCase):
         # self.assertEqual(type(normals), type(pcl.PointCloud_Normal))
         # 2. point size is same
         self.assertEqual(self.p.size, normals.size)
-        
+
         # 3. same Tutorial data
-        # size -> 
+        # size ->
         # self.assertEqual(self.p.size, normals.size)
         # for i in range(0, normals.size):
         #   print ('normal_x: '  + str(normals[i][0]) + ', normal_y : ' + str(normals[i][1])  + ', normal_z : ' + str(normals[i][2]))
@@ -318,4 +324,3 @@ if __name__ == '__main__':
     # unittest.main()
     testSuite = suite()
     unittest.TextTestRunner().run(testSuite)
-

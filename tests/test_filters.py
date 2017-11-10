@@ -19,11 +19,11 @@ _DATA = """0.0, 0.0, 0.2;
 
 
 _data2 = np.array(
-    [[0.0080142, 0.694695,-0.26015],
-    [-0.342265,-0.446349, 0.214207],
-    [0.173687 ,-0.84253 ,-0.400481],
-    [-0.874475, 0.706127,-0.117635],
-    [0.908514 ,-0.598159, 0.744714]], dtype=np.float32)
+    [[0.0080142, 0.694695, -0.26015],
+     [-0.342265, -0.446349, 0.214207],
+     [0.173687, -0.84253, -0.400481],
+     [-0.874475, 0.706127, -0.117635],
+     [0.908514, -0.598159, 0.744714]], dtype=np.float32)
 
 
 # Filter
@@ -32,11 +32,15 @@ _data2 = np.array(
 
 class TestApproximateVoxelGrid(unittest.TestCase):
     def setUp(self):
-        self.p = pcl.load("tests" + os.path.sep + "tutorials" + os.path.sep + "table_scene_lms400.pcd")
+        self.p = pcl.load(
+            "tests" +
+            os.path.sep +
+            "tutorials" +
+            os.path.sep +
+            "table_scene_lms400.pcd")
         self.fil = self.p.make_ApproximateVoxelGrid()
         # self.fil = pcl.ApproximateVoxelGrid()
         # self.fil.set_InputCloud(self.p)
-
 
     def test_VoxelGrid(self):
         x = 0.01
@@ -71,14 +75,14 @@ class TestConditionalRemoval(unittest.TestCase):
         # build the filter
         self.fil.set_KeepOrganized(True)
         # apply filter
-        cloud_filtered = self.fil.filter ()
+        cloud_filtered = self.fil.filter()
 
         # check
-        expected = np.array([-0.342265,-0.446349,0.214207])
+        expected = np.array([-0.342265, -0.446349, 0.214207])
         datas = np.around(cloud_filtered.to_array()[1].tolist(), decimals=6)
         self.assertEqual(datas.tolist(), expected.tolist())
 
-        expected2 = np.array([0.908514,-0.598159,0.744714])
+        expected2 = np.array([0.908514, -0.598159, 0.744714])
         datas = np.around(cloud_filtered.to_array()[4].tolist(), decimals=6)
         self.assertEqual(datas.tolist(), expected2.tolist())
 
@@ -124,10 +128,8 @@ class TestCropBox(unittest.TestCase):
         input.from_array(points)
         self.p = input
 
-
     def testException(self):
         self.assertRaises(TypeError, pcl.CropHull)
-
 
     def testCrop(self):
         cropBoxFilter = self.p.make_cropbox()
@@ -649,7 +651,6 @@ class TestProjectInliers(unittest.TestCase):
         self.assertEqual(result_param, pcl.SACMODEL_STICK)
         pass
 
-
     def test_copy_all_data(self):
         self.fil.set_copy_all_data(True)
         datas = self.fil.get_copy_all_data()
@@ -673,20 +674,19 @@ class TestRadiusOutlierRemoval(unittest.TestCase):
         # self.fil = pcl.RadiusOutlierRemoval()
         # self.fil.set_InputCloud(self.p)
 
-
     def test_radius_seach(self):
         radius = 15.8
         self.fil.set_radius_search(radius)
         result = self.fil.get_radius_search()
         self.assertEqual(radius, result)
-        
+
         min_pts = 2
         self.fil.set_MinNeighborsInRadius(2)
         result = self.fil.get_MinNeighborsInRadius()
         self.assertEqual(min_pts, result)
-        
+
         result_point = self.fil.filter()
-        
+
         # check
         # new instance is returned
         # self.assertNotEqual(self.p, result)
@@ -769,14 +769,14 @@ class TestVoxelGridFilter(unittest.TestCase):
 
 
 ### Official Test Base ###
-p_65558  = np.array([-0.058448, -0.189095, 0.723415], dtype=np.float32)
-p_84737  = np.array([-0.088929, -0.152957, 0.746095], dtype=np.float32)
-p_57966  = np.array([0.123646, -0.397528, 1.393187], dtype=np.float32)
-p_39543  = np.array([0.560287, -0.545020, 1.602833], dtype=np.float32)
-p_17766  = np.array([0.557854, -0.711976, 1.762013], dtype=np.float32)
-p_70202  = np.array([0.150500, -0.160329, 0.646596], dtype=np.float32)
+p_65558 = np.array([-0.058448, -0.189095, 0.723415], dtype=np.float32)
+p_84737 = np.array([-0.088929, -0.152957, 0.746095], dtype=np.float32)
+p_57966 = np.array([0.123646, -0.397528, 1.393187], dtype=np.float32)
+p_39543 = np.array([0.560287, -0.545020, 1.602833], dtype=np.float32)
+p_17766 = np.array([0.557854, -0.711976, 1.762013], dtype=np.float32)
+p_70202 = np.array([0.150500, -0.160329, 0.646596], dtype=np.float32)
 p_102219 = np.array([0.175637, -0.101353, 0.661631], dtype=np.float32)
-p_81765  = np.array([0.223189, -0.151714, 0.708332], dtype=np.float32)
+p_81765 = np.array([0.223189, -0.151714, 0.708332], dtype=np.float32)
 
 # class TESTFastBilateralFilter(unittest.TestCase):
 #     def setUp(self):

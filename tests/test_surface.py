@@ -21,7 +21,6 @@ class TestConcaveHull(unittest.TestCase):
         # self.surf = pcl.ConcaveHull()
         # self.surf.setInputCloud()
 
-
     def testreconstruct(self):
         alpha = 1.0
         self.surf.set_Alpha(alpha)
@@ -39,7 +38,6 @@ class TestMovingLeastSquares(unittest.TestCase):
         self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
         self.surf = self.p.make_moving_least_squares()
 
-
     def testFilter(self):
         self.surf.set_search_radius(0.5)
         self.surf.set_polynomial_order(2)
@@ -53,11 +51,11 @@ class TestMovingLeastSquares(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    
+
     # surface
     suite.addTests(unittest.makeSuite(TestConcaveHull))
     suite.addTests(unittest.makeSuite(TestMovingLeastSquares))
-    
+
     return suite
 
 
