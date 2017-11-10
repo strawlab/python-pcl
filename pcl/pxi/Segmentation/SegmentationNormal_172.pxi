@@ -70,12 +70,13 @@ cdef class SegmentationNormal:
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
-        vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_t*>self.me).setAxis(vec)
+        cdef eigen3.Vector3f vec(ax1, ax2, ax3)
+        (<pclseg.SACSegmentation_t*>self.me).setAxis(deref(vec))
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
-        """ Set the minimum and maximum cone opening angles in radians for a cone model.
+        """
+        Set the minimum and maximum cone opening angles in radians for a cone model.
         """
         self.me.setMinMaxOpeningAngle(min_angle, max_angle)
 
@@ -146,8 +147,8 @@ cdef class Segmentation_PointXYZI_Normal:
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
-        vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_PointXYZI_t*>self.me).setAxis(vec)
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pclseg.SACSegmentation_PointXYZI_t*>self.me).setAxis(deref(vec))
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -226,8 +227,8 @@ cdef class Segmentation_PointXYZRGB_Normal:
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
-        vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(vec)
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(deref(vec))
 
 
 	def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -304,8 +305,8 @@ cdef class Segmentation_PointXYZRGBA_Normal:
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
-        vec = eigen.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(vec)
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
