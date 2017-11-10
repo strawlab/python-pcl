@@ -2,6 +2,7 @@
 
 ### include ###
 # common?
+include "Vertices.pxi"
 include "PointXYZtoPointXYZ.pxi"
 # Segmentation
 include "Segmentation/Segmentation.pxi"
@@ -12,7 +13,8 @@ include "Filters/StatisticalOutlierRemovalFilter.pxi"
 include "Filters/VoxelGridFilter.pxi"
 include "Filters/PassThroughFilter.pxi"
 include "Filters/ApproximateVoxelGrid.pxi"
-include "Surface/MovingLeastSquares.pxi"
+# Kdtree
+# same 1.6 Å` 1.8
 # include "KdTree/KdTree.pxi"
 include "KdTree/KdTree_FLANN.pxi"
 # Octree
@@ -27,7 +29,10 @@ include "Filters/ProjectInliers.pxi"
 include "Filters/RadiusOutlierRemoval.pxi"
 include "Filters/ConditionAnd.pxi"
 include "Filters/ConditionalRemoval.pxi"
+# Surface
 include "Surface/ConcaveHull.pxi"
+include "Surface/MovingLeastSquares.pxi"
+# RangeImage
 include "Common/RangeImage/RangeImages.pxi"
 # Registration
 include "registration/GeneralizedIterativeClosestPoint.pxi"
@@ -41,11 +46,6 @@ include "SampleConsensus/SampleConsensusModelCylinder.pxi"
 include "SampleConsensus/SampleConsensusModelLine.pxi"
 include "SampleConsensus/SampleConsensusModelRegistration.pxi"
 include "SampleConsensus/SampleConsensusModelStick.pxi"
-# pcl 1.7.2?
-# include "registration/NormalDistributionsTransform.pxi"
-
-# include "Visualization/PointCloudColorHandlerCustoms.pxi"
-
 # Features
 include "Features/NormalEstimation.pxi"
 include "Features/VFHEstimation.pxi"
@@ -54,4 +54,10 @@ include "Features/IntegralImageNormalEstimation.pxi"
 # keyPoint
 include "KeyPoint/HarrisKeypoint3D.pxi"
 include "KeyPoint/UniformSampling.pxi"
+# pcl 1.7.2?
+# include "registration/NormalDistributionsTransform.pxi"
+# visual
+# include "Visualization/PointCloudColorHandlerCustoms.pxi"
+###
+
 

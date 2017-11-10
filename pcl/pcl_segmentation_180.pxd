@@ -25,6 +25,7 @@ cimport pcl_kdtree as pclkdt
 
 ##
 
+cimport eigen as eigen3
 from vector cimport vector as vector2
 
 ###############################################################################
@@ -54,12 +55,14 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # inline SampleConsensusModelPtr getModel () const { return (model_); }
         
         void setMethodType (int)
-        # \brief Get the type of sample consensus method used.
+        
+        # brief Get the type of sample consensus method used.
         # inline int getMethodType () const { return (method_type_); }
         int getMethodType ()
         
         void setDistanceThreshold (float)
-        # \brief Get the distance to the model threshold.
+
+        # brief Get the distance to the model threshold.
         # inline double getDistanceThreshold () const { return (threshold_); }
         double getDistanceThreshold ()
         
@@ -111,11 +114,11 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # \brief Set the axis along which we need to search for a model perpendicular to.
         # \param[in] ax the axis along which we need to search for a model perpendicular to
         # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-        # void setAxis (const eigen3.Vector3f &ax)
+        void setAxis (const eigen3.Vector3f &ax)
         
         # \brief Get the axis along which we need to search for a model perpendicular to.
         # inline Eigen::Vector3f getAxis () const { return (axis_); }
-        # eigen3.Vector3f getAxis ()
+        eigen3.Vector3f getAxis ()
         
         # \brief Set the angle epsilon (delta) threshold.
         # \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
@@ -237,9 +240,8 @@ cdef extern from "pcl/segmentation/comparator.h" namespace "pcl":
         #   * \param[in] idx2 the index of the second point.
         #   */
         # virtual bool compare (int idx1, int idx2) const = 0;
-        # 
-        # protected:
-        #   PointCloudConstPtr input_;
+
+
 ###
 
 # plane_coefficient_comparator.h
