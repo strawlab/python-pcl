@@ -562,6 +562,11 @@ else:
             ext_args['define_macros'].append((macro, value))
         else:
             ext_args['extra_compile_args'].append(flag)
+    
+    # clang?
+    # https://github.com/strawlab/python-pcl/issues/129
+    # gcc base libc++, clang base libstdc++
+    ext_args['extra_compile_args'].append("-stdlib=libstdc++")
 
     for flag in pkgconfig('--libs-only-l'):
         if flag == "-lflann_cpp-gd":
