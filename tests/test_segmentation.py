@@ -162,7 +162,6 @@ class TestSegmentPlane(unittest.TestCase):
 ### SegmentationNormal ###
 class TestSegmentationNormal(unittest.TestCase):
     def setUp(self):
-        # self.p = pcl.PointCloud(_data2)
         self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
         self.p = pcl.PointCloud()
         self.p.from_array(self.a)
@@ -184,8 +183,14 @@ class TestSegmentationNormal(unittest.TestCase):
         self.segment.set_distance_threshold(0.01)
 
         self.segment.set_axis(0.0, 1.0, 0.0)
+        expected = np.array([0.0, 1.0, 0.0])
+        param = self.segment.get_axis()
+        self.assertEqual(param.tolist(), expected.tolist())
         epsAngle = 30.0
+        expected = epsAngle / 180.0 * 3.14
         self.segment.set_eps_angle(epsAngle / 180.0 * 3.14)
+        param = self.segment.get_eps_angle()
+        self.assertEqual(param, expected)
 
         indices, model = self.segment.segment()
         self.assertListEqual(indices, SEGINLIERSIDX)
