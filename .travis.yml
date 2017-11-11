@@ -150,30 +150,31 @@ matrix:
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
     # clang
-    - os: osx
-      language: generic
-      compiler: clang
-      env:
-      - PYTHON_VERSION=2.7.10
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
-      compiler: clang
-      env:
-      - PYTHON_VERSION=3.4.3
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
-      compiler: clang
-      env:
-      - PYTHON_VERSION=3.5.1
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
+    # homebrew pcl use gcc compiler
+    # - os: osx
+    #   language: generic
+    #   compiler: clang
+    #   env:
+    #   - PYTHON_VERSION=2.7.10
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    #   - NOSEATTR="not pcl_ver_0_4"
+    # - os: osx
+    #   language: generic
+    #   compiler: clang
+    #   env:
+    #   - PYTHON_VERSION=3.4.3
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    #   - NOSEATTR="not pcl_ver_0_4"
+    # - os: osx
+    #   language: generic
+    #   compiler: clang
+    #   env:
+    #   - PYTHON_VERSION=3.5.1
+    #   - PYENV_ROOT=~/.pyenv
+    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    #   - NOSEATTR="not pcl_ver_0_4"
 
 
 # pcl 1.8.1 only(MacOSX/Ubuntu)
