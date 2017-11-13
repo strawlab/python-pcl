@@ -66,48 +66,49 @@ matrix:
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
 
     # clang
-    - os: linux
-      python: "2.7"
-      env:
-      - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-          packages:
-            - clang-3.6
-      env:
-      - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
-    - os: linux
-      python: "3.4"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-          packages:
-            - clang-3.6
-      env:
-      - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
-    - os: linux
-      python: "3.5"
-      addons:
-        apt:
-          sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-precise-3.6
-          packages:
-            - clang-3.6
-      env:
-      - PCL_VERSION="1.7"
-      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+    # apt-get no pcl use gcc
+    # - os: linux
+    #   python: "2.7"
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-precise-3.6
+    #       packages:
+    #         - clang-3.6
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+    # - os: linux
+    #   python: "3.4"
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-precise-3.6
+    #       packages:
+    #         - clang-3.6
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+    # - os: linux
+    #   python: "3.5"
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-precise-3.6
+    #       packages:
+    #         - clang-3.6
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
 
     # TravisCI TimeLimit 50min
     # - os: linux
