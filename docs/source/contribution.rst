@@ -109,7 +109,7 @@ They are symbols imported by packages and sub-packages of ``python-pcl``.
 **It is not allowed to use such shortcuts in the ``python-pcl`` library implementation**.
 Note that you can still use them in ``tests`` and ``examples`` directories.
 
-Once you send a pull request, your coding style is automatically checked by ``Travis CI <https://travis-ci.org/strawlab/python-pcl/>`_ for Linux and Mac OS X, and on `AppVeyor <https://ci.appveyor.com/project/strawlab/python-pcl>`_ for Windows.
+Once you send a pull request, your coding style is automatically checked by `Travis CI <https://travis-ci.org/strawlab/python-pcl/>`_ for Linux and Mac OS X, and on `AppVeyor <https://ci.appveyor.com/project/strawlab/python-pcl>`_ for Windows.
 The reviewing process starts after the check passes.
 
 The python-pcl is designed based on PointCloudLibrary's API design. python-pcl's source code and documents contain the original PointCloudLibrary ones.
@@ -144,21 +144,11 @@ Once the Cython modules are built, you can run unit tests simply by running ``no
 
   $ nosetests
 
-Tests are put into the ``tests/python-pcl_tests`` and ``tests/install_tests`` directories.
-These have the same structure as that of ``python-pcl`` and ``install`` directories, respectively.
-In order to enable test runner to find test scripts correctly, we are using special naming convention for the test subdirectories and the test scripts.
-
-* The name of each subdirectory of ``tests`` must end with the ``_tests`` suffix.
-* The name of each test script must start with the ``test_`` prefix.
+Tests are put into the ``tests`` directories.
 
 Following this naming convention, you can run all the tests by just typing ``nosetests`` at the repository root::
 
   $ nosetests
-
-Or you can also specify a root directory to search test scripts from::
-
-  $ nosetests tests/python-pcl_tests     # to just run tests of python-pcl
-  $ nosetests tests/install_tests  # to just run tests of installation modules
 
 If you modify the code related to existing unit tests, you must run appropriate commands.
 
