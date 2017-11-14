@@ -108,39 +108,67 @@ Installation
 Linux(Ubuntu)
 -------------
 
-PCL 1.7.0(use apt-get)
-^^^^^^^^^^^^^^^^^^^^^^
+before Install module
+^^^^^^^^^^^^^^^^^^^^^
 
-    1. Install PCL Module.
+    PCL 1.7.0 and Ubuntu14.04 (use apt-get)
 
-.. code-block:: none
-      
-        sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
-   
-        sudo apt-get update -y
-   
-        sudo apt-get install libpcl-all -y
+        1. Install PCL Module.
 
-PCL 1.8.0 (build module)([CI Test Timeout])
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        .. code-block:: none
 
-    1. Build Module
+            sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
 
-        Reference `here <https://askubuntu.com/questions/916260/how-to-install-point-cloud-library-v1-8-pcl-1-8-0-on-ubuntu-16-04-2-lts-for>`_.
+            sudo apt-get update -y
 
-MacOSX 
+            sudo apt-get install libpcl-all -y
+
+
+    PCL 1.7.2 and Ubuntu16.04 (use Debian package)
+
+        1. Install PCL Module.?
+
+        .. code-block:: none
+
+            sudo apt-get update -y
+
+            sudo apt-get install build-essential devscripts
+
+            dget -u https://launchpad.net/ubuntu/+archive/primary/+files/pcl_1.7.2-14ubuntu1.16.04.1.dsc
+
+            cd pcl-1.7.2
+
+            sudo dpkg-buildpackage -r -uc -b
+
+            sudo dpkg -i pcl_*.deb
+
+            * current add ppa 
+              (sudo add-apt-repository -remove ppa:v-launchpad-jochen-sprickerhof-de/pcl -y)
+
+            Reference `here <https://launchpad.net/ubuntu/xenial/+package/pcl-tools>`_.
+
+
+    PCL 1.8.0 and Ubuntu16.04(build module)([CI Test Timeout])
+
+        1. Build Module
+
+            Reference `here <https://askubuntu.com/questions/916260/how-to-install-point-cloud-library-v1-8-pcl-1-8-0-on-ubuntu-16-04-2-lts-for>`_.
+
+MacOSX
 ------
 
-use homebrew
-^^^^^^^^^^^^
+before Install module
+^^^^^^^^^^^^^^^^^^^^^
 
-    1. Install PCL Module.
+        Case1. use homebrew(PCL 1.8.1 - 2017/11/13 current)
 
-.. code-block:: none
+        1. Install PCL Module.
 
-       brew tap homebrew/science
+            .. code-block:: none
 
-       brew install pcl
+            brew tap homebrew/science
+
+            brew install pcl
 
 Warning:
    
