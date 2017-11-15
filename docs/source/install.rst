@@ -173,7 +173,7 @@ You can use ``setup.py`` to install python-pcl from the tarball::
 
 You can also install the development version of python-pcl from a cloned Git repository::
 
-  $ git clone https://github.com/google/python-pcl.git
+  $ git clone https://github.com/strawlab/python-pcl.git
   $ cd pcl/Python
   $ python setup.py install
 

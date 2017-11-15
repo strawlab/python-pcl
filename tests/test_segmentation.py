@@ -57,10 +57,10 @@ class TestEuclideanClusterExtraction(unittest.TestCase):
 
         cloud_cluster = pcl.PointCloud()
 
-        print('cluster_indices : ' + str(cluster_indices.count) + " count.")
+        # print('cluster_indices : ' + str(cluster_indices.count) + " count.")
         cloud_cluster = pcl.PointCloud()
         for j, indices in enumerate(cluster_indices):
-            print('indices = ' + str(len(indices)))
+            # print('indices = ' + str(len(indices)))
             points = np.zeros((len(indices), 3), dtype=np.float32)
 
             for i, indice in enumerate(indices):
@@ -153,48 +153,89 @@ class TestSegmentPlane(unittest.TestCase):
         seg.set_method_type(pcl.SAC_RANSAC)
         seg.set_distance_threshold(0.01)
 
-        indices, model = seg.segment()
+        indices, coefficients = seg.segment()
         self.assertListEqual(indices, SEGINLIERSIDX)
-        self.assertListEqual(model, SEGCOEFF)
+        self.assertListEqual(coefficients, SEGCOEFF)
         pass
 
 
 ### SegmentationNormal ###
 class TestSegmentationNormal(unittest.TestCase):
     def setUp(self):
-        self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
-        self.p = pcl.PointCloud()
-        self.p.from_array(self.a)
+        # self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
+        # self.p = pcl.PointCloud()
+        # self.p.from_array(self.a)
+        cloud = pcl.load('tests\\tutorials\\table_scene_mug_stereo_textured.pcd')
+        
+        fil = cloud.make_passthrough_filter()
+        fil.set_filter_field_name("z")
+        fil.set_filter_limits(0, 1.5)
+        cloud_filtered = fil.filter()
+
+        seg = cloud_filtered.make_segmenter_normals(ksearch=50)
+        seg.set_optimize_coefficients(True)
+        seg.set_model_type(pcl.SACMODEL_NORMAL_PLANE)
+        seg.set_normal_distance_weight(0.1)
+        seg.set_method_type(pcl.SAC_RANSAC)
+        seg.set_max_iterations(100)
+        seg.set_distance_threshold(0.03)
+        indices, model = seg.segment()
+        
+        self.p = cloud_filtered.extract(indices, negative=True)
+        
         self.segment = self.p.make_segmenter_normals(ksearch=50)
         # self.segment = pcl.SegmentationNormal()
         # self.segment.setInputCloud(self.p)
 
-    def testLoad(self):
-        npts = self.a.shape[0]
-        self.assertEqual(npts, self.p.size)
-        self.assertEqual(npts, self.p.width)
-        self.assertEqual(1, self.p.height)
+    # def testLoad(self):
+    #     npts = self.a.shape[0]
+    #     self.assertEqual(npts, self.p.size)
+    #     self.assertEqual(npts, self.p.width)
+    #     self.assertEqual(1, self.p.height)
 
 
-    def testSegmentNormalPlaneObject(self):
+    def testSegmentNormalCylinderObject(self):
         self.segment.set_optimize_coefficients(True)
-        self.segment.set_model_type(pcl.SACMODEL_PLANE)
+        self.segment.set_model_type(pcl.SACMODEL_CYLINDER)
+        self.segment.set_normal_distance_weight(0.1)
         self.segment.set_method_type(pcl.SAC_RANSAC)
-        self.segment.set_distance_threshold(0.01)
+        self.segment.set_max_iterations(10000)
+        self.segment.set_distance_threshold(0.05)
+        self.segment.set_radius_limits(0, 0.1)
 
-        self.segment.set_axis(0.0, 1.0, 0.0)
-        expected = np.array([0.0, 1.0, 0.0])
+        self.segment.set_axis(1.0, 0.0, 0.0)
+        expected = np.array([1.0, 0.0, 0.0])
         param = self.segment.get_axis()
         self.assertEqual(param.tolist(), expected.tolist())
-        epsAngle = 30.0
+        epsAngle = 35.0
         expected = epsAngle / 180.0 * 3.14
         self.segment.set_eps_angle(epsAngle / 180.0 * 3.14)
         param = self.segment.get_eps_angle()
         self.assertEqual(param, expected)
 
-        indices, model = self.segment.segment()
-        self.assertListEqual(indices, SEGINLIERSIDX)
-        self.assertListEqual(model, SEGCOEFF)
+        indices, coefficients = self.segment.segment()
+        # self.assertListEqual(indices, SEGINLIERSIDX)
+        # self.assertListEqual(coefficients, SEGCOEFF)
+
+        epsAngle = 50.0
+        expected2 = epsAngle / 180.0 * 3.14
+        self.segment.set_eps_angle(epsAngle / 180.0 * 3.14)
+        param2 = self.segment.get_eps_angle()
+        self.assertEqual(param2, expected2)
+        self.assertNotEqual(param, param2)
+        
+        indices2, coefficients2 = self.segment.segment()
+        # self.assertListEqual(indices2, SEGINLIERSIDX)
+        # self.assertListEqual(coefficients2, SEGCOEFF)
+        
+        # print(len(indices))
+        # print(coefficients)
+        
+        # print(len(indices2))
+        # print(coefficients2)
+        
+        self.assertNotEqual(len(indices), len(indices2))
+        # self.assertListNotEqual(coefficients, coefficients2)
         pass
 
 
