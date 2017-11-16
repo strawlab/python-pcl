@@ -165,7 +165,7 @@ class TestSegmentationNormal(unittest.TestCase):
         # self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
         # self.p = pcl.PointCloud()
         # self.p.from_array(self.a)
-        cloud = pcl.load('tests\\tutorials\\table_scene_mug_stereo_textured.pcd')
+        cloud = pcl.load('tests'  + os.path.sep + 'tutorials'  + os.path.sep + 'table_scene_mug_stereo_textured.pcd')
         
         fil = cloud.make_passthrough_filter()
         fil.set_filter_field_name("z")
