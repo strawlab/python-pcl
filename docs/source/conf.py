@@ -20,7 +20,7 @@ import six
 import sys
 
 
-__version__ = pkg_resources.get_distribution('python-pcl').version
+__version__ = pkg_resources.get_distribution('pcl').version
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
@@ -239,7 +239,7 @@ if on_rtd:
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'python-pcldoc'
+htmlhelp_basename = 'pcldoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -261,7 +261,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'python-pcl.tex', u'python-pcl Documentation',
+    (master_doc, 'pcl.tex', u'python-pcl Documentation',
      u'Preferred Networks, inc. and Preferred Infrastructure, inc.', 'manual'),
 ]
 
@@ -291,7 +291,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'python-pcl', u'python-pcl Documentation',
+    (master_doc, 'pcl', u'python-pcl Documentation',
      [author], 1)
 ]
 
@@ -305,8 +305,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'python-pcl', u'python-pcl Documentation',
-     author, 'python-pcl', 'One line description of project.',
+    (master_doc, 'pcl', u'python-pcl Documentation',
+     author, 'pcl', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -382,5 +382,5 @@ def linkcode_resolve(domain, info):
         return None
     relpath = os.path.relpath(filename, repo_root_dir)
 
-    return 'https://github.com/python-pcl/python-pcl/blob/{}/{}#L{}'.format(
+    return 'https://github.com/Sirokujira/python-pcl/blob/{}/{}#L{}'.format(
         tag, relpath, linenum)
