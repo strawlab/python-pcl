@@ -20,7 +20,9 @@ import six
 import sys
 
 
-__version__ = pkg_resources.get_distribution('pcl').version
+# __version__ = pkg_resources.get_distribution('pcl').version
+# Read the Docs
+__version__ = 0.3
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
