@@ -20,9 +20,9 @@ import six
 import sys
 
 
-# __version__ = pkg_resources.get_distribution('pcl').version
+# __version__ = pkg_resources.get_distribution('python-pcl').version
 # Read the Docs
-__version__ = 0.3
+__version__ = '0.3'
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
@@ -41,13 +41,15 @@ locale_dirs = ["locale"]
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.autosummary',
-              'sphinx.ext.doctest',
-              'sphinx.ext.intersphinx',
-              'sphinx.ext.mathjax',
-              'sphinx.ext.napoleon',
-              'sphinx.ext.linkcode']
+# extensions = ['sphinx.ext.autodoc',
+#               'sphinx.ext.autosummary',
+#               'sphinx.ext.doctest',
+#               'sphinx.ext.intersphinx',
+#               'sphinx.ext.mathjax',
+#               'sphinx.ext.napoleon',
+#               'sphinx.ext.linkcode']
+
+extensions = ["sphinx.ext.autodoc"]
 
 try:
     import sphinxcontrib.spelling  # noqa
@@ -264,7 +266,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'pcl.tex', u'python-pcl Documentation',
-     u'Preferred Networks, inc. and Preferred Infrastructure, inc.', 'manual'),
+     u'Tooru Oonuma', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -293,7 +295,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pcl', u'python-pcl Documentation',
+    (master_doc, 'python-pcl', u'python-pcl Documentation',
      [author], 1)
 ]
 
@@ -307,8 +309,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'pcl', u'python-pcl Documentation',
-     author, 'pcl', 'One line description of project.',
+    (master_doc, 'python-pcl', u'python-pcl Documentation',
+     author, 'python-pcl', 'One line description of project.',
      'Miscellaneous'),
 ]
 
