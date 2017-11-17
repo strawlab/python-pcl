@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # pcl documentation build configuration file, created by
-# sphinx-quickstart on Sun May 10 12:22:10 2015.
+# sphinx-quickstart on Mon Jul 31 16:25:14 2017.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -86,7 +87,8 @@ release = __version__
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
 # language = None
-language = "ja"
+language = 'en'
+# language = 'ja'
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
