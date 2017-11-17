@@ -4,18 +4,19 @@ python-pcl Tutorial
 .. toctree::
    :maxdepth: 1
 
+   application
    features
    filtering
+   GPU
    io
-   keypoints
+   keypoint
    kdtree
    octree
-   rangeimage
+   rangeImage
    recognition
    registration
    sampleconsensus
    segmentation
    surface
+   tracking
    visualization
-   application
-   GPU
