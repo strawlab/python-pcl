@@ -141,9 +141,9 @@ Before installing python-pcl, we recommend to upgrade ``setuptools`` if you are 
 The following Python packages are required to install python-pcl.
 The latest version of each package will automatically be installed if missing.
 
-* `PointCloudLibrary <http://pointclouds.org/>`_ 1.6 1.7 1.8
+* `PointCloudLibrary <http://pointclouds.org/>`_ 1.6.x 1.7.x 1.8.x
 * `NumPy <http://www.numpy.org/>`_ 1.9, 1.10, 1.11, 1.12, 1.13
-* `Cython <http://cython.readthedocs.io/en/latest/index.html>`_ 0.25.2
+* `Cython <http://cython.readthedocs.io/en/latest/index.html>`_ >=0.25.2
 
 Install python-pcl
 ------------------
