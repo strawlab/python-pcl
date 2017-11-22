@@ -5,7 +5,7 @@ How 3D Features work in PCL
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This document presents a basic introduction to the 3D feature estimation methodologies in PCL.
 
-* `Original <http://pointclouds.org/documentation/tutorials/how_features_work.php>`
+* `Original <http://pointclouds.org/documentation/tutorials/how_features_work.php>`_ \
 * TestCode : None
 
 
@@ -13,7 +13,7 @@ Estimating Surface Normals in a PointCloud
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This tutorial discusses the theoretical and implementation details of the surface normal estimation module in PCL.
 
-* `Original <http://pointclouds.org/documentation/tutorials/normal_estimation.php#normal-estimation>`
+* `Original <http://pointclouds.org/documentation/tutorials/normal_estimation.php#normal-estimation>`_ \
 * TestCode : None
 
 
@@ -21,8 +21,8 @@ Normal Estimation Using Integral Images
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 In this tutorial we will learn how to compute normals for an organized point cloud using integral images.
 
-* `Original <http://pointclouds.org/documentation/tutorials/normal_estimation_using_integral_images.php#normal-estimation-using-integral-images>`
-* TestCode : examples\official\Features\NormalEstimationUsingIntegralImages.py
+* `Original <http://pointclouds.org/documentation/tutorials/normal_estimation_using_integral_images.php#normal-estimation-using-integral-images>`_ \
+* TestCode : examples/official/Features/NormalEstimationUsingIntegralImages.py
 
 
 Point Feature Histograms (PFH) descriptors
@@ -61,7 +61,7 @@ Moment of inertia and eccentricity based descriptors
 In this tutorial we will learn how to compute moment of inertia and eccentricity of the cloud. In addition to this we will learn how to extract AABB and OBB.
 
 * `Original <http://pointclouds.org/documentation/tutorials/moment_of_inertia.php#moment-of-inertia>`_ \
-* TestCode : examples\official\Features\moment_of_inertia.py
+* TestCode : examples/official/Features/moment_of_inertia.py
 
 
 RoPs (Rotational Projection Statistics) feature
@@ -69,6 +69,6 @@ RoPs (Rotational Projection Statistics) feature
 In this tutorial we will learn how to compute RoPS feature.
 
 * `Original <http://pointclouds.org/documentation/tutorials/how_features_work.php>`_ \
-* TestCode : examples\official\Features\rops_feature.py
+* TestCode : examples/official/Features/rops_feature.py
 
 

@@ -7,7 +7,7 @@ Plane model segmentation
 In this tutorial, we will learn how to segment arbitrary plane models from a given point cloud dataset.
 
 * `Original <http://pointclouds.org/documentation/tutorials/planar_segmentation.php#planar-segmentation>`_ \
-* TestCode : None
+* TestCode : examples/official/Segmentation/Plane_model_segmentation.py
 
 
 Cylinder model segmentation
@@ -15,7 +15,7 @@ Cylinder model segmentation
 In this tutorial, we will learn how to segment arbitrary cylindrical models from a given point cloud dataset.
 
 * `Original <http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php#cylinder-segmentation>`_ \
-* TestCode : None
+* TestCode : examples/official/Segmentation/cylinder_segmentation.py
 
 
 Euclidean Cluster Extraction
@@ -23,7 +23,7 @@ Euclidean Cluster Extraction
 In this tutorial we will learn how to extract Euclidean clusters with the pcl::EuclideanClusterExtraction class.
 
 * `Original <http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction>`_ \
-* TestCode : None
+* TestCode : examples/official/Segmentation/cluster_extraction.py
 
 
 Region growing segmentation

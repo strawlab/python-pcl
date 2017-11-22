@@ -15,7 +15,7 @@ How to use iterative closest point
 This tutorial gives an example of how to use the iterative closest point algorithm to see if one PointCloud is just a rigid transformation of another PointCloud.
 
 * `Original <http://pointclouds.org/documentation/tutorials/iterative_closest_point.php#iterative-closest-point>`_ \
-* TestCode : None
+* TestCode : examples/official/Registration/iterative_closest_point.py
 
 
 How to incrementally register pairs of clouds
@@ -39,7 +39,7 @@ How to use Normal Distributions Transform
 This document demonstrates using the Normal Distributions Transform algorithm to register two large point clouds.
 
 * `Original <http://pointclouds.org/documentation/tutorials/normal_distributions_transform.php#normal-distributions-transform>`_ \
-* TestCode : None
+* TestCode : examples/official/Registration/normal_distributions_transform.py
 
 
 In-hand scanner for small objects
@@ -55,6 +55,6 @@ Robust pose estimation of rigid objects
 In this tutorial, we show how to find the alignment pose of a rigid object in a scene with clutter and occlusions.
 
 * `Original <http://pointclouds.org/documentation/tutorials/alignment_prerejective.php#alignment-prerejective>`_ \
-* TestCode : None
+* TestCode : examples/official/Registration/alignment_prerejective.py
 
 

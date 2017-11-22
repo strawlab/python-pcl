@@ -15,7 +15,7 @@ Construct a concave or convex hull polygon for a plane model
 In this tutorial we will learn how to calculate a simple 2D concave or convex hull polygon for a set of points supported by a plane.
 
 * `Original <http://pointclouds.org/documentation/tutorials/hull_2d.php#hull-2d>`_ \
-* TestCode : None
+* TestCode : examples/official/Surface/concave_hull_2d.py
 
 
 Fast triangulation of unordered point clouds
