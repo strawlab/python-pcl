@@ -8,8 +8,9 @@ environment:
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
+  # https://www.appveyor.com/docs/build-environment/#miniconda
   matrix:
-  - PYTHON: "C:\\Miniconda3-x64"
+  - PYTHON: "C:\Miniconda34-x64"
     PYTHON_VERSION: "3.4"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
@@ -51,8 +52,8 @@ install:
   # - "%CMD_IN_ENV% python -m pip install -r dev-requirements.txt"
   # - "pip install wheel"
   # - if [%PCL_VERSION%]==[1.6] anaconda search -t conda vc 10.*
-  - if [%PCL_VERSION%]==[1.6] conda install -y -q anaconda-client
-  - if [%PCL_VERSION%]==[1.6] "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PATH%;"
+  # - if [%PCL_VERSION%]==[1.6] conda install -y -q anaconda-client
+  # - if [%PCL_VERSION%]==[1.6] SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PATH%
   - "conda install -y -q wheel"
 
   # Mini-conda ng
