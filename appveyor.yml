@@ -41,6 +41,9 @@ install:
         Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
           throw "There are newer queued builds for this pull request, failing early." }
 
+  # Python(set before conda command call)
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PATH%;"
+
   # Install the build dependencies of the project. If some dependencies contain
   # compiled extensions and are not provided as pre-built wheel packages,
   # pip will build them from source using the MSVC compiler matching the
@@ -49,6 +52,7 @@ install:
   # - "pip install wheel"
   # - if [%PCL_VERSION%]==[1.6] anaconda search -t conda vc 10.*
   - if [%PCL_VERSION%]==[1.6] conda install -y -q anaconda-client
+  - if [%PCL_VERSION%]==[1.6] "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PATH%;"
   - "conda install -y -q wheel"
 
   # Mini-conda ng
@@ -59,8 +63,6 @@ install:
   - conda install -y -q setuptools
   # - "pip install --disable-pip-version-check --user --upgrade pip"
 
-  # Python
-  # - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PATH%;"
   # PCL 
   - "SET PATH=%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%;"
 
