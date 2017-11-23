@@ -10,7 +10,7 @@ environment:
 
   # https://www.appveyor.com/docs/build-environment/#miniconda
   matrix:
-  - PYTHON: "C:\Miniconda34-x64"
+  - PYTHON: "C:\\Miniconda34-x64"
     PYTHON_VERSION: "3.4"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.6.0"
