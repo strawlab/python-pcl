@@ -335,7 +335,7 @@ intersphinx_mapping = {
 
 doctest_global_setup = '''
 import numpy as np
-import pcl # TODO(okuta) : Remove this line
+import pcl # TODO : Remove this line
 np.random.seed(0)
 '''
 

@@ -625,12 +625,21 @@ setup(name='python-pcl',
       version='0.3',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
+      maintainer='Tooru Oonuma',
+      maintainer_email='t753github@gmail.com',
       license='BSD',
-      packages=["pcl"],
+      packages=[
+                "pcl",
+                # "pcl.pcl_visualization",
+      ],
       zip_safe=False,
       setup_requires=setup_requires,
       install_requires=install_requires,
+      classifiers=[
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+      ],
       tests_require=['mock', 'nose'],
       ext_modules=module,
-      cmdclass={'build_ext': build_ext}
-      )
+      cmdclass={'build_ext': build_ext},
+)
