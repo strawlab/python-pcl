@@ -188,7 +188,7 @@ cdef class PointCloud_PointXYZRGB:
 
     def to_list(self):
         """
-        Return this object as a list of 3-tuples
+        Return this object as a list of 4-tuples
         """
         return self.to_array().tolist()
 
