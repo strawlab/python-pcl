@@ -27,8 +27,6 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
                               double searchRadius,
                               cpp.PointCloud_Normal_t) except +
-    void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
-                              double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
     ## void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_PointXYZ *) except +
@@ -506,9 +504,6 @@ cdef class PointCloud:
 
     def make_VFHEstimation(self):
         vfhEstimation = VFHEstimation()
-        normalEstimation = self.make_NormalEstimation()
-        cloud_normals = normalEstimation.Compute()
-        # features
         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return vfhEstimation
@@ -542,11 +537,11 @@ cdef class PointCloud:
         cIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return iterativeClosestPoint
 
-    # def make_MomentOfInertiaEstimation(self):
-    #     momentofinertiaestimation = MomentOfInertiaEstimation(self)
-    #     cdef pclftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pclftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
-    #     cMomentOfInertiaEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-    #     return momentofinertiaestimation
+    def make_MomentOfInertiaEstimation(self):
+        momentofinertiaestimation = MomentOfInertiaEstimation(self)
+        cdef pclftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pclftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
+        cMomentOfInertiaEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return momentofinertiaestimation
 
     # registration - icp?
     # def make_IterativeClosestPoint():

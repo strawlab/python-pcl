@@ -83,36 +83,7 @@ void mpcl_compute_normals_PointXYZRGBA(const pcl::PointCloud<pcl::PointXYZRGBA>&
     ne.compute (out);
 }
 
-// set ksearch and radius to < 0 to disable 
-void mpcl_sacnormal_set_axis(pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> &sac,
-                             double ax, double ay, double az)
-{
-    Eigen::Vector3f vect(ax,ay,az);
-    sac.setAxis(vect);
-}
 
-void mpcl_sacnormal_set_axis_PointXYZI(pcl::SACSegmentationFromNormals<pcl::PointXYZI, pcl::Normal> &sac,
-                             double ax, double ay, double az)
-{
-    Eigen::Vector3f vect(ax,ay,az);
-    sac.setAxis(vect);
-}
-
-void mpcl_sacnormal_set_axis_PointXYZRGB(pcl::SACSegmentationFromNormals<pcl::PointXYZRGB, pcl::Normal> &sac,
-                             double ax, double ay, double az)
-{
-    Eigen::Vector3f vect(ax,ay,az);
-    sac.setAxis(vect);
-}
-
-void mpcl_sacnormal_set_axis_PointXYZRGBA(pcl::SACSegmentationFromNormals<pcl::PointXYZRGBA, pcl::Normal> &sac,
-                             double ax, double ay, double az)
-{
-    Eigen::Vector3f vect(ax,ay,az);
-    sac.setAxis(vect);
-}
-
-// 
 void mpcl_extract(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,
                   pcl::PointCloud<pcl::PointXYZ> *outcloud,
                   pcl::PointIndices *indices,

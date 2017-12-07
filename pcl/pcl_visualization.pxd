@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Header for pcl_visualization.pyx functionality that needs sharing with other modules.
-cimport pcl_visualization_defs as vis
+
+cimport pcl_visualization_defs as vis
 
 from libc.stddef cimport size_t
 
@@ -20,7 +21,8 @@ cdef class PointCloudColorHandleringCustom:
     cdef inline vis.PointCloudColorHandlerCustom[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloudColorHandlerCustom<PointXYZ>.
         return self.thisptr_shared.get()
-
+
+
 
 cdef class PointCloudGeometryHandleringCustom:
     cdef vis.PointCloudGeometryHandlerCustom_Ptr_t thisptr_shared     # PointCloudGeometryHandlerCustom[PointXYZ]
@@ -30,5 +32,6 @@ cdef class PointCloudGeometryHandleringCustom:
     cdef inline vis.PointCloudGeometryHandlerCustom[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloudGeometryHandlerCustom<PointXYZ>.
         return self.thisptr_shared.get()
-
+
+
 

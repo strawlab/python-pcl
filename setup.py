@@ -541,6 +541,20 @@ else:
     ext_args['include_dirs'].append('/usr/include/ni')
     # ext_args['library_dirs'].append()
     # ext_args['libraries'].append()
+    
+    # VTK use?
+    # ext_args['include_dirs'].append('/usr/include/vtk')
+    # ext_args['include_dirs'].append('/usr/local/include/vtk')
+    # pcl 1.7(Ubuntu)
+    ext_args['include_dirs'].append('/usr/include/vtk-5.8')
+    ext_args['library_dirs'].append('/usr/lib')
+    # ext_args['libraries'].append('libvtk*.so')
+    # pcl 1.8.1(MacOSX)
+    ext_args['include_dirs'].append('/usr/local/include/vtk-8.0')
+    ext_args['library_dirs'].append('/usr/local/lib')
+    ext_args['include_dirs'].append('/usr/local/Cellar/vtk/8.0.1/include')
+    ext_args['library_dirs'].append('/usr/local/Cellar/vtk/8.0.1/lib')
+    # ext_args['libraries'].append('libvtk*.dylib')
 
     for flag in pkgconfig('--cflags-only-other'):
         if flag.startswith('-D'):
@@ -548,6 +562,14 @@ else:
             ext_args['define_macros'].append((macro, value))
         else:
             ext_args['extra_compile_args'].append(flag)
+    
+    # clang?
+    # https://github.com/strawlab/python-pcl/issues/129
+    # gcc base libc++, clang base libstdc++
+    # gcc5
+    # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
+    # gcc4?
+    # ext_args['extra_compile_args'].append("-stdlib=libc++")
 
     for flag in pkgconfig('--libs-only-l'):
         if flag == "-lflann_cpp-gd":
@@ -600,15 +622,24 @@ else:
 setup(name='python-pcl',
       description='pcl wrapper',
       url='http://github.com/strawlab/python-pcl',
-      version='0.2',
+      version='0.3',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
+      maintainer='Tooru Oonuma',
+      maintainer_email='t753github@gmail.com',
       license='BSD',
-      packages=["pcl"],
+      packages=[
+                "pcl",
+                # "pcl.pcl_visualization",
+      ],
       zip_safe=False,
       setup_requires=setup_requires,
       install_requires=install_requires,
+      classifiers=[
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+      ],
       tests_require=['mock', 'nose'],
       ext_modules=module,
-      cmdclass={'build_ext': build_ext}
-      )
+      cmdclass={'build_ext': build_ext},
+)

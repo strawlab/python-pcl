@@ -122,7 +122,7 @@ cdef class PointCloud_Normal:
 
     def to_list(self):
         """
-        Return this object as a list of 3-tuples
+        Return this object as a list of 4-tuples
         """
         return self.to_array().tolist()
 
@@ -134,7 +134,7 @@ cdef class PointCloud_Normal:
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
         """
-        Return a point (3-tuple) at the given row/column
+        Return a point (4-tuple) at the given row/column
         """
         cdef cpp.Normal *p = idx.getptr_at2(self.thisptr(), row, col)
         return p.normal_x, p.normal_y, p.normal_z, p.curvature

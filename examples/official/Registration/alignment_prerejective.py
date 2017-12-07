@@ -34,7 +34,7 @@ args = parser.parse_args()
 # }
 if args.n != 3:
     print('Syntax is: " + "" +" object.pcd scene.pcd\n')
-    return 1
+    return (1)
 
 # // Load object and scene
 # pcl::console::print_highlight ("Loading point clouds...\n");
@@ -58,11 +58,11 @@ scene = pcl.load('')
 # grid.setInputCloud (scene);
 # grid.filter (*scene);
 print('Downsampling...\n')
-grid_obj = object.make_VexelGrid()
+grid_obj = object.make_voxel_grid_filter()
 leaf = 0.005
-grid_obj.set_LeafSize (leaf, leaf, leaf)
+grid_obj.set_leaf_size (leaf, leaf, leaf)
 object = grid_obj.filter()
-scene_obj = scene.make_VexelGrid()
+scene_obj = scene.make_voxel_grid_filter()
 grid_sce = scene_obj.filter ()
 
 # // Estimate normals for scene
@@ -157,8 +157,8 @@ if align.hasConverged () == True:
     # Print results
     print ('\n');
     # Eigen::Matrix4f transformation = align.getFinalTransformation ()
-    eigen3.Matrix4f transformation = align.getFinalTransformation ()
-    
+    transformation = align.getFinalTransformation ()
+
     # print ('    | %6.3f %6.3f %6.3f | \n', transformation [0, 0], transformation [0, 1], transformation [0, 2])
     # print ('R = | %6.3f %6.3f %6.3f | \n', transformation [1, 0], transformation [1, 1], transformation [1, 2])
     # print ('    | %6.3f %6.3f %6.3f | \n', transformation [2, 0], transformation [2, 1], transformation [2, 2])
@@ -166,7 +166,7 @@ if align.hasConverged () == True:
     # print ('t = < %0.3f, %0.3f, %0.3f >\n', transformation[0, 3], transformation[1, 3], transformation[2, 3])
     # print ('\n');
     # print ('Inliers: %i/%i\n', align.getInliers ().size (), object->size ());
-    
+
     # Show alignment
     visu = pcl.PCLVisualization('Alignment')
     visu.add_PointCloud (scene, ColorHandlerT (scene, 0.0, 255.0, 0.0), 'scene')

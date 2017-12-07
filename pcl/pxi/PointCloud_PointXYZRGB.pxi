@@ -25,8 +25,6 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals_PointXYZRGB(cpp.PointCloud_PointXYZRGB_t, int ksearch,
                               double searchRadius,
                               cpp.PointCloud_Normal_t) except +
-    void mpcl_sacnormal_set_axis_PointXYZRGB(pclseg.SACSegmentationNormal_PointXYZRGB_t,
-                              double ax, double ay, double az) except +
     void mpcl_extract_PointXYZRGB(cpp.PointCloud_PointXYZRGB_Ptr_t, cpp.PointCloud_PointXYZRGB_t *,
                               cpp.PointIndices_t *, bool) except +
 

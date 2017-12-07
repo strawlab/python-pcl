@@ -8,13 +8,14 @@ import pcl.pcl_visualization
 # from pcl.pcl_registration import icp, gicp, icp_nl
 
 cloud = pcl.load_XYZRGB('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
-visual = pcl.pcl_visualization.CloudViewing()
+visual = pcl.pcl_visualization.CloudViewing()
 
 # PointXYZ
 # visual.ShowMonochromeCloud(cloud)
-# visual.ShowGrayCloud(cloud)
-visual.ShowColorCloud(cloud)
-# visual.ShowColorACloud(cloud)
+
+# visual.ShowGrayCloud(cloud, b'cloud')
+visual.ShowColorCloud(cloud, b'cloud')
+# visual.ShowColorACloud(cloud, b'cloud')
 
 # while True:
 #     visual.WasStopped()

@@ -41,7 +41,8 @@ cdef class RangeImageBorderExtractor:
     # Parameters& getParameters ()
     # def GetParameters ()
     #     return self.me.getParameters ()
-    # 
+
+    # 
     # def HasRangeImage ()
     #     # cdef param = self.me.hasRangeImage ()
     #     return self.me.hasRangeImage ()
@@ -66,7 +67,8 @@ cdef class RangeImageBorderExtractor:
     # def GetBorderScoresBottom ()
     #     float[] data = self.me.getBorderScoresBottom ()  
     #     return data
-
+
+
 
 ###
 

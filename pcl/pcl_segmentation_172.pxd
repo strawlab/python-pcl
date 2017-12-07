@@ -19,12 +19,13 @@ from pcl_defs cimport PointXYZRGB
 from pcl_defs cimport PointXYZRGBA
 from pcl_defs cimport Normal
 from pcl_defs cimport PCLBase
-from pcl_sample_consensus cimport SacModel
-cimport pcl_surface as pclsf
-cimport pcl_kdtree as pclkdt
+from pcl_sample_consensus_172 cimport SacModel
+cimport pcl_surface_172 as pclsf
+cimport pcl_kdtree_172 as pclkdt
 
 ##
 
+cimport eigen as eigen3
 from vector cimport vector as vector2
 
 ###############################################################################
@@ -54,12 +55,14 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # inline SampleConsensusModelPtr getModel () const { return (model_); }
         
         void setMethodType (int)
-        # \brief Get the type of sample consensus method used.
+        
+        # brief Get the type of sample consensus method used.
         # inline int getMethodType () const { return (method_type_); }
         int getMethodType ()
         
         void setDistanceThreshold (float)
-        # \brief Get the distance to the model threshold.
+
+        # brief Get the distance to the model threshold.
         # inline double getDistanceThreshold () const { return (threshold_); }
         double getDistanceThreshold ()
         
@@ -111,11 +114,11 @@ cdef extern from "pcl/segmentation/sac_segmentation.h" namespace "pcl":
         # \brief Set the axis along which we need to search for a model perpendicular to.
         # \param[in] ax the axis along which we need to search for a model perpendicular to
         # inline void setAxis (const Eigen::Vector3f &ax) { axis_ = ax; }
-        # void setAxis (const eigen3.Vector3f &ax)
+        void setAxis (const eigen3.Vector3f &ax)
         
         # \brief Get the axis along which we need to search for a model perpendicular to.
         # inline Eigen::Vector3f getAxis () const { return (axis_); }
-        # eigen3.Vector3f getAxis ()
+        eigen3.Vector3f getAxis ()
         
         # \brief Set the angle epsilon (delta) threshold.
         # \param[in] ea the maximum allowed difference between the model normal and the given axis in radians.
@@ -2042,7 +2045,7 @@ cdef extern from "pcl/segmentation/extract_polygonal_prism_data.h" namespace "pc
 # namespace pcl
 # namespace segmentation
 # /** \brief Implementation of the GrabCut segmentation in
-# * "GrabCut — Interactive Foreground Extraction using Iterated Graph Cuts" by
+# * "GrabCut - Interactive Foreground Extraction using Iterated Graph Cuts" by
 # * Carsten Rother, Vladimir Kolmogorov and Andrew Blake.
 # * \author Justin Talbot, jtalbot@stanford.edu placed in Public Domain, 2010
 # * \author Nizar Sallem port to PCL and adaptation of original code.

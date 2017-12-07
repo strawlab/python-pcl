@@ -24,13 +24,13 @@ cdef class CloudViewing:
     def ShowMonochromeCloud(self, _pcl.PointCloud pc, cloudname=b'cloud'):
         self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
-    def ShowGrayCloud(self, _pcl.PointCloud_PointXYZI pc, cloudname='cloud'):
+    def ShowGrayCloud(self, _pcl.PointCloud_PointXYZI pc, cloudname=b'cloud'):
         self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
-    def ShowColorCloud(self, _pcl.PointCloud_PointXYZRGB pc, cloudname='cloud'):
+    def ShowColorCloud(self, _pcl.PointCloud_PointXYZRGB pc, cloudname=b'cloud'):
         self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
-    def ShowColorACloud(self, _pcl.PointCloud_PointXYZRGBA pc, cloudname='cloud'):
+    def ShowColorACloud(self, _pcl.PointCloud_PointXYZRGBA pc, cloudname=b'cloud'):
         self.thisptr().showCloud(pc.thisptr_shared, <string> cloudname)
 
     def WasStopped(self, int millis_to_wait = 1):

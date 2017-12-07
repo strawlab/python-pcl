@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 # cimport pcl_defs as cpp
 
 cdef extern from "boost/function.hpp" namespace "boost":

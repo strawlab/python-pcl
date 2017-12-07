@@ -25,7 +25,8 @@ cdef class RangeImageVisualization:
         # print('__dealloc__')
         del self.me
         pass
-    
+
+    
     # -std::numeric_limits<float>::infinity ()
     #  std::numeric_limits<float>::infinity ()
     def ShowRangeImage (self, _pcl.RangeImages range_image, float min_value = -99999.0, float max_value = 99999.0, bool grayscale = False):

@@ -26,19 +26,6 @@ void mpcl_compute_normals_PointXYZRGBA(const pcl::PointCloud<pcl::PointXYZRGBA> 
                           double searchRadius,
                           pcl::PointCloud<pcl::Normal> &out);
 
-// 
-void mpcl_sacnormal_set_axis(pcl::SACSegmentationFromNormals<pcl::PointXYZ, pcl::Normal> &sac,
-                             double ax, double ay, double az);
-
-void mpcl_sacnormal_set_axis_PointXYZI(pcl::SACSegmentationFromNormals<pcl::PointXYZI, pcl::Normal> &sac,
-                             double ax, double ay, double az);
-
-void mpcl_sacnormal_set_axis_PointXYZRGB(pcl::SACSegmentationFromNormals<pcl::PointXYZRGB, pcl::Normal> &sac,
-                             double ax, double ay, double az);
-
-void mpcl_sacnormal_set_axis_PointXYZRGBA(pcl::SACSegmentationFromNormals<pcl::PointXYZRGBA, pcl::Normal> &sac,
-                             double ax, double ay, double az);
-
 
 //
 void mpcl_extract(pcl::PointCloud<pcl::PointXYZ>::Ptr &incloud,

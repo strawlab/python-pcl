@@ -33,7 +33,8 @@ cdef class Octree2BufBase:
 
     def get_TreeDepth (self)
         self.me.getTreeDepth ()
-
+
+
     def AddData (self, unsigned int idxX_arg, unsigned int idxY_arg, unsigned int idxZ_arg, const DataT& data_arg):
         self.me.addData (idxX_arg, idxY_arg, idxZ_arg, const DataT& data_arg)
 
