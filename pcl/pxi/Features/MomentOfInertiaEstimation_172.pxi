@@ -32,6 +32,7 @@ cdef class MomentOfInertiaEstimation:
     def set_InputCloud(self, PointCloud pc not None):
         (<cpp.PCLBase_t*>self.me).setInputCloud(pc.thisptr_shared)
 
+    # feature_extractor.compute ();
     # feature_extractor.getMomentOfInertia (moment_of_inertia);
     # feature_extractor.getEccentricity (eccentricity);
     # feature_extractor.getAABB (min_point_AABB, max_point_AABB);
@@ -39,6 +40,9 @@ cdef class MomentOfInertiaEstimation:
     # feature_extractor.getEigenValues (major_value, middle_value, minor_value);
     # feature_extractor.getEigenVectors (major_vector, middle_vector, minor_vector);
     # feature_extractor.getMassCenter (mass_center);
+    def compute (self):
+        self.me.compute()
+
     def get_MomentOfInertia (self):
         cdef vector[float] moment_of_inertia
         self.me.getMomentOfInertia(moment_of_inertia)
@@ -169,6 +173,4 @@ cdef class MomentOfInertiaEstimation:
         
         return np_mass_center_vec
 
-    def Compute(self):
-        self.me.compute ()
 

@@ -158,7 +158,7 @@ class TestMomentOfInertiaEstimation(unittest.TestCase):
         self.feat = self.p.make_MomentOfInertiaEstimation()
 
     def test_Tutorials(self):
-        self.feat.Compute()
+        self.feat.compute()
 
         # Get Parameters
         moment_of_inertia = self.feat.get_MomentOfInertia()
