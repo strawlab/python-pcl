@@ -23,11 +23,13 @@ import pcl.pcl_visualization
 def Surface_normals(cloud):
     ne = cloud.make_NormalEstimation()
     tree = cloud.make_kdtree()
-    ne.set_SearchMethod (tree)
     ne.set_SearchMethod(tree)
     ne.set_RadiusSearch(0.5)
     # NG
+    print('test - a')
+    print(ne)
     cloud_normals = ne.compute()
+    print('test - b')
     return cloud_normals
 
 ###

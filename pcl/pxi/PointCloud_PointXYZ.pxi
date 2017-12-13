@@ -28,8 +28,6 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals(cpp.PointCloud_t, int ksearch,
                               double searchRadius,
                               cpp.PointCloud_Normal_t) except +
-    void mpcl_sacnormal_set_axis(pclseg.SACSegmentationNormal_t,
-                              double ax, double ay, double az) except +
     void mpcl_extract(cpp.PointCloudPtr_t, cpp.PointCloud_t *,
                               cpp.PointIndices_t *, bool) except +
     ## void mpcl_extract_HarrisKeypoint3D(cpp.PointCloudPtr_t, cpp.PointCloud_PointXYZ *) except +
@@ -108,9 +106,9 @@ cdef class PointCloud:
         cdef Py_ssize_t npoints = self.thisptr().size()
         
         if self._view_count == 0:
-            self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 3
+        self._view_count += 1
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
@@ -208,6 +206,9 @@ cdef class PointCloud:
         if self._view_count > 0:
             raise ValueError("can't resize PointCloud while there are"
                              " arrays/memoryviews referencing it")
+        if x < 0:
+            raise MemoryError("can't resize PointCloud to negative size")
+
         self.thisptr().resize(x)
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
@@ -515,9 +516,6 @@ cdef class PointCloud:
 
     def make_VFHEstimation(self):
         vfhEstimation = VFHEstimation()
-        normalEstimation = self.make_NormalEstimation()
-        cloud_normals = normalEstimation.Compute()
-        # features
         cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return vfhEstimation

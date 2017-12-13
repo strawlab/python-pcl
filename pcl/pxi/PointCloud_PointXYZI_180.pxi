@@ -43,7 +43,7 @@ _strides_xyzi_4[1] = (  <Py_ssize_t><void *>&(idx.getptr(p_xyzi_4, 0).y)
 _pc_xyzi_tmp4 = None
 
 cdef class PointCloud_PointXYZI:
-    """Represents a cloud of points in 3-d space.
+    """Represents a cloud of points in 4-d space.
 
     A point cloud can be initialized from either a NumPy ndarray of shape
     (n_points, 4), from a list of triples, or from an integer n to create an
@@ -98,9 +98,9 @@ cdef class PointCloud_PointXYZI:
         cdef Py_ssize_t npoints = self.thisptr().size()
         
         if self._view_count == 0:
-            self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 4
+        self._view_count += 1
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
@@ -191,7 +191,7 @@ cdef class PointCloud_PointXYZI:
 
     def to_list(self):
         """
-        Return this object as a list of 3-tuples
+        Return this object as a list of 4-tuples
         """
         return self.to_array().tolist()
 
@@ -203,7 +203,7 @@ cdef class PointCloud_PointXYZI:
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
         """
-        Return a point (3-tuple) at the given row/column
+        Return a point (4-tuple) at the given row/column
         """
         cdef cpp.PointXYZI *p = idx.getptr_at2(self.thisptr(), row, col)
         return p.x, p.y, p.z, p.intensity

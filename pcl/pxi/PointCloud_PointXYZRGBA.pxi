@@ -25,8 +25,6 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals_PointXYZRGBA(cpp.PointCloud_PointXYZRGBA_t, int ksearch,
                               double searchRadius,
                               cpp.PointCloud_Normal_t) except +
-    void mpcl_sacnormal_set_axis_PointXYZRGBA(pclseg.SACSegmentation_PointXYZRGBA_Normal_t,
-                              double ax, double ay, double az) except +
     void mpcl_extract_PointXYZRGBA(cpp.PointCloud_PointXYZRGBA_Ptr_t, cpp.PointCloud_PointXYZRGBA_t *,
                               cpp.PointIndices_t *, bool) except +
 
@@ -97,9 +95,9 @@ cdef class PointCloud_PointXYZRGBA:
         cdef Py_ssize_t npoints = self.thisptr().size()
 
         if self._view_count == 0:
-            self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 4
+        self._view_count += 1
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'

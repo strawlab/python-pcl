@@ -4,6 +4,7 @@ cimport pcl_sample_consensus as pcl_sac
 
 cdef class SampleConsensusModelPlane:
     """
+    defines a model for 3D plane segmentation class.
     """
     # cdef pcl_sac.SampleConsensusModelPlane_t *me
 

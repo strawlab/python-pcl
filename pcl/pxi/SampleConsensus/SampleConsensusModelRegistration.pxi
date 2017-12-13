@@ -4,6 +4,7 @@ cimport pcl_sample_consensus as pcl_sac
 
 cdef class SampleConsensusModelRegistration:
     """
+    defines a model for Point-To-Point registration outlier rejection class.
     """
 
     def __cinit__(self, PointCloud pc not None):

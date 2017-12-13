@@ -21,10 +21,11 @@ cdef extern from "pcl/PCLHeader.h" namespace "pcl":
         unsigned int seq
         unsigned long stamp
         string frame_id
-
+
 
 # inline std::ostream& operator << (std::ostream& out, const PCLHeader &h)
-
+
+
 # typedef boost::shared_ptr<PCLHeader> HeaderPtr;
 # typedef boost::shared_ptr<PCLHeader const> HeaderConstPtr;
 ctypedef shared_ptr[PCLHeader] PCLHeaderPtr_t

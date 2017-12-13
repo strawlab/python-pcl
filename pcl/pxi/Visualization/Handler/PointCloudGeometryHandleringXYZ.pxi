@@ -19,5 +19,6 @@ cdef class PointCloudGeometryHandleringXYZ:
         print('__dealloc__')
         # del self.me
         pass
-
+
+
 

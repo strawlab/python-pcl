@@ -6,14 +6,11 @@ from boost_shared_ptr cimport sp_assign
 
 cdef class SampleConsensusModelSphere:
     """
+    define a model for 3D sphere segmentation class.
     """
     # cdef pcl_sac.SampleConsensusModelSphere_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        # NG
-        # self.me = new pcl_sac.SampleConsensusModelSphere_t()
-        # self.me = new pcl_sac.SampleConsensusModelSphere_t(pc.thisptr_shared)
-        # shared_ptr
         # NG
         # sp_assign(self.thisptr_shared, new pcl_sac.SampleConsensusModelSphere_t(pc.thisptr_shared))
         sp_assign(self.thisptr_shared, new pcl_sac.SampleConsensusModelSphere[cpp.PointXYZ](pc.thisptr_shared))

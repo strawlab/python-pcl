@@ -97,9 +97,9 @@ cdef class PointCloud_PointXYZRGB:
         cdef Py_ssize_t npoints = self.thisptr().size()
 
         if self._view_count == 0:
-            self._view_count += 1
             self._shape[0] = npoints
             self._shape[1] = 4
+        self._view_count += 1
 
         buffer.buf = <char *>&(idx.getptr_at(self.thisptr(), 0).x)
         buffer.format = 'f'
@@ -188,7 +188,7 @@ cdef class PointCloud_PointXYZRGB:
 
     def to_list(self):
         """
-        Return this object as a list of 3-tuples
+        Return this object as a list of 4-tuples
         """
         return self.to_array().tolist()
 

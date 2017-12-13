@@ -1,107 +1,187 @@
+dist: trusty
+sudo: required
+
+
 language: python 
 
 cache:
   - pip
   - ccache
 
+# https://docs.travis-ci.com/user/languages/cpp/
 matrix:
   include:
+    # gcc
     # - os: linux
     #   python: "2.7"
     #   env:
     #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     # - os: linux
     #   python: "3.4"
     #   env:
     #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     # - os: linux
     #   python: "3.5"
     #   env:
     #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    # gcc?
     - os: linux
       python: "2.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
       env:
-      - PCL_VERSION="1.8"
+      - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: linux
       python: "3.4"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
       env:
-      - PCL_VERSION="1.8"
+      - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: linux
-      python: "3.5"
+      python: "3.5"#
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-4.9
       env:
-      - PCL_VERSION="1.8"
+      - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+
+    # clang
+    # apt-get no pcl use gcc
+    # - os: linux
+    #   python: "2.7"
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-precise-3.6
+    #       packages:
+    #         - clang-3.6
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+    # - os: linux
+    #   python: "3.4"
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-precise-3.6
+    #       packages:
+    #         - clang-3.6
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+    # - os: linux
+    #   python: "3.5"
+    #   addons:
+    #     apt:
+    #       sources:
+    #         - ubuntu-toolchain-r-test
+    #         - llvm-toolchain-precise-3.6
+    #       packages:
+    #         - clang-3.6
+    #   env:
+    #   - PCL_VERSION="1.7"
+    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
 
     # TravisCI TimeLimit 50min
-    # numpy error
+    # - os: linux
+    #   python: "2.7"
+    #   env:
+    #   - PCL_VERSION="1.8"
+    # - os: linux
+    #   python: "3.4"
+    #   env:
+    #   - PCL_VERSION="1.8"
+    # - os: linux
+    #   python: "3.5"
+    #   env:
+    #   - PCL_VERSION="1.8"
+
+    # TravisCI TimeLimit 50min
+    # gcc
+    - os: osx
+      language: generic
+      compiler: gcc
+      env:
+      - PYTHON_VERSION=2.7.10
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: gcc
+      env:
+      - PYTHON_VERSION=3.4.3
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: gcc
+      env:
+      - PYTHON_VERSION=3.5.1
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    # clang
+    # homebrew pcl use gcc compiler
     # - os: osx
     #   language: generic
+    #   compiler: clang
     #   env:
     #   - PYTHON_VERSION=2.7.10
     #   - PYENV_ROOT=~/.pyenv
     #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    #   - NOSEATTR="not pcl_ver_0_4"
     # - os: osx
     #   language: generic
+    #   compiler: clang
     #   env:
     #   - PYTHON_VERSION=3.4.3
     #   - PYENV_ROOT=~/.pyenv
     #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    #   - NOSEATTR="not pcl_ver_0_4"
     # - os: osx
     #   language: generic
+    #   compiler: clang
     #   env:
     #   - PYTHON_VERSION=3.5.1
     #   - PYENV_ROOT=~/.pyenv
     #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+    #   - NOSEATTR="not pcl_ver_0_4"
 
-# travis_wait 45 brew install pcl --without-vtk --without-qt;
-# use pcl version 1.7
-#   sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
-#   sudo apt-get update -y;
-#   sudo apt-get install libpcl-all -y;
-# use pcl 1.8(Ubuntu)
-# sudo apt-get update -y;
-# git clone https://github.com/PointCloudLibrary/pcl.git pcl-trunk;
-# ln -s pcl-trunk pcl -y;
-# sudo apt-get install g++ -y;
-# sudo apt-get install cmake cmake-gui -y;
-# sudo apt-get install doxygen -y;
-# sudo apt-get install mpi-default-dev openmpi-bin openmpi-common -y;
-# sudo apt-get install libflann1.8 libflann-dev -y;
-# sudo apt-get install libeigen3-dev -y;
-# sudo apt-get install libboost-all-dev -y;
-# sudo apt-get install libvtk5.8-qt4 libvtk5.8 libvtk5-dev -y;
-# sudo apt-get install libqhull* -y;
-# sudo apt-get install libusb-dev -y;
-# sudo apt-get install libgtest-dev -y;
-# sudo apt-get install git-core freeglut3-dev pkg-config -y;
-# sudo apt-get install build-essential libxmu-dev libxi-dev -y;
-# sudo apt-get install libusb-1-0-dev graphviz mono-complete -y;
-# sudo apt-get install qt-sdk openjdk-7-jdk openjdk-7-jre -y;
-# sudo apt-get install phonon-backend-gstreamer -y;
-# sudo apt-get install phonon-backend-vlc -y;
-# sudo apt-get install libpcap-dev -y;
-# cd pcl;
-# mkdir build;
-# cd build;
-# cmake -DCMAKE_BUILD_TYPE=None -DBUILD_GPU=OFF -DBUILD_apps=ON -DBUILD_examples=ON .. ;
-# travis_wait 45 make;
-# travis_wait 45 sudo make install;
-# https://github.com/hsean/Capstone-44-Object-Segmentation/wiki/PCL-1.8:-Ubuntu-14.04-Installation-Guide
-# Add OpenNI2?
-# sudo apt-get install -yV g++ python libusb-1.0.0-dev libudev-dev openjdk-6-jdk freeglut3-dev doxygen graphviz 
-# git clone https://github.com/OpenNI/OpenNI2.git
-# cd OpenNI2
-# make
-# cd Packaging
-# python ./ReleaseVersion.py x86
-# cd OpenNI-Linux-x86-2.2
-# cp -a Include /usr/local/include/ni2
-# cp -a Redist /usr/local/lib/ni2
-# cd ../../..
-# other
-# sudo apt-get install openni2-utils
-###
+
+# pcl 1.8.1 only(MacOSX/Ubuntu)
+# pcl_2d-1.8.pc copy /usr/local/lib/pkgconfig/pcl_2d-1.8.pc
 before_install:
-  - if [[ $TRAVIS_OS_NAME = "osx" ]]; then
+  - if [ ${TRAVIS_OS_NAME} = "osx" ]; then
       brew update >/dev/null;
       brew outdated pyenv || brew upgrade --quiet pyenv;
       brew install homebrew/boneyard/pyenv-pip-rehash;
@@ -111,34 +191,67 @@ before_install:
       pyenv global $PYTHON_VERSION;
       python --version;
       
-      brew search versions/pcl;
       travis_wait 45 brew install pcl --without-qt;
+      
+      ls /usr/local/include;
+      
+      cp -n ./travisCI/pcl_2d-1.8.pc /usr/local/lib/pkgconfig/pcl_2d-1.8.pc;
     fi
 
-  - if [[ $TRAVIS_OS_NAME = "linux" ]]; then
+# eval "${MATRIX_EVAL}";
+install:
+  - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) ]]; then
       sudo apt-get install openni2-utils
       
       sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
       sudo apt-get update -y;
       sudo apt-get install libpcl-all -y;
+
+      eval "${MATRIX_EVAL}";
     fi
-
-
-install:
+  - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
+      sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
+      
+      sudo apt-get install zram-config;
+      
+      sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev;
+      sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer;
+      sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev;
+      
+      wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
+      tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
+      export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH;
+      
+      sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304;
+      sudo mkswap /swapfile;
+      sudo swapon /swapfile;
+      
+      sudo apt-get install ninja-build;
+      
+      wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz;
+      tar -xf pcl-1.8.0.tar.gz;
+      cd pcl-pcl-1.8.0 && mkdir build && cd build;
+      cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..;
+      
+      travis_wait 50 ninja -j4;
+      sudo ninja -t targets install;
+      cd ../..;
+    fi
   - pip install --upgrade pip
   - pip install cython==0.25.2
+  - pip install nose
   - pip install numpy
   - pip install coveralls
   - python setup.py build_ext -i
   - python setup.py install
 
-# pcl base 1.7.2
-# - python examples/official/Recognition/cpython correspondence_grouping.py pcldata/tutorials/correspondence_grouping/milk.pcd pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
 script:
-  # - coverage run --source=test_pcl setup.py test
-  # - coverage run tests/test_pcl.py
-  - coverage run --parallel-mode tests/test_pcl.py
-  - coverage run --parallel-mode tests/test_registration.py
+  # - coverage run --parallel-mode tests/test_pcl.py
+  # - coverage run --parallel-mode tests/test_registration.py
+  # - nosetests -A "$NOSEATTR" --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  # - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --with-coverage --cover-erase --cover-package=python-pcl --verbose
+  - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  
   # examples
   # - python examples/GrabberCallbackTest.py
   # examples/official

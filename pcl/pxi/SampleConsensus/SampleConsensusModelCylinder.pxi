@@ -4,6 +4,7 @@ cimport pcl_sample_consensus as pcl_sac
 
 cdef class SampleConsensusModelCylinder:
     """
+    defines a model for 3D cylinder segmentation class.
     """
 
     def __cinit__(self, PointCloud pc not None):

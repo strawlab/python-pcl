@@ -151,44 +151,49 @@ if len(inliers) != 0:
 
     final.from_array(finalpoints)
 
-# // creates the visualization object and adds either our orignial cloud or all of the inliers
-# // depending on the command line arguments specified.
-# boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
-# if (pcl::console::find_argument (argc, argv, "-f") >= 0 || pcl::console::find_argument (argc, argv, "-sf") >= 0)
-#   viewer = simpleVis(final);
-# else
-#   viewer = simpleVis(cloud);
 
-if argc > 1:
-    if argvs[1] == "-f" or argvs[1] == "-sf":
-        viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-        viewer.SetBackgroundColor (0, 0, 0)
-        viewer.AddPointCloud (final, b'sample cloud')
-        viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
-        viewer.InitCameraParameters ()
+# current(0.3.0) Windows Only Test
+isWindows = False
+if isWindows == True:
+    # creates the visualization object and adds either our orignial cloud or all of the inliers
+    # depending on the command line arguments specified.
+    # boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
+    # if (pcl::console::find_argument (argc, argv, "-f") >= 0 || pcl::console::find_argument (argc, argv, "-sf") >= 0)
+    #   viewer = simpleVis(final);
+    # else
+    #   viewer = simpleVis(cloud);
+
+    if argc > 1:
+        if argvs[1] == "-f" or argvs[1] == "-sf":
+            viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
+            viewer.SetBackgroundColor (0, 0, 0)
+            viewer.AddPointCloud (final, b'sample cloud')
+            viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+            viewer.InitCameraParameters ()
+        else:
+            viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
+            viewer.SetBackgroundColor (0, 0, 0)
+            viewer.AddPointCloud (cloud, b'sample cloud')
+            viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+            viewer.InitCameraParameters ()
     else:
         viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
         viewer.SetBackgroundColor (0, 0, 0)
         viewer.AddPointCloud (cloud, b'sample cloud')
         viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
         viewer.InitCameraParameters ()
-else:
-    viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-    viewer.SetBackgroundColor (0, 0, 0)
-    viewer.AddPointCloud (cloud, b'sample cloud')
-    viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
-    viewer.InitCameraParameters ()
 
 
-# while (!viewer->wasStopped ())
-# {
-# viewer->spinOnce (100);
-# boost::this_thread::sleep (boost::posix_time::microseconds (100000));
-# }
-isStopped = False
-while isStopped == False:
-    isStopped = viewer.WasStopped()
-    viewer.SpinOnce (100)
+    # while (!viewer->wasStopped ())
+    # {
+    # viewer->spinOnce (100);
     # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
-
+    # }
+    isStopped = False
+    while isStopped == False:
+        isStopped = viewer.WasStopped()
+        viewer.SpinOnce (100)
+        # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
+else:
+    pass
 

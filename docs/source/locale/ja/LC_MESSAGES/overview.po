@@ -1,0 +1,140 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2015, Preferred Networks, inc. and Preferred Infrastructure,
+# inc.
+# This file is distributed under the same license as the python-pcl package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: python-pcl 0.0.1.dev0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-31 13:18+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.4.0\n"
+
+#: ../../source/overview.rst:4
+msgid "python-pcl Overview"
+msgstr ""
+
+#: ../../source/overview.rst:8
+msgid ""
+"`python-pcl <https://github.com/strawlab/python-pcl>`_ is an "
+"implementation of PointCloudLibrary-compatible. interface."
+msgstr ""
+
+#: ../../source/overview.rst:11
+msgid ""
+"The following is a brief overview of supported subset of "
+"PointCloudLibrary interface:"
+msgstr ""
+
+#: ../../source/overview.rst:13
+msgid "`filters <http://docs.pointclouds.org/trunk/group__filters.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:14
+msgid "`features <http://docs.pointclouds.org/trunk/group__features.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:15
+msgid "`keypoints <http://docs.pointclouds.org/trunk/group__keypoints.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:16
+msgid ""
+"`registration "
+"<http://docs.pointclouds.org/trunk/group__registration.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:17
+msgid "`kdtree <http://docs.pointclouds.org/trunk/group__kdtree.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:18
+msgid "`octree <http://docs.pointclouds.org/trunk/group__octree.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:19
+msgid ""
+"`segmentation "
+"<http://docs.pointclouds.org/trunk/group__segmentation.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:20
+msgid ""
+"`sample_consensus "
+"<http://docs.pointclouds.org/trunk/group__sample__consensus.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:21
+msgid "`surface <http://docs.pointclouds.org/trunk/group__surface.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:22
+msgid "`recognition <http://docs.pointclouds.org/trunk/group__recognition.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:23
+msgid "`io <http://docs.pointclouds.org/trunk/group__io.html>`_"
+msgstr ""
+
+#: ../../source/overview.rst:24
+msgid ""
+"`visualization "
+"<http://docs.pointclouds.org/trunk/group__visualization.html>`_"
+msgstr ""
+
+#~ msgid ""
+#~ "`python-pcl <https://github.com/strawlab/pcl-"
+#~ "python>`_ is an implementation of "
+#~ "NumPy-compatible multi-dimensional array on"
+#~ " CUDA. python-pcl consists of :class"
+#~ ":`python-pcl.ndarray`, the core multi-"
+#~ "dimensional array class, and many "
+#~ "functions on it. It supports a "
+#~ "subset of :class:`numpy.ndarray` interface."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The following is a brief overview "
+#~ "of supported subset of PointCloud "
+#~ "interface:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "`Basic indexing "
+#~ "<http://docs.scipy.org/doc/numpy/reference/arrays.indexing.html>`_ "
+#~ "(indexing by ints, slices, newaxes, and"
+#~ " Ellipsis)"
+#~ msgstr ""
+
+#~ msgid "python-pcl also includes the following features for performance:"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "python-pcl uses on-the-fly kernel"
+#~ " synthesis: when a kernel call is "
+#~ "required, it compiles a kernel code "
+#~ "optimized for the shapes and dtypes "
+#~ "of given arguments, sends it to "
+#~ "the GPU device, and executes the "
+#~ "kernel. The compiled code is cached "
+#~ "to ``$(HOME)/.python-pcl/kernel_cache`` directory"
+#~ " (this cache path can be overwritten"
+#~ " by setting the ``CUPY_CACHE_DIR`` "
+#~ "environment variable). It may make "
+#~ "things slower at the first kernel "
+#~ "call, though this slow down will "
+#~ "be resolved at the second execution. "
+#~ "python-pcl also caches the kernel "
+#~ "code sent to GPU device within the"
+#~ " process, which reduces the kernel "
+#~ "transfer time on further calls."
+#~ msgstr ""
+

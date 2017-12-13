@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
 from libcpp cimport bool
 from libcpp.string cimport string
@@ -3143,7 +3143,7 @@ cdef extern from "pcl/registration/lum.h" namespace "pcl" nogil:
 # /** \brief A 3D Normal Distribution Transform registration implementation for point cloud data.
 #   * \note For more information please see
 #   * <b>Magnusson, M. (2009). The Three-Dimensional Normal-Distributions Transform  
-#   * an Ef珣ient Representation for Registration, Surface Analysis, and Loop Detection.
+#   * an Ef菴器州ient Representation for Registration, Surface Analysis, and Loop Detection.
 #   * PhD thesis, Orebro University. Orebro Studies in Technology 36.</b>,
 #   * <b>More, J., and Thuente, D. (1994). Line Search Algorithm with Guaranteed Sufficient Decrease
 #   * In ACM Transactions on Mathematical Software.</b> and

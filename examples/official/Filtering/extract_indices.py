@@ -23,15 +23,15 @@ print("PointCloud before filtering: " + str(cloud_blob.width * cloud_blob.height
 # sor.setInputCloud (cloud_blob);
 # sor.setLeafSize (0.01f, 0.01f, 0.01f);
 # sor.filter (*cloud_filtered_blob);
-sor = cloud_blob.make_VexelGrid()
-sor.set_LeafSize(0.01, 0.01, 0.01)
+sor = cloud_blob.make_voxel_grid_filter()
+sor.set_leaf_size(0.01, 0.01, 0.01)
 cloud_filtered_blob = sor.filter()
 
-# // Convert to the templated PointCloud
+# Convert to the templated PointCloud
 # pcl::fromPCLPointCloud2 (*cloud_filtered_blob, *cloud_filtered);
 # std::cerr << "PointCloud after filtering: " << cloud_filtered->width * cloud_filtered->height << " data points." << std::endl;
-cloud_filtered = cloud_filtered_blob.from___
-print("PointCloud after filtering: " + (cloud_filtered.width * cloud_filtered.height) + " data points.")
+cloud_filtered = pcl.PCLPointCloud2(cloud_filtered_blob.to_array())
+print('PointCloud after filtering: ' + str(cloud_filtered.width * cloud_filtered.height) + ' data points.')
 
 # Write the downsampled version to disk
 # pcl::PCDWriter writer;

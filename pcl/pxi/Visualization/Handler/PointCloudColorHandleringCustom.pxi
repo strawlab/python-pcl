@@ -5,7 +5,8 @@ from _pcl cimport PointCloud_PointWithViewpoint
 from _pcl cimport RangeImages
 cimport pcl_defs as cpp
 cimport numpy as cnp
-
+
+
 cimport pcl_visualization_defs as pcl_vis
 from boost_shared_ptr cimport sp_assign
 
@@ -29,5 +30,6 @@ cdef class PointCloudColorHandleringCustom:
     def __dealloc__(self):
         # del self.me
         pass
-
+
+
 

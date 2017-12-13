@@ -43,16 +43,9 @@ cdef class HarrisKeypoint3D:
         self.me.setRadiusSearch (param)
 
     def compute(self):
-        # compute function based KeyPoint class
-        # self.thisptr().compute (deref(cPointCloudPointXYZI.makeShared().get()))
-        ###
-        # OK : data 0
         keypoints = PointCloud_PointXYZI()
+        sp_assign(keypoints.thisptr_shared, new cpp.PointCloud[cpp.PointXYZI]())
         cdef cpp.PointCloud_PointXYZI_t *ckeypoints = <cpp.PointCloud_PointXYZI_t*>keypoints.thisptr()
-        # self.me.compute (<cpp.PointCloud[cpp.PointXYZI]> deref(ckeypoints.makeShared().get()))
-        # pcl.1.7.2
-        self.me.compute (<cpp.PointCloud[cpp.PointXYZI]&> deref(ckeypoints.makeShared().get()))
-        # self.me.compute (ckeypoints.makeShared().get())
-        print('keypoints.count : ' + str(keypoints.size))
+        self.me.compute (<cpp.PointCloud[cpp.PointXYZI]&> deref(ckeypoints))
         return keypoints
 

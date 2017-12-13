@@ -73,6 +73,10 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         # void computeEigen (cpp.PointCloud[Eigen::MatrixXf] &output);
 
 
+ctypedef Feature[cpp.PointXYZ, cpp.Normal] Feature_t
+ctypedef Feature[cpp.PointXYZI, cpp.Normal] Feature_PointXYZI_t
+ctypedef Feature[cpp.PointXYZRGB, cpp.Normal] Feature_PointXYZRGB_t
+ctypedef Feature[cpp.PointXYZRGBA, cpp.Normal] Feature_PointXYZRGBA_t
 ###
 
 # template <typename PointInT, typename PointNT, typename PointOutT>
@@ -581,6 +585,7 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
 
+
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] IntegralImageNormalEstimation_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal] IntegralImageNormalEstimation_PointXYZI_t
 ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal] IntegralImageNormalEstimation_PointXYZRGB_t
@@ -589,14 +594,6 @@ ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal]] Int
 ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal]] IntegralImageNormalEstimation_PointXYZI_Ptr_t
 ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal]] IntegralImageNormalEstimation_PointXYZRGB_Ptr_t
 ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal]] IntegralImageNormalEstimation_PointXYZRGBA_Ptr_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal](Feature[cpp.PointXYZ, cpp.Normal]) IntegralImageNormalEstimation_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal](Feature[cpp.PoinPointXYZItXYZ, cpp.Normal]) IntegralImageNormalEstimation_PointXYZI_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal](Feature[cpp.PointXYZRGB, cpp.Normal]) IntegralImageNormalEstimation_PointXYZRGB_t
-# ctypedef IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal](Feature[cpp.PointXYZRGBA, cpp.Normal]) IntegralImageNormalEstimation_PointXYZRGBA_t
-# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal](Feature[cpp.PointXYZ, cpp.Normal])] IntegralImageNormalEstimationPtr_t
-# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZI, cpp.Normal](Feature[cpp.PoinPointXYZItXYZ, cpp.Normal])] IntegralImageNormalEstimation_PointXYZI_Ptr_t
-# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGB, cpp.Normal](Feature[cpp.PointXYZRGB, cpp.Normal])] IntegralImageNormalEstimation_PointXYZRGB_Ptr_t
-# ctypedef shared_ptr[IntegralImageNormalEstimation[cpp.PointXYZRGBA, cpp.Normal](Feature[cpp.PointXYZRGBA, cpp.Normal])] IntegralImageNormalEstimation_PointXYZRGBA_Ptr_t
 ###
 
 # integral_image2D.h
@@ -1287,11 +1284,15 @@ cdef extern from "pcl/features/normal_3d.h" namespace "pcl":
         # * to use a user defined view point, use the method setViewPoint
         inline void useSensorOriginAsViewPoint ()
         
+
 ctypedef NormalEstimation[cpp.PointXYZ, cpp.Normal] NormalEstimation_t
 ctypedef NormalEstimation[cpp.PointXYZI, cpp.Normal] NormalEstimation_PointXYZI_t
 ctypedef NormalEstimation[cpp.PointXYZRGB, cpp.Normal] NormalEstimation_PointXYZRGB_t
 ctypedef NormalEstimation[cpp.PointXYZRGBA, cpp.Normal] NormalEstimation_PointXYZRGBA_t
-
+ctypedef shared_ptr[NormalEstimation[cpp.PointXYZ, cpp.Normal]] NormalEstimationPtr_t
+ctypedef shared_ptr[NormalEstimation[cpp.PointXYZI, cpp.Normal]] NormalEstimation_PointXYZI_Ptr_t
+ctypedef shared_ptr[NormalEstimation[cpp.PointXYZRGB, cpp.Normal]] NormalEstimation_PointXYZRGB_Ptr_t
+ctypedef shared_ptr[NormalEstimation[cpp.PointXYZRGBA, cpp.Normal]] NormalEstimation_PointXYZRGBA_Ptr_t
 ###
 
 # template <typename PointInT>

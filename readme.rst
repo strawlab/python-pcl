@@ -14,20 +14,12 @@
       })();
     </script>
 
-
-.. image:: https://travis-ci.org/Sirokujira/python-pcl.png?branch=master
-        :target: https://travis-ci.org/Sirokujira/python-pcl
-
-.. image:: https://ci.appveyor.com/api/projects/status/ixcgmjb1x1713fde
-        :target: https://ci.appveyor.com/project/Sirokujira/python-pcl
-
-.. image:: https://coveralls.io/repos/github/Sirokujira/python-pcl/badge.svg?branch=master
-        :target: https://coveralls.io/github/Sirokujira/python-pcl?branch=master
+    <div align="center"><img src="docs/image/pcl_logo_958x309.png" width="309"/></div>
 
 Introduction
 ============
 
-This is a small python binding to the `pointcloud <http://pointclouds.org/>`_ library.
+This is a small python binding to the [pointcloud](http://pointclouds.org/) library.
 Currently, the following parts of the API are wrapped (all methods operate on PointXYZ)
 point types
 
@@ -82,59 +74,206 @@ and in the `unit tests <https://github.com/strawlab/python-pcl/blob/master/tests
 This work was supported by `Strawlab <http://strawlab.org/>`_.
 
 Requirements
-------------
+============
 
 This release has been tested on Linux Ubuntu 14.04 with
 
  * Python 2.7.6, 3.4.0, 3.5.2
- * pcl 1.7.2
- * Cython 0.25.2
+ * pcl 1.7.0
+ * Cython <= 0.25.2
 
 and MacOS with
+
  * Python 2.7.6, 3.4.0, 3.5.2
- * pcl 1.7.2
- * Cython 0.25.2
+ * pcl 1.8.1(use homebrew)
+ * Cython <= 0.25.2
 
 and Windows with
+
  * (Miniconda/Anaconda) - Python 3.4
  * pcl 1.6.0(VS2010)
- * Cython 0.25.2
+ * Cython <= 0.25.2
  * Gtk+
 
 and Windows with
+
  * (Miniconda/Anaconda) - Python 3.5
- * pcl 1.7.2(VS2015)
- * Cython 0.25.2
+ * pcl 1.8.1(VS2015)
+ * Cython <= 0.25.2
  * Gtk+
 
-and Windows with
- * (Miniconda/Anaconda) - Python 3.5
- * pcl 1.8.0(VS2015)
- * Cython 0.25.2
- * Gtk+
+Installation
+============
 
-`Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+Linux(Ubuntu)
+-------------
+
+before Install module
+^^^^^^^^^^^^^^^^^^^^^
+
+    PCL 1.7.0 and Ubuntu14.04 (use apt-get)
+
+        1. Install PCL Module.
+
+        .. code-block:: none
+
+            sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+
+            sudo apt-get update -y
+
+            sudo apt-get install libpcl-all -y
+
+
+    PCL 1.7.2 and Ubuntu16.04 (use Debian package)
+
+        1. Install PCL Module.?
+
+        .. code-block:: none
+
+            sudo apt-get update -y
+
+            sudo apt-get install build-essential devscripts
+
+            dget -u https://launchpad.net/ubuntu/+archive/primary/+files/pcl_1.7.2-14ubuntu1.16.04.1.dsc
+
+            cd pcl-1.7.2
+
+            sudo dpkg-buildpackage -r -uc -b
+
+            sudo dpkg -i pcl_*.deb
+
+            * current add ppa 
+              (sudo add-apt-repository -remove ppa:v-launchpad-jochen-sprickerhof-de/pcl -y)
+
+            Reference `here <https://launchpad.net/ubuntu/xenial/+package/pcl-tools>`_.
+
+
+    PCL 1.8.0 and Ubuntu16.04(build module)([CI Test Timeout])
+
+        1. Build Module
+
+            Reference `here <https://askubuntu.com/questions/916260/how-to-install-point-cloud-library-v1-8-pcl-1-8-0-on-ubuntu-16-04-2-lts-for>`_.
+
+MacOSX
+------
+
+before Install module
+^^^^^^^^^^^^^^^^^^^^^
+
+        Case1. use homebrew(PCL 1.8.1 - 2017/11/13 current)
+
+        1. Install PCL Module.
+
+            .. code-block:: none
+
+            brew tap homebrew/science
+
+            brew install pcl
+
+Warning:
+   
+   Current Installer (2017/10/02) Not generated pcl-2d-1.8.pc file.(Issue #119)
+   
+   Reference PointCloudLibrary Issue.
+   
+       `Pull qequests 1679 <https://github.com/PointCloudLibrary/pcl/pull/1679>`_.
+   
+       `Issue 1978 <https://github.com/PointCloudLibrary/pcl/issues/1978>`_.
+
+circumvent:
+
+    copy travis/pcl-2d-1.8.pc file to /usr/local/lib/pkgconfig folder.
+
+Windows
+-------
+
+before Install module
+^^^^^^^^^^^^^^^^^^^^^
+
+        Case1. use PCL 1.6.0 
+
+            `Windows SDK 7.1 <http://www.microsoft.com/download/en/details.aspx?id=8279>`_
+
+            `PCL All-In-One Installer <http://pointclouds.org/downloads/windows.html>`_
+                
+                `32 bit <http://sourceforge.net/projects/pointclouds/files/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe/download>`_
+                
+                `64 bit <http://sourceforge.net/projects/pointclouds/files/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe/download>`_
+
+            OpenNI2[(PCL Install FolderPath)\\3rdParty\\OpenNI\\OpenNI-(win32/x64)-1.3.2-Dev.msi]
+
+        Case2. use 1.8.1
+
+            `Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+
+            `PCL All-In-One Installer <https://github.com/PointCloudLibrary/pcl/releases/>`_
+                
+                `32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win32.exe>`_
+                
+                `64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win64.exe>`_
+
+            OpenNI2[(PCL Install FolderPath)\\3rdParty\\OpenNI2\\OpenNI-Windows-(win32/x64)-2.2.msi]
+
+        Common setting            
+
+            `Windows Gtk+ Download <http://win32builder.gnome.org/>`_                   
+
+                Download file unzip. Copy bin Folder to pkg-config Folder                  
+                 
+                or execute powershell file [Install-GTKPlus.ps1].
 
 `Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_ 
 
-`Windows Gtk+ Download <http://win32builder.gnome.org/>`_ 
+set before Environment variable
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    
+    1. PCL_ROOT
 
-Copy bin Folder to pkg-config Folder
+        set PCL_ROOT=$(PCL Install FolderPath)
 
-set Environment variable
+    2. PATH
 
-1. PCL_ROOT
-    $(PCL Install FolderPath)
+        (pcl 1.6.0)
+        set PATH=$(PCL_ROOT)/bin/;$(OPEN_NI_ROOT)/Tools;$(VTK_ROOT)/bin;%PATH%
 
-2. PATH
-    (pcl 1.6.0, 1.7.2?)
-    $(PCL_ROOT)/bin/;$(OPEN_NI_ROOT)/Tools;$(VTK_ROOT)/bin;
+        (pcl 1.8.1)
+        set PATH=$(PCL_ROOT)/bin/;$(OPEN_NI2_ROOT)/Tools;$(VTK_ROOT)/bin;%PATH%
 
-    (pcl 1.8.0)
-    $(PCL_ROOT)/bin/;$(OPEN_NI2_ROOT)/Tools;$(VTK_ROOT)/bin;
+Common setting
+--------------
 
-* use Cython 0.25.2 reason
-* `override method support version <http://cython.readthedocs.io/en/latest/src/userguide/wrapping_CPlusPlus.html/>`_
+1. pip module install.
+
+.. code-block:: none
+
+    pip install --upgrade pip
+    
+    pip install cython==0.25.2
+    
+    pip install numpy
+
+2. instal python module
+
+.. code-block:: none
+
+    python setup.py build_ext -i
+    
+    python setup.py install
+
+
+Build & Test Status
+===================
+
+windows(1.6.0/1.8.1)
+
+    .. image:: https://ci.appveyor.com/api/projects/status/w52fee7j22q211cm/branch/master?svg=true
+        :target: https://ci.appveyor.com/project/Sirokujira/python-pcl-iju42
+
+Mac OSX(1.8.1)/Ubuntu14.04(1.7.0)
+
+    .. image:: https://travis-ci.org/strawlab/python-pcl.svg?branch=master
+        :target: https://travis-ci.org/strawlab/python-pcl
+
 
 A note about types
 ------------------
@@ -150,20 +289,10 @@ provide a foundation for someone wishing to carry on.
 API Documentation
 =================
 
-.. autosummary::
-   pcl.PointCloud
-   pcl.Segmentation
-   pcl.SegmentationNormal
-   pcl.StatisticalOutlierRemovalFilter
-   pcl.MovingLeastSquares
-   pcl.PassThroughFilter
-   pcl.VoxelGridFilter
 
 For deficiencies in this documentation, please consult the
 `PCL API docs <http://docs.pointclouds.org/trunk/index.html>`_, and the
 `PCL tutorials <http://pointclouds.org/documentation/tutorials/>`_.
 
-.. automodule:: pcl
-   :members:
-   :undoc-members:
+
 

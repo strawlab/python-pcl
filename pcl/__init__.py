@@ -7,6 +7,7 @@ from ._pcl import *
 
 import sys
 
+
 def load(path, format=None):
     """Load pointcloud from path.
 
@@ -43,6 +44,7 @@ def load_XYZI(path, format=None):
         raise IOError("error while loading pointcloud from %r (format=%r)"
                       % (path, format))
     return p
+
 
 def load_XYZRGB(path, format=None):
     """
@@ -112,6 +114,7 @@ def save(cloud, path, format=None, binary=False):
         raise IOError("error while saving pointcloud to %r (format=%r)"
                       % (path, format))
 
+
 def save_XYZRGBA(cloud, path, format=None, binary=False):
     """Save pointcloud to file.
 
@@ -126,6 +129,7 @@ def save_XYZRGBA(cloud, path, format=None, binary=False):
         raise IOError("error while saving pointcloud to %r (format=%r)"
                       % (path, format))
 
+
 def save_PointNormal(cloud, path, format=None, binary=False):
     """
     Save pointcloud to file.
@@ -139,6 +143,7 @@ def save_PointNormal(cloud, path, format=None, binary=False):
     if dumper(_encode(path), binary):
         raise IOError("error while saving pointcloud to %r (format=%r)"
                       % (path, format))
+
 
 def _encode(path):
     # Encode path for use in C++.
