@@ -58,6 +58,7 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float& element "operator()"(int row, int col)
     cdef cppclass Vector4f:
         Vector4f() except +
+        Vector4f(double c0, double c1, double c2, double c3) except + 
         float *data()
         float& element "operator()"(int row, int col)
     cdef cppclass Vector3f:

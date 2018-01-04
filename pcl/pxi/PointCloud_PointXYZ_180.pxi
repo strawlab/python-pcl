@@ -6,6 +6,7 @@ cimport numpy as cnp
 
 cnp.import_array()
 
+
 # parts
 cimport pcl_features_180 as pclftr
 cimport pcl_filters_180 as pclfil
@@ -136,6 +137,13 @@ cdef class PointCloud:
             cdef float *data = origin.data()
             return np.array([data[0], data[1], data[2], data[3]],
                             dtype=np.float32)
+
+        def __set__(self, cnp.ndarray[cnp.float32_t, ndim=1] new_origin):
+            self.thisptr().sensor_origin_ = cpp.Vector4f(
+                    new_origin[0],
+                    new_origin[1],
+                    new_origin[2],
+                    0.0)
 
     property sensor_orientation:
         def __get__(self):
