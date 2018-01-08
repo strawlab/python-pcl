@@ -58,12 +58,12 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         float& element "operator()"(int row, int col)
     cdef cppclass Vector4f:
         Vector4f() except +
-        Vector4f(double c0, double c1, double c2, double c3) except + 
+        Vector4f(float c0, float c1, float c2, float c3) except + 
         float *data()
         float& element "operator()"(int row, int col)
     cdef cppclass Vector3f:
         Vector3f() except +
-        Vector3f(double c0, double c1, double c2) except + 
+        Vector3f(float c0, float c1, float c2) except + 
         float *data()
         float& element "operator()"(int row, int col)
     cdef cppclass Vector3i:
@@ -76,6 +76,8 @@ cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
         double coeff(int row, int col)
         double& element "operator()"(int row, int col)
     cdef cppclass Quaternionf:
+        Quaternionf()
+        Quaternionf(float, float, float, float)
         float w()
         float x()
         float y()

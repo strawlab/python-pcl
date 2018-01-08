@@ -122,7 +122,14 @@ cdef class PointCloud_FPFHSignature33:
         def __get__(self):
             # NumPy doesn't have a quaternion type, so we return a 4-vector.
             cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
-            return np.array([o.w(), o.x(), o.y(), o.z()])
+            return np.array([o.w(), o.x(), o.y(), o.z()], dtype=np.float32)
+        
+        def __set__(self, cnp.ndarray[cnp.float32_t, ndim=1] new_orient):
+            self.thisptr().sensor_orientation_ = cpp.Quaternionf(
+                    new_orient[0],
+                    new_orient[1],
+                    new_orient[2],
+                    new_orient[3])
 
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
