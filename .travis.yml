@@ -180,6 +180,8 @@ matrix:
 
 # pcl 1.8.1 only(MacOSX/Ubuntu)
 # pcl_2d-1.8.pc copy /usr/local/lib/pkgconfig/pcl_2d-1.8.pc
+# Check command
+# pkg-config pcl_2d-1.8 --libs
 before_install:
   - if [ ${TRAVIS_OS_NAME} = "osx" ]; then
       brew update >/dev/null;

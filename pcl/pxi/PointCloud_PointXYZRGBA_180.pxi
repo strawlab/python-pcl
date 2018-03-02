@@ -235,7 +235,7 @@ cdef class PointCloud_PointXYZRGBA:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+            error = pclio.loadPCDFile [cpp.PointXYZRGBA](string(s), deref(self.thisptr()))
             # cpp.PointCloud[cpp.PointXYZRGBA] *p = self.thisptr()
             # error = cpp.loadPCDFile(string(s), p)
         return error
@@ -243,9 +243,17 @@ cdef class PointCloud_PointXYZRGBA:
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
-            # cpp.PointCloud[cpp.PointXYZRGBA] *p = self.thisptr()
-            # ok = cpp.loadPLYFile(string(s), p)
+            # NG
+            # ok = pclio.loadPLYFile [cpp.PointXYZRGBA](string(s), <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr()))
+            ok = pclio.loadPLYFile [cpp.PointXYZRGBA](string(s), deref(self.thisptr()))
+        return ok
+
+    def _from_obj_file(self, const char *s):
+        cdef int ok = 0
+        with nogil:
+            # NG
+            # ok = pclio.loadOBJFile [cpp.PointXYZRGBA](string(s), <cpp.PointCloud[cpp.PointXYZRGBA]> deref(self.thisptr()))
+            ok = pclio.loadOBJFile [cpp.PointXYZRGBA](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -259,18 +267,18 @@ cdef class PointCloud_PointXYZRGBA:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = pclio.savePCDFile(s, deref(self.thisptr()), binary)
+            error = pclio.savePCDFile [cpp.PointXYZRGBA](s, deref(self.thisptr()), binary)
             # cpp.PointCloud[cpp.PointXYZRGBA] *
-            # error = cpp.savePCDFile(s, p, binary)
+            # error = cpp.savePCDFile [cpp.PointXYZRGBA](s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
+            error = pclio.savePLYFile [cpp.PointXYZRGBA](s, deref(self.thisptr()), binary)
             # cpp.PointCloud[cpp.PointXYZRGBA] *p = self.thisptr()
-            # error = cpp.savePLYFile(s, p, binary)
+            # error = cpp.savePLYFile [cpp.PointXYZRGBA](s, p, binary)
         return error
 
     def make_segmenter(self):

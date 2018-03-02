@@ -10,78 +10,148 @@ cimport pcl_defs as cpp
 # from boost_shared_ptr cimport shared_ptr
 
 cdef extern from "pcl/io/pcd_io.h" namespace "pcl::io":
-    # XYZ
-    int load(string file_name, cpp.PointCloud[cpp.PointXYZ] &cloud) nogil except +
-    int loadPCDFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZ] &cloud) nogil except +
-    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointXYZ] &cloud,
-                    bool binary_mode) nogil except +
-    int savePCDFileASCII (string file_name, cpp.PointCloud[cpp.PointXYZ] &cloud) nogil except +
-    int savePCDFileBinary (string &file_name, cpp.PointCloud[cpp.PointXYZ] &cloud) nogil except +
-    int savePCDFile (string &file_name, 
-                     cpp.PointCloud[cpp.PointXYZ] &cloud,
+    # Template 
+    int load [PointT](string file_name, cpp.PointCloud[PointT] &cloud) nogil except +
+    int loadPCDFile [PointT](string file_name, cpp.PointCloud[PointT] &cloud) nogil except +
+    int savePCDFile [PointT](string file_name, cpp.PointCloud[PointT] &cloud, bool binary_mode) nogil except +
+    int savePCDFileASCII [PointT](string file_name, cpp.PointCloud[PointT] &cloud) nogil except +
+    int savePCDFileBinary [PointT](string &file_name, cpp.PointCloud[PointT] &cloud) nogil except +
+    int savePCDFile_Index "savePCDFile" [PointT](string &file_name, 
+                     cpp.PointCloud[PointT] &cloud,
                      vector[int] &indices, 
                      bool binary_mode) nogil except +
 
 
-    # XYZI
-    int load(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
-    int loadPCDFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
-    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud,
-                    bool binary_mode) nogil except +
-
-    # XYZRGB
-    int load(string file_name, cpp.PointCloud[cpp.PointXYZRGB] &cloud) nogil except +
-    int loadPCDFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZRGB] &cloud) nogil except +
-    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointXYZRGB] &cloud,
-                    bool binary_mode) nogil except +
-
-    # XYZRGBA
-    int load(string file_name, cpp.PointCloud[cpp.PointXYZRGBA] &cloud) nogil except +
-    int loadPCDFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZRGBA] &cloud) nogil except +
-    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointXYZRGBA] &cloud,
-                    bool binary_mode) nogil except +
-
-	# PointWithViewpoint
-    int load(string file_name, cpp.PointCloud[cpp.PointWithViewpoint] &cloud) nogil except +
-    int loadPCDFile(string file_name,
-                    cpp.PointCloud[cpp.PointWithViewpoint] &cloud) nogil except +
-    int savePCDFile(string file_name, cpp.PointCloud[cpp.PointWithViewpoint] &cloud,
-                    bool binary_mode) nogil except +
-
 cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
-    # XYZ
-    int loadPLYFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZ] &cloud) nogil except +
-    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZ] &cloud,
+    # Template 
+    int loadPLYFile [PointT](string file_name,
+                             cpp.PointCloud[PointT] &cloud) nogil except +
+    int savePLYFile [PointT](string file_name, cpp.PointCloud[PointT] &cloud,
                     bool binary_mode) nogil except +
 
-    # XYZI
-    int loadPLYFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZI] &cloud) nogil except +
-    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZI] &cloud,
-                    bool binary_mode) nogil except +
 
-    # XYZRGB
-    int loadPLYFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZRGB] &cloud) nogil except +
-    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZRGB] &cloud,
-                    bool binary_mode) nogil except +
+###
 
-    # XYZRGBA
-    int loadPLYFile(string file_name,
-                    cpp.PointCloud[cpp.PointXYZRGBA] &cloud) nogil except +
-    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointXYZRGBA] &cloud,
-                    bool binary_mode) nogil except +
+# namespace pcl
+# {
+#   class PCL_EXPORTS MTLReader
+#   {
+#     public:
+#       /** \brief empty constructor */
+#       MTLReader ();
+# 
+#       /** \brief empty destructor */
+#       virtual ~MTLReader() {}
+# 
+#       /** \brief Read a MTL file given its full path.
+#         * \param[in] filename full path to MTL file
+#         * \return 0 on success < 0 else.
+#         */
+#       int
+#       read (const std::string& filename);
+# 
+#       /** \brief Read a MTL file given an OBJ file full path and the MTL file name.
+#         * \param[in] obj_file_name full path to OBJ file
+#         * \param[in] mtl_file_name MTL file name
+#         * \return 0 on success < 0 else.
+#         */
+#       int
+#       read (const std::string& obj_file_name, const std::string& mtl_file_name);
+# 
+#       std::vector<pcl::TexMaterial>::const_iterator
+#       getMaterial (const std::string& material_name) const;
+# 
+#       /// materials array
+#       std::vector<pcl::TexMaterial> materials_;
+# 
+#     private:
+#       /// converts CIE XYZ to RGB
+#       inline void
+#       cie2rgb (const Eigen::Vector3f& xyz, pcl::TexMaterial::RGB& rgb) const;
+#       /// fill a pcl::TexMaterial::RGB from a split line containing CIE x y z values
+#       int
+#       fillRGBfromXYZ (const std::vector<std::string>& split_line, pcl::TexMaterial::RGB& rgb);
+#       /// fill a pcl::TexMaterial::RGB from a split line containing r g b values
+#       int
+#       fillRGBfromRGB (const std::vector<std::string>& split_line, pcl::TexMaterial::RGB& rgb);
+#       /// matrix to convert CIE to RGB
+#       Eigen::Matrix3f xyz_to_rgb_matrix_;
+# 
+#       EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+#   };
 
-    # PointWithViewpoint
-    int loadPLYFile(string file_name,
-                    cpp.PointCloud[cpp.PointWithViewpoint] &cloud) nogil except +
-    int savePLYFile(string file_name, cpp.PointCloud[cpp.PointWithViewpoint] &cloud,
-                    bool binary_mode) nogil except +
+# cdef extern from "pcl/io/obj_io.h" namespace "pcl::io":
+#     # Template 
+#     # /** \brief Load any OBJ file into a templated PointCloud type
+#     #   * \param[in] file_name the name of the file to load
+#     #   * \param[out] cloud the resultant templated point cloud
+#     #   * \ingroup io
+#     #   */
+#     # template<typename PointT> inline int
+#     # loadOBJFile (const std::string &file_name, pcl::PointCloud<PointT> &cloud)
+#     int loadOBJFile [PointT](string file_name, cpp.PointCloud[PointT] &cloud) nogil except +
+# 
+#     # /** \brief Load any OBJ file into a templated PointCloud type.
+#     #   * \param[in] file_name the name of the file to load
+#     #   * \param[out] cloud the resultant templated point cloud
+#     #   * \param[out] origin the sensor acquisition origin, null
+#     #   * \param[out] orientation the sensor acquisition orientation, identity
+#     #   * \ingroup io
+#     #   */
+#     # inline int loadOBJFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud, Eigen::Vector4f &origin, Eigen::Quaternionf &orientation)
+# 
+#     # /** \brief Load an OBJ file into a PCLPointCloud2 blob type.
+#     #   * \param[in] file_name the name of the file to load
+#     #   * \param[out] cloud the resultant templated point cloud
+#     #   * \return 0 on success < 0 on error
+#     #   * \ingroup io
+#     #   */
+#     # inline int loadOBJFile (const std::string &file_name, pcl::PCLPointCloud2 &cloud)
+# 
+#     # /** \brief Load any OBJ file into a PolygonMesh type.
+#     #   * \param[in] file_name the name of the file to load
+#     #   * \param[out] mesh the resultant mesh
+#     #   * \return 0 on success < 0 on error
+#     #   *
+#     #   * \ingroup io
+#     #   */
+#     # inline int
+#     # loadOBJFile (const std::string &file_name, pcl::PolygonMesh &mesh)
+# 
+#     # /** \brief Load any OBJ file into a TextureMesh type.
+#     #   * \param[in] file_name the name of the file to load
+#     #   * \param[out] mesh the resultant mesh
+#     #   * \return 0 on success < 0 on error
+#     #   *
+#     #   * \ingroup io
+#     #   */
+#     # inline int
+#     # loadOBJFile (const std::string &file_name, pcl::TextureMesh &mesh)
+# 
+#     # /** \brief Saves a TextureMesh in ascii OBJ format.
+#     #   * \param[in] file_name the name of the file to write to disk
+#     #   * \param[in] tex_mesh the texture mesh to save
+#     #   * \param[in] precision the output ASCII precision
+#     #   * \ingroup io
+#     #   */
+#     # PCL_EXPORTS int
+#     # saveOBJFile (const std::string &file_name,
+#     #              const pcl::TextureMesh &tex_mesh,
+#     #              unsigned precision = 5);
+# 
+#     # /** \brief Saves a PolygonMesh in ascii PLY format.
+#     #   * \param[in] file_name the name of the file to write to disk
+#     #   * \param[in] mesh the polygonal mesh to save
+#     #   * \param[in] precision the output ASCII precision default 5
+#     #   * \ingroup io
+#     #   */
+#     # PCL_EXPORTS int
+#     # saveOBJFile (const std::string &file_name,
+#     #              const pcl::PolygonMesh &mesh,
+#     #              unsigned precision = 5);
+
+
+###
 
 #http://dev.pointclouds.org/issues/624
 #cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
