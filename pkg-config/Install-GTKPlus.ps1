@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
 Retrieves and extracts the GTK lirary from the "http://win32builder.gnome.org/" page.
 .EXAMPLE

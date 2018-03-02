@@ -19,6 +19,6 @@ Reference
 .. module:: python-pcl
 
 .. toctree::
-   :maxdepth: 10
+   :maxdepth: 1
 
    pcl
