@@ -18,12 +18,12 @@ matrix:
     #   - PCL_VERSION="1.7"
     #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     # - os: linux
-    #   python: "3.4"
+    #   python: "3.5"
     #   env:
     #   - PCL_VERSION="1.7"
     #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     # - os: linux
-    #   python: "3.5"
+    #   python: "3.6"
     #   env:
     #   - PCL_VERSION="1.7"
     #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
@@ -35,13 +35,13 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - g++-4.9
+            - g++-4.8
       env:
       - PCL_VERSION="1.7"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc-4.8 && CXX=g++-4.8"
     - os: linux
-      python: "3.4"
+      python: "3.5"
       addons:
         apt:
           sources:
@@ -53,7 +53,7 @@ matrix:
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: linux
-      python: "3.5"#
+      python: "3.6"
       addons:
         apt:
           sources:
@@ -84,7 +84,7 @@ matrix:
     #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
     # - os: linux
-    #   python: "3.4"
+    #   python: "3.5"
     #   addons:
     #     apt:
     #       sources:
@@ -97,7 +97,7 @@ matrix:
     #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
     # - os: linux
-    #   python: "3.5"
+    #   python: "3.6"
     #   addons:
     #     apt:
     #       sources:
@@ -116,11 +116,11 @@ matrix:
     #   env:
     #   - PCL_VERSION="1.8"
     # - os: linux
-    #   python: "3.4"
+    #   python: "3.5"
     #   env:
     #   - PCL_VERSION="1.8"
     # - os: linux
-    #   python: "3.5"
+    #   python: "3.6"
     #   env:
     #   - PCL_VERSION="1.8"
 
@@ -138,7 +138,7 @@ matrix:
       language: generic
       compiler: gcc
       env:
-      - PYTHON_VERSION=3.4.3
+      - PYTHON_VERSION=3.5.1
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
@@ -146,7 +146,7 @@ matrix:
       language: generic
       compiler: gcc
       env:
-      - PYTHON_VERSION=3.5.1
+      - PYTHON_VERSION=3.6.0
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
@@ -164,7 +164,7 @@ matrix:
     #   language: generic
     #   compiler: clang
     #   env:
-    #   - PYTHON_VERSION=3.4.3
+    #   - PYTHON_VERSION=3.5.1
     #   - PYENV_ROOT=~/.pyenv
     #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
     #   - NOSEATTR="not pcl_ver_0_4"
@@ -172,7 +172,7 @@ matrix:
     #   language: generic
     #   compiler: clang
     #   env:
-    #   - PYTHON_VERSION=3.5.1
+    #   - PYTHON_VERSION=3.6.0
     #   - PYENV_ROOT=~/.pyenv
     #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
     #   - NOSEATTR="not pcl_ver_0_4"
