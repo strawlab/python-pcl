@@ -19,7 +19,7 @@
 Introduction
 ============
 
-This is a small python binding to the [pointcloud](http://pointclouds.org/) library.
+This is a small python binding to the `pointcloud <http://pointclouds.org/>`_ library.
 Currently, the following parts of the API are wrapped (all methods operate on PointXYZ)
 point types
 
