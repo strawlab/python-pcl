@@ -6,7 +6,7 @@ cimport numpy as cnp
 cimport cython
 cimport pcl_visualization
 
-cimport pcl_visualization_defs as pclvis
+cimport pcl_visualization_defs as pcl_vis
 
 from libcpp.string cimport string
 
@@ -17,12 +17,12 @@ from boost_shared_ptr cimport sp_assign
 cdef class PCLVisualizering:
     """
     """
-    cdef pclvis.PCLVisualizerPtr_t thisptr_shared
+    cdef pcl_vis.PCLVisualizerPtr_t thisptr_shared
     
     def __cinit__(self):
-        sp_assign(self.thisptr_shared, new pclvis.PCLVisualizer('visual', True))
+        sp_assign(self.thisptr_shared, new pcl_vis.PCLVisualizer('visual', True))
 
-    cdef inline pclvis.PCLVisualizer *thisptr(self) nogil:
+    cdef inline pcl_vis.PCLVisualizer *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PCLVisualizer
         return self.thisptr_shared.get()
 
@@ -125,20 +125,20 @@ cdef class PCLVisualizering:
     # def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, string id = 'cloud', int viewport = 0):
     def AddPointCloud_ColorHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, id = b'cloud', viewport = 0):
         # NG : Base Class
-        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandler[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
+        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pcl_vis.PointCloudColorHandler[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         # OK? : Inheritance Class(PointCloudColorHandler)
-        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
-        self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), <string> id, viewport)
+        # self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
+        self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), <string> id, viewport)
         pass
 
     def AddPointCloud_ColorHandler(self, _pcl.RangeImages cloud, pcl_visualization.PointCloudColorHandleringCustom color_handler, id = b'cloud', int viewport = 0):
-        # self.thisptr().addPointCloud[cpp.PointWithRange](cloud.thisptr_shared, <const pclvis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
+        # self.thisptr().addPointCloud[cpp.PointWithRange](cloud.thisptr_shared, <const pcl_vis.PointCloudColorHandlerCustom[cpp.PointXYZ]> deref(color_handler.thisptr_shared.get()), id, viewport)
         pass
 
     # <const shared_ptr[PointCloudGeometryHandler[PointT]]> 
     # def AddPointCloud_GeometryHandler(self, _pcl.PointCloud cloud, pcl_visualization.PointCloudGeometryHandleringCustom geometry_handler, id = b'cloud', int viewport = 0):
     #     # overloaded
-    #     self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pclvis.PointCloudGeometryHandlerCustom[cpp.PointXYZ]> deref(geometry_handler.thisptr_shared.get()), <string> id, viewport)
+    #     self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pcl_vis.PointCloudGeometryHandlerCustom[cpp.PointXYZ]> deref(geometry_handler.thisptr_shared.get()), <string> id, viewport)
     #     # pass
 
     def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, id = b'cloud', int viewport = 0):

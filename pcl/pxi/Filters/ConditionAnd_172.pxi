@@ -4,7 +4,7 @@ from libcpp cimport bool
 # from libcpp.string cimport string
 
 cimport pcl_defs as cpp
-cimport pcl_filters_172 as pclfil
+cimport pcl_filters_172 as pcl_fil
 
 from pcl_filters cimport CompareOp2
 from boost_shared_ptr cimport shared_ptr
@@ -16,10 +16,10 @@ cdef class ConditionAnd:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in ConditionAnd(pc).
     """
-    cdef pclfil.ConditionAnd_t *me
+    cdef pcl_fil.ConditionAnd_t *me
 
     def __cinit__(self):
-        self.me = new pclfil.ConditionAnd_t()
+        self.me = new pcl_fil.ConditionAnd_t()
 
     def __dealloc__(self):
         del self.me
@@ -36,13 +36,13 @@ cdef class ConditionAnd:
         else:
             fname_ascii = field_name
         
-        cdef pclfil.FieldComparisonConstPtr_t fieldComp = <pclfil.FieldComparisonConstPtr_t> new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh)
+        cdef pcl_fil.FieldComparisonConstPtr_t fieldComp = <pcl_fil.FieldComparisonConstPtr_t> new pcl_fil.FieldComparison_t(string(fname_ascii), compOp, thresh)
         
         # Cython 0.25.2 NG
-        # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
-        self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
+        # self.me.addComparison(<shared_ptr[const pcl_fil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
+        self.me.addComparison(<shared_ptr[const pcl_fil.ComparisonBase[cpp.PointXYZ]]> fieldComp)
         
         # NG
-        # sp_assign( self.fieldCompPtr, new pclfil.FieldComparison_t(string(fname_ascii), compOp, thresh) )
-        # self.me.addComparison(<shared_ptr[const pclfil.ComparisonBase[cpp.PointXYZ]]> self.fieldCompPtr)
+        # sp_assign( self.fieldCompPtr, new pcl_fil.FieldComparison_t(string(fname_ascii), compOp, thresh) )
+        # self.me.addComparison(<shared_ptr[const pcl_fil.ComparisonBase[cpp.PointXYZ]]> self.fieldCompPtr)
 

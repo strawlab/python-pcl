@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_filters_180 as pclfil
+cimport pcl_filters_180 as pcl_fil
 
 cdef class PassThroughFilter:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_t *me
+    cdef pcl_fil.PassThrough_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_t()
+        self.me = new pcl_fil.PassThrough_t()
     def __dealloc__(self):
         del self.me
 
@@ -43,9 +43,9 @@ cdef class PassThroughFilter_PointXYZI:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_PointXYZI_t *me
+    cdef pcl_fil.PassThrough_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_PointXYZI_t()
+        self.me = new pcl_fil.PassThrough_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
@@ -77,9 +77,9 @@ cdef class PassThroughFilter_PointXYZRGB:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_PointXYZRGB_t *me
+    cdef pcl_fil.PassThrough_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_PointXYZRGB_t()
+        self.me = new pcl_fil.PassThrough_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
@@ -111,9 +111,9 @@ cdef class PassThroughFilter_PointXYZRGBA:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_PointXYZRGBA_t *me
+    cdef pcl_fil.PassThrough_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_PointXYZRGBA_t()
+        self.me = new pcl_fil.PassThrough_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 

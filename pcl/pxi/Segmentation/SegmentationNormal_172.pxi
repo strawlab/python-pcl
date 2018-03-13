@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation_172 as pclseg
+cimport pcl_segmentation_172 as pcl_seg
 cimport pcl_defs as cpp
 cimport pcl_sample_consensus_172 as pcl_sc
 
@@ -15,10 +15,10 @@ cdef class SegmentationNormal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentationFromNormals_t *me
+    cdef pcl_seg.SACSegmentationFromNormals_t *me
 
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentationFromNormals_t()
+        self.me = new pcl_seg.SACSegmentationFromNormals_t()
 
 
     def __dealloc__(self):
@@ -66,20 +66,20 @@ cdef class SegmentationNormal:
 
 
     def set_eps_angle(self, double ea):
-        (<pclseg.SACSegmentation_t*>self.me).setEpsAngle (ea)
+        (<pcl_seg.SACSegmentation_t*>self.me).setEpsAngle (ea)
 
 
     def get_eps_angle(self):
-        return (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentation_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
@@ -106,9 +106,9 @@ cdef class Segmentation_PointXYZI_Normal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentationFromNormals_PointXYZI_t *me
+    cdef pcl_seg.SACSegmentationFromNormals_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentationFromNormals_PointXYZI_t()
+        self.me = new pcl_seg.SACSegmentationFromNormals_PointXYZI_t()
 
     def __dealloc__(self):
         del self.me
@@ -157,16 +157,16 @@ cdef class Segmentation_PointXYZI_Normal:
 
 
     def get_eps_angle(self):
-        return (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_PointXYZI_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
@@ -193,9 +193,9 @@ cdef class Segmentation_PointXYZRGB_Normal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentationFromNormals_PointXYZRGB_t *me
+    cdef pcl_seg.SACSegmentationFromNormals_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentationFromNormals_PointXYZRGB_t()
+        self.me = new pcl_seg.SACSegmentationFromNormals_PointXYZRGB_t()
 
 
     def __dealloc__(self):
@@ -247,16 +247,16 @@ cdef class Segmentation_PointXYZRGB_Normal:
 
 
     def get_eps_angle(self):
-        return (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pclseg.SACSegmentation_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
@@ -283,9 +283,9 @@ cdef class Segmentation_PointXYZRGBA_Normal:
     Due to Cython limitations this should derive from pcl.Segmentation, but
     is currently unable to do so.
     """
-    cdef pclseg.SACSegmentationFromNormals_PointXYZRGBA_t *me
+    cdef pcl_seg.SACSegmentationFromNormals_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentationFromNormals_PointXYZRGBA_t()
+        self.me = new pcl_seg.SACSegmentationFromNormals_PointXYZRGBA_t()
 
     def __dealloc__(self):
         del self.me
@@ -331,20 +331,20 @@ cdef class Segmentation_PointXYZRGBA_Normal:
 
 
     def set_eps_angle(self, double ea):
-        vec = (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle(ea)
+        vec = (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle(ea)
 
 
     def get_eps_angle(self):
-        return (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pclseg.SACSegmentation_PointXYZRGBA_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
 

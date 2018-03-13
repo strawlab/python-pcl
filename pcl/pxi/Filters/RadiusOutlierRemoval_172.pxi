@@ -3,16 +3,16 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_filters_172 as pclfil
-cimport pcl_segmentation_172 as pclseg
+cimport pcl_filters_172 as pcl_fil
+cimport pcl_segmentation_172 as pcl_seg
 
 cdef class RadiusOutlierRemoval:
     """
     RadiusOutlierRemoval class for ...
     """
-    cdef pclfil.RadiusOutlierRemoval_t *me
+    cdef pcl_fil.RadiusOutlierRemoval_t *me
     def __cinit__(self):
-        self.me = new pclfil.RadiusOutlierRemoval_t()
+        self.me = new pcl_fil.RadiusOutlierRemoval_t()
     def __dealloc__(self):
         del self.me
 

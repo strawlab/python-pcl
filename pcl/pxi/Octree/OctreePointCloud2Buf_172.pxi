@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_octree_172 as pcloct
+cimport pcl_octree_172 as pcl_oct
 
 cimport eigen as eig
 
@@ -8,7 +8,7 @@ cdef class OctreePointCloud2Buf:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud2Buf_t *me
+    cdef pcl_oct.OctreePointCloud2Buf_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -20,7 +20,7 @@ cdef class OctreePointCloud2Buf:
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
-    #     self.me = new pcloct.OctreePointCloud2Buf_t(resolution)
+    #     self.me = new pcl_oct.OctreePointCloud2Buf_t(resolution)
 
     # def __dealloc__(self):
     #     del self.me
@@ -86,7 +86,7 @@ cdef class OctreePointCloud2Buf_PointXYZI:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud2Buf_PointXYZI_t *me
+    cdef pcl_oct.OctreePointCloud2Buf_PointXYZI_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -98,7 +98,7 @@ cdef class OctreePointCloud2Buf_PointXYZI:
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
-    #     self.me = new pcloct.OctreePointCloud2Buf_PointXYZI_t(resolution)
+    #     self.me = new pcl_oct.OctreePointCloud2Buf_PointXYZI_t(resolution)
 
     # def __dealloc__(self):
     #     del self.me
@@ -165,7 +165,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGB:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud2Buf_PointXYZRGB_t *me
+    cdef pcl_oct.OctreePointCloud2Buf_PointXYZRGB_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -177,7 +177,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGB:
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
-    #     self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGB_t(resolution)
+    #     self.me = new pcl_oct.OctreePointCloud2Buf_PointXYZRGB_t(resolution)
 
     # def __dealloc__(self):
     #     del self.me
@@ -240,7 +240,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGBA:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud2Buf_PointXYZRGBA_t *me
+    cdef pcl_oct.OctreePointCloud2Buf_PointXYZRGBA_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -252,7 +252,7 @@ cdef class OctreePointCloud2Buf_PointXYZRGBA:
     #     """
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
-    #     self.me = new pcloct.OctreePointCloud2Buf_PointXYZRGBA_t(resolution)
+    #     self.me = new pcl_oct.OctreePointCloud2Buf_PointXYZRGBA_t(resolution)
 
     # def __dealloc__(self):
     #     del self.me

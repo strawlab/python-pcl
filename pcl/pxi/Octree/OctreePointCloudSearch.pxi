@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_octree as pcloct
+cimport pcl_octree as pcl_oct
 
 # include "PointXYZtoPointXYZ.pxi" --> multiple define ng
 # include "OctreePointCloud.pxi"
@@ -9,7 +9,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
     """
     Octree pointcloud search
     """
-    cdef pcloct.OctreePointCloudSearch_t *me2
+    cdef pcl_oct.OctreePointCloudSearch_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -20,8 +20,8 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudSearch_t*> new pcloct.OctreePointCloudSearch_t(resolution)
-        self.me = <pcloct.OctreePointCloud_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudSearch_t*> new pcl_oct.OctreePointCloudSearch_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud_t*> self.me2
 
     def __dealloc__(self):
         del self.me2
@@ -69,7 +69,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         k_indices.resize(k)
         k_sqr_distances.resize(k)
         # self.me.nearestKSearch(pc.thisptr()[0], index, k, k_indices, k_sqr_distances)
-        (<pcloct.OctreePointCloudSearch_t*>self.me).nearestKSearch(pc.thisptr()[0], index, k, k_indices, k_sqr_distances)
+        (<pcl_oct.OctreePointCloudSearch_t*>self.me).nearestKSearch(pc.thisptr()[0], index, k, k_indices, k_sqr_distances)
 
         for i in range(k):
             sqdist[i] = k_sqr_distances[i]
@@ -91,7 +91,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             k_indices.resize(max_nn)
             k_sqr_distances.resize(max_nn)
         
-        cdef int k = (<pcloct.OctreePointCloudSearch_t*>self.me).radiusSearch(to_point_t(point), radius, k_indices, k_sqr_distances, max_nn)
+        cdef int k = (<pcl_oct.OctreePointCloudSearch_t*>self.me).radiusSearch(to_point_t(point), radius, k_indices, k_sqr_distances, max_nn)
         cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
         cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
         for i in range(k):
@@ -110,7 +110,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         Returns: (v_indices)
         """
         cdef vector[int] v_indices
-        # cdef bool isVexelSearch = (<pcloct.OctreePointCloudSearch_t*>self.me).voxelSearch(pc.thisptr()[0], v_indices)
+        # cdef bool isVexelSearch = (<pcl_oct.OctreePointCloudSearch_t*>self.me).voxelSearch(pc.thisptr()[0], v_indices)
         # self._VoxelSearch(pc, v_indices)
         result = pc.to_array()
         cdef cpp.PointXYZ point
@@ -136,7 +136,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
         cdef vector[int] voxel_indices
         # k = 10
         # voxel_indices.resize(k)
-        (<pcloct.OctreePointCloudSearch_t*>self.me).voxelSearch(point, voxel_indices)
+        (<pcl_oct.OctreePointCloudSearch_t*>self.me).voxelSearch(point, voxel_indices)
         
         # print('_VoxelSearch k = ' + str(k))
         # print('_VoxelSearch voxel_indices = ' + str(voxel_indices.size()))
@@ -176,7 +176,7 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
 #         radius_indices.resize(k)
 #         radius_distances.resize(k)
 #         # self.me.radiusSearch(pc.thisptr()[0], index, radius, radius_indices, radius_distances)
-#         k = (<pcloct.OctreePointCloudSearch_t*>self.me).radiusSearch(pc.thisptr()[0], index, radius, radius_indices, radius_distances, 10)
+#         k = (<pcl_oct.OctreePointCloudSearch_t*>self.me).radiusSearch(pc.thisptr()[0], index, radius, radius_indices, radius_distances, 10)
 # 
 #         for i in range(k):
 #             sqdist[i] = radius_distances[i]
@@ -226,7 +226,7 @@ cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
     """
     Octree pointcloud search
     """
-    cdef pcloct.OctreePointCloudSearch_PointXYZI_t *me2
+    cdef pcl_oct.OctreePointCloudSearch_PointXYZI_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -237,8 +237,8 @@ cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudSearch_PointXYZI_t*> new pcloct.OctreePointCloudSearch_PointXYZI_t(resolution)
-        self.me = <pcloct.OctreePointCloud_PointXYZI_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudSearch_PointXYZI_t*> new pcl_oct.OctreePointCloudSearch_PointXYZI_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud_PointXYZI_t*> self.me2
 
     def __dealloc__(self):
         del self.me2
@@ -256,7 +256,7 @@ cdef class OctreePointCloudSearch_PointXYZI(OctreePointCloud_PointXYZI):
         if max_nn > 0:
             k_indices.resize(max_nn)
             k_sqr_distances.resize(max_nn)
-        cdef int k = (<pcloct.OctreePointCloudSearch_PointXYZI_t*>self.me).radiusSearch(to_point2_t(point), radius, k_indices, k_sqr_distances, max_nn)
+        cdef int k = (<pcl_oct.OctreePointCloudSearch_PointXYZI_t*>self.me).radiusSearch(to_point2_t(point), radius, k_indices, k_sqr_distances, max_nn)
         cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
         cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
         for i in range(k):
@@ -308,7 +308,7 @@ cdef class OctreePointCloudSearch_PointXYZRGB(OctreePointCloud_PointXYZRGB):
     """
     Octree pointcloud search
     """
-    cdef pcloct.OctreePointCloudSearch_PointXYZRGB_t *me2
+    cdef pcl_oct.OctreePointCloudSearch_PointXYZRGB_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -319,8 +319,8 @@ cdef class OctreePointCloudSearch_PointXYZRGB(OctreePointCloud_PointXYZRGB):
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudSearch_PointXYZRGB_t*> new pcloct.OctreePointCloudSearch_PointXYZRGB_t(resolution)
-        self.me = <pcloct.OctreePointCloud_PointXYZRGB_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudSearch_PointXYZRGB_t*> new pcl_oct.OctreePointCloudSearch_PointXYZRGB_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud_PointXYZRGB_t*> self.me2
 
     def __dealloc__(self):
         del self.me2
@@ -338,7 +338,7 @@ cdef class OctreePointCloudSearch_PointXYZRGB(OctreePointCloud_PointXYZRGB):
         if max_nn > 0:
             k_indices.resize(max_nn)
             k_sqr_distances.resize(max_nn)
-        cdef int k = (<pcloct.OctreePointCloudSearch_PointXYZRGB_t*>self.me).radiusSearch(to_point3_t(point), radius, k_indices, k_sqr_distances, max_nn)
+        cdef int k = (<pcl_oct.OctreePointCloudSearch_PointXYZRGB_t*>self.me).radiusSearch(to_point3_t(point), radius, k_indices, k_sqr_distances, max_nn)
         cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
         cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
         for i in range(k):
@@ -390,7 +390,7 @@ cdef class OctreePointCloudSearch_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
     """
     Octree pointcloud search
     """
-    cdef pcloct.OctreePointCloudSearch_PointXYZRGBA_t *me2
+    cdef pcl_oct.OctreePointCloudSearch_PointXYZRGBA_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -401,8 +401,8 @@ cdef class OctreePointCloudSearch_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudSearch_PointXYZRGBA_t*> new pcloct.OctreePointCloudSearch_PointXYZRGBA_t(resolution)
-        self.me = <pcloct.OctreePointCloud_PointXYZRGBA_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudSearch_PointXYZRGBA_t*> new pcl_oct.OctreePointCloudSearch_PointXYZRGBA_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud_PointXYZRGBA_t*> self.me2
 
     def __dealloc__(self):
         del self.me2
@@ -420,7 +420,7 @@ cdef class OctreePointCloudSearch_PointXYZRGBA(OctreePointCloud_PointXYZRGBA):
         if max_nn > 0:
             k_indices.resize(max_nn)
             k_sqr_distances.resize(max_nn)
-        cdef int k = (<pcloct.OctreePointCloudSearch_PointXYZRGBA_t*>self.me).radiusSearch(to_point4_t(point), radius, k_indices, k_sqr_distances, max_nn)
+        cdef int k = (<pcl_oct.OctreePointCloudSearch_PointXYZRGBA_t*>self.me).radiusSearch(to_point4_t(point), radius, k_indices, k_sqr_distances, max_nn)
         cdef cnp.ndarray[float] np_k_sqr_distances = np.zeros(k, dtype=np.float32)
         cdef cnp.ndarray[int] np_k_indices = np.zeros(k, dtype=np.int32)
         for i in range(k):

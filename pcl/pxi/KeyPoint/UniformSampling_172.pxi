@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_keypoints_172 as pclkp
+cimport pcl_keypoints_172 as pcl_kp
 
 cdef class UniformSampling:
     """

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_octree as pcloct
+cimport pcl_octree as pcl_oct
 
 cimport eigen as eig
 
@@ -10,7 +10,7 @@ cdef class Octree2BufBase:
     """
     Octree2BufBase
     """
-    cdef pcloct.Octree2BufBase_t *me
+    cdef pcl_oct.Octree2BufBase_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -19,7 +19,7 @@ cdef class Octree2BufBase:
         """
         Constructs octree pointcloud with given resolution at lowest octree level
         """ 
-        self.me = new pcloct.Octree2BufBase_t(resolution)
+        self.me = new pcl_oct.Octree2BufBase_t(resolution)
 
     def __dealloc__(self):
         del self.me

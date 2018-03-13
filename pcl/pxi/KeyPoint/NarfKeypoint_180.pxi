@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_keypoints_180 as pclkp
+cimport pcl_keypoints_180 as pcl_kp
 
 cdef class NarfKeypoint:
     """

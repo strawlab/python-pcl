@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_kdtree as pclkdt
+cimport pcl_kdtree as pcl_kdt
 
 cdef class KdTree:
     """
@@ -13,7 +13,7 @@ cdef class KdTree:
     cdef cpp.KdTree_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new pclkdt.KdTree_t()
+        self.me = new pcl_kdt.KdTree_t()
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_io as pclio
+cimport pcl_io as pcl_io
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -153,13 +153,13 @@ cdef class PointCloud_PointWithViewpoint:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            error = pclio.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+            error = pcl_io.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            ok = pclio.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+            ok = pcl_io.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):

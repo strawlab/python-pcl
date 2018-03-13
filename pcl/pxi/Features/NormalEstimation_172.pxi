@@ -16,11 +16,11 @@ cdef class NormalEstimation:
     """
     NormalEstimation class for 
     """
-    cdef pclftr.NormalEstimation_t *me
+    cdef pcl_ftr.NormalEstimation_t *me
 
     def __cinit__(self):
-        self.me = new pclftr.NormalEstimation_t()
-        # sp_assign(self.thisptr_shared, new pclftr.NormalEstimation[cpp.PointXYZ, cpp.Normal]())
+        self.me = new pcl_ftr.NormalEstimation_t()
+        # sp_assign(self.thisptr_shared, new pcl_ftr.NormalEstimation[cpp.PointXYZ, cpp.Normal]())
 
     def __dealloc__(self):
         del self.me
@@ -38,6 +38,6 @@ cdef class NormalEstimation:
         normal = PointCloud_Normal()
         sp_assign(normal.thisptr_shared, new cpp.PointCloud[cpp.Normal]())
         cdef cpp.PointCloud_Normal_t *cNormal = <cpp.PointCloud_Normal_t*>normal.thisptr()
-        (<pclftr.Feature_t*>self.me).compute(deref(cNormal))
+        (<pcl_ftr.Feature_t*>self.me).compute(deref(cNormal))
         return normal
 
