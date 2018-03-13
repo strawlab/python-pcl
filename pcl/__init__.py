@@ -140,6 +140,10 @@ def save_PointNormal(cloud, path, format=None, binary=False):
                       % (path, format))
 
 
+def pcl_version():
+    # https://stackoverflow.com/questions/32539837/how-to-determine-pcl-point-cloud-library-version-in-c-code
+    pass
+
 def _encode(path):
     # Encode path for use in C++.
     if isinstance(path, bytes):

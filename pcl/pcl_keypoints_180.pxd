@@ -8,8 +8,8 @@ from libcpp cimport bool
 
 # pcl
 cimport pcl_defs as cpp
-cimport pcl_features_172 as pclftr
-cimport pcl_kdtree_172 as pclkdt
+cimport pcl_features_180 as pclftr
+cimport pcl_kdtree_180 as pclkdt
 
 # boost
 from boost_shared_ptr cimport shared_ptr

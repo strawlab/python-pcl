@@ -2,14 +2,34 @@
 # Header for _pcl.pyx functionality that needs sharing with other modules.
 
 cimport pcl_defs as cpp
-# KdTree
-cimport pcl_kdtree as pclkdt
-# RangeImage
-cimport pcl_range_image as pcl_rngimg
-# Features
-cimport pcl_features as pcl_ftr
-# SampleConsensus
-cimport pcl_sample_consensus as pcl_sac
+
+if cpp.PCL_MINOR_VERSION == 8:
+    # if cpp.PCL_REVISION_VERSION == 0:
+    # elif cpp.PCL_REVISION_VERSION == 1:
+    # else:
+    cimport pcl_kdtree_180 as pclkdt
+    cimport pcl_range_image_180 as pcl_rngimg
+    cimport pcl_features_180 as pcl_ftr
+    cimport pcl_sample_consensus_180 as pcl_sac
+elif cpp.PCL_MINOR_VERSION == 7:
+    if cpp.PCL_REVISION_VERSION == 0:
+        cimport pcl_features_170 as pcl_ftr
+    elif cpp.PCL_REVISION_VERSION == 2:
+        cimport pcl_features_172 as pcl_ftr
+    else:
+        cimport pcl_features_172 as pcl_ftr
+
+    cimport pcl_kdtree_172 as pclkdt
+    cimport pcl_range_image_172 as pcl_rngimg
+    cimport pcl_sample_consensus_172 as pcl_sac
+elif cpp.PCL_MINOR_VERSION == 6:
+    cimport pcl_kdtree as pclkdt
+    cimport pcl_range_image as pcl_rngimg
+    cimport pcl_features as pcl_ftr
+    cimport pcl_sample_consensus as pcl_sac
+else:
+    pass
+
 
 # class override(PointCloud)
 cdef class PointCloud:

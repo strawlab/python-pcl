@@ -7,7 +7,13 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
-cimport pcl_features_172 as pclftr
+if cpp.PCL_REVISION_VERSION == 0:
+    cimport pcl_features_170 as pcl_ftr
+elif cpp.PCL_REVISION_VERSION == 2:
+    cimport pcl_features_172 as pcl_ftr
+else:
+    cimport pcl_features_172 as pcl_ftr
+
 cimport pcl_filters_172 as pclfil
 cimport pcl_io_172 as pclio
 cimport pcl_kdtree_172 as pclkdt
