@@ -44,7 +44,6 @@ def pkgconfig_win(flag, cut):
     # decode() is required in Python 3. TODO how do know the encoding?
     # return stdout.decode().split()
     # Windows
-    # return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
     return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
 
 
@@ -156,13 +155,13 @@ if platform.system() == "Windows":
             for version in PCL_SUPPORTED:
                 print('    pkg-config pcl_common%s' % version, file=sys.stderr)
             sys.exit(1)
-    
+
     print(pcl_version)
     # pcl_version = '-1.6'
-    
+
     # Python Version Check
     info = sys.version_info
-    
+
     if pcl_version == '-1.6':
         # PCL 1.6.0 python Version == 3.4(>= 3.4?, 2.7 -> NG)
         # Visual Studio 2010
@@ -212,17 +211,17 @@ if platform.system() == "Windows":
     else:
         print('pcl_version Unknown')
         sys.exit(1)
-    
+
     # Find build/link options for PCL using pkg-config.
-    
+
     pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
     # pcl_libs += ['Eigen3']
     # print(pcl_libs)
-    
+
     ext_args = defaultdict(list)
     # set include path
     ext_args['include_dirs'].append(numpy.get_include())
-    
+
     # Get setting pkg-config
     # add include headers
     # use pkg-config
@@ -231,7 +230,7 @@ if platform.system() == "Windows":
     #     print(flag.lstrip().rstrip())
     # print('test')
     #     ext_args['include_dirs'].append(flag.lstrip().rstrip())
-    
+
     # no use pkg-config
     if pcl_version == '-1.6':
         # 1.6.0

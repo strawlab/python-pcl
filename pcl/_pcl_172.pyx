@@ -8,11 +8,41 @@ cimport numpy as cnp
 
 cimport pcl_common as pcl_cmn
 cimport pcl_defs as cpp
-cimport pcl_sample_consensus_172 as pcl_sc
-cimport pcl_features_172 as pcl_ftr
-cimport pcl_filters_172 as pcl_fil
-cimport pcl_range_image_172 as pcl_r_img
-cimport pcl_segmentation_172 as pclseg
+
+### DEFINE ###
+PCL_MAJOR_VERSION    = cpp.PCL_MAJOR_VERSION
+PCL_MINOR_VERSION    = cpp.PCL_MINOR_VERSION
+PCL_REVISION_VERSION = cpp.PCL_REVISION_VERSION
+
+if PCL_MINOR_VERSION == 8:
+    cimport pcl_sample_consensus_180 as pcl_sc
+    cimport pcl_features_180 as pcl_ftr
+    cimport pcl_filters_180 as pcl_fil
+    cimport pcl_range_image_180 as pcl_r_img
+    cimport pcl_segmentation_180 as pclseg
+    # cimport pcl_octree_180 as pcl_fil
+elif PCL_MINOR_VERSION == 7:
+    if cpp.PCL_REVISION_VERSION == 0:
+        cimport pcl_features_170 as pcl_ftr
+    elif cpp.PCL_REVISION_VERSION == 2:
+        cimport pcl_features_172 as pcl_ftr
+    else:
+        cimport pcl_features_172 as pcl_ftr
+
+    cimport pcl_sample_consensus_172 as pcl_sc
+    cimport pcl_filters_172 as pcl_fil
+    cimport pcl_range_image_172 as pcl_r_img
+    cimport pcl_segmentation_172 as pclseg
+    # cimport pcl_octree_172 as pcl_fil
+elif PCL_MINOR_VERSION == 6:
+    cimport pcl_sample_consensus as pcl_sc
+    cimport pcl_features as pcl_ftr
+    cimport pcl_filters as pcl_fil
+    cimport pcl_range_image as pcl_r_img
+    cimport pcl_segmentation as pclseg
+    # cimport pcl_octree as pcl_fil
+else:
+    pass
 
 cimport cython
 # from cython.operator import dereference as deref
