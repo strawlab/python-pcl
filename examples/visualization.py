@@ -17,13 +17,8 @@ visual = pcl.pcl_visualization.CloudViewing()
 visual.ShowColorCloud(cloud, b'cloud')
 # visual.ShowColorACloud(cloud, b'cloud')
 
-# while True:
-#     visual.WasStopped()
-# end
-
-flag = True
-while flag:
-    flag != visual.WasStopped()
-end
+v = True
+while v:
+    v=not(visual.WasStopped())
 
 

@@ -95,8 +95,10 @@ while True:
     # key = cv2.waitKey(delay=1)
     # if key == ord('q'):
     #     break
-    if visual.WasStopped() == True:
-        break
+    v = True
+    while v:
+        v=not(visual.WasStopped())
+
 
 device.stop()
 device.close()
