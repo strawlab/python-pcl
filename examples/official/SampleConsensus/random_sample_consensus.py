@@ -7,7 +7,7 @@ import pcl
 import random
 import pcl.pcl_visualization
 import math
-import sys # ƒ‚ƒWƒ…[ƒ‹‘®« argv ‚ğæ“¾‚·‚é‚½‚ß
+import sys # ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å±æ€§ argv ã‚’å–å¾—ã™ã‚‹ãŸã‚
 
 
 # boost::shared_ptr<pcl::visualization::PCLVisualizer> simpleVis (pcl::PointCloud<pcl::PointXYZ>::ConstPtr cloud)
@@ -22,8 +22,10 @@ import sys # ƒ‚ƒWƒ…[ƒ‹‘®« argv ‚ğæ“¾‚·‚é‚½‚ß
 #   return (viewer);
 # }
 
-argvs = sys.argv  # ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚ğŠi”[‚µ‚½ƒŠƒXƒg‚Ìæ“¾
-argc = len(argvs) # ˆø”‚ÌŒÂ”
+# argvs = sys.argv  # for random model
+# argvs = '-f' # plane model
+argvs = '-sf' # sphere model
+argc = len(argvs) # å¼•æ•°ã®å€‹æ•°
 
 # // initialize PointClouds
 # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
@@ -66,7 +68,7 @@ RAND_MAX = 1024
 
 for i in range(0, 1000):
     if argc > 1:
-        if argvs[1] == "-s" or argvs[1] == "-sf":
+        if argvs == "-s" or argvs == "-sf":
             points[i][0] = 1024 * random.random () / (RAND_MAX + 1.0)
             points[i][1] = 1024 * random.random () / (RAND_MAX + 1.0)
             # print("x : " + str(points[i][0]))
@@ -119,12 +121,12 @@ cloud.from_array(points)
 model_s = pcl.SampleConsensusModelSphere(cloud)
 model_p = pcl.SampleConsensusModelPlane(cloud)
 if argc > 1:
-    if argvs[1] == "-f":
+    if argvs == "-f":
         ransac = pcl.RandomSampleConsensus (model_p)
         ransac.set_DistanceThreshold (.01)
         ransac.computeModel()
         inliers = ransac.get_Inliers()
-    elif argvs[1] == "-sf":
+    elif argvs == "-sf":
         ransac = pcl.RandomSampleConsensus (model_s)
         ransac.set_DistanceThreshold (.01)
         ransac.computeModel()
@@ -153,7 +155,7 @@ if len(inliers) != 0:
 
 
 # current(0.3.0) Windows Only Test
-isWindows = False
+isWindows = False # set True for running the visualizer
 if isWindows == True:
     # creates the visualization object and adds either our orignial cloud or all of the inliers
     # depending on the command line arguments specified.
@@ -164,11 +166,13 @@ if isWindows == True:
     #   viewer = simpleVis(cloud);
 
     if argc > 1:
-        if argvs[1] == "-f" or argvs[1] == "-sf":
+        if argvs == "-f" or argvs == "-sf":
             viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
             viewer.SetBackgroundColor (0, 0, 0)
-            viewer.AddPointCloud (final, b'sample cloud')
+            viewer.AddPointCloud (cloud, b'sample cloud')
             viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+            viewer.AddPointCloud (final, b'inliers cloud')
+            viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'inliers cloud')
             viewer.InitCameraParameters ()
         else:
             viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
@@ -189,9 +193,7 @@ if isWindows == True:
     # viewer->spinOnce (100);
     # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
     # }
-    isStopped = False
-    while isStopped == False:
-        isStopped = viewer.WasStopped()
+    while viewer.WasStopped() != True:
         viewer.SpinOnce (100)
         # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
 else:
