@@ -15,7 +15,7 @@ cimport pcl_filters_180 as pcl_fil
 cimport pcl_io_180 as pcl_io
 cimport pcl_kdtree_180 as pcl_kdt
 cimport pcl_octree_180 as pcl_oct
-cimport pcl_sample_consensus_180 as pcl_sc
+cimport pcl_sample_consensus_180 as pcl_sac
 # cimport pcl_search_180 as pcl_sch
 cimport pcl_segmentation_180 as pcl_seg
 cimport pcl_surface_180 as pcl_sf

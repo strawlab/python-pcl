@@ -3,44 +3,51 @@
 
 cimport pcl_defs as cpp
 
-if cpp.PCL_MINOR_VERSION == 8:
-    if cpp.PCL_REVISION_VERSION == 0:
-        DEF PCL_VERSION_DEFINE=180
-    elif cpp.PCL_REVISION_VERSION == 1:
-        DEF PCL_VERSION_DEFINE=181
-    else:
-        DEF PCL_VERSION_DEFINE=181
+# DEF same name override before parameter
+# if cpp.PCL_MINOR_VERSION == 8:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         DEF PCL_VERSION_DEFINE=180
+#     elif cpp.PCL_REVISION_VERSION == 1:
+#         DEF PCL_VERSION_DEFINE=181
+#     else:
+#         DEF PCL_VERSION_DEFINE=181
+# 
+# elif cpp.PCL_MINOR_VERSION == 7:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         DEF PCL_VERSION_DEFINE=170
+#     elif cpp.PCL_REVISION_VERSION == 2:
+#         DEF PCL_VERSION_DEFINE=172
+#     else:
+#         DEF PCL_VERSION_DEFINE=172
+# 
+# elif cpp.PCL_MINOR_VERSION == 6:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         DEF PCL_VERSION_DEFINE=160
+#     else:
+#         DEF PCL_VERSION_DEFINE=160
+# 
+# else:
+#     DEF PCL_VERSION_DEFINE=180
 
-elif cpp.PCL_MINOR_VERSION == 7:
-    if cpp.PCL_REVISION_VERSION == 0:
-        DEF PCL_VERSION_DEFINE=170
-    elif cpp.PCL_REVISION_VERSION == 2:
-        DEF PCL_VERSION_DEFINE=172
-    else:
-        DEF PCL_VERSION_DEFINE=172
+# DEF PCL_VERSION_DEFINE=180
+# NG : 
+# DEF PCL_VERSION_DEFINE = str(cpp.PCL_MAJOR_VERSION) + str(cpp.PCL_MINOR_VERSION) + str(cpp.PCL_REVISION_VERSION)
+# DEF PCL_VERSION_DEFINE = str(_pcl.PCL_MAJOR_VERSION) + str(_pcl.PCL_MINOR_VERSION) + str(_pcl.PCL_REVISION_VERSION)
+# DEF PCL_VERSION_DEFINE = str(PCL_MAJOR_VERSION) + str(PCL_MINOR_VERSION) + str(PCL_REVISION_VERSION)
+# IF PCL_VERSION_DEFINE == 180:
+#     include "pxi/pxd_cimport_180.pxi"
+# ELIF PCL_VERSION_DEFINE == 181:
+#     include "pxi/pxd_cimport_180.pxi"
+# ELIF PCL_VERSION_DEFINE == 172:
+#     include "pxi/pxd_cimport_172.pxi"
+# ELIF PCL_VERSION_DEFINE == 170:
+#     include "pxi/pxd_cimport_172.pxi"
+# ELIF PCL_VERSION_DEFINE == 160:
+#     include "pxi/pxd_cimport.pxi"
+# ELSE:
+#     pass
 
-elif cpp.PCL_MINOR_VERSION == 6:
-    if cpp.PCL_REVISION_VERSION == 0:
-        DEF PCL_VERSION_DEFINE=160
-    else:
-        DEF PCL_VERSION_DEFINE=160
-
-else:
-    pass
-
-IF PCL_VERSION_DEFINE == 180:
-    include "pxi/pxd_cimport_180.pxi"
-ELIF PCL_VERSION_DEFINE == 181:
-    include "pxi/pxd_cimport_180.pxi"
-ELIF PCL_VERSION_DEFINE == 172:
-    include "pxi/pxd_cimport_172.pxi"
-ELIF PCL_VERSION_DEFINE == 170:
-    include "pxi/pxd_cimport_172.pxi"
-ELIF PCL_VERSION_DEFINE == 160:
-    include "pxi/pxd_cimport.pxi"
-ELSE:
-    include "pxi/pxd_cimport.pxi"
-
+include "pxi/pxd_cimport.pxi"
 
 # class override(PointCloud)
 cdef class PointCloud:

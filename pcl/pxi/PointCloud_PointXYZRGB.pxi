@@ -11,7 +11,7 @@ cimport pcl_filters as pcl_fil
 cimport pcl_io as pcl_io
 cimport pcl_kdtree as pcl_kdt
 cimport pcl_octree as pcl_oct
-# cimport pcl_sample_consensus as pcl_sc
+# cimport pcl_sample_consensus as pcl_sac
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pcl_seg
 cimport pcl_surface as pcl_sf

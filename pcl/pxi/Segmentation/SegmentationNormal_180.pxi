@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 cimport pcl_segmentation_180 as pcl_seg
 cimport pcl_defs as cpp
-cimport pcl_sample_consensus_180 as pcl_sc
+cimport pcl_sample_consensus_180 as pcl_sac
 
 cimport eigen as eigen3
 
@@ -37,7 +37,7 @@ cdef class SegmentationNormal:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
@@ -124,7 +124,7 @@ cdef class Segmentation_PointXYZI_Normal:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
@@ -214,7 +214,7 @@ cdef class Segmentation_PointXYZRGB_Normal:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
@@ -302,7 +302,7 @@ cdef class Segmentation_PointXYZRGBA_Normal:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
