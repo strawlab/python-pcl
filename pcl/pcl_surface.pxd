@@ -5,7 +5,7 @@ from libcpp.vector cimport vector
 
 # main
 cimport pcl_defs as cpp
-cimport pcl_kdtree as pclkdt
+cimport pcl_kdtree as pcl_kdt
 from boost_shared_ptr cimport shared_ptr
 
 ###############################################################################
@@ -32,11 +32,11 @@ cdef extern from "pcl/surface/reconstruction.h" namespace "pcl":
         # brief Provide an optional pointer to a search object.
         # param[in] tree a pointer to the spatial search object.
         # inline void setSearchMethod (const KdTreePtr &tree)
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
         
         # brief Get a pointer to the search method used.
         # inline KdTreePtr getSearchMethod ()
-        pclkdt.KdTreePtr_t getSearchMethod ()
+        pcl_kdt.KdTreePtr_t getSearchMethod ()
         
         # /** \brief Base method for surface reconstruction for all points given in
         #   * <setInputCloud (), setIndices ()> 
@@ -1797,8 +1797,8 @@ cdef extern from "pcl/surface/mls.h" namespace "pcl":
         void process(cpp.PointCloud[O] &) except +
         
         # KdTree
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
-        pclkdt.KdTreePtr_t getSearchMethod ()
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
+        pcl_kdt.KdTreePtr_t getSearchMethod ()
 
 ctypedef MovingLeastSquares[cpp.PointXYZ, cpp.PointXYZ] MovingLeastSquares_t
 ctypedef MovingLeastSquares[cpp.PointXYZI, cpp.PointXYZI] MovingLeastSquares_PointXYZI_t

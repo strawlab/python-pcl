@@ -3,32 +3,36 @@
 
 cimport pcl_defs as cpp
 
-if cpp.PCL_MINOR_VERSION == 8:
-    # if cpp.PCL_REVISION_VERSION == 0:
-    # elif cpp.PCL_REVISION_VERSION == 1:
-    # else:
-    cimport pcl_kdtree_180 as pclkdt
-    cimport pcl_range_image_180 as pcl_rngimg
-    cimport pcl_features_180 as pcl_ftr
-    cimport pcl_sample_consensus_180 as pcl_sac
-elif cpp.PCL_MINOR_VERSION == 7:
-    if cpp.PCL_REVISION_VERSION == 0:
-        cimport pcl_features_170 as pcl_ftr
-    elif cpp.PCL_REVISION_VERSION == 2:
-        cimport pcl_features_172 as pcl_ftr
-    else:
-        cimport pcl_features_172 as pcl_ftr
-
-    cimport pcl_kdtree_172 as pclkdt
-    cimport pcl_range_image_172 as pcl_rngimg
-    cimport pcl_sample_consensus_172 as pcl_sac
-elif cpp.PCL_MINOR_VERSION == 6:
-    cimport pcl_kdtree as pclkdt
-    cimport pcl_range_image as pcl_rngimg
-    cimport pcl_features as pcl_ftr
-    cimport pcl_sample_consensus as pcl_sac
-else:
-    pass
+# if cpp.PCL_MINOR_VERSION == 8:
+#     # if cpp.PCL_REVISION_VERSION == 0:
+#     # elif cpp.PCL_REVISION_VERSION == 1:
+#     # else:
+#     cimport pcl_kdtree_180 as pcl_kdt
+#     cimport pcl_range_image_180 as pcl_rim
+#     cimport pcl_features_180 as pcl_ftr
+#     cimport pcl_sample_consensus_180 as pcl_sac
+# elif cpp.PCL_MINOR_VERSION == 7:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         cimport pcl_features_170 as pcl_ftr
+#     elif cpp.PCL_REVISION_VERSION == 2:
+#         cimport pcl_features_172 as pcl_ftr
+#     else:
+#         cimport pcl_features_172 as pcl_ftr
+# 
+#     cimport pcl_kdtree_172 as pcl_kdt
+#     cimport pcl_range_image_172 as pcl_rim
+#     cimport pcl_sample_consensus_172 as pcl_sac
+# elif cpp.PCL_MINOR_VERSION == 6:
+#     cimport pcl_kdtree as pcl_kdt
+#     cimport pcl_range_image as pcl_rim
+#     cimport pcl_features as pcl_ftr
+#     cimport pcl_sample_consensus as pcl_sac
+# else:
+#     pass
+cimport pcl_kdtree as pcl_kdt
+cimport pcl_range_image as pcl_rim
+cimport pcl_features as pcl_ftr
+cimport pcl_sample_consensus as pcl_sac
 
 
 # class override(PointCloud)
@@ -136,16 +140,16 @@ cdef class PointCloud_PointNormal:
 ## KdTree
 # class override
 cdef class KdTree:
-    cdef pclkdt.KdTreePtr_t thisptr_shared   # KdTree
+    cdef pcl_kdt.KdTreePtr_t thisptr_shared   # KdTree
     
-    cdef inline pclkdt.KdTree[cpp.PointXYZ] *thisptr(self) nogil:
+    cdef inline pcl_kdt.KdTree[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying KdTree<PointXYZ>.
         return self.thisptr_shared.get()
 
 # cdef class KdTreeFLANN:
-#     cdef pclkdt.KdTreeFLANNPtr_t thisptr_shared   # KdTreeFLANN
+#     cdef pcl_kdt.KdTreeFLANNPtr_t thisptr_shared   # KdTreeFLANN
 #     
-#     cdef inline pclkdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
+#     cdef inline pcl_kdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying KdTreeFLANN<PointXYZ>.
 #         return self.thisptr_shared.get()
 
@@ -153,9 +157,9 @@ cdef class KdTree:
 ## RangeImages
 # class override
 cdef class RangeImages:
-    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
+    cdef pcl_rim.RangeImagePtr_t thisptr_shared   # RangeImages
     
-    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
+    cdef inline pcl_rim.RangeImage *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying RangeImage.
         return self.thisptr_shared.get()
 

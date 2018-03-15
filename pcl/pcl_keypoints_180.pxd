@@ -8,8 +8,8 @@ from libcpp cimport bool
 
 # pcl
 cimport pcl_defs as cpp
-cimport pcl_features_180 as pclftr
-cimport pcl_kdtree_180 as pclkdt
+cimport pcl_features_180 as pcl_ftr
+cimport pcl_kdtree_180 as pcl_kdt
 
 # boost
 from boost_shared_ptr cimport shared_ptr
@@ -161,7 +161,7 @@ ctypedef shared_ptr[HarrisKeypoint3D[cpp.PointXYZRGBA, cpp.PointXYZI, cpp.Normal
 cdef extern from "pcl/keypoints/narf_keypoint.h" namespace "pcl":
     cdef cppclass NarfKeypoint(Keypoint[cpp.PointWithRange, int]):
         NarfKeypoint ()
-        NarfKeypoint (pclftr.RangeImageBorderExtractor range_image_border_extractor, float support_size)
+        NarfKeypoint (pcl_ftr.RangeImageBorderExtractor range_image_border_extractor, float support_size)
         # NarfKeypoint (RangeImageBorderExtractor* range_image_border_extractor=NULL, float support_size=-1.0f);
         # public:
         # // =====TYPEDEFS=====
@@ -220,11 +220,11 @@ cdef extern from "pcl/keypoints/narf_keypoint.h" namespace "pcl":
         
         # //! Set the RangeImageBorderExtractor member (required)
         # void setRangeImageBorderExtractor (RangeImageBorderExtractor* range_image_border_extractor);
-        void setRangeImageBorderExtractor (pclftr.RangeImageBorderExtractor range_image_border_extractor)
+        void setRangeImageBorderExtractor (pcl_ftr.RangeImageBorderExtractor range_image_border_extractor)
         
         # //! Get the RangeImageBorderExtractor member
         # RangeImageBorderExtractor* getRangeImageBorderExtractor ()
-        pclftr.RangeImageBorderExtractor getRangeImageBorderExtractor ()
+        pcl_ftr.RangeImageBorderExtractor getRangeImageBorderExtractor ()
         
         # //! Set the RangeImage member of the RangeImageBorderExtractor
         # void setRangeImage (const RangeImage* range_image)

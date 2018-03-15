@@ -12,8 +12,8 @@ cimport eigen as eigen3
 
 # main
 cimport pcl_defs as cpp
-cimport pcl_kdtree_172 as pclkdt
-cimport pcl_range_image_172 as pcl_r_img
+cimport pcl_kdtree_172 as pcl_kdt
+cimport pcl_range_image_172 as pcl_rim
 
 ###############################################################################
 # Types
@@ -47,15 +47,15 @@ cdef extern from "pcl/features/feature.h" namespace "pcl":
         In getSearchSurface () const
         
         # inline void setSearchMethod (const KdTreePtr &tree)
-        # void setSearchMethod (pclkdt.KdTreePtr_t tree)
-        # void setSearchMethod (pclkdt.KdTreeFLANNPtr_t tree)
-        # void setSearchMethod (pclkdt.KdTreeFLANNConstPtr_t &tree)
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        # void setSearchMethod (pcl_kdt.KdTreePtr_t tree)
+        # void setSearchMethod (pcl_kdt.KdTreeFLANNPtr_t tree)
+        # void setSearchMethod (pcl_kdt.KdTreeFLANNConstPtr_t &tree)
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
         
         # inline KdTreePtr getSearchMethod () const
-        # pclkdt.KdTreePtr_t getSearchMethod ()
-        # pclkdt.KdTreeFLANNPtr_t getSearchMethod ()
-        # pclkdt.KdTreeFLANNConstPtr_t getSearchMethod ()
+        # pcl_kdt.KdTreePtr_t getSearchMethod ()
+        # pcl_kdt.KdTreeFLANNPtr_t getSearchMethod ()
+        # pcl_kdt.KdTreeFLANNConstPtr_t getSearchMethod ()
         
         double getSearchParameter ()
         void setKSearch (int search)
@@ -2619,7 +2619,7 @@ cdef extern from "pcl/features/principal_curvatures.h" namespace "pcl":
 cdef extern from "pcl/features/range_image_border_extractor.h" namespace "pcl":
     cdef cppclass RangeImageBorderExtractor(Feature[cpp.PointWithRange, cpp.BorderDescription]):
         RangeImageBorderExtractor ()
-        RangeImageBorderExtractor (const pcl_r_img.RangeImage range_image)
+        RangeImageBorderExtractor (const pcl_rim.RangeImage range_image)
         # =====CONSTRUCTOR & DESTRUCTOR=====
         # Constructor
         # RangeImageBorderExtractor (const RangeImage* range_image = NULL)
@@ -2675,7 +2675,7 @@ cdef extern from "pcl/features/range_image_border_extractor.h" namespace "pcl":
         # /** \brief Provide a pointer to the range image
         #   * \param range_image a pointer to the range_image
         # void setRangeImage (const RangeImage* range_image);
-        void setRangeImage (const pcl_r_img.RangeImage range_image)
+        void setRangeImage (const pcl_rim.RangeImage range_image)
         
         # brief Erase all data calculated for the current range image
         void clearData ()
@@ -2701,7 +2701,7 @@ cdef extern from "pcl/features/range_image_border_extractor.h" namespace "pcl":
         bool hasRangeImage ()
         
         # const RangeImage& getRangeImage () const { return *range_image_; }
-        const pcl_r_img.RangeImage getRangeImage ()
+        const pcl_rim.RangeImage getRangeImage ()
         
         # float* getBorderScoresLeft ()   { extractBorderScoreImages (); return border_scores_left_; }
         # float* getBorderScoresRight ()  { extractBorderScoreImages (); return border_scores_right_; }

@@ -18,7 +18,7 @@ if PCL_MINOR_VERSION == 8:
     cimport pcl_sample_consensus_180 as pcl_sc
     cimport pcl_features_180 as pcl_ftr
     cimport pcl_filters_180 as pcl_fil
-    cimport pcl_range_image_180 as pcl_r_img
+    cimport pcl_range_image_180 as pcl_rim
     cimport pcl_segmentation_180 as pclseg
     # cimport pcl_octree_180 as pcl_fil
 
@@ -39,7 +39,7 @@ elif PCL_MINOR_VERSION == 7:
 
     cimport pcl_sample_consensus_172 as pcl_sc
     cimport pcl_filters_172 as pcl_fil
-    cimport pcl_range_image_172 as pcl_r_img
+    cimport pcl_range_image_172 as pcl_rim
     cimport pcl_segmentation_172 as pclseg
     # cimport pcl_octree_172 as pcl_fil
 
@@ -54,7 +54,7 @@ elif PCL_MINOR_VERSION == 6:
     cimport pcl_sample_consensus as pcl_sc
     cimport pcl_features as pcl_ftr
     cimport pcl_filters as pcl_fil
-    cimport pcl_range_image as pcl_r_img
+    cimport pcl_range_image as pcl_rim
     cimport pcl_segmentation as pclseg
     # cimport pcl_octree as pcl_fil
 
@@ -143,8 +143,8 @@ cdef class _CythonCoordinateFrame_Type:
         readonly int LASER_FRAME
 
     def __cinit__(self):
-        self.CAMERA_FRAME = pcl_r_img.COORDINATEFRAME_CAMERA
-        self.LASER_FRAME = pcl_r_img.COORDINATEFRAME_LASER
+        self.CAMERA_FRAME = pcl_rim.COORDINATEFRAME_CAMERA
+        self.LASER_FRAME = pcl_rim.COORDINATEFRAME_LASER
 
 CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 
