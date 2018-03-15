@@ -44,11 +44,13 @@ from vector cimport vector as vector2
 ###
 
 # pcl_config.h
+# c/c++ #define set Cython
 # https://stackoverflow.com/questions/5697479/how-can-a-defined-c-value-be-exposed-to-python-in-a-cython-module
 cdef extern from "pcl/pcl_config.h":
     cdef int PCL_MAJOR_VERSION
     cdef int PCL_MINOR_VERSION
-    cdef int PCL_REVISION_VERSION
+    # 1.6.0 not set?
+    # cdef int PCL_REVISION_VERSION
     cdef int PCL_DEV_VERSION
 
 
