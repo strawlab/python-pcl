@@ -29,17 +29,17 @@ else:
     pass
 
 IF PCL_VERSION_DEFINE == 180:
-    include "pxi/pxd_import_180.pxi"
+    include "pxi/pxd_cimport_180.pxi"
 ELIF PCL_VERSION_DEFINE == 181:
-    include "pxi/pxd_import_180.pxi"
+    include "pxi/pxd_cimport_180.pxi"
 ELIF PCL_VERSION_DEFINE == 172:
-    include "pxi/pxd_import_172.pxi"
+    include "pxi/pxd_cimport_172.pxi"
 ELIF PCL_VERSION_DEFINE == 170:
-    include "pxi/pxd_import_170.pxi"
+    include "pxi/pxd_cimport_170.pxi"
 ELIF PCL_VERSION_DEFINE == 160:
-    include "pxi/pxd_import.pxi"
+    include "pxi/pxd_cimport.pxi"
 ELSE:
-    include "pxi/pxd_import.pxi"
+    include "pxi/pxd_cimport.pxi"
 
 
 # class override(PointCloud)

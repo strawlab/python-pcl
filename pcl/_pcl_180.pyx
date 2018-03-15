@@ -40,15 +40,17 @@ else:
     pass
 
 IF PCL_VERSION_DEFINE == 180:
-    include "pxi/pyx_import_180.pxi"
+    include "pxi/pyx_cimport_180.pxi"
 ELIF PCL_VERSION_DEFINE == 181:
-    include "pxi/pyx_import_180.pxi"
+    include "pxi/pyx_cimport_180.pxi"
 ELIF PCL_VERSION_DEFINE == 172:
-    include "pxi/pyx_import_172.pxi"
+    include "pxi/pyx_cimport_172.pxi"
+ELIF PCL_VERSION_DEFINE == 170:
+    include "pxi/pyx_cimport_172.pxi"
 ELIF PCL_VERSION_DEFINE == 160:
-    include "pxi/pyx_import.pxi"
+    include "pxi/pyx_cimport.pxi"
 ELSE:
-    include "pxi/pyx_import.pxi"
+    include "pxi/pyx_cimport.pxi"
 
 
 cimport cython
@@ -173,7 +175,6 @@ include "pxi/PointCloud_PointXYZRGBA_180.pxi"
 include "pxi/PointCloud_PointWithViewpoint.pxi"
 include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
-
 
 ### common ###
 def deg2rad(float alpha):
