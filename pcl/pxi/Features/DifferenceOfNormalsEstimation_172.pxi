@@ -3,12 +3,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-if cpp.PCL_REVISION_VERSION == 0:
-    cimport pcl_features_170 as pcl_ftr
-elif cpp.PCL_REVISION_VERSION == 2:
-    cimport pcl_features_172 as pcl_ftr
-else:
-    cimport pcl_features_172 as pcl_ftr
+cimport pcl_features_172 as pcl_ftr
 
 from boost_shared_ptr cimport sp_assign
 
