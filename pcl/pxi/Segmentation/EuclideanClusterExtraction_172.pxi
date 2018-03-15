@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport _pcl
-cimport pcl_segmentation_172 as pclseg
+cimport pcl_segmentation_172 as pcl_seg
 cimport pcl_defs as cpp
 from libcpp.vector cimport vector
 
@@ -8,9 +8,9 @@ cdef class EuclideanClusterExtraction:
     """
     Segmentation class for EuclideanClusterExtraction
     """
-    cdef pclseg.EuclideanClusterExtraction_t *me
+    cdef pcl_seg.EuclideanClusterExtraction_t *me
     def __cinit__(self):
-        self.me = new pclseg.EuclideanClusterExtraction_t()
+        self.me = new pcl_seg.EuclideanClusterExtraction_t()
     def __dealloc__(self):
         del self.me
     

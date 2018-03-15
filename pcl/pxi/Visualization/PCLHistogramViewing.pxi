@@ -4,18 +4,18 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
-cimport pcl_visualization_defs as pclvis
+cimport pcl_visualization_defs as pcl_vis
 from boost_shared_ptr cimport sp_assign
 
 cdef class PCLHistogramViewing:
     """
     """
-    cdef pclvis.PCLHistogramVisualizerPtr_t thisptr_shared
+    cdef pcl_vis.PCLHistogramVisualizerPtr_t thisptr_shared
 
     def __cinit__(self):
-        sp_assign(self.thisptr_shared, new pclvis.PCLHistogramVisualizer())
+        sp_assign(self.thisptr_shared, new pcl_vis.PCLHistogramVisualizer())
 
-    cdef inline pclvis.PCLHistogramVisualizer *thisptr(self) nogil:
+    cdef inline pcl_vis.PCLHistogramVisualizer *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PCLHistogramVisualizer
         return self.thisptr_shared.get()
 

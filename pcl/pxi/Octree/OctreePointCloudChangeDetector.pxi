@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_octree as pcloct
+cimport pcl_octree as pcl_oct
 
 cdef class OctreePointCloudChangeDetector(OctreePointCloud2Buf):
     """
     Octree pointcloud ChangeDetector
     """
     # override OctreePointCloud(OctreePointCloud_t)
-    # cdef pcloct.OctreePointCloudChangeDetector_t *me
-    cdef pcloct.OctreePointCloudChangeDetector_t *me2
+    # cdef pcl_oct.OctreePointCloudChangeDetector_t *me
+    cdef pcl_oct.OctreePointCloudChangeDetector_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -19,8 +19,8 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud2Buf):
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudChangeDetector_t*> new pcloct.OctreePointCloudChangeDetector_t(resolution)
-        self.me = <pcloct.OctreePointCloud2Buf_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudChangeDetector_t*> new pcl_oct.OctreePointCloudChangeDetector_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud2Buf_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector
@@ -39,8 +39,8 @@ cdef class OctreePointCloudChangeDetector(OctreePointCloud2Buf):
 
     # use Octree2BufBase class function
     def switchBuffers (self):
-        cdef pcloct.Octree2BufBase_t* buf
-        buf = <pcloct.Octree2BufBase_t*>self.me2
+        cdef pcl_oct.Octree2BufBase_t* buf
+        buf = <pcl_oct.Octree2BufBase_t*>self.me2
         buf.switchBuffers()
 
     # base OctreePointCloud2Buf
@@ -88,8 +88,8 @@ cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud2Buf_PointXY
     Octree pointcloud ChangeDetector
     """
     # override OctreePointCloud_PointXYZI
-    # cdef pcloct.OctreePointCloudChangeDetector_PointXYZI_t *me
-    cdef pcloct.OctreePointCloudChangeDetector_PointXYZI_t *me2
+    # cdef pcl_oct.OctreePointCloudChangeDetector_PointXYZI_t *me
+    cdef pcl_oct.OctreePointCloudChangeDetector_PointXYZI_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -100,8 +100,8 @@ cdef class OctreePointCloudChangeDetector_PointXYZI(OctreePointCloud2Buf_PointXY
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZI_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZI_t(resolution)
-        self.me = <pcloct.OctreePointCloud2Buf_PointXYZI_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudChangeDetector_PointXYZI_t*> new pcl_oct.OctreePointCloudChangeDetector_PointXYZI_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud2Buf_PointXYZI_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector
@@ -157,8 +157,8 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud2Buf_Point
     Octree pointcloud ChangeDetector
     """
     # override OctreePointCloud_PointXYZRGB
-    # cdef pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t *me
-    cdef pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t *me2
+    # cdef pcl_oct.OctreePointCloudChangeDetector_PointXYZRGB_t *me
+    cdef pcl_oct.OctreePointCloudChangeDetector_PointXYZRGB_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -169,8 +169,8 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGB(OctreePointCloud2Buf_Point
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGB_t(resolution)
-        self.me = <pcloct.OctreePointCloud2Buf_PointXYZRGB_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudChangeDetector_PointXYZRGB_t*> new pcl_oct.OctreePointCloudChangeDetector_PointXYZRGB_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud2Buf_PointXYZRGB_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector
@@ -226,8 +226,8 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud2Buf_Poin
     Octree pointcloud ChangeDetector
     """
     # override OctreePointCloud_PointXYZRGBA
-    # cdef pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t *me
-    cdef pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t *me2
+    # cdef pcl_oct.OctreePointCloudChangeDetector_PointXYZRGBA_t *me
+    cdef pcl_oct.OctreePointCloudChangeDetector_PointXYZRGBA_t *me2
 
     def __cinit__(self, double resolution):
         """
@@ -238,8 +238,8 @@ cdef class OctreePointCloudChangeDetector_PointXYZRGBA(OctreePointCloud2Buf_Poin
         if resolution <= 0.:
             raise ValueError("Expected resolution > 0., got %r" % resolution)
 
-        self.me2 = <pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t*> new pcloct.OctreePointCloudChangeDetector_PointXYZRGBA_t(resolution)
-        self.me = <pcloct.OctreePointCloud2Buf_PointXYZRGBA_t*> self.me2
+        self.me2 = <pcl_oct.OctreePointCloudChangeDetector_PointXYZRGBA_t*> new pcl_oct.OctreePointCloudChangeDetector_PointXYZRGBA_t(resolution)
+        self.me = <pcl_oct.OctreePointCloud2Buf_PointXYZRGBA_t*> self.me2
 
     def get_PointIndicesFromNewVoxels (self):
         cdef vector[int] newPointIdxVector

@@ -3,17 +3,17 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_features as pclftr
+cimport pcl_features as pcl_ftr
 
 
 cdef class RangeImageBorderExtractor:
     """
     RangeImageBorderExtractor class for 
     """
-    cdef pclftr.RangeImageBorderExtractor_t *me
+    cdef pcl_ftr.RangeImageBorderExtractor_t *me
     
     def __cinit__(self):
-        self.me = new pclftr.RangeImageBorderExtractor_t()
+        self.me = new pcl_ftr.RangeImageBorderExtractor_t()
     
     def __dealloc__(self):
         del self.me
@@ -49,7 +49,7 @@ cdef class RangeImageBorderExtractor:
     # 
     # # 
     # def GetRangeImage()
-    #     const pcl_r_img.RangeImage 
+    #     const pcl_rim.RangeImage 
     #     self.me.getRangeImage ()
     # 
     # def GetBorderScoresLeft ()

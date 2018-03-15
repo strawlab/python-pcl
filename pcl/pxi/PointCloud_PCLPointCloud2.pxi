@@ -10,16 +10,23 @@ cimport pcl_PCLPointCloud2_172 as pcl_pc2
 
 # parts
 cimport pcl_common_172 as pcl_cmn
-cimport pcl_features_172 as pclftr
-cimport pcl_filters_172 as pclfil
-cimport pcl_io_172 as pclio
-cimport pcl_kdtree_172 as pclkdt
-cimport pcl_octree_172 as pcloct
+
+if cpp.PCL_REVISION_VERSION == 0:
+    cimport pcl_features_170 as pcl_ftr
+elif cpp.PCL_REVISION_VERSION == 2:
+    cimport pcl_features_172 as pcl_ftr
+else:
+    cimport pcl_features_172 as pcl_ftr
+
+cimport pcl_filters_172 as pcl_fil
+cimport pcl_io_172 as pcl_io
+cimport pcl_kdtree_172 as pcl_kdt
+cimport pcl_octree_172 as pcl_oct
 cimport pcl_sample_consensus_172 as pcl_sc
 # cimport pcl_search_172 as pcl_sch
-cimport pcl_segmentation_172 as pclseg
-cimport pcl_surface_172 as pclsf
-cimport pcl_range_image_172 as pcl_r_img
+cimport pcl_segmentation_172 as pcl_seg
+cimport pcl_surface_172 as pcl_sf
+cimport pcl_range_image_172 as pcl_rim
 cimport pcl_registration_172 as pcl_reg
 
 from libcpp cimport bool
@@ -28,7 +35,7 @@ cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 
 cdef extern from "ProjectInliers.h":
-    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t) except +
+    void mpcl_ProjectInliers_setModelCoefficients(pcl_fil.ProjectInliers_t) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
@@ -278,8 +285,8 @@ cdef class PCLPointCloud2:
         cdef int error = 0
         with nogil:
             # NG
-            # error = pclio.loadPCDFile [pcl_pc2.PCLPointCloud2](string(s), <cpp.PointCloud[pcl_pc2.PCLPointCloud2]> deref(self.thisptr()))
-            # error = pclio.loadPCDFile [pcl_pc2.PCLPointCloud2](string(s), deref(self.thisptr()))
+            # error = pcl_io.loadPCDFile [pcl_pc2.PCLPointCloud2](string(s), <cpp.PointCloud[pcl_pc2.PCLPointCloud2]> deref(self.thisptr()))
+            # error = pcl_io.loadPCDFile [pcl_pc2.PCLPointCloud2](string(s), deref(self.thisptr()))
             pass
         
         return error
@@ -288,8 +295,8 @@ cdef class PCLPointCloud2:
         cdef int ok = 0
         with nogil:
             # NG
-            # ok = pclio.loadPLYFile [pcl_pc2.PCLPointCloud2](string(s), <cpp.PointCloud[pcl_pc2.PCLPointCloud2]> deref(self.thisptr()))
-            # ok = pclio.loadPLYFile [pcl_pc2.PCLPointCloud2](string(s), deref(self.thisptr()))
+            # ok = pcl_io.loadPLYFile [pcl_pc2.PCLPointCloud2](string(s), <cpp.PointCloud[pcl_pc2.PCLPointCloud2]> deref(self.thisptr()))
+            # ok = pcl_io.loadPLYFile [pcl_pc2.PCLPointCloud2](string(s), deref(self.thisptr()))
             pass
         
         return ok
@@ -306,7 +313,7 @@ cdef class PCLPointCloud2:
         cdef string s = string(f)
         with nogil:
             # OK
-            # error = pclio.savePCDFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
+            # error = pcl_io.savePCDFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
             pass
         
         return error
@@ -315,7 +322,7 @@ cdef class PCLPointCloud2:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            # error = pclio.savePLYFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
+            # error = pcl_io.savePLYFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
             pass
         
         return error

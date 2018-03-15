@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_filters as pclfil
+cimport pcl_filters as pcl_fil
 
 cdef class ApproximateVoxelGrid:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.ApproximateVoxelGrid_t *me
+    cdef pcl_fil.ApproximateVoxelGrid_t *me
 
     def __cinit__(self):
-        self.me = new pclfil.ApproximateVoxelGrid_t()
+        self.me = new pcl_fil.ApproximateVoxelGrid_t()
 
     def __dealloc__(self):
         del self.me
@@ -36,10 +36,10 @@ cdef class ApproximateVoxelGrid_PointXYZI:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.ApproximateVoxelGrid_PointXYZI_t *me
+    cdef pcl_fil.ApproximateVoxelGrid_PointXYZI_t *me
 
     def __cinit__(self):
-        self.me = new pclfil.ApproximateVoxelGrid_PointXYZI_t()
+        self.me = new pcl_fil.ApproximateVoxelGrid_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
@@ -65,9 +65,9 @@ cdef class ApproximateVoxelGrid_PointXYZRGB:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.ApproximateVoxelGrid_PointXYZRGB_t *me
+    cdef pcl_fil.ApproximateVoxelGrid_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclfil.ApproximateVoxelGrid_PointXYZRGB_t()
+        self.me = new pcl_fil.ApproximateVoxelGrid_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
@@ -93,9 +93,9 @@ cdef class ApproximateVoxelGrid_PointXYZRGBA:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.ApproximateVoxelGrid_PointXYZRGBA_t *me
+    cdef pcl_fil.ApproximateVoxelGrid_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclfil.ApproximateVoxelGrid_PointXYZRGBA_t()
+        self.me = new pcl_fil.ApproximateVoxelGrid_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 

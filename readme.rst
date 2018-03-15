@@ -206,23 +206,29 @@ before Install module
 
             `Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
 
+            `Visual Studio 2017 C++ Compiler Tools(use Python 3.6) <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+
             `PCL All-In-One Installer <https://github.com/PointCloudLibrary/pcl/releases/>`_
                 
-                `32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win32.exe>`_
-                
-                `64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win64.exe>`_
+                `Visual Studio 2015 - 32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win32.exe>`_
+
+                `Visual Studio 2017 - 32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2017-win32.exe>`_
+
+                `Visual Studio 2015 - 64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win64.exe>`_
+
+                `Visual Studio 2017 - 64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2017-win64.exe>`_
 
             OpenNI2[(PCL Install FolderPath)\\3rdParty\\OpenNI2\\OpenNI-Windows-(win32/x64)-2.2.msi]
 
-        Common setting            
+        Common setting
 
-            `Windows Gtk+ Download <http://win32builder.gnome.org/>`_                   
+            `Windows Gtk+ Download <http://win32builder.gnome.org/>`_
 
-                Download file unzip. Copy bin Folder to pkg-config Folder                  
-                 
+                Download file unzip. Copy bin Folder to pkg-config Folder
+
                 or execute powershell file [Install-GTKPlus.ps1].
 
-`Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_ 
+`Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_
 
 set before Environment variable
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

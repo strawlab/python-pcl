@@ -10,16 +10,16 @@ cimport pcl_PointCloud2_160 as pcl_pc2
 
 # parts
 cimport pcl_common as pcl_cmn
-cimport pcl_features as pclftr
-cimport pcl_filters as pclfil
-cimport pcl_io as pclio
-cimport pcl_kdtree as pclkdt
-cimport pcl_octree as pcloct
+cimport pcl_features as pcl_ftr
+cimport pcl_filters as pcl_fil
+cimport pcl_io as pcl_io
+cimport pcl_kdtree as pcl_kdt
+cimport pcl_octree as pcl_oct
 cimport pcl_sample_consensus as pcl_sc
 # cimport pcl_search as pcl_sch
-cimport pcl_segmentation as pclseg
-cimport pcl_surface as pclsf
-cimport pcl_range_image as pcl_r_img
+cimport pcl_segmentation as pcl_seg
+cimport pcl_surface as pcl_sf
+cimport pcl_range_image as pcl_rim
 cimport pcl_registration_160 as pcl_reg
 
 from libcpp cimport bool
@@ -28,7 +28,7 @@ cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 
 cdef extern from "ProjectInliers.h":
-    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t) except +
+    void mpcl_ProjectInliers_setModelCoefficients(pcl_fil.ProjectInliers_t) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
@@ -278,8 +278,8 @@ cdef class PointCloud2:
         cdef int error = 0
         with nogil:
             # NG
-            # error = pclio.loadPCDFile(string(s), <cpp.PointCloud[pcl_pc2.PointCloud2]> deref(self.thisptr()))
-            # error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+            # error = pcl_io.loadPCDFile(string(s), <cpp.PointCloud[pcl_pc2.PointCloud2]> deref(self.thisptr()))
+            # error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
             pass
         
         return error
@@ -288,8 +288,8 @@ cdef class PointCloud2:
         cdef int ok = 0
         with nogil:
             # NG
-            # ok = pclio.loadPLYFile(string(s), <cpp.PointCloud[pcl_pc2.PointCloud2]> deref(self.thisptr()))
-            # ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
+            # ok = pcl_io.loadPLYFile(string(s), <cpp.PointCloud[pcl_pc2.PointCloud2]> deref(self.thisptr()))
+            # ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
             pass
         
         return ok
@@ -306,7 +306,7 @@ cdef class PointCloud2:
         cdef string s = string(f)
         with nogil:
             # OK
-            # error = pclio.savePCDFile(s, deref(self.thisptr()), binary)
+            # error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
             pass
         
         return error
@@ -315,7 +315,7 @@ cdef class PointCloud2:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            # error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
+            # error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
             pass
         
         return error

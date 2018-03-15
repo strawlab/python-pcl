@@ -3,7 +3,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_filters_180 as pclfil
+cimport pcl_filters_180 as pcl_fil
 
 cimport eigen as eigen3
 
@@ -14,12 +14,12 @@ cdef class ConditionalRemoval:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in ConditionalRemoval(pc).
     """
-    cdef pclfil.ConditionalRemoval_t *me
+    cdef pcl_fil.ConditionalRemoval_t *me
 
     def __cinit__(self, ConditionAnd cond):
-        # self.me = new pclfil.ConditionalRemoval_t(<pclfil.ConditionBase_t*>cond.me)
+        # self.me = new pcl_fil.ConditionalRemoval_t(<pcl_fil.ConditionBase_t*>cond.me)
         # direct - NG
-        self.me = new pclfil.ConditionalRemoval_t(<pclfil.ConditionBasePtr_t>cond.me)
+        self.me = new pcl_fil.ConditionalRemoval_t(<pcl_fil.ConditionBasePtr_t>cond.me)
 
     # def __dealloc__(self):
     #    # MemoryAccessError

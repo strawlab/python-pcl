@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation_172 as pclseg
+cimport pcl_segmentation_172 as pcl_seg
 cimport pcl_defs as cpp
 
 cdef class MinCutSegmentation:
     """
     MinCutSegmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_t *me
+    cdef pcl_seg.SACSegmentation_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_t()
+        self.me = new pcl_seg.SACSegmentation_t()
     def __dealloc__(self):
         del self.me
 
@@ -22,7 +22,7 @@ cdef class MinCutSegmentation:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_seg.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -33,9 +33,9 @@ cdef class Segmentation_PointXYZI:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_PointXYZI_t *me
+    cdef pcl_seg.SACSegmentation_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZI_t()
+        self.me = new pcl_seg.SACSegmentation_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
@@ -49,7 +49,7 @@ cdef class Segmentation_PointXYZI:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_seg.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -61,9 +61,9 @@ cdef class Segmentation_PointXYZRGB:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_PointXYZRGB_t *me
+    cdef pcl_seg.SACSegmentation_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZRGB_t()
+        self.me = new pcl_seg.SACSegmentation_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
@@ -77,7 +77,7 @@ cdef class Segmentation_PointXYZRGB:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_seg.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)
@@ -89,9 +89,9 @@ cdef class Segmentation_PointXYZRGBA:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_PointXYZRGBA_t *me
+    cdef pcl_seg.SACSegmentation_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZRGBA_t()
+        self.me = new pcl_seg.SACSegmentation_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 
@@ -105,7 +105,7 @@ cdef class Segmentation_PointXYZRGBA:
 
     def set_optimize_coefficients(self, bool b):
         self.me.setOptimizeCoefficients(b)
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_seg.SacModel m):
         self.me.setModelType(m)
     def set_method_type(self, int m):
         self.me.setMethodType (m)

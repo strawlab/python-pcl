@@ -3,7 +3,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_filters as pclfil
+cimport pcl_filters as pcl_fil
 
 cimport eigen as eigen3
 
@@ -14,10 +14,10 @@ cdef class CropBox:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in CropBox(pc).
     """
-    cdef pclfil.CropBox_t *me
+    cdef pcl_fil.CropBox_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new pclfil.CropBox_t()
+        self.me = new pcl_fil.CropBox_t()
         (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def __dealloc__(self):

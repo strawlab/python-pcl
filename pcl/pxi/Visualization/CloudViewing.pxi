@@ -3,21 +3,21 @@ cimport _pcl
 cimport pcl_defs as cpp
 cimport numpy as cnp
 
-cimport pcl_visualization_defs as pclvis
+cimport pcl_visualization_defs as pcl_vis
 from boost_shared_ptr cimport sp_assign
 
 cdef class CloudViewing:
     """
     """
-    # cdef pclvis.CloudViewer *me
-    cdef pclvis.CloudViewerPtr_t thisptr_shared
+    # cdef pcl_vis.CloudViewer *me
+    cdef pcl_vis.CloudViewerPtr_t thisptr_shared
 
     def __cinit__(self):
-        # self.me = new pclvis.CloudViewer()
-        # sp_assign(<cpp.shared_ptr[pclvis.CloudViewer]> self.thisptr_shared, new pclvis.CloudViewer('cloud'))
-        sp_assign(self.thisptr_shared, new pclvis.CloudViewer('cloud'))
+        # self.me = new pcl_vis.CloudViewer()
+        # sp_assign(<cpp.shared_ptr[pcl_vis.CloudViewer]> self.thisptr_shared, new pcl_vis.CloudViewer('cloud'))
+        sp_assign(self.thisptr_shared, new pcl_vis.CloudViewer('cloud'))
 
-    cdef inline pclvis.CloudViewer *thisptr(self) nogil:
+    cdef inline pcl_vis.CloudViewer *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying CloudViewer
         return self.thisptr_shared.get()
 

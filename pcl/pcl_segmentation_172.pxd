@@ -21,7 +21,7 @@ from pcl_defs cimport Normal
 from pcl_defs cimport PCLBase
 from pcl_sample_consensus_172 cimport SacModel
 cimport pcl_surface_172 as pclsf
-cimport pcl_kdtree_172 as pclkdt
+cimport pcl_kdtree_172 as pcl_kdt
 
 ##
 
@@ -568,12 +568,12 @@ cdef extern from "pcl/segmentation/extract_clusters.h" namespace "pcl":
         # brief Provide a pointer to the search object.
         # param[in] tree a pointer to the spatial search object.
         # inline void setSearchMethod (const KdTreePtr &tree) 
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
         
         # brief Get a pointer to the search method used. 
         # @todo fix this for a generic search tree
         # inline KdTreePtr getSearchMethod () const 
-        pclkdt.KdTreePtr_t getSearchMethod ()
+        pcl_kdt.KdTreePtr_t getSearchMethod ()
         
         # brief Set the spatial cluster tolerance as a measure in the L2 Euclidean space
         # param[in] tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space

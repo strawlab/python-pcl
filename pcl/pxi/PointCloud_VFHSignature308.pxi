@@ -4,9 +4,9 @@ cimport pcl_defs as cpp
 cimport numpy as cnp
 
 # parts
-cimport pcl_features as pclftr
-cimport pcl_filters as pclfil
-cimport pcl_io as pclio
+cimport pcl_features as pcl_ftr
+cimport pcl_filters as pcl_fil
+cimport pcl_io as pcl_io
 
 from libcpp cimport bool
 cimport indexing as idx

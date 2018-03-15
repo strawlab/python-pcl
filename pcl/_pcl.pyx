@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # cython: embedsignature=True
 
-
 from collections import Sequence
 import numbers
 import numpy as np
@@ -9,13 +8,82 @@ cimport numpy as cnp
 
 cimport pcl_common as pcl_cmn
 cimport pcl_defs as cpp
+
+### DEFINE ###
+PCL_MAJOR_VERSION    = cpp.PCL_MAJOR_VERSION
+PCL_MINOR_VERSION    = cpp.PCL_MINOR_VERSION
+PCL_REVISION_VERSION = cpp.PCL_REVISION_VERSION
+
+if cpp.PCL_MINOR_VERSION == 8:
+    if cpp.PCL_REVISION_VERSION == 0:
+        DEF PCL_VERSION_DEFINE=180
+    elif cpp.PCL_REVISION_VERSION == 1:
+        DEF PCL_VERSION_DEFINE=181
+    else:
+        DEF PCL_VERSION_DEFINE=181
+
+elif PCL_MINOR_VERSION == 7:
+    if cpp.PCL_REVISION_VERSION == 0:
+        DEF PCL_VERSION_DEFINE=170
+    elif cpp.PCL_REVISION_VERSION == 2:
+        DEF PCL_VERSION_DEFINE=172
+    else:
+        DEF PCL_VERSION_DEFINE=172
+
+elif PCL_MINOR_VERSION == 6:
+    if cpp.PCL_REVISION_VERSION == 0:
+        DEF PCL_VERSION_DEFINE=160
+    else:
+        DEF PCL_VERSION_DEFINE=160
+
+else:
+    pass
+
+IF PCL_VERSION_DEFINE == 180:
+    cimport pcl_sample_consensus_180 as pcl_sc
+    cimport pcl_features_180 as pcl_ftr
+    cimport pcl_filters_180 as pcl_fil
+    cimport pcl_range_image_180 as pcl_rim
+    cimport pcl_segmentation_180 as pcl_seg
+ELIF PCL_VERSION_DEFINE == 181:
+    cimport pcl_sample_consensus_180 as pcl_sc
+    cimport pcl_features_180 as pcl_ftr
+    cimport pcl_filters_180 as pcl_fil
+    cimport pcl_range_image_180 as pcl_rim
+    cimport pcl_segmentation_180 as pcl_seg
+ELIF PCL_VERSION_DEFINE == 170:
+    cimport pcl_sample_consensus_172 as pcl_sc
+    cimport pcl_filters_172 as pcl_fil
+    cimport pcl_range_image_172 as pcl_rim
+    cimport pcl_segmentation_172 as pcl_seg
+    cimport pcl_features_170 as pcl_ftr
+ELIF PCL_VERSION_DEFINE == 172:
+	cimport pcl_sample_consensus_172 as pcl_sc
+    cimport pcl_filters_172 as pcl_fil
+    cimport pcl_range_image_172 as pcl_rim
+    cimport pcl_segmentation_172 as pcl_seg
+    cimport pcl_features_172 as pcl_ftr
+ELIF PCL_VERSION_DEFINE == 160:
+    cimport pcl_sample_consensus as pcl_sc
+    cimport pcl_features as pcl_ftr
+    cimport pcl_filters as pcl_fil
+    cimport pcl_range_image as pcl_rim
+    cimport pcl_segmentation as pcl_seg
+ELSE:
+    cimport pcl_sample_consensus as pcl_sc
+    cimport pcl_features as pcl_ftr
+    cimport pcl_filters as pcl_fil
+    cimport pcl_range_image as pcl_rim
+    cimport pcl_segmentation as pcl_seg
+
+
 cimport pcl_sample_consensus as pcl_sc
 cimport pcl_features as pcl_ftr
 cimport pcl_filters as pcl_fil
-cimport pcl_range_image as pcl_r_img
-cimport pcl_segmentation as pclseg
-
+cimport pcl_range_image as pcl_rim
+cimport pcl_segmentation as pcl_seg
 cimport cython
+
 # from cython.operator import dereference as deref
 from cython.operator cimport dereference as deref, preincrement as inc
 from cython cimport address
@@ -26,7 +94,7 @@ from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-# cimport pcl_segmentation as pclseg
+# cimport pcl_segmentation as pcl_seg
 
 from boost_shared_ptr cimport sp_assign
 
@@ -92,8 +160,8 @@ cdef class _CythonCoordinateFrame_Type:
         readonly int LASER_FRAME
 
     def __cinit__(self):
-        self.CAMERA_FRAME = pcl_r_img.COORDINATEFRAME_CAMERA
-        self.LASER_FRAME = pcl_r_img.COORDINATEFRAME_LASER
+        self.CAMERA_FRAME = pcl_rim.COORDINATEFRAME_CAMERA
+        self.LASER_FRAME = pcl_rim.COORDINATEFRAME_LASER
 
 CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 
@@ -130,6 +198,69 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 # 
 # CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
 ###
+
+# ok.
+# use DEF Paramater
+# DEF PCL_INCLUDE_MINOR_VERSION = 8
+# IF PCL_VERSION_DEFINE == 180:
+#   include "pxi/pxiInclude_180.pxi"
+#   include "pxi/PointCloud_PointXYZ_180.pxi"
+#   include "pxi/PointCloud_PointXYZI_180.pxi"
+#   include "pxi/PointCloud_PointXYZRGB_180.pxi"
+#   include "pxi/PointCloud_PointXYZRGBA_180.pxi"
+# ELIF PCL_VERSION_DEFINE == 181:
+#   include "pxi/pxiInclude_180.pxi"
+#   include "pxi/PointCloud_PointXYZ_180.pxi"
+#   include "pxi/PointCloud_PointXYZI_180.pxi"
+#   include "pxi/PointCloud_PointXYZRGB_180.pxi"
+#   include "pxi/PointCloud_PointXYZRGBA_180.pxi"
+# ELIF PCL_VERSION_DEFINE == 170:
+#   include "pxi/pxiInclude_170.pxi"
+#   include "pxi/PointCloud_PointXYZ_172.pxi"
+#   include "pxi/PointCloud_PointXYZI_172.pxi"
+#   include "pxi/PointCloud_PointXYZRGB_172.pxi"
+#   include "pxi/PointCloud_PointXYZRGBA_172.pxi"
+# ELIF PCL_VERSION_DEFINE == 172:
+#   include "pxi/pxiInclude_172.pxi"
+#   include "pxi/PointCloud_PointXYZ_172.pxi"
+#   include "pxi/PointCloud_PointXYZI_172.pxi"
+#   include "pxi/PointCloud_PointXYZRGB_172.pxi"
+#   include "pxi/PointCloud_PointXYZRGBA_172.pxi"
+# ELIF PCL_VERSION_DEFINE == 160:
+#   include "pxi/pxiInclude.pxi"
+#   include "pxi/PointCloud_PointXYZ.pxi"
+#   include "pxi/PointCloud_PointXYZI.pxi"
+#   include "pxi/PointCloud_PointXYZRGB.pxi"
+#   include "pxi/PointCloud_PointXYZRGBA.pxi"
+#   # Add PointCloud2
+#   # include "pxi/PointCloud_PointCloud2.pxi"
+# ELSE:
+#   pass
+
+# ng.
+# if PCL_INCLUDE_MINOR_VERSION == 8:
+#     include "pxi/pxiInclude_180.pxi"
+#     include "pxi/PointCloud_PointXYZ_180.pxi"
+#     include "pxi/PointCloud_PointXYZI_180.pxi"
+#     include "pxi/PointCloud_PointXYZRGB_180.pxi"
+#     include "pxi/PointCloud_PointXYZRGBA_180.pxi"
+# elif PCL_INCLUDE_MINOR_VERSION == 7:
+#     include "pxi/pxiInclude_170.pxi"
+#     include "pxi/PointCloud_PointXYZ_170.pxi"
+#     include "pxi/PointCloud_PointXYZI_170.pxi"
+#     include "pxi/PointCloud_PointXYZRGB_170.pxi"
+#     include "pxi/PointCloud_PointXYZRGBA_170.pxi"
+# elif PCL_INCLUDE_MINOR_VERSION == 6:
+#     include "pxi/pxiInclude.pxi"
+#     include "pxi/PointCloud_PointXYZ.pxi"
+#     include "pxi/PointCloud_PointXYZI.pxi"
+#     include "pxi/PointCloud_PointXYZRGB.pxi"
+#     include "pxi/PointCloud_PointXYZRGBA.pxi"
+#     # Add PointCloud2
+#     include "pxi/PointCloud_PointCloud2.pxi"
+# else:
+#     pass
+
 
 include "pxi/pxiInclude.pxi"
 

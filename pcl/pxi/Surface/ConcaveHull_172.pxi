@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-cimport pcl_surface_172 as pclsf
+cimport pcl_surface_172 as pcl_sf
 cimport pcl_defs as cpp
 
 cdef class ConcaveHull:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_t *me
+    cdef pcl_sf.ConcaveHull_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_t()
+        self.me = new pcl_sf.ConcaveHull_t()
     def __dealloc__(self):
         del self.me
 
@@ -28,9 +28,9 @@ cdef class ConcaveHull_PointXYZI:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_PointXYZI_t *me
+    cdef pcl_sf.ConcaveHull_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_PointXYZI_t()
+        self.me = new pcl_sf.ConcaveHull_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
@@ -51,9 +51,9 @@ cdef class ConcaveHull_PointXYZRGB:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_PointXYZRGB_t *me
+    cdef pcl_sf.ConcaveHull_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_PointXYZRGB_t()
+        self.me = new pcl_sf.ConcaveHull_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
@@ -74,9 +74,9 @@ cdef class ConcaveHull_PointXYZRGBA:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_PointXYZRGBA_t *me
+    cdef pcl_sf.ConcaveHull_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_PointXYZRGBA_t()
+        self.me = new pcl_sf.ConcaveHull_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 

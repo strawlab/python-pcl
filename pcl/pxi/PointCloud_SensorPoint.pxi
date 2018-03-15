@@ -7,16 +7,16 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
-cimport pcl_features as pclftr
-cimport pcl_filters as pclfil
-cimport pcl_io as pclio
-cimport pcl_kdtree as pclkdt
-cimport pcl_octree as pcloct
+cimport pcl_features as pcl_ftr
+cimport pcl_filters as pcl_fil
+cimport pcl_io as pcl_io
+cimport pcl_kdtree as pcl_kdt
+cimport pcl_octree as pcl_oct
 cimport pcl_sample_consensus as pcl_sc
 # cimport pcl_search as pcl_sch
-cimport pcl_segmentation as pclseg
-cimport pcl_surface as pclsf
-cimport pcl_range_image as pcl_r_img
+cimport pcl_segmentation as pcl_seg
+cimport pcl_surface as pcl_sf
+cimport pcl_range_image as pcl_rim
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -34,7 +34,7 @@ cdef extern from "minipcl.h":
 
 
 cdef extern from "ProjectInliers.h":
-    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t);
+    void mpcl_ProjectInliers_setModelCoefficients(pcl_fil.ProjectInliers_t);
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
@@ -235,16 +235,16 @@ cdef class PointCloud2:
         cdef int error = 0
         with nogil:
             # NG
-            # error = pclio.loadPCDFile(string(s), <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()))
-            error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+            # error = pcl_io.loadPCDFile(string(s), <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()))
+            error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
             # NG
-            # ok = pclio.loadPLYFile(string(s), <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
+            # ok = pcl_io.loadPLYFile(string(s), <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()))
+            ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -259,11 +259,11 @@ cdef class PointCloud2:
         cdef string s = string(f)
         with nogil:
             # NG
-            # error = pclio.savePCDFile(s, <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()), binary)
+            # error = pcl_io.savePCDFile(s, <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()), binary)
             # OK
-            error = pclio.savePCDFile(s, deref(self.thisptr()), binary)
-            # pclio.PointCloud2[cpp.PointXYZ] *p = self.thisptr()
-            # error = pclio.savePCDFile(s, p, binary)
+            error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
+            # pcl_io.PointCloud2[cpp.PointXYZ] *p = self.thisptr()
+            # error = pcl_io.savePCDFile(s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
@@ -271,8 +271,8 @@ cdef class PointCloud2:
         cdef string s = string(f)
         with nogil:
             # NG
-            # error = pclio.savePLYFile(s, <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
+            # error = pcl_io.savePLYFile(s, <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()), binary)
+            error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 
     def make_segmenter(self):
@@ -280,7 +280,7 @@ cdef class PointCloud2:
         Return a pcl.Segmentation object with this object set as the input-cloud
         """
         seg = Segmentation()
-        cdef pclseg.SACSegmentation_t *cseg = <pclseg.SACSegmentation_t *>seg.me
+        cdef pcl_seg.SACSegmentation_t *cseg = <pcl_seg.SACSegmentation_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         return seg
 
@@ -293,7 +293,7 @@ cdef class PointCloud2:
         # p = self.thisptr()
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = SegmentationNormal()
-        cdef pclseg.SACSegmentationNormal_t *cseg = <pclseg.SACSegmentationNormal_t *>seg.me
+        cdef pcl_seg.SACSegmentationNormal_t *cseg = <pcl_seg.SACSegmentationNormal_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg
@@ -303,7 +303,7 @@ cdef class PointCloud2:
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
         """
         fil = StatisticalOutlierRemovalFilter()
-        cdef pclfil.StatisticalOutlierRemoval_t *cfil = <pclfil.StatisticalOutlierRemoval_t *>fil.me
+        cdef pcl_fil.StatisticalOutlierRemoval_t *cfil = <pcl_fil.StatisticalOutlierRemoval_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
@@ -312,7 +312,7 @@ cdef class PointCloud2:
         Return a pcl.VoxelGridFilter object with this object set as the input-cloud
         """
         fil = VoxelGridFilter()
-        cdef pclfil.VoxelGrid_t *cfil = <pclfil.VoxelGrid_t *>fil.me
+        cdef pcl_fil.VoxelGrid_t *cfil = <pcl_fil.VoxelGrid_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
@@ -321,7 +321,7 @@ cdef class PointCloud2:
         Return a pcl.PassThroughFilter object with this object set as the input-cloud
         """
         fil = PassThroughFilter()
-        cdef pclfil.PassThrough_t *cfil = <pclfil.PassThrough_t *>fil.me
+        cdef pcl_fil.PassThrough_t *cfil = <pcl_fil.PassThrough_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
@@ -330,7 +330,7 @@ cdef class PointCloud2:
         Return a pcl.MovingLeastSquares object with this object as input cloud.
         """
         mls = MovingLeastSquares()
-        cdef pclsf.MovingLeastSquares_t *cmls = <pclsf.MovingLeastSquares_t *>mls.me
+        cdef pcl_sf.MovingLeastSquares_t *cmls = <pcl_sf.MovingLeastSquares_t *>mls.me
         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return mls
 
@@ -421,21 +421,21 @@ cdef class PointCloud2:
 
     def make_ProjectInliers(self):
         """
-        Return a pclfil.ProjectInliers object with this object set as the input-cloud
+        Return a pcl_fil.ProjectInliers object with this object set as the input-cloud
         """
         # proj = ProjectInliers()
-        # cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
+        # cdef pcl_fil.ProjectInliers_t *cproj = <pcl_fil.ProjectInliers_t *>proj.me
         # cproj.setInputCloud(self.thisptr_shared)
         # return proj
-        # # cdef pclfil.ProjectInliers_t* projInliers
+        # # cdef pcl_fil.ProjectInliers_t* projInliers
         # # mpcl_ProjectInliers_setModelCoefficients(projInliers)
         # mpcl_ProjectInliers_setModelCoefficients(deref(projInliers))
         # # proj = ProjectInliers()
-        # cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>projInliers
+        # cdef pcl_fil.ProjectInliers_t *cproj = <pcl_fil.ProjectInliers_t *>projInliers
         # cproj.setInputCloud(self.thisptr_shared)
         # return proj
         # # NG
-        # cdef pclfil.ProjectInliers_t* projInliers
+        # cdef pcl_fil.ProjectInliers_t* projInliers
         # # mpcl_ProjectInliers_setModelCoefficients(projInliers)
         # mpcl_ProjectInliers_setModelCoefficients(deref(projInliers))
         # projInliers.setInputCloud(self.thisptr_shared)
@@ -443,7 +443,7 @@ cdef class PointCloud2:
         # proj.me = projInliers
         # return proj
         proj = ProjectInliers()
-        cdef pclfil.ProjectInliers_t *cproj = <pclfil.ProjectInliers_t *>proj.me
+        cdef pcl_fil.ProjectInliers_t *cproj = <pcl_fil.ProjectInliers_t *>proj.me
         # mpcl_ProjectInliers_setModelCoefficients(cproj)
         mpcl_ProjectInliers_setModelCoefficients(deref(cproj))
         cproj.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
@@ -451,10 +451,10 @@ cdef class PointCloud2:
 
     def make_RadiusOutlierRemoval(self):
         """
-        Return a pclfil.RadiusOutlierRemoval object with this object set as the input-cloud
+        Return a pcl_fil.RadiusOutlierRemoval object with this object set as the input-cloud
         """
         fil = RadiusOutlierRemoval()
-        cdef pclfil.RadiusOutlierRemoval_t *cfil = <pclfil.RadiusOutlierRemoval_t *>fil.me
+        cdef pcl_fil.RadiusOutlierRemoval_t *cfil = <pcl_fil.RadiusOutlierRemoval_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return fil
 
@@ -463,7 +463,7 @@ cdef class PointCloud2:
         Return a pcl.ConditionAnd object with this object set as the input-cloud
         """
         condAnd = ConditionAnd()
-        cdef pclfil.ConditionAnd_t *cCondAnd = <pclfil.ConditionAnd_t *>condAnd.me
+        cdef pcl_fil.ConditionAnd_t *cCondAnd = <pcl_fil.ConditionAnd_t *>condAnd.me
         return condAnd
 
     def make_ConditionalRemoval(self, ConditionAnd range_conf):
@@ -471,7 +471,7 @@ cdef class PointCloud2:
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
         condRemoval = ConditionalRemoval(range_conf)
-        cdef pclfil.ConditionalRemoval_t *cCondRemoval = <pclfil.ConditionalRemoval_t *>condRemoval.me
+        cdef pcl_fil.ConditionalRemoval_t *cCondRemoval = <pcl_fil.ConditionalRemoval_t *>condRemoval.me
         cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return condRemoval
 
@@ -480,7 +480,7 @@ cdef class PointCloud2:
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
         concaveHull = ConcaveHull()
-        cdef pclsf.ConcaveHull_t *cConcaveHull = <pclsf.ConcaveHull_t *>concaveHull.me
+        cdef pcl_sf.ConcaveHull_t *cConcaveHull = <pcl_sf.ConcaveHull_t *>concaveHull.me
         cConcaveHull.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
         return concaveHull
 
@@ -495,7 +495,7 @@ cdef class PointCloud2:
         # # harris = HarrisKeypoint3D()
         # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr())
         # # mpcl_extract_HarrisKeypoint3D(self.thisptr_shared, result.thisptr_shared)
-        # # cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pclseg.SACSegmentationNormal_t *>harris.me
+        # # cdef keypt.HarrisKeypoint3DPtr_t *cseg = <pcl_seg.SACSegmentationNormal_t *>harris.me
         # # charris.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         # # charris.setNonMaxSupression (true)
         # # charris.setRadius (1.0)
@@ -506,31 +506,31 @@ cdef class PointCloud2:
 
     def make_NormalEstimation(self):
         normalEstimation = NormalEstimation()
-        cdef pclftr.NormalEstimation_t *cNormalEstimation = <pclftr.NormalEstimation_t *>normalEstimation.me
+        cdef pcl_ftr.NormalEstimation_t *cNormalEstimation = <pcl_ftr.NormalEstimation_t *>normalEstimation.me
         cNormalEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return normalEstimation
 
     def make_VFHEstimation(self):
         vfhEstimation = VFHEstimation()
-        cdef pclftr.VFHEstimation_t *cVFHEstimation = <pclftr.VFHEstimation_t *>vfhEstimation.me
+        cdef pcl_ftr.VFHEstimation_t *cVFHEstimation = <pcl_ftr.VFHEstimation_t *>vfhEstimation.me
         cVFHEstimation.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return vfhEstimation
 
     def make_RangeImage(self):
         rangeImages = RangeImages(self)
-        # cdef pcl_r_img.RangeImage_t *cRangeImage = <pcl_r_img.RangeImage_t *>rangeImages.me
+        # cdef pcl_rim.RangeImage_t *cRangeImage = <pcl_rim.RangeImage_t *>rangeImages.me
         return rangeImages
 
     def make_EuclideanClusterExtraction(self):
         euclideanclusterextraction = EuclideanClusterExtraction(self)
-        cdef pclseg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pclseg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
+        cdef pcl_seg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pcl_seg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
 
     # registration - icp?
     # def make_IterativeClosestPoint():
     #     iterativeClosestPoint = IterativeClosestPoint(self)
-    #     cdef pclseg.IterativeClosestPoint *cEuclideanClusterExtraction = <pclseg.IterativeClosestPoint *>euclideanclusterextraction.me
+    #     cdef pcl_seg.IterativeClosestPoint *cEuclideanClusterExtraction = <pcl_seg.IterativeClosestPoint *>euclideanclusterextraction.me
     #     
     #     cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
     #     # icp.setInputCloud(cloud_in);
