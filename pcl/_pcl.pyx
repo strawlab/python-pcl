@@ -77,13 +77,7 @@ ELSE:
     cimport pcl_segmentation as pcl_seg
 
 
-cimport pcl_sample_consensus as pcl_sc
-cimport pcl_features as pcl_ftr
-cimport pcl_filters as pcl_fil
-cimport pcl_range_image as pcl_rim
-cimport pcl_segmentation as pcl_seg
 cimport cython
-
 # from cython.operator import dereference as deref
 from cython.operator cimport dereference as deref, preincrement as inc
 from cython cimport address
@@ -93,8 +87,6 @@ from cpython cimport Py_buffer
 from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
-
-# cimport pcl_segmentation as pcl_seg
 
 from boost_shared_ptr cimport sp_assign
 
