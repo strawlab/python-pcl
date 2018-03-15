@@ -3,36 +3,43 @@
 
 cimport pcl_defs as cpp
 
-# if cpp.PCL_MINOR_VERSION == 8:
-#     # if cpp.PCL_REVISION_VERSION == 0:
-#     # elif cpp.PCL_REVISION_VERSION == 1:
-#     # else:
-#     cimport pcl_kdtree_180 as pcl_kdt
-#     cimport pcl_range_image_180 as pcl_rim
-#     cimport pcl_features_180 as pcl_ftr
-#     cimport pcl_sample_consensus_180 as pcl_sac
-# elif cpp.PCL_MINOR_VERSION == 7:
-#     if cpp.PCL_REVISION_VERSION == 0:
-#         cimport pcl_features_170 as pcl_ftr
-#     elif cpp.PCL_REVISION_VERSION == 2:
-#         cimport pcl_features_172 as pcl_ftr
-#     else:
-#         cimport pcl_features_172 as pcl_ftr
-# 
-#     cimport pcl_kdtree_172 as pcl_kdt
-#     cimport pcl_range_image_172 as pcl_rim
-#     cimport pcl_sample_consensus_172 as pcl_sac
-# elif cpp.PCL_MINOR_VERSION == 6:
-#     cimport pcl_kdtree as pcl_kdt
-#     cimport pcl_range_image as pcl_rim
-#     cimport pcl_features as pcl_ftr
-#     cimport pcl_sample_consensus as pcl_sac
-# else:
-#     pass
-cimport pcl_kdtree as pcl_kdt
-cimport pcl_range_image as pcl_rim
-cimport pcl_features as pcl_ftr
-cimport pcl_sample_consensus as pcl_sac
+if cpp.PCL_MINOR_VERSION == 8:
+    if cpp.PCL_REVISION_VERSION == 0:
+        DEF PCL_VERSION_DEFINE=180
+    elif cpp.PCL_REVISION_VERSION == 1:
+        DEF PCL_VERSION_DEFINE=181
+    else:
+        DEF PCL_VERSION_DEFINE=181
+
+elif cpp.PCL_MINOR_VERSION == 7:
+    if cpp.PCL_REVISION_VERSION == 0:
+        DEF PCL_VERSION_DEFINE=170
+    elif cpp.PCL_REVISION_VERSION == 2:
+        DEF PCL_VERSION_DEFINE=172
+    else:
+        DEF PCL_VERSION_DEFINE=172
+
+elif cpp.PCL_MINOR_VERSION == 6:
+    if cpp.PCL_REVISION_VERSION == 0:
+        DEF PCL_VERSION_DEFINE=160
+    else:
+        DEF PCL_VERSION_DEFINE=160
+
+else:
+    pass
+
+IF PCL_VERSION_DEFINE == 180:
+    include "pxi/pxd_import_180.pxi"
+ELIF PCL_VERSION_DEFINE == 181:
+    include "pxi/pxd_import_180.pxi"
+ELIF PCL_VERSION_DEFINE == 172:
+    include "pxi/pxd_import_172.pxi"
+ELIF PCL_VERSION_DEFINE == 170:
+    include "pxi/pxd_import_170.pxi"
+ELIF PCL_VERSION_DEFINE == 160:
+    include "pxi/pxd_import.pxi"
+ELSE:
+    include "pxi/pxd_import.pxi"
 
 
 # class override(PointCloud)

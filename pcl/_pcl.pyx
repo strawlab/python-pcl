@@ -22,7 +22,7 @@ if cpp.PCL_MINOR_VERSION == 8:
     else:
         DEF PCL_VERSION_DEFINE=181
 
-elif PCL_MINOR_VERSION == 7:
+elif cpp.PCL_MINOR_VERSION == 7:
     if cpp.PCL_REVISION_VERSION == 0:
         DEF PCL_VERSION_DEFINE=170
     elif cpp.PCL_REVISION_VERSION == 2:
@@ -30,7 +30,7 @@ elif PCL_MINOR_VERSION == 7:
     else:
         DEF PCL_VERSION_DEFINE=172
 
-elif PCL_MINOR_VERSION == 6:
+elif cpp.PCL_MINOR_VERSION == 6:
     if cpp.PCL_REVISION_VERSION == 0:
         DEF PCL_VERSION_DEFINE=160
     else:
@@ -40,41 +40,15 @@ else:
     pass
 
 IF PCL_VERSION_DEFINE == 180:
-    cimport pcl_sample_consensus_180 as pcl_sc
-    cimport pcl_features_180 as pcl_ftr
-    cimport pcl_filters_180 as pcl_fil
-    cimport pcl_range_image_180 as pcl_rim
-    cimport pcl_segmentation_180 as pcl_seg
+    include "pxi/pyx_import_180.pxi"
 ELIF PCL_VERSION_DEFINE == 181:
-    cimport pcl_sample_consensus_180 as pcl_sc
-    cimport pcl_features_180 as pcl_ftr
-    cimport pcl_filters_180 as pcl_fil
-    cimport pcl_range_image_180 as pcl_rim
-    cimport pcl_segmentation_180 as pcl_seg
-ELIF PCL_VERSION_DEFINE == 170:
-    cimport pcl_sample_consensus_172 as pcl_sc
-    cimport pcl_filters_172 as pcl_fil
-    cimport pcl_range_image_172 as pcl_rim
-    cimport pcl_segmentation_172 as pcl_seg
-    cimport pcl_features_170 as pcl_ftr
+    include "pxi/pyx_import_180.pxi"
 ELIF PCL_VERSION_DEFINE == 172:
-	cimport pcl_sample_consensus_172 as pcl_sc
-    cimport pcl_filters_172 as pcl_fil
-    cimport pcl_range_image_172 as pcl_rim
-    cimport pcl_segmentation_172 as pcl_seg
-    cimport pcl_features_172 as pcl_ftr
+    include "pxi/pyx_import_172.pxi"
 ELIF PCL_VERSION_DEFINE == 160:
-    cimport pcl_sample_consensus as pcl_sc
-    cimport pcl_features as pcl_ftr
-    cimport pcl_filters as pcl_fil
-    cimport pcl_range_image as pcl_rim
-    cimport pcl_segmentation as pcl_seg
+    include "pxi/pyx_import.pxi"
 ELSE:
-    cimport pcl_sample_consensus as pcl_sc
-    cimport pcl_features as pcl_ftr
-    cimport pcl_filters as pcl_fil
-    cimport pcl_range_image as pcl_rim
-    cimport pcl_segmentation as pcl_seg
+    include "pxi/pyx_import.pxi"
 
 
 cimport cython
