@@ -35,7 +35,7 @@ ELIF PCL_VERSION_DEFINE == 181:
 ELIF PCL_VERSION_DEFINE == 172:
     include "pxi/pxd_cimport_172.pxi"
 ELIF PCL_VERSION_DEFINE == 170:
-    include "pxi/pxd_cimport_170.pxi"
+    include "pxi/pxd_cimport_172.pxi"
 ELIF PCL_VERSION_DEFINE == 160:
     include "pxi/pxd_cimport.pxi"
 ELSE:
