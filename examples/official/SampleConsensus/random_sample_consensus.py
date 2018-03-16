@@ -5,7 +5,6 @@
 import numpy as np
 import pcl
 import random
-import pcl.pcl_visualization
 import math
 import sys # ÉÇÉWÉÖÅ[ÉãëÆê´ argv ÇéÊìæÇ∑ÇÈÇΩÇﬂ
 
@@ -153,8 +152,15 @@ if len(inliers) != 0:
 
 
 # current(0.3.0) Windows Only Test
-isWindows = False
-if isWindows == True:
+isVisual = False
+try:
+    import pcl.pcl_visualization
+    isVisual = True
+except:
+    print("Cannot import pcl.pcl_visualization")
+    import pcl.pcl_visualization
+   
+if isVisual == True:
     # creates the visualization object and adds either our orignial cloud or all of the inliers
     # depending on the command line arguments specified.
     # boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer;
@@ -184,16 +190,10 @@ if isWindows == True:
         viewer.InitCameraParameters ()
 
 
-    # while (!viewer->wasStopped ())
-    # {
-    # viewer->spinOnce (100);
-    # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
-    # }
-    isStopped = False
-    while isStopped == False:
-        isStopped = viewer.WasStopped()
+    v = True
+    while v:
+        v=not(viewer.WasStopped())
         viewer.SpinOnce (100)
-        # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
 else:
     pass
 
