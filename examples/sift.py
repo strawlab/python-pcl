@@ -103,9 +103,9 @@ print('SIFT points in the cloud_temp are ' + str(cloud_temp.size))
 # viewer.addPointCloud(cloud_temp, keypoints_color_handler, "keypoints");
 # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "keypoints");
 
-flag = True
-while flag:
-    flag != viewer.WasStopped()
+v = True
+while v:
+    v=not(viewer.WasStopped())
     viewer.SpinOnce()
     # pcl_sleep (0.01)
     # pass

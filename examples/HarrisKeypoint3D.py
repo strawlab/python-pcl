@@ -55,13 +55,11 @@ pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(cloud, 255, 255,
 kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints, 255, 0, 0)
 
 
-viewer.addPointCloud(cloud,pccolor,"testimg.png");
-viewer.addPointCloud(keypoints3D,kpcolor,"keypoints.png");
+viewer.addPointCloud(cloud, pccolor,"testimg.png");
+viewer.addPointCloud(keypoints3D, kpcolor,"keypoints.png");
 # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "keypoints.png");
 
-
-while True:
-    # viewer.wasStopped()
+v = True
+while v:
+    v=not(viewer.WasStopped())
     viewer.spinOnce()
-    # pcl_sleep (0.01)
-end

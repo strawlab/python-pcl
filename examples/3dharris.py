@@ -97,10 +97,7 @@ viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor, b'keypoints')
 #     viewer.spinOnce();
 #     pcl_sleep (0.01);
 # }
-flag = True
-while flag:
-    flag != viewer.WasStopped()
+v = True
+while v:
+    v=not(viewer.WasStopped())
     viewer.SpinOnce()
-    # pcl_sleep (0.01)
-    # pass
-end
