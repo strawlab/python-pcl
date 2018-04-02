@@ -10,7 +10,6 @@ from setuptools import setup, find_packages, Extension
 import subprocess
 import numpy
 import sys
-import platform
 import os
 import time
 
@@ -47,7 +46,7 @@ def pkgconfig_win(flag, cut):
     return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
 
 
-if platform.system() == "Windows":
+if sys.platform == 'win32':
     # Check 32bit or 64bit
     is_64bits = sys.maxsize > 2**32
     # if is_64bits == True
@@ -256,10 +255,10 @@ if platform.system() == "Windows":
         inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-' + boost_version, pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
     else:
         inc_dirs = []
-    
+
     for inc_dir in inc_dirs:
         ext_args['include_dirs'].append(inc_dir)
-    
+
     # for flag in pkgconfig_win('--libs-only-L', '-L'):
     #     print(flag.lstrip().rstrip())
     #     ext_args['library_dirs'].append(flag[2:])
@@ -268,7 +267,7 @@ if platform.system() == "Windows":
     #     print(flag.lstrip().rstrip())
     #     ext_args['extra_link_args'].append(flag)
     # end
-    
+
     # set library path
     if pcl_version == '-1.6':
         # 3rdParty(+Boost, +VTK)
@@ -284,13 +283,13 @@ if platform.system() == "Windows":
         lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib']
     else:
         lib_dir = []
-    
+
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
-    
+
     # OpenNI2?
     # %OPENNI2_REDIST64% %OPENNI2_REDIST%
-    
+
     # set compiler flags
     # for flag in pkgconfig_win('--cflags-only-other'):
     #     if flag.startswith('-D'):
@@ -304,7 +303,7 @@ if platform.system() == "Windows":
     #         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
     #         continue
     #     ext_args['libraries'].append(flag.lstrip().rstrip())
-    
+
     if pcl_version == '-1.6':
         # release
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
@@ -387,10 +386,11 @@ if platform.system() == "Windows":
             # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared', 'C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um']
             # win_kit_libdirs = ['C:\\Program Files (x86)\\Windows Kits\\8.1\\Lib\\winv6.3\\um\\x64']
             # win_kit_libdirs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10240.0\\ucrt\\x64']
-            
+
             # Windows OS 8/8.1/10?
-            # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\ucrt']
-            # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Include\\shared']
+            # win_kit_10_version = '10.0.10240.0'
+            # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\ucrt', 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\um']
+            # win_kit_libdirs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\ucrt', 'C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\um']
             pass
         else:
             # already set path
@@ -407,15 +407,15 @@ if platform.system() == "Windows":
 
     for lib_dir in win_kit_libdirs:
         ext_args['library_dirs'].append(lib_dir)
-    
+
     win_opengl_libreleases = ['OpenGL32']
     for opengl_librelease in win_opengl_libreleases:
         ext_args['libraries'].append(opengl_librelease)
-    
+
     # use OpenNI
     # use OpenNI2
     # add environment PATH : pcl/bin, OpenNI2/Tools
-    
+
     # use CUDA?
     # CUDA_PATH
     # CUDA_PATH_V7_5
@@ -428,7 +428,7 @@ if platform.system() == "Windows":
     else:
         print('No use cuda.')
         pass
-    
+
     # ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
     # define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
@@ -437,7 +437,7 @@ if platform.system() == "Windows":
                 '1'), ('_CRT_SECURE_NO_WARNINGS', '1')]
     for define in defines:
         ext_args['define_macros'].append(define)
-    
+
     # ext_args['extra_compile_args'].append('/DWIN32')
     # ext_args['extra_compile_args'].append('/D_WINDOWS')
     # ext_args['extra_compile_args'].append('/W3')
@@ -450,7 +450,7 @@ if platform.system() == "Windows":
     # https://ci.appveyor.com/project/KazuakiM/vim-ms-translator/branch/master 
     # ext_args['extra_compile_args'].append('/DDYNAMIC_MSVCRT_DLL=\"msvcr100.dll\"')
     # ext_args['extra_compile_args'].append('/DDYNAMIC_MSVCRT_DLL=\"msvcr100.dll\"')
-    
+
     # NG
     # ext_args['extra_compile_args'].append('/NODEFAULTLIB:msvcrtd')
     # https://blogs.msdn.microsoft.com/vcblog/2015/03/03/introducing-the-universal-crt/
@@ -470,7 +470,6 @@ if platform.system() == "Windows":
     ## define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # define_macros=[('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1')],
     # extra_compile_args=["/EHsc"],
-
     print(ext_args)
 
     if pcl_version == '-1.6':
@@ -502,7 +501,7 @@ if platform.system() == "Windows":
         sys.exit(1)
 else:
     # Not 'Windows'
-    if platform.system() == "Darwin":
+    if sys.platform == 'darwin':
         os.environ['ARCHFLAGS'] = ''
 
     # Try to find PCL. XXX we should only do this when trying to build or install.
@@ -558,20 +557,23 @@ else:
             ext_args['define_macros'].append((macro, value))
         else:
             ext_args['extra_compile_args'].append(flag)
-    
+
     # clang?
     # https://github.com/strawlab/python-pcl/issues/129
     # gcc base libc++, clang base libstdc++
     # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
     # ext_args['extra_compile_args'].append("-stdlib=libc++")
-    if platform.system() == "Darwin":
-        # or gcc5?
+    if sys.platform == 'darwin':
+        # gcc
+        # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
+        # clang?
         # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
         # ext_args['extra_compile_args'].append("-mmacosx-version-min=10.6")
         # ext_args['extra_compile_args'].append('-openmp')
         pass
     else:
         # gcc4?
+        # or gcc5?
         # ext_args['extra_compile_args'].append("-stdlib=libc++")
         pass
 
@@ -590,7 +592,9 @@ else:
 
     # grabber?
     # -lboost_system
-    ext_args['extra_link_args'].append('-lboost_system')
+    # ext_args['extra_link_args'].append('-lboost_system')
+    # MacOSX?
+    # ext_args['extra_link_args'].append('-lboost_system_mt')
     # ext_args['extra_link_args'].append('-lboost_bind')
 
     # Fix compile error on Ubuntu 12.04 (e.g., Travis-CI).

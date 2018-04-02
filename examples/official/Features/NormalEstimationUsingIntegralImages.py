@@ -36,7 +36,6 @@ viewer.AddPointCloudNormals(cloud, normals)
 
 flag = True
 while (flag):
-    flag != viewer.WasStopped ()
+    flag = not(viewer.WasStopped())
     viewer.SpinOnce ()
-end
 
