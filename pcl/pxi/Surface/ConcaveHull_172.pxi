@@ -4,7 +4,7 @@ cimport pcl_defs as cpp
 
 cdef class ConcaveHull:
     """
-    ConcaveHull class for ...
+    ConcaveHull (alpha shapes) using libqhull library.
     """
     cdef pcl_sf.ConcaveHull_t *me
     def __cinit__(self):
@@ -22,7 +22,11 @@ cdef class ConcaveHull:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
+
 
 cdef class ConcaveHull_PointXYZI:
     """
@@ -44,6 +48,9 @@ cdef class ConcaveHull_PointXYZI:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
 
 
@@ -67,6 +74,9 @@ cdef class ConcaveHull_PointXYZRGB:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
 
 
@@ -90,5 +100,8 @@ cdef class ConcaveHull_PointXYZRGBA:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
 
