@@ -4,10 +4,19 @@ pcl package
 Submodules
 ----------
 
-pcl\.\_pcl module(Base PCL1.8.0)
---------------------------------
 
-.. automodule:: pcl._pcl
+pcl.pcl\_visualization module
+-----------------------------
+
+.. automodule:: pcl.pcl_visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+pcl.registration module
+-----------------------
+
+.. automodule:: pcl.registration
     :members:
     :undoc-members:
     :show-inheritance:
