@@ -176,7 +176,7 @@ Warning:
    
    Reference PointCloudLibrary Issue.
    
-       `Pull qequests 1679 <https://github.com/PointCloudLibrary/pcl/pull/1679>`_.
+       `Pull request 1679 <https://github.com/PointCloudLibrary/pcl/pull/1679>`_.
    
        `Issue 1978 <https://github.com/PointCloudLibrary/pcl/issues/1978>`_.
 
