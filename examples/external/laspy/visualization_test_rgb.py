@@ -5,8 +5,9 @@ import pcl.pcl_visualization
 
 # RGB : NG
 # f = file.File('28XXX10000075-18.las', mode='r')
-# f = file.File('28W0608011101-1.las', mode='r')
-f = file.File('28XXX00020001-1.las', mode='r')
+f = file.File('28W0608011101-1.las', mode='r')
+# f = file.File('28XXX00020001-1.las', mode='r')
+f = file.File('simple1_4.las', mode='r')
 
 
 # check las file version
@@ -41,6 +42,23 @@ if f._header.data_format_id in (2, 3, 5):
     visual = pcl.pcl_visualization.CloudViewing()
     visual.ShowColorACloud(cloud, b'cloud')
 
-    v = True
-    while v:
-        v=not(visual.WasStopped())
+else:
+    ptcloud = np.vstack((f.x, f.y, f.z)).transpose()
+    mean_param = np.mean(ptcloud, 0)
+    cloud = pcl.PointCloud()
+    # set raw points
+    # cloud.from_array(np.array(ptcloud, dtype=np.float32))
+    # set point centered
+    # mean_param = np.concatenate([np.mean(ptcloud, 0)[0:3], np.zeros(1)])
+    ptcloud_centred = ptcloud - mean_param
+    # print(ptcloud_centred)
+    cloud.from_array(np.array(ptcloud_centred, dtype=np.float32))
+
+    ## Visualization
+    visual = pcl.pcl_visualization.CloudViewing()
+    visual.ShowMonochromeCloud(cloud, b'cloud')
+
+
+v = True
+while v:
+    v=not(visual.WasStopped())
