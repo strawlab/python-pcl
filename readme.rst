@@ -204,7 +204,7 @@ before Install module
 
         Case2. use 1.8.1
 
-            `Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+            `Visual Studio 2015 C++ Compiler Tools <https://www.visualstudio.com/vs/older-downloads/>`_ 
 
             `PCL All-In-One Installer <https://github.com/PointCloudLibrary/pcl/releases/>`_
                 
