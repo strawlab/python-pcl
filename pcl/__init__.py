@@ -1,4 +1,32 @@
 # XXX do a more specific import!
+
+from ctypes.util import find_library
+
+list_PCL_Dlls='''pcl_common_release
+pcl_features_release
+pcl_filters_release
+pcl_io_ply_release
+pcl_io_release
+pcl_kdtree_release
+pcl_keypoints_release
+pcl_ml_release
+pcl_octree_release
+pcl_outofcore_release
+pcl_people_release
+pcl_recognition_release
+pcl_registration_release
+pcl_sample_consensus_release
+pcl_search_release
+pcl_segmentation_release
+pcl_stereo_release
+pcl_surface_release
+pcl_tracking_release
+pcl_visualization_release'''.split('\n')
+
+for dll in list_PCL_Dlls:
+	if find_library(dll) is None:
+		raise(Exception('Could not find the PCL binary %s on the path, make sure you installed the C++ PCL library and added the bin folder to the path'%dll))
+
 from ._pcl import *
 # vtkSmartPointer.h error (Linux)
 # from .pcl_visualization import *
