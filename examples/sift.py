@@ -73,7 +73,7 @@ def Extract_SIFT(cloud, cloud_normals):
 # pcl::io::loadPCDFile<pcl::PointXYZ> (argv[1], *cloud);
 # cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
 # cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
-cloud = pcl.load('./bunny.pcd')
+cloud = pcl.load('./tests/tutorials/bunny.pcd')
 print("cloud points : " + str(cloud.size))
 
 # pcl::PointCloud<pcl::PointNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointNormal>);
