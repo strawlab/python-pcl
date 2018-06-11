@@ -14,6 +14,7 @@ import platform
 import os
 import time
 
+import shutil
 setup_requires = []
 install_requires = [
     'filelock',
@@ -622,8 +623,21 @@ else:
     else:
         print('no pcl install or pkg-config missed.')
         sys.exit(1)
+		
+		
+# copy the pcl dll to local ubfolder so that it can be added to the package through the data_files option
+from ctypes.util import find_library
+listDlls=[]
+if not os.path.isdir('./dlls'):
+	os.mkdir('./dlls')
+for dll in libreleases:
+	pathDll=find_library(dll)
+	if not pathDll is None:
+		shutil.copy2(pathDll, './dlls' )
+		listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
+		
 
-
+		
 setup(name='python-pcl',
       description='pcl wrapper',
       url='http://github.com/strawlab/python-pcl',
@@ -647,4 +661,5 @@ setup(name='python-pcl',
       tests_require=['mock', 'nose'],
       ext_modules=module,
       cmdclass={'build_ext': build_ext},
+	  data_files=[('pcl',listDlls)]
 )
