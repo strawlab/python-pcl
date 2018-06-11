@@ -626,18 +626,11 @@ else:
         sys.exit(1)
 		
 		
-# copy the pcl dll to local ubfolder so that it can be added to the package through the data_files option
-from ctypes.util import find_library
-listDlls=[]
-if not os.path.isdir('./dlls'):
-	os.mkdir('./dlls')
-for dll in libreleases:
-	pathDll=find_library(dll)
-	if not pathDll is None:
-		shutil.copy2(pathDll, './dlls' )
-		listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
+
+
 		
 if platform.system() == "Windows":	
+	# copy the pcl dll to local ubfolder so that it can be added to the package through the data_files option
 	listDlls=[]
 	if not os.path.isdir('./dlls'):
 		os.mkdir('./dlls')
