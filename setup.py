@@ -15,6 +15,7 @@ import os
 import time
 
 import shutil
+from ctypes.util import find_library
 setup_requires = []
 install_requires = [
     'filelock',
@@ -636,6 +637,19 @@ for dll in libreleases:
 		shutil.copy2(pathDll, './dlls' )
 		listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
 		
+if platform.system() == "Windows":	
+	listDlls=[]
+	if not os.path.isdir('./dlls'):
+		os.mkdir('./dlls')
+	for dll in libreleases:
+		pathDll=find_library(dll)
+		if not pathDll is None:
+			shutil.copy2(pathDll, './dlls' )
+			listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
+	data_files=[('Lib/site-packages/pcl',listDlls)]# the path is relative to the python root folder
+else:
+	listDlls=[]
+	data_files=None	
 
 		
 setup(name='python-pcl',
@@ -661,5 +675,5 @@ setup(name='python-pcl',
       tests_require=['mock', 'nose'],
       ext_modules=module,
       cmdclass={'build_ext': build_ext},
-	  data_files=[('pcl',listDlls)]
+	  data_files=data_files
 )
