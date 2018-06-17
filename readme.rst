@@ -176,7 +176,7 @@ Warning:
    
    Reference PointCloudLibrary Issue.
    
-       `Pull qequests 1679 <https://github.com/PointCloudLibrary/pcl/pull/1679>`_.
+       `Pull request 1679 <https://github.com/PointCloudLibrary/pcl/pull/1679>`_.
    
        `Issue 1978 <https://github.com/PointCloudLibrary/pcl/issues/1978>`_.
 
@@ -204,7 +204,7 @@ before Install module
 
         Case2. use 1.8.1
 
-            `Visual Studio 2015 C++ Compiler Tools <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+            `Visual Studio 2015 C++ Compiler Tools <https://www.visualstudio.com/vs/older-downloads/>`_ 
 
             `Visual Studio 2017 C++ Compiler Tools(use Python 3.6) <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
 
