@@ -188,7 +188,7 @@ Windows
 -------
 
 Using pip with a precompiled wheel
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 	This is the simpliest method on windows. The wheel contains the PCL binaries and thus you do not need to install the original PCL library.
 	
@@ -203,12 +203,12 @@ Using pip with a precompiled wheel
 	
 		
 Compiling the binding from source
-^^^^^^^^^^^^^^^^^^^^^		
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^		
 
 	If the method using the procompiled wheel does not work you can compile the binding from the source.
 	
 before Install module
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
         Case1. use PCL 1.6.0 
 
@@ -245,7 +245,7 @@ before Install module
 `Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_ 
 
 set before Environment variable
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     1. PCL_ROOT
 
