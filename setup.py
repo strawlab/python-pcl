@@ -54,7 +54,7 @@ if platform.system() == "Windows":
     # Check 32bit or 64bit
     is_64bits = sys.maxsize > 2**32
     # if is_64bits == True
-    
+
     # environment Value
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -137,7 +137,7 @@ if platform.system() == "Windows":
     # get pkg-config.exe filePath
     pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
-    
+
     # AppVeyor Check
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -147,7 +147,7 @@ if platform.system() == "Windows":
     else:
         # Try to find PCL. XXX we should only do this when trying to build or install.
         PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
-        
+
         for pcl_version in PCL_SUPPORTED:
             if subprocess.call(['.\\pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
             # if subprocess.call([pkgconfigPath, 'pcl_common%s' % pcl_version]) == 0:
@@ -158,13 +158,13 @@ if platform.system() == "Windows":
             for version in PCL_SUPPORTED:
                 print('    pkg-config pcl_common%s' % version, file=sys.stderr)
             sys.exit(1)
-    
+
     print(pcl_version)
     # pcl_version = '-1.6'
-    
+
     # Python Version Check
     info = sys.version_info
-    
+
     if pcl_version == '-1.6':
         # PCL 1.6.0 python Version == 3.4(>= 3.4?, 2.7 -> NG)
         # Visual Studio 2010
@@ -188,7 +188,7 @@ if platform.system() == "Windows":
             # pcl-1.8
             # 1.8.1 use 2d required features
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                        "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
                     "recognition", "registration", "sample_consensus", "search",
                     "segmentation", "stereo", "surface", "tracking", "visualization"]
         else:
@@ -204,7 +204,7 @@ if platform.system() == "Windows":
             # pcl-1.8
             # 1.8.1 use 2d required features
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                        "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
                     "recognition", "registration", "sample_consensus", "search",
                     "segmentation", "stereo", "surface", "tracking", "visualization"]
             pass
@@ -214,17 +214,17 @@ if platform.system() == "Windows":
     else:
         print('pcl_version Unknown')
         sys.exit(1)
-    
+
     # Find build/link options for PCL using pkg-config.
-    
+
     pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
     # pcl_libs += ['Eigen3']
     # print(pcl_libs)
-    
+
     ext_args = defaultdict(list)
     # set include path
     ext_args['include_dirs'].append(numpy.get_include())
-    
+
     # Get setting pkg-config
     # add include headers
     # use pkg-config
@@ -233,7 +233,7 @@ if platform.system() == "Windows":
     #     print(flag.lstrip().rstrip())
     # print('test')
     #     ext_args['include_dirs'].append(flag.lstrip().rstrip())
-    
+
     # no use pkg-config
     if pcl_version == '-1.6':
         # 1.6.0
@@ -259,10 +259,10 @@ if platform.system() == "Windows":
         inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-' + boost_version, pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
     else:
         inc_dirs = []
-    
+
     for inc_dir in inc_dirs:
         ext_args['include_dirs'].append(inc_dir)
-    
+
     # for flag in pkgconfig_win('--libs-only-L', '-L'):
     #     print(flag.lstrip().rstrip())
     #     ext_args['library_dirs'].append(flag[2:])
@@ -271,7 +271,7 @@ if platform.system() == "Windows":
     #     print(flag.lstrip().rstrip())
     #     ext_args['extra_link_args'].append(flag)
     # end
-    
+
     # set library path
     if pcl_version == '-1.6':
         # 3rdParty(+Boost, +VTK)
@@ -287,13 +287,13 @@ if platform.system() == "Windows":
         lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib']
     else:
         lib_dir = []
-    
+
     for lib_dir in lib_dirs:
         ext_args['library_dirs'].append(lib_dir)
-    
+
     # OpenNI2?
     # %OPENNI2_REDIST64% %OPENNI2_REDIST%
-    
+
     # set compiler flags
     # for flag in pkgconfig_win('--cflags-only-other'):
     #     if flag.startswith('-D'):
@@ -307,13 +307,13 @@ if platform.system() == "Windows":
     #         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
     #         continue
     #     ext_args['libraries'].append(flag.lstrip().rstrip())
-    
+
     if pcl_version == '-1.6':
         # release
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
         # release + vtk
         libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
-        
+
         # add boost
         # dynamic lib
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
@@ -364,7 +364,7 @@ if platform.system() == "Windows":
     # http://stackoverflow.com/questions/1236670/how-to-make-opengl-apps-in-64-bits-windows
     # C:\Program Files (x86)\Microsoft SDKs\Windows\7.0\Lib\x64\OpenGL32.lib
     # C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\OpenGL32.lib
-    
+
     # Add OpenGL32 .h/.lib
     win_kit_incs = []
     win_kit_libdirs = []
@@ -390,7 +390,7 @@ if platform.system() == "Windows":
             # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\shared', 'C:\\Program Files (x86)\\Windows Kits\\8.1\\Include\\um']
             # win_kit_libdirs = ['C:\\Program Files (x86)\\Windows Kits\\8.1\\Lib\\winv6.3\\um\\x64']
             # win_kit_libdirs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.10240.0\\ucrt\\x64']
-            
+
             # Windows OS 8/8.1/10?
             # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Include\\10.0.10240.0\\ucrt']
             # win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\10\\Include\\shared']
@@ -404,21 +404,21 @@ if platform.system() == "Windows":
             pass
     else:
         pass
-    
+
     for inc_dir in win_kit_incs:
         ext_args['include_dirs'].append(inc_dir)
 
     for lib_dir in win_kit_libdirs:
         ext_args['library_dirs'].append(lib_dir)
-    
+
     win_opengl_libreleases = ['OpenGL32']
     for opengl_librelease in win_opengl_libreleases:
         ext_args['libraries'].append(opengl_librelease)
-    
+
     # use OpenNI
     # use OpenNI2
     # add environment PATH : pcl/bin, OpenNI2/Tools
-    
+
     # use CUDA?
     # CUDA_PATH
     # CUDA_PATH_V7_5
@@ -431,7 +431,7 @@ if platform.system() == "Windows":
     else:
         print('No use cuda.')
         pass
-    
+
     # ext_args['define_macros'].append(('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'))
     # define_macros=[('BOOST_NO_EXCEPTIONS', 'None')],
     # debugs = [('EIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET', '1'), ('BOOST_NO_EXCEPTIONS', 'None')]
@@ -440,7 +440,7 @@ if platform.system() == "Windows":
                 '1'), ('_CRT_SECURE_NO_WARNINGS', '1')]
     for define in defines:
         ext_args['define_macros'].append(define)
-    
+
     # ext_args['extra_compile_args'].append('/DWIN32')
     # ext_args['extra_compile_args'].append('/D_WINDOWS')
     # ext_args['extra_compile_args'].append('/W3')
@@ -453,7 +453,7 @@ if platform.system() == "Windows":
     # https://ci.appveyor.com/project/KazuakiM/vim-ms-translator/branch/master 
     # ext_args['extra_compile_args'].append('/DDYNAMIC_MSVCRT_DLL=\"msvcr100.dll\"')
     # ext_args['extra_compile_args'].append('/DDYNAMIC_MSVCRT_DLL=\"msvcr100.dll\"')
-    
+
     # NG
     # ext_args['extra_compile_args'].append('/NODEFAULTLIB:msvcrtd')
     # https://blogs.msdn.microsoft.com/vcblog/2015/03/03/introducing-the-universal-crt/
@@ -479,7 +479,7 @@ if platform.system() == "Windows":
     if pcl_version == '-1.6':
         module = [Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
                   Extension("pcl.pcl_visualization", [
-                            "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
@@ -487,7 +487,7 @@ if platform.system() == "Windows":
     elif pcl_version == '-1.7':
         module = [Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
                   Extension("pcl.pcl_visualization", [
-                            "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
@@ -495,7 +495,7 @@ if platform.system() == "Windows":
     elif pcl_version == '-1.8':
         module = [Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
                   Extension("pcl.pcl_visualization", [
-                            "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
@@ -503,18 +503,18 @@ if platform.system() == "Windows":
     else:
         print('no pcl install or pkg-config missed.')
         sys.exit(1)
-	
+
     # copy the pcl dll to local subfolder so that it can be added to the package through the data_files option
     listDlls=[]
     if not os.path.isdir('./dlls'):
-	os.mkdir('./dlls')
+        os.mkdir('./dlls')
     for dll in libreleases:
-	pathDll=find_library(dll)
-	if not pathDll is None:
-	    shutil.copy2(pathDll, './dlls' )
-	    listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
+        pathDll=find_library(dll)
+        if not pathDll is None:
+            shutil.copy2(pathDll, './dlls' )
+            listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
     data_files=[('Lib/site-packages/pcl',listDlls)]# the path is relative to the python root folder 
-    
+
 else:
     # Not 'Windows'
     if platform.system() == "Darwin":
@@ -552,7 +552,7 @@ else:
     ext_args['include_dirs'].append('/usr/include/ni')
     # ext_args['library_dirs'].append()
     # ext_args['libraries'].append()
-    
+
     # VTK use?
     # ext_args['include_dirs'].append('/usr/include/vtk')
     # ext_args['include_dirs'].append('/usr/local/include/vtk')
@@ -573,7 +573,7 @@ else:
             ext_args['define_macros'].append((macro, value))
         else:
             ext_args['extra_compile_args'].append(flag)
-    
+
     # clang?
     # https://github.com/strawlab/python-pcl/issues/129
     # gcc base libc++, clang base libstdc++
@@ -636,12 +636,12 @@ else:
     else:
         print('no pcl install or pkg-config missed.')
         sys.exit(1)
-	
+
     listDlls=[]
     data_files=None			
-		
-  
-		
+
+
+
 setup(name='python-pcl',
       description='pcl wrapper',
       url='http://github.com/strawlab/python-pcl',
@@ -652,18 +652,18 @@ setup(name='python-pcl',
       maintainer_email='t753github@gmail.com',
       license='BSD',
       packages=[
-                "pcl",
+          "pcl",
                 # "pcl.pcl_visualization",
-      ],
+                ],
       zip_safe=False,
       setup_requires=setup_requires,
       install_requires=install_requires,
       classifiers=[
-        'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-      ],
+        ],
       tests_require=['mock', 'nose'],
       ext_modules=module,
       cmdclass={'build_ext': build_ext},
-	  data_files=data_files
+      data_files=data_files
 )
