@@ -187,8 +187,28 @@ circumvent:
 Windows
 -------
 
+Using pip with a precompiled wheel
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+	This is the simpliest method on windows. The wheel contains the PCL binaries and thus you do not need to install the original PCL library.
+	
+	1. Go in the history on the `appveyor page <https://ci.appveyor.com/project/Sirokujira/python-pcl-iju42/history>`_
+	2. Click on the last successful revision (green) and click on the job corresponding to your python version 
+	3. Go in the artfacts section for that job and download the wheel (the file with extension whl)
+	4. In the command line, move to your download folder and run the following command (replacing XXX by the right string)	
+	
+.. code-block:: none
+
+			pip install python_pcl-XXX.whl
+	
+		
+Compiling the binding from source
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^		
+
+	If the method using the procompiled wheel does not work you can compile the binding from the source.
+	
 before Install module
-^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~
 
         Case1. use PCL 1.6.0 
 
@@ -231,7 +251,7 @@ before Install module
 `Python Version use VisualStudio Compiler <https://wiki.python.org/moin/WindowsCompilers>`_
 
 set before Environment variable
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     1. PCL_ROOT
 

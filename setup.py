@@ -13,6 +13,8 @@ import sys
 import os
 import time
 
+import shutil
+from ctypes.util import find_library
 setup_requires = []
 install_requires = [
     'filelock',
@@ -50,7 +52,7 @@ if sys.platform == 'win32':
     # Check 32bit or 64bit
     is_64bits = sys.maxsize > 2**32
     # if is_64bits == True
-    
+
     # environment Value
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -133,7 +135,7 @@ if sys.platform == 'win32':
     # get pkg-config.exe filePath
     pkgconfigPath = os.getcwd() + '\\pkg-config\\pkg-config.exe'
     print(pkgconfigPath)
-    
+
     # AppVeyor Check
     for k, v in os.environ.items():
         # print("{key} : {value}".format(key=k, value=v))
@@ -143,7 +145,7 @@ if sys.platform == 'win32':
     else:
         # Try to find PCL. XXX we should only do this when trying to build or install.
         PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
-        
+
         for pcl_version in PCL_SUPPORTED:
             if subprocess.call(['.\\pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
             # if subprocess.call([pkgconfigPath, 'pcl_common%s' % pcl_version]) == 0:
@@ -184,7 +186,7 @@ if sys.platform == 'win32':
             # pcl-1.8
             # 1.8.1 use 2d required features
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                        "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
                     "recognition", "registration", "sample_consensus", "search",
                     "segmentation", "stereo", "surface", "tracking", "visualization"]
         else:
@@ -200,7 +202,7 @@ if sys.platform == 'win32':
             # pcl-1.8
             # 1.8.1 use 2d required features
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                        "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
                     "recognition", "registration", "sample_consensus", "search",
                     "segmentation", "stereo", "surface", "tracking", "visualization"]
             pass
@@ -309,7 +311,7 @@ if sys.platform == 'win32':
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
         # release + vtk
         libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
-        
+
         # add boost
         # dynamic lib
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
@@ -360,7 +362,7 @@ if sys.platform == 'win32':
     # http://stackoverflow.com/questions/1236670/how-to-make-opengl-apps-in-64-bits-windows
     # C:\Program Files (x86)\Microsoft SDKs\Windows\7.0\Lib\x64\OpenGL32.lib
     # C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\OpenGL32.lib
-    
+
     # Add OpenGL32 .h/.lib
     win_kit_incs = []
     win_kit_libdirs = []
@@ -401,7 +403,7 @@ if sys.platform == 'win32':
             pass
     else:
         pass
-    
+
     for inc_dir in win_kit_incs:
         ext_args['include_dirs'].append(inc_dir)
 
@@ -475,7 +477,7 @@ if sys.platform == 'win32':
     if pcl_version == '-1.6':
         module = [Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
                   Extension("pcl.pcl_visualization", [
-                            "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
@@ -483,7 +485,7 @@ if sys.platform == 'win32':
     elif pcl_version == '-1.7':
         module = [Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
                   Extension("pcl.pcl_visualization", [
-                            "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
@@ -491,7 +493,7 @@ if sys.platform == 'win32':
     elif pcl_version == '-1.8':
         module = [Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
                   Extension("pcl.pcl_visualization", [
-                            "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
@@ -499,6 +501,18 @@ if sys.platform == 'win32':
     else:
         print('no pcl install or pkg-config missed.')
         sys.exit(1)
+
+    # copy the pcl dll to local subfolder so that it can be added to the package through the data_files option
+    listDlls=[]
+    if not os.path.isdir('./dlls'):
+        os.mkdir('./dlls')
+    for dll in libreleases:
+        pathDll=find_library(dll)
+        if not pathDll is None:
+            shutil.copy2(pathDll, './dlls' )
+            listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
+    data_files=[('Lib/site-packages/pcl',listDlls)]# the path is relative to the python root folder 
+
 else:
     # Not 'Windows'
     if sys.platform == 'darwin':
@@ -536,7 +550,7 @@ else:
     ext_args['include_dirs'].append('/usr/include/ni')
     # ext_args['library_dirs'].append()
     # ext_args['libraries'].append()
-    
+
     # VTK use?
     # ext_args['include_dirs'].append('/usr/include/vtk')
     # ext_args['include_dirs'].append('/usr/local/include/vtk')
@@ -626,6 +640,10 @@ else:
         print('no pcl install or pkg-config missed.')
         sys.exit(1)
 
+    listDlls=[]
+    data_files=None			
+
+
 
 setup(name='python-pcl',
       description='pcl wrapper',
@@ -637,17 +655,18 @@ setup(name='python-pcl',
       maintainer_email='t753github@gmail.com',
       license='BSD',
       packages=[
-                "pcl",
+          "pcl",
                 # "pcl.pcl_visualization",
-      ],
+                ],
       zip_safe=False,
       setup_requires=setup_requires,
       install_requires=install_requires,
       classifiers=[
-        'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-      ],
+        ],
       tests_require=['mock', 'nose'],
       ext_modules=module,
       cmdclass={'build_ext': build_ext},
+      data_files=data_files
 )

@@ -1,4 +1,7 @@
 # XXX do a more specific import!
+
+from ctypes.util import find_library
+
 from ._pcl import *
 # vtkSmartPointer.h error (Linux)
 # from pcl_visualization import *
