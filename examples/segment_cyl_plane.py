@@ -6,7 +6,7 @@
 
 import pcl
 
-cloud = pcl.load('table_scene_mug_stereo_textured.pcd')
+cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
 
 print(cloud.size)
 

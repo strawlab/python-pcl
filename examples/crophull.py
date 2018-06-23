@@ -5,7 +5,7 @@ import numpy as np
 import pcl
 
 # http://www.pcl-users.org/CropHull-filter-question-td4030345.html
-datacloud = pcl.load('/examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+datacloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
 
 print(datacloud)
 
