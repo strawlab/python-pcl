@@ -209,23 +209,32 @@ if sys.platform == 'win32':
         else:
             if info.major == 2 and info.minor == 7:
                 import _msvccompiler
-                vcvarsall, vcruntime = _msvccompiler._find_vcvarsall('x64')
-                if vcvarsall is not None:
-                    print('set msvc2017/2015 compiler')
-                    boost_version = '1_64'
-                    vtk_version = '8.0'
-                    # pcl-1.8
-                    # 1.8.1 use 2d required features
-                    pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                                "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
-                            "recognition", "registration", "sample_consensus", "search",
-                            "segmentation", "stereo", "surface", "tracking", "visualization"]
-                else:
-                    print('no set msvc2017/2015 compiler')
-                    sys.exit(1)
-        else:
-            print('no building Python Version')
-            sys.exit(1)
+                import distutils.msvc9compiler
+                def find_vcvarsall(version):
+                    # 2017
+                    # return "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat"
+                    vcvarsall, vcruntime = _msvccompiler._find_vcvarsall('x64')
+                    if vcvarsall is not None:
+                        print('set msvc2017/2015 compiler')
+                        print(vcvarsall)
+                        return vcvarsall
+                    else:
+                        print('no set msvc2017/2015 compiler')
+                        return None
+
+                distutils.msvc9compiler.find_vcvarsall=find_vcvarsall
+
+                boost_version = '1_64'
+                vtk_version = '8.0'
+                # pcl-1.8
+                # 1.8.1 use 2d required features
+                pcl_libs = ["2d", "common", "features", "filters", "geometry",
+                            "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                        "recognition", "registration", "sample_consensus", "search",
+                        "segmentation", "stereo", "surface", "tracking", "visualization"]
+            else:
+                print('no building Python Version')
+                sys.exit(1)
     else:
         print('pcl_version Unknown')
         sys.exit(1)
