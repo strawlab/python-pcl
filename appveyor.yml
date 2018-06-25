@@ -21,7 +21,7 @@ environment:
     NOSEATTR: "not pcl_ver_0_4 and not pcl_over_17 and not pcl_over_18"
 
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-    PYTHON: "C:\\Miniconda27-x64"
+    PYTHON: "C:\\Miniconda-x64"
     PYTHON_VERSION: "2.7"
     PYTHON_ARCH: "64"
     PCL_ROOT: "C:\\Program Files\\PCL 1.8.1"
