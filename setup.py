@@ -207,6 +207,23 @@ if sys.platform == 'win32':
                     "segmentation", "stereo", "surface", "tracking", "visualization"]
             pass
         else:
+            if info.major == 2 and info.minor == 7:
+                import _msvccompiler
+                vcvarsall, vcruntime = _msvccompiler._find_vcvarsall('x64')
+                if vcvarsall is not None:
+                    print('set msvc2017/2015 compiler')
+                    boost_version = '1_64'
+                    vtk_version = '8.0'
+                    # pcl-1.8
+                    # 1.8.1 use 2d required features
+                    pcl_libs = ["2d", "common", "features", "filters", "geometry",
+                                "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                            "recognition", "registration", "sample_consensus", "search",
+                            "segmentation", "stereo", "surface", "tracking", "visualization"]
+                else:
+                    print('no set msvc2017/2015 compiler')
+                    sys.exit(1)
+        else:
             print('no building Python Version')
             sys.exit(1)
     else:
@@ -641,7 +658,7 @@ else:
         sys.exit(1)
 
     listDlls=[]
-    data_files=None			
+    data_files=None
 
 
 
