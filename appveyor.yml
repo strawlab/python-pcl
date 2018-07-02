@@ -31,6 +31,17 @@ environment:
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
     NOSEATTR: "not pcl_ver_0_4"
 
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PYTHON: "C:\\Miniconda-x64"
+    PYTHON_VERSION: "2.7"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.8.1"
+    PCL_VERSION: "1.8"
+    OPENNI_VERSION: "2.2"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist\\"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
+    NOSEATTR: "not pcl_ver_0_4"
+
   - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
     PYTHON: "C:\\Miniconda35-x64"
     PYTHON_VERSION: "3.5"

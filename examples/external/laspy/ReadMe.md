@@ -1,8 +1,9 @@
 
 1. Install module
-laspy
+pip install laspy
 
 Use Data : ShizuokaDB las files.
+https://pointcloud.pref.shizuoka.jp/
 
 XYZTestData :
 https://pointcloud.pref.shizuoka.jp/lasmap/ankendetail?ankenno=28XXX10000075

@@ -7,7 +7,7 @@ import pcl.pcl_visualization
 # f = file.File('28XXX10000075-18.las', mode='r')
 f = file.File('28W0608011101-1.las', mode='r')
 # f = file.File('28XXX00020001-1.las', mode='r')
-f = file.File('simple1_4.las', mode='r')
+# f = file.File('simple1_4.las', mode='r')
 
 
 # check las file version
