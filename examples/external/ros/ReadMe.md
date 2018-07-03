@@ -1,5 +1,5 @@
 
-S-PTAM is a Stereo SLAM system able to compute the camera trajectory in real-time. It heavily exploits the parallel nature of the SLAM problem, separating the time-constrained pose estimation from less pressing matters such as map building and refinement tasks. On the other hand, the stereo setting allows to reconstruct a metric 3D map for each frame of stereo images, improving the accuracy of the mapping process with respect to monocular SLAM and avoiding the well-known bootstrapping problem. Also, the real scale of the environment is an essential feature for robots which have to interact with their surrounding workspace.
+
 
 ## Table of Contents
   - [License](#license)
@@ -10,17 +10,7 @@ S-PTAM is a Stereo SLAM system able to compute the camera trajectory in real-tim
   - [ROS Package](#ros-package)
     - [ROS Compilation](#ros-compilation)
     - [Tutorials](#tutorials)
-      - [KITTI dataset](#kitti-dataset)
-      - [EuRoc MAV dataset](#euroc-mav-dataset)
-      - [MIT Stata Center dataset](#mit-stata-center-dataset)
-      - [Indoor Level 7 S-Block dataset](#indoor-level-7-s-block-dataset)
-    - [Node Information](#node-information)
-      - [Subscribed Topics](#subscribed-topics)
-      - [Published Topics](#published-topics)
-      - [ROS Parameters](#ros-parameters)
-      - [Involved Coordinates Systems](#involved-coordinates-systems)
   - [CMAKE flags](#cmake-flags)
-  - [S-PTAM Parameters](#s-ptam-parameters)
   - [Standalone](#standalone)
     - [Compilation](#compilation)
     - [Run](#run)

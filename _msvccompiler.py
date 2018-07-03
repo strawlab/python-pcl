@@ -63,7 +63,7 @@ def _find_vc2017():
     # import _distutils_findvs
     import threading
 
-    best_version = 0,   # tuple for full version comparisons
+    best_version = None   # tuple for full version comparisons
     best_dir = None
 
     # We need to call findall() on its own thread because it will
@@ -118,7 +118,7 @@ def _find_vcvarsall(plat_spec):
     vcruntime = None
     vcruntime_plat = 'x64' if 'amd64' in plat_spec else 'x86'
     if best_version:
-        vcredist = os.path.join(best_dir, "..", "..", "redist", "MSVC", "**",
+        vcredist = os.path.join(best_dir, "..", "..", "Redist", "MSVC", "**",
             "Microsoft.VC141.CRT", "vcruntime140.dll")
         try:
             import glob
