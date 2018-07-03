@@ -211,8 +211,9 @@ if sys.platform == 'win32':
                 import _msvccompiler
                 import distutils.msvc9compiler
                 def find_vcvarsall(version):
-                    # 2017
+                    # use vc2017 set vcvarsall.bat path
                     # return "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat"
+                    # return "C:/Program Files (x86)/Microsoft Visual Studio/2017/BuildTools/VC/Auxiliary/Build/vcvarsall.bat"
                     vcvarsall, vcruntime = _msvccompiler._find_vcvarsall('x64')
                     if vcvarsall is not None:
                         print('set msvc2017/2015 compiler')
