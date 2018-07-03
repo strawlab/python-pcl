@@ -108,6 +108,7 @@ def _find_vc2017():
         # path = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
         vc_dir = os.path.join(path, 'VC', 'Auxiliary', 'Build')
         if os.path.isdir(vc_dir):
+            version = 0
             best_version, best_dir = version, vc_dir
             break
     return best_version, best_dir
