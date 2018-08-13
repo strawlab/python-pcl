@@ -1,6 +1,6 @@
 *.pcd
 
-pcl/_pcl.cpp
+pcl/_pcl*.cpp
 pcl/_pcl.html
 pcl/registration.cpp
 

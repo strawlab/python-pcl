@@ -70,6 +70,44 @@ class TestEuclideanClusterExtraction(unittest.TestCase):
 
             cloud_cluster.from_array(points)
 
+### RegionGrowing (1.7.2/1.8.0)###
+@attr('pcl_over_17')
+@attr('pcl_ver_0_4')
+class TestRegionGrowing(unittest.TestCase):
+    def setUp(self):
+        # self.p = pcl.PointCloud(_data)
+        self.p = pcl.load(
+            './examples/pcldata/tutorials/table_scene_lms400.pcd')
+
+    def testTutorial(self):
+        vg = self.p.make_voxel_grid_filter()
+        vg.set_leaf_size(0.01, 0.01, 0.01)
+        cloud_filtered = vg.filter()
+        tree = cloud_filtered.make_kdtree()
+
+        self.segment = cloud_filtered.make_RegionGrowing(ksearch=50)
+        self.segment.set_MinClusterSize(100)
+        self.segment.set_MaxClusterSize(25000)
+        self.segment.set_NumberOfNeighbours(5)
+        self.segment.set_SmoothnessThreshold(0.2)
+        self.segment.set_CurvatureThreshold(0.05)
+        self.segment.set_SearchMethod(tree)
+        cluster_indices = self.segment.Extract()
+
+        cloud_cluster = pcl.PointCloud()
+
+        # print('cluster_indices : ' + str(cluster_indices.count) + " count.")
+        cloud_cluster = pcl.PointCloud()
+        for j, indices in enumerate(cluster_indices):
+            # print('indices = ' + str(len(indices)))
+            points = np.zeros((len(indices), 3), dtype=np.float32)
+
+            for i, indice in enumerate(indices):
+                points[i][0] = cloud_filtered[indice][0]
+                points[i][1] = cloud_filtered[indice][1]
+                points[i][2] = cloud_filtered[indice][2]
+
+            cloud_cluster.from_array(points)
 
 ### MinCutSegmentation(1.7.2) ###
 @attr('pcl_over_17')
@@ -249,6 +287,7 @@ def suite():
     suite.addTests(unittest.makeSuite(TestSegmentationNormal))
     # 1.7.2/1.8.0
     # suite.addTests(unittest.makeSuite(TestConditionalEuclideanClustering))
+    # suite.addTests(unittest.makeSuite(TestRegionGrowing))
     # suite.addTests(unittest.makeSuite(TestMinCutSegmentation))
     # suite.addTests(unittest.makeSuite(TestProgressiveMorphologicalFilter))
 
