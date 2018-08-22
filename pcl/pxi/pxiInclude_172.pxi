@@ -8,6 +8,7 @@ include "PointXYZtoPointXYZ.pxi"
 include "Segmentation/Segmentation_172.pxi"
 include "Segmentation/SegmentationNormal_172.pxi"
 include "Segmentation/EuclideanClusterExtraction_172.pxi"
+include "Segmentation/RegionGrowing_172.pxi"
 # Filters
 include "Filters/StatisticalOutlierRemovalFilter_172.pxi"
 include "Filters/VoxelGridFilter_172.pxi"

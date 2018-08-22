@@ -540,6 +540,15 @@ cdef class PointCloud:
         cdef pcl_seg.EuclideanClusterExtraction_t *cEuclideanClusterExtraction = <pcl_seg.EuclideanClusterExtraction_t *>euclideanclusterextraction.me
         cEuclideanClusterExtraction.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return euclideanclusterextraction
+    
+    def make_RegionGrowing(self, int ksearch=-1, double searchRadius=-1.0):
+        cdef cpp.PointCloud_Normal_t normals
+        mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
+        regiongrowing = RegionGrowing(self)
+        cdef pclseg.RegionGrowing_t *cRegionGrowing = <pclseg.RegionGrowing_t *>regiongrowing.me
+        cRegionGrowing.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        cRegionGrowing.setInputNormals(normals.makeShared())
+        return regiongrowing
 
     def make_GeneralizedIterativeClosestPoint(self):
         generalizedIterativeClosestPoint = GeneralizedIterativeClosestPoint(self)
