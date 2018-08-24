@@ -117,3 +117,8 @@ def main():
     # boost::this_thread::sleep (boost::posix_time::microseconds (100000));
     # }
 
+
+if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run('main()', sort='time')
+    main()

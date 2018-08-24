@@ -79,28 +79,36 @@ Requirements
 This release has been tested on Linux Ubuntu 14.04 with
 
  * Python 2.7.6, 3.4.0, 3.5.2
- * pcl 1.7.0
- * Cython <= 0.25.2
+ * pcl 1.7.0(apt install)
+ * Cython == 0.25.2
 
 and MacOS with
 
  * Python 2.7.6, 3.4.0, 3.5.2
  * pcl 1.8.1(use homebrew)
- * Cython <= 0.25.2
+ * Cython == 0.25.2
 
 and Windows with
 
  * (Miniconda/Anaconda) - Python 3.4
  * pcl 1.6.0(VS2010)
- * Cython <= 0.25.2
+ * Cython == 0.25.2
  * Gtk+
 
 and Windows with
 
  * (Miniconda/Anaconda) - Python 3.5
  * pcl 1.8.1(VS2015)
- * Cython <= 0.25.2
+ * Cython == 0.25.2
  * Gtk+
+
+and Windows with
+
+ * (Miniconda/Anaconda) - Python 3.6
+ * pcl 1.8.1(VS2017[Priority High]/VS2015[not VS2017 Install])
+ * Cython == 0.25.2
+ * Gtk+
+
 
 Installation
 ============
@@ -171,13 +179,13 @@ before Install module
             brew install pcl
 
 Warning:
-   
+
    Current Installer (2017/10/02) Not generated pcl-2d-1.8.pc file.(Issue #119)
-   
+
    Reference PointCloudLibrary Issue.
-   
+
        `Pull request 1679 <https://github.com/PointCloudLibrary/pcl/pull/1679>`_.
-   
+
        `Issue 1978 <https://github.com/PointCloudLibrary/pcl/issues/1978>`_.
 
 circumvent:
@@ -224,7 +232,7 @@ before Install module
 
         Case2. use 1.8.1
 
-            `Visual Studio 2015 C++ Compiler Tools <https://www.visualstudio.com/vs/older-downloads/>`_ 
+            `Visual Studio 2015 C++ Compiler Tools(use Python 3.5/3.6) <https://www.visualstudio.com/vs/older-downloads/>`_ 
 
             `Visual Studio 2017 C++ Compiler Tools(use Python 3.6) <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
 
@@ -252,7 +260,7 @@ before Install module
 
 set before Environment variable
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     1. PCL_ROOT
 
         set PCL_ROOT=$(PCL Install FolderPath)
@@ -260,10 +268,10 @@ set before Environment variable
     2. PATH
 
         (pcl 1.6.0)
-        set PATH=$(PCL_ROOT)/bin/;$(OPEN_NI_ROOT)/Tools;$(VTK_ROOT)/bin;%PATH%
+        set PATH=%PCL_ROOT%/bin/;%OPEN_NI_ROOT%/Tools;%VTK_ROOT%/bin;%PATH%
 
         (pcl 1.8.1)
-        set PATH=$(PCL_ROOT)/bin/;$(OPEN_NI2_ROOT)/Tools;$(VTK_ROOT)/bin;%PATH%
+        set PATH=%PCL_ROOT%/bin/;%OPEN_NI2_ROOT%/Tools;%VTK_ROOT%/bin;%PATH%
 
 Common setting
 --------------

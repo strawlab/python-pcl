@@ -4,6 +4,7 @@ import pcl
 import numpy as np
 import pcl.pcl_visualization
 
+
 # pcl::PointCloud<pcl::PointNormal>::Ptr Surface_normals(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 # {
 #     pcl::NormalEstimation<pcl::PointXYZ, pcl::PointNormal> ne;
@@ -69,44 +70,51 @@ def Extract_SIFT(cloud, cloud_normals):
 
 ###
 
-# pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-# pcl::io::loadPCDFile<pcl::PointXYZ> (argv[1], *cloud);
-# cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
-# cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
-cloud = pcl.load('./tests/tutorials/bunny.pcd')
-print("cloud points : " + str(cloud.size))
 
-# pcl::PointCloud<pcl::PointNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointNormal>);
-cloud_normals = Surface_normals(cloud)
+def main():
+    # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    # pcl::io::loadPCDFile<pcl::PointXYZ> (argv[1], *cloud);
+    # cloud = pcl.load("table_scene_mug_stereo_textured.pcd")
+    # cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+    cloud = pcl.load('./tests/tutorials/bunny.pcd')
+    print("cloud points : " + str(cloud.size))
 
-# XYZの情報をcloudからSurface_normals(cloud)にXYZとして加える
-# for(size_t i = 0; i < cloud_normals->points.size(); ++i)
-# {
-#     cloud_normals->points[i].x = cloud->points[i].x;
-#     cloud_normals->points[i].y = cloud->points[i].y;
-#     cloud_normals->points[i].z = cloud->points[i].z;
-# }
+    # pcl::PointCloud<pcl::PointNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointNormal>);
+    cloud_normals = Surface_normals(cloud)
 
-# // 視覚化のためSIFT計算の結果をcloud_tempにコピー
-# pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_temp (new pcl::PointCloud<pcl::PointXYZ>);
-# copyPointCloud(Extract_SIFT(cloud, cloud_normals), *cloud_temp);
-# std::cout << "SIFT points in the cloud_temp are " << cloud_temp->points.size () << std::endl;
-cloud_temp = Extract_SIFT(cloud, cloud_normals)
-print('SIFT points in the cloud_temp are ' + str(cloud_temp.size))
+    # XYZの情報をcloudからSurface_normals(cloud)にXYZとして加える
+    # for(size_t i = 0; i < cloud_normals->points.size(); ++i)
+    # {
+    #     cloud_normals->points[i].x = cloud->points[i].x;
+    #     cloud_normals->points[i].y = cloud->points[i].y;
+    #     cloud_normals->points[i].z = cloud->points[i].z;
+    # }
 
-# // 入力点群と計算された特徴点を表示
-# pcl::visualization::PCLVisualizer viewer("PCL Viewer");
-# pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> keypoints_color_handler (cloud_temp, 0, 255, 0);
-# pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> cloud_color_handler (cloud, 255, 0, 0);
-# viewer.setBackgroundColor( 0.0, 0.0, 0.0 );
-# viewer.addPointCloud(cloud, cloud_color_handler, "cloud");
-# viewer.addPointCloud(cloud_temp, keypoints_color_handler, "keypoints");
-# viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "keypoints");
+    # // 視覚化のためSIFT計算の結果をcloud_tempにコピー
+    # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_temp (new pcl::PointCloud<pcl::PointXYZ>);
+    # copyPointCloud(Extract_SIFT(cloud, cloud_normals), *cloud_temp);
+    # std::cout << "SIFT points in the cloud_temp are " << cloud_temp->points.size () << std::endl;
+    cloud_temp = Extract_SIFT(cloud, cloud_normals)
+    print('SIFT points in the cloud_temp are ' + str(cloud_temp.size))
 
-v = True
-while v:
-    v=not(viewer.WasStopped())
-    viewer.SpinOnce()
-    # pcl_sleep (0.01)
-    # pass
-end
+    # // 入力点群と計算された特徴点を表示
+    # pcl::visualization::PCLVisualizer viewer("PCL Viewer");
+    # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> keypoints_color_handler (cloud_temp, 0, 255, 0);
+    # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> cloud_color_handler (cloud, 255, 0, 0);
+    # viewer.setBackgroundColor( 0.0, 0.0, 0.0 );
+    # viewer.addPointCloud(cloud, cloud_color_handler, "cloud");
+    # viewer.addPointCloud(cloud_temp, keypoints_color_handler, "keypoints");
+    # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "keypoints");
+
+    v = True
+    while v:
+        v=not(viewer.WasStopped())
+        viewer.SpinOnce()
+        # pcl_sleep (0.01)
+        # pass
+
+
+if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run('main()', sort='time')
+    main()

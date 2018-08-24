@@ -91,8 +91,7 @@ import pcl
 #  * @param argv
 #  */
 # void
-# parseCommandLine (int argc,
-#                   char *argv[])
+# parseCommandLine (int argc, char *argv[])
 # {
 #   //Show help
 #   if (pcl::console::find_switch (argc, argv, "-h"))
@@ -459,3 +458,9 @@ import pcl
 
 # while (!viewer.wasStopped ())
 # 	viewer.spinOnce ();
+
+
+if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run('main()', sort='time')
+    main()

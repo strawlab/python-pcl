@@ -9,110 +9,118 @@ from pylibfreenect2 import FrameType, Registration, Frame
 from pylibfreenect2 import createConsoleLogger, setGlobalLogger
 from pylibfreenect2 import LoggerLevel
 
-try:
-    from pylibfreenect2 import OpenCLPacketPipeline
-    pipeline = OpenCLPacketPipeline()
-except:
-    from pylibfreenect2 import CpuPacketPipeline
-    pipeline = CpuPacketPipeline()
 
-# Create and set logger
-logger = createConsoleLogger(LoggerLevel.Debug)
-setGlobalLogger(logger)
+def main():
+    try:
+        from pylibfreenect2 import OpenCLPacketPipeline
+        pipeline = OpenCLPacketPipeline()
+    except:
+        from pylibfreenect2 import CpuPacketPipeline
+        pipeline = CpuPacketPipeline()
 
-fn = Freenect2()
-num_devices = fn.enumerateDevices()
-if num_devices == 0:
-    print("No device connected!")
-    sys.exit(1)
+    # Create and set logger
+    logger = createConsoleLogger(LoggerLevel.Debug)
+    setGlobalLogger(logger)
 
-serial = fn.getDeviceSerialNumber(0)
-device = fn.openDevice(serial, pipeline=pipeline)
+    fn = Freenect2()
+    num_devices = fn.enumerateDevices()
+    if num_devices == 0:
+        print("No device connected!")
+        sys.exit(1)
 
-listener = SyncMultiFrameListener(
-    FrameType.Color | FrameType.Ir | FrameType.Depth)
+    serial = fn.getDeviceSerialNumber(0)
+    device = fn.openDevice(serial, pipeline=pipeline)
 
-# Register listeners
-device.setColorFrameListener(listener)
-device.setIrAndDepthFrameListener(listener)
+    listener = SyncMultiFrameListener(
+        FrameType.Color | FrameType.Ir | FrameType.Depth)
 
-device.start()
+    # Register listeners
+    device.setColorFrameListener(listener)
+    device.setIrAndDepthFrameListener(listener)
 
-# NOTE: must be called after device.start()
-registration = Registration(device.getIrCameraParams(),
-                            device.getColorCameraParams())
+    device.start()
 
-undistorted = Frame(512, 424, 4)
-registered = Frame(512, 424, 4)
+    # NOTE: must be called after device.start()
+    registration = Registration(device.getIrCameraParams(),
+                                device.getColorCameraParams())
 
-# Optinal parameters for registration
-# set True if you need
-need_bigdepth = False
-need_color_depth_map = False
+    undistorted = Frame(512, 424, 4)
+    registered = Frame(512, 424, 4)
 
-bigdepth = Frame(1920, 1082, 4) if need_bigdepth else None
-color_depth_map = np.zeros((424, 512),  np.int32).ravel() \
-    if need_color_depth_map else None
+    # Optinal parameters for registration
+    # set True if you need
+    need_bigdepth = False
+    need_color_depth_map = False
 
-point = pcl.PointCloud()
-viewer = pcl.pcl_visualization.PCLVisualizering()
+    bigdepth = Frame(1920, 1082, 4) if need_bigdepth else None
+    color_depth_map = np.zeros((424, 512),  np.int32).ravel() \
+        if need_color_depth_map else None
 
-v = True
-while v:
-    v=not(viewer.WasStopped())
-    viewer.spinOnce();
+    point = pcl.PointCloud()
+    viewer = pcl.pcl_visualization.PCLVisualizering()
 
-    frames = listener.waitForNewFrame()
+    v = True
+    while v:
+        v=not(viewer.WasStopped())
+        viewer.spinOnce();
 
-    color = frames["color"]
-    ir = frames["ir"]
-    depth = frames["depth"]
+        frames = listener.waitForNewFrame()
 
-    registration.apply(color, depth, undistorted, registered,
-                       bigdepth=bigdepth,
-                       color_depth_map=color_depth_map)
+        color = frames["color"]
+        ir = frames["ir"]
+        depth = frames["depth"]
 
-    points = np.zeros((512*424, 3), dtype=np.float32)
-    for r in range(0, 512):
-        for c in range(0, 424):
-            point = registration.getPointXYZ(undistorted, registered, r, c)
-            # point = registration.getPointXYZRGB(undistorted, registered, r, c)
-            points[r * 424 + c][0] = point[0]
-            points[r * 424 + c][1] = point[1]
-            points[r * 424 + c][2] = point[2]
-            # point B, G, R,
-            # points[r * 424 + c][3] = point[5]
-            # points[r * 424 + c][4] = point[4]
-            # points[r * 424 + c][5] = point[3]
+        registration.apply(color, depth, undistorted, registered,
+                           bigdepth=bigdepth,
+                           color_depth_map=color_depth_map)
 
-    undistorted_arrray = undistorted.asarray(dtype=np.float32, ndim=2)
-    # registered_array = registered.asarray(dtype=np.uint8)
-    point = pcl.PointCloud(undistorted_arrray)
-    # visual.ShowColorCloud(cloud)
+        points = np.zeros((512*424, 3), dtype=np.float32)
+        for r in range(0, 512):
+            for c in range(0, 424):
+                point = registration.getPointXYZ(undistorted, registered, r, c)
+                # point = registration.getPointXYZRGB(undistorted, registered, r, c)
+                points[r * 424 + c][0] = point[0]
+                points[r * 424 + c][1] = point[1]
+                points[r * 424 + c][2] = point[2]
+                # point B, G, R,
+                # points[r * 424 + c][3] = point[5]
+                # points[r * 424 + c][4] = point[4]
+                # points[r * 424 + c][5] = point[3]
 
-    # cloud_normals = estimateNormal(cloud)
+        undistorted_arrray = undistorted.asarray(dtype=np.float32, ndim=2)
+        # registered_array = registered.asarray(dtype=np.uint8)
+        point = pcl.PointCloud(undistorted_arrray)
+        # visual.ShowColorCloud(cloud)
 
-    # Update estimation
-    # viewer.removePointCloud(b'normals')
-    # viewer.RemovePointCloud(b'normals', 0)
-    # viewer.addPointCloudNormals<PointType, pcl::Normal>( cloud, cloud_normals, 100, 0.05, "normals")
-    # viewer.AddPointCloudNormals(cloud, cloud_normals, 100, 0.05, b'normals')
+        # cloud_normals = estimateNormal(cloud)
 
-    listener.release(frames)
+        # Update estimation
+        # viewer.removePointCloud(b'normals')
+        # viewer.RemovePointCloud(b'normals', 0)
+        # viewer.addPointCloudNormals<PointType, pcl::Normal>( cloud, cloud_normals, 100, 0.05, "normals")
+        # viewer.AddPointCloudNormals(cloud, cloud_normals, 100, 0.05, b'normals')
 
-
-device.stop()
-device.close()
-
-sys.exit(0)
+        listener.release(frames)
 
 
-def estimateNormal(cloud):
-    ne = pcl.IntegralImageNormalEstimation()
+    device.stop()
+    device.close()
 
-    ne.setNormalEstimationMethod(pcl.pcl_AVERAGE_DEPTH_CHANGE)
-    ne.setMaxDepthChangeFactor(0.01)
-    ne.setNormalSmoothingSize(5.0)
-    ne.setInputCloud(cloud)
-    cloud_normals = ne.compute()
-    return cloud_normals
+    sys.exit(0)
+
+
+    def estimateNormal(cloud):
+        ne = pcl.IntegralImageNormalEstimation()
+
+        ne.setNormalEstimationMethod(pcl.pcl_AVERAGE_DEPTH_CHANGE)
+        ne.setMaxDepthChangeFactor(0.01)
+        ne.setNormalSmoothingSize(5.0)
+        ne.setInputCloud(cloud)
+        cloud_normals = ne.compute()
+        return cloud_normals
+
+
+if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run('main()', sort='time')
+    main()
