@@ -3167,7 +3167,7 @@ cdef extern from "pcl/segmentation/region_growing.h" namespace "pcl":
         # brief Allows to set search method that will be used for finding KNN.
         # param[in] tree pointer to a KdTree
         # void setSearchMethod (const KdTreePtr& tree) 
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
 
         # brief Returns normals.
         # NormalPtr getInputNormals () const
