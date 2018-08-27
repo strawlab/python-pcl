@@ -19,12 +19,13 @@ import stat
 import subprocess
 
 from distutils.errors import DistutilsExecError, DistutilsPlatformError, \
-                             CompileError, LibError, LinkError
+    CompileError, LibError, LinkError
 from distutils.ccompiler import CCompiler, gen_lib_options
 from distutils import log
 from distutils.util import get_platform
 
 from itertools import count
+
 
 def _find_vc2015():
     # import winreg
@@ -58,6 +59,7 @@ def _find_vc2015():
                 if version >= 14 and version > best_version:
                     best_version, best_dir = version, vc_dir
     return best_version, best_dir
+
 
 def _find_vc2017():
     # import _distutils_findvs
@@ -98,12 +100,12 @@ def _find_vc2017():
     # C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvarsall.bat
     # temporary solution : Default Install Path
     vcvarsall_path = [
-            "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools",
-            "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community",
-            # Not Check
-            # "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Professional",
-            # "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise",
-        ]
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools",
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community",
+        # Not Check
+        # "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Professional",
+        # "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise",
+    ]
     for path in vcvarsall_path:
         # path = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools"
         vc_dir = os.path.join(path, 'VC', 'Auxiliary', 'Build')
@@ -113,13 +115,14 @@ def _find_vc2017():
             break
     return best_version, best_dir
 
+
 def _find_vcvarsall(plat_spec):
     best_version, best_dir = _find_vc2017()
     vcruntime = None
     vcruntime_plat = 'x64' if 'amd64' in plat_spec else 'x86'
     if best_version:
         vcredist = os.path.join(best_dir, "..", "..", "Redist", "MSVC", "**",
-            "Microsoft.VC141.CRT", "vcruntime140.dll")
+                                "Microsoft.VC141.CRT", "vcruntime140.dll")
         try:
             import glob
             vcruntime = glob.glob(vcredist, recursive=True)[-1]
@@ -130,7 +133,7 @@ def _find_vcvarsall(plat_spec):
         best_version, best_dir = _find_vc2015()
         if best_version:
             vcruntime = os.path.join(best_dir, 'redist', vcruntime_plat,
-                "Microsoft.VC140.CRT", "vcruntime140.dll")
+                                     "Microsoft.VC140.CRT", "vcruntime140.dll")
 
     if not best_version:
         log.debug("No suitable Visual C++ version found")
@@ -146,6 +149,7 @@ def _find_vcvarsall(plat_spec):
         vcruntime = None
 
     return vcvarsall, vcruntime
+
 
 def _get_vc_env(plat_spec):
     if os.getenv("DISTUTILS_USE_SDK"):
@@ -166,7 +170,7 @@ def _get_vc_env(plat_spec):
     except subprocess.CalledProcessError as exc:
         log.error(exc.output)
         raise DistutilsPlatformError("Error executing {}"
-                .format(exc.cmd))
+                                     .format(exc.cmd))
 
     env = {
         key.lower(): value
@@ -178,6 +182,7 @@ def _get_vc_env(plat_spec):
     if vcruntime:
         env['py_vcruntime_redist'] = vcruntime
     return env
+
 
 def _find_exe(exe, paths=None):
     """Return path to an MSVC executable program.
@@ -196,12 +201,13 @@ def _find_exe(exe, paths=None):
             return fn
     return exe
 
+
 # A map keyed by get_platform() return values to values accepted by
 # 'vcvarsall.bat'. Always cross-compile from x86 to work with the
 # lighter-weight MSVC installs that do not include native 64-bit tools.
 PLAT_TO_VCVARS = {
-    'win32' : 'x86',
-    'win-amd64' : 'x86_amd64',
+    'win32': 'x86',
+    'win-amd64': 'x86_amd64',
 }
 
 # A set containing the DLLs that are guaranteed to be available for
@@ -209,4 +215,3 @@ PLAT_TO_VCVARS = {
 # dependencies that are not in this set will be copied to the output
 # path.
 _BUNDLED_DLLS = frozenset(['vcruntime140.dll'])
-

@@ -68,30 +68,32 @@ def main():
     for i in range(0, 1000):
         if argc > 1:
             if argvs[1] == "-s" or argvs[1] == "-sf":
-                points[i][0] = 1024 * random.random () / (RAND_MAX + 1.0)
-                points[i][1] = 1024 * random.random () / (RAND_MAX + 1.0)
+                points[i][0] = 1024 * random.random() / (RAND_MAX + 1.0)
+                points[i][1] = 1024 * random.random() / (RAND_MAX + 1.0)
                 # print("x : " + str(points[i][0]))
                 # print("y : " + str(points[i][1]))
                 if i % 5 == 0:
-                    points[i][2] = 1024 * random.random () / (RAND_MAX + 1.0)
+                    points[i][2] = 1024 * random.random() / (RAND_MAX + 1.0)
                 elif i % 2 == 0:
-                    points[i][2] = math.sqrt(math.fabs(1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1])))
+                    points[i][2] = math.sqrt(
+                        math.fabs(1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1])))
                     # points[i][2] = math.sqrt(1 )
                 else:
-                    points[i][2] = -1 * math.sqrt(math.fabs(1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1])))
+                    points[i][2] = -1 * math.sqrt(
+                        math.fabs(1 - (points[i][0] * points[i][0]) - (points[i][1] * points[i][1])))
                     # points[i][2] = -1 * math.sqrt( 1 )
             else:
-                points[i][0] = 1024 * random.random () / RAND_MAX
-                points[i][1] = 1024 * random.random () / RAND_MAX
+                points[i][0] = 1024 * random.random() / RAND_MAX
+                points[i][1] = 1024 * random.random() / RAND_MAX
                 if i % 2 == 0:
-                    points[i][2] = 1024 * random.random () / RAND_MAX
+                    points[i][2] = 1024 * random.random() / RAND_MAX
                 else:
                     points[i][2] = -1 * (points[i][0] + points[i][1])
         else:
-            points[i][0] = 1024 * random.random () / RAND_MAX
-            points[i][1] = 1024 * random.random () / RAND_MAX
+            points[i][0] = 1024 * random.random() / RAND_MAX
+            points[i][1] = 1024 * random.random() / RAND_MAX
             if i % 2 == 0:
-                points[i][2] = 1024 * random.random () / RAND_MAX
+                points[i][2] = 1024 * random.random() / RAND_MAX
             else:
                 points[i][2] = -1 * (points[i][0] + points[i][1])
 
@@ -121,20 +123,19 @@ def main():
     model_p = pcl.SampleConsensusModelPlane(cloud)
     if argc > 1:
         if argvs[1] == "-f":
-            ransac = pcl.RandomSampleConsensus (model_p)
-            ransac.set_DistanceThreshold (.01)
+            ransac = pcl.RandomSampleConsensus(model_p)
+            ransac.set_DistanceThreshold(.01)
             ransac.computeModel()
             inliers = ransac.get_Inliers()
         elif argvs[1] == "-sf":
-            ransac = pcl.RandomSampleConsensus (model_s)
-            ransac.set_DistanceThreshold (.01)
+            ransac = pcl.RandomSampleConsensus(model_s)
+            ransac.set_DistanceThreshold(.01)
             ransac.computeModel()
             inliers = ransac.get_Inliers()
         else:
             inliers = []
     else:
         inliers = []
-
 
     # // copies all inliers of the model computed to another PointCloud
     # pcl::copyPointCloud<pcl::PointXYZ>(*cloud, inliers, *final);
@@ -144,7 +145,7 @@ def main():
     print(str(len(inliers)))
     if len(inliers) != 0:
         finalpoints = np.zeros((len(inliers), 3), dtype=np.float32)
-        
+
         for i in range(0, len(inliers)):
             finalpoints[i][0] = cloud[inliers[i]][0]
             finalpoints[i][1] = cloud[inliers[i]][1]
@@ -173,28 +174,30 @@ def main():
         if argc > 1:
             if argvs[1] == "-f" or argvs[1] == "-sf":
                 viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-                viewer.SetBackgroundColor (0, 0, 0)
-                viewer.AddPointCloud (final, b'sample cloud')
-                viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
-                viewer.InitCameraParameters ()
+                viewer.SetBackgroundColor(0, 0, 0)
+                viewer.AddPointCloud(final, b'sample cloud')
+                viewer.SetPointCloudRenderingProperties(
+                    pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+                viewer.InitCameraParameters()
             else:
                 viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-                viewer.SetBackgroundColor (0, 0, 0)
-                viewer.AddPointCloud (cloud, b'sample cloud')
-                viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
-                viewer.InitCameraParameters ()
+                viewer.SetBackgroundColor(0, 0, 0)
+                viewer.AddPointCloud(cloud, b'sample cloud')
+                viewer.SetPointCloudRenderingProperties(
+                    pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+                viewer.InitCameraParameters()
         else:
             viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-            viewer.SetBackgroundColor (0, 0, 0)
-            viewer.AddPointCloud (cloud, b'sample cloud')
-            viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
-            viewer.InitCameraParameters ()
-
+            viewer.SetBackgroundColor(0, 0, 0)
+            viewer.AddPointCloud(cloud, b'sample cloud')
+            viewer.SetPointCloudRenderingProperties(
+                pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 3, b'sample cloud')
+            viewer.InitCameraParameters()
 
         v = True
         while v:
-            v=not(viewer.WasStopped())
-            viewer.SpinOnce (100)
+            v = not(viewer.WasStopped())
+            viewer.SpinOnce(100)
     else:
         pass
 

@@ -7,7 +7,7 @@ import sys
 
 def main():
     argvs = sys.argv  # コマンドライン引数を格納したリストの取得
-    argc = len(argvs) # 引数の個数
+    argc = len(argvs)  # 引数の個数
 
     if argc != 4:
         exit(-1)
@@ -56,22 +56,21 @@ def main():
     number_of_partition_bins = 5
     number_of_rotations = 3
 
-
     # pcl::search::KdTree<pcl::PointXYZ>::Ptr search_method (new pcl::search::KdTree<pcl::PointXYZ>);
     # search_method->setInputCloud (cloud);
     search_method = cloud.make_kdtree()
 
     # pcl::ROPSEstimation <pcl::PointXYZ, pcl::Histogram <135> > feature_estimator;
     feature_estimator = cloud.make_ROPSEstimation()
-    feature_estimator.setSearchMethod (search_method);
-    feature_estimator.setSearchSurface (cloud);
-    feature_estimator.setInputCloud (cloud);
-    feature_estimator.setIndices (indices);
-    feature_estimator.setTriangles (triangles);
-    feature_estimator.setRadiusSearch (support_radius);
-    feature_estimator.setNumberOfPartitionBins (number_of_partition_bins);
-    feature_estimator.setNumberOfRotations (number_of_rotations);
-    feature_estimator.setSupportRadius (support_radius);
+    feature_estimator.setSearchMethod(search_method)
+    feature_estimator.setSearchSurface(cloud)
+    feature_estimator.setInputCloud(cloud)
+    feature_estimator.setIndices(indices)
+    feature_estimator.setTriangles(triangles)
+    feature_estimator.setRadiusSearch(support_radius)
+    feature_estimator.setNumberOfPartitionBins(number_of_partition_bins)
+    feature_estimator.setNumberOfRotations(number_of_rotations)
+    feature_estimator.setSupportRadius(support_radius)
 
     # pcl::PointCloud<pcl::Histogram <135> >::Ptr histograms (new pcl::PointCloud <pcl::Histogram <135> > ());
     # feature_estimator.compute (*histograms);

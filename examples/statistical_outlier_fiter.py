@@ -14,10 +14,12 @@ def main():
     fil.set_mean_k(50)
     fil.set_std_dev_mul_thresh(1.0)
 
-    pcl.save(fil.filter(), "./examples/pcldata/tutorials/table_scene_lms400_inliers.pcd")
+    pcl.save(fil.filter(),
+             "./examples/pcldata/tutorials/table_scene_lms400_inliers.pcd")
 
     fil.set_negative(True)
-    pcl.save(fil.filter(), "./examples/pcldata/tutorials/table_scene_lms400_outliers.pcd")
+    pcl.save(fil.filter(),
+             "./examples/pcldata/tutorials/table_scene_lms400_outliers.pcd")
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ import pcl.pcl_visualization
 angular_resolution = 0.5
 # pcl::RangeImage::CoordinateFrame coordinate_frame = pcl::RangeImage::CAMERA_FRAME;
 coordinate_frame = pcl.CythonCoordinateFrame_Type.CAMERA_FRAME
-setUnseenToMaxRange = False;
+setUnseenToMaxRange = False
 
 # -----Help-----
 # void printUsage (const char* progName)
@@ -53,7 +53,8 @@ def main():
     # if (pcl::console::parse (argc, argv, "-r", angular_resolution) >= 0)
     # cout << "Setting angular resolution to "<<angular_resolution<<"deg.\n";
 
-    parser = argparse.ArgumentParser(description='StrawPCL example: range image border extraction')
+    parser = argparse.ArgumentParser(
+        description='StrawPCL example: range image border extraction')
     parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                         help='Setting unseen values in range image to maximum range readings')
     parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
@@ -128,7 +129,7 @@ def main():
         far_ranges = pcl.load_PointWithViewpoint(far_ranges_filename)
     else:
         setUnseenToMaxRange = True
-        print ('No *.pcd file given = Genarating example point cloud.\n')
+        print('No *.pcd file given = Genarating example point cloud.\n')
 
         count = 0
         points = np.zeros((100 * 100, 3), dtype=np.float32)
@@ -140,12 +141,11 @@ def main():
                 points[count][1] = y * 0.01
                 points[count][2] = 2.0 - y * 0.01
                 count = count + 1
-        
+
         point_cloud = pcl.PointCloud()
         point_cloud.from_array(points)
-        
-        far_ranges = pcl.PointCloud_PointWithViewpoint()
 
+        far_ranges = pcl.PointCloud_PointWithViewpoint()
 
     ##
     # Create RangeImage from the PointCloud
@@ -154,7 +154,7 @@ def main():
     border_size = 1
 
     # boost::shared_ptr<pcl::RangeImage> range_image_ptr (new pcl::RangeImage);
-    # pcl::RangeImage& range_image = *range_image_ptr;   
+    # pcl::RangeImage& range_image = *range_image_ptr;
     # range_image.createFromPointCloud (point_cloud, angular_resolution, pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
     #                                scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
     # range_image.integrateFarRanges (far_ranges);
@@ -162,13 +162,13 @@ def main():
     # range_image.setUnseenToMaxRange ();
     ##
     range_image = point_cloud.make_RangeImage()
-    range_image.CreateFromPointCloud (point_cloud, 
-                            angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0), 
-                            coordinate_frame, noise_level, min_range, border_size)
-    print ('range_image::integrateFarRanges.\n')
+    range_image.CreateFromPointCloud(point_cloud,
+                                     angular_resolution, pcl.deg2rad(
+                                         360.0), pcl.deg2rad(180.0),
+                                     coordinate_frame, noise_level, min_range, border_size)
+    print('range_image::integrateFarRanges.\n')
     if setUnseenToMaxRange == True:
-        range_image.SetUnseenToMaxRange ()
-
+        range_image.SetUnseenToMaxRange()
 
     # -----Open 3D viewer and add point cloud-----
     # pcl::visualization::PCLVisualizer viewer ("3D Viewer");
@@ -182,15 +182,15 @@ def main():
     ##
     # viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
     viewer = pcl.pcl_visualization.PCLVisualizering()
-    viewer.SetBackgroundColor (1.0, 1.0, 1.0)
-    range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (point_cloud, 0, 0, 0)
+    viewer.SetBackgroundColor(1.0, 1.0, 1.0)
+    range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+        point_cloud, 0, 0, 0)
     # viewer.AddPointCloud (range_image, range_image_color_handler, 'range image')
-    viewer.AddPointCloud (point_cloud, 'range image')
+    viewer.AddPointCloud(point_cloud, 'range image')
     # viewer.AddPointCloud_ColorHandler
     # viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, propName = 'range image')
     # NG - ([setPointCloudRenderingProperties] Could not find any PointCloud datasets with id <cloud>!)
     # viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1)
-
 
     ##
     # Extract borders
@@ -229,7 +229,7 @@ def main():
     # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointWithRange> shadow_points_color_handler (shadow_points_ptr, 0, 255, 255);
     # viewer.addPointCloud<pcl::PointWithRange> (shadow_points_ptr, shadow_points_color_handler, "shadow points");
     # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "shadow points");
-    # 
+    #
 
     ##
     # // -----Show points on range image-----
@@ -237,7 +237,7 @@ def main():
     # range_image_borders_widget =
     # pcl::visualization::RangeImageVisualizer::getRangeImageBordersWidget (range_image, -std::numeric_limits<float>::infinity (), std::numeric_limits<float>::infinity (), false,
     #                                                                       border_descriptions, "Range image with borders");
-    # 
+    #
 
     ##
     # // -----Main loop-----

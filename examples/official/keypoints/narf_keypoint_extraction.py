@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# author : Bastian Steder 
+# author : Bastian Steder
 # http://pointclouds.org/documentation/tutorials/narf_keypoint_extraction.php#narf-keypoint-extraction
 
 import pcl
@@ -27,7 +27,8 @@ setUnseenToMaxRange = False
 def main():
     # -----Main-----
     # -----Parse Command Line Arguments-----
-    parser = argparse.ArgumentParser(description='PointCloudLibrary example: narf keyPoint extraction')
+    parser = argparse.ArgumentParser(
+        description='PointCloudLibrary example: narf keyPoint extraction')
     parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                         help='Setting unseen values in range image to maximum range readings')
     parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
@@ -36,7 +37,7 @@ def main():
                         help='Setting support size to = ')
     parser.add_argument('--AngularResolution', '-r', default=0, type=int,
                         help='Setting angular resolution to = ')
-    parser.add_argument('--Help', 
+    parser.add_argument('--Help',
                         help='Usage: narf_keypoint_extraction.py [options] <scene.pcd>\n\n'
                         'Options:\n'
                         '-------------------------------------------\n'
@@ -74,7 +75,7 @@ def main():
         # filename = argv[pcd_filename_indices[0]]
         # point_cloud = pcl.load(argv[0])
         point_cloud = pcl.load('./examples/official/IO/test_pcd.pcd')
-        
+
         # scene_sensor_pose = Eigen::Affine3f (Eigen::Translation3f (point_cloud.sensor_origin_[0],
         #                                                            point_cloud.sensor_origin_[1],
         #                                                            point_cloud.sensor_origin_[2])) *
@@ -82,32 +83,33 @@ def main():
         # Python
         # origin = point_cloud.sensor_origin
         # sensor_orientation = eigen3.Affine3f(origin[0], origin[1], origin[2]) * eigen3.Affine3f(point_cloud.sensor_orientation)
-        
+
         # std::string far_ranges_filename = pcl::getFilenameWithoutExtension (filename)+_far_ranges.pcd;
         # if (pcl::io::loadPCDFile (far_ranges_filename.c_str (), far_ranges) == -1)
         #     stdcout  Far ranges file far_ranges_filename does not exists.n;
-        far_ranges_filename = os.path.splitext(pcd_filename_indices) + '_far_ranges.pcd'
+        far_ranges_filename = os.path.splitext(
+            pcd_filename_indices) + '_far_ranges.pcd'
         far_ranges = pcl.load_PointWithViewpoint(far_ranges_filename)
-        
+
         # Error
         # print('Far ranges file ' + far_ranges_filename + 'does not exists.\n')
-        
+
     else:
         setUnseenToMaxRange = True
-        print ('No *.pcd file given = Genarating example point cloud.\n')
-        
+        print('No *.pcd file given = Genarating example point cloud.\n')
+
         # for (float x = -0.5f; x = 0.5f; x += 0.01f)
         #     for (float y = -0.5f; y = 0.5f; y += 0.01f)
         #         points = np.zeros((1, 3), dtype=np.float32)
-        #         points[0][0] = x  
+        #         points[0][0] = x
         #         points[0][1] = y
         #         points[0][2] = 2.0f - y
         #     end
         # end
-        
+
         count = 0
         points = np.zeros((100 * 100, 3), dtype=np.float32)
-        
+
         # float NG
         # TypeError: range() integer end argument expected, got float.
         # for x in range(-0.5, 0.5, 0.01):
@@ -118,13 +120,13 @@ def main():
                 points[count][1] = y * 0.01
                 points[count][2] = 2.0 - y * 0.01
                 count = count + 1
-        
+
         # point_cloud.points.push_back (point);
         # point_cloud.width  = (int) point_cloud.points.size ()
         # point_cloud.height = 1;
         point_cloud = pcl.PointCloud()
         point_cloud.from_array(points)
-        
+
         far_ranges = pcl.PointCloud_PointWithViewpoint()
 
     # Create RangeImage from the PointCloud
@@ -136,17 +138,18 @@ def main():
     # pcl::RangeImage& range_image = *range_image_ptr;
     range_image = point_cloud.make_RangeImage()
 
-    print ('range_image::createFromPointCloud.\n')
-    print ('point_cloud(size  ) = ' + str(point_cloud.size  ) )
-    print ('point_cloud(width ) = ' + str(point_cloud.width ) )
-    print ('point_cloud(height) = ' + str(point_cloud.height) )
+    print('range_image::createFromPointCloud.\n')
+    print('point_cloud(size  ) = ' + str(point_cloud.size))
+    print('point_cloud(width ) = ' + str(point_cloud.width))
+    print('point_cloud(height) = ' + str(point_cloud.height))
 
     # range_image.createFromPointCloud (
     #                             point_cloud, angular_resolution, pcl.deg2rad (360.0f), pcl.deg2rad (180.0f),
     #                             scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
-    range_image.CreateFromPointCloud (point_cloud, 
-                                        angular_resolution, pcl.deg2rad (360.0), pcl.deg2rad (180.0), 
-                                        coordinate_frame, noise_level, min_range, border_size)
+    range_image.CreateFromPointCloud(point_cloud,
+                                     angular_resolution, pcl.deg2rad(
+                                         360.0), pcl.deg2rad(180.0),
+                                     coordinate_frame, noise_level, min_range, border_size)
 
     # NG
     # print ('range_image::integrateFarRanges.\n')
@@ -154,10 +157,9 @@ def main():
 
     # if (setUnseenToMaxRange)
     #     range_image.setUnseenToMaxRange ();
-    print ('range_image::setUnseenToMaxRange.\n')
+    print('range_image::setUnseenToMaxRange.\n')
     if setUnseenToMaxRange == True:
-       range_image.SetUnseenToMaxRange ()
-
+        range_image.SetUnseenToMaxRange()
 
     # current(0.3.0) Windows Only Test
     isVisual = False
@@ -179,28 +181,31 @@ def main():
         ##
         # viewer = pcl.PCLVisualizering("3D Viewer")
         viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-        viewer.SetBackgroundColor (1, 1, 1)
+        viewer.SetBackgroundColor(1, 1, 1)
         # NG
         # range_image_color_handler = pcl.PointCloudColorHandlerCustoms[cpp.PointWithRange] (range_image, 0, 0, 0)
         # range_image_color_handler = pcl.PointCloudColorHandlerCustoms (range_image, 0, 0, 0)
         # range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (range_image, 0, 0, 0)
-        range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (point_cloud, 0, 0, 0)
+        range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+            point_cloud, 0, 0, 0)
 
-        viewer.AddPointCloud_ColorHandler (point_cloud, range_image_color_handler, b'range image')
+        viewer.AddPointCloud_ColorHandler(
+            point_cloud, range_image_color_handler, b'range image')
         # viewer.AddPointCloud (point_cloud, 'range image', 0)
         # viewer.AddPointCloud (point_cloud)
 
         time.sleep(1)
-        viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, b'range image')
+        viewer.SetPointCloudRenderingProperties(
+            pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, b'range image')
         time.sleep(1)
-        viewer.InitCameraParameters ()
+        viewer.InitCameraParameters()
         time.sleep(1)
 
         # Show range image
         # pcl::visualization::RangeImageVisualizer range_image_widget ("Range image");
         # range_image_widget.showRangeImage (range_image);
         range_image_widget = pcl.pcl_visualization.RangeImageVisualization()
-        range_image_widget.ShowRangeImage (range_image)
+        range_image_widget.ShowRangeImage(range_image)
 
         # Extract NARF keypoints
         # pcl::RangeImageBorderExtractor range_image_border_extractor;
@@ -244,7 +249,6 @@ def main():
         # for x in range(-50, 50, 1):
         # for y in range(-50, 50, 1):
 
-
         # pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> keypoints_color_handler (keypoints_ptr, 0, 255, 0);
         # viewer.addPointCloud<pcl::PointXYZ> (keypoints_ptr, keypoints_color_handler, keypoints);
         # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, keypoints);
@@ -252,22 +256,24 @@ def main():
         # viewer.AddPointCloud<pcl::PointXYZ} (keypoints_ptr, keypoints_color_handler, keypoints)
         # viewer.SetPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, keypoints);
 
-        ## pcl
+        # pcl
         # keypoints_color_handler = pcl.visualization.PointCloudColorHandlerCustom[pcl.PointXYZ](keypoints_ptr, 0, 255, 0)
-        viewer.addPointCloud (keypoints_ptr, keypoints_color_handler, keypoints)
-        viewer.setPointCloudRenderingProperties (pcl.pcl_visualization.PCL_VISUALIZER_POINT_SIZE, 7, keypoints)
-        keypoints_color_handler = pcl.PointCloudColorHandlerCustom (0, 255, 0)
-        viewer.AddPointCloud (keypoints_ptr, keypoints_color_handler, keypoints)
-        viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCL_VISUALIZER_POINT_SIZE, 7, keypoints)
+        viewer.addPointCloud(keypoints_ptr, keypoints_color_handler, keypoints)
+        viewer.setPointCloudRenderingProperties(
+            pcl.pcl_visualization.PCL_VISUALIZER_POINT_SIZE, 7, keypoints)
+        keypoints_color_handler = pcl.PointCloudColorHandlerCustom(0, 255, 0)
+        viewer.AddPointCloud(keypoints_ptr, keypoints_color_handler, keypoints)
+        viewer.SetPointCloudRenderingProperties(
+            pcl.pcl_visualization.PCL_VISUALIZER_POINT_SIZE, 7, keypoints)
 
         # Main loop
         print("while")
         v = True
         while v:
-            v=not(viewer.WasStopped())
+            v = not(viewer.WasStopped())
             # process GUI events
-            range_image_widget.SpinOnce ()
-            viewer.SpinOnce ()
+            range_image_widget.SpinOnce()
+            viewer.SpinOnce()
     else:
         pass
 

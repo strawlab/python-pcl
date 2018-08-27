@@ -9,7 +9,8 @@ import pcl.pcl_visualization
 
 
 def main():
-    cloud = pcl.load_XYZRGB('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+    cloud = pcl.load_XYZRGB(
+        './examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
     visual = pcl.pcl_visualization.CloudViewing()
 
     # PointXYZ
@@ -21,7 +22,7 @@ def main():
 
     v = True
     while v:
-        v=not(visual.WasStopped())
+        v = not(visual.WasStopped())
 
 
 if __name__ == "__main__":

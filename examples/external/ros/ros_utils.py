@@ -8,7 +8,7 @@ def on_new_point_cloud(data):
     pc = pc2.read_points(data, skip_nans=True, field_names=("x", "y", "z"))
     pc_list = []
     for p in pc:
-        pc_list.append( [p[0],p[1],p[2]] )
+        pc_list.append([p[0], p[1], p[2]])
 
     p = pcl.PointCloud()
     p.from_list(pc_list)

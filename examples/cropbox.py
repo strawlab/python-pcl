@@ -4,8 +4,10 @@ from __future__ import print_function
 import numpy as np
 import pcl
 
+
 def main():
-    cloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+    cloud = pcl.load(
+        './examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
 
     # pcl::CropBox<PointXYZI> clipper;
     # clipper.setInputCloud(cloud);

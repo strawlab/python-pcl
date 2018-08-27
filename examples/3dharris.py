@@ -22,8 +22,8 @@ def main():
     # detector.compute(*keypoints);
     ###
     detector = cloud.make_HarrisKeypoint3D()
-    detector.set_NonMaxSupression (True)
-    detector.set_Radius (0.01)
+    detector.set_NonMaxSupression(True)
+    detector.set_Radius(0.01)
     # detector.set_NonMaxSupression (False)
     # detector.set_RadiusSearch (100)
     keypoints = detector.compute()
@@ -42,7 +42,7 @@ def main():
     #     if ((*i).intensity<min)
     #         min = (*i).intensity;
     #     keypoints3D->push_back(tmp);
-    # 
+    #
     # std::cout << "maximal responce: "<< max << " min responce:  "<< min<<std::endl;
     ###
     keypoints3D = pcl.PointCloud()
@@ -59,18 +59,19 @@ def main():
         points[i][2] = keypoints[i][2]
         intensity = keypoints[i][3]
         if intensity > max:
-            print("coords: " + str(keypoints[i][0]) + ";" + str(keypoints[i][1]) + ";" + str(keypoints[i][2]) )
+            print("coords: " + str(keypoints[i][0]) + ";" +
+                  str(keypoints[i][1]) + ";" + str(keypoints[i][2]))
             max = intensity
-        
+
         if intensity < min:
             min = intensity
-        
+
         count = count + 1
 
     points.resize(count, 3)
     print(points)
     keypoints3D.from_array(points)
-    print("maximal responce: " + str(max) + " min responce:  " +  str(min) )
+    print("maximal responce: " + str(max) + " min responce:  " + str(min))
 
     # //show point cloud
     # pcl::visualization::PCLVisualizer viewer ("3D Viewer");
@@ -81,8 +82,10 @@ def main():
     # viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, 7, "keypoints.png");
     ##
     viewer = pcl.pcl_visualization.PCLVisualizering('3D Viewer')
-    pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(cloud, 255, 255, 255)
-    kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(keypoints3D, 255, 0, 0)
+    pccolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+        cloud, 255, 255, 255)
+    kpcolor = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+        keypoints3D, 255, 0, 0)
     # OK
     viewer.AddPointCloud_ColorHandler(cloud, pccolor)
     viewer.AddPointCloud_ColorHandler(keypoints3D, kpcolor, b'keypoints')
@@ -93,10 +96,9 @@ def main():
     # viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 7, b'keypoints.png')
     ###
 
-
     v = True
     while v:
-        v=not(viewer.WasStopped())
+        v = not(viewer.WasStopped())
         viewer.SpinOnce()
         # sleep(0.01)
 

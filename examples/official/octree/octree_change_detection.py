@@ -24,7 +24,7 @@ def main():
     #     cloudA->points[i].y = 64.0f * rand () / (RAND_MAX + 1.0f);
     #     cloudA->points[i].z = 64.0f * rand () / (RAND_MAX + 1.0f);
     # }
-    # 
+    #
     # // Add points from cloudA to octree
     # octree.setInputCloud (cloudA);
     # octree.addPointsFromInputCloud ();
@@ -33,27 +33,27 @@ def main():
     points = np.zeros((128, 3), dtype=np.float32)
     RAND_MAX = 1.0
     for i in range(0, 5):
-        points[i][0] = 64.0 * random.random () / RAND_MAX
-        points[i][1] = 64.0 * random.random () / RAND_MAX
-        points[i][2] = 64.0 * random.random () / RAND_MAX
+        points[i][0] = 64.0 * random.random() / RAND_MAX
+        points[i][1] = 64.0 * random.random() / RAND_MAX
+        points[i][2] = 64.0 * random.random() / RAND_MAX
 
     cloudA.from_array(points)
     octree = cloudA.make_octreeChangeDetector(resolution)
-    octree.add_points_from_input_cloud ()
+    octree.add_points_from_input_cloud()
     ###
 
     # // Switch octree buffers: This resets octree but keeps previous tree structure in memory.
     # octree.switchBuffers ();
-    octree.switchBuffers ()
+    octree.switchBuffers()
 
     # pcl::PointCloud<pcl::PointXYZ>::Ptr cloudB (new pcl::PointCloud<pcl::PointXYZ> );
     cloudB = pcl.PointCloud()
 
-    # // Generate pointcloud data for cloudB 
+    # // Generate pointcloud data for cloudB
     # cloudB->width = 128;
     # cloudB->height = 1;
     # cloudB->points.resize (cloudB->width * cloudB->height);
-    # 
+    #
     # for (size_t i = 0; i < cloudB->points.size (); ++i)
     # {
     #   cloudB->points[i].x = 64.0f * rand () / (RAND_MAX + 1.0f);
@@ -65,14 +65,14 @@ def main():
     #  octree.addPointsFromInputCloud ();
     points2 = np.zeros((128, 3), dtype=np.float32)
     for i in range(0, 128):
-        points2[i][0] = 64.0 * random.random () / RAND_MAX
-        points2[i][1] = 64.0 * random.random () / RAND_MAX
-        points2[i][2] = 64.0 * random.random () / RAND_MAX
+        points2[i][0] = 64.0 * random.random() / RAND_MAX
+        points2[i][1] = 64.0 * random.random() / RAND_MAX
+        points2[i][2] = 64.0 * random.random() / RAND_MAX
 
     cloudB.from_array(points2)
 
-    octree.set_input_cloud (cloudB)
-    octree.add_points_from_input_cloud ()
+    octree.set_input_cloud(cloudB)
+    octree.add_points_from_input_cloud()
 
     # std::vector<int> newPointIdxVector;
     # // Get vector of point indices from octree voxels which did not exist in previous buffer
@@ -84,7 +84,7 @@ def main():
     #             << "  Point:" << cloudB->points[newPointIdxVector[i]].x << " "
     #             << cloudB->points[newPointIdxVector[i]].y << " "
     #             << cloudB->points[newPointIdxVector[i]].z << std::endl;
-    newPointIdxVector = octree.get_PointIndicesFromNewVoxels ()
+    newPointIdxVector = octree.get_PointIndicesFromNewVoxels()
     print('Output from getPointIndicesFromNewVoxels:')
 
     cloudB.extract(newPointIdxVector)
@@ -93,7 +93,8 @@ def main():
     for i in range(0, len(newPointIdxVector)):
         # print(str(i) + '# Index:' + str(newPointIdxVector[i]) + '  Point:' + str(cloudB[i * 3 + 0]) + ' ' + str(cloudB[i * 3 + 1]) + ' ' + str(cloudB[i * 3 + 2]) )
         # print(str(i) + '# Index:' + str(i) + '  Point:' + str(cloudB[i]))
-        print(str(i) + '# Index:' + str(newPointIdxVector[i]) + '  Point:' + str(cloudB[newPointIdxVector[i]][0]) + ' ' + str(cloudB[newPointIdxVector[i]][1]) + ' ' + str(cloudB[newPointIdxVector[i]][2]) )
+        print(str(i) + '# Index:' + str(newPointIdxVector[i]) + '  Point:' + str(cloudB[newPointIdxVector[i]][0]) + ' ' + str(
+            cloudB[newPointIdxVector[i]][1]) + ' ' + str(cloudB[newPointIdxVector[i]][2]))
 
 
 if __name__ == "__main__":

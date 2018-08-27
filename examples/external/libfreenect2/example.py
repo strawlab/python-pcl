@@ -99,8 +99,7 @@ def main():
         #     break
         v = True
         while v:
-            v=not(visual.WasStopped())
-
+            v = not(visual.WasStopped())
 
     device.stop()
     device.close()

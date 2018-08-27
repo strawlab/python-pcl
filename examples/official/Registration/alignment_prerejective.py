@@ -4,7 +4,8 @@
 
 import pcl
 import argparse
-parser = argparse.ArgumentParser(description='PointCloudLibrary example: Remove outliers')
+parser = argparse.ArgumentParser(
+    description='PointCloudLibrary example: Remove outliers')
 parser.add_argument('--Removal', '-r', choices=('Radius', 'Condition'), default='',
                     help='RadiusOutlier/Condition Removal')
 args = parser.parse_args()
@@ -18,9 +19,9 @@ def main():
     # typedef pcl::FPFHEstimationOMP<PointNT,PointNT,FeatureT> FeatureEstimationT;
     # typedef pcl::PointCloud<FeatureT> FeatureCloudT;
     # typedef pcl::visualization::PointCloudColorHandlerCustom<PointNT> ColorHandlerT;
-    # 
+    #
     # Align a rigid object to a scene with clutter and occlusions
-    # 
+    #
     # // Point clouds
     # PointCloudT::Ptr object (new PointCloudT);
     # PointCloudT::Ptr object_aligned (new PointCloudT);
@@ -62,10 +63,10 @@ def main():
     print('Downsampling...\n')
     grid_obj = object.make_voxel_grid_filter()
     leaf = 0.005
-    grid_obj.set_leaf_size (leaf, leaf, leaf)
+    grid_obj.set_leaf_size(leaf, leaf, leaf)
     object = grid_obj.filter()
     scene_obj = scene.make_voxel_grid_filter()
-    grid_sce = scene_obj.filter ()
+    grid_sce = scene_obj.filter()
 
     # // Estimate normals for scene
     # pcl::console::print_highlight ("Estimating scene normals...\n");
@@ -75,8 +76,8 @@ def main():
     # nest.compute (*scene);
     print('Estimating scene normals...\n')
     nest = scene.make_NormalEstimationOMP()
-    nest.set_RadiusSearch (0.01);
-    scene = nest.compute ()
+    nest.set_RadiusSearch(0.01)
+    scene = nest.compute()
 
     # // Estimate features
     # pcl::console::print_highlight ("Estimating features...\n");
@@ -90,13 +91,12 @@ def main():
     # fest.compute (*scene_features);
     print('Estimating features...\n')
     fest_obj = object.make_FeatureEstimation()
-    fest_obj.setRadiusSearch (0.025)
-    object_features = fest_obj.compute ()
+    fest_obj.setRadiusSearch(0.025)
+    object_features = fest_obj.compute()
 
     fest_sce = scene.make_FeatureEstimation()
-    fest_sce.setRadiusSearch (0.025)
-    scene_features = fest_sce.compute ()
-
+    fest_sce.setRadiusSearch(0.025)
+    scene_features = fest_sce.compute()
 
     # // Perform alignment
     # pcl::console::print_highlight ("Starting alignment...\n");
@@ -117,18 +117,18 @@ def main():
     # }
     print('Starting alignment...\n')
     align = object.make_SampleConsensusPrerejective()
-    align.setSourceFeatures (object_features)
-    align.setTargetFeatures (scene_features)
+    align.setSourceFeatures(object_features)
+    align.setTargetFeatures(scene_features)
     # Number of RANSAC iterations
-    align.set_MaximumIterations (50000)
+    align.set_MaximumIterations(50000)
     # Number of points to sample for generating/prerejecting a pose
-    align.set_NumberOfSamples (3)
+    align.set_NumberOfSamples(3)
     # Number of nearest features to use
-    align.set_CorrespondenceRandomness (5)
+    align.set_CorrespondenceRandomness(5)
     # Polygonal edge length similarity threshold
-    align.set_SimilarityThreshold (0.9)
+    align.set_SimilarityThreshold(0.9)
     # Inlier threshold
-    align.set_MaxCorrespondenceDistance (2.5 * leaf)
+    align.set_MaxCorrespondenceDistance(2.5 * leaf)
 
     # if (align.hasConverged ())
     # {
@@ -142,7 +142,7 @@ def main():
     #   pcl::console::print_info ("t = < %0.3f, %0.3f, %0.3f >\n", transformation (0,3), transformation (1,3), transformation (2,3));
     #   pcl::console::print_info ("\n");
     #   pcl::console::print_info ("Inliers: %i/%i\n", align.getInliers ().size (), object->size ());
-    #   
+    #
     #   // Show alignment
     #   pcl::visualization::PCLVisualizer visu("Alignment");
     #   visu.addPointCloud (scene, ColorHandlerT (scene, 0.0, 255.0, 0.0), "scene");
@@ -155,11 +155,11 @@ def main():
     #   return (1);
     # }
 
-    if align.hasConverged () == True:
+    if align.hasConverged() == True:
         # Print results
-        print ('\n');
+        print('\n')
         # Eigen::Matrix4f transformation = align.getFinalTransformation ()
-        transformation = align.getFinalTransformation ()
+        transformation = align.getFinalTransformation()
 
         # print ('    | %6.3f %6.3f %6.3f | \n', transformation [0, 0], transformation [0, 1], transformation [0, 2])
         # print ('R = | %6.3f %6.3f %6.3f | \n', transformation [1, 0], transformation [1, 1], transformation [1, 2])
@@ -171,9 +171,11 @@ def main():
 
         # Show alignment
         visu = pcl.PCLVisualization('Alignment')
-        visu.add_PointCloud (scene, ColorHandlerT (scene, 0.0, 255.0, 0.0), 'scene')
-        visu.add_PointCloud (object_aligned, ColorHandlerT (object_aligned, 0.0, 0.0, 255.0), 'object_aligned')
-        visu.spin ()
+        visu.add_PointCloud(scene, ColorHandlerT(
+            scene, 0.0, 255.0, 0.0), 'scene')
+        visu.add_PointCloud(object_aligned, ColorHandlerT(
+            object_aligned, 0.0, 0.0, 255.0), 'object_aligned')
+        visu.spin()
     else:
         print('Alignment failed!\n')
         return (1)

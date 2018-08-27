@@ -27,9 +27,9 @@ def main():
     points_in = np.zeros((5, 3), dtype=np.float32)
     RAND_MAX = 1024.0
     for i in range(0, 5):
-        points_in[i][0] = 1024 * random.random () / RAND_MAX
-        points_in[i][1] = 1024 * random.random () / RAND_MAX
-        points_in[i][2] = 1024 * random.random () / RAND_MAX
+        points_in[i][0] = 1024 * random.random() / RAND_MAX
+        points_in[i][1] = 1024 * random.random() / RAND_MAX
+        points_in[i][2] = 1024 * random.random() / RAND_MAX
 
     cloud_in.from_array(points_in)
 
@@ -40,7 +40,6 @@ def main():
     # *cloud_out = *cloud_in;
     print('Saved ' + str(cloud_in.size) + ' data points to input:')
     points_out = np.zeros((5, 3), dtype=np.float32)
-
 
     # std::cout << "size:" << cloud_out->points.size() << std::endl;
     # for (size_t i = 0; i < cloud_in->points.size (); ++i)
@@ -62,8 +61,8 @@ def main():
     # for (size_t i = 0; i < cloud_out->points.size (); ++i)
     #   std::cout << "    " << cloud_out->points[i].x << " " << cloud_out->points[i].y << " " << cloud_out->points[i].z << std::endl;
     for i in range(0, cloud_out.size):
-        print('     ' + str(cloud_out[i][0]) + ' ' + str(cloud_out[i][1]) +  ' '  + str(cloud_out[i][2]) + ' data points:')
-
+        print('     ' + str(cloud_out[i][0]) + ' ' + str(cloud_out[i]
+                                                         [1]) + ' ' + str(cloud_out[i][2]) + ' data points:')
 
     # pcl::IterativeClosestPoint<pcl::PointXYZ, pcl::PointXYZ> icp;
     # icp.setInputCloud(cloud_in);
@@ -78,7 +77,7 @@ def main():
     # std::cout << icp.getFinalTransformation() << std::endl;
     # print('has converged:' + str(icp.hasConverged()) + ' score: ' + str(icp.getFitnessScore()) )
     # print(str(icp.getFinalTransformation()))
-    print('has converged:' + str(converged) + ' score: ' + str(fitness) )
+    print('has converged:' + str(converged) + ' score: ' + str(fitness))
     print(str(transf))
 
 

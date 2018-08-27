@@ -1,5 +1,6 @@
 import pcl.pcl_grabber
 
+
 def func(obj):
     print(obj)
     obj.Test()     # Call to a specific method from class 'PyGrabberNode'

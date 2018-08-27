@@ -65,7 +65,8 @@ def main():
     #   angular_resolution_x = pcl::deg2rad (angular_resolution_x);
     #   angular_resolution_y = pcl::deg2rad (angular_resolution_y);
 
-    parser = argparse.ArgumentParser(description='StrawPCL example: How to visualize a range image')
+    parser = argparse.ArgumentParser(
+        description='StrawPCL example: How to visualize a range image')
     parser.add_argument('--UnseenToMaxRange', '-m', default=True, type=bool,
                         help='Setting unseen values in range image to maximum range readings')
     parser.add_argument('--CoordinateFrame', '-c', default=-1, type=int,
@@ -124,7 +125,7 @@ def main():
         far_ranges = pcl.load_PointWithViewpoint(far_ranges_filename)
     else:
         setUnseenToMaxRange = True
-        print ('No *.pcd file given = Genarating example point cloud.\n')
+        print('No *.pcd file given = Genarating example point cloud.\n')
 
         count = 0
         points = np.zeros((100 * 100, 3), dtype=np.float32)
@@ -136,10 +137,10 @@ def main():
                 points[count][1] = y * 0.01
                 points[count][2] = 2.0 - y * 0.01
                 count = count + 1
-        
+
         point_cloud = pcl.PointCloud()
         point_cloud.from_array(points)
-        
+
         far_ranges = pcl.PointCloud_PointWithViewpoint()
 
     # // -----------------------------------------------
@@ -149,7 +150,7 @@ def main():
     # float min_range = 0.0f;
     # int border_size = 1;
     # boost::shared_ptr<pcl::RangeImage> range_image_ptr(new pcl::RangeImage);
-    # pcl::RangeImage& range_image = *range_image_ptr;   
+    # pcl::RangeImage& range_image = *range_image_ptr;
     # range_image.createFromPointCloud (point_cloud, angular_resolution_x, angular_resolution_y,
     #                                 pcl::deg2rad (360.0f), pcl::deg2rad (180.0f),
     #                                 scene_sensor_pose, coordinate_frame, noise_level, min_range, border_size);
@@ -157,10 +158,11 @@ def main():
     min_range = 0.0
     border_size = 1
     range_image = point_cloud.make_RangeImage()
-    range_image.CreateFromPointCloud (point_cloud, 
-                            angular_resolution_x, pcl.deg2rad (360.0), pcl.deg2rad (180.0), 
-                            coordinate_frame, noise_level, min_range, border_size)
-    print ('range_image::integrateFarRanges.\n')
+    range_image.CreateFromPointCloud(point_cloud,
+                                     angular_resolution_x, pcl.deg2rad(
+                                         360.0), pcl.deg2rad(180.0),
+                                     coordinate_frame, noise_level, min_range, border_size)
+    print('range_image::integrateFarRanges.\n')
 
     # // --------------------------------------------
     # // -----Open 3D viewer and add point cloud-----
@@ -176,12 +178,13 @@ def main():
     # viewer.initCameraParameters ();
     # setViewerPose(viewer, range_image.getTransformationToWorldSystem ());
     viewer = pcl.pcl_visualization.PCLVisualizering()
-    viewer.SetBackgroundColor (1.0, 1.0, 1.0)
-    range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom (point_cloud, 0, 0, 0)
+    viewer.SetBackgroundColor(1.0, 1.0, 1.0)
+    range_image_color_handler = pcl.pcl_visualization.PointCloudColorHandleringCustom(
+        point_cloud, 0, 0, 0)
     cloudname = str('cloud')
-    viewer.AddPointCloud (range_image, range_image_color_handler, cloudname)
-    viewer.SetPointCloudRenderingProperties (pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, cloudname)
-
+    viewer.AddPointCloud(range_image, range_image_color_handler, cloudname)
+    viewer.SetPointCloudRenderingProperties(
+        pcl.pcl_visualization.PCLVISUALIZER_POINT_SIZE, 1, cloudname)
 
     # // --------------------------
     # // -----Show range image-----
@@ -189,8 +192,7 @@ def main():
     # pcl::visualization::RangeImageVisualizer range_image_widget ("Range image");
     # range_image_widget.showRangeImage (range_image);
     range_image_widget = pcl.pcl_visualization.RangeImageVisualization()
-    range_image_widget.ShowRangeImage (range_image)
-
+    range_image_widget.ShowRangeImage(range_image)
 
     #   //--------------------
     #   // -----Main loop-----
@@ -200,7 +202,7 @@ def main():
     #     range_image_widget.spinOnce ();
     #     viewer.spinOnce ();
     #     pcl_sleep (0.01);
-    #     
+    #
     #     if (live_update)
     #     {
     #       scene_sensor_pose = viewer.getViewerPose();

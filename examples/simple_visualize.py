@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Point cloud library 
+# Point cloud library
 import pcl
 
-# Opencv 
+# Opencv
 import opencv
 
 
@@ -14,7 +14,7 @@ def main():
     # int c=  10;
     a = 22
     b = 12
-    c=  10
+    c = 10
 
     # PCL Visualizer to view the pointcloud
     # pcl::visualization::PCLVisualizer viewer ("Simple visualizing window");
@@ -42,9 +42,9 @@ def main():
     # cvCreateTrackbar("X_limit", "picture", &a, 30, NULL);
     # cvCreateTrackbar("Y_limit", "picture", &b, 30, NULL);
     # cvCreateTrackbar("Z_limit", "picture", &c, 30, NULL);
-    opencv.cvCreateTrackbar("X_limit", "picture", &a, 30)
-    opencv.cvCreateTrackbar("Y_limit", "picture", &b, 30)
-    opencv.cvCreateTrackbar("Z_limit", "picture", &c, 30)
+    opencv.cvCreateTrackbar("X_limit", "picture", & a, 30)
+    opencv.cvCreateTrackbar("Y_limit", "picture", & b, 30)
+    opencv.cvCreateTrackbar("Z_limit", "picture", & c, 30)
 
     # // Starting the while loop where we continually filter with limits using trackbars and display pointcloud
     # char last_c = 0;
@@ -55,14 +55,14 @@ def main():
 
         # pcl::copyPointCloud(*cloud_filtered, *cloud);
         # // i,j,k Need to be adjusted depending on the pointcloud and its xyz limits if used with new pointclouds.
-        i = 0.1 * a;
-        j = 0.1 * b;
-        k = 0.1 * c;
-        
-        # Printing to ensure that the passthrough filter values are changing if we move trackbars. 
+        i = 0.1 * a
+        j = 0.1 * b
+        k = 0.1 * c
+
+        # Printing to ensure that the passthrough filter values are changing if we move trackbars.
         # cout << "i = " << i << " j = " << j << " k = " << k << endl;
         print("i = " + str(i) + " j = " + str(j) + " k = " + str(k))
-        
+
         # Applying passthrough filters with XYZ limits
         # pcl::PassThrough<pcl::PointXYZRGBA> pass;
         # pass.setInputCloud (cloud);
@@ -71,35 +71,35 @@ def main():
         # pass.setFilterLimits (-k, k);
         # pass.filter (*cloud);
         pass = cloud.make_PassThrough()
-        pass.setFilterFieldName ("y")
-        pass.setFilterLimits (-k, k)
-        cloud = pass.filter ()
-        
+        pass.setFilterFieldName("y")
+        pass.setFilterLimits(-k, k)
+        cloud = pass.filter()
+
         # pass.setInputCloud (cloud);
         # pass.setFilterFieldName ("x");
         # // pass.setFilterLimits (-0.1, 0.1);
         # pass.setFilterLimits (-j, j);
         # pass.filter (*cloud);
-        pass.setInputCloud (cloud);
-        pass.setFilterFieldName ("x")
-        pass.setFilterLimits (-j, j)
-        cloud = pass.filter ()
-        
+        pass.setInputCloud(cloud)
+        pass.setFilterFieldName("x")
+        pass.setFilterLimits(-j, j)
+        cloud = pass.filter()
+
         # pass.setInputCloud (cloud);
         # pass.setFilterFieldName ("z");
         # //  pass.setFilterLimits (-10, 10);
         # pass.setFilterLimits (-i, i);
         # pass.filter (*cloud);
-        pass.setInputCloud (cloud);
-        pass.setFilterFieldName ("z")
-        pass.setFilterLimits (-10, 10)
-        cloud = pass.filter ()
-        
+        pass.setInputCloud(cloud)
+        pass.setFilterFieldName("z")
+        pass.setFilterLimits(-10, 10)
+        cloud = pass.filter()
+
         # // Visualizing pointcloud
         # viewer.addPointCloud (cloud, "scene_cloud");
         # viewer.spinOnce();
         # viewer.removePointCloud("scene_cloud");
-        viewer.addPointCloud (cloud, "scene_cloud")
+        viewer.addPointCloud(cloud, "scene_cloud")
         viewer.spinOnce()
         viewer.removePointCloud("scene_cloud")
 

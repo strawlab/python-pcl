@@ -7,7 +7,8 @@ import pcl
 
 def main():
     # http://www.pcl-users.org/CropHull-filter-question-td4030345.html
-    datacloud = pcl.load('./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
+    datacloud = pcl.load(
+        './examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd')
 
     print(datacloud)
 
@@ -26,14 +27,14 @@ def main():
     # cloud->push_back(pcl::PointXYZ(-M_PI * 0.3, -M_PI * 0.3, 0));
 
     points_2 = np.array([
-                            [1 * 0.3, 1 * 0.3, 0],
-                            [0, 0, 0],
-                            [1, 0, 0],
-                            [1, 1 * 0.5, 0],
-                            [0, 1 * 0.5, 0],
-                            [0, 0, 0],
-                            [-1 * 0.3 , -1 * 0.3, 0]
-                        ], dtype=np.float32)
+        [1 * 0.3, 1 * 0.3, 0],
+        [0, 0, 0],
+        [1, 0, 0],
+        [1, 1 * 0.5, 0],
+        [0, 1 * 0.5, 0],
+        [0, 0, 0],
+        [-1 * 0.3, -1 * 0.3, 0]
+    ], dtype=np.float32)
     filterCloud.from_array(points_2)
     print(filterCloud)
 
@@ -66,7 +67,6 @@ def main():
     # print("before: " + outputCloud)
     crophull.Filtering(outputCloud)
     print(outputCloud)
-
 
     # Viewer
     # // pcl::visualization::CloudViewer viewer ("Cluster viewer");

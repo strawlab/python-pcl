@@ -71,6 +71,8 @@ class TestEuclideanClusterExtraction(unittest.TestCase):
             cloud_cluster.from_array(points)
 
 ### RegionGrowing (1.7.2/1.8.0)###
+
+
 @attr('pcl_over_17')
 @attr('pcl_ver_0_4')
 class TestRegionGrowing(unittest.TestCase):
@@ -110,6 +112,8 @@ class TestRegionGrowing(unittest.TestCase):
             cloud_cluster.from_array(points)
 
 ### MinCutSegmentation(1.7.2) ###
+
+
 @attr('pcl_over_17')
 @attr('pcl_ver_0_4')
 class TestMinCutSegmentation(unittest.TestCase):
@@ -203,8 +207,9 @@ class TestSegmentationNormal(unittest.TestCase):
         # self.a = np.array(np.mat(SEGDATA, dtype=np.float32))
         # self.p = pcl.PointCloud()
         # self.p.from_array(self.a)
-        cloud = pcl.load('tests'  + os.path.sep + 'tutorials'  + os.path.sep + 'table_scene_mug_stereo_textured.pcd')
-        
+        cloud = pcl.load('tests' + os.path.sep + 'tutorials' +
+                         os.path.sep + 'table_scene_mug_stereo_textured.pcd')
+
         fil = cloud.make_passthrough_filter()
         fil.set_filter_field_name("z")
         fil.set_filter_limits(0, 1.5)
@@ -218,9 +223,9 @@ class TestSegmentationNormal(unittest.TestCase):
         seg.set_max_iterations(100)
         seg.set_distance_threshold(0.03)
         indices, model = seg.segment()
-        
+
         self.p = cloud_filtered.extract(indices, negative=True)
-        
+
         self.segment = self.p.make_segmenter_normals(ksearch=50)
         # self.segment = pcl.SegmentationNormal()
         # self.segment.setInputCloud(self.p)
@@ -230,7 +235,6 @@ class TestSegmentationNormal(unittest.TestCase):
     #     self.assertEqual(npts, self.p.size)
     #     self.assertEqual(npts, self.p.width)
     #     self.assertEqual(1, self.p.height)
-
 
     def testSegmentNormalCylinderObject(self):
         self.segment.set_optimize_coefficients(True)
@@ -261,17 +265,17 @@ class TestSegmentationNormal(unittest.TestCase):
         param2 = self.segment.get_eps_angle()
         self.assertEqual(param2, expected2)
         self.assertNotEqual(param, param2)
-        
+
         indices2, coefficients2 = self.segment.segment()
         # self.assertListEqual(indices2, SEGINLIERSIDX)
         # self.assertListEqual(coefficients2, SEGCOEFF)
-        
+
         # print(len(indices))
         # print(coefficients)
-        
+
         # print(len(indices2))
         # print(coefficients2)
-        
+
         self.assertNotEqual(len(indices), len(indices2))
         # self.assertListNotEqual(coefficients, coefficients2)
         pass

@@ -34,7 +34,7 @@ def cvtDepth2Cloud(depth, cameraMatrix):
             y1 = float(y)
             # print(x1)
             # print(y1)
-            dist = -depth[y][x]
+            dist = depth[y][x]
             # print(dist)
             # print(cloud[y * cols + x][0])
             cloud[y * cols + x][0] = np.float32((x1 - ox) * dist * inv_fx)
@@ -87,22 +87,26 @@ def cvtDepthColor2Cloud(depth, color, cameraMatrix):
             red = color[y][x][2]
             green = color[y][x][1]
             blue = color[y][x][0]
-            rgb = np.left_shift(red, 16) + np.left_shift(green, 8) + np.left_shift(blue, 0)
+            rgb = np.left_shift(red, 16) + np.left_shift(green,
+                                                         8) + np.left_shift(blue, 0)
             cloud[y * cols + x][3] = rgb
 
     return cloud
 
 
 def main():
+    # | fx  0   cx |
+    # | 0   fy  cy |
+    # | 0   0   1  |
     # vals = np.array(
     #     [525., 0.  , 319.5,
     #      0.  , 525., 239.5,
     #      0.  , 0.  , 1.])
     # cameraMatrix = vals.reshape((3, 3))
     cameraMatrix = np.array(
-        [[525., 0.  , 319.5],
-         [0.  , 525., 239.5],
-         [0.  , 0.  , 1.   ]])
+        [[525., 0., 319.5],
+         [0., 525., 239.5],
+         [0., 0., 1.]])
 
     color0 = cv2.imread('00000.jpg')
     # 16 bit Image

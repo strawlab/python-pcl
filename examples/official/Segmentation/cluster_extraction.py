@@ -21,8 +21,8 @@ def main():
     #   vg.filter (*cloud_filtered);
     #   std::cout << "PointCloud after filtering has: " << cloud_filtered->points.size ()  << " data points." << std::endl; //*
     vg = cloud.make_voxel_grid_filter()
-    vg.set_leaf_size (0.01, 0.01, 0.01)
-    cloud_filtered = vg.filter ()
+    vg.set_leaf_size(0.01, 0.01, 0.01)
+    cloud_filtered = vg.filter()
 
     #   // Create the segmentation object for the planar model and set all the parameters
     #   pcl::SACSegmentation<pcl::PointXYZ> seg;
@@ -36,11 +36,11 @@ def main():
     #   seg.setMaxIterations (100);
     #   seg.setDistanceThreshold (0.02);
     seg = cloud.make_segmenter()
-    seg.set_optimize_coefficients (True)
-    seg.set_model_type (pcl.SACMODEL_PLANE)
-    seg.set_method_type (pcl.SAC_RANSAC)
-    seg.set_MaxIterations (100)
-    seg.set_distance_threshold (0.02)
+    seg.set_optimize_coefficients(True)
+    seg.set_model_type(pcl.SACMODEL_PLANE)
+    seg.set_method_type(pcl.SAC_RANSAC)
+    seg.set_MaxIterations(100)
+    seg.set_distance_threshold(0.02)
 
     #   int i=0, nr_points = (int) cloud_filtered->points.size ();
     #   while (cloud_filtered->points.size () > 0.3 * nr_points)
@@ -58,11 +58,11 @@ def main():
     #     extract.setInputCloud (cloud_filtered);
     #     extract.setIndices (inliers);
     #     extract.setNegative (false);
-    # 
+    #
     #     // Get the points associated with the planar surface
     #     extract.filter (*cloud_plane);
     #     std::cout << "PointCloud representing the planar component: " << cloud_plane->points.size () << " data points." << std::endl;
-    # 
+    #
     #     // Remove the planar inliers, extract the rest
     #     extract.setNegative (true);
     #     extract.filter (*cloud_f);
@@ -80,18 +80,16 @@ def main():
     #     extract.set_Indices (inliers)
     #     extract.set_Negative (false)
     #     cloud_plane = extract.filter ()
-    #     
+    #
     #     extract.set_Negative (True)
     #     cloud_f = extract.filter ()
     #     cloud_filtered = cloud_f
-
 
     # Creating the KdTree object for the search method of the extraction
     # pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
     # tree->setInputCloud (cloud_filtered);
     tree = cloud_filtered.make_kdtree()
     # tree = cloud_filtered.make_kdtree_flann()
-
 
     # std::vector<pcl::PointIndices> cluster_indices;
     # pcl::EuclideanClusterExtraction<pcl::PointXYZ> ec;
@@ -102,10 +100,10 @@ def main():
     # ec.setInputCloud (cloud_filtered);
     # ec.extract (cluster_indices);
     ec = cloud_filtered.make_EuclideanClusterExtraction()
-    ec.set_ClusterTolerance (0.02)
-    ec.set_MinClusterSize (100)
-    ec.set_MaxClusterSize (25000)
-    ec.set_SearchMethod (tree)
+    ec.set_ClusterTolerance(0.02)
+    ec.set_MinClusterSize(100)
+    ec.set_MaxClusterSize(25000)
+    ec.set_SearchMethod(tree)
     cluster_indices = ec.Extract()
 
     print('cluster_indices : ' + str(cluster_indices.count) + " count.")
@@ -120,14 +118,14 @@ def main():
     #     cloud_cluster->width = cloud_cluster->points.size ();
     #     cloud_cluster->height = 1;
     #     cloud_cluster->is_dense = true;
-    # 
+    #
     #     std::cout << "PointCloud representing the Cluster: " << cloud_cluster->points.size () << " data points." << std::endl;
     #     std::stringstream ss;
     #     ss << "cloud_cluster_" << j << ".pcd";
     #     writer.write<pcl::PointXYZ> (ss.str (), *cloud_cluster, false); //*
     #     j++;
     #   }
-    # 
+    #
 
     cloud_cluster = pcl.PointCloud()
 
@@ -137,7 +135,7 @@ def main():
         # cloudsize = len(indices)
         points = np.zeros((len(indices), 3), dtype=np.float32)
         # points = np.zeros((cloudsize, 3), dtype=np.float32)
-        
+
         # for indice in range(len(indices)):
         for i, indice in enumerate(indices):
             # print('dataNum = ' + str(i) + ', data point[x y z]: ' + str(cloud_filtered[indice][0]) + ' ' + str(cloud_filtered[indice][1]) + ' ' + str(cloud_filtered[indice][2]))
@@ -147,7 +145,7 @@ def main():
             points[i][2] = cloud_filtered[indice][2]
 
         cloud_cluster.from_array(points)
-        ss = "cloud_cluster_" + str(j) + ".pcd";
+        ss = "cloud_cluster_" + str(j) + ".pcd"
         pcl.save(cloud_cluster, ss)
 
 

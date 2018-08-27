@@ -23,6 +23,7 @@ install_requires = [
     'Cython>=0.25.2',
 ]
 
+
 def pkgconfig(flag):
     # Equivalent in Python 2.7 (but not 2.6):
     # subprocess.check_output(['pkg-config', flag] + pcl_libs).split()
@@ -33,6 +34,7 @@ def pkgconfig(flag):
     # handle those, anyway.
     # decode() is required in Python 3. TODO how do know the encoding?
     return stdout.decode().split()
+
 
 def pkgconfig_win(flag, cut):
     # Equivalent in Python 2.7 (but not 2.6):
@@ -144,11 +146,12 @@ if sys.platform == 'win32':
             break
     else:
         # Try to find PCL. XXX we should only do this when trying to build or install.
-        PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]    # in order of preference
+        # in order of preference
+        PCL_SUPPORTED = ["-1.8", "-1.7", "-1.6", ""]
 
         for pcl_version in PCL_SUPPORTED:
             if subprocess.call(['.\\pkg-config\\pkg-config.exe', 'pcl_common%s' % pcl_version]) == 0:
-            # if subprocess.call([pkgconfigPath, 'pcl_common%s' % pcl_version]) == 0:
+                # if subprocess.call([pkgconfigPath, 'pcl_common%s' % pcl_version]) == 0:
                 break
         else:
             print("%s: error: cannot find PCL, tried" %
@@ -187,8 +190,8 @@ if sys.platform == 'win32':
             # 1.8.1 use 2d required features
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
                         "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
-                    "recognition", "registration", "sample_consensus", "search",
-                    "segmentation", "stereo", "surface", "tracking", "visualization"]
+                        "recognition", "registration", "sample_consensus", "search",
+                        "segmentation", "stereo", "surface", "tracking", "visualization"]
         else:
             print('no building Python Version')
             sys.exit(1)
@@ -203,13 +206,14 @@ if sys.platform == 'win32':
             # 1.8.1 use 2d required features
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
                         "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
-                    "recognition", "registration", "sample_consensus", "search",
-                    "segmentation", "stereo", "surface", "tracking", "visualization"]
+                        "recognition", "registration", "sample_consensus", "search",
+                        "segmentation", "stereo", "surface", "tracking", "visualization"]
             pass
         else:
             if info.major == 2 and info.minor == 7:
                 import _msvccompiler
                 import distutils.msvc9compiler
+
                 def find_vcvarsall(version):
                     # use vc2017 set vcvarsall.bat path
                     # return "C:/Program Files (x86)/Microsoft Visual Studio/2017/Community/VC/Auxiliary/Build/vcvarsall.bat"
@@ -223,7 +227,7 @@ if sys.platform == 'win32':
                         print('no set msvc2017/2015 compiler')
                         return None
 
-                distutils.msvc9compiler.find_vcvarsall=find_vcvarsall
+                distutils.msvc9compiler.find_vcvarsall = find_vcvarsall
 
                 boost_version = '1_64'
                 vtk_version = '8.0'
@@ -231,8 +235,8 @@ if sys.platform == 'win32':
                 # 1.8.1 use 2d required features
                 pcl_libs = ["2d", "common", "features", "filters", "geometry",
                             "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
-                        "recognition", "registration", "sample_consensus", "search",
-                        "segmentation", "stereo", "surface", "tracking", "visualization"]
+                            "recognition", "registration", "sample_consensus", "search",
+                            "segmentation", "stereo", "surface", "tracking", "visualization"]
             else:
                 print('no building Python Version')
                 sys.exit(1)
@@ -271,17 +275,20 @@ if sys.platform == 'win32':
         # 3rdParty
         # inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\\include']
         # + add VTK
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root + '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\Eigen\\include', pcl_root +
+                    '\\3rdParty\\Boost\\include', pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
     elif pcl_version == '-1.7':
         # 1.7.2
         # boost 1.5.7
         # vtk 6.2
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-' + boost_version, pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-' +
+                    boost_version, pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
     elif pcl_version == '-1.8':
         # 1.8.0
         # boost 1.6.1
         # vtk 7.0
-        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-' + boost_version, pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
+        inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version, pcl_root + '\\3rdParty\\\Eigen\\eigen3', pcl_root + '\\3rdParty\\Boost\\include\\boost-' +
+                    boost_version, pcl_root + '\\3rdParty\\FLANN\\include', pcl_root + '\\3rdParty\\VTK\\include\\vtk-' + vtk_version]
     else:
         inc_dirs = []
 
@@ -300,16 +307,19 @@ if sys.platform == 'win32':
     # set library path
     if pcl_version == '-1.6':
         # 3rdParty(+Boost, +VTK)
-        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
+        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib',
+                    pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib\\vtk-5.8']
         # extern -> NG?
     elif pcl_version == '-1.7':
         # 1.7.2
         # 3rdParty(+Boost, +VTK)
-        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib']
+        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib',
+                    pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib']
     elif pcl_version == '-1.8':
         # 1.8.0
         # 3rdParty(+Boost, +VTK)
-        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib', pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib']
+        lib_dirs = [pcl_root + '\\lib', pcl_root + '\\3rdParty\\Boost\\lib',
+                    pcl_root + '\\3rdParty\\FLANN\\lib', pcl_root + '\\3rdParty\\VTK\lib']
     else:
         lib_dir = []
 
@@ -326,7 +336,7 @@ if sys.platform == 'win32':
     #         ext_args['define_macros'].append((macro, value))
     #     else:
     #         ext_args['extra_compile_args'].append(flag)
-    # 
+    #
     # for flag in pkgconfig_win('--libs-only-l', '-l'):
     #     if flag == "-lflann_cpp-gd":
     #         print("skipping -lflann_cpp-gd (see https://github.com/strawlab/python-pcl/issues/29")
@@ -337,7 +347,8 @@ if sys.platform == 'win32':
         # release
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s']
         # release + vtk
-        libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI', 'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
+        libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'vtkInfovis', 'MapReduceMPI',
+                       'vtkNetCDF', 'QVTK', 'vtkNetCDF_cxx', 'vtkRendering', 'vtkViews', 'vtkVolumeRendering', 'vtkWidgets', 'mpistubs', 'vtkalglib', 'vtkCharts', 'vtkexoIIc', 'vtkexpat', 'vtkCommon', 'vtkfreetype', 'vtkDICOMParser', 'vtkftgl', 'vtkFiltering', 'vtkhdf5', 'vtkjpeg', 'vtkGenericFiltering', 'vtklibxml2', 'vtkGeovis', 'vtkmetaio', 'vtkpng', 'vtkGraphics', 'vtkproj4', 'vtkHybrid', 'vtksqlite', 'vtksys', 'vtkIO', 'vtktiff', 'vtkImaging', 'vtkverdict', 'vtkzlib']
 
         # add boost
         # dynamic lib
@@ -346,7 +357,7 @@ if sys.platform == 'win32':
         # boost_chrono-vc100-mt-1_49 -> NG(1.47/1.49)
         # boost_date_time-vc100-mt-1_49.lib -> NG
         # libreleases = ['pcl_apps_release', 'pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'libboost_date_time-vc100-mt-1_49', 'libboost_filesystem-vc100-mt-1_49', 'libboost_graph_parallel-vc100-mt-1_49', 'libboost_iostreams-vc100-mt-1_49', 'libboost_locale-vc100-mt-1_49', 'libboost_math_c99-vc100-mt-1_49', 'libboost_math_c99f-vc100-mt-1_49', 'libboost_math_tr1-vc100-mt-1_49', 'libboost_math_tr1f-vc100-mt-1_49', 'libboost_mpi-vc100-mt-1_49', 'libboost_prg_exec_monitor-vc100-mt-1_49', 'libboost_program_options-vc100-mt-1_49', 'libboost_random-vc100-mt-1_49', 'libboost_regex-vc100-mt-1_49', 'libboost_serialization-vc100-mt-1_49', 'libboost_signals-vc100-mt-1_49', 'libboost_system-vc100-mt-1_49', 'libboost_test_exec_monitor-vc100-mt-1_49', 'libboost_thread-vc100-mt-1_49', 'libboost_timer-vc100-mt-1_49', 'libboost_unit_test_framework-vc100-mt-1_49', 'libboost_wave-vc100-mt-1_49', 'libboost_wserialization-vc100-mt-1_49']
-        # 'MapReduceMPI-gd.lib', 'vtkNetCDF-gd.lib', 'QVTK-gd.lib', 'vtkNetCDF_cxx-gd.lib', 'vtkRendering-gd.lib', 'vtkViews-gd.lib', 'vtkVolumeRendering-gd.lib', 'vtkWidgets-gd.lib', 'mpistubs-gd.lib', 'vtkalglib-gd.lib', 'vtkCharts-gd.lib', 'vtkexoIIc-gd.lib', 'vtkexpat-gd.lib', 'vtkCommon-gd.lib', 'vtkfreetype-gd.lib', 'vtkDICOMParser-gd.lib', 'vtkftgl-gd.lib', 'vtkFiltering-gd.lib', 'vtkhdf5-gd.lib', 'vtkjpeg-gd.lib', 'vtkGenericFiltering-gd.lib', 'vtklibxml2-gd.lib', 'vtkGeovis-gd.lib', 'vtkmetaio-gd.lib', 'vtkpng-gd.lib', 'vtkGraphics-gd.lib', 'vtkproj4-gd.lib', 'vtkHybrid-gd.lib', 'vtksqlite-gd.lib', 'vtksys-gd.lib', 'vtkIO-gd.lib', 'vtktiff-gd.lib', 'vtkImaging-gd.lib', 'vtkverdict-gd.lib', 'vtkzlib-gd.lib', 'vtkInfovis-gd.lib', 
+        # 'MapReduceMPI-gd.lib', 'vtkNetCDF-gd.lib', 'QVTK-gd.lib', 'vtkNetCDF_cxx-gd.lib', 'vtkRendering-gd.lib', 'vtkViews-gd.lib', 'vtkVolumeRendering-gd.lib', 'vtkWidgets-gd.lib', 'mpistubs-gd.lib', 'vtkalglib-gd.lib', 'vtkCharts-gd.lib', 'vtkexoIIc-gd.lib', 'vtkexpat-gd.lib', 'vtkCommon-gd.lib', 'vtkfreetype-gd.lib', 'vtkDICOMParser-gd.lib', 'vtkftgl-gd.lib', 'vtkFiltering-gd.lib', 'vtkhdf5-gd.lib', 'vtkjpeg-gd.lib', 'vtkGenericFiltering-gd.lib', 'vtklibxml2-gd.lib', 'vtkGeovis-gd.lib', 'vtkmetaio-gd.lib', 'vtkpng-gd.lib', 'vtkGraphics-gd.lib', 'vtkproj4-gd.lib', 'vtkHybrid-gd.lib', 'vtksqlite-gd.lib', 'vtksys-gd.lib', 'vtkIO-gd.lib', 'vtktiff-gd.lib', 'vtkImaging-gd.lib', 'vtkverdict-gd.lib', 'vtkzlib-gd.lib', 'vtkInfovis-gd.lib',
         # add boost
         # dynamic lib
         # libreleases = ['pcl_common_release', 'pcl_features_release', 'pcl_filters_release', 'pcl_io_release', 'pcl_io_ply_release', 'pcl_kdtree_release', 'pcl_keypoints_release', 'pcl_octree_release', 'pcl_registration_release', 'pcl_sample_consensus_release', 'pcl_segmentation_release', 'pcl_search_release', 'pcl_surface_release', 'pcl_tracking_release', 'pcl_visualization_release', 'flann', 'flann_s', 'boost_date_time-vc100-mt-1_47', 'boost_filesystem-vc100-mt-1_49', 'boost_graph-vc100-mt-1_49', 'boost_graph_parallel-vc100-mt-1_49', 'boost_iostreams-vc100-mt-1_49', 'boost_locale-vc100-mt-1_49', 'boost_math_c99-vc100-mt-1_49', 'boost_math_c99f-vc100-mt-1_49', 'boost_math_tr1-vc100-mt-1_49', 'boost_math_tr1f-vc100-mt-1_49', 'boost_mpi-vc100-mt-1_49', 'boost_prg_exec_monitor-vc100-mt-1_49', 'boost_program_options-vc100-mt-1_49', 'boost_random-vc100-mt-1_49', 'boost_regex-vc100-mt-1_49', 'boost_serialization-vc100-mt-1_49', 'boost_signals-vc100-mt-1_49', 'boost_system-vc100-mt-1_49', 'boost_thread-vc100-mt-1_49', 'boost_timer-vc100-mt-1_49', 'boost_unit_test_framework-vc100-mt-1_49', 'boost_wave-vc100-mt-1_49', 'boost_wserialization-vc100-mt-1_49']
@@ -372,7 +383,7 @@ if sys.platform == 'win32':
     for librelease in libreleases:
         ext_args['libraries'].append(librelease)
 
-    # Note : 
+    # Note :
     # vtk Version setting
 
     # use vtk need library(Windows base library)
@@ -385,7 +396,7 @@ if sys.platform == 'win32':
     # http://www.pcl-users.org/error-in-use-PCLVisualizer-td3719235.html
     # Download MSSDKs
     # http://msdn.microsoft.com/en-us/windows/bb980924.aspx
-    # 
+    #
     # http://stackoverflow.com/questions/1236670/how-to-make-opengl-apps-in-64-bits-windows
     # C:\Program Files (x86)\Microsoft SDKs\Windows\7.0\Lib\x64\OpenGL32.lib
     # C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Lib\x64\OpenGL32.lib
@@ -397,16 +408,20 @@ if sys.platform == 'win32':
         if is_64bits == True:
             # win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\x64']
             # AppVeyor
-            win_kit_libdirs = ['C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\x64']
+            win_kit_libdirs = [
+                'C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\x64']
         else:
             # win_opengl_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v7.0A\\Lib\\win32']
             # AppVeyor
-            win_kit_libdirs = ['C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\win32']
+            win_kit_libdirs = [
+                'C:\\Program Files\\Microsoft SDKs\\Windows\\v7.1\\Lib\\win32']
     elif pcl_version == '-1.7':
         if is_64bits == True:
-            win_kit_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0A\\Lib\\x64']
+            win_kit_libdirs = [
+                'C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0A\\Lib\\x64']
         else:
-            win_kit_libdirs = ['C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0A\\Lib\\win32']
+            win_kit_libdirs = [
+                'C:\\Program Files (x86)\\Microsoft SDKs\\Windows\\v8.0A\\Lib\\win32']
     elif pcl_version == '-1.8':
         if is_64bits == True:
             # already set path
@@ -476,7 +491,7 @@ if sys.platform == 'win32':
     # http://www.pcl-users.org/FW-Link-time-errors-in-RangeImage-with-clr-td3581422.html
     # ext_args['extra_compile_args'].append('/clr:nostdlib')
     # OpenNI2?(+Python3)
-    # https://ci.appveyor.com/project/KazuakiM/vim-ms-translator/branch/master 
+    # https://ci.appveyor.com/project/KazuakiM/vim-ms-translator/branch/master
     # ext_args['extra_compile_args'].append('/DDYNAMIC_MSVCRT_DLL=\"msvcr100.dll\"')
     # ext_args['extra_compile_args'].append('/DDYNAMIC_MSVCRT_DLL=\"msvcr100.dll\"')
 
@@ -530,15 +545,16 @@ if sys.platform == 'win32':
         sys.exit(1)
 
     # copy the pcl dll to local subfolder so that it can be added to the package through the data_files option
-    listDlls=[]
+    listDlls = []
     if not os.path.isdir('./dlls'):
         os.mkdir('./dlls')
     for dll in libreleases:
-        pathDll=find_library(dll)
+        pathDll = find_library(dll)
         if not pathDll is None:
-            shutil.copy2(pathDll, './dlls' )
-            listDlls.append(os.path.join('.\\dlls',dll+'.dll'))
-    data_files=[('Lib/site-packages/pcl',listDlls)]# the path is relative to the python root folder 
+            shutil.copy2(pathDll, './dlls')
+            listDlls.append(os.path.join('.\\dlls', dll+'.dll'))
+    # the path is relative to the python root folder
+    data_files = [('Lib/site-packages/pcl', listDlls)]
 
 else:
     # Not 'Windows'
@@ -667,9 +683,8 @@ else:
         print('no pcl install or pkg-config missed.')
         sys.exit(1)
 
-    listDlls=[]
-    data_files=None
-
+    listDlls = []
+    data_files = None
 
 
 setup(name='python-pcl',
@@ -683,17 +698,17 @@ setup(name='python-pcl',
       license='BSD',
       packages=[
           "pcl",
-                # "pcl.pcl_visualization",
-                ],
+          # "pcl.pcl_visualization",
+      ],
       zip_safe=False,
       setup_requires=setup_requires,
       install_requires=install_requires,
       classifiers=[
           'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        ],
+          'Programming Language :: Python :: 3.6',
+      ],
       tests_require=['mock', 'nose'],
       ext_modules=module,
       cmdclass={'build_ext': build_ext},
       data_files=data_files
-)
+      )

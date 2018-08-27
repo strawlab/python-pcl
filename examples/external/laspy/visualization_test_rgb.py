@@ -11,7 +11,6 @@ def main():
     # f = file.File('28XXX00020001-1.las', mode='r')
     # f = file.File('simple1_4.las', mode='r')
 
-
     # check las file version
     # RGB contains
     if f._header.data_format_id in (2, 3, 5):
@@ -29,7 +28,8 @@ def main():
         red = red.astype(np.uint32)
         green = green.astype(np.uint32)
         blue = blue.astype(np.uint32)
-        rgb = np.left_shift(red, 16) + np.left_shift(green, 8) + np.left_shift(blue, 0)
+        rgb = np.left_shift(red, 16) + np.left_shift(green,
+                                                     8) + np.left_shift(blue, 0)
         ptcloud = np.vstack((f.x, f.y, f.z, rgb)).transpose()
         cloud = pcl.PointCloud_PointXYZRGBA()
         # set raw points
@@ -40,7 +40,7 @@ def main():
         # print(ptcloud_centred)
         cloud.from_array(np.array(ptcloud_centred, dtype=np.float32))
 
-        ## Visualization
+        # Visualization
         visual = pcl.pcl_visualization.CloudViewing()
         visual.ShowColorACloud(cloud, b'cloud')
 
@@ -56,14 +56,13 @@ def main():
         # print(ptcloud_centred)
         cloud.from_array(np.array(ptcloud_centred, dtype=np.float32))
 
-        ## Visualization
+        # Visualization
         visual = pcl.pcl_visualization.CloudViewing()
         visual.ShowMonochromeCloud(cloud, b'cloud')
 
-
     v = True
     while v:
-        v=not(visual.WasStopped())
+        v = not(visual.WasStopped())
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ import pcl
 def main():
     # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ> ());
     # pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ> ());
-    # 
+    #
     # pcl::PCDReader reader;
     # reader.read("pcdfilename", *cloud);
     cloud = pcl.load('./examples/pcldata/tutorials/table_scene_lms400.pcd')

@@ -8,12 +8,12 @@ import random
 
 def main():
     #   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
-    # 
+    #
     #   // Fill in the cloud data
     #   cloud->width  = 15;
     #   cloud->height = 1;
     #   cloud->points.resize (cloud->width * cloud->height);
-    # 
+    #
     #   // Generate the data
     #   for (size_t i = 0; i < cloud->points.size (); ++i)
     #   {
@@ -21,7 +21,7 @@ def main():
     #     cloud->points[i].y = 1024 * rand () / (RAND_MAX + 1.0f);
     #     cloud->points[i].z = 1.0;
     #   }
-    # 
+    #
     #   // Set a few outliers
     #   cloud->points[0].z = 2.0;
     #   cloud->points[3].z = -2.0;
@@ -32,13 +32,13 @@ def main():
     points = np.zeros((15, 3), dtype=np.float32)
     RAND_MAX = 1024.0
     for i in range(0, 15):
-        points[i][0] = 1024 * random.random () / (RAND_MAX + 1.0)
-        points[i][1] = 1024 * random.random () / (RAND_MAX + 1.0)
+        points[i][0] = 1024 * random.random() / (RAND_MAX + 1.0)
+        points[i][1] = 1024 * random.random() / (RAND_MAX + 1.0)
         points[i][2] = 1.0
 
-    points[0][2] =  2.0
+    points[0][2] = 2.0
     points[3][2] = -2.0
-    points[6][2] =  4.0
+    points[6][2] = 4.0
 
     cloud.from_array(points)
 
@@ -47,10 +47,11 @@ def main():
     #     std::cerr << "    " << cloud->points[i].x << " "
     #                         << cloud->points[i].y << " "
     #                         << cloud->points[i].z << std::endl;
-    # 
-    print ('Point cloud data: ' + str(cloud.size) + ' points')
+    #
+    print('Point cloud data: ' + str(cloud.size) + ' points')
     for i in range(0, cloud.size):
-        print ('x: '  + str(cloud[i][0]) + ', y : ' + str(cloud[i][1])  + ', z : ' + str(cloud[i][2]))
+        print('x: ' + str(cloud[i][0]) + ', y : ' +
+              str(cloud[i][1]) + ', z : ' + str(cloud[i][2]))
 
     #   pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
     #   pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
@@ -62,7 +63,7 @@ def main():
     #   seg.setModelType (pcl::SACMODEL_PLANE);
     #   seg.setMethodType (pcl::SAC_RANSAC);
     #   seg.setDistanceThreshold (0.01);
-    # 
+    #
     #   seg.setInputCloud (cloud);
     #   seg.segment (*inliers, *coefficients);
     ###
@@ -83,22 +84,22 @@ def main():
     seg.set_max_iterations(100)
     indices, coefficients = seg.segment()
 
-
     #   if (inliers->indices.size () == 0)
     #   {
     #     PCL_ERROR ("Could not estimate a planar model for the given dataset.");
     #     return (-1);
     #   }
-    #   std::cerr << "Model coefficients: " << coefficients->values[0] << " " 
+    #   std::cerr << "Model coefficients: " << coefficients->values[0] << " "
     #                                       << coefficients->values[1] << " "
-    #                                       << coefficients->values[2] << " " 
+    #                                       << coefficients->values[2] << " "
     #                                       << coefficients->values[3] << std::endl;
     ###
     if len(indices) == 0:
         print('Could not estimate a planar model for the given dataset.')
         exit(0)
 
-    print('Model coefficients: ' + str(coefficients[0]) + ' ' + str(coefficients[1]) + ' ' + str(coefficients[2]) + ' ' + str(coefficients[3]))
+    print('Model coefficients: ' + str(coefficients[0]) + ' ' + str(
+        coefficients[1]) + ' ' + str(coefficients[2]) + ' ' + str(coefficients[3]))
 
     #   std::cerr << "Model inliers: " << inliers->indices.size () << std::endl;
     #   for (size_t i = 0; i < inliers->indices.size (); ++i)
@@ -108,7 +109,8 @@ def main():
     ###
     print('Model inliers: ' + str(len(indices)))
     for i in range(0, len(indices)):
-        print (str(indices[i]) + ', x: '  + str(cloud[indices[i]][0]) + ', y : ' + str(cloud[indices[i]][1])  + ', z : ' + str(cloud[indices[i]][2]))
+        print(str(indices[i]) + ', x: ' + str(cloud[indices[i]][0]) + ', y : ' +
+              str(cloud[indices[i]][1]) + ', z : ' + str(cloud[indices[i]][2]))
 
 
 if __name__ == "__main__":

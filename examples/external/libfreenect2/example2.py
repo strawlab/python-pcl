@@ -61,8 +61,8 @@ def main():
 
     v = True
     while v:
-        v=not(viewer.WasStopped())
-        viewer.spinOnce();
+        v = not(viewer.WasStopped())
+        viewer.spinOnce()
 
         frames = listener.waitForNewFrame()
 
@@ -102,12 +102,10 @@ def main():
 
         listener.release(frames)
 
-
     device.stop()
     device.close()
 
     sys.exit(0)
-
 
     def estimateNormal(cloud):
         ne = pcl.IntegralImageNormalEstimation()

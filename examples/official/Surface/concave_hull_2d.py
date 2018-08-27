@@ -8,8 +8,8 @@ import random
 
 
 def main():
-    #  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>), 
-    #                                      cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>), 
+    #  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>),
+    #                                      cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>),
     #                                      cloud_projected (new pcl::PointCloud<pcl::PointXYZ>);
     # cloud = pcl.PointCloud()
     # cloud_filtered = pcl.PointCloud()
@@ -17,7 +17,8 @@ def main():
 
     #  pcl::PCDReader reader;
     #  reader.read ("table_scene_mug_stereo_textured.pcd", *cloud);
-    cloud = pcl.load("./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd")
+    cloud = pcl.load(
+        "./examples/pcldata/tutorials/table_scene_mug_stereo_textured.pcd")
 
     # // Build a filter to remove spurious NaNs
     # pcl::PassThrough<pcl::PointXYZ> pass;
@@ -28,10 +29,11 @@ def main():
     # std::cerr << "PointCloud after filtering has: "
     #           << cloud_filtered->points.size () << " data points." << std::endl;
     passthrough = cloud.make_passthrough_filter()
-    passthrough.set_filter_field_name ("z")
-    passthrough.set_filter_limits (0.0, 1.1)
-    cloud_filtered = passthrough.filter ()
-    print ('PointCloud after filtering has: ' + str(cloud_filtered.size) + ' data points.')
+    passthrough.set_filter_field_name("z")
+    passthrough.set_filter_limits(0.0, 1.1)
+    cloud_filtered = passthrough.filter()
+    print('PointCloud after filtering has: ' +
+          str(cloud_filtered.size) + ' data points.')
 
     # pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients);
     # pcl::PointIndices::Ptr inliers (new pcl::PointIndices);
@@ -54,7 +56,8 @@ def main():
     seg.set_distance_threshold(0.01)
     indices, model = seg.segment()
 
-    print ('PointCloud after segmentation has: ' + str(indices.count) + ' inliers.')
+    print('PointCloud after segmentation has: ' +
+          str(indices.count) + ' inliers.')
 
     #   // Project the model inliers
     #   pcl::ProjectInliers<pcl::PointXYZ> proj;
@@ -66,12 +69,13 @@ def main():
     #   std::cerr << "PointCloud after projection has: "
     #             << cloud_projected->points.size () << " data points." << std::endl;
     proj = cloud_filtered.make_ProjectInliers()
-    proj.set_model_type (pcl.SACMODEL_PLANE);
+    proj.set_model_type(pcl.SACMODEL_PLANE)
     #   proj.setIndices (inliers);
     #   proj.setModelCoefficients (coefficients)
-    cloud_projected = proj.filter ()
+    cloud_projected = proj.filter()
 
-    print ('PointCloud after projection has: ' + str(cloud_projected.size) + ' data points.')
+    print('PointCloud after projection has: ' +
+          str(cloud_projected.size) + ' data points.')
 
     #   // Create a Concave Hull representation of the projected inliers
     #   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_hull (new pcl::PointCloud<pcl::PointXYZ>);
@@ -83,9 +87,9 @@ def main():
     #             << " data points." << std::endl;
     # cloud_projected = pcl.PointCloud()
     chull = cloud_projected.make_ConcaveHull()
-    chull.set_Alpha (0.1)
-    cloud_hull = chull.reconstruct ()
-    print ('Concave hull has: ' + str(cloud_hull.size) + ' data points.')
+    chull.set_Alpha(0.1)
+    cloud_hull = chull.reconstruct()
+    print('Concave hull has: ' + str(cloud_hull.size) + ' data points.')
 
     #   pcl::PCDWriter writer;
     #   writer.write ("table_scene_mug_stereo_textured_hull.pcd", *cloud_hull, false);

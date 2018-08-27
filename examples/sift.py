@@ -9,16 +9,16 @@ import pcl.pcl_visualization
 # {
 #     pcl::NormalEstimation<pcl::PointXYZ, pcl::PointNormal> ne;
 #     ne.setInputCloud (cloud);//法線の計算を行いたい点群を指定する
-# 
+#
 #     pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());//KDTREEを作る
 #     ne.setSearchMethod (tree);//検索方法にKDTREEを指定する
-# 
+#
 #     pcl::PointCloud<pcl::PointNormal>::Ptr cloud_normals (new pcl::PointCloud<pcl::PointNormal>);//法線情報を入れる変数
-# 
+#
 #     ne.setRadiusSearch (0.5);//検索する半径を指定する
-# 
+#
 #     ne.compute (*cloud_normals);//法線情報の出力先を指定する
-# 
+#
 #     return cloud_normals;
 # }
 def Surface_normals(cloud):
@@ -36,7 +36,7 @@ def Surface_normals(cloud):
 ###
 
 # pcl::PointCloud<pcl::PointWithScale> Extract_SIFT(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, pcl::PointCloud<pcl::PointNormal>::Ptr cloud_normals)
-# {    
+# {
 #     // SIFT特徴量計算のためのパラメータ
 #     const float min_scale = 0.01f;
 #     const int n_octaves = 3;
@@ -51,15 +51,17 @@ def Surface_normals(cloud):
 #     sift.setInputCloud(cloud_normals);
 #     sift.compute(result);
 #     std::cout << "No of SIFT points in the result are " << result.points.size () << std::endl;
-# 
+#
 #     return result;
 # }
+
+
 def Extract_SIFT(cloud, cloud_normals):
     min_scale = 0.01
     n_octaves = 3
     n_scales_per_octave = 4
     min_contrast = 0.001
-    
+
     sift = cloud_makeSIFTKeypoint()
     sift.set_SearchMethod(tree)
     sift.set_Scales(min_scale, n_octaves, n_scales_per_octave)
@@ -108,7 +110,7 @@ def main():
 
     v = True
     while v:
-        v=not(viewer.WasStopped())
+        v = not(viewer.WasStopped())
         viewer.SpinOnce()
         # pcl_sleep (0.01)
         # pass
