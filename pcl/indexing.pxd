@@ -7,7 +7,7 @@ cimport pcl_defs as cpp
 # Types
 ###############################################################################
 
-cdef extern from "indexing.hpp" nogil:
+cdef extern from "indexing.hpp":
 # cdef extern from "indexing.hpp":
     # Use these instead of operator[] or at.
     PointCloudType *getptr [PointCloudType](cpp.PointCloud[PointCloudType] *, size_t)
@@ -15,7 +15,7 @@ cdef extern from "indexing.hpp" nogil:
     PointCloudType *getptr_at2 [PointCloudType](cpp.PointCloud[PointCloudType] *, int, int) except +
 
 
-#cdef extern from "indexing_assign.h" nogil:
+#cdef extern from "indexing_assign.h":
 #     #void sp_assign(shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &t, cpp.PointCloud[cpp.PointXYZ] *value)
 #     #void sp_assign[T](shared_ptr[T] &p, T *value)
 

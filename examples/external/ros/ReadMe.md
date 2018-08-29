@@ -1,8 +1,5 @@
 
-
-
 ## Table of Contents
-  - [License](#license)
   - [Dependencies](#dependencies)
     - [ROS](#ros)
     - [ros-utils](#ros-utils)

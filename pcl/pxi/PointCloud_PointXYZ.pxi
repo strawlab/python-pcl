@@ -5,6 +5,7 @@ cimport numpy as cnp
 
 cnp.import_array()
 
+
 # parts
 cimport pcl_common as pcl_cmn
 cimport pcl_features as pcl_ftr
@@ -229,7 +230,7 @@ cdef class PointCloud:
         """
         Return a point (3-tuple) at the given row/column
         """
-        cdef cpp.PointXYZ *p = idx.getptr_at2 [cpp.PointXYZ](self.thisptr(), row, col)
+        cdef cpp.PointXYZ *p = idx.getptr_at2(self.thisptr(), row, col)
         return p.x, p.y, p.z
 
     def __getitem__(self, cnp.npy_intp nmidx):
@@ -247,24 +248,18 @@ cdef class PointCloud:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            error = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        error = pcl_io.loadPCDFile [cpp.PointXYZ] (string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
         return ok
 
     # no use pcl1.6
     def _from_obj_file(self, const char *s):
         cdef int ok = -1
-        # with nogil:
+        # 
         #     # NG
         #     # ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
         #     ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
@@ -280,22 +275,22 @@ cdef class PointCloud:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePCDFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            # OK
-            error = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
-            # pcl_io.PointCloud[cpp.PointXYZ] *p = self.thisptr()
-            # error = pcl_io.savePCDFile [cpp.PointXYZ](s, p, binary)
+        
+        # NG
+        # error = pcl_io.savePCDFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+        # OK
+        error = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        # pcl_io.PointCloud[cpp.PointXYZ] *p = self.thisptr()
+        # error = pcl_io.savePCDFile [cpp.PointXYZ](s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePLYFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            error = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        
+        # NG
+        # error = pcl_io.savePLYFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+        error = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
         return error
 
     # def copyPointCloud(self, vector[int] indices):

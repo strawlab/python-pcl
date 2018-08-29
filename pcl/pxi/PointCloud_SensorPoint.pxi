@@ -143,7 +143,7 @@ cdef class PointCloud2:
             cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
             return np.array([o.w(), o.x(), o.y(), o.z()])
 
-    # cdef inline PointCloud2[PointXYZ] *thisptr(self) nogil:
+    # cdef inline PointCloud2[PointXYZ] *thisptr(self):
     #     # Shortcut to get raw pointer to underlying PointCloud2
     #     return self.thisptr_shared.get()
 
@@ -233,18 +233,12 @@ cdef class PointCloud2:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile(string(s), <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()))
-            error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
+        error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile(string(s), <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -257,22 +251,15 @@ cdef class PointCloud2:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePCDFile(s, <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            # OK
-            error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
-            # pcl_io.PointCloud2[cpp.PointXYZ] *p = self.thisptr()
-            # error = pcl_io.savePCDFile(s, p, binary)
+        
+        error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePLYFile(s, <cpp.PointCloud2[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
+
+        error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 
     def make_segmenter(self):

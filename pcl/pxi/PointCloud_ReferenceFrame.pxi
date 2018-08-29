@@ -157,7 +157,7 @@ cdef class PointCloud_ReferenceFrame:
                     new_orient[2],
                     new_orient[3])
 
-    # cdef inline PointCloud[ReferenceFrame] *thisptr(self) nogil:
+    # cdef inline PointCloud[ReferenceFrame] *thisptr(self):
     #     # Shortcut to get raw pointer to underlying PointCloud
     #     return self.thisptr_shared.get()
 
@@ -247,18 +247,14 @@ cdef class PointCloud_ReferenceFrame:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile(string(s), <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()))
-            error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
+
+        error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile(string(s), <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()))
-            ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
+
+        ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -271,21 +267,13 @@ cdef class PointCloud_ReferenceFrame:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePCDFile(s, <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()), binary)
-            # OK
-            error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
-            # pcl_io.PointCloud[cpp.ReferenceFrame] *p = self.thisptr()
-            # error = pcl_io.savePCDFile(s, p, binary)
+
+        error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePLYFile(s, <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()), binary)
-            error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
+        error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 

@@ -22,7 +22,7 @@ cdef class PCLVisualizering:
     def __cinit__(self):
         sp_assign(self.thisptr_shared, new pcl_vis.PCLVisualizer('visual', True))
 
-    cdef inline pcl_vis.PCLVisualizer *thisptr(self) nogil:
+    cdef inline pcl_vis.PCLVisualizer *thisptr(self):
         # Shortcut to get raw pointer to underlying PCLVisualizer
         return self.thisptr_shared.get()
 

@@ -11,7 +11,7 @@ cimport pcl_grabber as cpp
 #     cdef Py_ssize_t _shape[2]
 #     cdef Py_ssize_t _view_count
 #     
-#     cdef inline cpp.PointCloud[cpp.PointXYZ] *thisptr(self) nogil:
+#     cdef inline cpp.PointCloud[cpp.PointXYZ] *thisptr(self):
 #         # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
 #         return self.thisptr_shared.get()
 # 
@@ -24,7 +24,7 @@ cimport pcl_grabber as cpp
 #     cdef Py_ssize_t _shape[2]
 #     cdef Py_ssize_t _view_count
 #     
-#     cdef inline cpp.PointCloud[cpp.PointXYZI] *thisptr(self) nogil:
+#     cdef inline cpp.PointCloud[cpp.PointXYZI] *thisptr(self):
 #         # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
 #         return self.thisptr_shared.get()
 # 
@@ -37,7 +37,7 @@ cimport pcl_grabber as cpp
 #     cdef Py_ssize_t _shape[2]
 #     cdef Py_ssize_t _view_count
 #     
-#     cdef inline cpp.PointCloud[cpp.PointXYZRGB] *thisptr(self) nogil:
+#     cdef inline cpp.PointCloud[cpp.PointXYZRGB] *thisptr(self):
 #         # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGB>.
 #         return self.thisptr_shared.get()
 # 
@@ -50,7 +50,7 @@ cimport pcl_grabber as cpp
 #     cdef Py_ssize_t _shape[2]
 #     cdef Py_ssize_t _view_count
 #     
-#     cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr(self) nogil:
+#     cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr(self):
 #         # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGBA>.
 #         return self.thisptr_shared.get()
 # 

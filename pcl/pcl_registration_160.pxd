@@ -18,7 +18,7 @@ from eigen cimport Matrix4f
 # registration.h
 # template <typename PointSource, typename PointTarget>
 # class Registration : public PCLBase<PointSource>
-cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/registration.h" namespace "pcl":
     cdef cppclass Registration[Source, Target](cpp.PCLBase[Source]):
         Registration()
         # override?
@@ -198,7 +198,7 @@ cdef extern from "pcl/registration/registration.h" namespace "pcl" nogil:
 # warp_point_rigid.h
 # template <class PointSourceT, class PointTargetT>
 # class WarpPointRigid
-cdef extern from "pcl/registration/warp_point_rigid.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/warp_point_rigid.h" namespace "pcl":
     cdef cppclass WarpPointRigid[Source, Target]:
         WarpPointRigid (int nr_dim)
         # public:
@@ -212,7 +212,7 @@ cdef extern from "pcl/registration/warp_point_rigid.h" namespace "pcl" nogil:
 
 # correspondence_rejection.h
 # class CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejector:
         CorrespondenceRejector()
         # /** \brief Provide a pointer to the vector of the input correspondences.
@@ -262,7 +262,7 @@ cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::r
 #   * \ingroup registration
 #   */
 # class DataContainerInterface
-# cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
+# cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration":
 #     cdef cppclass DataContainerInterface:
 #         DataContainerInterface()
 #         public:
@@ -278,7 +278,7 @@ cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::r
 # #   */
 # # template <typename PointT, typename NormalT=pcl::PointNormal>
 # # class DataContainer : public DataContainerInterface
-# cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration" nogil:
+# cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::registration":
 #     cdef cppclass DataContainer[PointT, NormalT](DataContainerInterface):
 #         DataContainer()
 #         # typedef typename pcl::PointCloud<PointT>::ConstPtr PointCloudConstPtr;
@@ -342,7 +342,7 @@ cdef extern from "pcl/registration/correspondence_rejection.h" namespace "pcl::r
 # correspondence_estimation.h
 # template <typename PointSource, typename PointTarget>
 # class CorrespondenceEstimation : public PCLBase<PointSource>
-cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceEstimation[Source, Target](cpp.PCLBase[Source]):
         CorrespondenceEstimation()
         # public:
@@ -393,7 +393,7 @@ cdef extern from "pcl/registration/correspondence_estimation.h" namespace "pcl::
 # icp.h
 # template <typename PointSource, typename PointTarget>
 # class IterativeClosestPoint : public Registration<PointSource, PointTarget>
-cdef extern from "pcl/registration/icp.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/icp.h" namespace "pcl":
     cdef cppclass IterativeClosestPoint[Source, Target](Registration[Source, Target]):
         IterativeClosestPoint() except +
         # ctypedef typename Registration<PointSource, PointTarget>::PointCloudSource PointCloudSource;
@@ -415,7 +415,7 @@ ctypedef shared_ptr[IterativeClosestPoint[cpp.PointXYZRGBA, cpp.PointXYZRGBA]] I
 ###
 
 # gicp.h
-cdef extern from "pcl/registration/gicp.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/gicp.h" namespace "pcl":
     cdef cppclass GeneralizedIterativeClosestPoint[Source, Target](Registration[Source, Target]):
         GeneralizedIterativeClosestPoint() except +
         # typedef pcl::PointCloud<PointSource> PointCloudSource;
@@ -526,7 +526,7 @@ ctypedef shared_ptr[GeneralizedIterativeClosestPoint[cpp.PointXYZRGBA, cpp.Point
 # template <typename PointSource, typename PointTarget>
 # class IterativeClosestPointNonLinear : public IterativeClosestPoint<PointSource, PointTarget>
 #   cdef cppclass IterativeClosestPointNonLinear[Source, Target](Registration[Source, Target]):
-cdef extern from "pcl/registration/icp_nl.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/icp_nl.h" namespace "pcl":
     cdef cppclass IterativeClosestPointNonLinear[Source, Target](IterativeClosestPoint[Source, Target]):
         IterativeClosestPointNonLinear() except +
 
@@ -546,7 +546,7 @@ ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXY
 # PolynomialSolver is Eigen llibrary
 # Eigen\include\unsupported\Eigen\src\Polynomials\PolynomialSolver.h(29,12)  [SJIS]:  *  \class PolynomialSolverBase.
 # class PolynomialSolver<_Scalar,2> : public PolynomialSolverBase<_Scalar,2>
-# cdef extern from "pcl/registration/bfgs.h" namespace "Eigen" nogil:
+# cdef extern from "pcl/registration/bfgs.h" namespace "Eigen":
 #     cdef cppclass PolynomialSolver[_Scalar, 2](PolynomialSolverBase[_Scalar, 2]):
 #         PolynomialSolver (int nr_dim)
         # public:
@@ -565,7 +565,7 @@ ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXY
 # bfgs.h
 # template<typename _Scalar, int NX=Eigen::Dynamic>
 # struct BFGSDummyFunctor
-# cdef extern from "pcl/registration/bfgs.h" nogil:
+# cdef extern from "pcl/registration/bfgs.h":
     # cdef struct BFGSDummyFunctor[_Scalar, NX]:
         # BFGSDummyFunctor ()
         # BFGSDummyFunctor(int inputs)
@@ -609,7 +609,7 @@ ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXY
 #  */
 # template<typename FunctorType>
 # class BFGS
-# cdef extern from "pcl/registration/bfgs.h" nogil:
+# cdef extern from "pcl/registration/bfgs.h":
 #     cdef cppclass BFGS[FunctorType]:
 #         # BFGS (FunctorType &_functor) 
 # public:
@@ -703,7 +703,7 @@ ctypedef shared_ptr[IterativeClosestPointNonLinear[cpp.PointXYZRGBA, cpp.PointXY
 # correspondence_estimation_normal_shooting.h
 # template <typename PointSource, typename PointTarget, typename NormalT>
 # class CorrespondenceEstimationNormalShooting : public CorrespondenceEstimation <PointSource, PointTarget>
-cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceEstimationNormalShooting[Source, Target, NormalT](CorrespondenceEstimation[Source, Target]):
         CorrespondenceEstimationNormalShooting()
         # 
@@ -737,7 +737,7 @@ cdef extern from "pcl/registration/correspondence_estimation_normal_shooting.h" 
 
 # correspondence_rejection_distance.h
 # class CorrespondenceRejectorDistance: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorDistance(CorrespondenceRejector):
         CorrespondenceRejectorDistance()
         # using CorrespondenceRejector::input_correspondences_;
@@ -777,7 +777,7 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 
 # correspondence_rejection_features.h
 # class CorrespondenceRejectorFeatures: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorFeatures(CorrespondenceRejector):
         CorrespondenceRejectorFeatures()
         # using CorrespondenceRejector::input_correspondences_;
@@ -835,7 +835,7 @@ cdef extern from "pcl/registration/correspondence_rejection_distance.h" namespac
 
 # correspondence_rejection_median_distance.h
 # class CorrespondenceRejectorMedianDistance: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_median_distance.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_median_distance.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorMedianDistance(CorrespondenceRejector):
         CorrespondenceRejectorMedianDistance()
 #       using CorrespondenceRejector::input_correspondences_;
@@ -880,7 +880,7 @@ cdef extern from "pcl/registration/correspondence_rejection_median_distance.h" n
 
 # correspondence_rejection_one_to_one.h
 # class CorrespondenceRejectorOneToOne: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_one_to_one.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_one_to_one.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorOneToOne(CorrespondenceRejector):
         CorrespondenceRejectorOneToOne()
 #       using CorrespondenceRejector::input_correspondences_;
@@ -912,7 +912,7 @@ cdef extern from "pcl/registration/correspondence_rejection_one_to_one.h" namesp
 # correspondence_rejection_sample_consensus.h
 # template <typename PointT>
 # class CorrespondenceRejectorSampleConsensus: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_sample_consensus.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_sample_consensus.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorSampleConsensus[T](CorrespondenceRejector):
         CorrespondenceRejectorSampleConsensus()
 #       using CorrespondenceRejector::input_correspondences_;
@@ -977,7 +977,7 @@ cdef extern from "pcl/registration/correspondence_rejection_sample_consensus.h" 
 
 # correspondence_rejection_surface_normal.h
 # class CorrespondenceRejectorSurfaceNormal : public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_surface_normal.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_surface_normal.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorSurfaceNormal(CorrespondenceRejector):
         CorrespondenceRejectorSurfaceNormal()
 #       using CorrespondenceRejector::input_correspondences_;
@@ -1044,7 +1044,7 @@ cdef extern from "pcl/registration/correspondence_rejection_surface_normal.h" na
 
 # correspondence_rejection_trimmed.h
 #     class CorrespondenceRejectorTrimmed: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_trimmed.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_trimmed.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorTrimmed(CorrespondenceRejector):
         CorrespondenceRejectorTrimmed()
 #       using CorrespondenceRejector::input_correspondences_;
@@ -1098,7 +1098,7 @@ cdef extern from "pcl/registration/correspondence_rejection_trimmed.h" namespace
 
 # correspondence_rejection_var_trimmed.h
 #     class CorrespondenceRejectorVarTrimmed: public CorrespondenceRejector
-cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" namespace "pcl::registration":
     cdef cppclass CorrespondenceRejectorVarTrimmed(CorrespondenceRejector):
         CorrespondenceRejectorVarTrimmed()
 #       using CorrespondenceRejector::input_correspondences_;
@@ -1408,7 +1408,7 @@ cdef extern from "pcl/registration/correspondence_rejection_var_trimmed.h" names
 # elch.h
 # template <typename PointT>
 # class ELCH : public PCLBase<PointT>
-cdef extern from "pcl/registration/elch.h" namespace "pcl::registration" nogil:
+cdef extern from "pcl/registration/elch.h" namespace "pcl::registration":
     cdef cppclass ELCH[T](cpp.PCLBase[T]):
         ELCH()
 #       public:
@@ -1537,7 +1537,7 @@ cdef extern from "pcl/registration/elch.h" namespace "pcl::registration" nogil:
 # ia_ransac.h
 # template <typename PointSource, typename PointTarget, typename FeatureT>
 # class SampleConsensusInitialAlignment : public Registration<PointSource, PointTarget>
-cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl":
     cdef cppclass SampleConsensusInitialAlignment[Source, Target, Feature](Registration[Source, Target]):
         SampleConsensusInitialAlignment() except +
         # public:
@@ -1710,7 +1710,7 @@ cdef extern from "pcl/registration/ia_ransac.h" namespace "pcl" nogil:
 # ppf_registration.h
 # template <typename PointSource, typename PointTarget>
 # class PPFRegistration : public Registration<PointSource, PointTarget>
-cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl":
     cdef cppclass PPFRegistration[Source, Target](Registration[Source, Target]):
         PPFRegistration() except +
         # public:
@@ -1783,7 +1783,7 @@ cdef extern from "pcl/registration/ppf_registration.h" namespace "pcl" nogil:
 # template <typename PointFeature>
 # class PyramidFeatureHistogram : public PCLBase<PointFeature>
 # cdef cppclass PyramidFeatureHistogram[PointFeature](PCLBase[PointFeature]):
-cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl":
     cdef cppclass PyramidFeatureHistogram[PointFeature]:
         PyramidFeatureHistogram() except +
         # public:
@@ -1837,7 +1837,7 @@ cdef extern from "pcl/registration/pyramid_feature_matching.h" namespace "pcl" n
 # transformation_estimation.h
 # template <typename PointSource, typename PointTarget>
 # class TransformationEstimation
-cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl":
     cdef cppclass TransformationEstimation[Source, Target](Registration[Source, Target]):
         TransformationEstimation() except +
         # public:
@@ -1899,7 +1899,7 @@ cdef extern from "pcl/registration/transformation_estimation.h" namespace "pcl" 
 
 # template <typename PointSource, typename PointTarget>
 # class TransformationEstimationLM : public TransformationEstimation<PointSource, PointTarget>
-cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pcl":
     cdef cppclass TransformationEstimationLM[Source, Target](TransformationEstimation[Source, Target]):
         TransformationEstimationLM() except +
         # ctypedef pcl::PointCloud<PointSource> PointCloudSource;
@@ -2086,7 +2086,7 @@ cdef extern from "pcl/registration/transformation_estimation_lm.h" namespace "pc
 # transformation_estimation_point_to_plane.h
 # template <typename PointSource, typename PointTarget>
 # class TransformationEstimationPointToPlane : public TransformationEstimationLM<PointSource, PointTarget>
-cdef extern from "pcl/registration/transformation_estimation_point_to_plane.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_estimation_point_to_plane.h" namespace "pcl":
     cdef cppclass TransformationEstimationPointToPlane[Source, Target](TransformationEstimationLM[Source, Target]):
         TransformationEstimationPointToPlane ()
         # public:
@@ -2103,7 +2103,7 @@ cdef extern from "pcl/registration/transformation_estimation_point_to_plane.h" n
 # template <typename PointSource, typename PointTarget>
 # class TransformationEstimationPointToPlaneLLS : public TransformationEstimation<PointSource, PointTarget>
 
-cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls.h" namespace "pcl":
     cdef cppclass TransformationEstimationPointToPlaneLLS[Source, Target](TransformationEstimation[Source, Target]):
         TransformationEstimationPointToPlaneLLS ()
         # inline void estimateRigidTransformation (
@@ -2154,7 +2154,7 @@ cdef extern from "pcl/registration/transformation_estimation_point_to_plane_lls.
 # transformation_estimation_svd.h
 # template <typename PointSource, typename PointTarget>
 # class TransformationEstimationSVD : public TransformationEstimation<PointSource, PointTarget>
-cdef extern from "pcl/registration/transformation_estimation_svd.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_estimation_svd.h" namespace "pcl":
     cdef cppclass TransformationEstimationSVD[Source, Target](TransformationEstimation[Source, Target]):
         TransformationEstimationSVD ()
         # /** \brief Estimate a rigid rotation transformation between a source and a target point cloud using SVD.
@@ -2211,7 +2211,7 @@ cdef extern from "pcl/registration/transformation_estimation_svd.h" namespace "p
 # transformation_validation.h
 # template <typename PointSource, typename PointTarget>
 # class TransformationValidation
-cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl":
     cdef cppclass TransformationValidation[Source, Target]:
         TransformationValidation ()
         # public:
@@ -2242,7 +2242,7 @@ cdef extern from "pcl/registration/transformation_validation.h" namespace "pcl" 
 # transformation_validation_euclidean.h
 # template <typename PointSource, typename PointTarget>
 # class TransformationValidationEuclidean
-cdef extern from "pcl/registration/transformation_validation_euclidean.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/transformation_validation_euclidean.h" namespace "pcl":
     cdef cppclass TransformationValidationEuclidean[Source, Target]:
         TransformationValidationEuclidean ()
         # public:
@@ -2269,7 +2269,7 @@ cdef extern from "pcl/registration/transformation_validation_euclidean.h" namesp
 # warp_point_rigid_3d.h
 # template <class PointSourceT, class PointTargetT>
 # class WarpPointRigid3D : public WarpPointRigid<PointSourceT, PointTargetT>
-cdef extern from "pcl/registration/warp_point_rigid_3d.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/warp_point_rigid_3d.h" namespace "pcl":
     cdef cppclass WarpPointRigid3D[Source, Target](WarpPointRigid[Source, Target]):
         WarpPointRigid3D ()
         # public:
@@ -2281,7 +2281,7 @@ cdef extern from "pcl/registration/warp_point_rigid_3d.h" namespace "pcl" nogil:
 # warp_point_rigid_6d.h
 # template <class PointSourceT, class PointTargetT>
 # class WarpPointRigid6D : public WarpPointRigid<PointSourceT, PointTargetT>
-cdef extern from "pcl/registration/warp_point_rigid_6d.h" namespace "pcl" nogil:
+cdef extern from "pcl/registration/warp_point_rigid_6d.h" namespace "pcl":
     cdef cppclass WarpPointRigid6D[Source, Target](WarpPointRigid[Source, Target]):
         WarpPointRigid6D ()
         # public:
@@ -2297,7 +2297,7 @@ cdef extern from "pcl/registration/warp_point_rigid_6d.h" namespace "pcl" nogil:
 # bfgs.h
 # template<typename _Scalar, int NX=Eigen::Dynamic>
 # struct BFGSDummyFunctor
-# cdef extern from "pcl/registration/bfgs.h" nogil:
+# cdef extern from "pcl/registration/bfgs.h":
 #     # cdef struct BFGSDummyFunctor[_Scalar, NX]:
 #         # enum { InputsAtCompileTime = NX };
 # 

@@ -59,7 +59,7 @@ cdef class PCLPointCloud2:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[pcl_pc2.PCLPointCloud2] *thisptr(self) nogil:
+    cdef inline cpp.PointCloud[pcl_pc2.PCLPointCloud2] *thisptr(self):
         # Shortcut to get raw pointer to underlying PointCloud<PCLPointCloud2>.
         return self.thisptr_shared.get()
 
@@ -277,22 +277,10 @@ cdef class PCLPointCloud2:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile [pcl_pc2.PCLPointCloud2](string(s), <cpp.PointCloud[pcl_pc2.PCLPointCloud2]> deref(self.thisptr()))
-            # error = pcl_io.loadPCDFile [pcl_pc2.PCLPointCloud2](string(s), deref(self.thisptr()))
-            pass
-        
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile [pcl_pc2.PCLPointCloud2](string(s), <cpp.PointCloud[pcl_pc2.PCLPointCloud2]> deref(self.thisptr()))
-            # ok = pcl_io.loadPLYFile [pcl_pc2.PCLPointCloud2](string(s), deref(self.thisptr()))
-            pass
-        
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -305,7 +293,7 @@ cdef class PCLPointCloud2:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
+        
             # OK
             # error = pcl_io.savePCDFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
             pass
@@ -315,7 +303,7 @@ cdef class PCLPointCloud2:
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
+        
             # error = pcl_io.savePLYFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
             pass
         

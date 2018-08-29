@@ -15,7 +15,7 @@ cdef class PCLHistogramViewing:
     def __cinit__(self):
         sp_assign(self.thisptr_shared, new pcl_vis.PCLHistogramVisualizer())
 
-    cdef inline pcl_vis.PCLHistogramVisualizer *thisptr(self) nogil:
+    cdef inline pcl_vis.PCLHistogramVisualizer *thisptr(self):
         # Shortcut to get raw pointer to underlying PCLHistogramVisualizer
         return self.thisptr_shared.get()
 

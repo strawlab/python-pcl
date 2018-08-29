@@ -152,14 +152,12 @@ cdef class PointCloud_PointWithViewpoint:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        with nogil:
-            error = pcl_io.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        error = pcl_io.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        with nogil:
-            ok = pcl_io.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):

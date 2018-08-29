@@ -21,15 +21,15 @@ from vector cimport vector as vector2
 ###############################################################################
 
 # Array
-# cdef extern from "Eigen/Array" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Array" namespace "Eigen":
 ###
 
 # Cholesky
-# cdef extern from "Eigen/Cholesky" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Cholesky" namespace "Eigen":
 ###
 
 # Core?
-# cdef extern from "Eigen/Core" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Core" namespace "Eigen":
 ###
 
 # Dense
@@ -46,7 +46,7 @@ cdef extern from "Eigen/Dense" namespace "Eigen":
 ###
 
 # Eigen
-cdef extern from "Eigen/Eigen" namespace "Eigen" nogil:
+cdef extern from "Eigen/Eigen" namespace "Eigen":
     cdef cppclass Matrix4f:
         Matrix4f() except +
         float *data()
@@ -103,13 +103,13 @@ ctypedef vector2[cpp.PointXYZRGB, aligned_allocator_PointXYZRGB_t] AlignedPointT
 ctypedef vector2[cpp.PointXYZRGBA, aligned_allocator_PointXYZRGBA_t] AlignedPointTVector_PointXYZRGBA_t
 
 # Eigen2Support?
-# cdef extern from "Eigen/Eigen2Support" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Eigen2Support" namespace "Eigen":
 
 # Eigenvalues
-# cdef extern from "Eigen/Eigenvalues" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Eigenvalues" namespace "Eigen":
 
 # Geometry
-cdef extern from "Eigen/Geometry" namespace "Eigen" nogil:
+cdef extern from "Eigen/Geometry" namespace "Eigen":
     cdef cppclass Translation2f:
         Translation2f() except +
         Translation2f(float a, float b) except +
@@ -126,37 +126,37 @@ cdef extern from "Eigen/Geometry" namespace "Eigen" nogil:
         double *data()
 
 # Householder
-# cdef extern from "Eigen/Householder" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Householder" namespace "Eigen":
 
 # Jacobi
-# cdef extern from "Eigen/Jacobi" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Jacobi" namespace "Eigen":
 
 # LeastSquares
-# cdef extern from "Eigen/LeastSquares" namespace "Eigen" nogil:
+# cdef extern from "Eigen/LeastSquares" namespace "Eigen":
 
 # LU
-# cdef extern from "Eigen/LU" namespace "Eigen" nogil:
+# cdef extern from "Eigen/LU" namespace "Eigen":
 
 # QR
-# cdef extern from "Eigen/QR" namespace "Eigen" nogil:
+# cdef extern from "Eigen/QR" namespace "Eigen":
 
 # QtAlignedMalloc
-# cdef extern from "Eigen/QtAlignedMalloc" namespace "Eigen" nogil:
+# cdef extern from "Eigen/QtAlignedMalloc" namespace "Eigen":
 
 # Sparse
-# cdef extern from "Eigen/Sparse" namespace "Eigen" nogil:
+# cdef extern from "Eigen/Sparse" namespace "Eigen":
 
 # StdDeque
-# cdef extern from "Eigen/StdDeque" namespace "Eigen" nogil:
+# cdef extern from "Eigen/StdDeque" namespace "Eigen":
 
 # StdList
-# cdef extern from "Eigen/StdList" namespace "Eigen" nogil:
+# cdef extern from "Eigen/StdList" namespace "Eigen":
 
 # StdVector
-# cdef extern from "Eigen/StdVector" namespace "Eigen" nogil:
+# cdef extern from "Eigen/StdVector" namespace "Eigen":
 
 # SVD
-# cdef extern from "Eigen/SVD" namespace "Eigen" nogil:
+# cdef extern from "Eigen/SVD" namespace "Eigen":
 
 ###
 

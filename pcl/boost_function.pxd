@@ -6,8 +6,8 @@ from libcpp cimport bool
 # Types
 ###############################################################################
 
-# cdef extern from "boost/function/function.hpp" namespace "boost" nogil:
-cdef extern from "boost/function.hpp" namespace "boost" nogil:
+# cdef extern from "boost/function/function.hpp" namespace "boost":
+cdef extern from "boost/function.hpp" namespace "boost":
     cdef cppclass function[T]:
         function()
         function(T*)

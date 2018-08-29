@@ -12,22 +12,6 @@ cache:
 matrix:
   include:
     # gcc
-    # - os: linux
-    #   python: "2.7"
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    # - os: linux
-    #   python: "3.5"
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    # - os: linux
-    #   python: "3.6"
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    # gcc?
     - os: linux
       python: "2.7"
       addons:
@@ -64,66 +48,6 @@ matrix:
       - PCL_VERSION="1.7"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-
-    # clang
-    # apt-get no pcl use gcc
-    # - os: linux
-    #   python: "2.7"
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #         - llvm-toolchain-precise-3.6
-    #       packages:
-    #         - clang-3.6
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
-    # - os: linux
-    #   python: "3.5"
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #         - llvm-toolchain-precise-3.6
-    #       packages:
-    #         - clang-3.6
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
-    # - os: linux
-    #   python: "3.6"
-    #   addons:
-    #     apt:
-    #       sources:
-    #         - ubuntu-toolchain-r-test
-    #         - llvm-toolchain-precise-3.6
-    #       packages:
-    #         - clang-3.6
-    #   env:
-    #   - PCL_VERSION="1.7"
-    #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    #   - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
-
-    # TravisCI TimeLimit 50min
-    # - os: linux
-    #   python: "2.7"
-    #   env:
-    #   - PCL_VERSION="1.8"
-    # - os: linux
-    #   python: "3.5"
-    #   env:
-    #   - PCL_VERSION="1.8"
-    # - os: linux
-    #   python: "3.6"
-    #   env:
-    #   - PCL_VERSION="1.8"
-
     # TravisCI TimeLimit 50min
     # gcc
     - os: osx
@@ -152,30 +76,30 @@ matrix:
       - NOSEATTR="not pcl_ver_0_4"
     # clang
     # homebrew pcl use gcc compiler
-    # - os: osx
-    #   language: generic
-    #   compiler: clang
-    #   env:
-    #   - PYTHON_VERSION=2.7.10
-    #   - PYENV_ROOT=~/.pyenv
-    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-    #   - NOSEATTR="not pcl_ver_0_4"
-    # - os: osx
-    #   language: generic
-    #   compiler: clang
-    #   env:
-    #   - PYTHON_VERSION=3.5.1
-    #   - PYENV_ROOT=~/.pyenv
-    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-    #   - NOSEATTR="not pcl_ver_0_4"
-    # - os: osx
-    #   language: generic
-    #   compiler: clang
-    #   env:
-    #   - PYTHON_VERSION=3.6.0
-    #   - PYENV_ROOT=~/.pyenv
-    #   - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-    #   - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: clang
+      env:
+      - PYTHON_VERSION=2.7.10
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: clang
+      env:
+      - PYTHON_VERSION=3.5.1
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: clang
+      env:
+      - PYTHON_VERSION=3.6.0
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
 
 
 # pcl 1.8.1 only(MacOSX/Ubuntu)
@@ -213,34 +137,34 @@ install:
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
       sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
-      
+
       sudo apt-get install zram-config;
-      
+
       sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev;
       sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer;
       sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev;
-      
+
       wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
       tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
       export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH;
-      
+
       sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304;
       sudo mkswap /swapfile;
       sudo swapon /swapfile;
-      
+
       sudo apt-get install ninja-build;
-      
+
       wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz;
       tar -xf pcl-1.8.0.tar.gz;
       cd pcl-pcl-1.8.0 && mkdir build && cd build;
       cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..;
-      
+
       travis_wait 50 ninja -j4;
       sudo ninja -t targets install;
       cd ../..;
     fi
   - pip install --upgrade pip
-  - pip install cython==0.25.2
+  - pip install cython
   - pip install nose
   - pip install numpy
   - pip install coveralls

@@ -1,7 +1,10 @@
+import roslib
 import rospy
-import pcl
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
+
+import numpy
+import pcl
 
 
 def on_new_point_cloud(data):
@@ -18,8 +21,10 @@ def on_new_point_cloud(data):
     indices, model = seg.segment()
 
 
+# reference : http://robonchu.hatenablog.com/entry/2017/09/20/234640
 def main():
     rospy.init_node('listener', anonymous=True)
+    # rospy.Subscriber("/kinect2/sd/points", PointCloud2, on_new_point_cloud)
     rospy.Subscriber("/kinect2/hd/points", PointCloud2, on_new_point_cloud)
     rospy.spin()
 

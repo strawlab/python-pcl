@@ -25,7 +25,7 @@ from boost_shared_ptr cimport shared_ptr
 # point_cloud_handlers.h -> point_cloud_color_handlers.h(1.7.2)
 # template <typename PointT>
 # class PointCloudColorHandler
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandler[T]:
         # brief Constructor.
         # PointCloudColorHandler (const PointCloudConstPtr &cloud)
@@ -65,7 +65,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 # point_cloud_handlers.h -> point_cloud_geometry_handlers.h(1.7.2)
 # template <typename PointT>
 # class PointCloudGeometryHandler
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudGeometryHandler[T]:
         # brief Constructor.
         # PointCloudGeometryHandler (const PointCloudConstPtr &cloud) :
@@ -102,7 +102,7 @@ cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visu
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudColorHandlerCustom : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandlerCustom[PointT](PointCloudColorHandler[PointT]):
         # PointCloudColorHandlerCustom ()
         # brief Constructor.
@@ -144,7 +144,7 @@ ctypedef shared_ptr[PointCloudColorHandlerCustom[cpp.PointWithRange]] PointCloud
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudGeometryHandlerXYZ : public PointCloudGeometryHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudGeometryHandlerXYZ[PointT](PointCloudGeometryHandler[PointT]):
         PointCloudGeometryHandlerXYZ()
         # public:
@@ -184,7 +184,7 @@ ctypedef shared_ptr[PointCloudGeometryHandlerXYZ[cpp.PointXYZRGBA]] PointCloudGe
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudGeometryHandlerSurfaceNormal : public PointCloudGeometryHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudGeometryHandlerSurfaceNormal[PointT]:
         PointCloudGeometryHandlerSurfaceNormal()
         # public:
@@ -221,7 +221,7 @@ ctypedef shared_ptr[PointCloudGeometryHandlerSurfaceNormal[cpp.PointXYZRGBA]] Po
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudGeometryHandlerCustom : public PointCloudGeometryHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudGeometryHandlerCustom[PointT]:
         PointCloudGeometryHandlerCustom()
         # public:
@@ -352,7 +352,7 @@ ctypedef shared_ptr[PointCloudGeometryHandlerCustom[cpp.PointXYZRGBA]] PointClou
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudColorHandlerRandom : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandlerRandom[PointT](PointCloudColorHandler[PointT]):
         PointCloudColorHandlerRandom()
         # typedef typename PointCloudColorHandler<PointT>::PointCloud PointCloud;
@@ -390,7 +390,7 @@ ctypedef shared_ptr[PointCloudColorHandlerRandom[cpp.PointXYZRGBA]] PointCloudCo
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudColorHandlerRGBField : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandlerRGBField[PointT](PointCloudColorHandler[PointT]):
         # PointCloudColorHandlerRGBField ()
         # /** \brief Constructor. */
@@ -431,7 +431,7 @@ ctypedef shared_ptr[PointCloudColorHandlerRGBField[cpp.PointXYZRGBA]] PointCloud
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudColorHandlerHSVField : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandlerHSVField[PointT](PointCloudColorHandler[PointT]):
         # PointCloudColorHandlerHSVField ()
         # /** \brief Constructor. */
@@ -469,7 +469,7 @@ ctypedef shared_ptr[PointCloudColorHandlerHSVField[cpp.PointXYZRGBA]] PointCloud
 # point_cloud_handlers.h
 # template <typename PointT>
 # class PointCloudColorHandlerGenericField : public PointCloudColorHandler<PointT>
-cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/point_cloud_handlers.h" namespace "pcl::visualization":
     cdef cppclass PointCloudColorHandlerGenericField[PointT](PointCloudColorHandler[PointT]):
         PointCloudColorHandlerGenericField ()
         # /** \brief Constructor. */
@@ -631,7 +631,7 @@ ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGBA]] PointC
 
 # pcl_visualizer.h
 # class PCL_EXPORTS PCLVisualizer
-cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization":
     cdef cppclass PCLVisualizer:
         PCLVisualizer()
         # public:
@@ -1783,7 +1783,7 @@ ctypedef shared_ptr[PCLVisualizer] PCLVisualizerPtr_t
 ###
 
 # cloud_viewer.h
-cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/cloud_viewer.h" namespace "pcl::visualization":
     cdef cppclass CloudViewer:
         # CloudViewer ()
         CloudViewer (string& window_name)
@@ -1997,7 +1997,7 @@ ctypedef shared_ptr[PCLHistogramVisualizer] PCLHistogramVisualizerPtr_t
 
 # image_viewer.h
 # class PCL_EXPORTS ImageViewer
-cdef extern from "pcl/visualization/image_viewer.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/image_viewer.h" namespace "pcl::visualization":
     cdef cppclass ImageViewer:
         ImageViewer()
         ImageViewer(const string& window_title)
@@ -2937,7 +2937,7 @@ cdef extern from "pcl/visualization/image_viewer.h" namespace "pcl::visualizatio
 
 # range_image_visualizer.h
 # class PCL_EXPORTS RangeImageVisualizer : public ImageViewer
-cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::visualization":
     cdef cppclass RangeImageVisualizer(ImageViewer):
         RangeImageVisualizer()
         RangeImageVisualizer (const string name)
@@ -3013,7 +3013,7 @@ cdef extern from "pcl/visualization/range_image_visualizer.h" namespace "pcl::vi
 # registration_visualizer.h
 # template<typename PointSource, typename PointTarget>
 # class RegistrationVisualizer
-cdef extern from "pcl/visualization/registration_visualizer.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/registration_visualizer.h" namespace "pcl::visualization":
     cdef cppclass RegistrationVisualizer[Source, Target]:
         RegistrationVisualizer ()
         
@@ -3062,7 +3062,7 @@ cdef extern from "pcl/visualization/registration_visualizer.h" namespace "pcl::v
 
 # window.h
 # class PCL_EXPORTS Window
-cdef extern from "pcl/visualization/window.h" namespace "pcl::visualization" nogil:
+cdef extern from "pcl/visualization/window.h" namespace "pcl::visualization":
     cdef cppclass Window:
         Window ()
         # public:

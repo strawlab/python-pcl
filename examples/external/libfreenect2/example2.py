@@ -10,6 +10,17 @@ from pylibfreenect2 import createConsoleLogger, setGlobalLogger
 from pylibfreenect2 import LoggerLevel
 
 
+def estimateNormal(cloud):
+    ne = pcl.IntegralImageNormalEstimation()
+
+    ne.setNormalEstimationMethod(pcl.pcl_AVERAGE_DEPTH_CHANGE)
+    ne.setMaxDepthChangeFactor(0.01)
+    ne.setNormalSmoothingSize(5.0)
+    ne.setInputCloud(cloud)
+    cloud_normals = ne.compute()
+    return cloud_normals
+
+
 def main():
     try:
         from pylibfreenect2 import OpenCLPacketPipeline
@@ -106,16 +117,6 @@ def main():
     device.close()
 
     sys.exit(0)
-
-    def estimateNormal(cloud):
-        ne = pcl.IntegralImageNormalEstimation()
-
-        ne.setNormalEstimationMethod(pcl.pcl_AVERAGE_DEPTH_CHANGE)
-        ne.setMaxDepthChangeFactor(0.01)
-        ne.setNormalSmoothingSize(5.0)
-        ne.setInputCloud(cloud)
-        cloud_normals = ne.compute()
-        return cloud_normals
 
 
 if __name__ == "__main__":

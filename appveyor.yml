@@ -125,7 +125,8 @@ build_script:
   - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
   
   # conda 
-  - conda install -y -q Cython=0.25.2
+  # - conda install -y -q Cython=0.25.2
+  - conda install -y -q Cython
   - conda install -y -q numpy
 
   - python setup.py build_ext -i

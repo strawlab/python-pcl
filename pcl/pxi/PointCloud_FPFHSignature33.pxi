@@ -217,18 +217,18 @@ cdef class PointCloud_FPFHSignature33:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
+        
+        # NG
+        # error = pcl_io.loadPCDFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+        error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
+        
+        # NG
+        # ok = pcl_io.loadPLYFile(string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -241,21 +241,21 @@ cdef class PointCloud_FPFHSignature33:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            # OK
-            error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
-            # pcl_io.PointCloud[cpp.PointXYZ] *p = self.thisptr()
-            # error = pcl_io.savePCDFile(s, p, binary)
+        
+        # NG
+        # error = pcl_io.savePCDFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+        # OK
+        error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
+        # pcl_io.PointCloud[cpp.PointXYZ] *p = self.thisptr()
+        # error = pcl_io.savePCDFile(s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
+        
+        # NG
+        # error = pcl_io.savePLYFile(s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
+        error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 
