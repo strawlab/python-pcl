@@ -293,20 +293,16 @@ cdef class PCLPointCloud2:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        
-            # OK
-            # error = pcl_io.savePCDFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
-            pass
-        
+        # OK
+        # error = pcl_io.savePCDFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
+        pass    
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        
-            # error = pcl_io.savePLYFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
-            pass
-        
+        # error = pcl_io.savePLYFile [pcl_pc2.PCLPointCloud2](s, deref(self.thisptr()), binary)
+        pass
         return error
 
     # def copyPointCloud(self, vector[int] indices):
