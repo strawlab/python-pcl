@@ -12,6 +12,7 @@ cimport pcl_defs as cpp
 ### DEFINE ###
 PCL_MAJOR_VERSION    = cpp.PCL_MAJOR_VERSION
 PCL_MINOR_VERSION    = cpp.PCL_MINOR_VERSION
+# not 1.6.0
 # PCL_REVISION_VERSION = cpp.PCL_REVISION_VERSION
 
 # if cpp.PCL_MINOR_VERSION == 8:
@@ -217,7 +218,7 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 #     include "pxi/PointCloud_PointXYZRGB.pxi"
 #     include "pxi/PointCloud_PointXYZRGBA.pxi"
 #     # Add PointCloud2
-#     include "pxi/PointCloud_PointCloud2.pxi"
+#     # include "pxi/PointCloud_PointCloud2.pxi"
 # else:
 #     pass
 
@@ -232,7 +233,7 @@ include "pxi/PointCloud_PointWithViewpoint.pxi"
 include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
 # Add PointCloud2
-include "pxi/PointCloud_PointCloud2.pxi"
+# include "pxi/PointCloud_PointCloud2.pxi"
 
 ### common ###
 def deg2rad(float alpha):
