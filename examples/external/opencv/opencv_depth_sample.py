@@ -108,16 +108,16 @@ def main():
          [0., 525., 239.5],
          [0., 0., 1.]])
 
-    color0 = cv2.imread('00000.jpg')
+    color0 = cv2.imread('rgb/0.png')
     # 16 bit Image
     # https://github.com/eiichiromomma/CVMLAB/wiki/OpenCV-16bitImage
-    # depth0 = cv2.imread('00000.png', -1)
-    depth0 = cv2.imread('00000.png', cv2.IMREAD_ANYDEPTH | cv2.IMREAD_ANYCOLOR)
+    # depth0 = cv2.imread('depth/0.png', -1)
+    depth0 = cv2.imread('depth/0.png', cv2.IMREAD_ANYDEPTH | cv2.IMREAD_ANYCOLOR)
     print("Color: ", color0.dtype)
     print("Depth: ", depth0.dtype)
 
-    # colorImage1 = cv2.imread('00001.jpg')
-    # depth1 = cv2.imread('00001.png', -1)
+    # colorImage1 = cv2.imread('rgb/1.png')
+    # depth1 = cv2.imread('depth/1.png', -1)
 
     # if (color0.empty() || depth0.empty() || colorImage1.empty() || depth1.empty()):
     #     cout << "Data (rgb or depth images) is empty.";

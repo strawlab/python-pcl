@@ -141,7 +141,7 @@ cdef class PCLVisualizering:
     #     self.thisptr().addPointCloud[cpp.PointXYZ](cloud.thisptr_shared, <const pcl_vis.PointCloudGeometryHandlerCustom[cpp.PointXYZ]> deref(geometry_handler.thisptr_shared.get()), <string> id, viewport)
     #     # pass
 
-    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, id = b'cloud', int viewport = 0):
+    def AddPointCloudNormals(self, _pcl.PointCloud cloud, _pcl.PointCloud_Normal normal, int level = 100, double scale = 0.02, id = b'normals', int viewport = 0):
         self.thisptr().addPointCloudNormals[cpp.PointXYZ, cpp.Normal](<cpp.PointCloudPtr_t> cloud.thisptr_shared, <cpp.PointCloud_Normal_Ptr_t> normal.thisptr_shared, level, scale, <string> id, viewport)
 
     def SetPointCloudRenderingProperties(self, int propType, int propValue, propName = b'cloud'):
