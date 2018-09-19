@@ -509,7 +509,7 @@ ctypedef shared_ptr[vector[int]] IndicesPtr_t;
 # pcl_base.h
 # template <typename PointT>
 # class PCLBase
-cdef extern from "pcl/pcl_base.h" namespace "pcl":
+cdef extern from "pcl/pcl_base.h" namespace "pcl" nogil:
     cdef cppclass PCLBase[PointT]:
         PCLBase ()
         # PCLBase (const PCLBase& base)
