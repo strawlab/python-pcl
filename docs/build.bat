@@ -3,4 +3,4 @@
 sphinx-intl build
 make clean html
 rem jp?
-rem make clean LANGUAGE=jp gettext html
+rem make -e SPHINXOPTS="-D language='ja'" html

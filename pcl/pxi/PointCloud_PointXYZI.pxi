@@ -270,7 +270,7 @@ cdef class PointCloud_PointXYZI:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        # with nogil:
+        with nogil:
             # NG
             # error = pcl_io.savePCDFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
             # OK
@@ -282,7 +282,7 @@ cdef class PointCloud_PointXYZI:
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        # with nogil:
+        with nogil:
             # NG
             # error = pcl_io.savePLYFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
             error = pcl_io.savePLYFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
