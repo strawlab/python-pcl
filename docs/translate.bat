@@ -1,8 +1,11 @@
 @ECHO OFF
 
 make gettext
-mkdir locale\pot
-copy build\locale\*.pot locale\pot
-mkdir locale\ja\LC_MESSAGES
-copy locale\pot\* locale\ja\LC_MESSAGES\
+rem ex. ja
 sphinx-intl update -p build\locale -l ja
+rem using transifex
+rem [transifex] start define.
+rem upload pot files.
+rem language transifer.
+rem downloads po files.
+rem [transifex] end define

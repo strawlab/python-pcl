@@ -1548,7 +1548,7 @@ cdef extern from "pcl/features/integral_image_normal.h" namespace "pcl":
         # * </ul>
         # * \param[in] normal_estimation_method the method used for normal estimation
         # void setNormalEstimationMethod (NormalEstimationMethod2 normal_estimation_method)
-       
+        
         # brief Set whether to use depth depending smoothing or not
         # param[in] use_depth_dependent_smoothing decides whether the smoothing is depth dependent
         void setDepthDependentSmoothing (bool use_depth_dependent_smoothing)

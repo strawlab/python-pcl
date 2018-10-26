@@ -7,7 +7,6 @@ cnp.import_array()
 
 # parts
 cimport pcl_features_172 as pcl_ftr
-
 cimport pcl_filters_172 as pcl_fil
 cimport pcl_io_172 as pcl_io
 cimport pcl_kdtree_172 as pcl_kdt
@@ -15,7 +14,7 @@ cimport pcl_octree_172 as pcl_oct
 cimport pcl_sample_consensus_172 as pcl_sac
 # cimport pcl_search_172 as pcl_sch
 cimport pcl_segmentation_172 as pcl_seg
-cimport pcl_surface_172 as pcl_sf
+cimport pcl_surface_172 as pcl_srf
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -238,17 +237,20 @@ cdef class PointCloud_PointXYZI:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        error = pcl_io.loadPCDFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        with nogil:
+            error = pcl_io.loadPCDFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        ok = pcl_io.loadPLYFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        with nogil:
+            ok = pcl_io.loadPLYFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
         return ok
 
     def _from_obj_file(self, const char *s):
         cdef int ok = 0
-        ok = pcl_io.loadOBJFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        with nogil:
+            ok = pcl_io.loadOBJFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -261,22 +263,22 @@ cdef class PointCloud_PointXYZI:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        
-        # NG
-        # error = pcl_io.savePCDFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
-        # OK
-        error = pcl_io.savePCDFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
-        # pcl_io.PointCloud[cpp.PointXYZI] *p = self.thisptr()
-        # error = pcl_io.savePCDFile [cpp.PointXYZI](s, p, binary)
+        with nogil:
+            # NG
+            # error = pcl_io.savePCDFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
+            # OK
+            error = pcl_io.savePCDFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
+            # pcl_io.PointCloud[cpp.PointXYZI] *p = self.thisptr()
+            # error = pcl_io.savePCDFile [cpp.PointXYZI](s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        
-        # NG
-        # error = pcl_io.savePLYFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
-        error = pcl_io.savePLYFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
+        with nogil:
+            # NG
+            # error = pcl_io.savePLYFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
+            error = pcl_io.savePLYFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
         return error
 
     def make_segmenter(self):
@@ -335,7 +337,7 @@ cdef class PointCloud_PointXYZI:
 #         Return a pcl.MovingLeastSquares object with this object as input cloud.
 #         """
 #         mls = MovingLeastSquares_PointXYZI()
-#         cdef pcl_sf.MovingLeastSquares_PointXYZI_t *cmls = <pcl_sf.MovingLeastSquares_PointXYZI_t *>mls.me
+#         cdef pcl_srf.MovingLeastSquares_PointXYZI_t *cmls = <pcl_srf.MovingLeastSquares_PointXYZI_t *>mls.me
 #         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
 #         return mls
 # 

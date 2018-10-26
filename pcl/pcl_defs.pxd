@@ -51,7 +51,7 @@ cdef extern from "pcl/pcl_config.h":
     cdef int PCL_MINOR_VERSION
     # 1.6.0 not set?
     # cdef int PCL_REVISION_VERSION
-    cdef int PCL_DEV_VERSION
+    # cdef int PCL_DEV_VERSION
 
 
 ###
@@ -111,7 +111,7 @@ cdef extern from "pcl/pcl_config.h":
 ###
 
 # point_cloud.h
-cdef extern from "pcl/point_cloud.h" namespace "pcl":
+cdef extern from "pcl/point_cloud.h" namespace "pcl" nogil:
     cdef cppclass PointCloud[T]:
         PointCloud() except +
         PointCloud(unsigned int, unsigned int) except +
@@ -138,7 +138,7 @@ cdef extern from "pcl/point_cloud.h" namespace "pcl":
 # ctypedef fused PointCloudTypes:
 #     PointXYZ
 #     PointXYZRGBA
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointXYZ:
         PointXYZ()
         float x
@@ -147,14 +147,14 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
 #     cdef struct Normal:
 #         pass
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct Normal:
         float normal_x
         float normal_y
         float normal_z
         float curvature
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct PointXYZRGBA:
          PointXYZRGBA()
          float x
@@ -164,7 +164,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
          # unsigned long rgba
          float rgba
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointXYZRGB:
          PointXYZRGB()
          float x
@@ -172,7 +172,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
          float z
          float rgb
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct PointXYZRGBL:
          PointXYZRGBA()
          float x
@@ -185,7 +185,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
          #unsigned long label
          float label
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct PointXYZHSV:
          PointXYZHSV()
          float x
@@ -195,13 +195,13 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
          float s
          float v
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct PointXY:
          PointXY()
          float x
          float y
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct InterestPoint:
         InterestPoint()
         float x
@@ -209,7 +209,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
         float strength
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct PointXYZI:
         PointXYZI()
         float x
@@ -217,7 +217,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
         float intensity
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct PointXYZL:
         PointXYZL()
         float x
@@ -226,21 +226,21 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         # unsigned long label
         float label
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
      cdef struct Label:
         Label()
         # uint32_t label
         # unsigned long label
         float label
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct Axis:
         Axis()
         float normal_x
         float normal_y
         float normal_z
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointNormal:
         PointNormal()
         float x
@@ -251,7 +251,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float normal_z
         float curvature
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointXYZRGBNormal:
         PointXYZRGBNormal()
         float x
@@ -263,7 +263,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float normal_z
         float curvature
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointXYZINormal:
         PointXYZINormal()
         float x
@@ -275,7 +275,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float normal_z
         float curvature
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointWithRange:
         PointWithRange()
         float x
@@ -283,7 +283,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
         float range
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointWithViewpoint:
         PointWithViewpoint()
         float x
@@ -293,26 +293,26 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float vp_y
         float vp_z
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct MomentInvariants:
         MomentInvariants()
         float j1
         float j2
         float j3
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PrincipalRadiiRSD:
         PrincipalRadiiRSD()
         float r_min
         float r_max
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct Boundary:
         Boundary()
         # uint8_t boundary_point
         unsigned char boundary_point
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PrincipalCurvatures:
         PrincipalCurvatures()
         float principal_curvature_x
@@ -321,17 +321,17 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float pc1
         float pc2
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PFHSignature125:
         PFHSignature125()
         float[125] histogram
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PFHRGBSignature250:
         PFHRGBSignature250()
         float[250] histogram
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PPFSignature:
         PPFSignature()
         float f1
@@ -340,7 +340,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float f4
         float alpha_m
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PPFRGBSignature:
         PPFRGBSignature()
         float f1
@@ -352,39 +352,39 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float b_ratio
         float alpha_m
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct NormalBasedSignature12:
         NormalBasedSignature12()
         float[12] values
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct SHOT352:
         SHOT352()
         float[352] descriptor
         float[9] rf
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct SHOT1344:
         SHOT1344()
         float[1344] descriptor
         float[9] rf
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct FPFHSignature33:
         FPFHSignature33()
         float[33] histogram
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct VFHSignature308:
         VFHSignature308()
         float[308] histogram
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct ESFSignature640:
         ESFSignature640()
         float[640] histogram
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct Narf36:
         Narf36()
         float[36] descriptor
@@ -405,7 +405,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
 #   BORDER_TRAIT__VEIL_POINT_RIGHT, BORDER_TRAIT__VEIL_POINT_BOTTOM, BORDER_TRAIT__VEIL_POINT_LEFT
 # };
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct BorderDescription:
         BorderDescription()
         int x
@@ -420,19 +420,19 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
 #   return (os);
 # }
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct GFPFHSignature16:
         GFPFHSignature16()
         float[16] histogram
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct IntensityGradient:
         IntensityGradient()
         float gradient_x
         float gradient_y
         float gradient_z
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointWithScale:
         PointWithScale()
         float x
@@ -440,7 +440,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float z
         float scale
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct PointSurfel:
         PointSurfel()
         float x
@@ -455,7 +455,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
         float confidence
         float curvature
 
-cdef extern from "pcl/point_types.h" namespace "pcl":
+cdef extern from "pcl/point_types.h" namespace "pcl" nogil:
     cdef struct ReferenceFrame:
         ReferenceFrame()
         float[3] x_axis
@@ -465,7 +465,7 @@ cdef extern from "pcl/point_types.h" namespace "pcl":
 ###
 
 # ModelCoefficients.h
-cdef extern from "pcl/ModelCoefficients.h" namespace "pcl":
+cdef extern from "pcl/ModelCoefficients.h" namespace "pcl" nogil:
     cdef struct ModelCoefficients:
         vector[float] values
 
@@ -475,7 +475,7 @@ ctypedef shared_ptr[ModelCoefficients] ModelCoefficientsPtr_t
 ###
 
 # PointIndices.h
-cdef extern from "pcl/PointIndices.h" namespace "pcl":
+cdef extern from "pcl/PointIndices.h" namespace "pcl" nogil:
     #FIXME: I made this a cppclass so that it can be allocated using new (cython barfs otherwise), and
     #hence passed to shared_ptr. This is needed because if one passes memory allocated
     #using malloc (which is required if this is a struct) to shared_ptr it aborts with
@@ -518,7 +518,7 @@ ctypedef shared_ptr[vector[int]] IndicesPtr_t;
 # pcl_base.h
 # template <typename PointT>
 # class PCLBase
-cdef extern from "pcl/pcl_base.h" namespace "pcl":
+cdef extern from "pcl/pcl_base.h" namespace "pcl" nogil:
     cdef cppclass PCLBase[PointT]:
         PCLBase ()
         # PCLBase (const PCLBase& base)
@@ -551,7 +551,7 @@ ctypedef shared_ptr[PCLBase[PointXYZRGBA]] PCLBase_PointXYZRGBA_Ptr_t
 # PolygonMesh.h
 # namespace pcl
 #  struct PolygonMesh
-cdef extern from "pcl/PolygonMesh.h" namespace "pcl":
+cdef extern from "pcl/PolygonMesh.h" namespace "pcl" nogil:
     cdef cppclass PolygonMesh:
         PolygonMesh()
 
@@ -563,7 +563,7 @@ cdef extern from "pcl/PolygonMesh.h" namespace "pcl":
 # TextureMesh.h
 # namespace pcl
 # struct TexMaterial
-cdef extern from "pcl/TextureMesh.h" namespace "pcl":
+cdef extern from "pcl/TextureMesh.h" namespace "pcl" nogil:
     cdef cppclass TexMaterial:
         TexMaterial ()
         # cdef struct RGB
@@ -582,7 +582,7 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
 
 ###
 
-cdef extern from "pcl/TextureMesh.h" namespace "pcl":
+cdef extern from "pcl/TextureMesh.h" namespace "pcl" nogil:
     cdef cppclass TextureMesh:
         TextureMesh ()
         # std_msgs::Header          header
@@ -598,7 +598,7 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl":
 # Vertices.h
 # namespace pcl
 # struct Vertices
-cdef extern from "pcl/Vertices.h" namespace "pcl":
+cdef extern from "pcl/Vertices.h" namespace "pcl" nogil:
     cdef cppclass Vertices:
         Vertices()
         vector[size_t] vertices;

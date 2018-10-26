@@ -18,7 +18,7 @@ cimport pcl_octree as pcl_oct
 cimport pcl_sample_consensus as pcl_sac
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pcl_seg
-cimport pcl_surface as pcl_sf
+cimport pcl_surface as pcl_srf
 cimport pcl_range_image as pcl_rim
 cimport pcl_registration_160 as pcl_reg
 
@@ -58,7 +58,7 @@ cdef class PointCloud2:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[pcl_pc2.PointCloud2] *thisptr(self):
+    cdef inline cpp.PointCloud[pcl_pc2.PointCloud2] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointCloud2>.
         return self.thisptr_shared.get()
 
@@ -276,10 +276,22 @@ cdef class PointCloud2:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
+        with nogil:
+            # NG
+            # error = pclio.loadPCDFile(string(s), <cpp.PointCloud[pcl_pc2.PointCloud2]> deref(self.thisptr()))
+            # error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+            pass
+        
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
+        with nogil:
+            # NG
+            # ok = pclio.loadPLYFile(string(s), <cpp.PointCloud[pcl_pc2.PointCloud2]> deref(self.thisptr()))
+            # ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
+            pass
+        
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -292,14 +304,20 @@ cdef class PointCloud2:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        # OK
-        error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
+        with nogil:
+            # OK
+            # error = pclio.savePCDFile(s, deref(self.thisptr()), binary)
+            pass
+        
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
+        with nogil:
+            # error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
+            pass
+        
         return error
 
     # def copyPointCloud(self, vector[int] indices):

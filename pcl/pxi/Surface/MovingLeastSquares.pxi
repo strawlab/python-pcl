@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 cimport _pcl
 cimport pcl_defs as cpp
-cimport pcl_surface as pcl_sf
+cimport pcl_surface as pcl_srf
 cimport pcl_kdtree as pcl_kdt
 
 cdef class MovingLeastSquares:
@@ -9,10 +9,10 @@ cdef class MovingLeastSquares:
     Smoothing class which is an implementation of the MLS (Moving Least Squares)
     algorithm for data smoothing and improved normal estimation.
     """
-    cdef pcl_sf.MovingLeastSquares_t *me
+    cdef pcl_srf.MovingLeastSquares_t *me
     
     def __cinit__(self):
-        self.me = new pcl_sf.MovingLeastSquares_t()
+        self.me = new pcl_srf.MovingLeastSquares_t()
     
     def __dealloc__(self):
         del self.me
@@ -66,10 +66,10 @@ cdef class MovingLeastSquares:
 #     Smoothing class which is an implementation of the MLS (Moving Least Squares)
 #     algorithm for data smoothing and improved normal estimation.
 #     """
-#     cdef pcl_sf.MovingLeastSquares_PointXYZI_t *me
+#     cdef pcl_srf.MovingLeastSquares_PointXYZI_t *me
 #     
 #     def __cinit__(self):
-#         self.me = new pcl_sf.MovingLeastSquares_PointXYZI_t()
+#         self.me = new pcl_srf.MovingLeastSquares_PointXYZI_t()
 #     def __dealloc__(self):
 #         del self.me
 # 
@@ -107,10 +107,10 @@ cdef class MovingLeastSquares_PointXYZRGB:
     Smoothing class which is an implementation of the MLS (Moving Least Squares)
     algorithm for data smoothing and improved normal estimation.
     """
-    cdef pcl_sf.MovingLeastSquares_PointXYZRGB_t *me
+    cdef pcl_srf.MovingLeastSquares_PointXYZRGB_t *me
     
     def __cinit__(self):
-        self.me = new pcl_sf.MovingLeastSquares_PointXYZRGB_t()
+        self.me = new pcl_srf.MovingLeastSquares_PointXYZRGB_t()
     
     def __dealloc__(self):
         del self.me
@@ -151,10 +151,10 @@ cdef class MovingLeastSquares_PointXYZRGBA:
     Smoothing class which is an implementation of the MLS (Moving Least Squares)
     algorithm for data smoothing and improved normal estimation.
     """
-    cdef pcl_sf.MovingLeastSquares_PointXYZRGBA_t *me
+    cdef pcl_srf.MovingLeastSquares_PointXYZRGBA_t *me
     
     def __cinit__(self):
-        self.me = new pcl_sf.MovingLeastSquares_PointXYZRGBA_t()
+        self.me = new pcl_srf.MovingLeastSquares_PointXYZRGBA_t()
     
     def __dealloc__(self):
         del self.me

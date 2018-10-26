@@ -57,7 +57,7 @@ cdef class PointCloud:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.PointXYZ] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
         return self.thisptr_shared.get()
 
@@ -70,7 +70,7 @@ cdef class PointCloud_PointXYZI:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.PointXYZI] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.PointXYZI] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZ>.
         return self.thisptr_shared.get()
 
@@ -83,7 +83,7 @@ cdef class PointCloud_PointXYZRGB:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.PointXYZRGB] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.PointXYZRGB] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGB>.
         return self.thisptr_shared.get()
 
@@ -96,7 +96,7 @@ cdef class PointCloud_PointXYZRGBA:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.PointXYZRGBA] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointXYZRGBA>.
         return self.thisptr_shared.get()
 
@@ -108,7 +108,7 @@ cdef class Vertices:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.Vertices *thisptr(self):
+    cdef inline cpp.Vertices *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying Vertices
         return self.thisptr_shared.get()
 
@@ -120,7 +120,7 @@ cdef class PointCloud_PointWithViewpoint:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.PointWithViewpoint] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.PointWithViewpoint] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointWithViewpoint>.
         return self.thisptr_shared.get()
 
@@ -133,7 +133,7 @@ cdef class PointCloud_Normal:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.Normal] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.Normal] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<Normal>.
         return self.thisptr_shared.get()
 
@@ -146,7 +146,7 @@ cdef class PointCloud_PointNormal:
     cdef Py_ssize_t _shape[2]
     cdef Py_ssize_t _view_count
     
-    cdef inline cpp.PointCloud[cpp.PointNormal] *thisptr(self):
+    cdef inline cpp.PointCloud[cpp.PointNormal] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying PointCloud<PointNormal>.
         return self.thisptr_shared.get()
 
@@ -156,14 +156,14 @@ cdef class PointCloud_PointNormal:
 cdef class KdTree:
     cdef pcl_kdt.KdTreePtr_t thisptr_shared   # KdTree
     
-    cdef inline pcl_kdt.KdTree[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_kdt.KdTree[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying KdTree<PointXYZ>.
         return self.thisptr_shared.get()
 
 # cdef class KdTreeFLANN:
 #     cdef pcl_kdt.KdTreeFLANNPtr_t thisptr_shared   # KdTreeFLANN
 #     
-#     cdef inline pcl_kdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self):
+#     cdef inline pcl_kdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying KdTreeFLANN<PointXYZ>.
 #         return self.thisptr_shared.get()
 
@@ -173,7 +173,7 @@ cdef class KdTree:
 cdef class RangeImages:
     cdef pcl_rim.RangeImagePtr_t thisptr_shared   # RangeImages
     
-    cdef inline pcl_rim.RangeImage *thisptr(self):
+    cdef inline pcl_rim.RangeImage *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying RangeImage.
         return self.thisptr_shared.get()
 
@@ -183,7 +183,7 @@ cdef class RangeImages:
 # cdef class IntegralImageNormalEstimation:
 #     cdef pcl_ftr.IntegralImageNormalEstimationPtr_t thisptr_shared     # IntegralImageNormalEstimation
 #     
-#     cdef inline pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self):
+#     cdef inline pcl_ftr.IntegralImageNormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying pcl::IntegralImageNormalEstimation<pcl::PointXYZ, pcl::Normal>.
 #         return self.thisptr_shared.get()
 
@@ -191,7 +191,7 @@ cdef class RangeImages:
 # cdef class NormalEstimation:
 #     cdef pcl_ftr.NormalEstimationPtr_t thisptr_shared     # NormalEstimation
 #     
-#     cdef inline pcl_ftr.NormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self):
+#     cdef inline pcl_ftr.NormalEstimation[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal>.
 #         return self.thisptr_shared.get()
 
@@ -201,48 +201,48 @@ cdef class RangeImages:
 cdef class SampleConsensusModel:
     cdef pcl_sac.SampleConsensusModelPtr_t thisptr_shared     # SampleConsensusModel
     
-    cdef inline pcl_sac.SampleConsensusModel[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModel[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModel<pcl::PointXYZ>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelPlane:
     cdef pcl_sac.SampleConsensusModelPlanePtr_t thisptr_shared     # SampleConsensusModelPlane
     
-    cdef inline pcl_sac.SampleConsensusModelPlane[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModelPlane[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelPlane<pcl::PointXYZ>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelSphere:
     cdef pcl_sac.SampleConsensusModelSpherePtr_t thisptr_shared     # SampleConsensusModelSphere
     
-    cdef inline pcl_sac.SampleConsensusModelSphere[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModelSphere[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelSphere<pcl::PointXYZ>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelCylinder:
     cdef pcl_sac.SampleConsensusModelCylinderPtr_t thisptr_shared     # SampleConsensusModelSphere
     
-    cdef inline pcl_sac.SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModelCylinder[cpp.PointXYZ, cpp.Normal] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelCylinder<pcl::PointXYZ, pcl::Normal>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelLine:
     cdef pcl_sac.SampleConsensusModelLinePtr_t thisptr_shared     # SampleConsensusModelLine
     
-    cdef inline pcl_sac.SampleConsensusModelLine[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModelLine[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelLine<pcl::PointXYZ>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelRegistration:
     cdef pcl_sac.SampleConsensusModelRegistrationPtr_t thisptr_shared     # SampleConsensusModelRegistration
     
-    cdef inline pcl_sac.SampleConsensusModelRegistration[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModelRegistration[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelRegistration<pcl::PointXYZ>.
         return self.thisptr_shared.get()
 
 cdef class SampleConsensusModelStick:
     cdef pcl_sac.SampleConsensusModelStickPtr_t thisptr_shared     # SampleConsensusModelStick
     
-    cdef inline pcl_sac.SampleConsensusModelStick[cpp.PointXYZ] *thisptr(self):
+    cdef inline pcl_sac.SampleConsensusModelStick[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying pcl::SampleConsensusModelStick<pcl::PointXYZ>.
         return self.thisptr_shared.get()

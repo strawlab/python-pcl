@@ -17,7 +17,7 @@ cdef class CloudViewing:
         # sp_assign(<cpp.shared_ptr[pcl_vis.CloudViewer]> self.thisptr_shared, new pcl_vis.CloudViewer('cloud'))
         sp_assign(self.thisptr_shared, new pcl_vis.CloudViewer('cloud'))
 
-    cdef inline pcl_vis.CloudViewer *thisptr(self):
+    cdef inline pcl_vis.CloudViewer *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying CloudViewer
         return self.thisptr_shared.get()
 

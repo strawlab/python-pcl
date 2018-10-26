@@ -80,26 +80,26 @@ This release has been tested on Linux Ubuntu 14.04 with
 
  * Python 2.7.6, 3.4.0, 3.5.2
  * pcl 1.7.0(apt install)
- * Cython == 0.25.2
+ * Cython <= 0.25.2
 
 and MacOS with
 
  * Python 2.7.6, 3.4.0, 3.5.2
  * pcl 1.8.1(use homebrew)
- * Cython == 0.25.2
+ * Cython <= 0.25.2
 
 and Windows with
 
  * (Miniconda/Anaconda) - Python 3.4
  * pcl 1.6.0(VS2010)
- * Cython == 0.25.2
+ * Cython <= 0.25.2
  * Gtk+
 
 and Windows with
 
  * (Miniconda/Anaconda) - Python 3.5
  * pcl 1.8.1(VS2015)
- * Cython == 0.25.2
+ * Cython <= 0.25.2
  * Gtk+
 
 and Windows with
@@ -232,7 +232,7 @@ before Install module
 
         Case2. use 1.8.1
 
-            `Visual Studio 2015 C++ Compiler Tools(use Python 3.5/3.6) <https://www.visualstudio.com/vs/older-downloads/>`_ 
+            `Visual Studio 2015 C++ Compiler Tools(use Python 2.7/3.5/3.6) <https://www.visualstudio.com/vs/older-downloads/>`_ 
 
             `Visual Studio 2017 C++ Compiler Tools(use Python 3.6) <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
 
@@ -282,7 +282,7 @@ Common setting
 
     pip install --upgrade pip
     
-    pip install cython==0.25.2
+    pip install cython
     
     pip install numpy
 

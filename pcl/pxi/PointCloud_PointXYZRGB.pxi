@@ -14,7 +14,7 @@ cimport pcl_octree as pcl_oct
 # cimport pcl_sample_consensus as pcl_sac
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pcl_seg
-cimport pcl_surface as pcl_sf
+cimport pcl_surface as pcl_srf
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -232,18 +232,20 @@ cdef class PointCloud_PointXYZRGB:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-        error = pcl_io.loadPCDFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        with nogil:
+            error = pcl_io.loadPCDFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-        ok = pcl_io.loadPLYFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        with nogil:
+            ok = pcl_io.loadPLYFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
         return ok
 
     # no use pcl1.6
     def _from_obj_file(self, const char *s):
         cdef int ok = -1
-        # 
+        # with nogil:
         #     # NG
         #     # ok = pcl_io.loadOBJFile [cpp.PointXYZRGB](string(s), <cpp.PointCloud[cpp.PointXYZRGB]> deref(self.thisptr()))
         #     ok = pcl_io.loadOBJFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
@@ -259,19 +261,19 @@ cdef class PointCloud_PointXYZRGB:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        
-        error = pcl_io.savePCDFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
-        # cpp.PointCloud[cpp.PointXYZRGB] *
-        # error = cpp.savePCDFile [cpp.PointXYZRGB](s, p, binary)
+        with nogil:
+            error = pcl_io.savePCDFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
+            # cpp.PointCloud[cpp.PointXYZRGB] *
+            # error = cpp.savePCDFile [cpp.PointXYZRGB](s, p, binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        
-        error = pcl_io.savePLYFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
-        # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
-        # error = cpp.savePLYFile [cpp.PointXYZRGB](s, p, binary)
+        with nogil:
+            error = pcl_io.savePLYFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
+            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
+            # error = cpp.savePLYFile [cpp.PointXYZRGB](s, p, binary)
         return error
 
     def make_segmenter(self):

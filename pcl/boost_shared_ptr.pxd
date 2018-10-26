@@ -6,8 +6,8 @@ from libcpp cimport bool
 # Types
 ###############################################################################
 
-# cdef extern from "boost/smart_ptr/shared_ptr.hpp" namespace "boost":
-cdef extern from "boost/shared_ptr.hpp" namespace "boost":
+# cdef extern from "boost/smart_ptr/shared_ptr.hpp" namespace "boost" nogil:
+cdef extern from "boost/shared_ptr.hpp" namespace "boost" nogil:
     cdef cppclass shared_ptr[T]:
         shared_ptr()
         shared_ptr(T*)
@@ -22,7 +22,7 @@ cdef extern from "boost/shared_ptr.hpp" namespace "boost":
         void swap(shared_ptr[T])
         void reset(T*)
 
-cdef extern from "boost_shared_ptr_assign.h":
+cdef extern from "boost_shared_ptr_assign.h" nogil:
      # void sp_assign(shared_ptr[cpp.PointCloud[cpp.PointXYZ]] &t, cpp.PointCloud[cpp.PointXYZ] *value)
      void sp_assign[T](shared_ptr[T] &p, T *value)
 

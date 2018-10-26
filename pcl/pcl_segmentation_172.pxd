@@ -20,7 +20,7 @@ from pcl_defs cimport PointXYZRGBA
 from pcl_defs cimport Normal
 from pcl_defs cimport PCLBase
 from pcl_sample_consensus_172 cimport SacModel
-cimport pcl_surface_172 as pclsf
+cimport pcl_surface_172 as pcl_srf
 cimport pcl_kdtree_172 as pcl_kdt
 
 ##

@@ -10,6 +10,7 @@ from setuptools import setup, find_packages, Extension
 import subprocess
 import numpy
 import sys
+import platform
 import os
 import time
 
@@ -50,7 +51,7 @@ def pkgconfig_win(flag, cut):
     return stdout.decode().replace('\r\n', '').replace('\ ', ' ').replace('/', '\\').split(cut)
 
 
-if sys.platform == 'win32':
+if platform.system() == "Windows":
     # Check 32bit or 64bit
     is_64bits = sys.maxsize > 2**32
     # if is_64bits == True
@@ -489,24 +490,24 @@ if sys.platform == 'win32':
 
     if pcl_version == '-1.6':
         module = [Extension("pcl._pcl", ["pcl/_pcl.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
-                  Extension("pcl.pcl_visualization", [
-                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                  # Extension("pcl.pcl_visualization", [
+                  #     "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
                   ]
     elif pcl_version == '-1.7':
         module = [Extension("pcl._pcl", ["pcl/_pcl_172.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
-                  Extension("pcl.pcl_visualization", [
-                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                  # Extension("pcl.pcl_visualization", [
+                  #     "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
                   ]
     elif pcl_version == '-1.8':
         module = [Extension("pcl._pcl", ["pcl/_pcl_180.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
-                  Extension("pcl.pcl_visualization", [
-                      "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
+                  # Extension("pcl.pcl_visualization", [
+                  #     "pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,

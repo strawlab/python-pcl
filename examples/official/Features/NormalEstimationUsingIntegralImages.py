@@ -25,17 +25,18 @@ def main():
     print('set_NormalSmoothingSize: ')
     ne.set_NormalSmoothingSize(10.0)
     print('set OK')
-    print('compute2 - start')
-    normals = ne.compute2(cloud)
-    print('compute2 - end')
+    print('compute - start')
+    normals = ne.compute()
+    print('compute - end')
     print(str(normals.size))
+    print(normals.to_array())
 
     # visualize normals
     viewer = pcl.pcl_visualization.PCLVisualizering()
     viewer.SetBackgroundColor(0.0, 0.0, 0.5)
-    # viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(cloud, normals);
-    viewer.AddPointCloudNormals(cloud, normals)
-    # viewer.AddPointCloud(cloud)
+    # viewer.addPointCloudNormals<pcl::PointXYZ,pcl::Normal>(cloud, normals, b'normals');
+    viewer.AddPointCloud(cloud)
+    viewer.AddPointCloudNormals(cloud, normals, 10, 0.05, b'normals')
 
     flag = True
     while (flag):

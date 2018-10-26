@@ -15,7 +15,7 @@ cimport pcl_octree as pcl_oct
 cimport pcl_sample_consensus as pcl_sac
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pcl_seg
-cimport pcl_surface as pcl_sf
+cimport pcl_surface as pcl_srf
 cimport pcl_range_image as pcl_rim
 
 from libcpp cimport bool
@@ -157,7 +157,7 @@ cdef class PointCloud_ReferenceFrame:
                     new_orient[2],
                     new_orient[3])
 
-    # cdef inline PointCloud[ReferenceFrame] *thisptr(self):
+    # cdef inline PointCloud[ReferenceFrame] *thisptr(self) nogil:
     #     # Shortcut to get raw pointer to underlying PointCloud
     #     return self.thisptr_shared.get()
 
@@ -247,14 +247,14 @@ cdef class PointCloud_ReferenceFrame:
 
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
-
-        error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
+        with nogil:
+            error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
-
-        ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
+        with nogil:
+            ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -267,13 +267,14 @@ cdef class PointCloud_ReferenceFrame:
     def _to_pcd_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-
-        error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
+        with nogil:
+            error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
+       	with nogil:
+            error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 

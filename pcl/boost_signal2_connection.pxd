@@ -6,19 +6,19 @@ from libcpp cimport bool
 # Types
 ###############################################################################
 
-# cdef extern from "boost/signals2.hpp" namespace "boost":
+# cdef extern from "boost/signals2.hpp" namespace "boost" nogil:
 # http://www.boost.org/doc/libs/1_63_0/doc/html/signals2/reference.html#header.boost.signals2.connection_hpp
-cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
+cdef extern from "boost/signals2.hpp" namespace "boost::signals2" nogil:
     cdef cppclass connection[T]:
         connection()
 
-# cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
+# cdef extern from "boost/signals2.hpp" namespace "boost::signals2" nogil:
 #     cdef void swap(connection&, connection&)
 
-# cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
+# cdef extern from "boost/signals2.hpp" namespace "boost::signals2" nogil:
 #     cdef class scoped_connection;
 
-# cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
+# cdef extern from "boost/signals2.hpp" namespace "boost::signals2" nogil:
 #     cdef class deconstruct_access;
 #     cdef class postconstructor_invoker;
 #     cdef template<typename T> postconstructor_invoker<T> deconstruct();
@@ -26,7 +26,7 @@ cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
 #     cdef template<typename T, typename A1, typename A2> postconstructor_invoker<T> deconstruct(const A1 &, const A2 &);
 #     cdef template<typename T, typename A1, typename A2, ..., typename AN> postconstructor_invoker<T> deconstruct(const A1 &, const A2 &, ..., const AN &);
 
-# cdef extern from "boost/signals2.hpp" namespace "boost::signals2":
+# cdef extern from "boost/signals2.hpp" namespace "boost::signals2" nogil:
 #     cdef class dummy_mutex;
 
 # Header <boost/signals2/last_value.hpp>

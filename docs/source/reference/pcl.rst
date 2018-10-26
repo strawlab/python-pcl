@@ -13,14 +13,6 @@ pcl.pcl\_visualization module
     :undoc-members:
     :show-inheritance:
 
-pcl.registration module
------------------------
-
-.. automodule:: pcl.registration
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 
 Module contents
 ---------------
