@@ -331,7 +331,7 @@ cdef class PointCloud_PointXYZRGB:
         Return a pcl.MovingLeastSquares object with this object as input cloud.
         """
         mls = MovingLeastSquares_PointXYZRGB()
-        cdef pcl_sf.MovingLeastSquares_PointXYZRGB_t *cmls = <pcl_sf.MovingLeastSquares_PointXYZRGB_t *>mls.me
+        cdef pcl_srf.MovingLeastSquares_PointXYZRGB_t *cmls = <pcl_srf.MovingLeastSquares_PointXYZRGB_t *>mls.me
         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGB]]> self.thisptr_shared)
         return mls
 

@@ -15,7 +15,7 @@ cimport pcl_octree as pcl_oct
 cimport pcl_sample_consensus as pcl_sac
 # cimport pcl_search as pcl_sch
 cimport pcl_segmentation as pcl_seg
-cimport pcl_surface as pcl_suf
+cimport pcl_surface as pcl_srf
 cimport pcl_range_image as pcl_rim
 cimport pcl_registration_160 as pcl_reg
 
@@ -344,7 +344,7 @@ cdef class PointCloud_PointXYZI:
 #         Return a pcl.MovingLeastSquares object with this object as input cloud.
 #         """
 #         mls = MovingLeastSquares_PointXYZI()
-#         cdef pcl_sf.MovingLeastSquares_PointXYZI_t *cmls = <pcl_sf.MovingLeastSquares_PointXYZI_t *>mls.me
+#         cdef pcl_srf.MovingLeastSquares_PointXYZI_t *cmls = <pcl_srf.MovingLeastSquares_PointXYZI_t *>mls.me
 #         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
 #         return mls
 # 
