@@ -485,6 +485,7 @@ if platform.system() == "Windows":
     # use OpenMP
     # https://stackoverflow.com/questions/7844830/cython-openmp-compiler-flag
     # ext_args['extra_compile_args'].append('/openmp')
+    # ext_args['extra_link_args'].append('/openmp')
 
     print(ext_args)
 
@@ -593,17 +594,24 @@ else:
     # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
     # ext_args['extra_compile_args'].append("-stdlib=libc++")
     if sys.platform == 'darwin':
-        # gcc
+        # not use gcc?
         # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
-        # clang?
-        # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
-        # ext_args['extra_compile_args'].append("-mmacosx-version-min=10.6")
-        # ext_args['extra_compile_args'].append('-openmp')
+        # clang(min : 10.7?/10.9?)
+        # minimum deployment target of OS X 10.9
+        ext_args['extra_compile_args'].append("-stdlib=libc++")
+        ext_args['extra_compile_args'].append("-mmacosx-version-min=10.9")
+        ext_args['extra_link_args'].append("-stdlib=libc++")
+        ext_args['extra_link_args'].append("-mmacosx-version-min=10.9")
+        # ext_args['extra_compile_args'].append('-fopenmp')
+        # ext_args['extra_link_args'].append('-fopenmp')
         pass
     else:
-        # gcc4?
-        # or gcc5?
+        # gcc? use standard library
+        # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
+        # ext_args['extra_link_args'].append("-stdlib=libstdc++")
+        # clang use standard library
         # ext_args['extra_compile_args'].append("-stdlib=libc++")
+        # ext_args['extra_link_args'].append("-stdlib=libc++")
         pass
 
     for flag in pkgconfig('--libs-only-l'):
