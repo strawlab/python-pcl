@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: python-pcl 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-15 16:12+0900\n"
+"POT-Creation-Date: 2018-12-04 10:32+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -700,6 +700,14 @@ msgstr ""
 
 #: ../../source/tutorial/pcl.rst:2
 msgid "pcl"
+msgstr ""
+
+#: ../../source/tutorial/pcl.rst:9
+msgid "Functions"
+msgstr ""
+
+#: ../../source/tutorial/pcl.rst:30
+msgid "Classes"
 msgstr ""
 
 #: ../../source/tutorial/rangeImage.rst:2
