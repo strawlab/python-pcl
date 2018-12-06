@@ -8,44 +8,11 @@ cimport numpy as cnp
 
 cimport pcl_common as pcl_cmn
 cimport pcl_defs as cpp
-
-### DEFINE ###
-PCL_MAJOR_VERSION    = cpp.PCL_MAJOR_VERSION
-PCL_MINOR_VERSION    = cpp.PCL_MINOR_VERSION
-# not 1.6.0
-# PCL_REVISION_VERSION = cpp.PCL_REVISION_VERSION
-
-# if cpp.PCL_MINOR_VERSION == 8:
-#     if cpp.PCL_REVISION_VERSION == 0:
-#         DEF PCL_VERSION_DEFINE=180
-#     elif cpp.PCL_REVISION_VERSION == 1:
-#         DEF PCL_VERSION_DEFINE=181
-#     else:
-#         DEF PCL_VERSION_DEFINE=181
-# 
-# elif cpp.PCL_MINOR_VERSION == 7:
-#     if cpp.PCL_REVISION_VERSION == 0:
-#         DEF PCL_VERSION_DEFINE=170
-#     elif cpp.PCL_REVISION_VERSION == 2:
-#         DEF PCL_VERSION_DEFINE=172
-#     else:
-#         DEF PCL_VERSION_DEFINE=172
-# 
-# elif cpp.PCL_MINOR_VERSION == 6:
-#     if cpp.PCL_REVISION_VERSION == 0:
-#         DEF PCL_VERSION_DEFINE=160
-#     else:
-#         DEF PCL_VERSION_DEFINE=160
-# 
-# else:
-#     pass
-# 
-# IF PCL_VERSION_DEFINE == 160:
-#     include "pxi/pyx_cimport.pxi"
-# ELSE:
-#     pass
-
-include "pxi/pyx_cimport.pxi"
+cimport pcl_sample_consensus as pcl_sc
+cimport pcl_features as pcl_ftr
+cimport pcl_filters as pcl_fil
+cimport pcl_range_image as pcl_r_img
+cimport pcl_segmentation as pclseg
 
 cimport cython
 # from cython.operator import dereference as deref
@@ -58,6 +25,8 @@ from libcpp.string cimport string
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
+# cimport pcl_segmentation as pclseg
+
 from boost_shared_ptr cimport sp_assign
 
 cnp.import_array()
@@ -65,31 +34,31 @@ cnp.import_array()
 ### Enum ###
 
 ## Enum Setting
-SAC_RANSAC = pcl_sac.SAC_RANSAC
-SAC_LMEDS = pcl_sac.SAC_LMEDS
-SAC_MSAC = pcl_sac.SAC_MSAC
-SAC_RRANSAC = pcl_sac.SAC_RRANSAC
-SAC_RMSAC = pcl_sac.SAC_RMSAC
-SAC_MLESAC = pcl_sac.SAC_MLESAC
-SAC_PROSAC = pcl_sac.SAC_PROSAC
+SAC_RANSAC = pcl_sc.SAC_RANSAC
+SAC_LMEDS = pcl_sc.SAC_LMEDS
+SAC_MSAC = pcl_sc.SAC_MSAC
+SAC_RRANSAC = pcl_sc.SAC_RRANSAC
+SAC_RMSAC = pcl_sc.SAC_RMSAC
+SAC_MLESAC = pcl_sc.SAC_MLESAC
+SAC_PROSAC = pcl_sc.SAC_PROSAC
 
-SACMODEL_PLANE = pcl_sac.SACMODEL_PLANE
-SACMODEL_LINE = pcl_sac.SACMODEL_LINE
-SACMODEL_CIRCLE2D = pcl_sac.SACMODEL_CIRCLE2D
-SACMODEL_CIRCLE3D = pcl_sac.SACMODEL_CIRCLE3D
-SACMODEL_SPHERE = pcl_sac.SACMODEL_SPHERE
-SACMODEL_CYLINDER = pcl_sac.SACMODEL_CYLINDER
-SACMODEL_CONE = pcl_sac.SACMODEL_CONE
-SACMODEL_TORUS = pcl_sac.SACMODEL_TORUS
-SACMODEL_PARALLEL_LINE = pcl_sac.SACMODEL_PARALLEL_LINE
-SACMODEL_PERPENDICULAR_PLANE = pcl_sac.SACMODEL_PERPENDICULAR_PLANE
-SACMODEL_PARALLEL_LINES = pcl_sac.SACMODEL_PARALLEL_LINES
-SACMODEL_NORMAL_PLANE = pcl_sac.SACMODEL_NORMAL_PLANE 
-SACMODEL_NORMAL_SPHERE = pcl_sac.SACMODEL_NORMAL_SPHERE
-SACMODEL_REGISTRATION = pcl_sac.SACMODEL_REGISTRATION
-SACMODEL_PARALLEL_PLANE = pcl_sac.SACMODEL_PARALLEL_PLANE
-SACMODEL_NORMAL_PARALLEL_PLANE = pcl_sac.SACMODEL_NORMAL_PARALLEL_PLANE
-SACMODEL_STICK = pcl_sac.SACMODEL_STICK
+SACMODEL_PLANE = pcl_sc.SACMODEL_PLANE
+SACMODEL_LINE = pcl_sc.SACMODEL_LINE
+SACMODEL_CIRCLE2D = pcl_sc.SACMODEL_CIRCLE2D
+SACMODEL_CIRCLE3D = pcl_sc.SACMODEL_CIRCLE3D
+SACMODEL_SPHERE = pcl_sc.SACMODEL_SPHERE
+SACMODEL_CYLINDER = pcl_sc.SACMODEL_CYLINDER
+SACMODEL_CONE = pcl_sc.SACMODEL_CONE
+SACMODEL_TORUS = pcl_sc.SACMODEL_TORUS
+SACMODEL_PARALLEL_LINE = pcl_sc.SACMODEL_PARALLEL_LINE
+SACMODEL_PERPENDICULAR_PLANE = pcl_sc.SACMODEL_PERPENDICULAR_PLANE
+SACMODEL_PARALLEL_LINES = pcl_sc.SACMODEL_PARALLEL_LINES
+SACMODEL_NORMAL_PLANE = pcl_sc.SACMODEL_NORMAL_PLANE 
+SACMODEL_NORMAL_SPHERE = pcl_sc.SACMODEL_NORMAL_SPHERE
+SACMODEL_REGISTRATION = pcl_sc.SACMODEL_REGISTRATION
+SACMODEL_PARALLEL_PLANE = pcl_sc.SACMODEL_PARALLEL_PLANE
+SACMODEL_NORMAL_PARALLEL_PLANE = pcl_sc.SACMODEL_NORMAL_PARALLEL_PLANE
+SACMODEL_STICK = pcl_sc.SACMODEL_STICK
 
 ### Enum Setting(define Class InternalType) ###
 
@@ -121,8 +90,8 @@ cdef class _CythonCoordinateFrame_Type:
         readonly int LASER_FRAME
 
     def __cinit__(self):
-        self.CAMERA_FRAME = pcl_rim.COORDINATEFRAME_CAMERA
-        self.LASER_FRAME = pcl_rim.COORDINATEFRAME_LASER
+        self.CAMERA_FRAME = pcl_r_img.COORDINATEFRAME_CAMERA
+        self.LASER_FRAME = pcl_r_img.COORDINATEFRAME_LASER
 
 CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 
@@ -160,69 +129,6 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 # CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
 ###
 
-# ok.
-# use DEF Paramater
-# DEF PCL_INCLUDE_MINOR_VERSION = 8
-# IF PCL_VERSION_DEFINE == 180:
-#   include "pxi/pxiInclude_180.pxi"
-#   include "pxi/PointCloud_PointXYZ_180.pxi"
-#   include "pxi/PointCloud_PointXYZI_180.pxi"
-#   include "pxi/PointCloud_PointXYZRGB_180.pxi"
-#   include "pxi/PointCloud_PointXYZRGBA_180.pxi"
-# ELIF PCL_VERSION_DEFINE == 181:
-#   include "pxi/pxiInclude_180.pxi"
-#   include "pxi/PointCloud_PointXYZ_180.pxi"
-#   include "pxi/PointCloud_PointXYZI_180.pxi"
-#   include "pxi/PointCloud_PointXYZRGB_180.pxi"
-#   include "pxi/PointCloud_PointXYZRGBA_180.pxi"
-# ELIF PCL_VERSION_DEFINE == 170:
-#   include "pxi/pxiInclude_170.pxi"
-#   include "pxi/PointCloud_PointXYZ_172.pxi"
-#   include "pxi/PointCloud_PointXYZI_172.pxi"
-#   include "pxi/PointCloud_PointXYZRGB_172.pxi"
-#   include "pxi/PointCloud_PointXYZRGBA_172.pxi"
-# ELIF PCL_VERSION_DEFINE == 172:
-#   include "pxi/pxiInclude_172.pxi"
-#   include "pxi/PointCloud_PointXYZ_172.pxi"
-#   include "pxi/PointCloud_PointXYZI_172.pxi"
-#   include "pxi/PointCloud_PointXYZRGB_172.pxi"
-#   include "pxi/PointCloud_PointXYZRGBA_172.pxi"
-# ELIF PCL_VERSION_DEFINE == 160:
-#   include "pxi/pxiInclude.pxi"
-#   include "pxi/PointCloud_PointXYZ.pxi"
-#   include "pxi/PointCloud_PointXYZI.pxi"
-#   include "pxi/PointCloud_PointXYZRGB.pxi"
-#   include "pxi/PointCloud_PointXYZRGBA.pxi"
-#   # Add PointCloud2
-#   # include "pxi/PointCloud_PointCloud2.pxi"
-# ELSE:
-#   pass
-
-# ng.
-# if PCL_INCLUDE_MINOR_VERSION == 8:
-#     include "pxi/pxiInclude_180.pxi"
-#     include "pxi/PointCloud_PointXYZ_180.pxi"
-#     include "pxi/PointCloud_PointXYZI_180.pxi"
-#     include "pxi/PointCloud_PointXYZRGB_180.pxi"
-#     include "pxi/PointCloud_PointXYZRGBA_180.pxi"
-# elif PCL_INCLUDE_MINOR_VERSION == 7:
-#     include "pxi/pxiInclude_170.pxi"
-#     include "pxi/PointCloud_PointXYZ_170.pxi"
-#     include "pxi/PointCloud_PointXYZI_170.pxi"
-#     include "pxi/PointCloud_PointXYZRGB_170.pxi"
-#     include "pxi/PointCloud_PointXYZRGBA_170.pxi"
-# elif PCL_INCLUDE_MINOR_VERSION == 6:
-#     include "pxi/pxiInclude.pxi"
-#     include "pxi/PointCloud_PointXYZ.pxi"
-#     include "pxi/PointCloud_PointXYZI.pxi"
-#     include "pxi/PointCloud_PointXYZRGB.pxi"
-#     include "pxi/PointCloud_PointXYZRGBA.pxi"
-#     # Add PointCloud2
-#     # include "pxi/PointCloud_PointCloud2.pxi"
-# else:
-#     pass
-
-
 include "pxi/pxiInclude.pxi"
 
 include "pxi/PointCloud_PointXYZ.pxi"
@@ -254,4 +160,5 @@ def rad2deg(float alpha):
 # Build NG
 # def copyPointCloud(_pcl.PointCloud cloud_in, indices, _pcl.PointCloud cloud_out):
 #     pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_in.thisptr_shared, <vector[int]> indices, <cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_out.thisptr_shared)
+
 

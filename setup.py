@@ -596,8 +596,10 @@ else:
         # gcc
         # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
         # clang?
-        # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
-        # ext_args['extra_compile_args'].append("-mmacosx-version-min=10.6")
+        ext_args['extra_compile_args'].append("-stdlib=libc++")
+        ext_args['extra_compile_args'].append("-mmacosx-version-min=10.9")
+        ext_args['extra_link_args'].append("-stdlib=libc++")
+        ext_args['extra_link_args'].append("-mmacosx-version-min=10.9")
         # ext_args['extra_compile_args'].append('-openmp')
         pass
     else:

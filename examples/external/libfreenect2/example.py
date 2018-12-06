@@ -1,5 +1,5 @@
 # coding: utf-8
-# before install libfreenect2 & pylibfreenect2
+
 import numpy as np
 # import cv2
 import pcl
