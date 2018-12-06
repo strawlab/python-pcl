@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: python-pcl 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-15 16:12+0900\n"
+"POT-Creation-Date: 2018-12-04 10:32+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,45 @@ msgstr ""
 msgid "pcl.pcl\\_visualization module"
 msgstr ""
 
+#: ../../docstring of pcl.pcl_visualization.CloudViewing:1
+#: pcl.pcl_visualization.PCLHistogramViewing:1
+#: pcl.pcl_visualization.PCLVisualizering:1
+#: pcl.pcl_visualization.PointCloudColorHandleringCustom:1
+#: pcl.pcl_visualization.PointCloudColorHandleringGenericField:1
+#: pcl.pcl_visualization.PointCloudColorHandleringHSVField:1
+#: pcl.pcl_visualization.PointCloudColorHandleringRGBField:1
+#: pcl.pcl_visualization.PointCloudColorHandleringRandom:1
+#: pcl.pcl_visualization.PointCloudGeometryHandlerCustom:1
+#: pcl.pcl_visualization.PointCloudGeometryHandleringCustom:1
+#: pcl.pcl_visualization.PointCloudGeometryHandleringSurfaceNormal:1
+#: pcl.pcl_visualization.PointCloudGeometryHandleringXYZ:1
+msgid "Bases: :class:`object`"
+msgstr ""
+
 #: ../../source/reference/pcl.rst:18
 msgid "Module contents"
+msgstr ""
+
+#: of pcl.load:1
+msgid "Load pointcloud from path."
+msgstr ""
+
+#: of pcl.load:3
+msgid ""
+"Currently supports PCD and PLY files. Format should be \"pcd\", \"ply\", "
+"\"obj\", or None to infer from the pathname."
+msgstr ""
+
+#: of pcl.load_PointWithViewpoint:1 pcl.load_XYZI:1 pcl.load_XYZRGB:1
+#: pcl.load_XYZRGBA:1
+msgid ""
+"Load pointcloud from path. Currently supports PCD and PLY files. Format "
+"should be \"pcd\", \"ply\", \"obj\", or None to infer from the pathname."
+msgstr ""
+
+#: of pcl.save:1 pcl.save_PointNormal:1 pcl.save_XYZRGBA:1
+msgid ""
+"Save pointcloud to file. Format should be \"pcd\", \"ply\", or None to "
+"infer from the pathname."
 msgstr ""
 
