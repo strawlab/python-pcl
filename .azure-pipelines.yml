@@ -1,0 +1,89 @@
+resources:
+  containers:
+    - container: env1604
+      image: pointcloudlibrary/env:16.04
+    - container: doc
+      image: pointcloudlibrary/doc
+
+jobs:
+  - job: ubuntu1604
+    displayName: Ubuntu 16.04 Build
+    timeoutInMinutes: 0
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    container: env1604
+    variables:
+      BUILD_DIR: '$(Agent.BuildDirectory)/build'
+      CMAKE_CXX_FLAGS: '-Wall -Wextra -Wabi -O2'
+    steps:
+      - script: |
+          mkdir $BUILD_DIR && cd $BUILD_DIR
+          cmake $(Build.SourcesDirectory) \
+            -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" \
+            -DPCL_ONLY_CORE_POINT_TYPES=ON \
+            -DPCL_QT_VERSION=5 \
+            -DBUILD_simulation=ON \
+            -DBUILD_global_tests=ON \
+            -DBUILD_examples=ON \
+            -DBUILD_tools=ON \
+            -DBUILD_apps=ON \
+            -DBUILD_apps_3d_rec_framework=ON \
+            -DBUILD_apps_cloud_composer=ON \
+            -DBUILD_apps_in_hand_scanner=ON \
+            -DBUILD_apps_modeler=ON \
+            -DBUILD_apps_point_cloud_editor=ON
+        displayName: 'CMake Configuration'
+      - script: |
+          cd $BUILD_DIR
+          # Compiling some of the test targets with -j2 option leads to pipeline failures
+          # (presumably out of memory error). Thus we make them separately in a single
+          # thread mode. Their corresponding modules are built before with the -j2 mode
+          # to make the process faster.
+          cmake --build . -- -j2 pcl_filters pcl_registration
+          cmake --build . -- test_filters test_registration test_registration_api
+          cmake --build . -- -j2
+        displayName: 'Build Library'
+      - script: cd $BUILD_DIR && cmake --build . -- tests
+        displayName: 'Run Unit Tests'
+  - job: documentation
+    displayName: Generate Documentation
+    pool:
+      vmImage: 'Ubuntu 16.04'
+    container: doc
+    variables:
+      BUILD_DIR: '$(Agent.BuildDirectory)/build'
+      DOC_DIR: '$(Agent.BuildDirectory)/documentation'
+    steps:
+      - task: InstallSSHKey@0
+        inputs:
+          hostName: github.com
+          sshPublicKey: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBh5Yrau/gguTfoNALxhVX77Pgz6y6UWoJRERMKR68ee documentation@pointclouds.org
+          sshKeySecureFile: id_ed25519
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.6'
+          addToPath: true
+      - script: |
+          mkdir $BUILD_DIR && cd $BUILD_DIR
+          cmake $(Build.SourcesDirectory) \
+                   -DDOXYGEN_USE_SHORT_NAMES=OFF \
+                   -DSPHINX_HTML_FILE_SUFFIX=php \
+                   -DWITH_DOCS=ON \
+                   -DWITH_TUTORIALS=ON
+        displayName: 'CMake Configuration'
+      - script: cd $BUILD_DIR && make doc tutorials advanced
+        displayName: 'Build Documentation'
+      - script: |
+          git config --global user.email "documentation@pointclouds.org"
+          git config --global user.name "PointCloudLibrary (via Azure Pipelines)"
+          echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+          git clone git@github.com:PointCloudLibrary/documentation.git $DOC_DIR
+          cd $DOC_DIR
+          cp -r $BUILD_DIR/doc/tutorials/html/* tutorials
+          cp -r $BUILD_DIR/doc/advanced/html/* advanced
+          cp -r $BUILD_DIR/doc/doxygen/html/* .
+          git add --all
+          git commit --amend --reset-author -m 'Documentation for commit $(Build.SourceVersion)' -q
+          git push --force
+        displayName: 'Push Generated Documentation To GitHub'
+        condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
