@@ -75,6 +75,27 @@ environment:
     APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
     NOSEATTR: "not pcl_ver_0_4"
 
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+    PYTHON: "C:\\Miniconda36-x64"
+    PYTHON_VERSION: "3.6"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.9.1"
+    PCL_VERSION: "1.9"
+    OPENNI_VERSION: "2.2"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist\\"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
+    NOSEATTR: "not pcl_ver_0_4"
+
+  - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    PYTHON: "C:\\Miniconda36-x64"
+    PYTHON_VERSION: "3.6"
+    PYTHON_ARCH: "64"
+    PCL_ROOT: "C:\\Program Files\\PCL 1.9.1"
+    PCL_VERSION: "1.9"
+    OPENNI_VERSION: "2.2"
+    OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist\\"
+    APPVEYOR_OPENNI_ROOT: ".\\AppVeyor\\OpenNI2\\x64\\Redist"
+    NOSEATTR: "not pcl_ver_0_4"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
@@ -166,7 +187,7 @@ test_script:
   # - python examples\official\Segmentation\cylinder_segmentation.py
   # - python examples\official\surface\concave_hull_2d.py
   # - python examples\official\surface\resampling.py
-  
+
 after_test:
   # If tests are successful, create binary packages for the project.
   - "%CMD_IN_ENV% python setup.py bdist_wheel"

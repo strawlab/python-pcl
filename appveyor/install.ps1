@@ -154,14 +154,14 @@ function DownloadPCL ($pcl_version, $platform_suffix, $msvc_version)
     }
     elseif ($major -le 1 -and $minor -eq 9)
     {
-        $dir = "$major.$minor.micro"
+        # $dir = "$major.$minor.micro"
         # 2015? or 2017?
+        # fix 1.9.1
+        $dir = "$major.$minor.1"
         $msvcver = "msvc" + "$msvc_version"
-        
-        $msvcver = "msvc" + "$msvc_version"
-        
+
         $filename = "PCL-" + "$dir" + "-AllInOne-" + "$msvcver" + "-" + "$platform_suffix.exe"
-        
+
         $url = "$BASE_PCL_URL" + "/pcl-" + "$dir" + "/" + "$filename"
     }
     else
