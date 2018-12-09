@@ -62,7 +62,8 @@ class TestConditionalRemoval(unittest.TestCase):
         # self.p = pcl.load("tests" + os.path.sep + "flydracyl.pcd")
         # self.p = pcl.PointCloud(_data)
         self.p = pcl.PointCloud(_data2)
-        self.fil = self.p.make_ConditionalRemoval(pcl.ConditionAnd())
+        self.fil = self.p.make_ConditionalRemoval()
+        self.fil.set_Condition(pcl.ConditionAnd())
 
     # result
     # nan nan nan

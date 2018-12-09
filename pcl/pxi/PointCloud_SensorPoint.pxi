@@ -466,10 +466,22 @@ cdef class PointCloud2:
         cdef pclfil.ConditionAnd_t *cCondAnd = <pclfil.ConditionAnd_t *>condAnd.me
         return condAnd
 
+    def make_ConditionalRemoval(self):
+        """
+        Return a pcl.ConditionalRemoval object with this object set as the input-cloud
+        """
+        condRemoval = ConditionalRemoval()
+        cdef pclfil.ConditionalRemoval_t *cCondRemoval = <pclfil.ConditionalRemoval_t *>condRemoval.me
+        cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)
+        return condRemoval
+
     def make_ConditionalRemoval(self, ConditionAnd range_conf):
         """
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
+        warn("constructor with condition is deprecated, use setCondition()",
+                DeprecationWarning)
+
         condRemoval = ConditionalRemoval(range_conf)
         cdef pclfil.ConditionalRemoval_t *cCondRemoval = <pclfil.ConditionalRemoval_t *>condRemoval.me
         cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud2[cpp.PointXYZ]]> self.thisptr_shared)

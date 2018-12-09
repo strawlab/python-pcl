@@ -19,7 +19,14 @@ cdef class ConditionalRemoval:
     def __cinit__(self, ConditionAnd cond):
         # self.me = new pclfil.ConditionalRemoval_t(<pclfil.ConditionBase_t*>cond.me)
         # direct - NG
-        self.me = new pclfil.ConditionalRemoval_t(<pclfil.ConditionBasePtr_t>cond.me)
+        from warnings import warn
+        warn("constructor with condition is deprecated, use setCondition()",
+                DeprecationWarning)
+        self.me = new pclfil.ConditionalRemoval_t()
+        self.me.setCondition(<pclfil.ConditionBasePtr_t>cond.me)
+
+    def __cinit__(self):
+        self.me = new pclfil.ConditionalRemoval_t()
 
     # def __dealloc__(self):
     #    # MemoryAccessError
@@ -28,6 +35,9 @@ cdef class ConditionalRemoval:
 
     def set_KeepOrganized(self, flag):
         self.me.setKeepOrganized(flag)
+
+    def set_Condition(self, ConditionAnd cond):
+        self.me.setCondition(<pclfil.ConditionBasePtr_t>cond.me)
 
     def filter(self):
         """
