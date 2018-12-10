@@ -4,16 +4,30 @@ jobs:
     timeoutInMinutes: 0
     pool:
       vmImage: 'Ubuntu 16.04'
+    strategy:
+      matrix:
+        Python27:
+          python.version: '2.7'
+        Python35:
+          python.version: '3.5'
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
     variables:
       BUILD_DIR: '$(Agent.BuildDirectory)/build'
     steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '$(python.version)'
+          architecture: 'x64'
       - script: |
-          apt-get install openni2-utils
-          add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
-          apt-get update -y
-          apt-get install libpcl-all -y
+          sudo apt-get install openni2-utils
+          sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+          sudo apt-get update -y
+          sudo apt-get install libpcl-all -y
+          python -m pip install --upgrade pip && pip install -r requirements.txt
           pip install setuptools
-          pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
           python setup.py build_ext -i
@@ -26,13 +40,23 @@ jobs:
     timeoutInMinutes: 0
     pool:
       vmImage: 'macOS-10.13'
+    strategy:
+      matrix:
+        Python27:
+          python.version: '2.7'
+        Python35:
+          python.version: '3.5'
+        Python36:
+          python.version: '3.6'
+        Python37:
+          python.version: '3.7'
     variables:
       BUILD_DIR: '$(Agent.BuildDirectory)/build'
     steps:
       - script: |
-          brew install pcl
+          sudo brew install pcl
+          python -m pip install --upgrade pip && pip install -r requirements.txt
           pip install setuptools
-          pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
           mkdir $BUILD_DIR && cd $BUILD_DIR
@@ -104,12 +128,12 @@ jobs:
       #   displayName: 'Free up space'
       - script: |
           SET PATH=%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%
-          powershell  -NoProfile -ExecutionPolicy Unrestricted .\appveyor\install.ps1
-          cd pkg-config
-          powershell  -NoProfile -ExecutionPolicy Unrestricted .\Install-GTKPlus.ps1
-          cd ..
+          powershell -NoProfile -ExecutionPolicy Unrestricted .\appveyor\install.ps1
+          pushd pkg-config
+          powershell -NoProfile -ExecutionPolicy Unrestricted .\Install-GTKPlus.ps1
+          popd
+          python -m pip install --upgrade pip && pip install -r requirements.txt
           pip install setuptools
-          pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
           python setup.py build_ext -i
