@@ -104,15 +104,15 @@ jobs:
       #   displayName: 'Free up space'
       - script: |
           SET PATH=%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%
-          powershell  -NoProfile -ExecutionPolicy Unrestricted  .\appveyor\install.ps1
+          powershell  -NoProfile -ExecutionPolicy Unrestricted .\appveyor\install.ps1
           cd pkg-config
-          powershell  -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1
+          powershell  -NoProfile -ExecutionPolicy Unrestricted .\Install-GTKPlus.ps1
           cd ..
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
-        python setup.py build_ext -i
-        python setup.py install
+          python setup.py build_ext -i
+          python setup.py install
         displayName: 'Build Library'
       - script: nosetests
         displayName: 'Run Unit Tests'
