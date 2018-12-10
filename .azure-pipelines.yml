@@ -104,9 +104,9 @@ jobs:
       #   displayName: 'Free up space'
       - script: |
           SET PATH=%PCL_ROOT%\\bin;%PCL_ROOT%\\3rdParty\\VTK\\bin;%OPENNI_ROOT%;%PATH%
-          ps : appveyor\install.ps1
+          powershell  -NoProfile -ExecutionPolicy Unrestricted  .\appveyor\install.ps1
           cd pkg-config
-          ps : .\Install-GTKPlus.ps1
+          powershell  -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1
           cd ..
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
