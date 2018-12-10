@@ -127,7 +127,7 @@ before_install:
 # eval "${MATRIX_EVAL}";
 install:
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) ]]; then
-      sudo apt-get install openni2-utils
+      sudo apt-get install openni2-utils;
 
       sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
       sudo apt-get update -y;
