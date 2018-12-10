@@ -12,7 +12,7 @@ jobs:
           add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
           apt-get update -y
           apt-get install libpcl-all -y
-          pip install -y -q setuptools
+          pip install setuptools
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
@@ -31,7 +31,7 @@ jobs:
     steps:
       - script: |
           brew install pcl
-          pip install -y -q setuptools
+          pip install setuptools
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
@@ -108,7 +108,7 @@ jobs:
           cd pkg-config
           powershell  -NoProfile -ExecutionPolicy Unrestricted .\Install-GTKPlus.ps1
           cd ..
-          pip install -y -q setuptools
+          pip install setuptools
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
