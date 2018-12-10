@@ -6,13 +6,13 @@ jobs:
       vmImage: 'Ubuntu 16.04'
     variables:
       BUILD_DIR: '$(Agent.BuildDirectory)/build'
-      CMAKE_CXX_FLAGS: '-Wall -Wextra -Wabi -O2'
     steps:
       - script: |
           apt-get install openni2-utils
           add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
           apt-get update -y
           apt-get install libpcl-all -y
+          pip install -y -q setuptools
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
@@ -28,10 +28,10 @@ jobs:
       vmImage: 'macOS-10.13'
     variables:
       BUILD_DIR: '$(Agent.BuildDirectory)/build'
-      CMAKE_CXX_FLAGS: '-Wall -Wextra -Wabi -O2'
     steps:
       - script: |
           brew install pcl
+          pip install -y -q setuptools
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
@@ -108,6 +108,7 @@ jobs:
           cd pkg-config
           powershell  -NoProfile -ExecutionPolicy Unrestricted .\Install-GTKPlus.ps1
           cd ..
+          pip install -y -q setuptools
           pip install -r requirements.txt
         displayName: 'Install Dependencies'
       - script: |
