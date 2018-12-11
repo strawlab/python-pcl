@@ -14,8 +14,6 @@ jobs:
           python.version: '3.6'
         Python37:
           python.version: '3.7'
-    variables:
-      BUILD_DIR: '$(Agent.BuildDirectory)/build'
     steps:
       - task: UsePythonVersion@0
         inputs:
@@ -28,8 +26,8 @@ jobs:
           # sudo apt-get update -y
           # sudo apt-get install libpcl-all -y
           # 16.04(https://qiita.com/TEWi_R/items/941acb2af690f8f184a1)
-          sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev
-          sudo apt install libpcl-dev
+          # sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev -y
+          sudo apt install libpcl-dev -y
           python -m pip install --upgrade pip && pip install -r requirements.txt
           pip install setuptools
         displayName: 'Install Dependencies'
@@ -54,12 +52,11 @@ jobs:
           python.version: '3.6'
         Python37:
           python.version: '3.7'
-    variables:
-      BUILD_DIR: '$(Agent.BuildDirectory)/build'
     steps:
       - script: |
-          sudo brew install pcl
-          python -m pip install --upgrade pip && pip install -r requirements.txt
+          brew install pcl
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
           pip install setuptools
         displayName: 'Install Dependencies'
       - script: |
@@ -73,7 +70,7 @@ jobs:
     pool:
       vmImage: 'Ubuntu 16.04'
     variables:
-      BUILD_DIR: '$(Agent.BuildDirectory)/docs'
+      BUILD_DIR: '$(Agent.sourcesDirectory)/docs'
     steps:
       - task: UsePythonVersion@0
         inputs:
