@@ -26,7 +26,7 @@ jobs:
           # sudo apt-get update -y
           # sudo apt-get install libpcl-all -y
           # 16.04(https://qiita.com/TEWi_R/items/941acb2af690f8f184a1)
-          # sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev -y
+          sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev -y
           sudo apt install libpcl-dev -y
           python -m pip install --upgrade pip && pip install -r requirements.txt
           pip install setuptools
@@ -54,6 +54,7 @@ jobs:
           python.version: '3.7'
     steps:
       - script: |
+          brew install pkg-config
           brew install pcl
           python -m pip install --upgrade pip
           pip install -r requirements.txt
@@ -65,26 +66,6 @@ jobs:
         displayName: 'Build Library'
       - script: nosetests
         displayName: 'Run Unit Tests'
-  - job: documentation
-    displayName: Generate Documentation
-    pool:
-      vmImage: 'Ubuntu 16.04'
-    variables:
-      BUILD_DIR: '$(Agent.sourcesDirectory)/docs'
-    steps:
-      - task: UsePythonVersion@0
-        inputs:
-          versionSpec: '3.6'
-          addToPath: true
-      - script: |
-          pip install -r requirements-docs.txt
-        displayName: 'Install Dependencies'
-      - script: |
-          cd $BUILD_DIR
-          make html
-        displayName: 'Build Documentation'
-      - script: |
-        displayName: 'Push Generated Documentation To Read the Docs'
   - job: vs2017
     displayName: Windows VS2017 Build
     timeoutInMinutes: 0
@@ -96,19 +77,21 @@ jobs:
           PLATFORM: 'x86'
           ARCHITECTURE: 'x86'
           GENERATOR: 'Visual Studio 15 2017'
+          PCL_ROOT: 'C:\Program Files (x86)\PCL 1.9.1'
+          OPENNI_ROOT: '%ProgramFiles(x86)%\OpenNI2\Redist\'
         x64:
           PLATFORM: 'x64'
           ARCHITECTURE: 'x86_amd64'
           GENERATOR: 'Visual Studio 15 2017 Win64'
+          PCL_ROOT: 'C:\Program Files\PCL 1.9.1'
+          OPENNI_ROOT: 'C:\Program Files\OpenNI2\Redist\'
     variables:
       # BUILD_DIR: '$(Agent.WorkFolder)\build'
       # VCPKG_DIR: '$(Agent.WorkFolder)\vcpkg'
       VCVARSALL: '%ProgramFiles(x86)%\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvarsall.bat'
       CONFIGURATION: 'Release'
-      PCL_ROOT: "C:\\Program Files\\PCL 1.9.1"
       PCL_VERSION: "1.9"
       OPENNI_VERSION: "2.2"
-      OPENNI_ROOT: "C:\\Program Files\\OpenNI2\\Redist\\"
       NOSEATTR: "not pcl_ver_0_4"
     steps:
       # - script: |
