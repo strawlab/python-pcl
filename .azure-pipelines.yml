@@ -23,9 +23,13 @@ jobs:
           architecture: 'x64'
       - script: |
           sudo apt-get install openni2-utils
-          sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
-          sudo apt-get update -y
-          sudo apt-get install libpcl-all -y
+          # 14.04
+          # sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+          # sudo apt-get update -y
+          # sudo apt-get install libpcl-all -y
+          # 16.04(https://qiita.com/TEWi_R/items/941acb2af690f8f184a1)
+          sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev
+          sudo apt install libpcl-dev
           python -m pip install --upgrade pip && pip install -r requirements.txt
           pip install setuptools
         displayName: 'Install Dependencies'
@@ -59,7 +63,6 @@ jobs:
           pip install setuptools
         displayName: 'Install Dependencies'
       - script: |
-          mkdir $BUILD_DIR && cd $BUILD_DIR
           python setup.py build_ext -i
           python setup.py install
         displayName: 'Build Library'
