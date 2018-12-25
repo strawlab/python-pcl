@@ -8,7 +8,7 @@ Recommended Environments
 
 We recommend Windows and these Linux distributions.
 
-* `Ubuntu <http://www.ubuntu.com/>`_ 14.04/16.04/18.04 64bit
+* `Ubuntu <http://www.ubuntu.com/>`_ 16.04/18.04 64bit
 * `MacOS <https://www.apple.com/macos/>`_ 10.9/10.10/10.11/10.12
 * `Windows <https://www.microsoft.com/>`_ 7/8.1/10 64bit
 
@@ -21,17 +21,14 @@ This is typical installation method for each platform::
 
   Linux(Ubuntu)
 
-  PCL 1.7.0(use apt-get)
+  PCL 1.7.2(use apt)
 
   1.Install PCL Module.
 
-  $ sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+  $ sudo apt install libpcl-dev -y
 
-  $ sudo apt-get update -y
+  Reference <https://packages.ubuntu.com/search?keywords=libpcl-dev>
 
-  $ sudo apt-get install libpcl-all -y
-
- 
   PCL 1.8.0 (build module)([CI Test Timeout])
 
   1.Build Module

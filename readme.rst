@@ -76,16 +76,22 @@ This work was supported by `Strawlab <http://strawlab.org/>`_.
 Requirements
 ============
 
-This release has been tested on Linux Ubuntu 14.04 with
+This release has been tested on Linux Ubuntu 16.04 with
 
- * Python 2.7.6, 3.4.0, 3.5.2
- * pcl 1.7.0(apt install)
+ * Python 2.7.6, 3.5.x
+ * pcl 1.7.2(apt install)
+ * Cython <= 0.25.2
+
+This release has been tested on Linux Ubuntu 18.04 with
+
+ * Python 2.7.6, 3.5.x
+ * pcl 1.8.1(apt install)
  * Cython <= 0.25.2
 
 and MacOS with
 
- * Python 2.7.6, 3.4.0, 3.5.2
- * pcl 1.8.1(use homebrew)
+ * Python 2.7.6, 3.5.x
+ * pcl 1.9.1(use homebrew)
  * Cython <= 0.25.2
 
 and Windows with
@@ -119,48 +125,25 @@ Linux(Ubuntu)
 before Install module
 ^^^^^^^^^^^^^^^^^^^^^
 
-    PCL 1.7.0 and Ubuntu14.04 (use apt-get)
+    Ubuntu16.04/18.04 (use official package)
 
         1. Install PCL Module.
 
-        .. code-block:: none
+        .. code-block:: bash
 
-            sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
+            $ sudo apt-get update -y
 
-            sudo apt-get update -y
+            $ sudo apt-get install libpcl-dev -y
 
-            sudo apt-get install libpcl-all -y
-
-
-    PCL 1.7.2 and Ubuntu16.04 (use Debian package)
-
-        1. Install PCL Module.?
-
-        .. code-block:: none
-
-            sudo apt-get update -y
-
-            sudo apt-get install build-essential devscripts
-
-            dget -u https://launchpad.net/ubuntu/+archive/primary/+files/pcl_1.7.2-14ubuntu1.16.04.1.dsc
-
-            cd pcl-1.7.2
-
-            sudo dpkg-buildpackage -r -uc -b
-
-            sudo dpkg -i pcl_*.deb
-
-            * current add ppa 
-              (sudo add-apt-repository -remove ppa:v-launchpad-jochen-sprickerhof-de/pcl -y)
-
-            Reference `here <https://launchpad.net/ubuntu/xenial/+package/pcl-tools>`_.
+            Reference `here <https://packages.ubuntu.com/search?keywords=libpcl-dev>`_.
 
 
-    PCL 1.8.0 and Ubuntu16.04(build module)([CI Test Timeout])
+    PCL 1.8.x/1.9.x and Ubuntu16.04/18.04(build module)([CI Test Timeout])
 
         1. Build Module
 
             Reference `here <https://askubuntu.com/questions/916260/how-to-install-point-cloud-library-v1-8-pcl-1-8-0-on-ubuntu-16-04-2-lts-for>`_.
+
 
 MacOSX
 ------
@@ -168,15 +151,32 @@ MacOSX
 before Install module
 ^^^^^^^^^^^^^^^^^^^^^
 
-        Case1. use homebrew(PCL 1.8.1 - 2017/11/13 current)
+        Case1. use homebrew(PCL 1.9.1 - 2018/12/25 current)
 
         1. Install PCL Module.
 
-            .. code-block:: none
+            .. code-block:: bash
 
-            brew tap homebrew/science
+            $ brew tap homebrew/science
 
-            brew install pcl
+            $ brew install pcl
+
+
+        Case1. use old homebrew(PCL 1.8.1 - 2017/11/13 current)
+
+        1. Check git log.
+
+            .. code-block:: bash
+
+            $ cd /usr/local/Library/Formula
+
+            $ git log ...
+
+        2. git checkout (target hash) pcl.rb
+
+            .. code-block:: bash
+
+            write after.
 
 Warning:
 
@@ -198,23 +198,23 @@ Windows
 Using pip with a precompiled wheel
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-	This is the simpliest method on windows. The wheel contains the PCL binaries and thus you do not need to install the original PCL library.
-	
-	1. Go in the history on the `appveyor page <https://ci.appveyor.com/project/Sirokujira/python-pcl-iju42/history>`_
-	2. Click on the last successful revision (green) and click on the job corresponding to your python version 
-	3. Go in the artfacts section for that job and download the wheel (the file with extension whl)
-	4. In the command line, move to your download folder and run the following command (replacing XXX by the right string)	
-	
-.. code-block:: none
+    This is the simpliest method on windows. The wheel contains the PCL binaries _ 
+    and thus you do not need to install the original PCL library.
 
-			pip install python_pcl-XXX.whl
-	
-		
+    1. Go in the history on the `appveyor page <https://ci.appveyor.com/project/Sirokujira/python-pcl-iju42/history>`_
+    2. Click on the last successful revision (green) and click on the job corresponding to your python version 
+    3. Go in the artfacts section for that job and download the wheel (the file with extension whl)
+    4. In the command line, move to your download folder and run the following command (replacing XXX by the right string)  
+
+.. code-block:: bat
+
+            pip install python_pcl-XXX.whl
+
 Compiling the binding from source
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^		
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-	If the method using the procompiled wheel does not work you can compile the binding from the source.
-	
+    If the method using the procompiled wheel does not work you can compile the binding from the source.
+
 before Install module
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -223,21 +223,23 @@ before Install module
             `Windows SDK 7.1 <http://www.microsoft.com/download/en/details.aspx?id=8279>`_
 
             `PCL All-In-One Installer <http://pointclouds.org/downloads/windows.html>`_
-                
+
                 `32 bit <http://sourceforge.net/projects/pointclouds/files/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win32.exe/download>`_
-                
+
                 `64 bit <http://sourceforge.net/projects/pointclouds/files/1.6.0/PCL-1.6.0-AllInOne-msvc2010-win64.exe/download>`_
 
             OpenNI2[(PCL Install FolderPath)\\3rdParty\\OpenNI\\OpenNI-(win32/x64)-1.3.2-Dev.msi]
 
-        Case2. use 1.8.1
+        Case2. use 1.8.1/1.9.1
 
-            `Visual Studio 2015 C++ Compiler Tools(use Python 2.7/3.5/3.6) <https://www.visualstudio.com/vs/older-downloads/>`_ 
+            `Visual Studio 2015 C++ Compiler Tools(use Python 2.7/3.5/3.6/3.7) <https://www.visualstudio.com/vs/older-downloads/>`_ 
 
-            `Visual Studio 2017 C++ Compiler Tools(use Python 3.6) <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
+            `Visual Studio 2017 C++ Compiler Tools(use Python 3.6.x/3.7.x) <http://landinghub.visualstudio.com/visual-cpp-build-tools>`_ 
 
             `PCL All-In-One Installer <https://github.com/PointCloudLibrary/pcl/releases/>`_
-                
+
+                1.8.1
+
                 `Visual Studio 2015 - 32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win32.exe>`_
 
                 `Visual Studio 2017 - 32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2017-win32.exe>`_
@@ -245,6 +247,12 @@ before Install module
                 `Visual Studio 2015 - 64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2015-win64.exe>`_
 
                 `Visual Studio 2017 - 64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.8.1/PCL-1.8.1-AllInOne-msvc2017-win64.exe>`_
+
+                1.9.1
+
+                `Visual Studio 2017 - 32 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.9.1/PCL-1.9.1-AllInOne-msvc2017-win32.exe>`_
+
+                `Visual Studio 2017 - 64 bit <https://github.com/PointCloudLibrary/pcl/releases/download/pcl-1.9.1/PCL-1.9.1-AllInOne-msvc2017-win64.exe>`_
 
             OpenNI2[(PCL Install FolderPath)\\3rdParty\\OpenNI2\\OpenNI-Windows-(win32/x64)-2.2.msi]
 
@@ -263,14 +271,18 @@ set before Environment variable
 
     1. PCL_ROOT
 
-        set PCL_ROOT=$(PCL Install FolderPath)
+.. code-block:: bat
+
+        set PCL_ROOT=(PCL Install/Build_Binary FolderPath)
 
     2. PATH
+
+.. code-block:: bat
 
         (pcl 1.6.0)
         set PATH=%PCL_ROOT%/bin/;%OPEN_NI_ROOT%/Tools;%VTK_ROOT%/bin;%PATH%
 
-        (pcl 1.8.1)
+        (pcl 1.8.1/1.9.1)
         set PATH=%PCL_ROOT%/bin/;%OPEN_NI2_ROOT%/Tools;%VTK_ROOT%/bin;%PATH%
 
 Common setting
@@ -281,9 +293,9 @@ Common setting
 .. code-block:: none
 
     pip install --upgrade pip
-    
+
     pip install cython
-    
+
     pip install numpy
 
 2. instal python module
@@ -291,19 +303,19 @@ Common setting
 .. code-block:: none
 
     python setup.py build_ext -i
-    
+
     python setup.py install
 
 
 Build & Test Status
 ===================
 
-windows(1.6.0/1.8.1)
+windows(1.6.0/1.8.1/1.9.1)
 
     .. image:: https://ci.appveyor.com/api/projects/status/w52fee7j22q211cm/branch/master?svg=true
         :target: https://ci.appveyor.com/project/Sirokujira/python-pcl-iju42
 
-Mac OSX(1.8.1)/Ubuntu14.04(1.7.0)
+Mac OSX(1.9.1)/Ubuntu16.04(1.7.2)
 
     .. image:: https://travis-ci.org/strawlab/python-pcl.svg?branch=master
         :target: https://travis-ci.org/strawlab/python-pcl
@@ -323,10 +335,9 @@ provide a foundation for someone wishing to carry on.
 API Documentation
 =================
 
+`Read the docs <https://python-pcl-fork.readthedocs.io/en/latest/>`_.
 
 For deficiencies in this documentation, please consult the
 `PCL API docs <http://docs.pointclouds.org/trunk/index.html>`_, and the
 `PCL tutorials <http://pointclouds.org/documentation/tutorials/>`_.
-
-
 
