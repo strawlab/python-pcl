@@ -666,35 +666,35 @@ class TestProjectInliers(unittest.TestCase):
 
 
 ### RadiusOutlierRemoval ###
-class TestRadiusOutlierRemoval(unittest.TestCase):
-
-    def setUp(self):
-        # self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
-        self.p = pcl.PointCloud(_data2)
-        print(self.p.size)
-        self.fil = self.p.make_RadiusOutlierRemoval()
-        # self.fil = pcl.RadiusOutlierRemoval()
-        # self.fil.set_InputCloud(self.p)
-
-    def test_radius_seach(self):
-        radius = 15.8
-        self.fil.set_radius_search(radius)
-        result = self.fil.get_radius_search()
-        self.assertEqual(radius, result)
-
-        min_pts = 2
-        self.fil.set_MinNeighborsInRadius(2)
-        result = self.fil.get_MinNeighborsInRadius()
-        self.assertEqual(min_pts, result)
-
-        result_point = self.fil.filter()
-
-        # check
-        # new instance is returned
-        # self.assertNotEqual(self.p, result)
-        # filter retains the same number of points
-        # self.assertNotEqual(result_point.size, 0)
-        # self.assertNotEqual(self.p.size, result_point.size)
+# class TestRadiusOutlierRemoval(unittest.TestCase):
+# 
+#     def setUp(self):
+#         # self.p = pcl.load("tests/table_scene_mug_stereo_textured_noplane.pcd")
+#         self.p = pcl.PointCloud(_data2)
+#         print(self.p.size)
+#         self.fil = self.p.make_RadiusOutlierRemoval()
+#         # self.fil = pcl.RadiusOutlierRemoval()
+#         # self.fil.set_InputCloud(self.p)
+# 
+#     def test_radius_seach(self):
+#         radius = 15.8
+#         self.fil.set_radius_search(radius)
+#         result = self.fil.get_radius_search()
+#         self.assertEqual(radius, result)
+# 
+#         min_pts = 2
+#         self.fil.set_MinNeighborsInRadius(2)
+#         result = self.fil.get_MinNeighborsInRadius()
+#         self.assertEqual(min_pts, result)
+# 
+#         result_point = self.fil.filter()
+# 
+#         # check
+#         # new instance is returned
+#         # self.assertNotEqual(self.p, result)
+#         # filter retains the same number of points
+#         # self.assertNotEqual(result_point.size, 0)
+#         # self.assertNotEqual(self.p.size, result_point.size)
 
 
 ### StatisticalOutlierRemovalFilter ###
