@@ -50,19 +50,19 @@ $dstFile = $zipFilePath
 # Download gtk
 # Write $SourceURLBase
 # PowerShell Version 3.0
-# Invoke-WebRequest -UseBasicParsing -Uri $packSourceURLBase | Expand-Stream -Destination $dstPath
-# 2.0
-$cli = New-Object System.Net.WebClient
-$cli.DownloadFile($SourceURLBase, (Join-Path $dstPath $dstFile))
+Invoke-WebRequest -UseBasicParsing -Uri $packSourceURLBase | Expand-Stream -Destination $dstPath
+# 2.0(Windows 10 Error [not use NetFramework 2.0])
+# $cli = New-Object System.Net.WebClient
+# $cli.DownloadFile($SourceURLBase, (Join-Path $dstPath $dstFile))
 
 # Extract zip File
 # 3.0
-# New-ZipExtract -source $zipFilePath -destination $dstPath -force -verbose
+New-ZipExtract -source $zipFilePath -destination $dstPath -force -verbose
 # 2.0
-$shell = New-Object -ComObject shell.application
-$zip = $shell.NameSpace((Join-Path $dstPath $dstFile))
-$dest = $shell.NameSpace((Split-Path (Join-Path $dstPath $dstFile) -Parent))
-$dest.CopyHere($zip.Items()) 
+# $shell = New-Object -ComObject shell.application
+# $zip = $shell.NameSpace((Join-Path $dstPath $dstFile))
+# $dest = $shell.NameSpace((Split-Path (Join-Path $dstPath $dstFile) -Parent))
+# $dest.CopyHere($zip.Items()) 
 
 # Copy binary
 Copy-Item $dstPath/bin/* $dstPath
