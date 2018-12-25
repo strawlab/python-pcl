@@ -23,18 +23,20 @@ if ([System.IntPtr]::Size -eq 4)
     # 32 bit logic here
     # Write "32-bit OS"
     $os_bit = "win32"
+    $zipFilePath = "pkg-config_0.23-3_win32.zip"
 }
 else
 {
     # 64 bit logic here
     # Write "64-bit OS"
     $os_bit = "win64"
+    $zipFilePath = "pkg-config_0.23-2_win64.zip"
 }
 
-$zipFilePath = "gtk+-bundle_$gtkVersion-" + "$gtkDate" + "_$os_bit.zip"
-
+# $zipFilePath = "gtk+-bundle_$gtkVersion-" + "$gtkDate" + "_$os_bit.zip"
 # base URL to download the pack file from
-$SourceURLBase = "http://win32builder.gnome.org/$zipFilePath"
+# $SourceURLBase = "http://win32builder.gnome.org/$zipFilePath"
+$SourceURLBase = "http://ftp.gnome.org/pub/gnome/binaries/$os_bit/dependencies/$zipFilePath"
 
 # download the pack and extract the files into the curent directory 
 # How to get the current directory of the cmdlet being executed
