@@ -1,6 +1,9 @@
 dist: xenial
-sudo: required
-
+addons:
+  apt:
+    packages:
+    - licpcl-dev
+    - oopenni2-utils
 
 language: python 
 
@@ -138,7 +141,6 @@ install:
       sudo apt-get install libpcl-dev -y;
       # sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
 
-      # eval "${MATRIX_EVAL}";
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
       sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
