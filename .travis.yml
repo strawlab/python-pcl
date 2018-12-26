@@ -31,7 +31,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - oopenni2-utils
+            - openni2-utils
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
@@ -44,7 +44,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - oopenni2-utils
+            - openni2-utils
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
@@ -57,7 +57,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - oopenni2-utils
+            - openni2-utils
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
@@ -120,6 +120,14 @@ matrix:
       compiler: clang
       env:
       - PYTHON_VERSION=3.6.0
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: clang
+      env:
+      - PYTHON_VERSION=3.7.0
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
