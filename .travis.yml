@@ -1,5 +1,6 @@
-dist: trusty
+dist: xenial
 sudo: required
+
 
 language: python 
 
@@ -147,17 +148,18 @@ before_install:
     fi
 
 # eval "${MATRIX_EVAL}";
+# trusty(pcl-1.7.0?)
+# sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+# sudo apt-get update -y;
+# sudo apt-get install libpcl-all -y;
+# use Ubuntu official package(Ubuntu 16.04 use pcl 1.7.2)
+# sudo apt-get install libpcl-dev -y;
+# sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
 install:
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) ]]; then
 
-      # trusty(pcl-1.7.0?)
-      sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
-      sudo apt-get update -y;
-      sudo apt-get install libpcl-all -y;
-
-      # use Ubuntu official package(Ubuntu 16.04 use pcl 1.7.2)
-      # sudo apt-get install libpcl-dev -y;
-      # sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
+      sudo apt-get install libpcl-dev -y;
+      sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
       sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
@@ -215,7 +217,6 @@ install:
       sudo ninja -t targets install;
       cd ../..;
     fi
-
   - pip install --upgrade pip
   - pip install cython>=0.25.2
   - pip install nose
@@ -259,3 +260,4 @@ script:
 after_success:
   - coverage combine
   - coveralls
+
