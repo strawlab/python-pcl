@@ -23,7 +23,11 @@ if "%ELEVATED%" neq "yes" (
 
 :admins
     REM Install GTK+
-    powershell  -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1 
+    REM powershell -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1
+    REM powershell -v 2 -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1
+    REM powershell -v 3 -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1
+    REM default use upper ver 5(use zip archive package)
+    powershell -v 5 -NoProfile -ExecutionPolicy Unrestricted  .\Install-GTKPlus.ps1
 
     goto exit1
 
