@@ -1,8 +1,5 @@
 dist: trusty
-addons:
-  apt:
-    packages:
-    - oopenni2-utils
+sudo: required
 
 language: python 
 
@@ -33,6 +30,7 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - oopenni2-utils
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
@@ -45,6 +43,20 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - oopenni2-utils
+            - g++-4.9
+      env:
+      - PCL_VERSION="1.7"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    - os: linux
+      python: "3.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - oopenni2-utils
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
@@ -73,6 +85,14 @@ matrix:
       compiler: gcc
       env:
       - PYTHON_VERSION=3.6.0
+      - PYENV_ROOT=~/.pyenv
+      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
+      - NOSEATTR="not pcl_ver_0_4"
+    - os: osx
+      language: generic
+      compiler: gcc
+      env:
+      - PYTHON_VERSION=3.7.0
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
@@ -158,9 +178,9 @@ install:
 
       sudo apt-get install ninja-build;
 
-      wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz;
-      tar -xf pcl-1.8.0.tar.gz;
-      cd pcl-pcl-1.8.0 && mkdir build && cd build;
+      wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.1.tar.gz;
+      tar -xf pcl-1.8.1.tar.gz;
+      cd pcl-pcl-1.8.1 && mkdir build && cd build;
       cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..;
 
       travis_wait 50 ninja -j4;
@@ -186,9 +206,9 @@ install:
 
       sudo apt-get install ninja-build;
 
-      wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.0.tar.gz;
-      tar -xf pcl-1.8.0.tar.gz;
-      cd pcl-pcl-1.8.0 && mkdir build && cd build;
+      wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz;
+      tar -xf pcl-1.9.1.tar.gz;
+      cd pcl-1.9.1 && mkdir build && cd build;
       cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..;
 
       travis_wait 50 ninja -j4;
@@ -197,7 +217,7 @@ install:
     fi
 
   - pip install --upgrade pip
-  - pip install cython
+  - pip install cython>=0.25.2
   - pip install nose
   - pip install numpy
   - pip install coveralls

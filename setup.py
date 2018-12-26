@@ -515,9 +515,10 @@ if platform.system() == "Windows":
     # NG
     # ext_args['extra_compile_args'].append('/NODEFAULTLIB:msvcrtd')
     # https://blogs.msdn.microsoft.com/vcblog/2015/03/03/introducing-the-universal-crt/
-    # default args
+    # runtime libraries args(default MT?)
+    # use all-in-one package on vtk libraries.(use Dynamic?)
     # ext_args['extra_compile_args'].append('/MD')
-    # custom
+    # custom build
     # ext_args['extra_compile_args'].append('/MDd')
     # ext_args['extra_compile_args'].append('/MTd')
     # ext_args['extra_compile_args'].append('/MT')

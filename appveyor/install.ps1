@@ -155,7 +155,7 @@ function DownloadPCL ($pcl_version, $platform_suffix, $msvc_version)
     elseif ($major -le 1 -and $minor -eq 9)
     {
         # $dir = "$major.$minor.micro"
-        # 2015? or 2017?
+        # 2017
         # fix 1.9.1
         $dir = "$major.$minor.1"
         $msvcver = "msvc" + "$msvc_version"
