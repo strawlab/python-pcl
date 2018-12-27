@@ -3,10 +3,11 @@ os:
 
 environment:
   global:
+    # remove?
     # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
     # /E:ON and /V:ON options are not enabled in the batch script intepreter
     # See: http://stackoverflow.com/a/13751649/163740
-    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+    # CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   # https://www.appveyor.com/docs/windows-images-software/
   matrix:
@@ -238,13 +239,13 @@ test_script:
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - "%CMD_IN_ENV% python setup.py bdist_wheel"
-  - "%CMD_IN_ENV% python setup.py bdist_wininst"
+  - python setup.py bdist_wheel"
+  - python setup.py bdist_wininst"
   # msilib.Win64 import Error
   # https://bugs.python.org/issue34251
   # Appveyor use Python Version 3.7.0
-  # - "%CMD_IN_ENV% python setup.py bdist_msi"
-  - if [%PYTHON_VERSION%] neq [3.7] "%CMD_IN_ENV%" "python setup.py bdist_msi"
+  # - python setup.py bdist_msi"
+  - if [%PYTHON_VERSION%] neq [3.7] python setup.py bdist_msi
   - ps: "ls dist"
 
 artifacts:
