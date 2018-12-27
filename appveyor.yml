@@ -244,7 +244,7 @@ after_test:
   # https://bugs.python.org/issue34251
   # Appveyor use Python Version 3.7.0
   # - "%CMD_IN_ENV% python setup.py bdist_msi"
-  - if [%PYTHON_VERSION%] neq [3.7] "%CMD_IN_ENV% python setup.py bdist_msi"
+  - if [%PYTHON_VERSION%] neq [3.7] "%CMD_IN_ENV%" "python setup.py bdist_msi"
   - ps: "ls dist"
 
 artifacts:
