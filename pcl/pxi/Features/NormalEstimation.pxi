@@ -30,7 +30,7 @@ cdef class NormalEstimation:
         self.me.setKSearch (param)
 
     def set_ViewPoint(self, float vpx, float vpy, float vpz):
-        self.me.setViewPoint(vpx, vpy, vpx)
+        self.me.setViewPoint(vpx, vpy, vpz)
 
     def compute(self):
         normal = PointCloud_Normal()
