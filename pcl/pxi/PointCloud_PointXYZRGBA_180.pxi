@@ -169,14 +169,14 @@ cdef class PointCloud_PointXYZRGBA:
     @cython.boundscheck(False)
     def to_array(self):
         """
-        Return this object as a 2D numpy array (float32)
+        Return this object as a 2D numpy array (float64)
         """
         cdef float x,y,z
         cdef cnp.npy_intp n = self.thisptr().size()
-        cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
+        cdef cnp.ndarray[cnp.float64_t, ndim=2, mode="c"] result
         cdef cpp.PointXYZRGBA *p
 
-        result = np.empty((n, 4), dtype=np.float32)
+        result = np.empty((n, 4), dtype=np.float64)
 
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
