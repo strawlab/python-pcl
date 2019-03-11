@@ -34,7 +34,7 @@ cdef extern from "minipcl.h":
 # XXX Is there a more elegant way to get these?
 cdef Py_ssize_t _strides_xyzrgba_2[2]
 cdef PointCloud_PointXYZRGBA _pc_xyzrgba_tmp2 = PointCloud_PointXYZRGBA(np.array([[1, 2, 3, 0],
-                                                                          [4, 5, 6, 0]], dtype=np.float32))
+                                                                          [4, 5, 6, 0]], dtype=np.float64))
 cdef cpp.PointCloud[cpp.PointXYZRGBA] *p_xyzrgba_2 = _pc_xyzrgba_tmp2.thisptr()
 _strides_xyzrgba_2[0] = (  <Py_ssize_t><void *>idx.getptr(p_xyzrgba_2, 1)
                - <Py_ssize_t><void *>idx.getptr(p_xyzrgba_2, 0))
