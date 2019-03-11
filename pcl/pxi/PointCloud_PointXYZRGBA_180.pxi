@@ -173,10 +173,12 @@ cdef class PointCloud_PointXYZRGBA:
         """
         cdef float x,y,z
         cdef cnp.npy_intp n = self.thisptr().size()
-        cdef cnp.ndarray[cnp.float64_t, ndim=2, mode="c"] result
+        cdef cnp.ndarray[object, ndim=2, mode="c"] result
         cdef cpp.PointXYZRGBA *p
 
-        result = np.empty((n, 4), dtype=np.float64)
+        result = np.empty((n, 4), dtype=object)
+        result[:, :3] = np.float
+        result[:, 3] = np.int
 
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
@@ -184,7 +186,7 @@ cdef class PointCloud_PointXYZRGBA:
             result[i, 1] = p.y
             result[i, 2] = p.z
             result[i, 3] = p.rgba
-        return result
+        return result.astype(np.float64)
 
     @cython.boundscheck(False)
     def from_list(self, _list):
