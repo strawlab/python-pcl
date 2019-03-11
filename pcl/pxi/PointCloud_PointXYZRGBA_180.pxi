@@ -150,9 +150,9 @@ cdef class PointCloud_PointXYZRGBA:
                     new_orient[3])
 
     @cython.boundscheck(False)
-    def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
+    def from_array(self, cnp.ndarray[cnp.float64_t, ndim=2] arr not None):
         """
-        Fill this object from a 2D numpy array (float32)
+        Fill this object from a 2D numpy array (float64)
         """
         assert arr.shape[1] == 4
 
