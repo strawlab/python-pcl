@@ -86,7 +86,8 @@ elif args.Removal == 'Condition':
     range_cond.add_Comparison2('z', pcl.CythonCompareOp_Type.LT, 0.8)
 
     # build the filter
-    condrem = cloud.make_ConditionalRemoval(range_cond)
+    condrem = cloud.make_ConditionalRemoval()
+    condrem.set_Condition(range_cond)
     condrem.set_KeepOrganized(True)
     # apply filter
     cloud_filtered = condrem.filter ()
