@@ -616,6 +616,10 @@ cdef extern from "pcl/filters/conditional_removal.h" namespace "pcl":
         ConditionalRemoval(int)
         # ConditionalRemoval (ConditionBasePtr condition, bool extract_removed_indices = false)
         # python invalid default param ?
+        ConditionalRemoval (ConditionBasePtr_t condition, bool extract_removed_indices = false)
+        ConditionalRemoval (ConditionBase_PointXYZI_Ptr_t condition, bool extract_removed_indices = false)
+        ConditionalRemoval (ConditionBase_PointXYZRGB_Ptr_t condition, bool extract_removed_indices = false)
+        ConditionalRemoval (ConditionBase_PointXYZRGBA_Ptr_t condition, bool extract_removed_indices = false)
         # [with PointT = pcl::PointXYZ, pcl::ConditionalRemoval<PointT>::ConditionBasePtr = boost::shared_ptr<pcl::ConditionBase<pcl::PointXYZ> >]
         # is deprecated (declared at /usr/include/pcl-1.7/pcl/filters/conditional_removal.h:632): ConditionalRemoval(ConditionBasePtr condition, bool extract_removed_indices = false) is deprecated, 
         # please use the setCondition (ConditionBasePtr condition) function instead. [-Wdeprecated-declarations]

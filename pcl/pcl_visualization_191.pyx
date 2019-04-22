@@ -8,7 +8,8 @@ import numpy as np
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
-cimport pcl_visualization_defs as vis
+# cimport pcl_visualization_defs as vis
+cimport pcl_visualization_191_defs as vis
 
 cimport cython
 # from cython.operator import dereference as deref
@@ -66,10 +67,10 @@ include "pxi/Visualization/Handler/PointCloudGeometryHandleringXYZ.pxi"
 
 # VTK
 include "pxi/Visualization/CloudViewing.pxi"
-include "pxi/Visualization/PCLVisualizering.pxi"
+# include "pxi/Visualization/PCLVisualizering.pxi"
+include "pxi/Visualization/PCLVisualizering_191.pxi"
 include "pxi/Visualization/PCLHistogramViewing.pxi"
 # include "pxi/Visualization/RangeImageVisualization.pxi"
-include "pxi/Visualization/vtkSmartPointerRenderWindow.pxi"
 
 # NG(vtk Link Error)
 # include "pxi/Visualization/RangeImageVisualization.pxi"

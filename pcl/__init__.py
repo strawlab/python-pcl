@@ -157,7 +157,7 @@ def _infer_format(path, format):
     if format is not None:
         return format.lower()
 
-    for candidate in ["pcd", "ply"]:
+    for candidate in ["pcd", "ply", "obj"]:
         if path.endswith("." + candidate):
             return candidate
 

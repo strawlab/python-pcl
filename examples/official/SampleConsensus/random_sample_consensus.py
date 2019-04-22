@@ -155,7 +155,7 @@ if len(inliers) != 0:
 
 
 # current(0.3.0) Windows Only Test
-isWindows = False # set True for running the visualizer
+isWindows = True # set True for running the visualizer
 if isWindows == True:
     # creates the visualization object and adds either our orignial cloud or all of the inliers
     # depending on the command line arguments specified.

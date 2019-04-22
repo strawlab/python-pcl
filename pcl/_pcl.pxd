@@ -151,6 +151,19 @@ cdef class PointCloud_PointNormal:
         return self.thisptr_shared.get()
 
 
+# class override(PolygonMesh)
+cdef class PolygonMesh:
+    cdef cpp.PolygonMeshPtr_t thisptr_shared     # 
+    
+    # Buffer protocol support.
+    # cdef Py_ssize_t _shape[2]
+    # cdef Py_ssize_t _view_count
+    
+    cdef inline cpp.PolygonMesh *thisptr(self) nogil:
+        # Shortcut to get raw pointer to underlying PolygonMesh.
+        return self.thisptr_shared.get()
+
+
 ## KdTree
 # class override
 cdef class KdTree:

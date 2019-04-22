@@ -20,8 +20,11 @@
 
 We have tested ???? in Ubuntu 16.04 with ROS Kinetic.
 To install ROS (Kinetic) use the following command:
-
 `sudo apt-get install ros-kinetic-desktop`
+
+We have tested ???? in Ubuntu 18.04 with ROS Melodic.
+To install ROS (Melodic) use the following command:
+`sudo apt-get install ros-Melodic-desktop`
 
 ## SuiteSparse
 

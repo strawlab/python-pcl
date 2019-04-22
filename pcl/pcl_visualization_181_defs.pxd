@@ -15,6 +15,9 @@ cimport eigen as eigen3
 # boost
 from boost_shared_ptr cimport shared_ptr
 
+# vtk
+cimport vtk_defs as vtk
+
 ###############################################################################
 # Types
 ###############################################################################
@@ -633,13 +636,13 @@ ctypedef shared_ptr[PointCloudColorHandlerGenericField[cpp.PointXYZRGBA]] PointC
 # class PCL_EXPORTS PCLVisualizer
 cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualization" nogil:
     cdef cppclass PCLVisualizer:
-        PCLVisualizer()
+        # PCLVisualizer()
         # public:
         # brief PCL Visualizer constructor.
         # param[in] name the window name (empty by default)
         # param[in] create_interactor if true (default), create an interactor, false otherwise
         # PCLVisualizer (const std::string &name = "", const bool create_interactor = true);
-        PCLVisualizer (const string name, bool create_interactor)
+        PCLVisualizer (string name, bool create_interactor)
         
         # brief PCL Visualizer constructor.
         # param[in] argc
@@ -754,10 +757,10 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # 
         # -1.8
         # void addCoordinateSystem (double scale = 1.0, int viewport = 0);
-        # void addCoordinateSystem (double scale, int viewport)
+        void addCoordinateSystem (double scale, int viewport)
         # 1.9
         # void addCoordinateSystem (double scale = 1.0, const std::string& id = "reference", int viewport = 0);
-        void addCoordinateSystem (double scale, string id, int viewport)
+        # void addCoordinateSystem (double scale, string id, int viewport)
 
         # brief Adds 3D axes describing a coordinate system to screen at x, y, z
         # param[in] scale the scale of the axes (default: 1)
@@ -767,9 +770,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] viewport the view port where the 3D axes should be added (default: all)
         # 
         # void addCoordinateSystem (double scale, float x, float y, float z, int viewport = 0);
-        # void addCoordinateSystem (double scale, float x, float y, float z, int viewport)
+        void addCoordinateSystem (double scale, float x, float y, float z, int viewport)
         # 1.9
-        void addCoordinateSystem (double scale, float x, float y, float z, string id, int viewport)
+        # void addCoordinateSystem (double scale, float x, float y, float z, string id, int viewport)
 
         # brief Adds 3D axes describing a coordinate system to screen at x, y, z, Roll,Pitch,Yaw
         # param[in] scale the scale of the axes (default: 1)
@@ -799,16 +802,16 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #         y
         # 
         # void addCoordinateSystem (double scale, const Eigen::Affine3f& t, int viewport = 0);
-        # void addCoordinateSystem (double scale, const eigen3.Affine3f& t, int viewport)
+        void addCoordinateSystem (double scale, const eigen3.Affine3f& t, int viewport)
         # 1.9
-        void addCoordinateSystem (double scale, const eigen3.Affine3f& t, string id, int viewport)
+        # void addCoordinateSystem (double scale, const eigen3.Affine3f& t, string id, int viewport)
 
         # brief Removes a previously added 3D axes (coordinate system)
         # param[in] viewport view port where the 3D axes should be removed from (default: all)
         # bool removeCoordinateSystem (int viewport = 0);
-        # bool removeCoordinateSystem (int viewport)
+        bool removeCoordinateSystem (int viewport)
         # 1.9
-        bool removeCoordinateSystem (string id, int viewport)
+        # bool removeCoordinateSystem (string id, int viewport)
         
         # brief Removes a Point Cloud from screen, based on a given ID.
         # param[in] id the point cloud object id (i.e., given on \a addPointCloud)
@@ -961,7 +964,8 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #            const PointT &position,
         #            double textScale = 1.0,
         #            double r = 1.0, double g = 1.0, double b = 1.0, const std::string &id = "", int viewport = 0);
-        bool addText3D[PointT](const string &text, const PointT &position, double textScale, double r, double g, double b, const string &id, int viewport)
+        # bool addText3D[PointT](const string &text, const PointT &position, double textScale, double r, double g, double b, const string &id, int viewport)
+        bool addText3D[PointT](string text, PointT position, double textScale, double r, double g, double b, string id, int viewport)
         
         ###
         # brief Add the estimated surface normals of a Point Cloud to screen.
@@ -1318,7 +1322,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #  * \param[in] viewport the view port where the Point Cloud's rendering properties should be modified (default: all)
         #  */
         # bool setPointCloudRenderingProperties (int property, double value, const std::string &id = "cloud", int viewport = 0);
-        bool setPointCloudRenderingProperties (int property, double value, const string id, int viewport)
+        bool setPointCloudRenderingProperties (int property, double value, string id, int viewport)
         
         # /** \brief Get the rendering properties of a PointCloud
         #  * \param[in] property the property type
@@ -1335,7 +1339,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #  * \param[in] viewport the view port where the shape's properties should be modified (default: all)
         #  */
         # bool setShapeRenderingProperties (int property, double value, const std::string &id, int viewport = 0);
-        bool setShapeRenderingProperties (int property, double value, const string &id, int viewport)
+        bool setShapeRenderingProperties (int property, double value, string id, int viewport)
         
         # /** \brief Set the rendering properties of a shape (3x values - e.g., RGB)
         #   * \param[in] property the property type
@@ -1772,7 +1776,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         void saveScreenshot (const string &file)
         
         # /** \brief Return a pointer to the underlying VTK Render Window used. */
-        vtkSmartPointer<vtkRenderWindow> getRenderWindow ()
+        vtk.vtkSmartPointer[vtk.vtkRenderWindow] getRenderWindow ()
         
         # /** \brief Create the internal Interactor object. */
         # void createInteractor ();
@@ -1783,6 +1787,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in,out] iren the vtkRenderWindowInteractor object to set up
         #   * \param[in,out] win a vtkRenderWindow object that the interactor is attached to
         # void setupInteractor (vtkRenderWindowInteractor *iren, vtkRenderWindow *win);
+        void setupInteractor (vtk.vtkRenderWindowInteractor& iren, vtk.vtkRenderWindow& win);
         
         # /** \brief Get a pointer to the current interactor style used. */
         # inline vtkSmartPointer<PCLVisualizerInteractorStyle> getInteractorStyle ()

@@ -1928,106 +1928,82 @@ cdef extern from "pcl/io/obj_io.h" namespace "pcl::io":
 
 # vtk_lib_io.h
 # namespace pcl
-#   namespace io
-#     /** \brief Convert vtkPolyData object to a PCL PolygonMesh
-#       * \param[in] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
-#       * \param[out] mesh PCL Polygon Mesh to fill
-#       * \return Number of points in the point cloud of mesh.
-#       */
-#     PCL_EXPORTS int
-#     vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, 
-#               pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Convert a PCL PolygonMesh to a vtkPolyData object
-#       * \param[in] mesh Reference to PCL Polygon Mesh
-#       * \param[out] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
-#       * \return Number of points in the point cloud of mesh.
-#       */
-#     PCL_EXPORTS int
-#     mesh2vtk (const pcl::PolygonMesh& mesh, 
-#               vtkSmartPointer<vtkPolyData>& poly_data);
-# 
-#     /** \brief Load a \ref PolygonMesh object given an input file name, based on the file extension
-#       * \param[in] file_name the name of the file containing the polygon data
-#       * \param[out] mesh the object that we want to load the data in 
-#       * \ingroup io
-#       */ 
-#     PCL_EXPORTS int
-#     loadPolygonFile (const std::string &file_name, 
-#                      pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Save a \ref PolygonMesh object given an input file name, based on the file extension
-#       * \param[in] file_name the name of the file to save the data to
-#       * \param[in] mesh the object that contains the data
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     savePolygonFile (const std::string &file_name, 
-#                      const pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Load a VTK file into a \ref PolygonMesh object
-#       * \param[in] file_name the name of the file that contains the data
-#       * \param[out] mesh the object that we want to load the data in 
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     loadPolygonFileVTK (const std::string &file_name, 
-#                         pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Load a PLY file into a \ref PolygonMesh object
-#       * \param[in] file_name the name of the file that contains the data
-#       * \param[out] mesh the object that we want to load the data in 
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     loadPolygonFilePLY (const std::string &file_name, 
-#                         pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Load an OBJ file into a \ref PolygonMesh object
-#       * \param[in] file_name the name of the file that contains the data
-#       * \param[out] mesh the object that we want to load the data in 
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     loadPolygonFileOBJ (const std::string &file_name, 
-#                         pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Load an STL file into a \ref PolygonMesh object
-#       * \param[in] file_name the name of the file that contains the data
-#       * \param[out] mesh the object that we want to load the data in 
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     loadPolygonFileSTL (const std::string &file_name, 
-#                         pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Save a \ref PolygonMesh object into a VTK file
-#       * \param[in] file_name the name of the file to save the data to
-#       * \param[in] mesh the object that contains the data
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     savePolygonFileVTK (const std::string &file_name, 
-#                         const pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Save a \ref PolygonMesh object into a PLY file
-#       * \param[in] file_name the name of the file to save the data to
-#       * \param[in] mesh the object that contains the data
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     savePolygonFilePLY (const std::string &file_name, 
-#                         const pcl::PolygonMesh& mesh);
-# 
-#     /** \brief Save a \ref PolygonMesh object into an STL file
-#       * \param[in] file_name the name of the file to save the data to
-#       * \param[in] mesh the object that contains the data
-#       * \ingroup io
-#       */
-#     PCL_EXPORTS int
-#     savePolygonFileSTL (const std::string &file_name, 
-#                         const pcl::PolygonMesh& mesh);
-# 
+# namespace io
+cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
+    # /** \brief Convert vtkPolyData object to a PCL PolygonMesh
+    #   * \param[in] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
+    #   * \param[out] mesh PCL Polygon Mesh to fill
+    #   * \return Number of points in the point cloud of mesh.
+    # PCL_EXPORTS int
+    # vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, 
+    #           pcl::PolygonMesh& mesh);
+    # int vtk2mesh (const vtkSmartPointer<vtkPolyData>& poly_data, cpp.PolygonMesh& mesh)
+    # /** \brief Convert a PCL PolygonMesh to a vtkPolyData object
+    #   * \param[in] mesh Reference to PCL Polygon Mesh
+    #   * \param[out] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
+    #   * \return Number of points in the point cloud of mesh.
+    #   */
+    # PCL_EXPORTS int
+    # mesh2vtk (const pcl::PolygonMesh& mesh, 
+    #           vtkSmartPointer<vtkPolyData>& poly_data);
+    # 
+    # \brief Load a \ref PolygonMesh object given an input file name, based on the file extension
+    # \param[in] file_name the name of the file containing the polygon data
+    # \param[out] mesh the object that we want to load the data in 
+    # \ingroup io
+    int loadPolygonFile (string file_name, cpp.PolygonMesh& mesh) nogil except +
+    
+    # \brief Save a \ref PolygonMesh object given an input file name, based on the file extension
+    # \param[in] file_name the name of the file to save the data to
+    # \param[in] mesh the object that contains the data
+    # \ingroup io
+    int savePolygonFile (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # 
+    # /** \brief Load a VTK file into a \ref PolygonMesh object
+    #   * \param[in] file_name the name of the file that contains the data
+    #   * \param[out] mesh the object that we want to load the data in 
+    #   * \ingroup io
+    #   */
+    int loadPolygonFileVTK (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # \brief Load a PLY file into a \ref PolygonMesh object
+    # \param[in] file_name the name of the file that contains the data
+    # \param[out] mesh the object that we want to load the data in 
+    # \ingroup io
+    int loadPolygonFilePLY (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # /** \brief Load an OBJ file into a \ref PolygonMesh object
+    #   * \param[in] file_name the name of the file that contains the data
+    #   * \param[out] mesh the object that we want to load the data in 
+    #   * \ingroup io
+    #   */
+    int loadPolygonFileOBJ (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # \brief Load an STL file into a \ref PolygonMesh object
+    # \param[in] file_name the name of the file that contains the data
+    # \param[out] mesh the object that we want to load the data in 
+    # \ingroup io
+    int loadPolygonFileSTL (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # \brief Save a \ref PolygonMesh object into a VTK file
+    # \param[in] file_name the name of the file to save the data to
+    # \param[in] mesh the object that contains the data
+    # \ingroup io
+    int savePolygonFileVTK (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # \brief Save a \ref PolygonMesh object into a PLY file
+    # \param[in] file_name the name of the file to save the data to
+    # \param[in] mesh the object that contains the data
+    # \ingroup io
+    int savePolygonFilePLY (string file_name, cpp.PolygonMesh mesh) nogil except +
+    
+    # \brief Save a \ref PolygonMesh object into an STL file
+    # \param[in] file_name the name of the file to save the data to
+    # \param[in] mesh the object that contains the data
+    # \ingroup io
+    int savePolygonFileSTL (string file_name, const cpp.PolygonMesh mesh) nogil except +
+
 #     /** \brief Write a \ref RangeImagePlanar object to a PNG file
 #       * \param[in] file_name the name of the file to save the data to
 #       * \param[in] range_image the object that contains the data

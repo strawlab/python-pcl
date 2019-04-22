@@ -5,10 +5,8 @@ cimport numpy as cnp
 
 cimport cython
 cimport pcl_visualization
-from pcl_visualization import vtkSmartPointerRenderWindow
-cimport pcl_visualization_defs as pcl_vis
 
-# cimport vtk_defs as vtk
+cimport pcl_visualization_191_defs as pcl_vis
 cimport vtk_defs
 
 from libcpp cimport bool
@@ -16,13 +14,6 @@ from libcpp.string cimport string
 
 from boost_shared_ptr cimport shared_ptr
 from boost_shared_ptr cimport sp_assign
-
-
-cdef extern from "vtkInteracterWrapper.h":
-    void wrapped_from_pclvis_to_vtk(pcl_vis.PCLVisualizer* this_ptr, vtk_defs.vtkSmartPointer[vtk_defs.vtkRenderWindowInteractor] qvtkWidget, string id, bool isVisible) except +
-    # void wrapped_from_pclvis_to_vtk2(pcl_vis.PCLVisualizer* this_ptr, object qvtkWidget, string id, bool isVisible) except +
-    void wrapped_from_pclvis_to_vtk2(pcl_vis.PCLVisualizer* this_ptr, object qvtkWidget) except +
-    object wrapped_from_pclvis_to_vtk3(pcl_vis.PCLVisualizer* this_ptr) except +
 
 
 cdef class PCLVisualizering:
@@ -270,44 +261,8 @@ cdef class PCLVisualizering:
         # self.thisptr().addCone()
         pass
 
-    def get_render_window(self, interactor):
-        # using PyObject*
-        # wrapped_from_pclvis_to_vtk2(self.thisptr(), interactor)
-        # print(dir(interactor))
-        print("get_render_window : 1")
-        renWin = interactor.GetRenderWindow()
-        print("renWin : ")
-        # print(dir(renWin))
-        print(renWin.__vtkname__)
-        wrapped_from_pclvis_to_vtk2(self.thisptr(), renWin)
-        print("get_render_window : 2")
-        # renWin = vtk.vtkRenderWindow()
-        # hogehoge ---
-        # interactor.SetRenderWindow(renWin)
-        # https://www.quora.com/What-is-the-pointer-in-Python-Does-a-pointer-exist-in-Python
-        # import _ctypes
-        # vtk_id = _ctypes.PyObj_FromPtr(interactor)
-        # vtkWin32OpenGLRenderWindow
-        # cdef vtk_defs.vtkSmartPointer[vtk_defs.vtkRenderWindowInteractor] ptr
-        # PyObject has pointers.(NG)
-        # ptr = <vtk_defs.vtkSmartPointer[vtk_defs.vtkRenderWindowInteractor]>interactor
-        # ptr = <vtk_defs.vtkSmartPointer[vtk_defs.vtkRenderWindowInteractor]>(<vtk.vtkSmartPointerBase>interactor.GetPointer())
-        # import vtk
-        # vtk_id = vtk.vtkSmartPointerBase(interactor)
-        # pt_addr = vtk_id.GetPointer()
-        # ptr = <vtk_defs.vtkSmartPointer[vtk_defs.vtkRenderWindowInteractor]>pt_addr
-        # ptr = (<vtk_defs.vtkSmartPointer[vtk_defs.vtkRenderWindowInteractor]>pt_addr)
-        # Wrapper?
-        # wrapped_from_pclvis_to_vtk(self.thisptr(), ptr, b'pt', False)
-        # return interactor
-        # Python has pointers.(NG)
-        # return <vtkObjectBase*>ptr.GetPointer()
-        # vtkSmartPointerRenderWindow renderWindow = vtkSmartPointerRenderWindow()
-        # renderWindow = vtkSmartPointerRenderWindow()
-        pass
-
-    def get_render_window2(self):
-        return wrapped_from_pclvis_to_vtk3(self.thisptr())
+    def get_render_window(self):
+        # return self.thisptr().getRenderWindow()
         pass
 
     # int property, double value, const string id, int viewport

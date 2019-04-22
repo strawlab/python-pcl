@@ -21,7 +21,151 @@ from vector cimport vector as vector2
 ###############################################################################
 
 ### base class ###
+# Vertices.h
+# namespace pcl
+# struct Vertices
+cdef extern from "pcl/Vertices.h" namespace "pcl" nogil:
+    cdef cppclass Vertices:
+        Vertices()
+        vector[size_t] vertices;
+        # ostream& element "operator()"(ostream s, Vertices v)
+        # public:
+        # ctypedef shared_ptr[Vertices] Ptr
+        # ctypedef shared_ptr[Vertices const] ConstPtr
 
+
+# ctypedef Vertices Vertices_t
+ctypedef shared_ptr[Vertices] VerticesPtr_t
+# ctypedef shared_ptr[Vertices const] VerticesConstPtr
+# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::Vertices & v)
+###
+
+
+# PCLHeader.h
+cdef extern from "pcl/PCLHeader.h" namespace "pcl" nogil:
+    cdef cppclass PCLHeader:
+        PCLHeader ()
+
+        # pcl::uint32_t seq
+        # """
+        # brief A timestamp associated with the time when the data was acquired
+        # The value represents microseconds since 1970-01-01 00:00:00 (the UNIX epoch).
+        # """
+        # pcl::uint64_t stamp
+        # """ brief Coordinate frame ID """
+        # string frame_id
+        # typedef boost::shared_ptr<PCLHeader> Ptr;
+        # typedef boost::shared_ptr<PCLHeader const> ConstPtr;
+
+
+# typedef boost::shared_ptr<PCLHeader> HeaderPtr;
+# typedef boost::shared_ptr<PCLHeader const> HeaderConstPtr;
+# 
+# inline std::ostream& operator << (std::ostream& out, const PCLHeader &h)
+# {
+#     out << "seq: " << h.seq;
+#     out << " stamp: " << h.stamp;
+#     out << " frame_id: " << h.frame_id << std::endl;
+#     return (out);
+# }
+# 
+# inline bool operator== (const PCLHeader &lhs, const PCLHeader &rhs)
+# {
+#     return (&lhs == &rhs) ||
+#         (lhs.seq == rhs.seq && lhs.stamp == rhs.stamp && lhs.frame_id == rhs.frame_id);
+# }
+###
+
+
+# PCLPointField.h
+cdef extern from "pcl/PCLPointField.h" namespace "pcl" nogil:
+    cdef cppclass PCLPointField:
+        PCLPointField ()
+        # string name
+        # pcl::uint32_t offset
+        # pcl::uint8_t datatype
+        # pcl::uint32_t count
+        # enum PointFieldTypes { INT8 = 1,
+        #                         UINT8 = 2,
+        #                         INT16 = 3,
+        #                         UINT16 = 4,
+        #                         INT32 = 5,
+        #                         UINT32 = 6,
+        #                         FLOAT32 = 7,
+        #                         FLOAT64 = 8 };
+        # typedef boost::shared_ptr< ::pcl::PCLPointField> Ptr;
+        # typedef boost::shared_ptr< ::pcl::PCLPointField const> ConstPtr;
+
+
+# typedef boost::shared_ptr< ::pcl::PCLPointField> PCLPointFieldPtr;
+# typedef boost::shared_ptr< ::pcl::PCLPointField const> PCLPointFieldConstPtr;
+# 
+# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PCLPointField & v)
+# {
+#     s << "name: ";
+#     s << "  " << v.name << std::endl;
+#     s << "offset: ";
+#     s << "  " << v.offset << std::endl;
+#     s << "datatype: ";
+#     s << "  " << v.datatype << std::endl;
+#     s << "count: ";
+#     s << "  " << v.count << std::endl;
+#     return (s);
+# }
+###
+
+# PCLPointCloud2.h
+cdef extern from "pcl/PCLPointCloud2.h" namespace "pcl" nogil:
+    cdef cppclass PCLPointCloud2:
+        PCLPointCloud2()
+        # PCLHeader header
+        # pcl::uint32_t height
+        # pcl::uint32_t width
+        # vector[PCLPointField] fields
+        # pcl::uint8_t is_bigendian
+        # pcl::uint32_t point_step
+        # pcl::uint32_t row_step
+        # vector[pcl::uint8_t] data
+        # pcl::uint8_t is_dense
+        # typedef boost::shared_ptr< ::pcl::PCLPointCloud2> Ptr;
+        # typedef boost::shared_ptr< ::pcl::PCLPointCloud2  const> ConstPtr;
+
+
+# typedef boost::shared_ptr< ::pcl::PCLPointCloud2> PCLPointCloud2Ptr;
+# typedef boost::shared_ptr< ::pcl::PCLPointCloud2 const> PCLPointCloud2ConstPtr;
+# 
+# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PCLPointCloud2 &v)
+# {
+#     s << "header: " << std::endl;
+#     s << v.header;
+#     s << "height: ";
+#     s << "  " << v.height << std::endl;
+#     s << "width: ";
+#     s << "  " << v.width << std::endl;
+#     s << "fields[]" << std::endl;
+#     for (size_t i = 0; i < v.fields.size (); ++i)
+#     {
+#       s << "  fields[" << i << "]: ";
+#       s << std::endl;
+#       s << "    " << v.fields[i] << std::endl;
+#     }
+#     s << "is_bigendian: ";
+#     s << "  " << v.is_bigendian << std::endl;
+#     s << "point_step: ";
+#     s << "  " << v.point_step << std::endl;
+#     s << "row_step: ";
+#     s << "  " << v.row_step << std::endl;
+#     s << "data[]" << std::endl;
+#     for (size_t i = 0; i < v.data.size (); ++i)
+#     {
+#       s << "  data[" << i << "]: ";
+#       s << "  " << v.data[i] << std::endl;
+#     }
+#     s << "is_dense: ";
+#     s << "  " << v.is_dense << std::endl;
+# 
+#     return (s);
+# }
 ###
 
 ### Inheritance class ###
@@ -555,9 +699,15 @@ cdef extern from "pcl/PolygonMesh.h" namespace "pcl" nogil:
     cdef cppclass PolygonMesh:
         PolygonMesh()
 
+        PCLHeader header
+        PCLPointCloud2 cloud
+        vector[Vertices] polygons
+
 # ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr;
 # ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr;
 # inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PolygonMesh &v)
+ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr_t
+# ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr_t
 ###
 
 # TextureMesh.h
@@ -593,25 +743,6 @@ cdef extern from "pcl/TextureMesh.h" namespace "pcl" nogil:
 
 # ctypedef shared_ptr[TextureMesh] TextureMeshPtr_t
 # ctypedef shared_ptr[TextureMesh const] TextureMeshConstPtr_t
-###
-
-# Vertices.h
-# namespace pcl
-# struct Vertices
-cdef extern from "pcl/Vertices.h" namespace "pcl" nogil:
-    cdef cppclass Vertices:
-        Vertices()
-        vector[size_t] vertices;
-        # ostream& element "operator()"(ostream s, Vertices v)
-        # public:
-        # ctypedef shared_ptr[Vertices] Ptr
-        # ctypedef shared_ptr[Vertices const] ConstPtr
-
-
-# ctypedef Vertices Vertices_t
-ctypedef shared_ptr[Vertices] VerticesPtr_t
-# ctypedef shared_ptr[Vertices const] VerticesConstPtr
-# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::Vertices & v)
 ###
 
 

@@ -14,7 +14,39 @@ PCL_MAJOR_VERSION    = cpp.PCL_MAJOR_VERSION
 PCL_MINOR_VERSION    = cpp.PCL_MINOR_VERSION
 # PCL_REVISION_VERSION = cpp.PCL_REVISION_VERSION
 
-include "pxi/pyx_cimport_180.pxi"
+# if cpp.PCL_MINOR_VERSION == 8:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         DEF PCL_VERSION_DEFINE=180
+#     elif cpp.PCL_REVISION_VERSION == 1:
+#         DEF PCL_VERSION_DEFINE=181
+#     else:
+#         DEF PCL_VERSION_DEFINE=181
+# 
+# elif cpp.PCL_MINOR_VERSION == 7:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         DEF PCL_VERSION_DEFINE=170
+#     elif cpp.PCL_REVISION_VERSION == 2:
+#         DEF PCL_VERSION_DEFINE=172
+#     else:
+#         DEF PCL_VERSION_DEFINE=172
+# 
+# elif cpp.PCL_MINOR_VERSION == 6:
+#     if cpp.PCL_REVISION_VERSION == 0:
+#         DEF PCL_VERSION_DEFINE=160
+#     else:
+#         DEF PCL_VERSION_DEFINE=160
+# 
+# else:
+#     pass
+# 
+# IF PCL_VERSION_DEFINE == 172:
+#     include "pxi/pyx_cimport_172.pxi"
+# ELIF PCL_VERSION_DEFINE == 170:
+#     include "pxi/pyx_cimport_172.pxi"
+# ELSE:
+#     pass
+
+include "pxi/pyx_cimport_172.pxi"
 
 cimport cython
 # from cython.operator import dereference as deref
@@ -129,16 +161,17 @@ CythonCoordinateFrame_Type = _CythonCoordinateFrame_Type()
 # CythonNormalEstimationMethod_Type = _CythonNormalEstimationMethod_Type()
 ###
 
-include "pxi/pxiInclude_180.pxi"
+include "pxi/pxiInclude_172.pxi"
 
-include "pxi/PointCloud_PointXYZ_180.pxi"
-include "pxi/PointCloud_PointXYZI_180.pxi"
-include "pxi/PointCloud_PointXYZRGB_180.pxi"
-include "pxi/PointCloud_PointXYZRGBA_180.pxi"
+include "pxi/PointCloud_PointXYZ_172.pxi"
+include "pxi/PointCloud_PointXYZI_172.pxi"
+include "pxi/PointCloud_PointXYZRGB_172.pxi"
+include "pxi/PointCloud_PointXYZRGBA_172.pxi"
 include "pxi/PointCloud_PointWithViewpoint.pxi"
 include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
-include "pxi/PolygonMesh.pxi"
+# Add PointCloud2
+include "pxi/PointCloud_PCLPointCloud2.pxi"
 
 ### common ###
 def deg2rad(float alpha):

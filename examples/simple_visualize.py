@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # Point cloud library
 import pcl
+import pcl.pcl_visualization
 
 # Opencv
-import opencv
+# import opencv
+import cv2
 
 
 def main():
@@ -18,8 +20,9 @@ def main():
 
     # PCL Visualizer to view the pointcloud
     # pcl::visualization::PCLVisualizer viewer ("Simple visualizing window");
+    viewer = pcl.pcl_visualization.PCLVisualizering()
 
-    # int   main (int argc, char** argv)
+    # int main (int argc, char** argv)
     # {
     #   pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZRGBA>);
     #   pcl::PointCloud<pcl::PointXYZRGBA>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZRGBA>);
@@ -28,10 +31,12 @@ def main():
     #       PCL_ERROR ("Couldn't load the file\n");
     #       return (-1);
     #   }
-    cloud = pcl.loadPLYFile("ism_test_cat.pcd")
+    # cloud = pcl.load("lamppost.pcd")
+    cloud = pcl.load("Tile_173078_LD_010_017_L22.obj")
 
     # pcl::copyPointCloud( *cloud,*cloud_filtered);
-    cloud_filtered = cloud.copyPointCloud()
+    # cloud_filtered = cloud.copyPointCloud()
+    cloud_filtered = cloud
 
     # float i
     # float j
@@ -42,9 +47,9 @@ def main():
     # cvCreateTrackbar("X_limit", "picture", &a, 30, NULL);
     # cvCreateTrackbar("Y_limit", "picture", &b, 30, NULL);
     # cvCreateTrackbar("Z_limit", "picture", &c, 30, NULL);
-    opencv.cvCreateTrackbar("X_limit", "picture", & a, 30)
-    opencv.cvCreateTrackbar("Y_limit", "picture", & b, 30)
-    opencv.cvCreateTrackbar("Z_limit", "picture", & c, 30)
+    # cv2.CreateTrackbar("X_limit", "picture", a, 30)
+    # cv2.CreateTrackbar("Y_limit", "picture", b, 30)
+    # cv2.CreateTrackbar("Z_limit", "picture", c, 30)
 
     # // Starting the while loop where we continually filter with limits using trackbars and display pointcloud
     # char last_c = 0;
@@ -70,38 +75,39 @@ def main():
         # //  pass.setFilterLimits (-0.1, 0.1);
         # pass.setFilterLimits (-k, k);
         # pass.filter (*cloud);
-        pass = cloud.make_PassThrough()
-        pass.setFilterFieldName("y")
-        pass.setFilterLimits(-k, k)
-        cloud = pass.filter()
+        pass_th = cloud.make_passthrough_filter()
+        pass_th.set_filter_field_name("y")
+        pass_th.set_filter_limits(-k, k)
+        cloud = pass_th.filter()
 
         # pass.setInputCloud (cloud);
         # pass.setFilterFieldName ("x");
         # // pass.setFilterLimits (-0.1, 0.1);
         # pass.setFilterLimits (-j, j);
         # pass.filter (*cloud);
-        pass.setInputCloud(cloud)
-        pass.setFilterFieldName("x")
-        pass.setFilterLimits(-j, j)
-        cloud = pass.filter()
+        # pass_th.setInputCloud(cloud)
+        pass_th.set_filter_field_name("x")
+        pass_th.set_filter_limits(-j, j)
+        cloud = pass_th.filter()
 
         # pass.setInputCloud (cloud);
         # pass.setFilterFieldName ("z");
         # //  pass.setFilterLimits (-10, 10);
         # pass.setFilterLimits (-i, i);
         # pass.filter (*cloud);
-        pass.setInputCloud(cloud)
-        pass.setFilterFieldName("z")
-        pass.setFilterLimits(-10, 10)
-        cloud = pass.filter()
+        # pass_th.setInputCloud(cloud)
+        pass_th.set_filter_field_name("z")
+        pass_th.set_filter_limits(-10, 10)
+        cloud = pass_th.filter()
 
         # // Visualizing pointcloud
         # viewer.addPointCloud (cloud, "scene_cloud");
         # viewer.spinOnce();
         # viewer.removePointCloud("scene_cloud");
-        viewer.addPointCloud(cloud, "scene_cloud")
-        viewer.spinOnce()
-        viewer.removePointCloud("scene_cloud")
+        viewer.AddPointCloud(cloud, b'scene_cloud', 0)
+        viewer.SpinOnce()
+        # viewer.Spin()
+        viewer.RemovePointCloud(b'scene_cloud', 0)
 
 
 if __name__ == "__main__":
