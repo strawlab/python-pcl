@@ -247,7 +247,7 @@ if platform.system() == "Windows":
         # Visual Studio 2015/2017
         if info.major == 3 and info.minor >= 5:
             # PCL 1.9.1
-            boost_version = '1_69'
+            boost_version = '1_68'
             vtk_version = '8.1'
             # pcl-1.9
             # 1.9.1 use 2d required features
@@ -842,7 +842,7 @@ else:
                   ]
     elif pcl_version == '-1.9':
         module = [Extension("pcl._pcl", ["pcl/_pcl_190.pyx", "pcl/minipcl.cpp", "pcl/ProjectInliers.cpp"], language="c++", **ext_args),
-                  Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx", "pcl/vtkInteracterWrapper.cpp"], language="c++", **ext_args),
+                  Extension("pcl.pcl_visualization", ["pcl/pcl_visualization.pyx"], language="c++", **ext_args),
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,

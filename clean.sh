@@ -9,4 +9,3 @@ sudo rm pcl/pcl_grabber*.pyd
 sudo rm -rf build
 sudo rm -rf python_pcl.egg-info
 pip uninstall python-pcl -y
-
