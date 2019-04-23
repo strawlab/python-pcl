@@ -1,30 +1,135 @@
-dist: xenial
-sudo: required
+# 'sudo' is enabled automatically by the 'apt' addon below.
+#sudo: false 
+#sudo: required
 
 
-language: python 
-
-cache:
-  - pip
-  - ccache
-
-# https://docs.travis-ci.com/user/languages/cpp/
+# https://docs.travis-ci.com/user/languages/python/#running-python-tests-on-multiple-operating-systems
 matrix:
   include:
     # gcc
     - os: linux
+      dist: trusty
+      language: python
       python: "2.7"
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - openni2-utils
+            - build-essential
+            - gcc-4.9
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
+      - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - os: linux
+      dist: trusty
+      language: python
+      python: "3.5"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - build-essential
+            - gcc-4.9
+            - g++-4.9
+      env:
+      - PCL_VERSION="1.7"
+      - OS_VERSION="trusty"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    - os: linux
+      dist: trusty
+      language: python
+      python: "3.6"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - build-essential
+            - gcc-4.9
+            - g++-4.9
+      env:
+      - PCL_VERSION="1.7"
+      - OS_VERSION="trusty"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    - os: linux
+      dist: xenial   # required for Python >= 3.7
+      language: python
+      python: "3.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - build-essential
+            - gcc-4.9
+            - g++-4.9
+      env:
+      - PCL_VERSION="1.7"
+      - OS_VERSION="xenial"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    - os: linux
+      dist: xenial   # required for Python >= 3.7
+      language: python
+      python: "3.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - g++-4.9
+      env:
+      - PCL_VERSION="1.8"
+      - OS_VERSION="xenial"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    - os: linux
+      dist: xenial   # required for Python >= 3.7
+      language: python
+      python: "3.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - g++-4.9
+      env:
+      - PCL_VERSION="1.9"
+      - OS_VERSION="xenial"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+    # clang
+    - os: linux
+      dist: trusty
+      language: python
+      python: "2.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - clang++-3.9
+      env:
+      - PCL_VERSION="1.7"
+      - OS_VERSION="trusty"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-4.9"
+    - os: linux
+      dist: trusty
+      language: python
       python: "3.5"
       addons:
         apt:
@@ -35,9 +140,12 @@ matrix:
             - g++-4.9
       env:
       - PCL_VERSION="1.7"
+      - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-4.9"
     - os: linux
+      dist: trusty
+      language: python
       python: "3.6"
       addons:
         apt:
@@ -45,12 +153,15 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - g++-4.9
+            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
+      - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
     - os: linux
+      dist: xenial   # required for Python >= 3.7
+      language: python
       python: "3.7"
       addons:
         apt:
@@ -58,103 +169,89 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - g++-4.9
+            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+    - os: linux
+      dist: xenial   # required for Python >= 3.7
+      language: python
+      python: "3.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - clang++-3.9
+      env:
+      - PCL_VERSION="1.8"
+      - OS_VERSION="xenial"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+    - os: linux
+      dist: xenial   # required for Python >= 3.7
+      language: python
+      python: "3.7"
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - openni2-utils
+            - clang++-3.9
+      env:
+      - PCL_VERSION="1.9"
+      - OS_VERSION="xenial"
+      - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
     # TravisCI TimeLimit 50min
-    # gcc
-    - os: osx
-      language: generic
-      compiler: gcc
-      env:
-      - PYTHON_VERSION=2.7.10
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
-      compiler: gcc
-      env:
-      - PYTHON_VERSION=3.5.1
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
-      compiler: gcc
-      env:
-      - PYTHON_VERSION=3.6.0
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
-      compiler: gcc
-      env:
-      - PYTHON_VERSION=3.7.0
-      - PYENV_ROOT=~/.pyenv
-      - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
-      - NOSEATTR="not pcl_ver_0_4"
-    # clang
+    # clang only(gcc replace clang)
     # homebrew pcl use gcc compiler
     - os: osx
       language: generic
-      compiler: clang
       env:
-      - PYTHON_VERSION=2.7.10
+      - PYTHON_VERSION=2.7.16
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
     - os: osx
       language: generic
-      compiler: clang
       env:
-      - PYTHON_VERSION=3.5.1
+      - PYTHON_VERSION=3.5.7
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
     - os: osx
       language: generic
-      compiler: clang
       env:
-      - PYTHON_VERSION=3.6.0
+      - PYTHON_VERSION=3.6.8
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
     - os: osx
       language: generic
-      compiler: clang
       env:
-      - PYTHON_VERSION=3.7.0
+      - PYTHON_VERSION=3.7.3
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
 
 
-# pcl 1.8.1 only(MacOSX/Ubuntu)
-# pcl_2d-1.8.pc copy /usr/local/lib/pkgconfig/pcl_2d-1.8.pc
-# Check command
-# pkg-config pcl_2d-1.8 --libs
-before_install:
-  - if [ ${TRAVIS_OS_NAME} = "osx" ]; then
-      brew update >/dev/null;
-      brew outdated pyenv || brew upgrade --quiet pyenv;
-      brew install homebrew/boneyard/pyenv-pip-rehash;
-      brew tap homebrew/science;
+cache:
+  - pip
+  - ccache
+  directories:
+    - $HOME/Library/Caches/Homebrew
 
-      PYTHON_CONFIGURE_OPTS="--enable-unicode=ucs2" pyenv install -ks $PYTHON_VERSION;
-      pyenv global $PYTHON_VERSION;
-      python --version;
 
-      travis_wait 45 brew install pcl --without-qt;
+before_cache:
+  - brew cleanup
 
-      ls /usr/local/include;
 
-      cp -n ./travisCI/pcl_2d-1.8.pc /usr/local/lib/pkgconfig/pcl_2d-1.8.pc;
-    fi
-
+# (Mac OSX using pcl 1.9.1 only [homebrew])
 # eval "${MATRIX_EVAL}";
 # trusty(pcl-1.7.0?)
 # sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
@@ -163,11 +260,25 @@ before_install:
 # use Ubuntu official package(Ubuntu 16.04 use pcl 1.7.2)
 # sudo apt-get install libpcl-dev -y;
 # sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
-install:
-  - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) ]]; then
+before_install:
+  - if [ ${TRAVIS_OS_NAME} = "osx" ]; then
+      brew update >/dev/null;
+      brew install ccache;
 
-      sudo apt-get install libpcl-dev -y;
-      sudo apt install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
+      PYTHON_CONFIGURE_OPTS="--enable-unicode=ucs2" pyenv install -ks $PYTHON_VERSION;
+      pyenv global $PYTHON_VERSION;
+      python --version;
+
+      travis_wait 45 brew install pcl --without-qt;
+    fi
+  - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "trusty") ]]; then
+        sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+        sudo apt -y update;
+        sudo apt -y install libpcl-all;
+    fi
+  - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "xenial") ]]; then
+      sudo apt -y install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
+      sudo apt -y install libpcl-dev;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
       sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
@@ -225,21 +336,26 @@ install:
       sudo ninja -t targets install;
       cd ../..;
     fi
+
+install:
   - pip install --upgrade pip
-  - pip install cython>=0.25.2
+  - pip install -r requirements.txt
   - pip install nose
-  - pip install numpy
+  # coveralls
+  - pip install pytest
   - pip install coveralls
+
   - python setup.py build_ext -i
   - python setup.py install
 
+# command to run tests
 script:
   # - coverage run --parallel-mode tests/test_pcl.py
   # - coverage run --parallel-mode tests/test_registration.py
   # - nosetests -A "$NOSEATTR" --with-coverage --cover-erase --cover-package=python-pcl --verbose
   # - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --with-coverage --cover-erase --cover-package=python-pcl --verbose
   - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
-  
+  # - py.test --cov pcl
   # examples
   # - python examples/GrabberCallbackTest.py
   # examples/official
@@ -266,6 +382,7 @@ script:
   # - python examples/official/surface/resampling.py
 
 after_success:
+  # coveralls.io
   - coverage combine
   - coveralls
 

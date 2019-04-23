@@ -11,8 +11,6 @@ from boost_shared_ptr cimport shared_ptr
 from eigen cimport Vector4f
 from eigen cimport Quaternionf
 
-from vector cimport vector as vector2
-
 # Vertices
 # ctypedef unsigned int uint32_t
 
@@ -196,7 +194,8 @@ cdef extern from "pcl/pcl_config.h":
     # 1.6.0 not set?
     # cdef int PCL_REVISION_VERSION
     # cdef int PCL_DEV_VERSION
-
+    # PCL_VERSION
+    # VTK_RENDERING_BACKEND_OPENGL_VERSION
 
 ###
 
