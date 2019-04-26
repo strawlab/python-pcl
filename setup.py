@@ -281,8 +281,8 @@ if platform.system() == "Windows":
         # vtk 5.8
         # + add VTK
         inc_dirs = [pcl_root + '\\include\\pcl' + pcl_version,
-                    eigen_root + '\\eigen3', 
-                    boost_root + '\\include\\boost-' + boost_version,
+                    pcl_root + '\\3rdParty\\Eigen\\include',
+                    pcl_root + '\\3rdParty\\Boost\\include',
                     flann_root + '\\include',
                     qhull_root + '\\include',
                     vtk_root + '\\include\\vtk-' + vtk_version]
