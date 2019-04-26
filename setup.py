@@ -191,7 +191,7 @@ if platform.system() == "Windows":
             pcl_libs = ["2d", "common", "features", "filters", "geometry",
                         "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
                         "recognition", "registration", "sample_consensus", "search",
-                        "segmentation", "stereo", "surface", "tracking", "visualization"]
+                        "segmentation", "surface", "tracking", "visualization"]
         else:
             print('no building Python Version')
             sys.exit(1)
@@ -651,10 +651,17 @@ else:
     #             "registration", "sample_consensus", "search", "segmentation",
     #             "surface", "tracking", "visualization"]
     # version 1.7
-    pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
-                "recognition", "registration", "sample_consensus", "search",
-                "segmentation", "stereo", "surface", "tracking", "visualization"]
+    if pcl_version == '-1.7':
+        pcl_libs = ["2d", "common", "features", "filters", "geometry",
+                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                    "recognition", "registration", "sample_consensus", "search",
+                    "segmentation", "surface", "tracking", "visualization"]
+    else:
+        # version 1.8
+        pcl_libs = ["2d", "common", "features", "filters", "geometry",
+                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+                    "recognition", "registration", "sample_consensus", "search",
+                    "segmentation", "stereo", "surface", "tracking", "visualization"]
     pcl_libs = ["pcl_%s%s" % (lib, pcl_version) for lib in pcl_libs]
 
     ext_args = defaultdict(list)
