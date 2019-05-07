@@ -695,20 +695,20 @@ ctypedef shared_ptr[PCLBase[PointXYZRGBA]] PCLBase_PointXYZRGBA_Ptr_t
 # PolygonMesh.h
 # namespace pcl
 #  struct PolygonMesh
-cdef extern from "pcl/PolygonMesh.h" namespace "pcl" nogil:
-    cdef cppclass PolygonMesh:
-        PolygonMesh()
-
-        PCLHeader header
-        PCLPointCloud2 cloud
-        vector[Vertices] polygons
-
-# ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr;
-# ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr;
-# inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PolygonMesh &v)
-ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr_t
-# ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr_t
-###
+# cdef extern from "pcl/PolygonMesh.h" namespace "pcl" nogil:
+#     cdef cppclass PolygonMesh:
+#         PolygonMesh()
+# 
+#         PCLHeader header
+#         PCLPointCloud2 cloud
+#         vector[Vertices] polygons
+# 
+# # ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr;
+# # ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr;
+# # inline std::ostream& operator<<(std::ostream& s, const  ::pcl::PolygonMesh &v)
+# ctypedef shared_ptr[PolygonMesh] PolygonMeshPtr_t
+# # ctypedef shared_ptr[PolygonMesh const] PolygonMeshConstPtr_t
+# ###
 
 # TextureMesh.h
 # namespace pcl

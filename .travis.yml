@@ -1,13 +1,13 @@
 # 'sudo' is enabled automatically by the 'apt' addon below.
 #sudo: false 
-#sudo: required
+sudo: required
 
 
 # https://docs.travis-ci.com/user/languages/python/#running-python-tests-on-multiple-operating-systems
 matrix:
   include:
     # gcc
-    - os: linux
+    - name: "Python 2.7 on Trusty Linux use pcl 1.7"
       dist: trusty
       language: python
       python: "2.7"
@@ -25,7 +25,7 @@ matrix:
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-    - os: linux
+    - name: "Python 3.5 on Trusty Linux use pcl 1.7"
       dist: trusty
       language: python
       python: "3.5"
@@ -43,7 +43,7 @@ matrix:
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-    - os: linux
+    - name: "Python 3.6 on Trusty Linux use pcl 1.7"
       dist: trusty
       language: python
       python: "3.6"
@@ -61,7 +61,7 @@ matrix:
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-    - os: linux
+    - name: "Python 3.7.1 on Xenial Linux use pcl 1.7"
       dist: xenial   # required for Python >= 3.7
       language: python
       python: "3.7"
@@ -79,7 +79,7 @@ matrix:
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-    - os: linux
+    - name: "Python 3.7.1 on Xenial Linux use pcl 1.8"
       dist: xenial   # required for Python >= 3.7
       language: python
       python: "3.7"
@@ -95,7 +95,7 @@ matrix:
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
-    - os: linux
+    - name: "Python 3.7.1 on Xenial Linux use pcl 1.9"
       dist: xenial   # required for Python >= 3.7
       language: python
       python: "3.7"
@@ -112,7 +112,7 @@ matrix:
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     # clang
-    - os: linux
+    - name: "Python 2.7 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
       language: python
       python: "2.7"
@@ -121,13 +121,14 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
+            - clang-3.9
             - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-4.9"
-    - os: linux
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-3.9"
+    - name: "Python 3.5 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
       language: python
       python: "3.5"
@@ -137,13 +138,14 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - g++-4.9
+            - clang-3.9
+            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-4.9"
-    - os: linux
+      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+    - name: "Python 3.6 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
       language: python
       python: "3.6"
@@ -153,13 +155,14 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
+            - clang-3.9
             - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
-    - os: linux
+    - name: "Python 3.7 on Xenial Linux use pcl 1.7(clang)"
       dist: xenial   # required for Python >= 3.7
       language: python
       python: "3.7"
@@ -169,13 +172,14 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
+            - clang-3.9
             - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
-    - os: linux
+    - name: "Python 3.7 on Xenial Linux use pcl 1.8(clang)"
       dist: xenial   # required for Python >= 3.7
       language: python
       python: "3.7"
@@ -185,13 +189,14 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
+            - clang-3.9
             - clang++-3.9
       env:
       - PCL_VERSION="1.8"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
-    - os: linux
+    - name: "Python 3.7 on Xenial Linux use pcl 1.9(clang)"
       dist: xenial   # required for Python >= 3.7
       language: python
       python: "3.7"
@@ -201,6 +206,7 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
+            - clang-3.9
             - clang++-3.9
       env:
       - PCL_VERSION="1.9"
@@ -210,29 +216,33 @@ matrix:
     # TravisCI TimeLimit 50min
     # clang only(gcc replace clang)
     # homebrew pcl use gcc compiler
-    - os: osx
-      language: generic
+    - name: "Python 2.7.16 on macOS"
+      os: osx
+      language: generic # 'language: python' is an error on Travis CI macOS
       env:
       - PYTHON_VERSION=2.7.16
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
+    - name: "Python 3.5.7 on macOS"
+      os: osx
+      language: generic # 'language: python' is an error on Travis CI macOS
       env:
       - PYTHON_VERSION=3.5.7
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
+    - name: "Python 3.6.8 on macOS"
+      os: osx
+      language: generic # 'language: python' is an error on Travis CI macOS
       env:
       - PYTHON_VERSION=3.6.8
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
-    - os: osx
-      language: generic
+    - name: "Python 3.7.3 on macOS"
+      os: osx
+      language: generic # 'language: python' is an error on Travis CI macOS
       env:
       - PYTHON_VERSION=3.7.3
       - PYENV_ROOT=~/.pyenv
