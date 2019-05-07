@@ -13,6 +13,7 @@ matrix:
     - name: "Python 2.7.15 on Xenial Linux use pcl 1.7"
       dist: xenial
       python: "2.7"
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -20,16 +21,15 @@ matrix:
           packages:
             - openni2-utils
             - build-essential
-            - gcc-4.9
-            - g++-4.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "Python 3.5 on Trusty Linux use pcl 1.7"
       dist: trusty
       python: "3.5"
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -37,16 +37,15 @@ matrix:
           packages:
             - openni2-utils
             - build-essential
-            - gcc-4.9
-            - g++-4.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "Python 3.6 on Trusty Linux use pcl 1.7"
       dist: trusty
       python: "3.6"
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -54,16 +53,15 @@ matrix:
           packages:
             - openni2-utils
             - build-essential
-            - gcc-4.9
-            - g++-4.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.7"
       dist: xenial   # required for Python >= 3.7
       python: "3.7"
+      compiler: gcc
       addons:
         apt:
           sources:
@@ -71,13 +69,11 @@ matrix:
           packages:
             - openni2-utils
             - build-essential
-            - gcc-4.9
-            - g++-4.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.8"
       dist: xenial   # required for Python >= 3.7
       python: "3.7"
@@ -87,12 +83,11 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - g++-4.9
       env:
       - PCL_VERSION="1.8"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.9"
       dist: xenial   # required for Python >= 3.7
       python: "3.7"
@@ -102,108 +97,100 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - g++-4.9
       env:
       - PCL_VERSION="1.9"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
+      - MATRIX_EVAL="CC=gcc && CXX=g++"
     # clang
     - name: "Python 2.7.15 on Xenial Linux use pcl 1.7(clang)"
       dist: xenial
       python: "2.7"
+      compiler: clang
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
-          packages:
-            - clang-3.9
-            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-3.9"
+      - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "Python 3.5 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
       python: "3.5"
+      compiler: clang
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - clang-3.9
-            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+      - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "Python 3.6 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
       python: "3.6"
+      compiler: clang
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - clang-3.9
-            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="trusty"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+      - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "Python 3.7 on Xenial Linux use pcl 1.7(clang)"
       dist: xenial   # required for Python >= 3.7
       python: "3.7"
+      compiler: clang
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - clang-3.9
-            - clang++-3.9
       env:
       - PCL_VERSION="1.7"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+      - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "Python 3.7 on Xenial Linux use pcl 1.8(clang)"
       dist: xenial   # required for Python >= 3.7
       python: "3.7"
+      compiler: clang
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - clang-3.9
-            - clang++-3.9
       env:
       - PCL_VERSION="1.8"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+      - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "Python 3.7 on Xenial Linux use pcl 1.9(clang)"
       dist: xenial   # required for Python >= 3.7
       python: "3.7"
+      compiler: clang
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - openni2-utils
-            - clang-3.9
-            - clang++-3.9
       env:
       - PCL_VERSION="1.9"
       - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-      - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
+      - MATRIX_EVAL="CC=clang && CXX=clang++"
     # TravisCI TimeLimit 50min
     # clang only(gcc replace clang)
     # homebrew pcl use gcc compiler
