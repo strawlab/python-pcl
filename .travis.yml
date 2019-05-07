@@ -1,15 +1,17 @@
 # 'sudo' is enabled automatically by the 'apt' addon below.
 #sudo: false 
-sudo: required
+#sudo: required
 
+language: python            # this works for Linux but is an error on macOS or Windows
 
 # https://docs.travis-ci.com/user/languages/python/#running-python-tests-on-multiple-operating-systems
+# https://docs.travis-ci.com/user/reference/trusty#python-images
+# https://docs.travis-ci.com/user/reference/xenial#python-support
 matrix:
   include:
     # gcc
-    - name: "Python 2.7 on Trusty Linux use pcl 1.7"
-      dist: trusty
-      language: python
+    - name: "Python 2.7.15 on Xenial Linux use pcl 1.7"
+      dist: xenial
       python: "2.7"
       addons:
         apt:
@@ -27,7 +29,6 @@ matrix:
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - name: "Python 3.5 on Trusty Linux use pcl 1.7"
       dist: trusty
-      language: python
       python: "3.5"
       addons:
         apt:
@@ -45,7 +46,6 @@ matrix:
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - name: "Python 3.6 on Trusty Linux use pcl 1.7"
       dist: trusty
-      language: python
       python: "3.6"
       addons:
         apt:
@@ -63,7 +63,6 @@ matrix:
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.7"
       dist: xenial   # required for Python >= 3.7
-      language: python
       python: "3.7"
       addons:
         apt:
@@ -81,7 +80,6 @@ matrix:
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.8"
       dist: xenial   # required for Python >= 3.7
-      language: python
       python: "3.7"
       addons:
         apt:
@@ -97,7 +95,6 @@ matrix:
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.9"
       dist: xenial   # required for Python >= 3.7
-      language: python
       python: "3.7"
       addons:
         apt:
@@ -112,9 +109,8 @@ matrix:
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc-4.9 && CXX=g++-4.9"
     # clang
-    - name: "Python 2.7 on Trusty Linux use pcl 1.7(clang)"
-      dist: trusty
-      language: python
+    - name: "Python 2.7.15 on Xenial Linux use pcl 1.7(clang)"
+      dist: xenial
       python: "2.7"
       addons:
         apt:
@@ -130,7 +126,6 @@ matrix:
       - MATRIX_EVAL="CC=clang-3.9 && CXX=g++-3.9"
     - name: "Python 3.5 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
-      language: python
       python: "3.5"
       addons:
         apt:
@@ -147,7 +142,6 @@ matrix:
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
     - name: "Python 3.6 on Trusty Linux use pcl 1.7(clang)"
       dist: trusty
-      language: python
       python: "3.6"
       addons:
         apt:
@@ -164,7 +158,6 @@ matrix:
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
     - name: "Python 3.7 on Xenial Linux use pcl 1.7(clang)"
       dist: xenial   # required for Python >= 3.7
-      language: python
       python: "3.7"
       addons:
         apt:
@@ -181,7 +174,6 @@ matrix:
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
     - name: "Python 3.7 on Xenial Linux use pcl 1.8(clang)"
       dist: xenial   # required for Python >= 3.7
-      language: python
       python: "3.7"
       addons:
         apt:
@@ -198,7 +190,6 @@ matrix:
       - MATRIX_EVAL="CC=clang-3.9 && CXX=clang++-3.9"
     - name: "Python 3.7 on Xenial Linux use pcl 1.9(clang)"
       dist: xenial   # required for Python >= 3.7
-      language: python
       python: "3.7"
       addons:
         apt:
