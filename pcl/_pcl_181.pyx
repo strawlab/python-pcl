@@ -138,7 +138,7 @@ include "pxi/PointCloud_PointXYZRGBA_180.pxi"
 include "pxi/PointCloud_PointWithViewpoint.pxi"
 include "pxi/PointCloud_Normal.pxi"
 include "pxi/PointCloud_PointNormal.pxi"
-include "pxi/PolygonMesh.pxi"
+# include "pxi/PolygonMesh.pxi"
 
 ### common ###
 def deg2rad(float alpha):
