@@ -244,8 +244,8 @@ matrix:
 cache:
   - pip
   - ccache
-  directories:
-    - $HOME/Library/Caches/Homebrew
+#   directories:
+#     - $HOME/Library/Caches/Homebrew
 
 
 before_cache:
