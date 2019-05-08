@@ -486,14 +486,16 @@ cdef class PointCloud:
         """
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
-        condRemoval = ConditionalRemoval(range_conf)
-        cdef pcl_fil.ConditionalRemoval_t *cCondRemoval = <pcl_fil.ConditionalRemoval_t *>condRemoval.me
-        cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        return condRemoval
+        # condRemoval = ConditionalRemoval(range_conf)
+        # cdef pcl_fil.ConditionalRemoval_t *cCondRemoval = <pcl_fil.ConditionalRemoval_t *>condRemoval.me
+        # cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        # return condRemoval
+        # TODO: build error(comment out[temporary fix])
+        return 0
 
     def make_ConcaveHull(self):
         """
-        Return a pcl.ConditionalRemoval object with this object set as the input-cloud
+        Return a pcl.ConcaveHull object with this object set as the input-cloud
         """
         concaveHull = ConcaveHull()
         cdef pcl_srf.ConcaveHull_t *cConcaveHull = <pcl_srf.ConcaveHull_t *>concaveHull.me
