@@ -1929,7 +1929,7 @@ cdef extern from "pcl/io/ply_io.h" namespace "pcl::io":
 # vtk_lib_io.h
 # namespace pcl
 # namespace io
-cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
+# cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
     # /** \brief Convert vtkPolyData object to a PCL PolygonMesh
     #   * \param[in] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
     #   * \param[out] mesh PCL Polygon Mesh to fill
@@ -2049,6 +2049,5 @@ cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
 #     vtkStructuredGridToPointCloud (vtkStructuredGrid* const structured_grid, 
 #                                    pcl::PointCloud<PointT>& cloud);
 # 
-# 
+#
 ###
-

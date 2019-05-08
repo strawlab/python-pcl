@@ -211,6 +211,9 @@ cdef class PointCloud_PointXYZRGB:
         if self._view_count > 0:
             raise ValueError("can't resize PointCloud while there are"
                              " arrays/memoryviews referencing it")
+        if x < 0:
+            raise MemoryError("can't resize PointCloud to negative size")
+
         self.thisptr().resize(x)
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
@@ -234,27 +237,25 @@ cdef class PointCloud_PointXYZRGB:
         return self._from_pcd_file(f)
 
     def _from_pcd_file(self, const char *s):
-        cdef int error = 0
-        with nogil:
-            error = pcl_io.loadPCDFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
-            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
-            # error = cpp.loadPCDFile(string(s), p)
-        return error
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPCDFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        # Cython 0.29? : Calling gil-requiring function not allowed without gil
+        ok = pcl_io.loadPCDFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        return ok
 
     def _from_ply_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            ok = pcl_io.loadPLYFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
-            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
-            # ok = cpp.loadPLYFile [cpp.PointXYZRGB](string(s), p)
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPLYFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
         return ok
 
     def _from_obj_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadOBJFile [cpp.PointXYZRGB](string(s), <cpp.PointCloud[cpp.PointXYZRGB]> deref(self.thisptr()))
-            ok = pcl_io.loadOBJFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadOBJFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadOBJFile [cpp.PointXYZRGB](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -265,22 +266,20 @@ cdef class PointCloud_PointXYZRGB:
         return self._to_pcd_file(fname, not ascii)
 
     def _to_pcd_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            error = pcl_io.savePCDFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
-            # cpp.PointCloud[cpp.PointXYZRGB] *
-            # error = cpp.savePCDFile [cpp.PointXYZRGB](s, p, binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePCDFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePCDFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
+        return ok
 
     def _to_ply_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            error = pcl_io.savePLYFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
-            # cpp.PointCloud[cpp.PointXYZRGB] *p = self.thisptr()
-            # error = cpp.savePLYFile [cpp.PointXYZRGB](s, p, binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePLYFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePLYFile [cpp.PointXYZRGB](s, deref(self.thisptr()), binary)
+        return ok
 
     def make_segmenter(self):
         """

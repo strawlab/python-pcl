@@ -136,11 +136,25 @@ cdef class PointCloud:
             return np.array([data[0], data[1], data[2], data[3]],
                             dtype=np.float32)
 
+        def __set__(self, cnp.ndarray[cnp.float32_t, ndim=1] new_origin):
+            self.thisptr().sensor_origin_ = cpp.Vector4f(
+                    new_origin[0],
+                    new_origin[1],
+                    new_origin[2],
+                    0.0)
+
     property sensor_orientation:
         def __get__(self):
             # NumPy doesn't have a quaternion type, so we return a 4-vector.
             cdef cpp.Quaternionf o = self.thisptr().sensor_orientation_
-            return np.array([o.w(), o.x(), o.y(), o.z()])
+            return np.array([o.w(), o.x(), o.y(), o.z()], dtype=np.float32)
+        
+        def __set__(self, cnp.ndarray[cnp.float32_t, ndim=1] new_orient):
+            self.thisptr().sensor_orientation_ = cpp.Quaternionf(
+                    new_orient[0],
+                    new_orient[1],
+                    new_orient[2],
+                    new_orient[3])
 
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
@@ -230,27 +244,25 @@ cdef class PointCloud:
         return self._from_pcd_file(f)
 
     def _from_pcd_file(self, const char *s):
-        cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            error = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
-        return error
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        # Cython 0.29? : Calling gil-requiring function not allowed without gil
+        ok = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        return ok
 
     def _from_ply_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
         return ok
 
     def _from_obj_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -261,25 +273,20 @@ cdef class PointCloud:
         return self._to_pcd_file(fname, not ascii)
 
     def _to_pcd_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePCDFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            # OK
-            error = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
-            # pcl_io.PointCloud[cpp.PointXYZ] *p = self.thisptr()
-            # error = pcl_io.savePCDFile [cpp.PointXYZ](s, p, binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        return ok
 
     def _to_ply_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePLYFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            error = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        return ok
 
     def make_segmenter(self):
         """
@@ -489,7 +496,7 @@ cdef class PointCloud:
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
         concaveHull = ConcaveHull()
-        cdef pcl_sf.ConcaveHull_t *cConcaveHull = <pcl_sf.ConcaveHull_t *>concaveHull.me
+        cdef pcl_srf.ConcaveHull_t *cConcaveHull = <pcl_srf.ConcaveHull_t *>concaveHull.me
         cConcaveHull.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return concaveHull
 
@@ -530,7 +537,7 @@ cdef class PointCloud:
         cdef cpp.PointCloud_Normal_t normals
         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
         regiongrowing = RegionGrowing(self)
-        cdef pclseg.RegionGrowing_t *cRegionGrowing = <pclseg.RegionGrowing_t *>regiongrowing.me
+        cdef pcl_seg.RegionGrowing_t *cRegionGrowing = <pcl_seg.RegionGrowing_t *>regiongrowing.me
         cRegionGrowing.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         cRegionGrowing.setInputNormals(normals.makeShared())
         return regiongrowing

@@ -5,7 +5,6 @@ cimport numpy as cnp
 
 cnp.import_array()
 
-
 # parts
 cimport pcl_features_180 as pcl_ftr
 cimport pcl_filters_180 as pcl_fil
@@ -245,27 +244,25 @@ cdef class PointCloud:
         return self._from_pcd_file(f)
 
     def _from_pcd_file(self, const char *s):
-        cdef int error = 0
-        with nogil:
-            # NG
-            # error = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            error = pcl_io.loadPCDFile [cpp.PointXYZ] (string(s), deref(self.thisptr()))
-        return error
+        cdef int ok = -1
+        # with nogil:
+        #     error = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        # Cython 0.29? : Calling gil-requiring function not allowed without gil
+        ok = pcl_io.loadPCDFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        return ok
 
     def _from_ply_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
         return ok
 
     def _from_obj_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()))
-            ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadOBJFile [cpp.PointXYZ](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -276,25 +273,20 @@ cdef class PointCloud:
         return self._to_pcd_file(fname, not ascii)
 
     def _to_pcd_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePCDFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            # OK
-            error = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
-            # pcl_io.PointCloud[cpp.PointXYZ] *p = self.thisptr()
-            # error = pcl_io.savePCDFile [cpp.PointXYZ](s, p, binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePCDFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        return ok
 
     def _to_ply_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pcl_io.savePLYFile [cpp.PointXYZ](s, <cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), binary)
-            error = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePLYFile [cpp.PointXYZ](s, deref(self.thisptr()), binary)
+        return ok
 
     def make_segmenter(self):
         """
@@ -494,12 +486,10 @@ cdef class PointCloud:
         """
         Return a pcl.ConditionalRemoval object with this object set as the input-cloud
         """
-        # condRemoval = ConditionalRemoval(range_conf)
-        # cdef pcl_fil.ConditionalRemoval_t *cCondRemoval = <pcl_fil.ConditionalRemoval_t *>condRemoval.me
-        # cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
-        # return condRemoval
-        # TODO: build error(comment out[temporary fix])
-        return 0
+        condRemoval = ConditionalRemoval(range_conf)
+        cdef pcl_fil.ConditionalRemoval_t *cCondRemoval = <pcl_fil.ConditionalRemoval_t *>condRemoval.me
+        cCondRemoval.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return condRemoval
 
     def make_ConcaveHull(self):
         """
@@ -547,7 +537,7 @@ cdef class PointCloud:
         cdef cpp.PointCloud_Normal_t normals
         mpcl_compute_normals(<cpp.PointCloud[cpp.PointXYZ]> deref(self.thisptr()), ksearch, searchRadius, normals)
         regiongrowing = RegionGrowing(self)
-        cdef pclseg.RegionGrowing_t *cRegionGrowing = <pclseg.RegionGrowing_t *>regiongrowing.me
+        cdef pcl_seg.RegionGrowing_t *cRegionGrowing = <pcl_seg.RegionGrowing_t *>regiongrowing.me
         cRegionGrowing.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         cRegionGrowing.setInputNormals(normals.makeShared())
         return regiongrowing

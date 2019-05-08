@@ -652,8 +652,8 @@ else:
     #             "surface", "tracking", "visualization"]
     # version 1.7
     if pcl_version == '-1.7':
-        pcl_libs = ["2d", "common", "features", "filters", "geometry",
-                    "io", "kdtree", "keypoints", "ml", "octree", "outofcore", "people",
+        pcl_libs = ["common", "features", "filters", "geometry",
+                    "io", "kdtree", "keypoints", "octree", "outofcore", "people",
                     "recognition", "registration", "sample_consensus", "search",
                     "segmentation", "surface", "tracking", "visualization"]
     else:
@@ -680,10 +680,7 @@ else:
     # OpenNI2
     ext_args['include_dirs'].append('/usr/include/openni2')
 
-    # VTK use?
-    # ext_args['include_dirs'].append('/usr/include/vtk')
-    # ext_args['include_dirs'].append('/usr/local/include/vtk')
-
+    # VTK use
     if sys.platform == 'darwin':
         # pcl 1.8.1(MacOSX)
         # if pcl_version == '-1.8':
@@ -696,14 +693,10 @@ else:
             # pcl 1.9.1
             # build install?
             # vtk_version = '8.1'
-            # homebrew(MacOSX homebrew)
-            vtk_version = '8.1.2_3'
-            # ext_args['include_dirs'].append('/usr/local/include/vtk-' + vtk_version)
-            # ext_args['library_dirs'].append('/usr/local/lib')
             # vtk_include_dir = os.path.join('/usr/local' ,'include/vtk-8.1')
             # vtk_library_dir = os.path.join('/usr/local', 'lib')
-            # ext_args['include_dirs'].append('/usr/local/Cellar/vtk/8.1.0/include')
-            # ext_args['library_dirs'].append('/usr/local/Cellar/vtk/8.1.0/lib')
+            # homebrew(MacOSX homebrew)
+            vtk_version = '8.1.2_3'
             vtk_include_dir = os.path.join('/usr/local/Cellar/vtk/8.1.2_3' ,'include/vtk-8.1')
             vtk_library_dir = os.path.join('/usr/local/Cellar/vtk/8.1.2_3', 'lib')
         pass
@@ -712,13 +705,13 @@ else:
         # vtk_version = '5.8'
         # ext_args['include_dirs'].append('/usr/include/vtk-' + vtk_version)
         # ext_args['library_dirs'].append('/usr/lib')
-        # pcl 1.7.2(Ubuntu 16.04)
+        # pcl 1.7.2(Ubuntu 16.04)(xenial)
         if pcl_version == '-1.7':
-            vtk_version = '6.3'
+            vtk_version = '6.2'
             vtk_include_dir = os.path.join('/usr/include/vtk-' + vtk_version)
             vtk_library_dir = os.path.join('/usr/lib')
         elif pcl_version == '-1.8':
-            # pcl 1.8.0/1?(Ubuntu 18.04)
+            # pcl 1.8.0/1?(Ubuntu 18.04)(melodic)
             vtk_version = '7.0'
             # pcl 1.8.1?
             # vtk_version = '8.0'
@@ -726,13 +719,10 @@ else:
             vtk_library_dir = os.path.join('/usr/lib')
         elif pcl_version == '-1.9':
             # pcl 1.9.1
-            vtk_version = '8.1'
             # build install?
-            # vtk_include_dir = os.path.join('/usr/include/vtk-' + vtk_version)
-            # vtk_library_dir = os.path.join('/usr/lib')
-            # (Conda package)
-            vtk_include_dir = os.path.join(os.environ["PREFIX"] ,'include/vtk-8.1')
-            vtk_library_dir = os.path.join(os.environ["PREFIX"], 'lib')
+            vtk_version = '8.1'
+            vtk_include_dir = os.path.join('/usr/include/vtk-' + vtk_version)
+            vtk_library_dir = os.path.join('/usr/lib')
         else:
             pass
 

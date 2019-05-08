@@ -1929,7 +1929,7 @@ cdef extern from "pcl/io/obj_io.h" namespace "pcl::io":
 # vtk_lib_io.h
 # namespace pcl
 # namespace io
-cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
+# cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
     # /** \brief Convert vtkPolyData object to a PCL PolygonMesh
     #   * \param[in] poly_data Pointer (vtkSmartPointer) to a vtkPolyData object
     #   * \param[out] mesh PCL Polygon Mesh to fill
@@ -1951,13 +1951,13 @@ cdef extern from "pcl/io/vtk_lib_io.h" namespace "pcl::io":
     # \param[in] file_name the name of the file containing the polygon data
     # \param[out] mesh the object that we want to load the data in 
     # \ingroup io
-    int loadPolygonFile (string file_name, cpp.PolygonMesh& mesh) nogil except +
+    # int loadPolygonFile (string file_name, cpp.PolygonMesh& mesh) nogil except +
     
     # \brief Save a \ref PolygonMesh object given an input file name, based on the file extension
     # \param[in] file_name the name of the file to save the data to
     # \param[in] mesh the object that contains the data
     # \ingroup io
-    int savePolygonFile (string file_name, cpp.PolygonMesh mesh) nogil except +
+    # int savePolygonFile (string file_name, cpp.PolygonMesh mesh) nogil except +
     
     # 
     # /** \brief Load a VTK file into a \ref PolygonMesh object
