@@ -194,7 +194,7 @@ matrix:
     # TravisCI TimeLimit 50min
     # clang only(gcc replace clang)
     # homebrew pcl use gcc compiler
-    - name: "Python 2.7.16 on macOS"
+    - name: "Python 2.7.16 on macOS using homebrew"
       os: osx
       language: generic # 'language: python' is an error on Travis CI macOS
       env:
@@ -202,7 +202,7 @@ matrix:
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
-    - name: "Python 3.5.7 on macOS"
+    - name: "Python 3.5.7 on macOS using homebrew"
       os: osx
       language: generic # 'language: python' is an error on Travis CI macOS
       env:
@@ -210,7 +210,7 @@ matrix:
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
-    - name: "Python 3.6.8 on macOS"
+    - name: "Python 3.6.8 on macOS using homebrew"
       os: osx
       language: generic # 'language: python' is an error on Travis CI macOS
       env:
@@ -218,7 +218,7 @@ matrix:
       - PYENV_ROOT=~/.pyenv
       - PATH=$PYENV_ROOT/shims:$PATH:$PYENV_ROOT/bin
       - NOSEATTR="not pcl_ver_0_4"
-    - name: "Python 3.7.3 on macOS"
+    - name: "Python 3.7.3 on macOS using homebrew"
       os: osx
       language: generic # 'language: python' is an error on Travis CI macOS
       env:
@@ -240,6 +240,7 @@ before_cache:
 
 
 # (Mac OSX using pcl 1.9.1 only [homebrew])
+# brew install ccache;
 # eval "${MATRIX_EVAL}";
 # trusty(pcl-1.7.0?)
 # sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
@@ -251,30 +252,20 @@ before_cache:
 before_install:
   - if [ ${TRAVIS_OS_NAME} = "osx" ]; then
       brew update >/dev/null;
-      brew install ccache;
 
-      PYTHON_CONFIGURE_OPTS="--enable-unicode=ucs2" pyenv install -ks $PYTHON_VERSION;
+      pyenv install $PYTHON_VERSION;
       pyenv global $PYTHON_VERSION;
       python --version;
 
-      travis_wait 45 brew install pcl --without-qt;
+      travis_wait 45 brew install pcl;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "xenial") ]]; then
-      sudo apt -y install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
       sudo apt -y install libpcl-dev;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.8" ) ]]; then
-      sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
-
-      sudo apt-get install zram-config;
-
-      sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev;
-      sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer;
-      sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev;
-
-      wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
-      tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
-      export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH;
+      sudo apt -y install g++ doxygen libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev;
+      sudo apt -y install git-core freeglut3-dev pkg-config build-essential
+      sudo apt -y install libflann-dev libflann1.8 libboost-all-dev libeigen3-dev;
 
       sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304;
       sudo mkswap /swapfile;
@@ -292,17 +283,9 @@ before_install:
       cd ../..;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.9" ) ]]; then
-      sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer;
-
-      sudo apt-get install zram-config;
-
-      sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev;
-      sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer;
-      sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev;
-
-      wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
-      tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz;
-      export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH;
+      sudo apt -y install g++ doxygen libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev;
+      sudo apt -y install git-core freeglut3-dev pkg-config build-essential
+      sudo apt -y install libflann-dev libflann1.8 libboost-all-dev libeigen3-dev;
 
       sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304;
       sudo mkswap /swapfile;
@@ -339,30 +322,6 @@ script:
   # - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --with-coverage --cover-erase --cover-package=python-pcl --verbose
   - nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
   # - py.test --cov pcl
-  # examples
-  # - python examples/GrabberCallbackTest.py
-  # examples/official
-  # - python examples/official/grabber/openni_grabber.py
-  # # examples_command_172.txt
-  # # Filtering
-  # - python examples/official/Filtering/PassThroughFilter.py
-  # - python examples/official/Filtering/project_inliers.py
-  # - python examples/official/Filtering/remove_outliers.py -r Radius
-  # - python examples/official/Filtering/remove_outliers.py -r Condition
-  # - python examples/official/Filtering/VoxelGrid_160.py
-  # - python examples/official/Filtering/statistical_removal.py
-  # - python examples/official/IO/pcd_read.py
-  # # KdTree
-  # - python examples/official/kdtree/kdtree_search.py
-  # # keypoints
-  # # NG(RangeImage Link Error)
-  # - python examples/official/keypoints/narf_keypoint_extraction.py
-  # # octree
-  # - python examples/official/octree/octree_search.py
-  # - python examples/official/Segmentation/cluster_extraction.py
-  # - python examples/official/Segmentation/cylinder_segmentation.py
-  # - python examples/official/surface/concave_hull_2d.py
-  # - python examples/official/surface/resampling.py
 
 after_success:
   # coveralls.io
