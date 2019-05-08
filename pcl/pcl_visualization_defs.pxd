@@ -1246,7 +1246,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] id the polygon object id (default: "polygon")
         #   * \param[in] viewport the view port where the PolygonMesh should be added (default: all)
         #   */
-        bool addPolylineFromPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
+        # bool addPolylineFromPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
         
         # /** \brief Add the specified correspondences to the display.
         #   * \param[in] source_points The source points
