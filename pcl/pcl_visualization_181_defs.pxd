@@ -1213,7 +1213,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #   * \param[in] viewport the view port where the PolygonMesh should be added (default: all)
         #   */
         # bool addPolygonMesh (const pcl::PolygonMesh &polymesh, const std::string &id = "polygon", int viewport = 0);
-        bool addPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
+        # bool addPolygonMesh (const cpp.PolygonMesh &polymesh, const string &id, int viewport)
         
         # /** \brief Add a PolygonMesh object to screen
         #   * \param[in] cloud the polygonal mesh point cloud
@@ -1226,7 +1226,7 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #                 const std::vector<pcl::Vertices> &vertices,
         #                 const std::string &id = "polygon",
         #                 int viewport = 0);
-        bool addPolygonMesh[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const vector[cpp.Vertices] &vertices, const string &id, int viewport)
+        # bool addPolygonMesh[PointT](const shared_ptr[cpp.PointCloud[PointT]] &cloud, const vector[cpp.Vertices] &vertices, const string &id, int viewport)
         
         # /** \brief Update a PolygonMesh object on screen
         #   * \param[in] cloud the polygonal mesh point cloud

@@ -23,11 +23,11 @@ matrix:
             - build-essential
       env:
       - PCL_VERSION="1.7"
-      - OS_VERSION="trusty"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc && CXX=g++"
-    - name: "Python 3.5 on Trusty Linux use pcl 1.7"
-      dist: trusty
+    - name: "Python 3.5 on Xenial Linux use pcl 1.7"
+      dist: xenial
       python: "3.5"
       compiler: gcc
       addons:
@@ -39,11 +39,11 @@ matrix:
             - build-essential
       env:
       - PCL_VERSION="1.7"
-      - OS_VERSION="trusty"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc && CXX=g++"
-    - name: "Python 3.6 on Trusty Linux use pcl 1.7"
-      dist: trusty
+    - name: "Python 3.6 on Xenial Linux use pcl 1.7"
+      dist: xenial
       python: "3.6"
       compiler: gcc
       addons:
@@ -55,7 +55,7 @@ matrix:
             - build-essential
       env:
       - PCL_VERSION="1.7"
-      - OS_VERSION="trusty"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=gcc && CXX=g++"
     - name: "Python 3.7.1 on Xenial Linux use pcl 1.7"
@@ -113,11 +113,11 @@ matrix:
             - ubuntu-toolchain-r-test
       env:
       - PCL_VERSION="1.7"
-      - OS_VERSION="trusty"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=clang && CXX=clang++"
-    - name: "Python 3.5 on Trusty Linux use pcl 1.7(clang)"
-      dist: trusty
+    - name: "Python 3.5 on Xenial Linux use pcl 1.7(clang)"
+      dist: xenial
       python: "3.5"
       compiler: clang
       addons:
@@ -128,11 +128,11 @@ matrix:
             - openni2-utils
       env:
       - PCL_VERSION="1.7"
-      - OS_VERSION="trusty"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=clang && CXX=clang++"
-    - name: "Python 3.6 on Trusty Linux use pcl 1.7(clang)"
-      dist: trusty
+    - name: "Python 3.6 on Xenial Linux use pcl 1.7(clang)"
+      dist: xenial
       python: "3.6"
       compiler: clang
       addons:
@@ -143,7 +143,7 @@ matrix:
             - openni2-utils
       env:
       - PCL_VERSION="1.7"
-      - OS_VERSION="trusty"
+      - OS_VERSION="xenial"
       - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
       - MATRIX_EVAL="CC=clang && CXX=clang++"
     - name: "Python 3.7 on Xenial Linux use pcl 1.7(clang)"
@@ -258,11 +258,6 @@ before_install:
       python --version;
 
       travis_wait 45 brew install pcl --without-qt;
-    fi
-  - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "trusty") ]]; then
-        sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
-        sudo apt -y update;
-        sudo apt -y install libpcl-all;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "xenial") ]]; then
       sudo apt -y install git build-essential linux-libc-dev cmake cmake-gui libusb-1.0-0-dev libusb-dev libudev-dev mpi-default-dev openmpi-bin openmpi-common libflann1.8 libflann-dev libeigen3-dev libboost-all-dev libqhull* libgtest-dev freeglut3-dev pkg-config libxmu-dev libxi-dev mono-complete qt-sdk openjdk-8-jdk openjdk-8-jre libproj-dev libglfw3-dev;
