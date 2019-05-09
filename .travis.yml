@@ -311,4 +311,5 @@ deploy:
   on:
     # test
     branch: rc_patches4
-    distributions: sdist --formats=gztar,zip
+    distributions: "sdist bdist_wheel"
+    skip_existing: true
