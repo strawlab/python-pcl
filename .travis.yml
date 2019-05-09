@@ -314,5 +314,4 @@ deploy:
   on:
     # test
     branch: rc_patches4
-    distributions: "sdist bdist_wheel"
-    skip_existing: true
+    # skip_existing: true
