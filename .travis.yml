@@ -290,6 +290,7 @@ install:
 
   - python setup.py build_ext -i
   - python setup.py install
+  - python setup.py sdist bdist_wheel
 
 # command to run tests
 script:
