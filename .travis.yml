@@ -283,6 +283,8 @@ before_install:
 install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
+  - pip install wheel
+  - pip install twine
   - pip install nose
   # coveralls
   - pip install pytest
@@ -291,6 +293,7 @@ install:
   - python setup.py build_ext -i
   - python setup.py install
   - python setup.py sdist bdist_wheel
+  # - twine upload dist/*
 
 # command to run tests
 script:
