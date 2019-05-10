@@ -20,7 +20,11 @@ setup_requires = []
 install_requires = [
     'filelock',
     'nose',
-    'numpy',
+    # RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility
+    # https://github.com/scikit-image/scikit-image/issues/3655
+    # 'numpy>=1.15.1,!=1.50.0',
+    # numpy.ufunc size changed, may indicate binary incompatibility. 
+    'numpy>=1.16.1,!=1.16.2',
     'Cython>=0.26.0',
 ]
 
@@ -868,7 +872,7 @@ else:
 setup(name='python-pcl',
       description='Python bindings for the Point Cloud Library (PCL). using Cython.',
       url='http://github.com/strawlab/python-pcl',
-      version='0.3.0.a1',
+      version='0.3.0a1',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
       maintainer='Tooru Oonuma',

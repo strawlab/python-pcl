@@ -193,16 +193,15 @@ install:
 build_script:
   - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
   - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
-  
-  # conda 
-  # - conda install -y -q Cython=0.25.2
-  - conda install -y -q Cython
-  - conda install -y -q numpy
+
+  # conda(comment out effective whl files?)
+  # - conda install -y -q Cython
+  # - conda install -y -q numpy
 
   - python setup.py build_ext -i
   - python setup.py install
-  - python setup.py bdist_wheel
-  - python -m pip list
+  # - python setup.py sdist bdist_wheel
+  # - python -m pip list
 
   - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" .
   - if [%PCL_VERSION%]==[1.6] copy "%APPVEYOR_OPENNI_ROOT%" "%PYTHON%"
@@ -246,7 +245,7 @@ after_test:
   # Appveyor use Python Version 3.7.0
   # - python setup.py bdist_msi"
   - if [%PYTHON_VERSION%] neq [3.7] python setup.py bdist_msi
-  - ps: "ls dist"
+  # - ps: "ls dist"
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
