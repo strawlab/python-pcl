@@ -292,7 +292,7 @@ install:
 
   - python setup.py build_ext -i
   - python setup.py install
-  - python setup.py sdist bdist_wheel
+  # - python setup.py sdist bdist_wheel
   # - twine upload dist/*
 
 # command to run tests
@@ -306,12 +306,12 @@ after_success:
   # coveralls.io
   - coverage combine
   - coveralls
-deploy:
-  provider: pypi
-  user: sirokujira
-  password:
-    secure: zz1i5hJ9zdXZ+WryKx5PrughDzlJqClAAeEaVgyEQ/almoYkJANWUDW/MbI/Lf39lvhVWwhU7eSai/wPAxasNTSb9L60IFAfqmLDVYzgi2oqBnVrG2la5RDM0ccObwYlmnEjP+08S/R+049kHSEtsu2dszt2Mmko4EUvyzdO5TqYum6pNmB/8XZYRaVVNixva4C76aYDfJ3yfOyJl/pUQoPS3T0u/DWzAJuTgzMS0SRwtEFsno3BK1cRW8cpUThF8/LWGX6Q4C0pReGi4II8bZtlgggrqDZNEszXyGxEbyIvJM7BkxB6uu6AFQtro5ciR3mwSlx5++3KZ6rb9R6nON1HqtrCBiX1TNcBvB7qpYl0hRnAjpDaBmLvK8l74py0sKqb5kpxHUCQ2N24OlVGGf6zC26AuLuJjmq4t9z8A3C9RG+OV0nznY68EsbgHF0pVNbp/TNpfmGG4pXG23exHkFz+kirQGMe4BcQGMIzc1ULpmdu/iaM47BzvsKW18BYT1PY3EkqDWjNR83aFV/YI52L+jzxSkE+GVfkDqARRlP63dE5tfio4+wE84gNgiZwh/zCpBO+Kf4jPDSG2smfHnFQL37COxoLF4R3sUFlY/oUCaXNSuIeLrTtIVk12MzYWZIVm5IxjVUlJIzMJVY7ilexS8MzZgK4lwnpWNFwxyc=
-  on:
-    # test
-    branch: rc_patches4
-    # skip_existing: true
+# deploy:
+#   provider: pypi
+#   user: sirokujira
+#   password:
+#     secure: zz1i5hJ9zdXZ+WryKx5PrughDzlJqClAAeEaVgyEQ/almoYkJANWUDW/MbI/Lf39lvhVWwhU7eSai/wPAxasNTSb9L60IFAfqmLDVYzgi2oqBnVrG2la5RDM0ccObwYlmnEjP+08S/R+049kHSEtsu2dszt2Mmko4EUvyzdO5TqYum6pNmB/8XZYRaVVNixva4C76aYDfJ3yfOyJl/pUQoPS3T0u/DWzAJuTgzMS0SRwtEFsno3BK1cRW8cpUThF8/LWGX6Q4C0pReGi4II8bZtlgggrqDZNEszXyGxEbyIvJM7BkxB6uu6AFQtro5ciR3mwSlx5++3KZ6rb9R6nON1HqtrCBiX1TNcBvB7qpYl0hRnAjpDaBmLvK8l74py0sKqb5kpxHUCQ2N24OlVGGf6zC26AuLuJjmq4t9z8A3C9RG+OV0nznY68EsbgHF0pVNbp/TNpfmGG4pXG23exHkFz+kirQGMe4BcQGMIzc1ULpmdu/iaM47BzvsKW18BYT1PY3EkqDWjNR83aFV/YI52L+jzxSkE+GVfkDqARRlP63dE5tfio4+wE84gNgiZwh/zCpBO+Kf4jPDSG2smfHnFQL37COxoLF4R3sUFlY/oUCaXNSuIeLrTtIVk12MzYWZIVm5IxjVUlJIzMJVY7ilexS8MzZgK4lwnpWNFwxyc=
+#   on:
+#     # test
+#     branch: rc_patches4
+#     # skip_existing: true
