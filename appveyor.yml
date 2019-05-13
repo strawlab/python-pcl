@@ -170,6 +170,11 @@ install:
   # - if [%PCL_VERSION%]==[1.6] SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PYTHON%\\Library\\bin;%PYTHON%\\Lib\\site-packages;%PATH%
   - "conda install -y -q wheel"
 
+  # conda(comment out effective whl files?)
+  # - conda install -y -q Cython
+  # - conda install -y -q numpy
+  - pip install -r requirements.txt
+
   # Mini-conda ng
   # - "pip install --upgrade setuptools"
   # - conda install -y -q setuptools
@@ -193,10 +198,6 @@ install:
 build_script:
   - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\bfgs.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\bfgs.h"
   - if [%PCL_VERSION%]==[1.6] copy .\\appveyor\\eigen.h "%PCL_ROOT%\include\pcl-%PCL_VERSION%\pcl\registration\eigen.h"
-
-  # conda(comment out effective whl files?)
-  # - conda install -y -q Cython
-  # - conda install -y -q numpy
 
   - python setup.py build_ext -i
   - python setup.py install
