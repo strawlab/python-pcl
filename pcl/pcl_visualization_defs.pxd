@@ -755,9 +755,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] scale the scale of the axes (default: 1)
         # param[in] viewport the view port where the 3D axes should be added (default: all)
         # 
-        # -1.8
+        # -1.6
         # void addCoordinateSystem (double scale = 1.0, int viewport = 0);
-        # 1.8/1.9
+        # 1.7/1.8/1.9
         # void addCoordinateSystem (double scale = 1.0, const std::string& id = "reference", int viewport = 0);
         void addCoordinateSystem (double scale, string id, int viewport)
 
@@ -768,9 +768,9 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         # param[in] z the Z position of the axes
         # param[in] viewport the view port where the 3D axes should be added (default: all)
         # void addCoordinateSystem (double scale, float x, float y, float z, int viewport = 0);
-        # 1.7?
+        # -1.6
         # void addCoordinateSystem (double scale, float x, float y, float z, int viewport)
-        # 1.8/1.9
+        # 1.7/1.8/1.9
         void addCoordinateSystem (double scale, float x, float y, float z, string id, int viewport)
 
         # brief Adds 3D axes describing a coordinate system to screen at x, y, z, Roll,Pitch,Yaw
@@ -801,17 +801,17 @@ cdef extern from "pcl/visualization/pcl_visualizer.h" namespace "pcl::visualizat
         #         y
         # 
         # void addCoordinateSystem (double scale, const Eigen::Affine3f& t, int viewport = 0);
-        # 1.7?
+        # -1.6
         # void addCoordinateSystem (double scale, const eigen3.Affine3f& t, int viewport)
-        # 1.8/1.9
+        # 1.7/1.8/1.9
         void addCoordinateSystem (double scale, const eigen3.Affine3f& t, string id, int viewport)
 
         # brief Removes a previously added 3D axes (coordinate system)
         # param[in] viewport view port where the 3D axes should be removed from (default: all)
         # bool removeCoordinateSystem (int viewport = 0);
-        # 1.7?
+        # 1.6
         # bool removeCoordinateSystem (int viewport)
-        # 1.8/1.9
+        # 1.7/1.8/1.9
         bool removeCoordinateSystem (string id, int viewport)
         
         # brief Removes a Point Cloud from screen, based on a given ID.

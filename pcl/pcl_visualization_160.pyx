@@ -8,7 +8,7 @@ import numpy as np
 cimport numpy as cnp
 
 cimport pcl_defs as cpp
-cimport pcl_visualization_defs as pcl_vis
+cimport pcl_visualization_160_defs as pcl_vis
 
 cimport cython
 # from cython.operator import dereference as deref
@@ -27,7 +27,7 @@ cnp.import_array()
 ### Enum ###
 
 ### Enum Setting ###
-# pcl_visualization_defs.pxd
+# pcl_visualization_160_defs.pxd
 # cdef enum RenderingProperties:
 # Re: [Cython] resolving name conflict -- does not work for enums !? 
 # https://www.mail-archive.com/cython-dev@codespeak.net/msg02494.html
