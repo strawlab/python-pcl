@@ -73,34 +73,34 @@ matrix:
     - OS_VERSION="xenial"
     - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     - MATRIX_EVAL="CC=gcc && CXX=g++"
-  - name: Python 3.7.1 on Xenial Linux use pcl 1.8
-    dist: xenial
-    python: '3.7'
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - openni2-utils
-    env:
-    - PCL_VERSION="1.8"
-    - OS_VERSION="xenial"
-    - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    - MATRIX_EVAL="CC=gcc && CXX=g++"
-  - name: Python 3.7.1 on Xenial Linux use pcl 1.9
-    dist: xenial
-    python: '3.7'
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - openni2-utils
-    env:
-    - PCL_VERSION="1.9"
-    - OS_VERSION="xenial"
-    - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    - MATRIX_EVAL="CC=gcc && CXX=g++"
+  # - name: Python 3.7.1 on Xenial Linux use pcl 1.8
+  #   dist: xenial
+  #   python: '3.7'
+  #   addons:
+  #     apt:
+  #       sources:
+  #       - ubuntu-toolchain-r-test
+  #       packages:
+  #       - openni2-utils
+  #   env:
+  #   - PCL_VERSION="1.8"
+  #   - OS_VERSION="xenial"
+  #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+  #   - MATRIX_EVAL="CC=gcc && CXX=g++"
+  # - name: Python 3.7.1 on Xenial Linux use pcl 1.9
+  #   dist: xenial
+  #   python: '3.7'
+  #   addons:
+  #     apt:
+  #       sources:
+  #       - ubuntu-toolchain-r-test
+  #       packages:
+  #       - openni2-utils
+  #   env:
+  #   - PCL_VERSION="1.9"
+  #   - OS_VERSION="xenial"
+  #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+  #   - MATRIX_EVAL="CC=gcc && CXX=g++"
   - name: Python 2.7.15 on Xenial Linux use pcl 1.7(clang)
     dist: xenial
     python: '2.7'
@@ -159,36 +159,36 @@ matrix:
     - OS_VERSION="xenial"
     - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
     - MATRIX_EVAL="CC=clang && CXX=clang++"
-  - name: Python 3.7 on Xenial Linux use pcl 1.8(clang)
-    dist: xenial
-    python: '3.7'
-    compiler: clang
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - openni2-utils
-    env:
-    - PCL_VERSION="1.8"
-    - OS_VERSION="xenial"
-    - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    - MATRIX_EVAL="CC=clang && CXX=clang++"
-  - name: Python 3.7 on Xenial Linux use pcl 1.9(clang)
-    dist: xenial
-    python: '3.7'
-    compiler: clang
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - openni2-utils
-    env:
-    - PCL_VERSION="1.9"
-    - OS_VERSION="xenial"
-    - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
-    - MATRIX_EVAL="CC=clang && CXX=clang++"
+  # - name: Python 3.7 on Xenial Linux use pcl 1.8(clang)
+  #   dist: xenial
+  #   python: '3.7'
+  #   compiler: clang
+  #   addons:
+  #     apt:
+  #       sources:
+  #       - ubuntu-toolchain-r-test
+  #       packages:
+  #       - openni2-utils
+  #   env:
+  #   - PCL_VERSION="1.8"
+  #   - OS_VERSION="xenial"
+  #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+  #   - MATRIX_EVAL="CC=clang && CXX=clang++"
+  # - name: Python 3.7 on Xenial Linux use pcl 1.9(clang)
+  #   dist: xenial
+  #   python: '3.7'
+  #   compiler: clang
+  #   addons:
+  #     apt:
+  #       sources:
+  #       - ubuntu-toolchain-r-test
+  #       packages:
+  #       - openni2-utils
+  #   env:
+  #   - PCL_VERSION="1.9"
+  #   - OS_VERSION="xenial"
+  #   - NOSEATTR="not pcl_ver_0_4 and not pcl_over_18"
+  #   - MATRIX_EVAL="CC=clang && CXX=clang++"
   - name: Python 2.7.16 on macOS using homebrew
     os: osx
     language: generic
