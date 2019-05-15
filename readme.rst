@@ -236,7 +236,7 @@ before Install module
 
         Common setting            
 
-            `Windows Gtk+ Download <http://win32builder.gnome.org/>`_                   
+            `Windows Gtk+ Download <http://www.tarnyko.net/dl/gtk.htm>`_                   
 
                 Download file unzip. Copy bin Folder to pkg-config Folder                  
                  
