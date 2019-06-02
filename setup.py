@@ -632,6 +632,7 @@ else:
                   # Extension("pcl.pcl_grabber", ["pcl/pcl_grabber.pyx", "pcl/grabber_callback.cpp"], language="c++", **ext_args),
                   # debug
                   # gdb_debug=True,
+                  extra_compile_args=ext_args['extra_link_args']
                   ]
     else:
         print('no pcl install or pkg-config missed.')
