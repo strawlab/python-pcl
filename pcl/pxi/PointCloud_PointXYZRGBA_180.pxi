@@ -34,7 +34,7 @@ cdef extern from "minipcl.h":
 # XXX Is there a more elegant way to get these?
 cdef Py_ssize_t _strides_xyzrgba_2[2]
 cdef PointCloud_PointXYZRGBA _pc_xyzrgba_tmp2 = PointCloud_PointXYZRGBA(np.array([[1, 2, 3, 0],
-                                                                          [4, 5, 6, 0]], dtype=np.float32))
+                                                                          [4, 5, 6, 0]], dtype=np.float64))
 cdef cpp.PointCloud[cpp.PointXYZRGBA] *p_xyzrgba_2 = _pc_xyzrgba_tmp2.thisptr()
 _strides_xyzrgba_2[0] = (  <Py_ssize_t><void *>idx.getptr(p_xyzrgba_2, 1)
                - <Py_ssize_t><void *>idx.getptr(p_xyzrgba_2, 0))
@@ -150,9 +150,9 @@ cdef class PointCloud_PointXYZRGBA:
                     new_orient[3])
 
     @cython.boundscheck(False)
-    def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
+    def from_array(self, cnp.ndarray[cnp.float64_t, ndim=2] arr not None):
         """
-        Fill this object from a 2D numpy array (float32)
+        Fill this object from a 2D numpy array (float64)
         """
         assert arr.shape[1] == 4
 
@@ -169,14 +169,16 @@ cdef class PointCloud_PointXYZRGBA:
     @cython.boundscheck(False)
     def to_array(self):
         """
-        Return this object as a 2D numpy array (float32)
+        Return this object as a 2D numpy array (float64)
         """
         cdef float x,y,z
         cdef cnp.npy_intp n = self.thisptr().size()
-        cdef cnp.ndarray[cnp.float32_t, ndim=2, mode="c"] result
+        cdef cnp.ndarray[object, ndim=2, mode="c"] result
         cdef cpp.PointXYZRGBA *p
 
-        result = np.empty((n, 4), dtype=np.float32)
+        result = np.empty((n, 4), dtype=object)
+        result[:, :3] = np.float
+        result[:, 3] = np.int
 
         for i in range(n):
             p = idx.getptr(self.thisptr(), i)
@@ -184,7 +186,7 @@ cdef class PointCloud_PointXYZRGBA:
             result[i, 1] = p.y
             result[i, 2] = p.z
             result[i, 3] = p.rgba
-        return result
+        return result.astype(np.float64)
 
     @cython.boundscheck(False)
     def from_list(self, _list):
