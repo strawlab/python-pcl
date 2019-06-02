@@ -19,6 +19,7 @@ from ctypes.util import find_library
 setup_requires = []
 install_requires = [
     'filelock',
+    'mock',
     'nose',
     # RuntimeWarning: numpy.dtype size changed, may indicate binary incompatibility
     # https://github.com/scikit-image/scikit-image/issues/3655
@@ -874,7 +875,7 @@ else:
 setup(name='python-pcl',
       description='Python bindings for the Point Cloud Library (PCL). using Cython.',
       url='http://github.com/strawlab/python-pcl',
-      version='0.3.0a1',
+      version='0.3.0rc1',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
       maintainer='Tooru Oonuma',
