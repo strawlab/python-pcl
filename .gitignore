@@ -35,3 +35,6 @@ pip-log.txt
 
 # Vim
 *.sw[op]
+
+# PyCharm
+.idea
