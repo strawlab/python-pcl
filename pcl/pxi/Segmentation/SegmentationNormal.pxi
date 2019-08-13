@@ -61,10 +61,6 @@ cdef class SegmentationNormal:
         self.me.setMaxIterations (i)
 
 
-    def set_radius_limits(self, float f1, float f2):
-        self.me.setRadiusLimits (f1, f2)
-
-
     def set_eps_angle(self, double ea):
         (<pcl_seg.SACSegmentation_t*>self.me).setEpsAngle (ea)
 
@@ -82,6 +78,10 @@ cdef class SegmentationNormal:
         vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
+
+
+    def set_radius_limits(self, float f1, float f2):
+        self.me.setRadiusLimits (f1, f2)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -148,27 +148,27 @@ cdef class Segmentation_PointXYZI_Normal:
         self.me.setMaxIterations (i)
 
 
-    def set_radius_limits(self, float f1, float f2):
-        self.me.setRadiusLimits (f1, f2)
-
-
     def set_eps_angle(self, double ea):
         self.me.setEpsAngle (ea)
 
 
     def get_eps_angle(self):
-        return (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentationFromNormals_PointXYZI_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentationFromNormals_PointXYZI_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentationFromNormals_PointXYZI_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
+
+
+    def set_radius_limits(self, float f1, float f2):
+        self.me.setRadiusLimits (f1, f2)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -238,27 +238,27 @@ cdef class Segmentation_PointXYZRGB_Normal:
         self.me.setMaxIterations (i)
 
 
-    def set_radius_limits(self, float f1, float f2):
-        self.me.setRadiusLimits (f1, f2)
-
-
     def set_eps_angle(self, double ea):
         self.me.setEpsAngle (ea)
 
 
     def get_eps_angle(self):
-        return (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentationFromNormals_PointXYZRGB_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentationFromNormals_PointXYZRGB_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentationFromNormals_PointXYZRGB_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
+
+
+    def set_radius_limits(self, float f1, float f2):
+        self.me.setRadiusLimits (f1, f2)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):
@@ -326,27 +326,27 @@ cdef class Segmentation_PointXYZRGBA_Normal:
         self.me.setMaxIterations (i)
 
 
-    def set_radius_limits(self, float f1, float f2):
-        self.me.setRadiusLimits (f1, f2)
-
-
     def set_eps_angle(self, double ea):
-        vec = (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle(ea)
+        vec = (<pcl_seg.SACSegmentationFromNormals_PointXYZRGBA_t*>self.me).setEpsAngle(ea)
 
 
     def get_eps_angle(self):
-        return (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).getEpsAngle()
+        return (<pcl_seg.SACSegmentationFromNormals_PointXYZRGBA_t*>self.me).getEpsAngle()
 
 
     def set_axis(self, double ax1, double ax2, double ax3):
         cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
-        (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
+        (<pcl_seg.SACSegmentationFromNormals_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
 
 
     def get_axis(self):
-        vec = (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).getAxis()
+        vec = (<pcl_seg.SACSegmentationFromNormals_PointXYZRGBA_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
+
+
+    def set_radius_limits(self, float f1, float f2):
+        self.me.setRadiusLimits (f1, f2)
 
 
     def set_min_max_opening_angle(self, double min_angle, double max_angle):

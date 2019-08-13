@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation_180 as pcl_seg
-cimport pcl_sample_consensus_180 as pcl_sac
+cimport pcl_segmentation_172 as pcl_seg
+cimport pcl_sample_consensus_172 as pcl_sac
 cimport pcl_defs as cpp
 
 cimport eigen as eigen3
@@ -43,9 +43,8 @@ cdef class Segmentation:
         self.me.setDistanceThreshold (d)
 
 
-    def set_max_iterations(self, int count):
+    def set_MaxIterations(self, int count):
         self.me.setMaxIterations (count)
-
 
     def set_eps_angle(self, double ea):
         (<pcl_seg.SACSegmentation_t*>self.me).setEpsAngle (ea)
@@ -64,7 +63,6 @@ cdef class Segmentation:
         vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
-
 
 cdef class Segmentation_PointXYZI:
     """
@@ -101,9 +99,8 @@ cdef class Segmentation_PointXYZI:
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
 
-
     def set_eps_angle(self, double ea):
-        self.me.setEpsAngle (ea)
+        (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).setEpsAngle (ea)
 
 
     def get_eps_angle(self):
@@ -119,7 +116,6 @@ cdef class Segmentation_PointXYZI:
         vec = (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
-
 
 cdef class Segmentation_PointXYZRGB:
     """
@@ -156,9 +152,8 @@ cdef class Segmentation_PointXYZRGB:
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
 
-
     def set_eps_angle(self, double ea):
-        self.me.setEpsAngle (ea)
+        (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).setEpsAngle (ea)
 
 
     def get_eps_angle(self):
@@ -174,7 +169,6 @@ cdef class Segmentation_PointXYZRGB:
         vec = (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getAxis()
         cdef float *data = vec.data()
         return np.array([data[0], data[1], data[2]], dtype=np.float32)
-
 
 cdef class Segmentation_PointXYZRGBA:
     """
@@ -213,7 +207,7 @@ cdef class Segmentation_PointXYZRGBA:
 
 
     def set_eps_angle(self, double ea):
-        vec = (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle(ea)
+        (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle (ea)
 
 
     def get_eps_angle(self):
