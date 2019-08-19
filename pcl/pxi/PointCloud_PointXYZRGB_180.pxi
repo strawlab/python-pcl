@@ -150,6 +150,24 @@ cdef class PointCloud_PointXYZRGB:
                     new_orient[3])
 
     @cython.boundscheck(False)
+    def from_3d_array(self, cnp.ndarray[cnp.float32_t, ndim=3] arr not None):
+        """
+        Fill this object Organized from a 3D numpy array (float32)
+        """
+        assert arr.shape[2] == 4
+
+        cdef cnp.npy_intp npts = arr.shape[0] * arr.shape[1]
+        self.resize(npts)
+        self.thisptr().width = arr.shape[0]
+        self.thisptr().height = arr.shape[1]
+
+        cdef cpp.PointXYZRGB *p
+        for j in range(self.thisptr().width):
+            for i in range(self.thisptr().height):
+                p = idx.getptr_at2(self.thisptr(), i, j)
+                p.x, p.y, p.z, p.rgb = arr[j, i, 0], arr[j, i, 1], arr[j, i, 2], arr[j, i, 3]
+
+    @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
         """
         Fill this object from a 2D numpy array (float32)

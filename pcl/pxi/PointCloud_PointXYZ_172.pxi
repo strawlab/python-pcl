@@ -155,6 +155,23 @@ cdef class PointCloud:
                     new_orient[1],
                     new_orient[2],
                     new_orient[3])
+    @cython.boundscheck(False)
+    def from_3d_array(self, cnp.ndarray[cnp.float32_t, ndim=3] arr not None):
+        """
+        Fill this object Organized from a 3D numpy array (float32)
+        """
+        assert arr.shape[2] == 3
+
+        cdef cnp.npy_intp npts = arr.shape[0] * arr.shape[1]
+        self.resize(npts)
+        self.thisptr().width = arr.shape[1]
+        self.thisptr().height = arr.shape[0]
+
+        cdef cpp.PointXYZ *p
+        for j in range(self.thisptr().width):
+            for i in range(self.thisptr().height):
+                p = idx.getptr_at2(self.thisptr(), j, i)
+                p.x, p.y, p.z = arr[i, j, 0], arr[i, j, 1], arr[i, j, 2]
 
     @cython.boundscheck(False)
     def from_array(self, cnp.ndarray[cnp.float32_t, ndim=2] arr not None):
@@ -189,7 +206,28 @@ cdef class PointCloud:
             result[i, 0] = p.x
             result[i, 1] = p.y
             result[i, 2] = p.z
-        
+
+        return result
+
+    @cython.boundscheck(False)
+    def to_3d_array(self):
+        """
+        Return this object as a 3D numpy array (float32)
+        """
+        cdef float x, y, z
+        cdef cnp.npy_intp n = self.thisptr().size()
+        cdef cnp.ndarray[cnp.float32_t, ndim=3, mode="c"] result
+        cdef cpp.PointXYZ *p
+        cdef cnp.npy_intp w = self.thisptr().width
+        cdef cnp.npy_intp h = self.thisptr().height
+        result = np.empty((h, w, 3), dtype=np.float32)
+        for j in range(w):
+            for i in range(h):
+                p = idx.getptr_at2(self.thisptr(), j, i)
+                result[i, j, 0] = p.x
+                result[i, j, 1] = p.y
+                result[i, j, 2] = p.z
+
         return result
 
     def from_list(self, _list):
