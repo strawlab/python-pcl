@@ -799,7 +799,10 @@ else:
         pass
     else:
         ext_args['extra_compile_args'].append("-std=c++11")
-        ext_args['library_dirs'].append("/usr/lib/x86_64-linux-gnu/")
+        if plarform.machine() == 'x86_64':
+            ext_args['library_dirs'].append("/usr/lib/x86_64-linux-gnu/")
+        elif platform.machine() == 'aarch64':
+            ext_args['library_dirs'].append("/usr/lib/aarch64-linux-gnu/")
         # gcc? use standard library
         # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
         # ext_args['extra_link_args'].append("-stdlib=libstdc++")
