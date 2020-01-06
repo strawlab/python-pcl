@@ -762,7 +762,7 @@ else:
         ubuntu_base = '/usr/include/vtk-' 
         if pcl_version == '-1.7':
             vtk_version = detect_vtk(ubuntu_base, '6.2')
-            vtk_include_dir = os.path.join(base + vtk_version)
+            vtk_include_dir = os.path.join(ubuntu_base + vtk_version)
             vtk_library_dir = os.path.join('/usr/lib')
         elif pcl_version == '-1.8':
             # pcl 1.8.0/1?(Ubuntu 18.04)(melodic)
