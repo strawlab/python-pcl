@@ -48,7 +48,7 @@ cdef class IterativeClosestPointNonLinear:
         # cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4f mat
         cdef Matrix4f mat
         mat = reg.getFinalTransformation()
-        cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='F'] transf
+        cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='fortran'] transf
         cdef np.float32_t *transf_data
         
         transf = np.empty((4, 4), dtype=np.float32, order='F')
