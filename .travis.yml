@@ -234,7 +234,7 @@ before_install:
       pyenv global $PYTHON_VERSION;
       python --version;
 
-      travis_wait 45 brew install pcl;
+      travis_wait 90 brew install pcl;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "xenial") ]]; then
       sudo apt -y install libpcl-dev;
