@@ -192,6 +192,11 @@ matrix:
   - name: Python 2.7.16 on macOS using homebrew
     os: osx
     language: generic
+    addons:
+      homebrew:
+        packages:
+        - pcl
+        update: true
     env:
     - PYTHON_VERSION=2.7.16
     - PYENV_ROOT=~/.pyenv
@@ -200,6 +205,11 @@ matrix:
   - name: Python 3.5.7 on macOS using homebrew
     os: osx
     language: generic
+    addons:
+      homebrew:
+        packages:
+        - pcl
+        update: true
     env:
     - PYTHON_VERSION=3.5.7
     - PYENV_ROOT=~/.pyenv
@@ -208,6 +218,11 @@ matrix:
   - name: Python 3.6.8 on macOS using homebrew
     os: osx
     language: generic
+    addons:
+      homebrew:
+        packages:
+        - pcl
+        update: true
     env:
     - PYTHON_VERSION=3.6.8
     - PYENV_ROOT=~/.pyenv
@@ -216,6 +231,11 @@ matrix:
   - name: Python 3.7.3 on macOS using homebrew
     os: osx
     language: generic
+    addons:
+      homebrew:
+        packages:
+        - pcl
+        update: true
     env:
     - PYTHON_VERSION=3.7.3
     - PYENV_ROOT=~/.pyenv
@@ -228,13 +248,11 @@ before_cache:
 - brew cleanup
 before_install:
   - if [ ${TRAVIS_OS_NAME} = "osx" ]; then
-      brew update >/dev/null;
 
       pyenv install $PYTHON_VERSION;
       pyenv global $PYTHON_VERSION;
       python --version;
 
-      travis_wait 90 brew install pcl;
     fi
   - if [[ ( "$TRAVIS_OS_NAME" == "linux" ) && ( "$PCL_VERSION" == "1.7" ) && ( "$OS_VERSION" == "xenial") ]]; then
       sudo apt -y install libpcl-dev;
