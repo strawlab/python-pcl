@@ -196,6 +196,7 @@ matrix:
       homebrew:
         packages:
         - pcl
+        - boost
         update: true
     env:
     - PYTHON_VERSION=2.7.16
@@ -209,6 +210,7 @@ matrix:
       homebrew:
         packages:
         - pcl
+        - boost
         update: true
     env:
     - PYTHON_VERSION=3.5.7
@@ -222,6 +224,7 @@ matrix:
       homebrew:
         packages:
         - pcl
+        - boost
         update: true
     env:
     - PYTHON_VERSION=3.6.8
@@ -235,6 +238,7 @@ matrix:
       homebrew:
         packages:
         - pcl
+        - boost
         update: true
     env:
     - PYTHON_VERSION=3.7.3
