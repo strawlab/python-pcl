@@ -51,7 +51,7 @@ def safe_version(possible):
         return 0.0
 
 def detect_vtk(base, fallback):
-    """ 
+    """
     Use a heuristic to find out which version is installed.
       - list all the subfolders matching base + "*"
       - take the string after base and parse as float
@@ -66,8 +66,8 @@ def detect_vtk(base, fallback):
 
     """
 
-    candidates =  [
-        i[len(base):] 
+    candidates = [
+        i[len(base):]
         for i in glob.glob(base + "*")
     ]
 
@@ -80,7 +80,6 @@ def detect_vtk(base, fallback):
 
     return candidates[0]
 
-    
 
 
 def pkgconfig_win(flag, cut):
@@ -748,10 +747,9 @@ else:
             # vtk_version = '8.1.2_3'
             # vtk_include_dir = os.path.join('/usr/local/Cellar/vtk', vtk_version ,'include/vtk-8.2')
             # 2019/05/08 check(pcl 1.9.1_4)
-            vtk_version = '8.2.0'
-            vtk_include_dir = os.path.join('/usr/local/Cellar/vtk', vtk_version ,'include/vtk-8.2')
+            vtk_version = detect_vtk('/usr/local/Cellar/vtk/', '8.2.0')
+            vtk_include_dir = os.path.join('/usr/local/Cellar/vtk', vtk_version, 'include/vtk-8.2')
             vtk_library_dir = os.path.join('/usr/local/Cellar/vtk', vtk_version, 'lib')
-        pass
     else:
         # pcl 1.7.0?(Ubuntu 14.04)
         # vtk_version = '5.8'
