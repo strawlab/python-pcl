@@ -191,12 +191,12 @@ matrix:
   #   - MATRIX_EVAL="CC=clang && CXX=clang++"
   - name: Python 2.7.16 on macOS using homebrew
     os: osx
+    osx_image: xcode11.3
     language: generic
     addons:
       homebrew:
         packages:
         - pcl
-        - boost
         update: true
     env:
     - PYTHON_VERSION=2.7.16
@@ -205,12 +205,12 @@ matrix:
     - NOSEATTR="not pcl_ver_0_4"
   - name: Python 3.5.7 on macOS using homebrew
     os: osx
+    osx_image: xcode11.3
     language: generic
     addons:
       homebrew:
         packages:
         - pcl
-        - boost
         update: true
     env:
     - PYTHON_VERSION=3.5.7
@@ -219,12 +219,12 @@ matrix:
     - NOSEATTR="not pcl_ver_0_4"
   - name: Python 3.6.8 on macOS using homebrew
     os: osx
+    osx_image: xcode11.3
     language: generic
     addons:
       homebrew:
         packages:
         - pcl
-        - boost
         update: true
     env:
     - PYTHON_VERSION=3.6.8
@@ -233,12 +233,12 @@ matrix:
     - NOSEATTR="not pcl_ver_0_4"
   - name: Python 3.7.3 on macOS using homebrew
     os: osx
+    osx_image: xcode11.3
     language: generic
     addons:
       homebrew:
         packages:
         - pcl
-        - boost
         update: true
     env:
     - PYTHON_VERSION=3.7.3
