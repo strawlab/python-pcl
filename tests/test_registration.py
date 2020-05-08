@@ -20,8 +20,8 @@ class TestICP(unittest.TestCase):
         rot_y = [[cos(theta[1]), 0, sin(theta[1])],
                  [0, 1, 0],
                  [-sin(theta[1]), 0, cos(theta[1])]]
-        rot_z = [[cos(theta[2]), -sin(theta[1]), 0],
-                 [sin(theta[2]), cos(theta[1]), 0],
+        rot_z = [[cos(theta[2]), -sin(theta[2]), 0],
+                 [sin(theta[2]), cos(theta[2]), 0],
                  [0, 0, 1]]
         transform = np.dot(rot_x, np.dot(rot_y, rot_z))
 
