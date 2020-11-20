@@ -69,7 +69,7 @@ cdef class IterativeClosestPoint:
         cdef np.ndarray[dtype=np.float32_t, ndim=2, mode='fortran'] transf
         cdef np.float32_t *transf_data
         
-        transf = np.empty((4, 4), dtype=np.float32, order='fortran')
+        transf = np.empty((4, 4), dtype=np.float32, order='F')
         transf_data = <np.float32_t *>np.PyArray_DATA(transf)
         
         for i in range(16):
