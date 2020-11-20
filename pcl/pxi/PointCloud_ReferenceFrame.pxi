@@ -7,16 +7,16 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
-cimport pcl_features as pclftr
-cimport pcl_filters as pclfil
-cimport pcl_io as pclio
-cimport pcl_kdtree as pclkdt
-cimport pcl_octree as pcloct
-cimport pcl_sample_consensus as pcl_sc
+cimport pcl_features as pcl_ftr
+cimport pcl_filters as pcl_fil
+cimport pcl_io as pcl_io
+cimport pcl_kdtree as pcl_kdt
+cimport pcl_octree as pcl_oct
+cimport pcl_sample_consensus as pcl_sac
 # cimport pcl_search as pcl_sch
-cimport pcl_segmentation as pclseg
-cimport pcl_surface as pclsf
-cimport pcl_range_image as pcl_r_img
+cimport pcl_segmentation as pcl_seg
+cimport pcl_surface as pcl_srf
+cimport pcl_range_image as pcl_rim
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -34,7 +34,7 @@ cdef extern from "minipcl.h":
 
 
 cdef extern from "ProjectInliers.h":
-    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t) except +
+    void mpcl_ProjectInliers_setModelCoefficients(pcl_fil.ProjectInliers_t) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?
@@ -248,17 +248,13 @@ cdef class PointCloud_ReferenceFrame:
     def _from_pcd_file(self, const char *s):
         cdef int error = 0
         with nogil:
-            # NG
-            # error = pclio.loadPCDFile(string(s), <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()))
-            error = pclio.loadPCDFile(string(s), deref(self.thisptr()))
+            error = pcl_io.loadPCDFile(string(s), deref(self.thisptr()))
         return error
 
     def _from_ply_file(self, const char *s):
         cdef int ok = 0
         with nogil:
-            # NG
-            # ok = pclio.loadPLYFile(string(s), <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()))
-            ok = pclio.loadPLYFile(string(s), deref(self.thisptr()))
+            ok = pcl_io.loadPLYFile(string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -272,20 +268,13 @@ cdef class PointCloud_ReferenceFrame:
         cdef int error = 0
         cdef string s = string(f)
         with nogil:
-            # NG
-            # error = pclio.savePCDFile(s, <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()), binary)
-            # OK
-            error = pclio.savePCDFile(s, deref(self.thisptr()), binary)
-            # pclio.PointCloud[cpp.ReferenceFrame] *p = self.thisptr()
-            # error = pclio.savePCDFile(s, p, binary)
+            error = pcl_io.savePCDFile(s, deref(self.thisptr()), binary)
         return error
 
     def _to_ply_file(self, const char *f, bool binary=False):
         cdef int error = 0
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pclio.savePLYFile(s, <cpp.PointCloud[cpp.ReferenceFrame]> deref(self.thisptr()), binary)
-            error = pclio.savePLYFile(s, deref(self.thisptr()), binary)
+       	with nogil:
+            error = pcl_io.savePLYFile(s, deref(self.thisptr()), binary)
         return error
 

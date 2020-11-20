@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_io as pclio
+cimport pcl_io as pcl_io
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -128,6 +128,9 @@ cdef class PointCloud_PointWithViewpoint:
         if self._view_count > 0:
             raise ValueError("can't resize PointCloud while there are"
                              " arrays/memoryviews referencing it")
+        if x < 0:
+            raise MemoryError("can't resize PointCloud to negative size")
+
         self.thisptr().resize(x)
 
     def get_point(self, cnp.npy_intp row, cnp.npy_intp col):
@@ -151,15 +154,25 @@ cdef class PointCloud_PointWithViewpoint:
         return self._from_pcd_file(f)
 
     def _from_pcd_file(self, const char *s):
-        cdef int error = 0
-        with nogil:
-            error = pclio.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
-        return error
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        # Cython 0.29? : Calling gil-requiring function not allowed without gil
+        ok = pcl_io.loadPCDFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        return ok
 
     def _from_ply_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            ok = pclio.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
+        return ok
+
+    # no use pcl1.6
+    def _from_obj_file(self, const char *s):
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadOBJFile [cpp.PointWithViewpoint](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):

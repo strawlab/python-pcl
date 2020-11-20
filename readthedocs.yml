@@ -1,6 +1,14 @@
+# .readthedocs.yml
 name: python-pcl
 type: sphinx
 base: docs/source
 requirements_file: docs/requirements.txt
+
+build:
+  image: latest
+
+conda:
+  file: environment.yml
+
 python:
-  setup_py_install: true
+  setup_py_install: false

@@ -20,13 +20,13 @@ cdef class PointCloud_Normal:
     """
     def __cinit__(self, init=None):
         cdef PointCloud_Normal other
-        
+
         self._view_count = 0
-        
+
         # TODO: NG --> import pcl --> pyd Error(python shapedptr/C++ shard ptr collusion?)
         # sp_assign(<cpp.shared_ptr[cpp.PointCloud[cpp.Normal]]> self.thisptr_shared, new cpp.PointCloud[cpp.Normal]())
         sp_assign(self.thisptr_shared, new cpp.PointCloud[cpp.Normal]())
-        
+
         if init is None:
             return
         elif isinstance(init, (numbers.Integral, np.integer)):
@@ -73,12 +73,12 @@ cdef class PointCloud_Normal:
         Fill this object from a 2D numpy array (float32)
         """
         assert arr.shape[1] == 4
-        
+
         cdef cnp.npy_intp npts = arr.shape[0]
         self.resize(npts)
         self.thisptr().width = npts
         self.thisptr().height = 1
-        
+
         cdef cpp.Normal *p
         for i in range(npts):
             p = idx.getptr(self.thisptr(), i)

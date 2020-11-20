@@ -9,7 +9,7 @@ import pcl
 #     double g;
 #     double b;
 #     double size;
-# 
+#
 #     CloudStyle (double r,
 #                 double g,
 #                 double b,
@@ -21,17 +21,17 @@ import pcl
 #     {
 #     }
 # };
-# 
+#
 # CloudStyle style_white (255.0, 255.0, 255.0, 4.0);
 # CloudStyle style_red (255.0, 0.0, 0.0, 3.0);
 # CloudStyle style_green (0.0, 255.0, 0.0, 5.0);
 # CloudStyle style_cyan (93.0, 200.0, 217.0, 4.0);
 # CloudStyle style_violet (255.0, 0.0, 255.0, 8.0);
-# 
+#
 # std::string model_filename_;
 # std::string scene_filename_;
-# 
-# //Algorithm params 
+#
+# //Algorithm params
 # bool show_keypoints_ (false);
 # bool use_hough_ (true);
 # float model_ss_ (0.02f);
@@ -84,15 +84,14 @@ import pcl
 #   std::cout << "     --hv_rad_normals val:        Normals radius (default " << hv_rad_normals_ << ")" << std::endl;
 #   std::cout << "     --hv_detect_clutter val:     TRUE if clutter detect enabled (default " << hv_detect_clutter_ << ")" << std::endl << std::endl;
 # }
-# 
+#
 # /**
 #  * Parses Command Line Arguments (Argc,Argv)
 #  * @param argc
 #  * @param argv
 #  */
 # void
-# parseCommandLine (int argc,
-#                   char *argv[])
+# parseCommandLine (int argc, char *argv[])
 # {
 #   //Show help
 #   if (pcl::console::find_switch (argc, argv, "-h"))
@@ -100,7 +99,7 @@ import pcl
 #     showHelp (argv[0]);
 #     exit (0);
 #   }
-# 
+#
 #   //Model & scene filenames
 #   std::vector<int> filenames;
 #   filenames = pcl::console::parse_file_extension_argument (argc, argv, ".pcd");
@@ -110,16 +109,16 @@ import pcl
 #     showHelp (argv[0]);
 #     exit (-1);
 #   }
-# 
+#
 #   model_filename_ = argv[filenames[0]];
 #   scene_filename_ = argv[filenames[1]];
-# 
+#
 #   //Program behavior
 #   if (pcl::console::find_switch (argc, argv, "-k"))
 #   {
 #     show_keypoints_ = true;
 #   }
-# 
+#
 #   std::string used_algorithm;
 #   if (pcl::console::parse_argument (argc, argv, "--algorithm", used_algorithm) != -1)
 #   {
@@ -138,7 +137,7 @@ import pcl
 #       exit (-1);
 #     }
 #   }
-# 
+#
 #   //General parameters
 #   pcl::console::parse_argument (argc, argv, "--model_ss", model_ss_);
 #   pcl::console::parse_argument (argc, argv, "--scene_ss", scene_ss_);
@@ -166,7 +165,7 @@ import pcl
 #   pcl::PointCloud<NormalType>::Ptr scene_normals (new pcl::PointCloud<NormalType> ());
 #   pcl::PointCloud<DescriptorType>::Ptr model_descriptors (new pcl::PointCloud<DescriptorType> ());
 #   pcl::PointCloud<DescriptorType>::Ptr scene_descriptors (new pcl::PointCloud<DescriptorType> ());
-# 
+#
 #   /**
 #    * Load Clouds
 #    */
@@ -182,7 +181,7 @@ import pcl
 #     showHelp (argv[0]);
 #     return (-1);
 #   }
-# 
+#
 #   /**
 #    * Compute Normals
 #    */
@@ -190,10 +189,10 @@ import pcl
 #   norm_est.setKSearch (10);
 #   norm_est.setInputCloud (model);
 #   norm_est.compute (*model_normals);
-# 
+#
 #   norm_est.setInputCloud (scene);
 #   norm_est.compute (*scene_normals);
-# 
+#
 #   /**
 #    *  Downsample Clouds to Extract keypoints
 #    */
@@ -202,28 +201,28 @@ import pcl
 #   uniform_sampling.setRadiusSearch (model_ss_);
 #   uniform_sampling.filter (*model_keypoints);
 #   std::cout << "Model total points: " << model->size () << "; Selected Keypoints: " << model_keypoints->size () << std::endl;
-# 
+#
 #   uniform_sampling.setInputCloud (scene);
 #   uniform_sampling.setRadiusSearch (scene_ss_);
 #   uniform_sampling.filter (*scene_keypoints);
 #   std::cout << "Scene total points: " << scene->size () << "; Selected Keypoints: " << scene_keypoints->size () << std::endl;
-# 
+#
 #   /**
 #    *  Compute Descriptor for keypoints
 #    */
 #   pcl::SHOTEstimationOMP<PointType, NormalType, DescriptorType> descr_est;
 #   descr_est.setRadiusSearch (descr_rad_);
-# 
+#
 #   descr_est.setInputCloud (model_keypoints);
 #   descr_est.setInputNormals (model_normals);
 #   descr_est.setSearchSurface (model);
 #   descr_est.compute (*model_descriptors);
-# 
+#
 #   descr_est.setInputCloud (scene_keypoints);
 #   descr_est.setInputNormals (scene_normals);
 #   descr_est.setSearchSurface (scene);
 #   descr_est.compute (*scene_descriptors);
-# 
+#
 #   /**
 #    *  Find Model-Scene Correspondences with KdTree
 #    */
@@ -232,7 +231,7 @@ import pcl
 #   match_search.setInputCloud (model_descriptors);
 #   std::vector<int> model_good_keypoints_indices;
 #   std::vector<int> scene_good_keypoints_indices;
-# 
+#
 #   for (size_t i = 0; i < scene_descriptors->size (); ++i)
 #   {
 #     std::vector<int> neigh_indices (1);
@@ -254,47 +253,47 @@ import pcl
 #   pcl::PointCloud<PointType>::Ptr scene_good_kp (new pcl::PointCloud<PointType> ());
 #   pcl::copyPointCloud (*model_keypoints, model_good_keypoints_indices, *model_good_kp);
 #   pcl::copyPointCloud (*scene_keypoints, scene_good_keypoints_indices, *scene_good_kp);
-# 
+#
 #   std::cout << "Correspondences found: " << model_scene_corrs->size () << std::endl;
-# 
+#
 #   /**
 #    *  Clustering
 #    */
 #   std::vector<Eigen::Matrix4f, Eigen::aligned_allocator<Eigen::Matrix4f> > rototranslations;
 #   std::vector < pcl::Correspondences > clustered_corrs;
-# 
+#
 #   if (use_hough_)
 #   {
 #     pcl::PointCloud<RFType>::Ptr model_rf (new pcl::PointCloud<RFType> ());
 #     pcl::PointCloud<RFType>::Ptr scene_rf (new pcl::PointCloud<RFType> ());
-# 
+#
 #     pcl::BOARDLocalReferenceFrameEstimation<PointType, NormalType, RFType> rf_est;
 #     rf_est.setFindHoles (true);
 #     rf_est.setRadiusSearch (rf_rad_);
-# 
+#
 #     rf_est.setInputCloud (model_keypoints);
 #     rf_est.setInputNormals (model_normals);
 #     rf_est.setSearchSurface (model);
 #     rf_est.compute (*model_rf);
-# 
+#
 #     rf_est.setInputCloud (scene_keypoints);
 #     rf_est.setInputNormals (scene_normals);
 #     rf_est.setSearchSurface (scene);
 #     rf_est.compute (*scene_rf);
-# 
+#
 #     //  Clustering
 #     pcl::Hough3DGrouping<PointType, PointType, RFType, RFType> clusterer;
 #     clusterer.setHoughBinSize (cg_size_);
 #     clusterer.setHoughThreshold (cg_thresh_);
 #     clusterer.setUseInterpolation (true);
 #     clusterer.setUseDistanceWeight (false);
-# 
+#
 #     clusterer.setInputCloud (model_keypoints);
 #     clusterer.setInputRf (model_rf);
 #     clusterer.setSceneCloud (scene_keypoints);
 #     clusterer.setSceneRf (scene_rf);
 #     clusterer.setModelSceneCorrespondences (model_scene_corrs);
-# 
+#
 #     clusterer.recognize (rototranslations, clustered_corrs);
 #   }
 #   else
@@ -302,14 +301,14 @@ import pcl
 #     pcl::GeometricConsistencyGrouping<PointType, PointType> gc_clusterer;
 #     gc_clusterer.setGCSize (cg_size_);
 #     gc_clusterer.setGCThreshold (cg_thresh_);
-# 
+#
 #     gc_clusterer.setInputCloud (model_keypoints);
 #     gc_clusterer.setSceneCloud (scene_keypoints);
 #     gc_clusterer.setModelSceneCorrespondences (model_scene_corrs);
-# 
+#
 #     gc_clusterer.recognize (rototranslations, clustered_corrs);
 #   }
-# 
+#
 #   /**
 #    * Stop if no instances
 #    */
@@ -322,19 +321,19 @@ import pcl
 #   {
 #     cout << "Recognized Instances: " << rototranslations.size () << endl << endl;
 #   }
-# 
+#
 #   /**
-#    * Generates clouds for each instances found 
+#    * Generates clouds for each instances found
 #    */
 #   std::vector<pcl::PointCloud<PointType>::ConstPtr> instances;
-# 
+#
 #   for (size_t i = 0; i < rototranslations.size (); ++i)
 #   {
 #     pcl::PointCloud<PointType>::Ptr rotated_model (new pcl::PointCloud<PointType> ());
 #     pcl::transformPointCloud (*model, *rotated_model, rototranslations[i]);
 #     instances.push_back (rotated_model);
 #   }
-# 
+#
 #   /**
 #    * ICP
 #    */
@@ -342,7 +341,7 @@ import pcl
 #   if (true)
 #   {
 #     cout << "--- ICP ---------" << endl;
-# 
+#
 #     for (size_t i = 0; i < rototranslations.size (); ++i)
 #     {
 #       pcl::IterativeClosestPoint<PointType, PointType> icp;
@@ -363,21 +362,21 @@ import pcl
 #         cout << "Not Aligned!" << endl;
 #       }
 #     }
-# 
+#
 #     cout << "-----------------" << endl << endl;
 #   }
-# 
+#
 #   /**
 #    * Hypothesis Verification
 #    */
 #   cout << "--- Hypotheses Verification ---" << endl;
 #   std::vector<bool> hypotheses_mask;  // Mask Vector to identify positive hypotheses
-# 
+#
 #   pcl::GlobalHypothesesVerification<PointType, PointType> GoHv;
-# 
+#
 #   GoHv.setSceneCloud (scene);  // Scene Cloud
 #   GoHv.addModels (registered_instances, true);  //Models to verify
-# 
+#
 #   GoHv.setInlierThreshold (hv_inlier_th_);
 #   GoHv.setOcclusionThreshold (hv_occlusion_th_);
 #   GoHv.setRegularizer (hv_regularizer_);
@@ -385,10 +384,10 @@ import pcl
 #   GoHv.setClutterRegularizer (hv_clutter_reg_);
 #   GoHv.setDetectClutter (hv_detect_clutter_);
 #   GoHv.setRadiusNormals (hv_rad_normals_);
-# 
+#
 #   GoHv.verify ();
 #   GoHv.getMask (hypotheses_mask);  // i-element TRUE if hvModels[i] verifies hypotheses
-# 
+#
 #   for (int i = 0; i < hypotheses_mask.size (); i++)
 #   {
 #     if (hypotheses_mask[i])
@@ -401,21 +400,21 @@ import pcl
 #     }
 #   }
 #   cout << "-------------------------------" << endl;
-# 
+#
 #   /**
 #    *  Visualization
 #    */
 #   pcl::visualization::PCLVisualizer viewer ("Hypotheses Verification");
 #   viewer.addPointCloud (scene, "scene_cloud");
-# 
+#
 #   pcl::PointCloud<PointType>::Ptr off_scene_model (new pcl::PointCloud<PointType> ());
 #   pcl::PointCloud<PointType>::Ptr off_scene_model_keypoints (new pcl::PointCloud<PointType> ());
-# 
+#
 #   pcl::PointCloud<PointType>::Ptr off_model_good_kp (new pcl::PointCloud<PointType> ());
 #   pcl::transformPointCloud (*model, *off_scene_model, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
 #   pcl::transformPointCloud (*model_keypoints, *off_scene_model_keypoints, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
 #   pcl::transformPointCloud (*model_good_kp, *off_model_good_kp, Eigen::Vector3f (-1, 0, 0), Eigen::Quaternionf (1, 0, 0, 0));
-# 
+#
 #   if (show_keypoints_)
 #   {
 #     CloudStyle modelStyle = style_white;
@@ -423,7 +422,7 @@ import pcl
 #     viewer.addPointCloud (off_scene_model, off_scene_model_color_handler, "off_scene_model");
 #     viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, modelStyle.size, "off_scene_model");
 #   }
-# 
+#
 #   if (show_keypoints_)
 #   {
 #     CloudStyle goodKeypointStyle = style_violet;
@@ -431,23 +430,23 @@ import pcl
 #                                                                                                     goodKeypointStyle.b);
 #     viewer.addPointCloud (off_model_good_kp, model_good_keypoints_color_handler, "model_good_keypoints");
 #     viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, goodKeypointStyle.size, "model_good_keypoints");
-# 
+#
 #     pcl::visualization::PointCloudColorHandlerCustom<PointType> scene_good_keypoints_color_handler (scene_good_kp, goodKeypointStyle.r, goodKeypointStyle.g,
 #                                                                                                     goodKeypointStyle.b);
 #     viewer.addPointCloud (scene_good_kp, scene_good_keypoints_color_handler, "scene_good_keypoints");
 #     viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, goodKeypointStyle.size, "scene_good_keypoints");
 #   }
-# 
+#
 #   for (size_t i = 0; i < instances.size (); ++i)
 #   {
 #     std::stringstream ss_instance;
 #     ss_instance << "instance_" << i;
-# 
+#
 #     CloudStyle clusterStyle = style_red;
 #     pcl::visualization::PointCloudColorHandlerCustom<PointType> instance_color_handler (instances[i], clusterStyle.r, clusterStyle.g, clusterStyle.b);
 #     viewer.addPointCloud (instances[i], instance_color_handler, ss_instance.str ());
 #     viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, clusterStyle.size, ss_instance.str ());
-# 
+#
 #     CloudStyle registeredStyles = hypotheses_mask[i] ? style_green : style_cyan;
 #     ss_instance << "_registered" << endl;
 #     pcl::visualization::PointCloudColorHandlerCustom<PointType> registered_instance_color_handler (registered_instances[i], registeredStyles.r,
@@ -455,7 +454,13 @@ import pcl
 #     viewer.addPointCloud (registered_instances[i], registered_instance_color_handler, ss_instance.str ());
 #     viewer.setPointCloudRenderingProperties (pcl::visualization::PCL_VISUALIZER_POINT_SIZE, registeredStyles.size, ss_instance.str ());
 #   }
-# 
+#
 
 # while (!viewer.wasStopped ())
 # 	viewer.spinOnce ();
+
+
+if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run('main()', sort='time')
+    main()

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_filters_172 as pclfil
+cimport pcl_filters_172 as pcl_fil
 
 cdef class VoxelGridFilter:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.VoxelGrid_t *me
+    cdef pcl_fil.VoxelGrid_t *me
     def __cinit__(self):
-        self.me = new pclfil.VoxelGrid_t()
+        self.me = new pcl_fil.VoxelGrid_t()
     def __dealloc__(self):
         del self.me
 
@@ -31,9 +31,9 @@ cdef class VoxelGridFilter_PointXYZI:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.VoxelGrid_PointXYZI_t *me
+    cdef pcl_fil.VoxelGrid_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclfil.VoxelGrid_PointXYZI_t()
+        self.me = new pcl_fil.VoxelGrid_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
@@ -56,9 +56,9 @@ cdef class VoxelGridFilter_PointXYZRGB:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.VoxelGrid_PointXYZRGB_t *me
+    cdef pcl_fil.VoxelGrid_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclfil.VoxelGrid_PointXYZRGB_t()
+        self.me = new pcl_fil.VoxelGrid_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
@@ -81,9 +81,9 @@ cdef class VoxelGridFilter_PointXYZRGBA:
     """
     Assembles a local 3D grid over a given PointCloud, and downsamples + filters the data.
     """
-    cdef pclfil.VoxelGrid_PointXYZRGBA_t *me
+    cdef pcl_fil.VoxelGrid_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclfil.VoxelGrid_PointXYZRGBA_t()
+        self.me = new pcl_fil.VoxelGrid_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 

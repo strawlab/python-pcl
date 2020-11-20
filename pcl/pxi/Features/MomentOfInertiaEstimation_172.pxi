@@ -3,14 +3,14 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_features_172 as pclftr
+cimport pcl_features_172 as pcl_ftr
 
 
 cdef class MomentOfInertiaEstimation:
     """
     MomentOfInertiaEstimation class for 
     """
-    cdef pclftr.MomentOfInertiaEstimation_t *me
+    cdef pcl_ftr.MomentOfInertiaEstimation_t *me
     # std::vector <float> moment_of_inertia;
     # std::vector <float> eccentricity;
     # pcl::PointXYZ min_point_AABB;
@@ -24,7 +24,7 @@ cdef class MomentOfInertiaEstimation:
     # Eigen::Vector3f mass_center;
 
     def __cinit__(self):
-        self.me = new pclftr.MomentOfInertiaEstimation_t()
+        self.me = new pcl_ftr.MomentOfInertiaEstimation_t()
 
     def __dealloc__(self):
         del self.me

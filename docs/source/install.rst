@@ -8,8 +8,8 @@ Recommended Environments
 
 We recommend Windows and these Linux distributions.
 
-* `Ubuntu <http://www.ubuntu.com/>`_ 14.04 64bit
-* `MacOS <https://www.apple.com/macos/>`_ 10.10/10.11/10.12
+* `Ubuntu <http://www.ubuntu.com/>`_ 16.04/18.04 64bit
+* `MacOS <https://www.apple.com/macos/>`_ 10.9/10.10/10.11/10.12
 * `Windows <https://www.microsoft.com/>`_ 7/8.1/10 64bit
 
 The following versions of Python can be used: 2.7.6+, 3.5.1+, and 3.6.0+.
@@ -21,42 +21,35 @@ This is typical installation method for each platform::
 
   Linux(Ubuntu)
 
-  PCL 1.7.0(use apt-get)
+  PCL 1.7.2(use apt)
 
   1.Install PCL Module.
-  sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y
 
-  sudo apt-get update -y
+  $ sudo apt install libpcl-dev -y
 
-  sudo apt-get install libpcl-all -y
+  Reference <https://packages.ubuntu.com/search?keywords=libpcl-dev>
 
- 
   PCL 1.8.0 (build module)([CI Test Timeout])
-
 
   1.Build Module
 
-
   Reference here.
-
 
   MacOSX
 
   use homebrew
 
   1.Install PCL Module.
-  brew tap homebrew/science
 
-  brew install pcl
+  $ brew tap homebrew/science
 
+  $ brew install pcl
 
   Warning:
-
 
   Current Installer (2017/10/02) Not generated pcl-2d-1.8.pc file.(Issue #119)
 
   Reference PointCloudLibrary Issue.
-
 
   Pull qequests 1679.
 
@@ -64,12 +57,11 @@ This is typical installation method for each platform::
 
   circumvent:
 
-  copy travis/pcl-2d-1.8.pc file to /usr/local/lib/pkgconfig folder.
+  $ copy travis/pcl-2d-1.8.pc file to /usr/local/lib/pkgconfig folder.
  
   Windows
  
   before Install module
-
 
   Case1. use PCL 1.6.0
 
@@ -79,11 +71,9 @@ This is typical installation method for each platform::
 
               32 bit
 
+              64 bit
 
-
-  64 bit
-
-  OpenNI2[(PCL Install FolderPath)\3rdParty\OpenNI\OpenNI-(win32/x64)-1.3.2-Dev.msi]
+              OpenNI2[(PCL Install FolderPath)\3rdParty\OpenNI\OpenNI-(win32/x64)-1.3.2-Dev.msi]
 
   Case2. use 1.8.1
 
@@ -102,7 +92,6 @@ This is typical installation method for each platform::
 
   Windows Gtk+ Download
 
-
   Download file unzip. Copy bin Folder to pkg-config Folder
 
   or execute powershell file [Install-GTKPlus.ps1].
@@ -115,16 +104,18 @@ This is typical installation method for each platform::
   1.PCL_ROOT
 
 
-  set PCL_ROOT=$(PCL Install FolderPath)
+  set PCL_ROOT=%PCL Install FolderPath%
 
 
   2.PATH
 
+  (pcl 1.6.0)
 
-  (pcl 1.6.0) set PATH=$(PCL_ROOT)/bin/;$(OPEN_NI_ROOT)/Tools;$(VTK_ROOT)/bin;%PATH%
+  $ set PATH=%PCL_ROOT%/bin/;%OPEN_NI_ROOT%/Tools;$(VTK_ROOT)/bin;%PATH%
 
-  (pcl 1.8.1) set PATH=$(PCL_ROOT)/bin/;$(OPEN_NI2_ROOT)/Tools;$(VTK_ROOT)/bin;%PATH%
+  (pcl 1.8.1)
 
+  $ set PATH=%PCL_ROOT%/bin/;%OPEN_NI2_ROOT%/Tools;$(VTK_ROOT)/bin;%PATH%
 
 If you use old ``setuptools``, upgrade it::
 
@@ -141,8 +132,8 @@ Before installing python-pcl, we recommend to upgrade ``setuptools`` if you are 
 The following Python packages are required to install python-pcl.
 The latest version of each package will automatically be installed if missing.
 
-* `PointCloudLibrary <http://pointclouds.org/>`_ 1.6.x 1.7.x 1.8.x
-* `NumPy <http://www.numpy.org/>`_ 1.9, 1.10, 1.11, 1.12, 1.13
+* `PointCloudLibrary <http://pointclouds.org/>`_ 1.6.x 1.7.x 1.8.x 1.9.x
+* `NumPy <http://www.numpy.org/>`_ 1.9, 1.10, 1.11, 1.12, 1.13, ...
 * `Cython <http://cython.readthedocs.io/en/latest/index.html>`_ >=0.25.2
 
 Install python-pcl

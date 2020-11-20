@@ -1,5 +1,5 @@
 # coding: utf-8
-# before install libfreenect2 & pylibfreenect2
+
 import numpy as np
 # import cv2
 import pcl
@@ -10,96 +10,104 @@ from pylibfreenect2 import FrameType, Registration, Frame
 from pylibfreenect2 import createConsoleLogger, setGlobalLogger
 from pylibfreenect2 import LoggerLevel
 
-try:
-    from pylibfreenect2 import OpenCLPacketPipeline
-    pipeline = OpenCLPacketPipeline()
-except:
-    from pylibfreenect2 import CpuPacketPipeline
-    pipeline = CpuPacketPipeline()
 
-# Create and set logger
-logger = createConsoleLogger(LoggerLevel.Debug)
-setGlobalLogger(logger)
+def main():
+    try:
+        from pylibfreenect2 import OpenCLPacketPipeline
+        pipeline = OpenCLPacketPipeline()
+    except:
+        from pylibfreenect2 import CpuPacketPipeline
+        pipeline = CpuPacketPipeline()
 
-fn = Freenect2()
-num_devices = fn.enumerateDevices()
-if num_devices == 0:
-    print("No device connected!")
-    sys.exit(1)
+    # Create and set logger
+    logger = createConsoleLogger(LoggerLevel.Debug)
+    setGlobalLogger(logger)
 
-serial = fn.getDeviceSerialNumber(0)
-device = fn.openDevice(serial, pipeline=pipeline)
+    fn = Freenect2()
+    num_devices = fn.enumerateDevices()
+    if num_devices == 0:
+        print("No device connected!")
+        sys.exit(1)
 
-listener = SyncMultiFrameListener(
-    FrameType.Color | FrameType.Ir | FrameType.Depth)
+    serial = fn.getDeviceSerialNumber(0)
+    device = fn.openDevice(serial, pipeline=pipeline)
 
-# Register listeners
-device.setColorFrameListener(listener)
-device.setIrAndDepthFrameListener(listener)
+    listener = SyncMultiFrameListener(
+        FrameType.Color | FrameType.Ir | FrameType.Depth)
 
-device.start()
+    # Register listeners
+    device.setColorFrameListener(listener)
+    device.setIrAndDepthFrameListener(listener)
 
-# NOTE: must be called after device.start()
-registration = Registration(device.getIrCameraParams(),
-                            device.getColorCameraParams())
+    device.start()
 
-undistorted = Frame(512, 424, 4)
-registered = Frame(512, 424, 4)
+    # NOTE: must be called after device.start()
+    registration = Registration(device.getIrCameraParams(),
+                                device.getColorCameraParams())
 
-# Optinal parameters for registration
-# set True if you need
-need_bigdepth = False
-need_color_depth_map = False
+    undistorted = Frame(512, 424, 4)
+    registered = Frame(512, 424, 4)
 
-bigdepth = Frame(1920, 1082, 4) if need_bigdepth else None
-color_depth_map = np.zeros((424, 512),  np.int32).ravel() \
-    if need_color_depth_map else None
+    # Optinal parameters for registration
+    # set True if you need
+    need_bigdepth = False
+    need_color_depth_map = False
 
-point = pcl.PointCloud()
-visual = pcl.pcl_visualization.CloudViewing()
-visual.ShowColorCloud(cloud)
+    bigdepth = Frame(1920, 1082, 4) if need_bigdepth else None
+    color_depth_map = np.zeros((424, 512),  np.int32).ravel() \
+        if need_color_depth_map else None
 
-while True:
-    frames = listener.waitForNewFrame()
+    point = pcl.PointCloud()
+    visual = pcl.pcl_visualization.CloudViewing()
+    visual.ShowColorCloud(cloud)
 
-    color = frames["color"]
-    ir = frames["ir"]
-    depth = frames["depth"]
+    while True:
+        frames = listener.waitForNewFrame()
 
-    registration.apply(color, depth, undistorted, registered,
-                       bigdepth=bigdepth,
-                       color_depth_map=color_depth_map)
+        color = frames["color"]
+        ir = frames["ir"]
+        depth = frames["depth"]
 
-    # NOTE for visualization:
-    # cv2.imshow without OpenGL backend seems to be quite slow to draw all
-    # things below. Try commenting out some imshow if you don't have a fast
-    # visualization backend.
-    # cv2.imshow("ir", ir.asarray() / 65535.)
-    # cv2.imshow("depth", depth.asarray() / 4500.)
-    # cv2.imshow("color", cv2.resize(color.asarray(), (int(1920 / 3), int(1080 / 3))))
-    # cv2.imshow("registered", registered.asarray(np.uint8))
+        registration.apply(color, depth, undistorted, registered,
+                           bigdepth=bigdepth,
+                           color_depth_map=color_depth_map)
 
-    # if need_bigdepth:
-    #     cv2.imshow("bigdepth", cv2.resize(bigdepth.asarray(np.float32),
-    #                                       (int(1920 / 3), int(1082 / 3))))
-    # if need_color_depth_map:
-    #     cv2.imshow("color_depth_map", color_depth_map.reshape(424, 512))
+        # NOTE for visualization:
+        # cv2.imshow without OpenGL backend seems to be quite slow to draw all
+        # things below. Try commenting out some imshow if you don't have a fast
+        # visualization backend.
+        # cv2.imshow("ir", ir.asarray() / 65535.)
+        # cv2.imshow("depth", depth.asarray() / 4500.)
+        # cv2.imshow("color", cv2.resize(color.asarray(), (int(1920 / 3), int(1080 / 3))))
+        # cv2.imshow("registered", registered.asarray(np.uint8))
 
-    undistorted_arrray = undistorted.asarray(dtype=np.float32, ndim=2)
-    # registered_array = registered.asarray(dtype=np.uint8)
-    point = pcl.PointCloud(undistorted_arrray)
-    # visual.ShowColorCloud(cloud)
+        # if need_bigdepth:
+        #     cv2.imshow("bigdepth", cv2.resize(bigdepth.asarray(np.float32),
+        #                                       (int(1920 / 3), int(1082 / 3))))
+        # if need_color_depth_map:
+        #     cv2.imshow("color_depth_map", color_depth_map.reshape(424, 512))
 
-    listener.release(frames)
+        undistorted_arrray = undistorted.asarray(dtype=np.float32, ndim=2)
+        # registered_array = registered.asarray(dtype=np.uint8)
+        point = pcl.PointCloud(undistorted_arrray)
+        # visual.ShowColorCloud(cloud)
 
-    # key = cv2.waitKey(delay=1)
-    # if key == ord('q'):
-    #     break
-    if visual.WasStopped() == True:
-        break
+        listener.release(frames)
 
-device.stop()
-device.close()
+        # key = cv2.waitKey(delay=1)
+        # if key == ord('q'):
+        #     break
+        v = True
+        while v:
+            v = not(visual.WasStopped())
 
-sys.exit(0)
+    device.stop()
+    device.close()
 
+    sys.exit(0)
+
+
+if __name__ == "__main__":
+    # import cProfile
+    # cProfile.run('main()', sort='time')
+    main()

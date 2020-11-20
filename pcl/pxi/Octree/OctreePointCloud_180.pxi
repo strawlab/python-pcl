@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_octree_180 as pcloct
+cimport pcl_octree_180 as pcl_oct
 
 cimport eigen as eig
 
@@ -8,7 +8,7 @@ cdef class OctreePointCloud:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_t *me
+    cdef pcl_oct.OctreePointCloud_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -21,9 +21,9 @@ cdef class OctreePointCloud:
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
     #     cdef double param = 0
-    #     self.me = new pcloct.OctreePointCloud_t(0)
-    #     # self.me = new pcloct.OctreePointCloud_t(resolution)
-    #     # self.me = new pcloct.OctreePointCloud_t()
+    #     self.me = new pcl_oct.OctreePointCloud_t(0)
+    #     # self.me = new pcl_oct.OctreePointCloud_t(resolution)
+    #     # self.me = new pcl_oct.OctreePointCloud_t()
 
     # def __dealloc__(self):
     #     del self.me
@@ -89,7 +89,7 @@ cdef class OctreePointCloud_PointXYZI:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_PointXYZI_t *me
+    cdef pcl_oct.OctreePointCloud_PointXYZI_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -102,9 +102,9 @@ cdef class OctreePointCloud_PointXYZI:
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
     #     cdef double param = 0
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZI_t(param)
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZI_t(resolution)
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZI_t()
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZI_t(param)
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZI_t(resolution)
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZI_t()
 
     # def __dealloc__(self):
     #     del self.me
@@ -171,7 +171,7 @@ cdef class OctreePointCloud_PointXYZRGB:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_PointXYZRGB_t *me
+    cdef pcl_oct.OctreePointCloud_PointXYZRGB_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -184,9 +184,9 @@ cdef class OctreePointCloud_PointXYZRGB:
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
     #     cdef double param = 0
-    #     self.me = new pcloct.OctreePointCloud_PointXYZRGB_t(param)
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZRGB_t(resolution)
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZRGB_t()
+    #     self.me = new pcl_oct.OctreePointCloud_PointXYZRGB_t(param)
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZRGB_t(resolution)
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZRGB_t()
 
     # def __dealloc__(self):
     #     del self.me
@@ -249,7 +249,7 @@ cdef class OctreePointCloud_PointXYZRGBA:
     """
     Octree pointcloud
     """
-    cdef pcloct.OctreePointCloud_PointXYZRGBA_t *me
+    cdef pcl_oct.OctreePointCloud_PointXYZRGBA_t *me
 
     # def __cinit__(self, double resolution):
     #     self.me = NULL
@@ -262,9 +262,9 @@ cdef class OctreePointCloud_PointXYZRGBA:
     #     Constructs octree pointcloud with given resolution at lowest octree level
     #     """ 
     #     cdef double param = 0
-    #     self.me = new pcloct.OctreePointCloud_PointXYZRGBA_t(param)
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZRGBA_t(resolution)
-    #     # self.me = new pcloct.OctreePointCloud_PointXYZRGBA_t()
+    #     self.me = new pcl_oct.OctreePointCloud_PointXYZRGBA_t(param)
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZRGBA_t(resolution)
+    #     # self.me = new pcl_oct.OctreePointCloud_PointXYZRGBA_t()
 
     # def __dealloc__(self):
     #     del self.me

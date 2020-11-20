@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_filters_180 as pclfil
+cimport pcl_filters_180 as pcl_fil
 
 cdef class PassThroughFilter:
     """
-    Passes points in a cloud based on constraints for one particular field of the point type
+    Passes points in a cloud based on constraints for one particular field of the point type.
     """
-    cdef pclfil.PassThrough_t *me
+    cdef pcl_fil.PassThrough_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_t()
+        self.me = new pcl_fil.PassThrough_t()
     def __dealloc__(self):
         del self.me
 
     def set_filter_field_name(self, field_name):
+        """
+        Provide the name of the field to be used for filtering data.
+        """
         cdef bytes fname_ascii
         if isinstance(field_name, unicode):
             fname_ascii = field_name.encode("ascii")
@@ -24,6 +27,9 @@ cdef class PassThroughFilter:
         self.me.setFilterFieldName(string(fname_ascii))
 
     def set_filter_limits(self, float filter_min, float filter_max):
+        """
+        Set the numerical limits for the field for filtering data.
+        """
         self.me.setFilterLimits (filter_min, filter_max)
 
     def filter(self):
@@ -43,13 +49,16 @@ cdef class PassThroughFilter_PointXYZI:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_PointXYZI_t *me
+    cdef pcl_fil.PassThrough_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_PointXYZI_t()
+        self.me = new pcl_fil.PassThrough_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
     def set_filter_field_name(self, field_name):
+        """
+        Provide the name of the field to be used for filtering data.
+        """
         cdef bytes fname_ascii
         if isinstance(field_name, unicode):
             fname_ascii = field_name.encode("ascii")
@@ -61,6 +70,9 @@ cdef class PassThroughFilter_PointXYZI:
         self.me.setFilterFieldName(string(fname_ascii))
 
     def set_filter_limits(self, float filter_min, float filter_max):
+        """
+        Set the numerical limits for the field for filtering data.
+        """
         self.me.setFilterLimits (filter_min, filter_max)
 
     def filter(self):
@@ -77,13 +89,16 @@ cdef class PassThroughFilter_PointXYZRGB:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_PointXYZRGB_t *me
+    cdef pcl_fil.PassThrough_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_PointXYZRGB_t()
+        self.me = new pcl_fil.PassThrough_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
     def set_filter_field_name(self, field_name):
+        """
+        Provide the name of the field to be used for filtering data.
+        """
         cdef bytes fname_ascii
         if isinstance(field_name, unicode):
             fname_ascii = field_name.encode("ascii")
@@ -95,6 +110,9 @@ cdef class PassThroughFilter_PointXYZRGB:
         self.me.setFilterFieldName(string(fname_ascii))
 
     def set_filter_limits(self, float filter_min, float filter_max):
+        """
+        Set the numerical limits for the field for filtering data.
+        """
         self.me.setFilterLimits (filter_min, filter_max)
 
     def filter(self):
@@ -111,13 +129,16 @@ cdef class PassThroughFilter_PointXYZRGBA:
     """
     Passes points in a cloud based on constraints for one particular field of the point type
     """
-    cdef pclfil.PassThrough_PointXYZRGBA_t *me
+    cdef pcl_fil.PassThrough_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclfil.PassThrough_PointXYZRGBA_t()
+        self.me = new pcl_fil.PassThrough_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 
     def set_filter_field_name(self, field_name):
+        """
+        Provide the name of the field to be used for filtering data.
+        """
         cdef bytes fname_ascii
         if isinstance(field_name, unicode):
             fname_ascii = field_name.encode("ascii")
@@ -129,6 +150,9 @@ cdef class PassThroughFilter_PointXYZRGBA:
         self.me.setFilterFieldName(string(fname_ascii))
 
     def set_filter_limits(self, float filter_min, float filter_max):
+        """
+        Set the numerical limits for the field for filtering data.
+        """
         self.me.setFilterLimits (filter_min, filter_max)
 
     def filter(self):

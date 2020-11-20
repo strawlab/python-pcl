@@ -1,9 +1,5 @@
-# XXX do a more specific import!
-
-from ctypes.util import find_library
-
+﻿# XXX do a more specific import!
 from ._pcl import *
-# vtkSmartPointer.h error (Linux)
 # from .pcl_visualization import *
 # from .pcl_grabber import *
 
@@ -15,7 +11,8 @@ def load(path, format=None):
     """Load pointcloud from path.
 
     Currently supports PCD and PLY files.
-    Format should be "pcd", "ply", "obj", or None to infer from the pathname.
+
+    Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)
     p = PointCloud()
@@ -31,8 +28,10 @@ def load(path, format=None):
 
 def load_XYZI(path, format=None):
     """Load pointcloud from path.
+
     Currently supports PCD and PLY files.
-    Format should be "pcd", "ply", "obj", or None to infer from the pathname.
+
+    Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)
     p = PointCloud_PointXYZI()
@@ -50,7 +49,7 @@ def load_XYZRGB(path, format=None):
     """
     Load pointcloud from path.
     Currently supports PCD and PLY files.
-    Format should be "pcd", "ply", "obj", or None to infer from the pathname.
+    Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)
     p = PointCloud_PointXYZRGB()
@@ -68,7 +67,7 @@ def load_XYZRGBA(path, format=None):
     """
     Load pointcloud from path.
     Currently supports PCD and PLY files.
-    Format should be "pcd", "ply", "obj", or None to infer from the pathname.
+    Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)
     p = PointCloud_PointXYZRGBA()
@@ -86,7 +85,7 @@ def load_PointWithViewpoint(path, format=None):
     """
     Load pointcloud from path.
     Currently supports PCD and PLY files.
-    Format should be "pcd", "ply", "obj", or None to infer from the pathname.
+    Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)
     p = PointCloud_PointWithViewpoint()
@@ -102,6 +101,7 @@ def load_PointWithViewpoint(path, format=None):
 
 def save(cloud, path, format=None, binary=False):
     """Save pointcloud to file.
+
     Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)
@@ -116,6 +116,7 @@ def save(cloud, path, format=None, binary=False):
 
 def save_XYZRGBA(cloud, path, format=None, binary=False):
     """Save pointcloud to file.
+
     Format should be "pcd", "ply", or None to infer from the pathname.
     """
     format = _infer_format(path, format)

@@ -10,16 +10,16 @@ cimport pcl_PCLPointCloud2_180 as pcl_pc2
 
 # parts
 cimport pcl_common_180 as pcl_cmn
-cimport pcl_features_180 as pclftr
-cimport pcl_filters_180 as pclfil
-cimport pcl_io_180 as pclio
-cimport pcl_kdtree_180 as pclkdt
-cimport pcl_octree_180 as pcloct
-cimport pcl_sample_consensus_180 as pcl_sc
+cimport pcl_features_180 as pcl_ftr
+cimport pcl_filters_180 as pcl_fil
+cimport pcl_io_180 as pcl_io
+cimport pcl_kdtree_180 as pcl_kdt
+cimport pcl_octree_180 as pcl_oct
+cimport pcl_sample_consensus_180 as pcl_sac
 # cimport pcl_search_180 as pcl_sch
-cimport pcl_segmentation_180 as pclseg
-cimport pcl_surface_180 as pclsf
-cimport pcl_range_image_180 as pcl_r_img
+cimport pcl_segmentation_180 as pcl_seg
+cimport pcl_surface_180 as pcl_srf
+cimport pcl_range_image_180 as pcl_rim
 cimport pcl_registration_180 as pcl_reg
 
 from libcpp cimport bool
@@ -28,7 +28,7 @@ cimport indexing as idx
 from boost_shared_ptr cimport sp_assign
 
 cdef extern from "ProjectInliers.h":
-    void mpcl_ProjectInliers_setModelCoefficients(pclfil.ProjectInliers_t) except +
+    void mpcl_ProjectInliers_setModelCoefficients(pcl_fil.ProjectInliers_t) except +
 
 # Empirically determine strides, for buffer support.
 # XXX Is there a more elegant way to get these?

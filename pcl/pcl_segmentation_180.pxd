@@ -21,7 +21,7 @@ from pcl_defs cimport Normal
 from pcl_defs cimport PCLBase
 from pcl_sample_consensus_180 cimport SacModel
 cimport pcl_surface_180 as pclsf
-cimport pcl_kdtree_180 as pclkdt
+cimport pcl_kdtree_180 as pcl_kdt
 
 ##
 
@@ -556,12 +556,12 @@ cdef extern from "pcl/segmentation/extract_clusters.h" namespace "pcl":
         # brief Provide a pointer to the search object.
         # param[in] tree a pointer to the spatial search object.
         # inline void setSearchMethod (const KdTreePtr &tree) 
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
         
         # brief Get a pointer to the search method used. 
         # @todo fix this for a generic search tree
         # inline KdTreePtr getSearchMethod () const 
-        pclkdt.KdTreePtr_t getSearchMethod ()
+        pcl_kdt.KdTreePtr_t getSearchMethod ()
         
         # brief Set the spatial cluster tolerance as a measure in the L2 Euclidean space
         # param[in] tolerance the spatial cluster tolerance as a measure in the L2 Euclidean space
@@ -3154,7 +3154,7 @@ cdef extern from "pcl/segmentation/region_growing.h" namespace "pcl":
         # brief Allows to set search method that will be used for finding KNN.
         # param[in] tree pointer to a KdTree
         # void setSearchMethod (const KdTreePtr& tree) 
-        void setSearchMethod (const pclkdt.KdTreePtr_t &tree)
+        void setSearchMethod (const pcl_kdt.KdTreePtr_t &tree)
 
         # brief Returns normals.
         # NormalPtr getInputNormals () const

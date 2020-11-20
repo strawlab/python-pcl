@@ -1,0 +1,360 @@
+version: 2
+jobs:
+  python27:
+    docker:
+      - image: circleci/python:2.7.15-jessie-browsers
+        environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.7
+      - run: sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libpcl-all -y
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python35:
+    docker:
+      - image: circleci/python:3.5.6-jessie-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.7
+      - run: sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libpcl-all -y
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python36:
+    docker:
+      - image: circleci/python:3.6.6-stretch-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.7
+      - run: sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libpcl-all -y
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python37:
+    docker:
+      - image: circleci/python:3.7.0-stretch-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.7
+      - run: sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libpcl-all -y
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+
+  python27_2:
+    docker:
+      - image: circleci/python:2.7.15-jessie-browsers
+        environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.8
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.1.tar.gz
+            tar -xf pcl-1.8.1.tar.gz
+            cd pcl-1.8.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python35_2:
+    docker:
+      - image: circleci/python:3.5.6-jessie-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.8
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.1.tar.gz
+            tar -xf pcl-1.8.1.tar.gz
+            cd pcl-1.8.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python36_2:
+    docker:
+      - image: circleci/python:3.6.6-stretch-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.8
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.1.tar.gz
+            tar -xf pcl-1.8.1.tar.gz
+            cd pcl-1.8.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python37_2:
+    docker:
+      - image: circleci/python:3.7.0-stretch-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.8
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.8.1.tar.gz
+            tar -xf pcl-1.8.1.tar.gz
+            cd pcl-1.8.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run: sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libpcl-all -y
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+
+
+  python27_3:
+    docker:
+      - image: circleci/python:2.7.15-jessie-browsers
+        environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.9
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz
+            tar -xf pcl-1.9.1.tar.gz
+            cd pcl-1.9.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python35_3:
+    docker:
+      - image: circleci/python:3.5.6-jessie-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.9
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz
+            tar -xf pcl-1.9.1.tar.gz
+            cd pcl-1.9.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python36_3:
+    docker:
+      - image: circleci/python:3.6.6-stretch-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.9
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz
+            tar -xf pcl-1.9.1.tar.gz
+            cd pcl-1.9.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+  python37_3:
+    docker:
+      - image: circleci/python:3.7.0-stretch-browsers
+      environment:
+          NOSEATTR: "not pcl_ver_0_4"
+    steps:
+      - checkout
+      - run: pip install -r docs/requirements.txt
+      # 1.9
+      - run:
+          command: |
+            sudo add-apt-repository -y ppa:webupd8team/java && sudo apt update && sudo apt -y install oracle-java8-installer
+            sudo apt-get install zram-config
+            sudo apt -y install g++ doxygen mpi-default-dev openmpi-bin openmpi-common libusb-1.0-0-dev libqhull* libusb-dev libgtest-dev
+            sudo apt -y install git-core freeglut3-dev pkg-config build-essential libxmu-dev libxi-dev libphonon-dev libphonon-dev phonon-backend-gstreamer
+            sudo apt -y install phonon-backend-vlc graphviz mono-complete qt-sdk libflann-dev libflann1.8 libboost-all-dev libeigen3-dev
+            wget --no-check-certificate -qO- http://www.cmake.org/files/v3.6/cmake-3.6.2-Linux-x86_64.tar.gz -O /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            tar -xvf /tmp/cmake-3.6.2-Linux-x86_64.tar.gz
+            export PATH=$PWD/cmake-3.6.2-Linux-x86_64/bin/:$PATH
+            # sudo dd if=/dev/zero of=/swapfile bs=1024 count=4194304
+            # sudo mkswap /swapfile
+            # sudo swapon /swapfile
+            sudo apt-get install ninja-build
+            wget https://github.com/PointCloudLibrary/pcl/archive/pcl-1.9.1.tar.gz
+            tar -xf pcl-1.9.1.tar.gz
+            cd pcl-1.9.1 && mkdir build && cd build
+            cmake -G Ninja -DWITH_OPENGL:BOOL=OFF -DWITH_FZAPI:BOOL=OFF -DWITH_LIBUSB:BOOL=OFF -DWITH_VTK:BOOL=OFF -DBUILD_OPENNI:BOOL=OFF -DBUILD_OPENNI2:BOOL=OFF -DBUILD_apps:BOOL=OFF -DBUILD_geometry:BOOL=OFF -DBUILD_global_tests:BOOL=OFF -DBUILD_outofcore:BOOL=OFF -DBUILD_people:BOOL=OFF -DBUILD_tools:BOOL=OFF -DBUILD_tracking:BOOL=OFF -DBUILD_visualization:BOOL=OFF -DBUILD_examples:BOOL=OFF ..
+            cmake --build . --config Release
+      - run: sudo add-apt-repository ppa:v-launchpad-jochen-sprickerhof-de/pcl -y;
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install libpcl-all -y
+      - run:
+          command: |
+            python setup.py build_ext -i
+            python setup.py install
+            nosetests -A "not pcl_ver_0_4 and not pcl_over_18" --verbose
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - python27
+      - python35
+      - python36
+      - python37
+      - python27_2
+      - python35_2
+      - python36_2
+      - python37_2
+      - python27_3
+      - python35_3
+      - python36_3
+      - python37_3

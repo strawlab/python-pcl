@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 cimport pcl_defs as cpp
-cimport pcl_kdtree as pclkdt
+cimport pcl_kdtree as pcl_kdt
 
 cdef class KdTreeFLANN:
     """
@@ -10,10 +10,10 @@ cdef class KdTreeFLANN:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in KdTreeFLANN(pc).
     """
-    cdef pclkdt.KdTreeFLANN_t *me
+    cdef pcl_kdt.KdTreeFLANN_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new pclkdt.KdTreeFLANN_t()
+        self.me = new pcl_kdt.KdTreeFLANN_t()
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
@@ -106,10 +106,10 @@ cdef class KdTreeFLANN_PointXYZI:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in KdTreeFLANN(pc).
     """
-    cdef pclkdt.KdTreeFLANN_PointXYZI_t *me
+    cdef pcl_kdt.KdTreeFLANN_PointXYZI_t *me
 
     def __cinit__(self, PointCloud_PointXYZI pc not None):
-        self.me = new pclkdt.KdTreeFLANN_PointXYZI_t()
+        self.me = new pcl_kdt.KdTreeFLANN_PointXYZI_t()
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
@@ -170,10 +170,10 @@ cdef class KdTreeFLANN_PointXYZRGB:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in KdTreeFLANN(pc).
     """
-    cdef pclkdt.KdTreeFLANN_PointXYZRGB_t *me
+    cdef pcl_kdt.KdTreeFLANN_PointXYZRGB_t *me
 
     def __cinit__(self, PointCloud_PointXYZRGB pc not None):
-        self.me = new pclkdt.KdTreeFLANN_PointXYZRGB_t()
+        self.me = new pcl_kdt.KdTreeFLANN_PointXYZRGB_t()
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):
@@ -234,10 +234,10 @@ cdef class KdTreeFLANN_PointXYZRGBA:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in KdTreeFLANN(pc).
     """
-    cdef pclkdt.KdTreeFLANN_PointXYZRGBA_t *me
+    cdef pcl_kdt.KdTreeFLANN_PointXYZRGBA_t *me
 
     def __cinit__(self, PointCloud_PointXYZRGBA pc not None):
-        self.me = new pclkdt.KdTreeFLANN_PointXYZRGBA_t()
+        self.me = new pcl_kdt.KdTreeFLANN_PointXYZRGBA_t()
         self.me.setInputCloud(pc.thisptr_shared)
 
     def __dealloc__(self):

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # cython: embedsignature=True
 
-
 from collections import Sequence
 import numbers
 import numpy as np
@@ -72,7 +71,6 @@ cdef class _CythonCompareOp_Type:
         readonly int LT
         readonly int LE
         readonly int EQ
-
 
     def __cinit__(self):
         self.GT = pcl_fil.COMPAREOP_GT
@@ -162,4 +160,5 @@ def rad2deg(float alpha):
 # Build NG
 # def copyPointCloud(_pcl.PointCloud cloud_in, indices, _pcl.PointCloud cloud_out):
 #     pcl_cmn.copyPointCloud_Indices [cpp.PointXYZ](<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_in.thisptr_shared, <vector[int]> indices, <cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> cloud_out.thisptr_shared)
+
 

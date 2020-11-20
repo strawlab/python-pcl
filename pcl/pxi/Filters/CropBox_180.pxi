@@ -3,7 +3,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_filters_180 as pclfil
+cimport pcl_filters_180 as pcl_fil
 
 cimport eigen as eigen3
 
@@ -14,10 +14,10 @@ cdef class CropBox:
     Must be constructed from the reference point cloud, which is copied, so
     changed to pc are not reflected in CropBox(pc).
     """
-    cdef pclfil.CropBox_t *me
+    cdef pcl_fil.CropBox_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new pclfil.CropBox_t()
+        self.me = new pcl_fil.CropBox_t()
         (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def __dealloc__(self):
@@ -27,6 +27,9 @@ cdef class CropBox:
         (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def set_Translation(self, tx, ty, tz):
+        """
+        Set a translation value for the box. 
+        """
         # Convert Eigen::Vector3f
         cdef eigen3.Vector3f origin
         cdef float *data = origin.data()
@@ -37,6 +40,9 @@ cdef class CropBox:
 
     # def set_Rotation(self, cnp.ndarray[ndim=3, dtype=int, mode='c'] ind):
     def set_Rotation(self, rx, ry, rz):
+        """
+        Set a rotation value for the box. 
+        """
         # Convert Eigen::Vector3f
         cdef eigen3.Vector3f origin
         cdef float *data = origin.data()
@@ -46,6 +52,9 @@ cdef class CropBox:
         self.me.setRotation(origin)
 
     def set_Min(self, minx, miny, minz, mins):
+        """
+        Set the minimum point of the box. 
+        """
         # Convert Eigen::Vector4f
         cdef eigen3.Vector4f originMin
         cdef float *dataMin = originMin.data()
@@ -56,6 +65,9 @@ cdef class CropBox:
         self.me.setMin(originMin)
 
     def set_Max(self, maxx, maxy, maxz, maxs):
+        """
+        Set the maximum point of the box. 
+        """
         cdef eigen3.Vector4f originMax;
         cdef float *dataMax = originMax.data()
         dataMax[0] = maxx
@@ -65,6 +77,9 @@ cdef class CropBox:
         self.me.setMax(originMax)
 
     def set_MinMax(self, minx, miny, minz, mins, maxx, maxy, maxz, maxs):
+        """
+        Set the minimum/maximum point of the box. 
+        """
         # Convert Eigen::Vector4f
         cdef eigen3.Vector4f originMin
         cdef float *dataMin = originMin.data()

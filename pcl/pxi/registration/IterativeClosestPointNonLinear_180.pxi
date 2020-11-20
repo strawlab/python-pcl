@@ -42,8 +42,7 @@ cdef class IterativeClosestPointNonLinear:
         
         cdef _pcl.PointCloud result = _pcl.PointCloud()
         
-        with nogil:
-            reg.align(result.thisptr()[0])
+        reg.align(result.thisptr()[0])
         
         # Get transformation matrix and convert from Eigen to NumPy format.
         # cdef pcl_reg.Registration[cpp.PointXYZ, cpp.PointXYZ].Matrix4f mat

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-cimport pcl_surface_172 as pclsf
+cimport pcl_surface_172 as pcl_srf
 cimport pcl_defs as cpp
 
 cdef class ConcaveHull:
     """
-    ConcaveHull class for ...
+    ConcaveHull (alpha shapes) using libqhull library.
     """
-    cdef pclsf.ConcaveHull_t *me
+    cdef pcl_srf.ConcaveHull_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_t()
+        self.me = new pcl_srf.ConcaveHull_t()
     def __dealloc__(self):
         del self.me
 
@@ -22,15 +22,19 @@ cdef class ConcaveHull:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
+
 
 cdef class ConcaveHull_PointXYZI:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_PointXYZI_t *me
+    cdef pcl_srf.ConcaveHull_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_PointXYZI_t()
+        self.me = new pcl_srf.ConcaveHull_PointXYZI_t()
     def __dealloc__(self):
         del self.me
 
@@ -44,6 +48,9 @@ cdef class ConcaveHull_PointXYZI:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
 
 
@@ -51,9 +58,9 @@ cdef class ConcaveHull_PointXYZRGB:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_PointXYZRGB_t *me
+    cdef pcl_srf.ConcaveHull_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_PointXYZRGB_t()
+        self.me = new pcl_srf.ConcaveHull_PointXYZRGB_t()
     def __dealloc__(self):
         del self.me
 
@@ -67,6 +74,9 @@ cdef class ConcaveHull_PointXYZRGB:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
 
 
@@ -74,9 +84,9 @@ cdef class ConcaveHull_PointXYZRGBA:
     """
     ConcaveHull class for ...
     """
-    cdef pclsf.ConcaveHull_PointXYZRGBA_t *me
+    cdef pcl_srf.ConcaveHull_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclsf.ConcaveHull_PointXYZRGBA_t()
+        self.me = new pcl_srf.ConcaveHull_PointXYZRGBA_t()
     def __dealloc__(self):
         del self.me
 
@@ -90,5 +100,8 @@ cdef class ConcaveHull_PointXYZRGBA:
         return pc
 
     def set_Alpha(self, double d):
+        """
+        Set the alpha value, which limits the size of the resultant hull segments (the smaller the more detailed the hull). 
+        """
         self.me.setAlpha (d)
 

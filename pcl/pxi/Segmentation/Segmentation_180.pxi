@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation_180 as pclseg
-cimport pcl_sample_consensus_180 as pcl_sc
+cimport pcl_segmentation_180 as pcl_seg
+cimport pcl_sample_consensus_180 as pcl_sac
 cimport pcl_defs as cpp
 
 cimport eigen as eigen3
@@ -9,9 +9,9 @@ cdef class Segmentation:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_t *me
+    cdef pcl_seg.SACSegmentation_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_t()
+        self.me = new pcl_seg.SACSegmentation_t()
 
 
     def __dealloc__(self):
@@ -31,7 +31,7 @@ cdef class Segmentation:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
@@ -51,9 +51,9 @@ cdef class Segmentation_PointXYZI:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_PointXYZI_t *me
+    cdef pcl_seg.SACSegmentation_PointXYZI_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZI_t()
+        self.me = new pcl_seg.SACSegmentation_PointXYZI_t()
 
 
     def __dealloc__(self):
@@ -71,7 +71,7 @@ cdef class Segmentation_PointXYZI:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
@@ -87,9 +87,9 @@ cdef class Segmentation_PointXYZRGB:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_PointXYZRGB_t *me
+    cdef pcl_seg.SACSegmentation_PointXYZRGB_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZRGB_t()
+        self.me = new pcl_seg.SACSegmentation_PointXYZRGB_t()
 
 
     def __dealloc__(self):
@@ -107,7 +107,7 @@ cdef class Segmentation_PointXYZRGB:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 
@@ -123,9 +123,9 @@ cdef class Segmentation_PointXYZRGBA:
     """
     Segmentation class for Sample Consensus methods and models
     """
-    cdef pclseg.SACSegmentation_PointXYZRGBA_t *me
+    cdef pcl_seg.SACSegmentation_PointXYZRGBA_t *me
     def __cinit__(self):
-        self.me = new pclseg.SACSegmentation_PointXYZRGBA_t()
+        self.me = new pcl_seg.SACSegmentation_PointXYZRGBA_t()
 
 
     def __dealloc__(self):
@@ -143,7 +143,7 @@ cdef class Segmentation_PointXYZRGBA:
         self.me.setOptimizeCoefficients(b)
 
 
-    def set_model_type(self, pcl_sc.SacModel m):
+    def set_model_type(self, pcl_sac.SacModel m):
         self.me.setModelType(m)
 
 

@@ -1,33 +1,32 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2015, Preferred Networks, inc. and Preferred Infrastructure,
-# inc.
+# Copyright (C) 2017, Tooru Oonuma.
 # This file is distributed under the same license as the python-pcl package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: python-pcl 0.0.1.dev0\n"
+"Project-Id-Version: python-pcl 0.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-28 11:33+0900\n"
+"POT-Creation-Date: 2018-10-15 16:12+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.4.0\n"
+"Generated-By: Babel 2.6.0\n"
 
 #: ../../source/compatibility.rst:2
 msgid "API Compatibility Policy"
-msgstr "APIŒİŠ·«ƒ|ƒŠƒV["
+msgstr "APIäº’æ›æ€§ãƒãƒªã‚·ãƒ¼"
 
 #: ../../source/compatibility.rst:4
 msgid ""
-"This document expresses the design policy on compatibilities of pcl-"
-"python APIs. Development team should obey this policy on deciding to add,"
-" extend, and change APIs and their behaviors."
-msgstr "‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚ÍApython-pcl API‚ÌŒİŠ·«‚ÉŠÖ‚·‚éİŒv•ûj‚ğ•\‚µ‚Ä‚¢‚Ü‚·B ŠJ”­ƒ`[ƒ€‚ÍAAPI‚Æ‚»‚ÌU‚é•‘‚¢‚Ì’Ç‰ÁAŠg’£A•ÏX‚ğŒˆ’è‚·‚éÛ‚É‚±‚Ì•ûj‚É]‚¤‚×‚«‚Å‚·B"
+"This document expresses the design policy on compatibilities of python-"
+"pcl APIs. Development team should obey this policy on deciding to add, "
+"extend, and change APIs and their behaviors."
+msgstr "ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã¯ã€python-pcl APIã®äº’æ›æ€§ã«é–¢ã™ã‚‹è¨­è¨ˆæ–¹é‡ã‚’è¡¨ã—ã¦ã„ã¾ã™ã€‚ é–‹ç™ºãƒãƒ¼ãƒ ã¯ã€APIã¨ãã®æŒ¯ã‚‹èˆã„ã®è¿½åŠ ã€æ‹¡å¼µã€å¤‰æ›´ã‚’æ±ºå®šã™ã‚‹éš›ã«ã“ã®æ–¹é‡ã«å¾“ã†ã¹ãã§ã™ã€‚"
 
 #: ../../source/compatibility.rst:7
 msgid ""
@@ -37,51 +36,51 @@ msgid ""
 "before creating pull requests that contain changes on the interface. Note"
 " that this document may contain ambiguities on the level of supported "
 "compatibilities."
-msgstr "‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚ÍAƒ†[ƒU[‚ÆŠJ”­Ò‚Ì—¼•û‚Ì‚½‚ß‚É‘‚©‚ê‚Ä‚¢‚Ü‚·B ƒ†[ƒU[‚ÍA‚±‚Ì•¶‘‚ÉŠî‚Ã‚¢‚ÄƒR[ƒh“à‚Ìpython-pclÀ‘•‚ÌˆË‘¶ŠÖŒW‚ÌƒŒƒxƒ‹‚ğŒˆ’è‚Å‚«‚Ü‚·B ŠJ”­Ò‚ÍAƒCƒ“ƒ^ƒtƒF[ƒX‚Ì•ÏX‚ğŠÜ‚Şƒvƒ‹—v‹‚ğì¬‚·‚é‘O‚ÉA‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚ğ“Ç‚Ş•K—v‚ª‚ ‚è‚Ü‚·B ‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚É‚ÍAƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚éŒİŠ·«‚ÌƒŒƒxƒ‹‚ÉŠÖ‚·‚é‚ ‚¢‚Ü‚¢«‚ªŠÜ‚Ü‚ê‚Ä‚¢‚é‚±‚Æ‚É’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢B"
+msgstr "ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã¯ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¨é–‹ç™ºè€…ã®ä¸¡æ–¹ã®ãŸã‚ã«æ›¸ã‹ã‚Œã¦ã„ã¾ã™ã€‚ ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯ã€ã“ã®æ–‡æ›¸ã«åŸºã¥ã„ã¦ã‚³ãƒ¼ãƒ‰å†…ã®python-pclå®Ÿè£…ã®ä¾å­˜é–¢ä¿‚ã®ãƒ¬ãƒ™ãƒ«ã‚’æ±ºå®šã§ãã¾ã™ã€‚ é–‹ç™ºè€…ã¯ã€ã‚¤ãƒ³ã‚¿ãƒ•ã‚§ãƒ¼ã‚¹ã®å¤‰æ›´ã‚’å«ã‚€ãƒ—ãƒ«è¦æ±‚ã‚’ä½œæˆã™ã‚‹å‰ã«ã€ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’èª­ã‚€å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚ ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã«ã¯ã€ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹äº’æ›æ€§ã®ãƒ¬ãƒ™ãƒ«ã«é–¢ã™ã‚‹ã‚ã„ã¾ã„æ€§ãŒå«ã¾ã‚Œã¦ã„ã‚‹ã“ã¨ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚"
 
 #: ../../source/compatibility.rst:14
 msgid "Versioning and Backward Compatibilities"
-msgstr "ƒo[ƒWƒ‡ƒ“ŠÇ—‚Æ‰ºˆÊŒİŠ·«‚É‚Â‚¢‚Ä"
+msgstr "ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç®¡ç†ã¨ä¸‹ä½äº’æ›æ€§ã«ã¤ã„ã¦"
 
 #: ../../source/compatibility.rst:16
 msgid ""
 "The updates of python-pcl are classified into three levels: major, minor,"
 " and revision. These types have distinct levels of backward "
 "compatibilities."
-msgstr "python-pcl‚ÌXV‚ÍAƒƒWƒƒ[Aƒ}ƒCƒi[AƒŠƒrƒWƒ‡ƒ“‚Ì3‚Â‚ÌƒŒƒxƒ‹‚É•ª—Ş‚³‚ê‚Ü‚·B ‚±‚ê‚ç‚Ìƒ^ƒCƒv‚É‚ÍAŒã•ûŒİŠ·«‚ÌˆÙ‚È‚éƒŒƒxƒ‹‚ª‚ ‚è‚Ü‚·B"
+msgstr "python-pclã®æ›´æ–°ã¯ã€ãƒ¡ã‚¸ãƒ£ãƒ¼ã€ãƒã‚¤ãƒŠãƒ¼ã€ãƒªãƒ“ã‚¸ãƒ§ãƒ³ã®3ã¤ã®ãƒ¬ãƒ™ãƒ«ã«åˆ†é¡ã•ã‚Œã¾ã™ã€‚ ã“ã‚Œã‚‰ã®ã‚¿ã‚¤ãƒ—ã«ã¯ã€å¾Œæ–¹äº’æ›æ€§ã®ç•°ãªã‚‹ãƒ¬ãƒ™ãƒ«ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:19
 msgid ""
 "**Major update** contains disruptive changes that break the backward "
 "compatibility."
-msgstr "ƒƒWƒƒ[ƒAƒbƒvƒf[ƒg‚É‚ÍA‰ºˆÊŒİŠ·«‚ğ‘¹‚È‚¤”j‰ó“I‚È•ÏX‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B"
+msgstr "ãƒ¡ã‚¸ãƒ£ãƒ¼ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã«ã¯ã€ä¸‹ä½äº’æ›æ€§ã‚’æãªã†ç ´å£Šçš„ãªå¤‰æ›´ãŒå«ã¾ã‚Œã¦ã„ã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:20
 msgid ""
 "**Minor update** contains addition and extension to the APIs keeping the "
 "supported backward compatibility."
-msgstr "ƒ}ƒCƒi[ƒAƒbƒvƒf[ƒg‚É‚ÍAƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚éŒã•ûŒİŠ·«‚ğˆÛ‚µ‚È‚ª‚çAAPI‚Ö‚Ì’Ç‰Á‚ÆŠg’£‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B"
+msgstr "ãƒã‚¤ãƒŠãƒ¼ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã«ã¯ã€ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹å¾Œæ–¹äº’æ›æ€§ã‚’ç¶­æŒã—ãªãŒã‚‰ã€APIã¸ã®è¿½åŠ ã¨æ‹¡å¼µãŒå«ã¾ã‚Œã¦ã„ã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:21
 msgid ""
 "**Revision update** contains improvements on the API implementations "
 "without changing any API specifications."
-msgstr "ƒŠƒrƒWƒ‡ƒ“‚ÌXV‚É‚ÍAAPId—l‚ğ•ÏX‚·‚é‚±‚Æ‚È‚­AAPIÀ‘•‚Ì‰ü—Ç‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·B"
+msgstr "ãƒªãƒ“ã‚¸ãƒ§ãƒ³ã®æ›´æ–°ã«ã¯ã€APIä»•æ§˜ã‚’å¤‰æ›´ã™ã‚‹ã“ã¨ãªãã€APIå®Ÿè£…ã®æ”¹è‰¯ãŒå«ã¾ã‚Œã¦ã„ã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:23
 msgid ""
 "Note that we do not support full backward compatibility, which is almost "
 "infeasible for Python-based APIs, since there is no way to completely "
 "hide the implementation details."
-msgstr "Š®‘S‚ÈŒã•ûŒİŠ·«‚ÍƒTƒ|[ƒg‚µ‚Ä‚¢‚È‚¢‚±‚Æ‚É’ˆÓ‚µ‚Ä‚­‚¾‚³‚¢B‚±‚ê‚ÍPythonƒx[ƒX‚ÌAPI‚Å‚Í‚Ù‚Æ‚ñ‚ÇÀŒ»•s‰Â”\‚Å‚·BÀ‘•‚ÌÚ×‚ğŠ®‘S‚É‰B‚·•û–@‚ª‚È‚¢‚©‚ç‚Å‚·B"
+msgstr "å®Œå…¨ãªå¾Œæ–¹äº’æ›æ€§ã¯ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ãªã„ã“ã¨ã«æ³¨æ„ã—ã¦ãã ã•ã„ã€‚ã“ã‚Œã¯Pythonãƒ™ãƒ¼ã‚¹ã®APIã§ã¯ã»ã¨ã‚“ã©å®Ÿç¾ä¸å¯èƒ½ã§ã™ã€‚å®Ÿè£…ã®è©³ç´°ã‚’å®Œå…¨ã«éš ã™æ–¹æ³•ãŒãªã„ã‹ã‚‰ã§ã™ã€‚"
 
 #: ../../source/compatibility.rst:27
 msgid "Processes to Break Backward Compatibilities"
-msgstr "‰ºˆÊŒİŠ·«‚ğ’†’f‚·‚éƒvƒƒZƒX"
+msgstr "ä¸‹ä½äº’æ›æ€§ã‚’ä¸­æ–­ã™ã‚‹ãƒ—ãƒ­ã‚»ã‚¹"
 
 #: ../../source/compatibility.rst:30
 msgid "Deprecation, Dropping, and Its Preparation"
-msgstr "Œ¸‰¿‹pAŒ¸‰¿‹p‚¨‚æ‚Ñ‚»‚Ì€”õ????"
+msgstr "æ¸›ä¾¡å„Ÿå´ã€æ¸›ä¾¡å„Ÿå´ãŠã‚ˆã³ãã®æº–å‚™????"
 
 #: ../../source/compatibility.rst:32
 msgid ""
@@ -90,7 +89,7 @@ msgid ""
 "implementation is changed to fire deprecation warning (if possible). "
 "There should be another way to reimplement the same things previously "
 "written with the deprecated APIs."
-msgstr "‚·‚×‚Ä‚ÌAPI‚ÍAƒ}ƒCƒi[‚ÈXV‚Å”p~‚³‚ê‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B???‚»‚Ì‚æ‚¤‚Èê‡‚ÍA”ñ„§‚Ì’ß‚ªAPI‚ÌƒhƒLƒ…ƒƒ“ƒg‚É’Ç‰Á‚³‚êAAPI‚ÌÀ‘•‚ª”p~—\’èŒx‚É•ÏX‚³‚ê‚Ü‚·i‰Â”\‚Èê‡jB ˆÈ‘O‚Í”p~—\’è‚ÌAPI‚Å‘‚©‚ê‚½‚à‚Ì‚Æ“¯‚¶‚à‚Ì‚ğÄÀ‘•‚·‚é•Ê‚Ì•û–@‚ª‚ ‚é‚Í‚¸‚Å‚·B???"
+msgstr "ã™ã¹ã¦ã®APIã¯ã€ãƒã‚¤ãƒŠãƒ¼ãªæ›´æ–°ã§å»ƒæ­¢ã•ã‚Œã‚‹å¯èƒ½æ€§ãŒã‚ã‚Šã¾ã™ã€‚???ãã®ã‚ˆã†ãªå ´åˆã¯ã€éæ¨å¥¨ã®æ³¨é‡ˆãŒAPIã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã«è¿½åŠ ã•ã‚Œã€APIã®å®Ÿè£…ãŒå»ƒæ­¢äºˆå®šè­¦å‘Šã«å¤‰æ›´ã•ã‚Œã¾ã™ï¼ˆå¯èƒ½ãªå ´åˆï¼‰ã€‚ ä»¥å‰ã¯å»ƒæ­¢äºˆå®šã®APIã§æ›¸ã‹ã‚ŒãŸã‚‚ã®ã¨åŒã˜ã‚‚ã®ã‚’å†å®Ÿè£…ã™ã‚‹åˆ¥ã®æ–¹æ³•ãŒã‚ã‚‹ã¯ãšã§ã™ã€‚???"
 
 #: ../../source/compatibility.rst:36
 msgid ""
@@ -98,37 +97,37 @@ msgid ""
 "the dropping is stated in the documentation with the major version number"
 " on which the API is planned to be dropped, and the API implementation is"
 " changed to fire the future warning (if possible)."
-msgstr "‚Ç‚ñ‚ÈAPI‚à«—ˆAƒhƒƒbƒv‚³‚ê‚é‚æ‚¤‚Éƒ}[ƒN‚³‚ê‚é‚©‚à‚µ‚ê‚Ü‚¹‚ñB ‚»‚Ì‚æ‚¤‚Èê‡AAPI‚ªíœ‚³‚ê‚é—\’è‚ÌƒƒWƒƒ[ƒo[ƒWƒ‡ƒ“”Ô†‚ÌƒhƒLƒ…ƒƒ“ƒg‚Éƒhƒƒbƒvƒ_ƒEƒ“‚ª‹LÚ‚³‚êAAPIÀ‘•‚ª«—ˆ‚ÌŒx‚ğ”­‚·‚é‚æ‚¤‚É•ÏX‚³‚ê‚Ü‚·i‰Â”\‚Èê‡jB"
+msgstr "ã©ã‚“ãªAPIã‚‚å°†æ¥ã€ãƒ‰ãƒ­ãƒƒãƒ—ã•ã‚Œã‚‹ã‚ˆã†ã«ãƒãƒ¼ã‚¯ã•ã‚Œã‚‹ã‹ã‚‚ã—ã‚Œã¾ã›ã‚“ã€‚ ãã®ã‚ˆã†ãªå ´åˆã€APIãŒå‰Šé™¤ã•ã‚Œã‚‹äºˆå®šã®ãƒ¡ã‚¸ãƒ£ãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã«ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ãŒè¨˜è¼‰ã•ã‚Œã€APIå®Ÿè£…ãŒå°†æ¥ã®è­¦å‘Šã‚’ç™ºã™ã‚‹ã‚ˆã†ã«å¤‰æ›´ã•ã‚Œã¾ã™ï¼ˆå¯èƒ½ãªå ´åˆï¼‰ã€‚"
 
 #: ../../source/compatibility.rst:39
 msgid "The actual dropping should be done through the following steps:"
-msgstr "ÀÛ‚Ì—‰º???‚ÍAˆÈ‰º‚Ìè‡‚Ås‚¤•K—v‚ª‚ ‚è‚Ü‚·"
+msgstr "å®Ÿéš›ã®è½ä¸‹???ã¯ã€ä»¥ä¸‹ã®æ‰‹é †ã§è¡Œã†å¿…è¦ãŒã‚ã‚Šã¾ã™"
 
 #: ../../source/compatibility.rst:41
 msgid ""
 "Make the API deprecated. At this point, users should not need the "
 "deprecated API in their new application codes."
-msgstr "API‚ğ”ñ„§‚É‚·‚éB ‚±‚Ì“_‚ÅAƒ†[ƒU[‚ÍV‚µ‚¢ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒR[ƒh‚Å”p~—\’èAPI‚ğ•K—v‚Æ‚·‚×‚«‚Å‚Í‚ ‚è‚Ü‚¹‚ñB???"
+msgstr "APIã‚’éæ¨å¥¨ã«ã™ã‚‹ã€‚ ã“ã®æ™‚ç‚¹ã§ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯æ–°ã—ã„ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰ã§å»ƒæ­¢äºˆå®šAPIã‚’å¿…è¦ã¨ã™ã¹ãã§ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚???"
 
 #: ../../source/compatibility.rst:43
 msgid ""
 "After that, mark the API as *to be dropped in the future*. It must be "
 "done in the minor update different from that of the deprecation."
-msgstr "‚»‚ÌŒãAAPI‚ğ¡Œãíœ‚·‚é‚æ‚¤‚Éƒ}[ƒN‚µ‚Ä‚­‚¾‚³‚¢B ‚±‚ê‚ÍA”ñ„§‚Ì‚à‚Ì‚Æ‚ÍˆÙ‚È‚éƒ}ƒCƒi[ƒAƒbƒvƒf[ƒg‚Ås‚¤•K—v‚ª‚ ‚è‚Ü‚·B"
+msgstr "ãã®å¾Œã€APIã‚’ä»Šå¾Œå‰Šé™¤ã™ã‚‹ã‚ˆã†ã«ãƒãƒ¼ã‚¯ã—ã¦ãã ã•ã„ã€‚ ã“ã‚Œã¯ã€éæ¨å¥¨ã®ã‚‚ã®ã¨ã¯ç•°ãªã‚‹ãƒã‚¤ãƒŠãƒ¼ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§è¡Œã†å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:45
 msgid "At the major version announced in the above update, drop the API."
-msgstr "ã‹LƒAƒbƒvƒf[ƒg‚Å”­•\‚³‚ê‚½ƒƒWƒƒ[ƒo[ƒWƒ‡ƒ“‚ÅAPI‚ğíœ‚µ‚Ä‚­‚¾‚³‚¢B"
+msgstr "ä¸Šè¨˜ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§ç™ºè¡¨ã•ã‚ŒãŸãƒ¡ã‚¸ãƒ£ãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§APIã‚’å‰Šé™¤ã—ã¦ãã ã•ã„ã€‚"
 
 #: ../../source/compatibility.rst:47
 msgid ""
 "Consequently, it takes at least two minor versions to drop any APIs after"
 " the first deprecation."
-msgstr "‚µ‚½‚ª‚Á‚ÄAÅ‰‚Ì”ñ„§”Å‚ÌŒã‚ÉAPI‚ğíœ‚·‚é‚É‚ÍA­‚È‚­‚Æ‚à2‚Â‚Ìƒ}ƒCƒi[ƒo[ƒWƒ‡ƒ“‚ª•K—v‚Å‚·B???"
+msgstr "ã—ãŸãŒã£ã¦ã€æœ€åˆã®éæ¨å¥¨ç‰ˆã®å¾Œã«APIã‚’å‰Šé™¤ã™ã‚‹ã«ã¯ã€å°‘ãªãã¨ã‚‚2ã¤ã®ãƒã‚¤ãƒŠãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒå¿…è¦ã§ã™ã€‚???"
 
 #: ../../source/compatibility.rst:50
 msgid "API Changes and Its Preparation"
-msgstr "API‚Ì•ÏX‚Æ‚»‚Ì€”õ"
+msgstr "APIã®å¤‰æ›´ã¨ãã®æº–å‚™"
 
 #: ../../source/compatibility.rst:52
 msgid ""
@@ -137,38 +136,38 @@ msgid ""
 "the documentation with the version number on which the API is planned to "
 "be changed, and the API implementation is changed to fire the future "
 "warning on the certain usages."
-msgstr "¡Œã‚ÌŒİŠ·«‚Ì‚È‚¢•ÏX‚É‚Â‚¢‚Ä‚ÍA‚·‚×‚Ä‚ÌAPI‚É•ÏX‚ª‰Á‚¦‚ç‚ê‚Ä‚¢‚é‚Æƒ}[ƒN‚³‚ê‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B ‚»‚Ì‚æ‚¤‚Èê‡AAPI‚Ì•ÏX—\’è‚Ìƒo[ƒWƒ‡ƒ“”Ô†‚ÌƒhƒLƒ…ƒƒ“ƒg‚É•ÏX‚ª‹LÚ‚³‚êAAPI‚ÌÀ‘•‚ª•ÏX‚³‚ê‚Ä“Á’è‚Ì—p“r‚É‚Â‚¢‚Ä‚Ì«—ˆ‚ÌŒx‚ª”­¶‚µ‚Ü‚·B"
+msgstr "ä»Šå¾Œã®äº’æ›æ€§ã®ãªã„å¤‰æ›´ã«ã¤ã„ã¦ã¯ã€ã™ã¹ã¦ã®APIã«å¤‰æ›´ãŒåŠ ãˆã‚‰ã‚Œã¦ã„ã‚‹ã¨ãƒãƒ¼ã‚¯ã•ã‚Œã‚‹ã“ã¨ãŒã‚ã‚Šã¾ã™ã€‚ ãã®ã‚ˆã†ãªå ´åˆã€APIã®å¤‰æ›´äºˆå®šã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã«å¤‰æ›´ãŒè¨˜è¼‰ã•ã‚Œã€APIã®å®Ÿè£…ãŒå¤‰æ›´ã•ã‚Œã¦ç‰¹å®šã®ç”¨é€”ã«ã¤ã„ã¦ã®å°†æ¥ã®è­¦å‘ŠãŒç™ºç”Ÿã—ã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:55
 msgid "The actual change should be done in the following steps:"
-msgstr "ÀÛ‚Ì•ÏX‚ÍAŸ‚Ìè‡‚Ås‚¤•K—v‚ª‚ ‚è‚Ü‚·B"
+msgstr "å®Ÿéš›ã®å¤‰æ›´ã¯ã€æ¬¡ã®æ‰‹é †ã§è¡Œã†å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:57
 msgid ""
 "Announce that the API will be changed in the future. At this point, the "
 "actual version of change need not be accurate."
-msgstr "API‚ª«—ˆ•ÏX‚³‚ê‚é‚±‚Æ‚ğ”­•\‚µ‚Ü‚·B ‚±‚Ì“_‚ÅAÀÛ‚Ì•ÏX‚Ìƒo[ƒWƒ‡ƒ“‚Í³Šm‚Å‚ ‚é•K—v‚Í‚ ‚è‚Ü‚¹‚ñB"
+msgstr "APIãŒå°†æ¥å¤‰æ›´ã•ã‚Œã‚‹ã“ã¨ã‚’ç™ºè¡¨ã—ã¾ã™ã€‚ ã“ã®æ™‚ç‚¹ã§ã€å®Ÿéš›ã®å¤‰æ›´ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã¯æ­£ç¢ºã§ã‚ã‚‹å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚"
 
 #: ../../source/compatibility.rst:59
 msgid ""
 "After the announcement, mark the API as *to be changed in the future* "
 "with version number of planned changes. At this point, users should not "
 "use the marked API in their new application codes."
-msgstr "ƒAƒiƒEƒ“ƒX‚ÌŒãA¡Œã•ÏX‚ª—\’è‚³‚ê‚Ä‚¢‚éƒo[ƒWƒ‡ƒ“”Ô†‚ÅAPI‚ğ•ÏX‚µ‚Ä‚­‚¾‚³‚¢B ‚±‚Ì“_‚ÅAƒ†[ƒU[‚ÍV‚µ‚¢ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒR[ƒh‚Åƒ}[ƒN‚³‚ê‚½API‚ğg—p‚µ‚È‚¢‚Å‚­‚¾‚³‚¢B"
+msgstr "ã‚¢ãƒŠã‚¦ãƒ³ã‚¹ã®å¾Œã€ä»Šå¾Œå¤‰æ›´ãŒäºˆå®šã•ã‚Œã¦ã„ã‚‹ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·ã§APIã‚’å¤‰æ›´ã—ã¦ãã ã•ã„ã€‚ ã“ã®æ™‚ç‚¹ã§ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¯æ–°ã—ã„ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰ã§ãƒãƒ¼ã‚¯ã•ã‚ŒãŸAPIã‚’ä½¿ç”¨ã—ãªã„ã§ãã ã•ã„ã€‚"
 
 #: ../../source/compatibility.rst:61
 msgid "At the major update announced in the above update, change the API."
-msgstr "ã‹L‚ÌƒAƒbƒvƒf[ƒg‚Å”­•\‚³‚ê‚½ƒƒWƒƒ[ƒAƒbƒvƒf[ƒg‚Å‚ÍAAPI‚ğ•ÏX‚µ‚Ä‚­‚¾‚³‚¢B"
+msgstr "ä¸Šè¨˜ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§ç™ºè¡¨ã•ã‚ŒãŸãƒ¡ã‚¸ãƒ£ãƒ¼ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆã§ã¯ã€APIã‚’å¤‰æ›´ã—ã¦ãã ã•ã„ã€‚"
 
 #: ../../source/compatibility.rst:65
 msgid "Supported Backward Compatibility"
-msgstr "ƒTƒ|[ƒg‚³‚ê‚Ä‚¢‚é‰ºˆÊŒİŠ·«"
+msgstr "ã‚µãƒãƒ¼ãƒˆã•ã‚Œã¦ã„ã‚‹ä¸‹ä½äº’æ›æ€§"
 
 #: ../../source/compatibility.rst:67
 msgid ""
 "This section defines backward compatibilities that minor updates must "
 "maintain."
-msgstr "‚±‚ÌƒZƒNƒVƒ‡ƒ“‚Å‚ÍAƒ}ƒCƒi[‚ÈXV‚ªˆÛ‚µ‚È‚¯‚ê‚Î‚È‚ç‚È‚¢Œã•ûŒİŠ·«‚ğ’è‹`‚µ‚Ü‚·B"
+msgstr "ã“ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã§ã¯ã€ãƒã‚¤ãƒŠãƒ¼ãªæ›´æ–°ãŒç¶­æŒã—ãªã‘ã‚Œã°ãªã‚‰ãªã„å¾Œæ–¹äº’æ›æ€§ã‚’å®šç¾©ã—ã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:70
 msgid "Documented Interface"
@@ -181,14 +180,14 @@ msgid ""
 "compatibilities of documented features. In other words, codes only based "
 "on the documented features run correctly with minor/revision-updated "
 "versions."
-msgstr "python-pcl‚É‚ÍAŒö®‚ÌAPIƒhƒLƒ…ƒƒ“ƒg‚ª‚ ‚è‚Ü‚·B ‘½‚­‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÍA•¶‘‰»‚³‚ê‚½‹@”\‚ÉŠî‚Ã‚¢‚Ä‹Lq‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B ƒhƒLƒ…ƒƒ“ƒg‰»‚³‚ê‚½‹@”\‚ÌŒã•ûŒİŠ·«‚ğƒTƒ|[ƒg‚µ‚Ä‚¢‚Ü‚·B Œ¾‚¢Š·‚¦‚ê‚ÎA•¶‘‰»‚³‚ê‚½‹@”\‚Ì‚İ‚ÉŠî‚Ã‚­ƒR[ƒh‚ÍAƒ}ƒCƒi[ƒo[ƒWƒ‡ƒ“/ƒŠƒrƒWƒ‡ƒ“XVƒo[ƒWƒ‡ƒ“‚Å³‚µ‚­“®ì‚µ‚Ü‚·B"
+msgstr "python-pclã«ã¯ã€å…¬å¼ã®APIãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆãŒã‚ã‚Šã¾ã™ã€‚ å¤šãã®ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€æ–‡æ›¸åŒ–ã•ã‚ŒãŸæ©Ÿèƒ½ã«åŸºã¥ã„ã¦è¨˜è¿°ã™ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚ ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆåŒ–ã•ã‚ŒãŸæ©Ÿèƒ½ã®å¾Œæ–¹äº’æ›æ€§ã‚’ã‚µãƒãƒ¼ãƒˆã—ã¦ã„ã¾ã™ã€‚ è¨€ã„æ›ãˆã‚Œã°ã€æ–‡æ›¸åŒ–ã•ã‚ŒãŸæ©Ÿèƒ½ã®ã¿ã«åŸºã¥ãã‚³ãƒ¼ãƒ‰ã¯ã€ãƒã‚¤ãƒŠãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³/ãƒªãƒ“ã‚¸ãƒ§ãƒ³æ›´æ–°ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã§æ­£ã—ãå‹•ä½œã—ã¾ã™ã€‚"
 
 #: ../../source/compatibility.rst:77
 msgid ""
 "Developers are encouraged to use apparent names for objects of "
 "implementation details. For example, attributes outside of the documented"
 " APIs should have one or more underscores at the prefix of their names."
-msgstr "ŠJ”­Ò‚ÍÀ‘•‚ÌÚ×‚ÌƒIƒuƒWƒFƒNƒg‚É–¾”’‚È–¼‘O‚ğg—p‚·‚é‚±‚Æ‚ª„§‚³‚ê‚Ü‚·B ‚½‚Æ‚¦‚ÎA•¶‘‰»‚³‚ê‚½API‚ÌŠO•”‚Ì‘®«‚ÍA–¼‘O‚ÌÚ“ª«‚É1‚ÂˆÈã‚ÌƒAƒ“ƒ_[ƒXƒRƒA‚ğ‚Â•K—v‚ª‚ ‚è‚Ü‚·B???"
+msgstr "é–‹ç™ºè€…ã¯å®Ÿè£…ã®è©³ç´°ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«æ˜ç™½ãªåå‰ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒæ¨å¥¨ã•ã‚Œã¾ã™ã€‚ ãŸã¨ãˆã°ã€æ–‡æ›¸åŒ–ã•ã‚ŒãŸAPIã®å¤–éƒ¨ã®å±æ€§ã¯ã€åå‰ã®æ¥é ­è¾ã«1ã¤ä»¥ä¸Šã®ã‚¢ãƒ³ãƒ€ãƒ¼ã‚¹ã‚³ã‚¢ã‚’æŒã¤å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚???"
 
 #: ../../source/compatibility.rst:83
 msgid "Undocumented behaviors"
@@ -296,28 +295,11 @@ msgstr ""
 
 #: ../../source/compatibility.rst:139
 msgid ""
-"Any changes of dependent libraries that force modifications on the "
-"existing environments must be done in major updates. Such changes include"
-" following cases:"
-msgstr ""
-
-#: ../../source/compatibility.rst:142
-msgid ""
-"dropping supported versions of dependent libraries (e.g. dropping cuDNN "
-"v2)"
-msgstr ""
-
-#: ../../source/compatibility.rst:143
-msgid "adding new mandatory dependencies (e.g. adding h5py to setup_requires)"
-msgstr ""
-
-#: ../../source/compatibility.rst:145
-msgid ""
 "Supporting optional packages/libraries may be done in minor updates (e.g."
 " supporting h5py in optional features)."
 msgstr ""
 
-#: ../../source/compatibility.rst:148
+#: ../../source/compatibility.rst:142
 msgid ""
 "The installation compatibility does not guarantee that all the features "
 "of python-pcl correctly run on supported environments. It may contain "

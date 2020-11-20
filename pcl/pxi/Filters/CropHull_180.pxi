@@ -3,7 +3,7 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_filters_180 as pclfil
+cimport pcl_filters_180 as pcl_fil
 
 from boost_shared_ptr cimport shared_ptr
 
@@ -12,10 +12,10 @@ cdef class CropHull:
     Must be constructed from the reference point cloud, which is copied, 
     so changed to pc are not reflected in CropHull(pc).
     """
-    cdef pclfil.CropHull_t *me
+    cdef pcl_fil.CropHull_t *me
 
     def __cinit__(self, PointCloud pc not None):
-        self.me = new pclfil.CropHull_t()
+        self.me = new pcl_fil.CropHull_t()
         (<cpp.PCLBase_t*>self.me).setInputCloud (pc.thisptr_shared)
 
     def __dealloc__(self):

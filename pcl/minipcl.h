@@ -11,6 +11,7 @@ void mpcl_compute_normals(const pcl::PointCloud<pcl::PointXYZ> &cloud,
                           int ksearch,
                           double searchRadius,
                           pcl::PointCloud<pcl::Normal> &out);
+
 void mpcl_compute_normals_PointXYZI(const pcl::PointCloud<pcl::PointXYZI> &cloud,
                           int ksearch,
                           double searchRadius,

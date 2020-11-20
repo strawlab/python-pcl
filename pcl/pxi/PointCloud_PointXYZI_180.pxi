@@ -6,15 +6,15 @@ cimport numpy as cnp
 cnp.import_array()
 
 # parts
-cimport pcl_features_180 as pclftr
-cimport pcl_filters_180 as pclfil
-cimport pcl_io_180 as pclio
-cimport pcl_kdtree_180 as pclkdt
-# cimport pcl_octree_180 as pcloct
-# cimport pcl_sample_consensus_180 as pcl_sc
+cimport pcl_features_180 as pcl_ftr
+cimport pcl_filters_180 as pcl_fil
+cimport pcl_io_180 as pcl_io
+cimport pcl_kdtree_180 as pcl_kdt
+# cimport pcl_octree_180 as pcl_oct
+# cimport pcl_sample_consensus_180 as pcl_sac
 # cimport pcl_search_180 as pcl_sch
-cimport pcl_segmentation_180 as pclseg
-cimport pcl_surface_180 as pclsf
+cimport pcl_segmentation_180 as pcl_seg
+cimport pcl_surface_180 as pcl_srf
 
 from libcpp cimport bool
 cimport indexing as idx
@@ -25,7 +25,7 @@ cdef extern from "minipcl.h":
     void mpcl_compute_normals_PointXYZI(cpp.PointCloud_PointXYZI_t, int ksearch,
                               double searchRadius,
                               cpp.PointCloud_Normal_t) except +
-    void mpcl_sacnormal_set_axis_PointXYZI(pclseg.SACSegmentationNormal_PointXYZI_t,
+    void mpcl_sacnormal_set_axis_PointXYZI(pcl_seg.SACSegmentationNormal_PointXYZI_t,
                               double ax, double ay, double az) except +
     void mpcl_extract_PointXYZI(cpp.PointCloud_PointXYZI_Ptr_t, cpp.PointCloud_PointXYZI_t *,
                               cpp.PointIndices_t *, bool) except +
@@ -236,27 +236,25 @@ cdef class PointCloud_PointXYZI:
         return self._from_pcd_file(f)
 
     def _from_pcd_file(self, const char *s):
-        cdef int error = 0
-        with nogil:
-            # NG
-            # error = pclio.loadPCDFile [cpp.PointXYZI](string(s), <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()))
-            error = pclio.loadPCDFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
-        return error
+        cdef int ok = -1
+        # with nogil:
+        #     error = pcl_io.loadPCDFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        # Cython 0.29? : Calling gil-requiring function not allowed without gil
+        ok = pcl_io.loadPCDFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        return ok
 
     def _from_ply_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pclio.loadPLYFile [cpp.PointXYZI](string(s), <cpp.PointCloud[cpp.PointXYZI(self.thisptr()))
-            ok = pclio.loadPLYFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadPLYFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadPLYFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
         return ok
 
     def _from_obj_file(self, const char *s):
-        cdef int ok = 0
-        with nogil:
-            # NG
-            # ok = pclio.loadOBJFile [cpp.PointXYZI](string(s), <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()))
-            ok = pclio.loadOBJFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        cdef int ok = -1
+        # with nogil:
+        #     ok = pcl_io.loadOBJFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
+        ok = pcl_io.loadOBJFile [cpp.PointXYZI](string(s), deref(self.thisptr()))
         return ok
 
     def to_file(self, const char *fname, bool ascii=True):
@@ -267,32 +265,27 @@ cdef class PointCloud_PointXYZI:
         return self._to_pcd_file(fname, not ascii)
 
     def _to_pcd_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pclio.savePCDFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
-            # OK
-            error = pclio.savePCDFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
-            # pclio.PointCloud[cpp.PointXYZI] *p = self.thisptr()
-            # error = pclio.savePCDFile [cpp.PointXYZI](s, p, binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePCDFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePCDFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
+        return ok
 
     def _to_ply_file(self, const char *f, bool binary=False):
-        cdef int error = 0
+        cdef int ok = -1
         cdef string s = string(f)
-        with nogil:
-            # NG
-            # error = pclio.savePLYFile [cpp.PointXYZI](s, <cpp.PointCloud[cpp.PointXYZI]> deref(self.thisptr()), binary)
-            error = pclio.savePLYFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
-        return error
+        # with nogil:
+        #     ok = pcl_io.savePLYFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
+        ok = pcl_io.savePLYFile [cpp.PointXYZI](s, deref(self.thisptr()), binary)
+        return ok
 
     def make_segmenter(self):
         """
         Return a pcl.Segmentation object with this object set as the input-cloud
         """
         seg = Segmentation_PointXYZI()
-        cdef pclseg.SACSegmentation_PointXYZI_t *cseg = <pclseg.SACSegmentation_PointXYZI_t *>seg.me
+        cdef pcl_seg.SACSegmentation_PointXYZI_t *cseg = <pcl_seg.SACSegmentation_PointXYZI_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         return seg
 
@@ -305,7 +298,7 @@ cdef class PointCloud_PointXYZI:
         # p = self.thisptr()
         # mpcl_compute_normals(deref(p), ksearch, searchRadius, normals)
         seg = Segmentation_PointXYZI_Normal()
-        cdef pclseg.SACSegmentationFromNormals_PointXYZI_t *cseg = <pclseg.SACSegmentationFromNormals_PointXYZI_t *>seg.me
+        cdef pcl_seg.SACSegmentationFromNormals_PointXYZI_t *cseg = <pcl_seg.SACSegmentationFromNormals_PointXYZI_t *>seg.me
         cseg.setInputCloud(self.thisptr_shared)
         cseg.setInputNormals (normals.makeShared());
         return seg
@@ -315,7 +308,7 @@ cdef class PointCloud_PointXYZI:
         Return a pcl.StatisticalOutlierRemovalFilter object with this object set as the input-cloud
         """
         fil = StatisticalOutlierRemovalFilter_PointXYZI()
-        cdef pclfil.StatisticalOutlierRemoval_PointXYZI_t *cfil = <pclfil.StatisticalOutlierRemoval_PointXYZI_t *>fil.me
+        cdef pcl_fil.StatisticalOutlierRemoval_PointXYZI_t *cfil = <pcl_fil.StatisticalOutlierRemoval_PointXYZI_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
         return fil
 
@@ -324,7 +317,7 @@ cdef class PointCloud_PointXYZI:
         Return a pcl.VoxelGridFilter object with this object set as the input-cloud
         """
         fil = VoxelGridFilter_PointXYZI()
-        cdef pclfil.VoxelGrid_PointXYZI_t *cfil = <pclfil.VoxelGrid_PointXYZI_t *>fil.me
+        cdef pcl_fil.VoxelGrid_PointXYZI_t *cfil = <pcl_fil.VoxelGrid_PointXYZI_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
         return fil
 
@@ -333,7 +326,7 @@ cdef class PointCloud_PointXYZI:
         Return a pcl.PassThroughFilter object with this object set as the input-cloud
         """
         fil = PassThroughFilter_PointXYZI()
-        cdef pclfil.PassThrough_PointXYZI_t *cfil = <pclfil.PassThrough_PointXYZI_t *>fil.me
+        cdef pcl_fil.PassThrough_PointXYZI_t *cfil = <pcl_fil.PassThrough_PointXYZI_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
         return fil
 
@@ -343,7 +336,7 @@ cdef class PointCloud_PointXYZI:
 #         Return a pcl.MovingLeastSquares object with this object as input cloud.
 #         """
 #         mls = MovingLeastSquares_PointXYZI()
-#         cdef pclsf.MovingLeastSquares_PointXYZI_t *cmls = <pclsf.MovingLeastSquares_PointXYZI_t *>mls.me
+#         cdef pcl_srf.MovingLeastSquares_PointXYZI_t *cmls = <pcl_srf.MovingLeastSquares_PointXYZI_t *>mls.me
 #         cmls.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZI]]> self.thisptr_shared)
 #         return mls
 # 

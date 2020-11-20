@@ -2,14 +2,8 @@
 # Header for _pcl.pyx functionality that needs sharing with other modules.
 
 cimport pcl_defs as cpp
-# KdTree
-cimport pcl_kdtree as pclkdt
-# RangeImage
-cimport pcl_range_image as pcl_rngimg
-# Features
-cimport pcl_features as pcl_ftr
-# SampleConsensus
-cimport pcl_sample_consensus as pcl_sac
+
+include "pxi/pxd_cimport.pxi"
 
 # class override(PointCloud)
 cdef class PointCloud:
@@ -113,19 +107,34 @@ cdef class PointCloud_PointNormal:
         return self.thisptr_shared.get()
 
 
+# class override(PolygonMesh)
+# cdef class PolygonMesh:
+#     cdef cpp.PolygonMeshPtr_t thisptr_shared     # 
+#     
+#     # Buffer protocol support.
+#     # cdef Py_ssize_t _shape[2]
+#     # cdef Py_ssize_t _view_count
+#     
+#     cdef inline cpp.PolygonMesh *thisptr(self) nogil:
+#         # Shortcut to get raw pointer to underlying PolygonMesh.
+#         return self.thisptr_shared.get()
+# 
+# 
+###
+
 ## KdTree
 # class override
 cdef class KdTree:
-    cdef pclkdt.KdTreePtr_t thisptr_shared   # KdTree
+    cdef pcl_kdt.KdTreePtr_t thisptr_shared   # KdTree
     
-    cdef inline pclkdt.KdTree[cpp.PointXYZ] *thisptr(self) nogil:
+    cdef inline pcl_kdt.KdTree[cpp.PointXYZ] *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying KdTree<PointXYZ>.
         return self.thisptr_shared.get()
 
 # cdef class KdTreeFLANN:
-#     cdef pclkdt.KdTreeFLANNPtr_t thisptr_shared   # KdTreeFLANN
+#     cdef pcl_kdt.KdTreeFLANNPtr_t thisptr_shared   # KdTreeFLANN
 #     
-#     cdef inline pclkdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
+#     cdef inline pcl_kdt.KdTreeFLANN[cpp.PointXYZ] *thisptr(self) nogil:
 #         # Shortcut to get raw pointer to underlying KdTreeFLANN<PointXYZ>.
 #         return self.thisptr_shared.get()
 
@@ -133,9 +142,9 @@ cdef class KdTree:
 ## RangeImages
 # class override
 cdef class RangeImages:
-    cdef pcl_rngimg.RangeImagePtr_t thisptr_shared   # RangeImages
+    cdef pcl_rim.RangeImagePtr_t thisptr_shared   # RangeImages
     
-    cdef inline pcl_rngimg.RangeImage *thisptr(self) nogil:
+    cdef inline pcl_rim.RangeImage *thisptr(self) nogil:
         # Shortcut to get raw pointer to underlying RangeImage.
         return self.thisptr_shared.get()
 

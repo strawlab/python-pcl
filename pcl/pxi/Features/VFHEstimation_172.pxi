@@ -4,17 +4,17 @@ from libcpp.vector cimport vector
 from libcpp cimport bool
 
 cimport pcl_defs as cpp
-cimport pcl_features_172 as pclftr
+cimport pcl_features_172 as pcl_ftr
 
 
 cdef class VFHEstimation:
     """
     VFHEstimation class for 
     """
-    cdef pclftr.VFHEstimation_t *me
+    cdef pcl_ftr.VFHEstimation_t *me
 
     def __cinit__(self):
-        self.me = new pclftr.VFHEstimation_t()
+        self.me = new pcl_ftr.VFHEstimation_t()
 
     def __dealloc__(self):
         del self.me

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
-cimport pcl_segmentation_172 as pclseg
+cimport pcl_segmentation_172 as pcl_seg
 cimport pcl_defs as cpp
 
 cdef class ProgressiveMorphologicalFilter:
     """
     ProgressiveMorphologicalFilter class for Sample Consensus methods and models
     """
-    cdef pclseg.ProgressiveMorphologicalFilter_t *me
+    cdef pcl_seg.ProgressiveMorphologicalFilter_t *me
     def __cinit__(self):
-        self.me = new pclseg.ProgressiveMorphologicalFilter_t()
+        self.me = new pcl_seg.ProgressiveMorphologicalFilter_t()
 
     def __dealloc__(self):
         del self.me

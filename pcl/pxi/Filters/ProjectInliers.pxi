@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
-cimport pcl_filters as pclfil
-cimport pcl_segmentation as pclseg
+cimport pcl_filters as pcl_fil
+cimport pcl_segmentation as pcl_seg
 cimport pcl_defs as cpp
 
 cdef class ProjectInliers:
     """
     ProjectInliers class for ...
     """
-    cdef pclfil.ProjectInliers_t *me
+    cdef pcl_fil.ProjectInliers_t *me
     def __cinit__(self):
-        self.me = new pclfil.ProjectInliers_t()
+        self.me = new pcl_fil.ProjectInliers_t()
     def __dealloc__(self):
         del self.me
 
@@ -33,7 +33,7 @@ cdef class ProjectInliers:
     #     
     # def get_Model_Coefficients(self):
     #     self.me.getModelCoefficients()
-    def set_model_type(self, pclseg.SacModel m):
+    def set_model_type(self, pcl_seg.SacModel m):
         self.me.setModelType(m)
     def get_model_type(self):
         return self.me.getModelType()
