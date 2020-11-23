@@ -891,7 +891,7 @@ else:
 setup(name='python-pcl',
       description='Python bindings for the Point Cloud Library (PCL). using Cython.',
       url='http://github.com/strawlab/python-pcl',
-      version='0.3.0rc1',
+      version='0.3.1',
       author='John Stowers',
       author_email='john.stowers@gmail.com',
       maintainer='Tooru Oonuma',
