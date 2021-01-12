@@ -798,7 +798,7 @@ else:
         # ext_args['extra_link_args'].append('-fopenmp -Xpreprocessor -lomp')
         pass
     else:
-        ext_args['extra_compile_args'].append("-std=c++11")
+        # ext_args['extra_compile_args'].append("-std=c++11")
         ext_args['library_dirs'].append("/usr/lib/x86_64-linux-gnu/")
         # gcc? use standard library
         # ext_args['extra_compile_args'].append("-stdlib=libstdc++")
