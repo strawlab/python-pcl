@@ -45,12 +45,9 @@ cdef class NormalDistributionsTransform:
     # def get_FinalNumIteration(self):
     #     return self.me.getFinalNumIteration()
 
-    cdef object run(self, pcl_reg.NormalDistributionsTransform_t &reg, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+    cdef object run(self, pcl_reg.NormalDistributionsTransform_t &reg, _pcl.PointCloud source, _pcl.PointCloud target):
         reg.setInputTarget(target.thisptr_shared)
-        
-        if max_iter is not None:
-            reg.setMaximumIterations(max_iter)
-        
+                
         cdef _pcl.PointCloud result = _pcl.PointCloud()
         
         reg.align(result.thisptr()[0])
@@ -70,7 +67,7 @@ cdef class NormalDistributionsTransform:
         
         return reg.hasConverged(), transf, result, reg.getTransformationProbability()
 
-    def ndt(self, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None):
+    def ndt(self, _pcl.PointCloud source, _pcl.PointCloud target, max_iter=None, resolution=None, step_size=None, outlier_ratio=None):
         """
         Align source to target using normal distributions transform (NDT).
         Parameters
@@ -81,6 +78,15 @@ cdef class NormalDistributionsTransform:
             Target point cloud.
         max_iter : integer, optional
             Maximum number of iterations. If not given, uses the default number
+            hardwired into PCL.
+        resolution : float, optional
+            Voxel grid resolution. If not given, uses the default number
+            hardwired into PCL.
+        step_size : float, optional
+            Newton line search maximum step length. If not given, uses the default number
+            hardwired into PCL.
+        outlier_ratio : float, optional
+            Point cloud outlier ratio. If not given, uses the default number
             hardwired into PCL.
         Returns
         -------
@@ -94,5 +100,15 @@ cdef class NormalDistributionsTransform:
             The registration alignment probability.
         """
         cdef pcl_reg.NormalDistributionsTransform_t ndt
+
+        if max_iter is not None:
+            reg.setMaximumIterations(max_iter)
+        if resolution is not None:
+            reg.setResolution(max_iter)
+        if step_size is not None:
+            reg.setStepSize(max_iter)
+        if outlier_ratio is not None:
+            reg.setOulierRatio(max_iter)
+
         ndt.setInputCloud(source.thisptr_shared)
         return self.run(ndt, source, target, max_iter)
