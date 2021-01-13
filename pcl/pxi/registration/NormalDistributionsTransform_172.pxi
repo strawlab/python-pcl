@@ -102,13 +102,13 @@ cdef class NormalDistributionsTransform:
         cdef pcl_reg.NormalDistributionsTransform_t ndt
 
         if max_iter is not None:
-            reg.setMaximumIterations(max_iter)
+            ndt.setMaximumIterations(max_iter)
         if resolution is not None:
-            reg.setResolution(max_iter)
+            ndt.setResolution(max_iter)
         if step_size is not None:
-            reg.setStepSize(max_iter)
+            ndt.setStepSize(max_iter)
         if outlier_ratio is not None:
-            reg.setOulierRatio(max_iter)
+            ndt.setOulierRatio(max_iter)
 
         ndt.setInputCloud(source.thisptr_shared)
         return self.run(ndt, source, target, max_iter)
