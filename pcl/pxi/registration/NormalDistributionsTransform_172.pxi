@@ -111,4 +111,4 @@ cdef class NormalDistributionsTransform:
             ndt.setOulierRatio(max_iter)
 
         ndt.setInputCloud(source.thisptr_shared)
-        return self.run(ndt, source, target, max_iter)
+        return self.run(ndt, source, target)
