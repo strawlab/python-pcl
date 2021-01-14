@@ -104,11 +104,11 @@ cdef class NormalDistributionsTransform:
         if max_iter is not None:
             ndt.setMaximumIterations(max_iter)
         if resolution is not None:
-            ndt.setResolution(max_iter)
+            ndt.setResolution(resolution)
         if step_size is not None:
-            ndt.setStepSize(max_iter)
+            ndt.setStepSize(step_size)
         if outlier_ratio is not None:
-            ndt.setOulierRatio(max_iter)
+            ndt.setOulierRatio(outlier_ratio)
 
         ndt.setInputCloud(source.thisptr_shared)
         return self.run(ndt, source, target)
