@@ -3,6 +3,7 @@
 pcl/_pcl*.cpp
 pcl/_pcl.html
 pcl/registration.cpp
+pcl/pcl_visualization.cpp
 
 *.py[co]
 *.so
