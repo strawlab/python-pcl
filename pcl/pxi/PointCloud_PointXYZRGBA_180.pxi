@@ -316,7 +316,7 @@ cdef class PointCloud_PointXYZRGBA:
         """
         Return a pcl.VoxelGridFilter object with this object set as the input-cloud
         """
-        fil = VoxelGridFilter()
+        fil = VoxelGridFilter_PointXYZRGBA()
         cdef pcl_fil.VoxelGrid_PointXYZRGBA_t *cfil = <pcl_fil.VoxelGrid_PointXYZRGBA_t *>fil.me
         cfil.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZRGBA]]> self.thisptr_shared)
         return fil
