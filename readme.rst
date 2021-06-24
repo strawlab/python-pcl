@@ -1,3 +1,5 @@
+**⚠⚠ A new maintainer for this library is sought. Please see https://github.com/strawlab/python-pcl/issues/395. ⚠⚠**
+
 .. raw:: html
 
     <a href="https://github.com/strawlab/python-pcl">
