@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # ensure that we use the local pcl (and not the system copy) to document
-import sys
-import os
+import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import pcl
 assert pcl.PointCloud.__doc__ is not None
@@ -33,3 +32,6 @@ htmlhelp_basename = 'python-pcldoc'
 html_logo = 'pcl_logo.png'
 html_title = 'Python Bindings to the Point Cloud Library'
 html_short_title = '%s v%s' % (project, version)
+
+
+

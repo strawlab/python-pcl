@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 cdef extern from "<vector>" namespace "std":
     cdef cppclass vector[T, A]:
         cppclass iterator:
