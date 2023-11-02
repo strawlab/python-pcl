@@ -1,4 +1,5 @@
-**⚠⚠ A new maintainer for this library is sought. Please see https://github.com/strawlab/python-pcl/issues/395. ⚠⚠**
+**⚠⚠ This repository has been archived as is it is no longer maintained.
+Please see https://github.com/strawlab/python-pcl/issues/395 for details. ⚠⚠**
 
 .. raw:: html
 
