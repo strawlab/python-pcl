@@ -1,0 +1,7 @@
+docutils
+pygments
+sphinx
+sphinx-issues
+sphinx_rtd_theme
+recommonmark
+transifex-client

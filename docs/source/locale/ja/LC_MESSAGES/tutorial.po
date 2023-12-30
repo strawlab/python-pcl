@@ -1,0 +1,1384 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Tooru Oonuma.
+# This file is distributed under the same license as the python-pcl package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: python-pcl 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-12-04 10:32+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: ../../source/tutorial/GPU.rst:2
+msgid "GPU Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:6
+msgid "Configuring your PC to use your Nvidia GPU with PCL"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:7
+msgid "This tutorial explains how to configure PCL to use with a Nvidia GPU"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:9
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/gpu_install.php"
+"#gpu-install>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:10 ../../source/tutorial/GPU.rst:18
+#: ../../source/tutorial/GPU.rst:26 ../../source/tutorial/application.rst:10
+#: ../../source/tutorial/application.rst:18
+#: ../../source/tutorial/application.rst:26
+#: ../../source/tutorial/application.rst:34
+#: ../../source/tutorial/features.rst:9 ../../source/tutorial/features.rst:17
+#: ../../source/tutorial/features.rst:33 ../../source/tutorial/features.rst:41
+#: ../../source/tutorial/features.rst:49 ../../source/tutorial/features.rst:57
+#: ../../source/tutorial/filtering.rst:48 ../../source/tutorial/io.rst:9
+#: ../../source/tutorial/io.rst:17 ../../source/tutorial/io.rst:25
+#: ../../source/tutorial/io.rst:33 ../../source/tutorial/io.rst:41
+#: ../../source/tutorial/io.rst:49 ../../source/tutorial/io.rst:57
+#: ../../source/tutorial/io.rst:65 ../../source/tutorial/io.rst:73
+#: ../../source/tutorial/io.rst:81 ../../source/tutorial/octree.rst:9
+#: ../../source/tutorial/rangeImage.rst:9
+#: ../../source/tutorial/recognition.rst:10
+#: ../../source/tutorial/recognition.rst:18
+#: ../../source/tutorial/recognition.rst:26
+#: ../../source/tutorial/registration.rst:10
+#: ../../source/tutorial/registration.rst:26
+#: ../../source/tutorial/registration.rst:34
+#: ../../source/tutorial/registration.rst:50
+#: ../../source/tutorial/segmentation.rst:34
+#: ../../source/tutorial/segmentation.rst:42
+#: ../../source/tutorial/segmentation.rst:50
+#: ../../source/tutorial/segmentation.rst:58
+#: ../../source/tutorial/segmentation.rst:66
+#: ../../source/tutorial/segmentation.rst:74
+#: ../../source/tutorial/segmentation.rst:82
+#: ../../source/tutorial/segmentation.rst:90
+#: ../../source/tutorial/surface.rst:10 ../../source/tutorial/surface.rst:26
+#: ../../source/tutorial/surface.rst:34 ../../source/tutorial/tracking.rst:9
+#: ../../source/tutorial/visualization.rst:10
+#: ../../source/tutorial/visualization.rst:18
+#: ../../source/tutorial/visualization.rst:26
+#: ../../source/tutorial/visualization.rst:34
+#: ../../source/tutorial/visualization.rst:42
+#: ../../source/tutorial/visualization.rst:50
+#: ../../source/tutorial/visualization.rst:58
+msgid "TestCode : None"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:14
+msgid "Using Kinfu Large Scale to generate a textured mesh"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:15
+msgid ""
+"This tutorial demonstrates how to use KinFu Large Scale to produce a mesh"
+" from a room, and apply texture information in post-processing for a more"
+" appealing visual result."
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:17
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/using_kinfu_large_scale.php"
+"#using-kinfu-large-scale>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:22
+msgid "Detecting people and their poses using PointCloud Library"
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:23
+msgid "This tutorial presents a method for people and pose detection."
+msgstr ""
+
+#: ../../source/tutorial/GPU.rst:25
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/gpu_people.php"
+"#gpu-people>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:2
+msgid "Applications Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:6
+msgid "Aligning object templates to a point cloud"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:7
+msgid ""
+"This tutorial gives an example of how some of the tools covered in the "
+"previous tutorials can be combined to solve a higher level problem - "
+"aligning a previously captured model of an object to some newly captured "
+"data."
+msgstr ""
+
+#: ../../source/tutorial/application.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/template_alignment.php"
+"#template-alignment>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:14
+msgid "Cluster Recognition and 6DOF Pose Estimation using VFH descriptors"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:15
+msgid ""
+"In this tutorial we show how the Viewpoint Feature Histogram (VFH) "
+"descriptor can be used to recognize similar clusters in terms of their "
+"geometry."
+msgstr ""
+
+#: ../../source/tutorial/application.rst:17
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/vfh_recognition.php#vfh-"
+"recognition>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:22
+msgid "Point Cloud Streaming to Mobile Devices with Real-time Visualization"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:23
+msgid ""
+"This tutorial describes how to send point cloud data over the network "
+"from a desktop server to a client running on a mobile device."
+msgstr ""
+
+#: ../../source/tutorial/application.rst:25
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/mobile_streaming.php"
+"#mobile-streaming>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:30
+msgid "Detecting people on a ground plane with RGB-D data"
+msgstr ""
+
+#: ../../source/tutorial/application.rst:31
+msgid ""
+"This tutorial presents a method for detecting people on a ground plane "
+"with RGB-D data."
+msgstr ""
+
+#: ../../source/tutorial/application.rst:33
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/ground_based_rgbd_people_detection.php"
+"#ground-based-rgbd-people-detection>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:2
+msgid "Features Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:5
+msgid "How 3D Features work in PCL"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:6
+msgid ""
+"This document presents a basic introduction to the 3D feature estimation "
+"methodologies in PCL."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:8 ../../source/tutorial/features.rst:71
+#: ../../source/tutorial/io.rst:8 ../../source/tutorial/io.rst:16
+#: ../../source/tutorial/io.rst:24 ../../source/tutorial/io.rst:32
+#: ../../source/tutorial/io.rst:40 ../../source/tutorial/io.rst:48
+#: ../../source/tutorial/io.rst:56 ../../source/tutorial/io.rst:64
+#: ../../source/tutorial/io.rst:72 ../../source/tutorial/io.rst:80
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/how_features_work.php>`_ "
+"\\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:13
+msgid "Estimating Surface Normals in a PointCloud"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:14
+msgid ""
+"This tutorial discusses the theoretical and implementation details of the"
+" surface normal estimation module in PCL."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:16
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/normal_estimation.php"
+"#normal-estimation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:21
+msgid "Normal Estimation Using Integral Images"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:22
+msgid ""
+"In this tutorial we will learn how to compute normals for an organized "
+"point cloud using integral images."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:24
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/normal_estimation_using_integral_images.php"
+"#normal-estimation-using-integral-images>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:25
+msgid ""
+"TestCode : "
+"examples/official/Features/NormalEstimationUsingIntegralImages.py"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:29
+msgid "Point Feature Histograms (PFH) descriptors"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:30
+msgid ""
+"This tutorial introduces a family of 3D feature descriptors called PFH "
+"(Point Feature Histograms) and discusses their implementation details "
+"from PCL?fs perspective."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:32
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/pfh_estimation.php#pfh-"
+"estimation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:37
+msgid "Fast Point Feature Histograms (FPFH) descriptors"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:38
+msgid ""
+"This tutorial introduces the FPFH (Fast Point Feature Histograms) 3D "
+"descriptor and discusses their implementation details from PCL?fs "
+"perspective."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:40
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/fpfh_estimation.php#fpfh-"
+"estimation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:45
+msgid "Estimating VFH signatures for a set of points"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:46
+msgid ""
+"This document describes the Viewpoint Feature Histogram (VFH) descriptor,"
+" a novel representation for point clusters for the problem of Cluster "
+"(e.g., Object) Recognition and 6DOF Pose Estimation."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:48
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/vfh_estimation.php#vfh-"
+"estimation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:53
+msgid "How to extract NARF features from a range image"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:54
+msgid ""
+"In this tutorial, we will learn how to extract NARF features from a range"
+" image."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:56
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/narf_feature_extraction.php"
+"#narf-feature-extraction>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:60
+msgid "Moment of inertia and eccentricity based descriptors"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:61
+msgid ""
+"In this tutorial we will learn how to compute moment of inertia and "
+"eccentricity of the cloud. In addition to this we will learn how to "
+"extract AABB and OBB."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:63
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/moment_of_inertia.php"
+"#moment-of-inertia>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:64
+msgid "TestCode : examples/official/Features/moment_of_inertia.py"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:68
+msgid "RoPs (Rotational Projection Statistics) feature"
+msgstr ""
+
+#: ../../source/tutorial/features.rst:69
+msgid "In this tutorial we will learn how to compute RoPS feature."
+msgstr ""
+
+#: ../../source/tutorial/features.rst:72
+msgid "TestCode : examples/official/Features/rops_feature.py"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:2
+msgid "Filtering Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:5
+msgid "Filtering a PointCloud using a PassThrough filter"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:6
+msgid ""
+"In this tutorial, we will learn how to remove points whose values fall "
+"inside/outside a user given interval along a specified dimension."
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:8
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/passthrough.php#passthrough>`_"
+" \\"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:9
+msgid "TestCode : examples/official/Filtering/PassThroughFilter.py"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:12
+msgid "Downsampling a PointCloud using a VoxelGrid filter"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:13
+msgid ""
+"In this tutorial, we will learn how to downsample (i.e., reduce the "
+"number of points) a Point Cloud."
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:15
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/voxel_grid.php#voxelgrid>`_"
+" \\"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:16
+msgid "TestCode : examples/official/Filtering/VoxelGrid_160.py"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:20
+msgid "Removing outliers using a StatisticalOutlierRemoval filter"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:21
+msgid ""
+"In this tutorial, we will learn how to remove sparse outliers from noisy "
+"data, using StatisticalRemoval."
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:23
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/statistical_outlier.php"
+"#statistical-outlier-removal>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:24
+msgid "TestCode : examples/official/Filtering/statistical_removal.py"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:28
+msgid "Projecting points using a parametric model"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:29
+msgid ""
+"In this tutorial, we will learn how to project points to a parametric "
+"model (i.e., plane)."
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:31
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/project_inliers.php"
+"#project-inliers>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:32
+msgid "TestCode : examples/official/Filtering/project_inliers.py"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:36
+msgid "Extracting indices from a PointCloud"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:37
+msgid ""
+"In this tutorial, we will learn how to extract a set of indices given by "
+"a segmentation algorithm."
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:39
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/extract_indices.php"
+"#extract-indices>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:40
+msgid "TestCode : examples/official/Filtering/extract_indices.py"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:44
+msgid "Removing outliers using a Conditional or RadiusOutlier removal"
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:45
+msgid ""
+"In this tutorial, we will learn how to remove outliers from noisy data, "
+"using ConditionalRemoval, RadiusOutlierRemoval."
+msgstr ""
+
+#: ../../source/tutorial/filtering.rst:47
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/remove_outliers.php"
+"#remove-outliers>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/index.rst:2
+msgid "python-pcl Tutorial"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:2
+msgid "Input and Output Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:5
+msgid "The PCD (Point Cloud Data) file format"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:6
+msgid ""
+"This document describes the PCD file format, and the way it is used "
+"inside PCL."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:13
+msgid "Reading Point Cloud data from PCD files"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:14
+msgid "In this tutorial, we will learn how to read a Point Cloud from a PCD file."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:21
+msgid "Writing Point Cloud data to PCD files"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:22
+msgid "In this tutorial, we will learn how to write a Point Cloud to a PCD file."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:29
+msgid "Concatenate the points of two Point Clouds"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:30
+msgid ""
+"In this tutorial, we will learn how to concatenate both the fields and "
+"the point data of two Point Clouds. When concatenating fields, one "
+"PointClouds contains only XYZ data, and the other contains Surface Normal"
+" information."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:37
+msgid "The OpenNI Grabber Framework in PCL"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:38
+msgid ""
+"In this tutorial, we will learn how to acquire point cloud data from an "
+"OpenNI camera."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:45
+msgid "The Velodyne High Definition LiDAR (HDL) Grabber"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:46
+msgid ""
+"In this tutorial, we will learn how to acquire point cloud data from a "
+"Velodyne HDL."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:53
+msgid "The PCL Dinast Grabber Framework"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:54
+msgid ""
+"In this tutorial, we will learn how to acquire point cloud data from a "
+"Dinast camera."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:61
+msgid "Grabbing point clouds from Ensenso cameras"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:62
+msgid ""
+"In this tutorial, we will learn how to acquire point cloud data from an "
+"IDS-Imaging Ensenso camera."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:69
+msgid "Grabbing point clouds / meshes from davidSDK scanners"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:70
+msgid ""
+"In this tutorial, we will learn how to acquire point cloud or mesh data "
+"from a davidSDK scanner."
+msgstr ""
+
+#: ../../source/tutorial/io.rst:77
+msgid "Grabbing point clouds from DepthSense cameras"
+msgstr ""
+
+#: ../../source/tutorial/io.rst:78
+msgid ""
+"In this tutorial we will learn how to setup and use DepthSense cameras "
+"within PCL on both Linux and Windows platforms."
+msgstr ""
+
+#: ../../source/tutorial/kdtree.rst:2
+msgid "KdTree Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/kdtree.rst:5
+msgid "How to use a KdTree to search"
+msgstr ""
+
+#: ../../source/tutorial/kdtree.rst:7
+msgid ""
+"In this tutorial, we will learn how to search using the nearest neighbor "
+"method for k-d trees"
+msgstr ""
+
+#: ../../source/tutorial/kdtree.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/kdtree_search.php#kdtree-"
+"search>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/kdtree.rst:10
+msgid "TestCode : examples/official/kdtree/kdtree_search.py"
+msgstr ""
+
+#: ../../source/tutorial/keypoint.rst:2
+msgid "KeyPoint Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/keypoint.rst:5
+msgid "How to extract NARF keypoint from a range image"
+msgstr ""
+
+#: ../../source/tutorial/keypoint.rst:6
+msgid ""
+"In this tutorial, we will learn how to extract NARF keypoints from a "
+"range image."
+msgstr ""
+
+#: ../../source/tutorial/keypoint.rst:8
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/narf_keypoint_extraction.php"
+"#narf-keypoint-extraction>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/keypoint.rst:9
+msgid "TestCode : examples/official/keypoints/narf_keypoint_extraction.py"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:2
+msgid "Octree Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:5
+msgid "Point Cloud Compression"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:6
+msgid ""
+"In this tutorial, we will learn how to compress a single point cloud and "
+"streams of point clouds."
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:8
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/compression.php"
+"#octree-compression>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:13
+msgid "Spatial Partitioning and Search Operations with Octrees"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:14
+msgid ""
+"In this tutorial, we will learn how to use octrees for spatial "
+"partitioning and nearest neighbor search."
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:16
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/octree.php"
+"#octree-search>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:17
+msgid "TestCode : examples/official/octree/octree_search.py"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:21
+msgid "Spatial change detection on unorganized point cloud data"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:22
+msgid ""
+"In this tutorial, we will learn how to use octrees for detecting spatial "
+"changes within point clouds."
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:24
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/octree_change.php#octree-"
+"change-detection>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/octree.rst:25
+msgid "TestCode : examples/official/octree/octree_change_detection.py"
+msgstr ""
+
+#: ../../source/tutorial/pcl.rst:2
+msgid "pcl"
+msgstr ""
+
+#: ../../source/tutorial/pcl.rst:9
+msgid "Functions"
+msgstr ""
+
+#: ../../source/tutorial/pcl.rst:30
+msgid "Classes"
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:2
+msgid "RangeImage Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:5
+msgid "How to create a range image from a point cloud"
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:6
+msgid ""
+"This tutorial demonstrates how to create a range image from a point cloud"
+" and a given sensor position."
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:8
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/range_image_creation.php"
+"#range-image-creation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:13
+msgid "How to extract borders from range images"
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:14
+msgid ""
+"This tutorial demonstrates how to extract borders (traversals from "
+"foreground to background) from a range image."
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:16
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/range_image_border_extraction.php"
+"#range-image-border-extraction>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/rangeImage.rst:17
+msgid "TestCode : examples/official/RangeImage/range_image_border_extraction.py"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:2
+msgid "Recognition Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:6
+msgid "3D Object Recognition based on Correspondence Grouping"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:7
+msgid ""
+"This tutorial aims at explaining how to perform 3D Object Recognition "
+"based on the pcl_recognition module."
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/correspondence_grouping.php"
+"#correspondence-grouping>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:14
+msgid "Implicit Shape Model"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:15
+msgid ""
+"In this tutorial we will learn how the Implicit Shape Model algorithm "
+"works and how to use it for finding objects centers."
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:17
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/implicit_shape_model.php"
+"#implicit-shape-model>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:22
+msgid "Tutorial: Hypothesis Verification for 3D Object Recognition"
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:23
+msgid ""
+"This tutorial aims at explaining how to do 3D object recognition in "
+"clutter by verifying model hypotheses in cluttered and heavily occluded "
+"3D scenes."
+msgstr ""
+
+#: ../../source/tutorial/recognition.rst:25
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/global_hypothesis_verification.php"
+"#global-hypothesis-verification>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:2
+msgid "Registration Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:6
+msgid "The PCL Registration API"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:7
+msgid ""
+"In this document, we describe the point cloud registration API and its "
+"modules: the estimation and rejection of point correspondences, and the "
+"estimation of rigid transformations."
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/registration_api.php"
+"#registration-api>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:14
+msgid "How to use iterative closest point"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:15
+msgid ""
+"This tutorial gives an example of how to use the iterative closest point "
+"algorithm to see if one PointCloud is just a rigid transformation of "
+"another PointCloud."
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:17
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/iterative_closest_point.php"
+"#iterative-closest-point>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:18
+msgid "TestCode : examples/official/Registration/iterative_closest_point.py"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:22
+msgid "How to incrementally register pairs of clouds"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:23
+msgid ""
+"This document demonstrates using the Iterative Closest Point algorithm in"
+" order to incrementally register a series of point clouds two by two."
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:25
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/pairwise_incremental_registration.php"
+"#pairwise-incremental-registration>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:30
+msgid "Interactive Iterative Closest Point"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:31
+msgid "This tutorial will teach you how to build an interactive ICP program"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:33
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/interactive_icp.php"
+"#interactive-icp>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:38
+msgid "How to use Normal Distributions Transform"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:39
+msgid ""
+"This document demonstrates using the Normal Distributions Transform "
+"algorithm to register two large point clouds."
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:41
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/normal_distributions_transform.php"
+"#normal-distributions-transform>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:42
+msgid ""
+"TestCode : "
+"examples/official/Registration/normal_distributions_transform.py"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:46
+msgid "In-hand scanner for small objects"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:47
+msgid ""
+"This document shows how to use the In-hand scanner applications to obtain"
+" colored models of small objects with RGB-D cameras."
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:49
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/in_hand_scanner.php#in-"
+"hand-scanner>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:54
+msgid "Robust pose estimation of rigid objects"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:55
+msgid ""
+"In this tutorial, we show how to find the alignment pose of a rigid "
+"object in a scene with clutter and occlusions."
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:57
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/alignment_prerejective.php"
+"#alignment-prerejective>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/registration.rst:58
+msgid "TestCode : examples/official/Registration/alignment_prerejective.py"
+msgstr ""
+
+#: ../../source/tutorial/sampleconsensus.rst:2
+msgid "Sampleconsensus Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/sampleconsensus.rst:6
+msgid "How to use Random Sample Consensus model"
+msgstr ""
+
+#: ../../source/tutorial/sampleconsensus.rst:7
+msgid ""
+"In this tutorial we learn how to use a RandomSampleConsensus with a plane"
+" model to obtain the cloud fitting to this model."
+msgstr ""
+
+#: ../../source/tutorial/sampleconsensus.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/random_sample_consensus.php"
+"#random-sample-consensus>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/sampleconsensus.rst:10
+msgid "TestCode : examples/official/SampleConsensus/random_sample_consensus.py"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:2
+msgid "segmentation Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:6
+msgid "Plane model segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:7
+msgid ""
+"In this tutorial, we will learn how to segment arbitrary plane models "
+"from a given point cloud dataset."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/planar_segmentation.php"
+"#planar-segmentation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:10
+msgid "TestCode : examples/official/Segmentation/Plane_model_segmentation.py"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:14
+msgid "Cylinder model segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:15
+msgid ""
+"In this tutorial, we will learn how to segment arbitrary cylindrical "
+"models from a given point cloud dataset."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:17
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/cylinder_segmentation.php"
+"#cylinder-segmentation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:18
+msgid "TestCode : examples/official/Segmentation/cylinder_segmentation.py"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:22
+msgid "Euclidean Cluster Extraction"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:23
+msgid ""
+"In this tutorial we will learn how to extract Euclidean clusters with the"
+" pcl::EuclideanClusterExtraction class."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:25
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/cluster_extraction.php"
+"#cluster-extraction>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:26
+msgid "TestCode : examples/official/Segmentation/cluster_extraction.py"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:30
+msgid "Region growing segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:31
+msgid ""
+"In this tutorial we will learn how to use region growing segmentation "
+"algorithm."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:33
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/region_growing_segmentation.php"
+"#region-growing-segmentation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:38
+msgid "Color-based region growing segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:39
+msgid ""
+"In this tutorial we will learn how to use color-based region growing "
+"segmentation algorithm."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:41
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/region_growing_rgb_segmentation.php"
+"#region-growing-rgb-segmentation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:46
+msgid "Min-Cut Based Segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:47
+msgid ""
+"In this tutorial we will learn how to use min-cut based segmentation "
+"algorithm."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:49
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/min_cut_segmentation.php"
+"#min-cut-segmentation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:54
+msgid "Conditional Euclidean Clustering"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:55
+msgid ""
+"This tutorial describes how to use the Conditional Euclidean Clustering "
+"class in PCL: A segmentation algorithm that clusters points based on "
+"Euclidean distance and a user-customizable condition that needs to hold."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:57
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/conditional_euclidean_clustering.php"
+"#conditional-euclidean-clustering>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:62
+msgid "Difference of Normals Based Segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:63
+msgid ""
+"In this tutorial we will learn how to use the difference of normals "
+"feature for segmentation."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:65
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/don_segmentation.php#don-"
+"segmentation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:70
+msgid "Clustering of Pointclouds into Supervoxels - Theoretical primer"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:71
+msgid ""
+"In this tutorial, we show to break a pointcloud into the mid-level "
+"supervoxel representation."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:73
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/supervoxel_clustering.php"
+"#supervoxel-clustering>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:78
+msgid ""
+"Identifying ground returns using ProgressiveMorphologicalFilter "
+"segmentation"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:79
+msgid ""
+"In this tutorial, we show how to segment a point cloud into ground and "
+"non-ground returns."
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:81
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/progressive_morphological_filtering.php"
+"#progressive-morphological-filtering>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:86
+msgid "Filtering a PointCloud using ModelOutlierRemoval"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:87
+msgid ""
+"This tutorial describes how to extract points from a point cloud using "
+"SAC models"
+msgstr ""
+
+#: ../../source/tutorial/segmentation.rst:89
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/model_outlier_removal.php"
+"#model-outlier-removal>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:2
+msgid "surface Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:6
+msgid "Smoothing and normal estimation based on polynomial reconstruction"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:7 ../../source/tutorial/tracking.rst:6
+msgid ""
+"In this tutorial, we will learn how to construct and run a Moving Least "
+"Squares (MLS) algorithm to obtain smoothed XYZ coordinates and normals."
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:9
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/resampling.php"
+"#moving-least-squares>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:14
+msgid "Construct a concave or convex hull polygon for a plane model"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:15
+msgid ""
+"In this tutorial we will learn how to calculate a simple 2D concave or "
+"convex hull polygon for a set of points supported by a plane."
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:17
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/hull_2d.php"
+"#hull-2d>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:18
+msgid "TestCode : examples/official/Surface/concave_hull_2d.py"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:22
+msgid "Fast triangulation of unordered point clouds"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:23
+msgid ""
+"In this tutorial we will learn how to run a greedy triangulation "
+"algorithm on a PointCloud with normals to obtain a triangle mesh based on"
+" projections of the local neighborhood."
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:25
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/greedy_projection.php"
+"#greedy-triangulation>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:30
+msgid "Fitting trimmed B-splines to unordered point clouds"
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:31
+msgid ""
+"In this tutorial we will learn how to reconstruct a smooth surface from "
+"an unordered point-cloud by fitting trimmed B-splines."
+msgstr ""
+
+#: ../../source/tutorial/surface.rst:33
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/bspline_fitting.php"
+"#bspline-fitting>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/tracking.rst:2
+msgid "Tracking Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/tracking.rst:5
+msgid "Tracking Example"
+msgstr ""
+
+#: ../../source/tutorial/tracking.rst:8
+msgid "Original Page : None  (tutorials/sources/tracking/tracking_sample.cpp)"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:2
+msgid "Visualization Tutorials"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:6
+msgid "The CloudViewer"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:7
+msgid "This tutorial demonstrates how to use the pcl visualization tools."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:9
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/cloud_viewer.php#cloud-"
+"viewer>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:14
+msgid "How to visualize a range image"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:15
+msgid ""
+"This tutorial demonstrates how to use the pcl visualization tools for "
+"range images."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:17
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/range_image_visualization.php"
+"#range-image-visualization>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:22
+msgid "PCLVisualizer"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:23
+msgid ""
+"This tutorial demonstrates how to use the PCLVisualizer class for "
+"powerful visualisation of point clouds and related data."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:25
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/pcl_visualizer.php#pcl-"
+"visualizer>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:30
+msgid "PCLPlotter"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:31
+msgid ""
+"This tutorial demonstrates how to use the PCLPlotter class for powerful "
+"visualisation of plots, charts and histograms of raw data and explicit "
+"functions."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:33
+msgid ""
+"`Original <http://pointclouds.org/documentation/tutorials/pcl_plotter.php"
+"#pcl-plotter>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:38
+msgid "Visualization"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:39
+msgid ""
+"This tutorial will give an overview on the usage of the PCL visualization"
+" tools."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:41
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/walkthrough.php#visualization>`_"
+" \\"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:46
+msgid "Create a PCL visualizer in Qt with cmake"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:47
+msgid ""
+"This tutorial shows you how to create a PCL visualizer within a Qt "
+"application."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:49
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/qt_visualizer.php#qt-"
+"visualizer>`_ \\"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:54
+msgid "Create a PCL visualizer in Qt to colorize clouds"
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:55
+msgid "This tutorial shows you how to color point clouds within a Qt application."
+msgstr ""
+
+#: ../../source/tutorial/visualization.rst:57
+msgid ""
+"`Original "
+"<http://pointclouds.org/documentation/tutorials/qt_colorize_cloud.php#qt-"
+"colorize-cloud>`_ \\"
+msgstr ""
+

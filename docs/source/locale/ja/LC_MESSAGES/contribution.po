@@ -1,0 +1,368 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2017, Tooru Oonuma.
+# This file is distributed under the same license as the python-pcl package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: python-pcl 0.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-10-15 16:12+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: ../../source/contribution.rst:2
+msgid "python-pcl Contribution Guide"
+msgstr "python-pclコントリビューションガイド"
+
+#: ../../source/contribution.rst:4
+msgid ""
+"This is a guide for all contributions to python-pcl. The development of "
+"python-pcl is running on `the official repository at GitHub "
+"<https://github.com/strawlab/python-pcl>`_. Anyone that wants to register"
+" an issue or to send a pull request should read through this document."
+msgstr ""
+
+#: ../../source/contribution.rst:9
+msgid "Classification of Contributions"
+msgstr ""
+
+#: ../../source/contribution.rst:11
+msgid "There are several ways to contribute to python-pcl community:"
+msgstr ""
+
+#: ../../source/contribution.rst:13
+msgid "Registering an issue"
+msgstr ""
+
+#: ../../source/contribution.rst:14
+msgid "Sending a pull request (PR)"
+msgstr ""
+
+#: ../../source/contribution.rst:16
+msgid ""
+"This document mainly focuses on 1 and 2, though other contributions are "
+"also appreciated."
+msgstr ""
+
+#: ../../source/contribution.rst:19
+msgid "Release and Milestone"
+msgstr ""
+
+#: ../../source/contribution.rst:21
+msgid ""
+"We are using `GitHub Flow <http://scottchacon.com/2011/08/31/github-"
+"flow.html>`_ as our basic working process. In particular, we are using "
+"the master branch for our development, and releases are made as tags."
+msgstr ""
+
+#: ../../source/contribution.rst:24
+msgid ""
+"Releases are classified into three groups: major, minor, and revision. "
+"This classification is based on following criteria:"
+msgstr ""
+
+#: ../../source/contribution.rst:27
+msgid ""
+"**Major update** contains disruptive changes that break the backward "
+"compatibility."
+msgstr ""
+
+#: ../../source/contribution.rst:28
+msgid ""
+"**Minor update** contains additions and extensions to the APIs keeping "
+"the supported backward compatibility."
+msgstr ""
+
+#: ../../source/contribution.rst:29
+msgid ""
+"**Revision update** contains improvements on the API implementations "
+"without changing any API specification."
+msgstr ""
+
+#: ../../source/contribution.rst:31
+msgid ""
+"The release classification is reflected into the version number x.y.z, "
+"where x, y, and z corresponds to major, minor, and revision updates, "
+"respectively."
+msgstr ""
+
+#: ../../source/contribution.rst:33
+msgid ""
+"We set a milestone for an upcoming release. The milestone is of name "
+"'vX.Y.Z', where the version number represents a revision release at the "
+"outset. If at least one *feature* PR is merged in the period, we rename "
+"the milestone to represent a minor release (see the next section for the "
+"PR types)."
+msgstr ""
+
+#: ../../source/contribution.rst:37
+msgid "See also :doc:`compatibility`."
+msgstr ""
+
+#: ../../source/contribution.rst:40
+msgid "Issues and PRs"
+msgstr ""
+
+#: ../../source/contribution.rst:42
+msgid "Issues and PRs are classified into following categories:"
+msgstr ""
+
+#: ../../source/contribution.rst:44
+msgid "**Bug**: bug reports (issues) and bug fixes (PRs)"
+msgstr ""
+
+#: ../../source/contribution.rst:45
+msgid ""
+"**Enhancement**: implementation improvements without breaking the "
+"interface"
+msgstr ""
+
+#: ../../source/contribution.rst:46
+msgid "**Feature**: feature requests (issues) and their implementations (PRs)"
+msgstr ""
+
+#: ../../source/contribution.rst:47
+msgid "**NoCompat**: disrupts backward compatibility"
+msgstr ""
+
+#: ../../source/contribution.rst:48
+msgid "**Test**: test fixes and updates"
+msgstr ""
+
+#: ../../source/contribution.rst:49
+msgid "**Document**: document fixes and improvements"
+msgstr ""
+
+#: ../../source/contribution.rst:50
+msgid "**Example**: fixes and improvements on the examples"
+msgstr ""
+
+#: ../../source/contribution.rst:51
+msgid "**Install**: fixes installation script"
+msgstr ""
+
+#: ../../source/contribution.rst:52
+msgid ""
+"**Contribution-Welcome**: issues that we request for contribution (only "
+"issues are categorized to this)"
+msgstr ""
+
+#: ../../source/contribution.rst:53
+msgid "**Other**: other issues and PRs"
+msgstr ""
+
+#: ../../source/contribution.rst:55
+msgid ""
+"Issues and PRs are labeled by these categories. This classification is "
+"often reflected into its corresponding release category: Feature "
+"issues/PRs are contained into minor/major releases and NoCompat "
+"issues/PRs are contained into major releases, while other issues/PRs can "
+"be contained into any releases including revision ones."
+msgstr ""
+
+#: ../../source/contribution.rst:58
+msgid ""
+"On registering an issue, write precise explanations on what you want "
+"python-pcl to be. Bug reports must include necessary and sufficient "
+"conditions to reproduce the bugs. Feature requests must include **what** "
+"you want to do (and **why** you want to do, if needed). You can contain "
+"your thoughts on **how** to realize it into the feature requests, though "
+"**what** part is most important for discussions."
+msgstr ""
+
+#: ../../source/contribution.rst:63
+msgid ""
+"If you can write code to fix an issue, send a PR to the master branch. "
+"Before writing your code for PRs, read through the :ref:`coding-guide`. "
+"The description of any PR must contain a precise explanation of **what** "
+"and **how** you want to do; it is the first documentation of your code "
+"for developers, a very important part of your PR."
+msgstr ""
+
+#: ../../source/contribution.rst:67
+msgid ""
+"Once you send a PR, it is automatically tested on `Travis CI <https"
+"://travis-ci.org/strawlab/python-pcl/>`_ for Linux and Mac OS X, and on "
+"`AppVeyor <https://ci.appveyor.com/project/strawlab/python-pcl>`_ for "
+"Windows. Your PR need to pass at least the test for Linux/MacOSX on "
+"Travis CI and Windows on AppVeyor. After the automatic test passes, some "
+"of the core developers will start reviewing your code. Note that this "
+"automatic PR test only includes CPU tests."
+msgstr ""
+
+#: ../../source/contribution.rst:72
+msgid ""
+"Even if your code is not complete, you can send a pull request as a "
+"*work-in-progress PR* by putting the ``[WIP]`` prefix to the PR title. If"
+" you write a precise explanation about the PR, core developers and other "
+"contributors can join the discussion about how to proceed the PR."
+msgstr ""
+
+#: ../../source/contribution.rst:78
+msgid "Coding Guidelines"
+msgstr ""
+
+#: ../../source/contribution.rst:80
+msgid ""
+"We use `PEP8 <https://www.python.org/dev/peps/pep-0008/>`_ and a part of "
+"`OpenStack Style Guidelines "
+"<http://docs.openstack.org/developer/hacking/>`_ related to general "
+"coding style as our basic style guidelines."
+msgstr ""
+
+#: ../../source/contribution.rst:82
+msgid ""
+"To check your code, use ``autopep8`` and ``flake8`` command installed by "
+"``hacking`` package::"
+msgstr ""
+
+#: ../../source/contribution.rst:88
+msgid "To check Cython code, use ``.flake8.cython`` configuration file::"
+msgstr ""
+
+#: ../../source/contribution.rst:92
+msgid ""
+"The ``autopep8`` supports automatically correct Python code to conform to"
+" the PEP 8 style guide::"
+msgstr ""
+
+#: ../../source/contribution.rst:96
+msgid ""
+"The ``flake8`` command lets you know the part of your code not obeying "
+"our style guidelines. Before sending a pull request, be sure to check "
+"that your code passes the ``flake8`` checking."
+msgstr ""
+
+#: ../../source/contribution.rst:99
+msgid ""
+"Note that ``flake8`` command is not perfect. It does not check some of "
+"the style guidelines. Here is a (not-complete) list of the rules that "
+"``flake8`` cannot check."
+msgstr ""
+
+#: ../../source/contribution.rst:103
+msgid "Relative imports are prohibited. [H304]"
+msgstr ""
+
+#: ../../source/contribution.rst:104
+msgid "Importing non-module symbols is prohibited."
+msgstr ""
+
+#: ../../source/contribution.rst:105
+msgid ""
+"Import statements must be organized into three parts: standard libraries,"
+" third-party libraries, and internal imports. [H306]"
+msgstr ""
+
+#: ../../source/contribution.rst:107
+msgid ""
+"In addition, we restrict the usage of *shortcut symbols* in our code "
+"base. They are symbols imported by packages and sub-packages of ``python-"
+"pcl``. **It is not allowed to use such shortcuts in the ``python-pcl`` "
+"library implementation**. Note that you can still use them in ``tests`` "
+"and ``examples`` directories."
+msgstr ""
+
+#: ../../source/contribution.rst:112
+msgid ""
+"Once you send a pull request, your coding style is automatically checked "
+"by `Travis CI <https://travis-ci.org/strawlab/python-pcl/>`_ for Linux "
+"and Mac OS X, and on `AppVeyor <https://ci.appveyor.com/project/strawlab"
+"/python-pcl>`_ for Windows. The reviewing process starts after the check "
+"passes."
+msgstr ""
+
+#: ../../source/contribution.rst:115
+msgid ""
+"The python-pcl is designed based on PointCloudLibrary's API design. "
+"python-pcl's source code and documents contain the original "
+"PointCloudLibrary ones. Please note the followings when writing the "
+"document."
+msgstr ""
+
+#: ../../source/contribution.rst:118
+msgid ""
+"In order to identify overlapping parts, it is preferable to add some "
+"remarks that this document is just copied or altered from the original "
+"one. It is also preferable to briefly explain the specification of the "
+"function in a short paragraph, and refer to the corresponding function in"
+" PointCloudLibrary so that users can read the detailed document. However,"
+" it is possible to include a complete copy of the document with such a "
+"remark if users cannot summarize in such a way."
+msgstr ""
+
+#: ../../source/contribution.rst:125
+msgid ""
+"If a function in python-pcl only implements a limited amount of features "
+"in the original one, users should explicitly describe only what is "
+"implemented in the document."
+msgstr ""
+
+#: ../../source/contribution.rst:131
+msgid "Testing Guidelines"
+msgstr ""
+
+#: ../../source/contribution.rst:133
+msgid ""
+"Testing is one of the most important part of your code. You must test "
+"your code by unit tests following our testing guidelines. Note that we "
+"are using the nose package and the mock package for testing, so install "
+"nose and mock before writing your code::"
+msgstr ""
+
+#: ../../source/contribution.rst:139
+msgid ""
+"In order to run unit tests at the repository root, you first have to "
+"build Cython files in place by running the following command::"
+msgstr ""
+
+#: ../../source/contribution.rst:143
+msgid ""
+"Once the Cython modules are built, you can run unit tests simply by "
+"running ``nosetests`` command at the repository root::"
+msgstr ""
+
+#: ../../source/contribution.rst:147
+msgid "Tests are put into the ``tests`` directories."
+msgstr ""
+
+#: ../../source/contribution.rst:149
+msgid ""
+"Following this naming convention, you can run all the tests by just "
+"typing ``nosetests`` at the repository root::"
+msgstr ""
+
+#: ../../source/contribution.rst:153
+msgid ""
+"If you modify the code related to existing unit tests, you must run "
+"appropriate commands."
+msgstr ""
+
+#: ../../source/contribution.rst:155
+msgid ""
+"There are many examples of unit tests under the ``tests`` directory. They"
+" simply use the ``unittest`` package of the standard library."
+msgstr ""
+
+#: ../../source/contribution.rst:158
+msgid ""
+"Once you send a pull request, your code is automatically tested by "
+"`Travis-CI <https://travis-ci.org/strawlab/python-pcl/>`_ and `Appveyor "
+"<https://appveyor.org/strawlab/python-pcl/>`_. The reviewing process "
+"starts after the test passes."
+msgstr ""
+
+#: ../../source/contribution.rst:162
+msgid ""
+"Some of numerically unstable tests might cause errors irrelevant to your "
+"changes. In such a case, we ignore the failures and go on to the review "
+"process, so do not worry about it."
+msgstr ""
+
