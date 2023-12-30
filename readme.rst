@@ -80,8 +80,6 @@ This release has been tested on Linux Mint 17 with
  * pcl 1.7.2
  * Cython 0.21.2
 
-and CentOS 6.5 with
-
  * Python 2.6.6
  * pcl 1.6.0
  * Cython 0.21
