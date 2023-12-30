@@ -312,18 +312,23 @@ Common setting
 
 .. code-block:: none
 
--> conda create -n ipk # create a new conda env. 
--> conda activate ipk	# activate env.
+    conda create -n env
 
--> conda update -n base -c defaults conda # update conda
+    conda activate env
 
--> conda config --add channels conda-forge # add conda-forge channels
--> conda install -c sirokujira python-pcl # pcl installation
--> conda install -c jithinpr2 gtk3 # Gtk+ Gui dependency
--> conda install -y ipython #  install ipython
--> conda install -y jupyter # install jupyter 
+    conda update -n base -c defaults conda
 
-After that, run jupyter notebook or ipython shell to test pcl installation. 
+    conda config --add channels conda-forge
+
+    conda install -c sirokujira python-pcl
+
+    conda install -c jithinpr2 gtk3
+
+    conda install -y ipython
+
+    conda install -y jupyter 
+
+After that, run ``jupyter notebook`` or ``ipython`` shell to test pcl installation. 
 
 Build & Test Status
 ===================
