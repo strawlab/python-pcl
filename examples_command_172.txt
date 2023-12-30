@@ -1,0 +1,110 @@
+# Applications
+python examples/official/Applications/ground_based_rgbd_people_detector.txt
+python examples/official/Applications/template_alignment.txt
+python examples/official/Applications/vfh_cluster_classifier.txt
+
+###
+
+# Features
+# pcl 1.8?
+# python examples/official/Features/moment_of_inertia.py
+# python examples/official/Features/rops_feature.py examples/pcldata/tutorials/rops_tutorial/points.pcd examples/pcldata/tutorials/rops_tutorial/indices.txt examples/pcldata/tutorials/rops_tutorial/triangles.txt
+# NG(Leak Error)
+# python examples/official/Features/NormalEstimationUsingIntegralImages.py
+###
+
+# Filtering
+python examples/official/Filtering/PassThroughFilter.py
+python examples/official/Filtering/project_inliers.py
+python examples/official/Filtering/remove_outliers.py -r Radius
+python examples/official/Filtering/remove_outliers.py -r Condition
+
+# python examples/official/Filtering/VoxelGrid_172.py
+python examples/official/Filtering/statistical_removal.py
+
+###
+
+# GPU
+# Version 1.7.2
+# python examples/official/GPU/people_detect_172.txt
+###
+
+# IO
+python examples/official/IO/pcd_read.py
+###
+
+# KdTree
+python examples/official/kdtree/kdtree_search.py
+###
+
+# keypoints
+# NG(RangeImage Link Error)
+python examples/official/keypoints/narf_keypoint_extraction.py
+###
+
+# octree
+# execute NG
+# Exception ignored in: 'pcl._pcl.to_point_t'
+# TypeError: a float is required
+python examples/official/octree/octree_search.py
+python examples/official/octree/octree_change_detection.py
+###
+
+# RangeImage
+# NG(RangeImage Link Error)
+python examples/official/RangeImage/range_image_border_extraction.py
+python examples/official/RangeImage/range_image_visualize.py
+###
+
+# Recognition
+# pcl 1.7.2
+# python examples/official/Recognition/correspondence_grouping.py examples/pcldata/tutorials/correspondence_grouping/milk.pcd examples/pcldata/tutorials/correspondence_grouping/milk_cartoon_all_small_clorox.pcd
+# pcl 1.7.2
+# python examples/official/Recognition/global_hypothesis_verification.py
+# pcl 1.7.2
+# python examples/official/Recognition/implicit_shape_model.py
+###
+
+# Registration
+python examples/official/Registration/iterative_closest_point.py
+# pcl 1.7.2(pcl 1.6 NG)
+python examples/official/Registration/alignment_prerejective.py
+# Unkwnon
+# python examples/official/Registration/normal_distributions_transform.py
+# python examples/official/Registration/pairwise_incremental_registration.txt
+# python examples/official/Registration/pcl-interactive_icp.txt
+###
+
+# SampleConsensus
+python examples/official/SampleConsensus/random_sample_consensus.py
+python examples/official/SampleConsensus/random_sample_consensus.py -s
+python examples/official/SampleConsensus/random_sample_consensus.py -sf
+# NG
+python examples/official/SampleConsensus/random_sample_consensus.py -f
+###
+
+# Segmentation
+python examples/official/Segmentation/cluster_extraction.py
+python examples/official/Segmentation/cylinder_segmentation.py
+python examples/official/Segmentation/Plane_model_segmentation.py
+# Version 1.7.2
+# python examples/official/Segmentation/bare_earth_172.txt
+# python examples/official/Segmentation/conditional_euclidean_clustering_172.txt
+# python examples/official/Segmentation/don_segmentation_172.txt
+# python examples/official/Segmentation/MinCutSegmentation_172.txt
+# python examples/official/Segmentation/region_growing_rgb_segmentation_172.txt
+# python examples/official/Segmentation/region_growing_segmentation_172.txt
+# python examples/official/Segmentation/supervoxel_clustering_172.txt
+###
+
+# Surface
+python examples/official/surface/concave_hull_2d.py
+# NG(process Function DLL Excetion)
+python examples/official/surface/resampling.py
+# pcl 1.7.2
+# python examples/official/surface/greedy_projection_172.py
+###
+
+# Visualization
+###
+

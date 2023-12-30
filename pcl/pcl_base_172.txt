@@ -1,0 +1,439 @@
+# # cloud_iterator.h
+# #include <pcl/point_cloud.h>
+# #include <pcl/PointIndices.h>
+# #include <pcl/correspondence.h>
+# 
+# namespace pcl
+# {
+# /** \brief Iterator class for point clouds with or without given indices
+# * \author Suat Gedikli
+# */
+# template <typename PointT>
+# class CloudIterator
+		# public:
+		# CloudIterator (PointCloud<PointT>& cloud);
+		# CloudIterator (PointCloud<PointT>& cloud, const std::vector<int>& indices);
+		# CloudIterator (PointCloud<PointT>& cloud, const PointIndices& indices);
+		# CloudIterator (PointCloud<PointT>& cloud, const Correspondences& corrs, bool source);
+		# ~CloudIterator ();
+		# void operator ++ ();
+		# void operator ++ (int);
+		# PointT& operator* () const;
+		# PointT* operator-> () const;
+		# unsigned getCurrentPointIndex () const;
+		# unsigned getCurrentIndex () const;
+		# /** \brief Size of the range the iterator is going through. Depending on how the CloudIterator was constructed this is the size of the cloud or indices/correspondences. */
+		# size_t size () const;
+		# void reset ();
+		# bool isValid () const;
+		# operator bool () const
+
+
+###
+
+# /** \brief Iterator class for point clouds with or without given indices
+# * \author Suat Gedikli
+# */
+# namespace pcl
+# template <typename PointT>
+# class ConstCloudIterator
+# {
+		public:
+		ConstCloudIterator (const PointCloud<PointT>& cloud);
+		ConstCloudIterator (const PointCloud<PointT>& cloud, const std::vector<int>& indices);
+		ConstCloudIterator (const PointCloud<PointT>& cloud, const PointIndices& indices);
+		ConstCloudIterator (const PointCloud<PointT>& cloud, const Correspondences& corrs, bool source);
+		~ConstCloudIterator ();
+		
+		void operator ++ ();
+		void operator ++ (int);
+		const PointT& operator* () const;
+		const PointT* operator-> () const;
+		unsigned getCurrentPointIndex () const;
+		unsigned getCurrentIndex () const;
+		/** \brief Size of the range the iterator is going through. Depending on how the ConstCloudIterator was constructed this is the size of the cloud or indices/correspondences. */
+		size_t size () const;
+		void reset ();
+		bool isValid () const;
+		operator bool () const
+
+
+###
+
+# conversions.h
+namespace pcl
+namespace detail
+// For converting template point cloud to message.
+template<typename PointT>
+struct FieldAdder
+		# FieldAdder (std::vector<pcl::PCLPointField>& fields) : fields_ (fields) {};
+		# template<typename U> void operator() ()
+		# 
+		# // For converting message to template point cloud.
+		# template<typename PointT>
+		# struct FieldMapper
+			# FieldMapper (const std::vector<pcl::PCLPointField>& fields, std::vector<FieldMapping>& map) : fields_ (fields), map_ (map)
+		# 
+		# template<typename Tag> void operator () ()
+		# 
+		# inline bool fieldOrdering (const FieldMapping& a, const FieldMapping& b)
+
+	namespace detail
+  	template<typename PointT> void createMapping (const std::vector<pcl::PCLPointField>& msg_fields, MsgFieldMap& field_map)
+
+  	/** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object using a field_map.
+     * \param[in] msg the PCLPointCloud2 binary blob
+     * \param[out] cloud the resultant pcl::PointCloud<T>
+     * \param[in] field_map a MsgFieldMap object
+     * \note Use fromPCLPointCloud2 (PCLPointCloud2, PointCloud<T>) directly or create you
+     * own MsgFieldMap using:
+     *
+     * \code
+     * MsgFieldMap field_map;
+     * createMapping<PointT> (msg.fields, field_map);
+     * \endcode
+     */
+  	template <typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud, const MsgFieldMap& field_map)
+
+  	/** \brief Convert a PCLPointCloud2 binary data blob into a pcl::PointCloud<T> object.
+     * \param[in] msg the PCLPointCloud2 binary blob
+     * \param[out] cloud the resultant pcl::PointCloud<T>
+     */
+  	template<typename PointT> void fromPCLPointCloud2 (const pcl::PCLPointCloud2& msg, pcl::PointCloud<PointT>& cloud)
+
+  	/** \brief Convert a pcl::PointCloud<T> object to a PCLPointCloud2 binary data blob.
+     * \param[in] cloud the input pcl::PointCloud<T>
+     * \param[out] msg the resultant PCLPointCloud2 binary blob
+     */
+  	template<typename PointT> void toPCLPointCloud2 (const pcl::PointCloud<PointT>& cloud, pcl::PCLPointCloud2& msg)
+	
+   	/** \brief Copy the RGB fields of a PointCloud into pcl::PCLImage format
+     * \param[in] cloud the point cloud message
+     * \param[out] msg the resultant pcl::PCLImage
+     * CloudT cloud type, CloudT should be akin to pcl::PointCloud<pcl::PointXYZRGBA>
+     * \note will throw std::runtime_error if there is a problem
+     */
+  	template<typename CloudT> void toPCLPointCloud2 (const CloudT& cloud, pcl::PCLImage& msg)
+	
+  	/** \brief Copy the RGB fields of a PCLPointCloud2 msg into pcl::PCLImage format
+     * \param cloud the point cloud message
+     * \param msg the resultant pcl::PCLImage
+     * will throw std::runtime_error if there is a problem
+     */
+  	inline void toPCLPointCloud2 (const pcl::PCLPointCloud2& cloud, pcl::PCLImage& msg)
+
+
+###
+
+# correspondence.h
+# namespace pcl
+	# /** \brief Correspondence represents a match between two entities (e.g., points, descriptors, etc). This is 
+	#  * represesented via the indices of a \a source point and a \a target point, and the distance between them.
+	#  *
+	#  * \author Dirk Holz, Radu B. Rusu, Bastian Steder
+	#  * \ingroup common
+	#  */
+	struct Correspondence
+    	/** \brief Index of the query (source) point. */
+    	int index_query;
+    	/** \brief Index of the matching (target) point. Set to -1 if no correspondence found. */
+    	int index_match;
+    	/** \brief Distance between the corresponding points, or the weight denoting the confidence in correspondence estimation */
+    	union
+    	{
+      		float distance;
+      		float weight;
+    	};
+    	
+    	/** \brief Standard constructor. 
+      	 * Sets \ref index_query to 0, \ref index_match to -1, and \ref distance to FLT_MAX.
+      	 */
+    	inline Correspondence () : index_query (0), index_match (-1), distance (std::numeric_limits<float>::max ())
+		
+    	/** \brief Constructor. */
+    	inline Correspondence (int _index_query, int _index_match, float _distance) : index_query (_index_query), index_match (_index_match), distance (_distance)
+		
+    	/** \brief Empty destructor. */
+    	virtual ~Correspondence () {}
+	
+	/** \brief overloaded << operator */
+  	PCL_EXPORTS std::ostream& operator << (std::ostream& os, const Correspondence& c);
+	
+  	typedef std::vector< pcl::Correspondence, Eigen::aligned_allocator<pcl::Correspondence> > Correspondences;
+  	typedef boost::shared_ptr<Correspondences> CorrespondencesPtr;
+  	typedef boost::shared_ptr<const Correspondences > CorrespondencesConstPtr;
+	
+  	/**
+     * \brief Get the query points of correspondences that are present in
+     * one correspondence vector but not in the other, e.g., to compare
+     * correspondences before and after rejection.
+     * \param[in] correspondences_before Vector of correspondences before rejection
+     * \param[in] correspondences_after Vector of correspondences after rejection
+     * \param[out] indices Query point indices of correspondences that have been rejected
+     * \param[in] presorting_required Enable/disable internal sorting of vectors.
+     * By default (true), vectors are internally sorted before determining their difference.
+     * If the order of correspondences in \a correspondences_after is not different (has not been changed)
+     * from the order in \b correspondences_before this pre-processing step can be disabled
+     * in order to gain efficiency. In order to disable pre-sorting set \a presorting_requered to false.
+     */
+  	void getRejectedQueryIndices (const pcl::Correspondences &correspondences_before, const pcl::Correspondences &correspondences_after, std::vector<int>& indices, bool presorting_required = true);
+	
+  	/**
+     * \brief Representation of a (possible) correspondence between two 3D points in two different coordinate frames
+     *        (e.g. from feature matching)
+     * \ingroup common
+     */
+  	struct PointCorrespondence3D : public Correspondence
+  	{
+    	Eigen::Vector3f point1;  //!< The 3D position of the point in the first coordinate frame
+    	Eigen::Vector3f point2;  //!< The 3D position of the point in the second coordinate frame
+		
+    	/** \brief Empty constructor. */
+    	PointCorrespondence3D () : point1 (), point2 () {}
+		
+    	/** \brief Empty destructor. */
+    	virtual ~PointCorrespondence3D () {}
+    	
+    	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  	};
+  	typedef std::vector<PointCorrespondence3D, Eigen::aligned_allocator<PointCorrespondence3D> > PointCorrespondences3DVector;
+	
+  	/**
+     * \brief Representation of a (possible) correspondence between two points (e.g. from feature matching),
+     *        that encode complete 6DOF transoformations.
+     * \ingroup common
+     */
+  	struct PointCorrespondence6D : public PointCorrespondence3D
+  	{
+    	Eigen::Affine3f transformation;  //!< The transformation to go from the coordinate system
+                                         //!< of point2 to the coordinate system of point1
+    	/** \brief Empty destructor. */
+    	virtual ~PointCorrespondence6D () {}
+		
+    	EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  	};
+  	typedef std::vector<PointCorrespondence6D, Eigen::aligned_allocator<PointCorrespondence6D> > PointCorrespondences6DVector;
+	
+  	/**
+     * \brief Comparator to enable us to sort a vector of PointCorrespondences according to their scores using
+     *        std::sort (begin(), end(), isBetterCorrespondence);
+     * \ingroup common
+     */
+  	inline bool isBetterCorrespondence (const Correspondence &pc1, const Correspondence &pc2)
+
+
+###
+
+# exceptions.h
+#include <stdexcept>
+#include <sstream>
+#include <pcl/pcl_macros.h>
+#include <boost/current_function.hpp>
+
+/** PCL_THROW_EXCEPTION a helper macro to be used for throwing exceptions.
+  * This is an example on how to use:
+  * PCL_THROW_EXCEPTION(IOException,
+  *                     "encountered an error while opening " << filename << " PCD file");
+  */
+#define PCL_THROW_EXCEPTION(ExceptionName, message)                         \
+{                                                                           \
+  std::ostringstream s;                                                     \
+  s << message;                                                             \
+  s.flush ();                                                               \
+  throw ExceptionName(s.str(), __FILE__, BOOST_CURRENT_FUNCTION, __LINE__); \
+}
+
+namespace pcl
+	/** \class PCLException
+     * \brief A base class for all pcl exceptions which inherits from std::runtime_error
+     * \author Eitan Marder-Eppstein, Suat Gedikli, Nizar Sallem
+     */
+  	class PCLException : public std::runtime_error
+  	{
+    	public:
+      	PCLException (const std::string& error_description,
+                      const std::string& file_name = "",
+                      const std::string& function_name = "" ,
+                      unsigned line_number = 0) throw ()
+        : std::runtime_error (error_description)
+        , file_name_ (file_name)
+        , function_name_ (function_name)
+        , message_ (error_description)
+        , line_number_ (line_number) 
+      	
+      	virtual ~PCLException () throw ()
+      	
+      	const std::string& getFileName () const throw ()
+		
+      	const std::string& getFunctionName () const throw ()
+		
+      	unsigned getLineNumber () const throw ()
+		
+      	std::string detailedMessage () const throw ()
+		
+      	char const* what () const throw () 
+		
+	/** \class InvalidConversionException
+     * \brief An exception that is thrown when a PCLPointCloud2 message cannot be converted into a PCL type
+     */
+  	class InvalidConversionException : public PCLException
+    	public:
+      	InvalidConversionException (const std::string& error_description,
+                                    const std::string& file_name = "",
+                                    const std::string& function_name = "" ,
+                                    unsigned line_number = 0) throw ()
+        : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	/** \class IsNotDenseException
+     * \brief An exception that is thrown when a PointCloud is not dense but is attemped to be used as dense
+     */
+  	class IsNotDenseException : public PCLException
+    	public:
+      	IsNotDenseException (const std::string& error_description,
+                             const std::string& file_name = "",
+                             const std::string& function_name = "" ,
+                             unsigned line_number = 0) throw ()
+        : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	/** \class InvalidSACModelTypeException
+     * \brief An exception that is thrown when a sample consensus model doesn't
+     * have the correct number of samples defined in model_types.h
+     */
+  	class InvalidSACModelTypeException : public PCLException
+    	public:
+      	InvalidSACModelTypeException (const std::string& error_description,
+                                      const std::string& file_name = "",
+                                      const std::string& function_name = "" ,
+                                      unsigned line_number = 0) throw ()
+        : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	/** \class IOException
+     * \brief An exception that is thrown during an IO error (typical read/write errors)
+     */
+  	class IOException : public PCLException
+    	public:
+		
+      	IOException (const std::string& error_description,
+                     const std::string& file_name = "",
+                     const std::string& function_name = "" ,
+                     unsigned line_number = 0) throw ()
+        : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+
+  	/** \class InitFailedException
+     * \brief An exception thrown when init can not be performed should be used in all the
+     * PCLBase class inheritants.
+     */
+  	class InitFailedException : public PCLException
+    	public:
+      	InitFailedException (const std::string& error_description = "",
+                             const std::string& file_name = "",
+                             const std::string& function_name = "" ,
+                             unsigned line_number = 0) throw ()
+        : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	/** \class UnorganizedPointCloudException
+     * \brief An exception that is thrown when an organized point cloud is needed
+     * but not provided.
+     */
+  	class UnorganizedPointCloudException : public PCLException
+    	public:
+        UnorganizedPointCloudException (const std::string& error_description,
+                                        const std::string& file_name = "",
+                                        const std::string& function_name = "" ,
+                                        unsigned line_number = 0) throw ()
+        : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	/** \class KernelWidthTooSmallException
+     * \brief An exception that is thrown when the kernel size is too small
+     */
+  	class KernelWidthTooSmallException : public PCLException
+    	public:
+    	KernelWidthTooSmallException (const std::string& error_description,
+                                      const std::string& file_name = "",
+                                      const std::string& function_name = "" ,
+                                      unsigned line_number = 0) throw ()
+      : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	class UnhandledPointTypeException : public PCLException
+    	public:
+    	UnhandledPointTypeException (const std::string& error_description,
+                                     const std::string& file_name = "",
+                                     const std::string& function_name = "" ,
+                                     unsigned line_number = 0) throw ()
+      : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	class ComputeFailedException : public PCLException
+    	public:
+    	ComputeFailedException (const std::string& error_description,
+                                const std::string& file_name = "",
+                                const std::string& function_name = "" ,
+                                unsigned line_number = 0) throw ()
+      : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+	
+  	/** \class BadArgumentException
+     * \brief An exception that is thrown when the argments number or type is wrong/unhandled.
+     */
+  	class BadArgumentException : public PCLException
+    	public:
+    	BadArgumentException (const std::string& error_description,
+                              const std::string& file_name = "",
+                              const std::string& function_name = "" ,
+                              unsigned line_number = 0) throw ()
+      : pcl::PCLException (error_description, file_name, function_name, line_number) { }
+
+
+###
+
+# # for_each_type.h
+# 
+# namespace pcl 
+#   //////////////////////////////////////////////////////////////////////////////////////////////
+#   template <bool done = true>
+#   struct for_each_type_impl
+#   {
+#     template<typename Iterator, typename LastIterator, typename F>
+#     static void execute (F) {}
+#   };
+# 
+#   //////////////////////////////////////////////////////////////////////////////////////////////
+#   template <>
+#   struct for_each_type_impl<false>
+#   {
+#     template<typename Iterator, typename LastIterator, typename F> static void execute (F f)
+#   };
+# 
+#   //////////////////////////////////////////////////////////////////////////////////////////////
+#   template<typename Sequence, typename F> inline void for_each_type (F f)
+# 
+#   //////////////////////////////////////////////////////////////////////////////////////////////
+#   template <typename Sequence1, typename Sequence2>
+#   struct intersect 
+#   { 
+#     typedef typename boost::mpl::remove_if<Sequence1, boost::mpl::not_<boost::mpl::contains<Sequence2, boost::mpl::_1> > >::type type; 
+#   }; 
+# }
+# 
+###
+
+# ModelCoefficients.h
+# PCLHeader.h
+# PCLImage.h
+# PCLPointCloud2.h
+# PCLPointField.h
+# pcl_base.h
+# pcl_config.h
+# pcl_exports.h
+# pcl_macros.h
+# pcl_tests.h
+# PointIndices.h
+# point_cloud.h
+# point_representation.h
+# point_traits.h
+# point_types.h
+# point_types_conversion.h
+# PolygonMesh.h
+# register_point_struct.h
+# sse.h
+# TextureMesh.h
+# Vertices.h
+###

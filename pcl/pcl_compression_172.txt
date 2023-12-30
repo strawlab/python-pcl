@@ -1,0 +1,1106 @@
+# color_coding.h
+namespace pcl
+{
+  namespace octree
+  {
+    using namespace std;
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /** \brief @b ColorCoding class
+     *  \note This class encodes 8-bit color information for octree-based point cloud compression.
+     *  \note
+     *  \note typename: PointT: type of point used in pointcloud
+     *  \author Julius Kammerl (julius@kammerl.de)
+     */
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    template<typename PointT>
+      class ColorCoding
+      {
+
+      // public typedefs
+        typedef pcl::PointCloud<PointT> PointCloud;
+        typedef boost::shared_ptr<PointCloud> PointCloudPtr;
+        typedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
+
+      public:
+
+        /** \brief Constructor.
+         *
+         * */
+        ColorCoding () :
+          output_ (), pointAvgColorDataVector_ (), pointAvgColorDataVector_Iterator_ (),
+          pointDiffColorDataVector_ (), pointDiffColorDataVector_Iterator_ (), colorBitReduction_ (0)
+        {
+        }
+
+        /** \brief Empty class constructor. */
+        virtual
+        ~ColorCoding ()
+        {
+        }
+
+        /** \brief Define color bit depth of encoded color information.
+          * \param bitDepth_arg: amounts of bits for representing one color component
+          */
+        inline
+        void
+        setBitDepth (unsigned char bitDepth_arg)
+        {
+          colorBitReduction_ = static_cast<unsigned char> (8 - bitDepth_arg);
+        }
+
+        /** \brief Retrieve color bit depth of encoded color information.
+          * \return amounts of bits for representing one color component
+          */
+        inline unsigned char
+        getBitDepth ()
+        {
+          return (static_cast<unsigned char> (8 - colorBitReduction_));
+        }
+
+        /** \brief Set amount of voxels containing point color information and reserve memory
+          * \param voxelCount_arg: amounts of voxels
+          */
+        inline void
+        setVoxelCount (unsigned int voxelCount_arg)
+        {
+          pointAvgColorDataVector_.reserve (voxelCount_arg * 3);
+        }
+
+        /** \brief Set amount of points within point cloud to be encoded and reserve memory
+         *  \param pointCount_arg: amounts of points within point cloud
+         * */
+        inline
+        void
+        setPointCount (unsigned int pointCount_arg)
+        {
+          pointDiffColorDataVector_.reserve (pointCount_arg * 3);
+        }
+
+        /** \brief Initialize encoding of color information
+         * */
+        void
+        initializeEncoding ()
+        {
+          pointAvgColorDataVector_.clear ();
+
+          pointDiffColorDataVector_.clear ();
+        }
+
+        /** \brief Initialize decoding of color information
+         * */
+        void
+        initializeDecoding ()
+        {
+          pointAvgColorDataVector_Iterator_ = pointAvgColorDataVector_.begin ();
+
+          pointDiffColorDataVector_Iterator_ = pointDiffColorDataVector_.begin ();
+        }
+
+        /** \brief Get reference to vector containing averaged color data
+         * */
+        std::vector<char>&
+        getAverageDataVector ()
+        {
+          return pointAvgColorDataVector_;
+        }
+
+        /** \brief Get reference to vector containing differential color data
+         * */
+        std::vector<char>&
+        getDifferentialDataVector ()
+        {
+          return pointDiffColorDataVector_;
+        }
+
+        /** \brief Encode averaged color information for a subset of points from point cloud
+         * \param indexVector_arg indices defining a subset of points from points cloud
+         * \param rgba_offset_arg offset to color information
+         * \param inputCloud_arg input point cloud
+         * */
+        void
+        encodeAverageOfPoints (const typename std::vector<int>& indexVector_arg, unsigned char rgba_offset_arg, PointCloudConstPtr inputCloud_arg)
+        {
+          std::size_t i, len;
+
+          unsigned int avgRed;
+          unsigned int avgGreen;
+          unsigned int avgBlue;
+
+          // initialize
+          avgRed = avgGreen = avgBlue = 0;
+
+          // iterate over points
+          len = indexVector_arg.size ();
+          for (i = 0; i < len; i++)
+          {
+            // get color information from points
+            const int& idx = indexVector_arg[i];
+            const char* idxPointPtr = reinterpret_cast<const char*> (&inputCloud_arg->points[idx]);
+            const int& colorInt = *reinterpret_cast<const int*> (idxPointPtr+rgba_offset_arg);
+
+            // add color information
+            avgRed += (colorInt >> 0) & 0xFF;
+            avgGreen += (colorInt >> 8) & 0xFF;
+            avgBlue += (colorInt >> 16) & 0xFF;
+
+          }
+
+          // calculated average color information
+          if (len > 1)
+          {
+            avgRed   /= static_cast<unsigned int> (len);
+            avgGreen /= static_cast<unsigned int> (len);
+            avgBlue  /= static_cast<unsigned int> (len);
+          }
+
+          // remove least significant bits
+          avgRed >>= colorBitReduction_;
+          avgGreen >>= colorBitReduction_;
+          avgBlue >>= colorBitReduction_;
+
+          // add to average color vector
+          pointAvgColorDataVector_.push_back (static_cast<char> (avgRed));
+          pointAvgColorDataVector_.push_back (static_cast<char> (avgGreen));
+          pointAvgColorDataVector_.push_back (static_cast<char> (avgBlue));
+        }
+
+        /** \brief Encode color information of a subset of points from point cloud
+         * \param indexVector_arg indices defining a subset of points from points cloud
+         * \param rgba_offset_arg offset to color information
+         * \param inputCloud_arg input point cloud
+         * */
+        void
+        encodePoints (const typename std::vector<int>& indexVector_arg, unsigned char rgba_offset_arg, PointCloudConstPtr inputCloud_arg)
+        {
+          std::size_t i, len;
+
+          unsigned int avgRed;
+          unsigned int avgGreen;
+          unsigned int avgBlue;
+
+          // initialize
+          avgRed = avgGreen = avgBlue = 0;
+
+          // iterate over points
+          len = indexVector_arg.size ();
+          for (i = 0; i < len; i++)
+          {
+            // get color information from point
+            const int& idx = indexVector_arg[i];
+            const char* idxPointPtr = reinterpret_cast<const char*> (&inputCloud_arg->points[idx]);
+            const int& colorInt = *reinterpret_cast<const int*> (idxPointPtr+rgba_offset_arg);
+
+            // add color information
+            avgRed += (colorInt >> 0) & 0xFF;
+            avgGreen += (colorInt >> 8) & 0xFF;
+            avgBlue += (colorInt >> 16) & 0xFF;
+
+          }
+
+          if (len > 1)
+          {
+            unsigned char diffRed;
+            unsigned char diffGreen;
+            unsigned char diffBlue;
+
+            // calculated average color information
+            avgRed   /= static_cast<unsigned int> (len);
+            avgGreen /= static_cast<unsigned int> (len);
+            avgBlue  /= static_cast<unsigned int> (len);
+
+            // iterate over points for differential encoding
+            for (i = 0; i < len; i++)
+            {
+              const int& idx = indexVector_arg[i];
+              const char* idxPointPtr = reinterpret_cast<const char*> (&inputCloud_arg->points[idx]);
+              const int& colorInt = *reinterpret_cast<const int*> (idxPointPtr+rgba_offset_arg);
+
+              // extract color components and do XOR encoding with predicted average color
+              diffRed = (static_cast<unsigned char> (avgRed)) ^ static_cast<unsigned char> (((colorInt >> 0) & 0xFF));
+              diffGreen = (static_cast<unsigned char> (avgGreen)) ^ static_cast<unsigned char> (((colorInt >> 8) & 0xFF));
+              diffBlue = (static_cast<unsigned char> (avgBlue)) ^ static_cast<unsigned char> (((colorInt >> 16) & 0xFF));
+
+              // remove least significant bits
+              diffRed = static_cast<unsigned char> (diffRed >> colorBitReduction_);
+              diffGreen = static_cast<unsigned char> (diffGreen >> colorBitReduction_);
+              diffBlue = static_cast<unsigned char> (diffBlue >> colorBitReduction_);
+
+              // add to differential color vector
+              pointDiffColorDataVector_.push_back (static_cast<char> (diffRed));
+              pointDiffColorDataVector_.push_back (static_cast<char> (diffGreen));
+              pointDiffColorDataVector_.push_back (static_cast<char> (diffBlue));
+            }
+          }
+
+          // remove least significant bits from average color information
+          avgRed   >>= colorBitReduction_;
+          avgGreen >>= colorBitReduction_;
+          avgBlue  >>= colorBitReduction_;
+
+          // add to differential color vector
+          pointAvgColorDataVector_.push_back (static_cast<char> (avgRed));
+          pointAvgColorDataVector_.push_back (static_cast<char> (avgGreen));
+          pointAvgColorDataVector_.push_back (static_cast<char> (avgBlue));
+
+        }
+
+        /** \brief Decode color information
+          * \param outputCloud_arg output point cloud
+          * \param beginIdx_arg index indicating first point to be assiged with color information
+          * \param endIdx_arg index indicating last point to be assiged with color information
+          * \param rgba_offset_arg offset to color information
+          */
+        void
+        decodePoints (PointCloudPtr outputCloud_arg, std::size_t beginIdx_arg, std::size_t endIdx_arg, unsigned char rgba_offset_arg)
+        {
+          std::size_t i;
+          unsigned int pointCount;
+          unsigned int colorInt;
+
+          assert (beginIdx_arg <= endIdx_arg);
+
+          // amount of points to be decoded
+          pointCount = static_cast<unsigned int> (endIdx_arg - beginIdx_arg);
+
+          // get averaged color information for current voxel
+          unsigned char avgRed = *(pointAvgColorDataVector_Iterator_++);
+          unsigned char avgGreen = *(pointAvgColorDataVector_Iterator_++);
+          unsigned char avgBlue = *(pointAvgColorDataVector_Iterator_++);
+
+          // invert bit shifts during encoding
+          avgRed = static_cast<unsigned char> (avgRed << colorBitReduction_);
+          avgGreen = static_cast<unsigned char> (avgGreen << colorBitReduction_);
+          avgBlue = static_cast<unsigned char> (avgBlue << colorBitReduction_);
+
+          // iterate over points
+          for (i = 0; i < pointCount; i++)
+          {
+            if (pointCount > 1)
+            {
+              // get differential color information from input vector
+              unsigned char diffRed   = static_cast<unsigned char> (*(pointDiffColorDataVector_Iterator_++));
+              unsigned char diffGreen = static_cast<unsigned char> (*(pointDiffColorDataVector_Iterator_++));
+              unsigned char diffBlue  = static_cast<unsigned char> (*(pointDiffColorDataVector_Iterator_++));
+
+              // invert bit shifts during encoding
+              diffRed = static_cast<unsigned char> (diffRed << colorBitReduction_);
+              diffGreen = static_cast<unsigned char> (diffGreen << colorBitReduction_);
+              diffBlue = static_cast<unsigned char> (diffBlue << colorBitReduction_);
+
+              // decode color information
+              colorInt = ((avgRed ^ diffRed) << 0) |
+                         ((avgGreen ^ diffGreen) << 8) |
+                         ((avgBlue ^ diffBlue) << 16);
+            }
+            else
+            {
+              // decode color information
+              colorInt = (avgRed << 0) | (avgGreen << 8) | (avgBlue << 16);
+            }
+
+            char* idxPointPtr = reinterpret_cast<char*> (&outputCloud_arg->points[beginIdx_arg + i]);
+            int& pointColor = *reinterpret_cast<int*> (idxPointPtr+rgba_offset_arg);
+            // assign color to point from point cloud
+            pointColor=colorInt;
+          }
+        }
+
+        /** \brief Set default color to points
+         * \param outputCloud_arg output point cloud
+         * \param beginIdx_arg index indicating first point to be assiged with color information
+         * \param endIdx_arg index indicating last point to be assiged with color information
+         * \param rgba_offset_arg offset to color information
+         * */
+        void
+        setDefaultColor (PointCloudPtr outputCloud_arg, std::size_t beginIdx_arg, std::size_t endIdx_arg, unsigned char rgba_offset_arg)
+        {
+          std::size_t i;
+          unsigned int pointCount;
+
+          assert (beginIdx_arg <= endIdx_arg);
+
+          // amount of points to be decoded
+          pointCount = static_cast<unsigned int> (endIdx_arg - beginIdx_arg);
+
+          // iterate over points
+          for (i = 0; i < pointCount; i++)
+          {
+            char* idxPointPtr = reinterpret_cast<char*> (&outputCloud_arg->points[beginIdx_arg + i]);
+            int& pointColor = *reinterpret_cast<int*> (idxPointPtr+rgba_offset_arg);
+            // assign color to point from point cloud
+            pointColor = defaultColor_;
+          }
+        }
+
+
+      protected:
+
+        /** \brief Pointer to output point cloud dataset. */
+        PointCloudPtr output_;
+
+        /** \brief Vector for storing average color information  */
+        std::vector<char> pointAvgColorDataVector_;
+
+        /** \brief Iterator on average color information vector */
+        std::vector<char>::const_iterator pointAvgColorDataVector_Iterator_;
+
+        /** \brief Vector for storing differential color information  */
+        std::vector<char> pointDiffColorDataVector_;
+
+        /** \brief Iterator on differential color information vector */
+        std::vector<char>::const_iterator pointDiffColorDataVector_Iterator_;
+
+        /** \brief Amount of bits to be removed from color components before encoding */
+        unsigned char colorBitReduction_;
+
+        // frame header identifier
+        static const int defaultColor_;
+
+      };
+
+    // define default color
+    template<typename PointT>
+    const int ColorCoding<PointT>::defaultColor_ = ((255) << 0) |
+                                                   ((255) << 8) |
+                                                   ((255) << 16);
+
+  }
+}
+
+#define PCL_INSTANTIATE_ColorCoding(T) template class PCL_EXPORTS pcl::octree::ColorCoding<T>;
+
+#endif
+###
+
+
+# compression_profiles.h
+namespace pcl
+{
+  namespace io
+  {
+
+    enum compression_Profiles_e
+    {
+      LOW_RES_ONLINE_COMPRESSION_WITHOUT_COLOR,
+      LOW_RES_ONLINE_COMPRESSION_WITH_COLOR,
+
+      MED_RES_ONLINE_COMPRESSION_WITHOUT_COLOR,
+      MED_RES_ONLINE_COMPRESSION_WITH_COLOR,
+
+      HIGH_RES_ONLINE_COMPRESSION_WITHOUT_COLOR,
+      HIGH_RES_ONLINE_COMPRESSION_WITH_COLOR,
+
+      LOW_RES_OFFLINE_COMPRESSION_WITHOUT_COLOR,
+      LOW_RES_OFFLINE_COMPRESSION_WITH_COLOR,
+
+      MED_RES_OFFLINE_COMPRESSION_WITHOUT_COLOR,
+      MED_RES_OFFLINE_COMPRESSION_WITH_COLOR,
+
+      HIGH_RES_OFFLINE_COMPRESSION_WITHOUT_COLOR,
+      HIGH_RES_OFFLINE_COMPRESSION_WITH_COLOR,
+
+      COMPRESSION_PROFILE_COUNT,
+      MANUAL_CONFIGURATION
+    };
+
+    // compression configuration profile
+    struct configurationProfile_t
+    {
+      double pointResolution;
+      const double octreeResolution;
+      bool doVoxelGridDownSampling;
+      unsigned int iFrameRate;
+      const unsigned char colorBitResolution;
+      bool doColorEncoding;
+    };
+
+    // predefined configuration parameters
+    const struct configurationProfile_t compressionProfiles_[COMPRESSION_PROFILE_COUNT] = {
+    {
+    // PROFILE: LOW_RES_ONLINE_COMPRESSION_WITHOUT_COLOR
+       0.01, /* pointResolution = */
+       0.01, /* octreeResolution = */
+       true, /* doVoxelGridDownDownSampling = */
+       50, /* iFrameRate = */
+       4, /* colorBitResolution = */
+       false /* doColorEncoding = */
+    }, {
+    // PROFILE: LOW_RES_ONLINE_COMPRESSION_WITH_COLOR
+        0.01, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        true, /* doVoxelGridDownDownSampling = */
+        50, /* iFrameRate = */
+        4, /* colorBitResolution = */
+        true /* doColorEncoding = */
+    }, {
+    // PROFILE: MED_RES_ONLINE_COMPRESSION_WITHOUT_COLOR
+        0.005, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        false, /* doVoxelGridDownDownSampling = */
+        40, /* iFrameRate = */
+        5, /* colorBitResolution = */
+        false /* doColorEncoding = */
+    }, {
+    // PROFILE: MED_RES_ONLINE_COMPRESSION_WITH_COLOR
+        0.005, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        false, /* doVoxelGridDownDownSampling = */
+        40, /* iFrameRate = */
+        5, /* colorBitResolution = */
+        true /* doColorEncoding = */
+    }, {
+    // PROFILE: HIGH_RES_ONLINE_COMPRESSION_WITHOUT_COLOR
+        0.0001, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        false, /* doVoxelGridDownDownSampling = */
+        30, /* iFrameRate = */
+        7, /* colorBitResolution = */
+        false /* doColorEncoding = */
+    }, {
+    // PROFILE: HIGH_RES_ONLINE_COMPRESSION_WITH_COLOR
+        0.0001, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        false, /* doVoxelGridDownDownSampling = */
+        30, /* iFrameRate = */
+        7, /* colorBitResolution = */
+        true /* doColorEncoding = */
+    }, {
+    // PROFILE: LOW_RES_OFFLINE_COMPRESSION_WITHOUT_COLOR
+        0.01, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        true, /* doVoxelGridDownDownSampling = */
+        100, /* iFrameRate = */
+        4, /* colorBitResolution = */
+        false /* doColorEncoding = */
+    }, {
+    // PROFILE: LOW_RES_OFFLINE_COMPRESSION_WITH_COLOR
+        0.01, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        true, /* doVoxelGridDownDownSampling = */
+        100, /* iFrameRate = */
+        4, /* colorBitResolution = */
+        true /* doColorEncoding = */
+    }, {
+    // PROFILE: MED_RES_OFFLINE_COMPRESSION_WITHOUT_COLOR
+        0.005, /* pointResolution = */
+        0.005, /* octreeResolution = */
+        true, /* doVoxelGridDownDownSampling = */
+        100, /* iFrameRate = */
+        5, /* colorBitResolution = */
+        false /* doColorEncoding = */
+    }, {
+    // PROFILE: MED_RES_OFFLINE_COMPRESSION_WITH_COLOR
+        0.005, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        false, /* doVoxelGridDownDownSampling = */
+        100, /* iFrameRate = */
+        5, /* colorBitResolution = */
+        true /* doColorEncoding = */
+    }, {
+    // PROFILE: HIGH_RES_OFFLINE_COMPRESSION_WITHOUT_COLOR
+        0.0001, /* pointResolution = */
+        0.0001, /* octreeResolution = */
+        true, /* doVoxelGridDownDownSampling = */
+        100, /* iFrameRate = */
+        8, /* colorBitResolution = */
+        false /* doColorEncoding = */
+    }, {
+    // PROFILE: HIGH_RES_OFFLINE_COMPRESSION_WITH_COLOR
+        0.0001, /* pointResolution = */
+        0.01, /* octreeResolution = */
+        false, /* doVoxelGridDownDownSampling = */
+        100, /* iFrameRate = */
+        8, /* colorBitResolution = */
+        true /* doColorEncoding = */
+    }};
+
+  }
+}
+
+
+#endif
+###
+
+
+# entropy_range_coder.h
+namespace pcl
+{
+
+  using boost::uint8_t;
+  using boost::uint32_t;
+  using boost::uint64_t;
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /** \brief @b AdaptiveRangeCoder compression class
+   *  \note This class provides adaptive range coding functionality.
+   *  \note Its symbol probability/frequency table is adaptively updated during encoding
+   *  \note
+   *  \author Julius Kammerl (julius@kammerl.de)
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  class AdaptiveRangeCoder
+  {
+
+  public:
+
+    /** \brief Empty constructor. */
+    AdaptiveRangeCoder () : outputCharVector_ ()
+    {
+    }
+
+    /** \brief Empty deconstructor. */
+    virtual
+    ~AdaptiveRangeCoder ()
+    {
+    }
+
+    /** \brief Encode char vector to output stream
+     * \param inputByteVector_arg input vector
+     * \param outputByteStream_arg output stream containing compressed data
+     * \return amount of bytes written to output stream
+     */
+    unsigned long
+    encodeCharVectorToStream (const std::vector<char>& inputByteVector_arg, std::ostream& outputByteStream_arg);
+
+    /** \brief Decode char stream to output vector
+     * \param inputByteStream_arg input stream of compressed data
+     * \param outputByteVector_arg decompressed output vector
+     * \return amount of bytes read from input stream
+     */
+    unsigned long
+    decodeStreamToCharVector (std::istream& inputByteStream_arg, std::vector<char>& outputByteVector_arg);
+
+  protected:
+    typedef boost::uint32_t DWord; // 4 bytes
+
+  private:
+    /** vector containing compressed data
+     */
+    std::vector<char> outputCharVector_;
+
+  };
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  /** \brief @b StaticRangeCoder compression class
+   *  \note This class provides static range coding functionality.
+   *  \note Its symbol probability/frequency table is precomputed and encoded to the output stream
+   *  \note
+   *  \author Julius Kammerl (julius@kammerl.de)
+   */
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  class StaticRangeCoder
+  {
+    public:
+      /** \brief Constructor. */
+      StaticRangeCoder () :
+        cFreqTable_ (65537), outputCharVector_ ()
+      {
+      }
+
+      /** \brief Empty deconstructor. */
+      virtual
+      ~StaticRangeCoder ()
+      {
+      }
+
+      /** \brief Encode integer vector to output stream
+        * \param[in] inputIntVector_arg input vector
+        * \param[out] outputByterStream_arg output stream containing compressed data
+        * \return amount of bytes written to output stream
+        */
+      unsigned long
+      encodeIntVectorToStream (std::vector<unsigned int>& inputIntVector_arg, std::ostream& outputByterStream_arg);
+
+      /** \brief Decode stream to output integer vector
+       * \param inputByteStream_arg input stream of compressed data
+       * \param outputIntVector_arg decompressed output vector
+       * \return amount of bytes read from input stream
+       */
+      unsigned long
+      decodeStreamToIntVector (std::istream& inputByteStream_arg, std::vector<unsigned int>& outputIntVector_arg);
+
+      /** \brief Encode char vector to output stream
+       * \param inputByteVector_arg input vector
+       * \param outputByteStream_arg output stream containing compressed data
+       * \return amount of bytes written to output stream
+       */
+      unsigned long
+      encodeCharVectorToStream (const std::vector<char>& inputByteVector_arg, std::ostream& outputByteStream_arg);
+
+      /** \brief Decode char stream to output vector
+       * \param inputByteStream_arg input stream of compressed data
+       * \param outputByteVector_arg decompressed output vector
+       * \return amount of bytes read from input stream
+       */
+      unsigned long
+      decodeStreamToCharVector (std::istream& inputByteStream_arg, std::vector<char>& outputByteVector_arg);
+
+    protected:
+      typedef boost::uint32_t DWord; // 4 bytes
+
+      /** \brief Helper function to calculate the binary logarithm
+       * \param n_arg: some value
+       * \return binary logarithm (log2) of argument n_arg
+       */
+      inline double
+      Log2 (double n_arg)
+      {
+        return log (n_arg) / log (2.0);
+      }
+
+    private:
+      /** \brief Vector containing cumulative symbol frequency table. */
+      std::vector<uint64_t> cFreqTable_;
+
+      /** \brief Vector containing compressed data. */
+      std::vector<char> outputCharVector_;
+
+  };
+}
+
+
+//#include "impl/entropy_range_coder.hpp"
+
+#endif
+###
+
+# octree_pointcloud_compression.h
+using namespace pcl::octree;
+
+namespace pcl
+{
+  namespace io
+  {
+    /** \brief @b Octree pointcloud compression class
+     *  \note This class enables compression and decompression of point cloud data based on octree data structures.
+     *  \note
+     *  \note typename: PointT: type of point used in pointcloud
+     *  \author Julius Kammerl (julius@kammerl.de)
+     */
+    template<typename PointT, typename LeafT = OctreeContainerPointIndices,
+        typename BranchT = OctreeContainerEmpty,
+        typename OctreeT = Octree2BufBase<LeafT, BranchT> >
+    class OctreePointCloudCompression : public OctreePointCloud<PointT, LeafT,
+        BranchT, OctreeT>
+    {
+      public:
+        // public typedefs
+        typedef typename OctreePointCloud<PointT, LeafT, BranchT, OctreeT>::PointCloud PointCloud;
+        typedef typename OctreePointCloud<PointT, LeafT, BranchT, OctreeT>::PointCloudPtr PointCloudPtr;
+        typedef typename OctreePointCloud<PointT, LeafT, BranchT, OctreeT>::PointCloudConstPtr PointCloudConstPtr;
+
+        // Boost shared pointers
+        typedef boost::shared_ptr<OctreePointCloudCompression<PointT, LeafT, BranchT, OctreeT> > Ptr;
+        typedef boost::shared_ptr<const OctreePointCloudCompression<PointT, LeafT, BranchT, OctreeT> > ConstPtr;
+
+        typedef typename OctreeT::LeafNode LeafNode;
+        typedef typename OctreeT::BranchNode BranchNode;
+
+        typedef OctreePointCloudCompression<PointT, LeafT, BranchT, Octree2BufBase<LeafT, BranchT> > RealTimeStreamCompression;
+        typedef OctreePointCloudCompression<PointT, LeafT, BranchT, OctreeBase<LeafT, BranchT> > SinglePointCloudCompressionLowMemory;
+
+
+        /** \brief Constructor
+          * \param compressionProfile_arg:  define compression profile
+          * \param octreeResolution_arg:  octree resolution at lowest octree level
+          * \param pointResolution_arg:  precision of point coordinates
+          * \param doVoxelGridDownDownSampling_arg:  voxel grid filtering
+          * \param iFrameRate_arg:  i-frame encoding rate
+          * \param doColorEncoding_arg:  enable/disable color coding
+          * \param colorBitResolution_arg:  color bit depth
+          * \param showStatistics_arg:  output compression statistics
+          */
+        OctreePointCloudCompression (compression_Profiles_e compressionProfile_arg = MED_RES_ONLINE_COMPRESSION_WITH_COLOR,
+                               bool showStatistics_arg = false,
+                               const double pointResolution_arg = 0.001,
+                               const double octreeResolution_arg = 0.01,
+                               bool doVoxelGridDownDownSampling_arg = false,
+                               const unsigned int iFrameRate_arg = 30,
+                               bool doColorEncoding_arg = true,
+                               const unsigned char colorBitResolution_arg = 6) :
+          OctreePointCloud<PointT, LeafT, BranchT, OctreeT> (octreeResolution_arg),
+          output_ (PointCloudPtr ()),
+          binary_tree_data_vector_ (),
+          binary_color_tree_vector_ (),
+          point_count_data_vector_ (),
+          point_count_data_vector_iterator_ (),
+          color_coder_ (),
+          point_coder_ (),
+          entropy_coder_ (),
+          do_voxel_grid_enDecoding_ (doVoxelGridDownDownSampling_arg), i_frame_rate_ (iFrameRate_arg),
+          i_frame_counter_ (0), frame_ID_ (0), point_count_ (0), i_frame_ (true),
+          do_color_encoding_ (doColorEncoding_arg), cloud_with_color_ (false), data_with_color_ (false),
+          point_color_offset_ (0), b_show_statistics_ (showStatistics_arg), 
+          compressed_point_data_len_ (), compressed_color_data_len_ (), selected_profile_(compressionProfile_arg),
+          point_resolution_(pointResolution_arg), octree_resolution_(octreeResolution_arg),
+          color_bit_resolution_(colorBitResolution_arg),
+          object_count_(0)
+        {
+          initialization();
+        }
+
+        /** \brief Empty deconstructor. */
+        virtual
+        ~OctreePointCloudCompression ()
+        {
+        }
+
+        /** \brief Initialize globals */
+        void initialization () {
+          if (selected_profile_ != MANUAL_CONFIGURATION)
+          {
+            // apply selected compression profile
+
+            // retrieve profile settings
+            const configurationProfile_t selectedProfile = compressionProfiles_[selected_profile_];
+
+            // apply profile settings
+            i_frame_rate_ = selectedProfile.iFrameRate;
+            do_voxel_grid_enDecoding_ = selectedProfile.doVoxelGridDownSampling;
+            this->setResolution (selectedProfile.octreeResolution);
+            point_coder_.setPrecision (static_cast<float> (selectedProfile.pointResolution));
+            do_color_encoding_ = selectedProfile.doColorEncoding;
+            color_coder_.setBitDepth (selectedProfile.colorBitResolution);
+
+          }
+          else 
+          {
+            // configure point & color coder
+            point_coder_.setPrecision (static_cast<float> (point_resolution_));
+            color_coder_.setBitDepth (color_bit_resolution_);
+          }
+
+          if (point_coder_.getPrecision () == this->getResolution ())
+            //disable differential point colding
+            do_voxel_grid_enDecoding_ = true;
+
+        }
+
+        /** \brief Add point at index from input pointcloud dataset to octree
+         * \param[in] pointIdx_arg the index representing the point in the dataset given by \a setInputCloud to be added
+         */
+        virtual void
+        addPointIdx (const int pointIdx_arg)
+        {
+          ++object_count_;
+          OctreePointCloud<PointT, LeafT, BranchT, OctreeT>::addPointIdx(pointIdx_arg);
+        }
+
+        /** \brief Provide a pointer to the output data set.
+          * \param cloud_arg: the boost shared pointer to a PointCloud message
+          */
+        inline void
+        setOutputCloud (const PointCloudPtr &cloud_arg)
+        {
+          if (output_ != cloud_arg)
+          {
+            output_ = cloud_arg;
+          }
+        }
+
+        /** \brief Get a pointer to the output point cloud dataset.
+          * \return pointer to pointcloud output class.
+          */
+        inline PointCloudPtr
+        getOutputCloud () const
+        {
+          return (output_);
+        }
+
+        /** \brief Encode point cloud to output stream
+          * \param cloud_arg:  point cloud to be compressed
+          * \param compressed_tree_data_out_arg:  binary output stream containing compressed data
+          */
+        void
+        encodePointCloud (const PointCloudConstPtr &cloud_arg, std::ostream& compressed_tree_data_out_arg);
+
+        /** \brief Decode point cloud from input stream
+          * \param compressed_tree_data_in_arg: binary input stream containing compressed data
+          * \param cloud_arg: reference to decoded point cloud
+          */
+        void
+        decodePointCloud (std::istream& compressed_tree_data_in_arg, PointCloudPtr &cloud_arg);
+
+      protected:
+
+        /** \brief Write frame information to output stream
+          * \param compressed_tree_data_out_arg: binary output stream
+          */
+        void
+        writeFrameHeader (std::ostream& compressed_tree_data_out_arg);
+
+        /** \brief Read frame information to output stream
+          * \param compressed_tree_data_in_arg: binary input stream
+          */
+        void
+        readFrameHeader (std::istream& compressed_tree_data_in_arg);
+
+        /** \brief Synchronize to frame header
+          * \param compressed_tree_data_in_arg: binary input stream
+          */
+        void
+        syncToHeader (std::istream& compressed_tree_data_in_arg);
+
+        /** \brief Apply entropy encoding to encoded information and output to binary stream
+          * \param compressed_tree_data_out_arg: binary output stream
+          */
+        void
+        entropyEncoding (std::ostream& compressed_tree_data_out_arg);
+
+        /** \brief Entropy decoding of input binary stream and output to information vectors
+          * \param compressed_tree_data_in_arg: binary input stream
+          */
+        void
+        entropyDecoding (std::istream& compressed_tree_data_in_arg);
+
+        /** \brief Encode leaf node information during serialization
+          * \param leaf_arg: reference to new leaf node
+          * \param key_arg: octree key of new leaf node
+         */
+        virtual void
+        serializeTreeCallback (LeafT &leaf_arg, const OctreeKey& key_arg);
+
+        /** \brief Decode leaf nodes information during deserialization
+         * \param key_arg octree key of new leaf node
+         */
+        // param leaf_arg reference to new leaf node
+        virtual void
+        deserializeTreeCallback (LeafT&, const OctreeKey& key_arg);
+
+
+        /** \brief Pointer to output point cloud dataset. */
+        PointCloudPtr output_;
+
+        /** \brief Vector for storing binary tree structure */
+        std::vector<char> binary_tree_data_vector_;
+
+        /** \brief Interator on binary tree structure vector */
+        std::vector<char> binary_color_tree_vector_;
+
+        /** \brief Vector for storing points per voxel information  */
+        std::vector<unsigned int> point_count_data_vector_;
+
+        /** \brief Interator on points per voxel vector */
+        std::vector<unsigned int>::const_iterator point_count_data_vector_iterator_;
+
+        /** \brief Color coding instance */
+        ColorCoding<PointT> color_coder_;
+
+        /** \brief Point coding instance */
+        PointCoding<PointT> point_coder_;
+
+        /** \brief Static range coder instance */
+        StaticRangeCoder entropy_coder_;
+
+        bool do_voxel_grid_enDecoding_;
+        uint32_t i_frame_rate_;
+        uint32_t i_frame_counter_;
+        uint32_t frame_ID_;
+        uint64_t point_count_;
+        bool i_frame_;
+
+        bool do_color_encoding_;
+        bool cloud_with_color_;
+        bool data_with_color_;
+        unsigned char point_color_offset_;
+
+        //bool activating statistics
+        bool b_show_statistics_;
+        uint64_t compressed_point_data_len_;
+        uint64_t compressed_color_data_len_;
+
+        // frame header identifier
+        static const char* frame_header_identifier_;
+
+        const compression_Profiles_e selected_profile_;
+        const double point_resolution_;
+        const double octree_resolution_;
+        const unsigned char color_bit_resolution_;
+
+        std::size_t object_count_;
+
+      };
+
+    // define frame identifier
+    template<typename PointT, typename LeafT, typename BranchT, typename OctreeT>
+      const char* OctreePointCloudCompression<PointT, LeafT, BranchT, OctreeT>::frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";
+  }
+
+}
+
+
+#endif
+###
+
+
+# point_coding.h
+namespace pcl
+{
+  namespace octree
+  {
+    /** \brief @b PointCoding class
+      * \note This class encodes 8-bit differential point information for octree-based point cloud compression.
+      * \note typename: PointT: type of point used in pointcloud
+      * \author Julius Kammerl (julius@kammerl.de)
+      */
+    template<typename PointT>
+    class PointCoding
+    {
+        // public typedefs
+        typedef pcl::PointCloud<PointT> PointCloud;
+        typedef boost::shared_ptr<PointCloud> PointCloudPtr;
+        typedef boost::shared_ptr<const PointCloud> PointCloudConstPtr;
+
+      public:
+        /** \brief Constructor. */
+        PointCoding () :
+          output_ (), pointDiffDataVector_ (), pointDiffDataVectorIterator_ (), 
+          pointCompressionResolution_ (0.001f) // 1mm
+        {
+        }
+
+        /** \brief Empty class constructor. */
+        virtual
+        ~PointCoding ()
+        {
+        }
+
+        /** \brief Define precision of point information
+          * \param precision_arg: precision
+          */
+        inline void
+        setPrecision (float precision_arg)
+        {
+          pointCompressionResolution_ = precision_arg;
+        }
+
+        /** \brief Retrieve precision of point information
+          * \return precision
+          */
+        inline float
+        getPrecision ()
+        {
+          return (pointCompressionResolution_);
+        }
+
+        /** \brief Set amount of points within point cloud to be encoded and reserve memory
+          * \param pointCount_arg: amounts of points within point cloud
+          */
+        inline void
+        setPointCount (unsigned int pointCount_arg)
+        {
+          pointDiffDataVector_.reserve (pointCount_arg * 3);
+        }
+
+        /** \brief Initialize encoding of differential point */
+        void
+        initializeEncoding ()
+        {
+          pointDiffDataVector_.clear ();
+        }
+
+        /** \brief Initialize decoding of differential point */
+        void
+        initializeDecoding ()
+        {
+          pointDiffDataVectorIterator_ = pointDiffDataVector_.begin ();
+        }
+
+        /** \brief Get reference to vector containing differential color data */
+        std::vector<char>&
+        getDifferentialDataVector ()
+        {
+          return (pointDiffDataVector_);
+        }
+
+        /** \brief Encode differential point information for a subset of points from point cloud
+          * \param indexVector_arg indices defining a subset of points from points cloud
+          * \param referencePoint_arg coordinates of reference point
+          * \param inputCloud_arg input point cloud
+          */
+        void
+        encodePoints (const typename std::vector<int>& indexVector_arg, const double* referencePoint_arg,
+                      PointCloudConstPtr inputCloud_arg)
+        {
+          std::size_t i, len;
+
+          len = indexVector_arg.size ();
+
+          // iterate over points within current voxel
+          for (i = 0; i < len; i++)
+          {
+            unsigned char diffX, diffY, diffZ;
+
+            // retrieve point from cloud
+            const int& idx = indexVector_arg[i];
+            const PointT& idxPoint = inputCloud_arg->points[idx];
+
+            // differentially encode point coordinates and truncate overflow
+            diffX = static_cast<unsigned char> (max (-127, min<int>(127, static_cast<int> ((idxPoint.x - referencePoint_arg[0])  / pointCompressionResolution_))));
+            diffY = static_cast<unsigned char> (max (-127, min<int>(127, static_cast<int> ((idxPoint.y - referencePoint_arg[1])  / pointCompressionResolution_))));
+            diffZ = static_cast<unsigned char> (max (-127, min<int>(127, static_cast<int> ((idxPoint.z - referencePoint_arg[2])  / pointCompressionResolution_))));
+
+            // store information in differential point vector
+            pointDiffDataVector_.push_back (diffX);
+            pointDiffDataVector_.push_back (diffY);
+            pointDiffDataVector_.push_back (diffZ);
+          }
+        }
+
+        /** \brief Decode differential point information
+          * \param outputCloud_arg output point cloud
+          * \param referencePoint_arg coordinates of reference point
+          * \param beginIdx_arg index indicating first point to be assiged with color information
+          * \param endIdx_arg index indicating last point to be assiged with color information
+          */
+        void
+        decodePoints (PointCloudPtr outputCloud_arg, const double* referencePoint_arg, std::size_t beginIdx_arg,
+                      std::size_t endIdx_arg)
+        {
+          std::size_t i;
+          unsigned int pointCount;
+
+          assert (beginIdx_arg <= endIdx_arg);
+
+          pointCount = static_cast<unsigned int> (endIdx_arg - beginIdx_arg);
+
+          // iterate over points within current voxel
+          for (i = 0; i < pointCount; i++)
+          {
+            // retrieve differential point information
+            const unsigned char& diffX = static_cast<unsigned char> (*(pointDiffDataVectorIterator_++));
+            const unsigned char& diffY = static_cast<unsigned char> (*(pointDiffDataVectorIterator_++));
+            const unsigned char& diffZ = static_cast<unsigned char> (*(pointDiffDataVectorIterator_++));
+
+            // retrieve point from point cloud
+            PointT& point = outputCloud_arg->points[beginIdx_arg + i];
+
+            // decode point position
+            point.x = static_cast<float> (referencePoint_arg[0] + diffX * pointCompressionResolution_);
+            point.y = static_cast<float> (referencePoint_arg[1] + diffY * pointCompressionResolution_);
+            point.z = static_cast<float> (referencePoint_arg[2] + diffZ * pointCompressionResolution_);
+          }
+        }
+
+      protected:
+        /** \brief Pointer to output point cloud dataset. */
+        PointCloudPtr output_;
+
+        /** \brief Vector for storing differential point information  */
+        std::vector<char> pointDiffDataVector_;
+
+        /** \brief Iterator on differential point information vector */
+        std::vector<char>::const_iterator pointDiffDataVectorIterator_;
+
+        /** \brief Precision of point coding*/
+        float pointCompressionResolution_;
+    };
+  }
+}
+
+#define PCL_INSTANTIATE_ColorCoding(T) template class PCL_EXPORTS pcl::octree::ColorCoding<T>;
+
+#endif
+###
+

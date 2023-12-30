@@ -1,0 +1,60 @@
+# -*- coding: utf-8 -*-
+# Detecting people and their poses using PointCloud Library
+# http://pointclouds.org/documentation/tutorials/gpu_people.php#gpu-people
+
+# int main(int argc, char** argv)
+# selecting GPU and prining info
+# int device = 0;
+# pc::parse_argument (argc, argv, "-gpu", device);
+# pcl::gpu::setDevice (device);
+# pcl::gpu::printShortCudaDeviceInfo (device);
+device = 0
+pcl::gpu::setDevice (device)
+pcl::gpu::printShortCudaDeviceInfo (device)
+
+# // selecting data source
+# boost::shared_ptr<pcl::Grabber> capture;
+# capture.reset( new pcl::OpenNIGrabber() );
+## Python
+# capture = pcl.???
+##
+
+# //selecting tree files
+# vector<string> tree_files;
+# tree_files.push_back("Data/forest1/tree_20.txt");
+# tree_files.push_back("Data/forest2/tree_20.txt");
+# tree_files.push_back("Data/forest3/tree_20.txt");
+# tree_files.push_back("Data/forest4/tree_20.txt");
+
+# pc::parse_argument (argc, argv, "-tree0", tree_files[0]);
+# pc::parse_argument (argc, argv, "-tree1", tree_files[1]);
+# pc::parse_argument (argc, argv, "-tree2", tree_files[2]);
+# pc::parse_argument (argc, argv, "-tree3", tree_files[3]);
+
+# int num_trees = (int)tree_files.size();
+# pc::parse_argument (argc, argv, "-numTrees", num_trees);
+
+# tree_files.resize(num_trees);
+# if (num_trees == 0 || num_trees > 4) return cout << "Invalid number of trees" << endl, -1;
+
+# try
+# {
+# 	// loading trees
+# 	typedef pcl::gpu::people::RDFBodyPartsDetector RDFBodyPartsDetector;
+# 	RDFBodyPartsDetector::Ptr rdf(new RDFBodyPartsDetector(tree_files));
+# 	PCL_INFO("Loaded files into rdf");
+# 
+# 	// Create the app
+# 	PeoplePCDApp app(*capture);
+# 	app.people_detector_.rdf_detector_ = rdf;
+# 
+# 	// executing
+# 	app.startMainLoop ();
+# }
+# catch (const pcl::PCLException& e)  { cout << "PCLException: " << e.detailedMessage() << endl; }  
+# catch (const std::runtime_error& e) { cout << e.what() << endl; }
+# catch (const std::bad_alloc& /*e*/) { cout << "Bad alloc" << endl; }
+# catch (const std::exception& /*e*/) { cout << "Exception" << endl; }
+###
+
+

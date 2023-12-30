@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+# Identifying ground returns using ProgressiveMorphologicalFilter segmentation
+# http://pointclouds.org/documentation/tutorials/progressive_morphological_filtering.php#progressive-morphological-filtering
+
+import pcl
+
+# int main (int argc, char** argv)
+# {
+#   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+#   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_filtered (new pcl::PointCloud<pcl::PointXYZ>);
+#   pcl::PointIndicesPtr ground (new pcl::PointIndices);
+#
+#   // Fill in the cloud data
+#   pcl::PCDReader reader;
+#   // Replace the path below with the path where you saved your file
+#   reader.read<pcl::PointXYZ> ("samp11-utm.pcd", *cloud);
+# 
+#   std::cerr << "Cloud before filtering: " << std::endl;
+#   std::cerr << *cloud << std::endl;
+### 
+cloud = pcl.load('samp11-utm.pcd')
+# print("Cloud before filtering: ")
+
+# // Create the filtering object
+# pcl::ProgressiveMorphologicalFilter<pcl::PointXYZ> pmf;
+# pmf.setInputCloud (cloud);
+# pmf.setMaxWindowSize (20);
+# pmf.setSlope (1.0f);
+# pmf.setInitialDistance (0.5f);
+# pmf.setMaxDistance (3.0f);
+# pmf.extract (ground->indices);
+###
+pmf = cloud.make_ProgressiveMorphologicalFilter()
+pmf.set_MaxWindowSize (20)
+pmf.set_Slope (1.0)
+pmf.set_InitialDistance (0.5)
+pmf.set_MaxDistance (3.0)
+ground_indices = pmf.extract()
+
+# // Create the filtering object
+# pcl::ExtractIndices<pcl::PointXYZ> extract;
+# extract.setInputCloud (cloud);
+# extract.setIndices (ground);
+# extract.filter (*cloud_filtered);
+###
+extract = cloud_make_Extract()
+extract.setIndices (ground);
+cloud_filtered = extract.filter ()
+
+# std::cerr << "Ground cloud after filtering: " << std::endl;
+# std::cerr << *cloud_filtered << std::endl;
+# pcl::PCDWriter writer;
+# writer.write<pcl::PointXYZ> ("samp11-utm_ground.pcd", *cloud_filtered, false);
+# 
+# // Extract non-ground returns
+# extract.setNegative (true);
+# extract.filter (*cloud_filtered);
+# 
+# std::cerr << "Object cloud after filtering: " << std::endl;
+# std::cerr << *cloud_filtered << std::endl;
+# 
+# writer.write<pcl::PointXYZ> ("samp11-utm_object.pcd", *cloud_filtered, false);
+###
+pcl.save(cloud_filtered, 'samp11-utm_ground.pcd')
+
+extract.setNegative (True)
+cloud_filtered = extract.filter ()
+
+pcl.save(cloud_filtered, 'samp11-utm_object.pcd')
