@@ -1,4 +1,0 @@
-brew install pcl
-ÅEversion 1.8.1 only
-
-cp travis/pcl-2d-1.8.pc /usr/local/lib/pkgconfig

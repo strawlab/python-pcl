@@ -14,7 +14,7 @@ namespace {
     }
 
     template <typename T>
-    T *getptr_at2(pcl::PointCloud<T> *pc, int i, int j)
+    T *getptr_at(pcl::PointCloud<T> *pc, int i, int j)
     {
         return &(pc->at(i, j));
     }

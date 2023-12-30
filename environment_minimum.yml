@@ -1,7 +1,0 @@
-name: python-pcl
-channels:
-- !!python/unicode
-  'defaults'
-dependencies:
-  - Cython=0.28.5
-  - numpy
