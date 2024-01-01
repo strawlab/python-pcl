@@ -560,6 +560,12 @@ cdef class PointCloud:
         cIterativeClosestPoint.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
         return iterativeClosestPoint
 
+    def make_NormalDistributionsTransform(self):
+        normalDistributionsTransform = NormalDistributionsTransform(self)
+        cdef pcl_reg.NormalDistributionsTransform_t *cNormalDistributionsTransform = <pcl_reg.NormalDistributionsTransform_t *>normalDistributionsTransform.me
+        cNormalDistributionsTransform.setInputCloud(<cpp.shared_ptr[cpp.PointCloud[cpp.PointXYZ]]> self.thisptr_shared)
+        return normalDistributionsTransform
+
     def make_MomentOfInertiaEstimation(self):
         momentofinertiaestimation = MomentOfInertiaEstimation(self)
         cdef pcl_ftr.MomentOfInertiaEstimation_t *cMomentOfInertiaEstimation = <pcl_ftr.MomentOfInertiaEstimation_t *>momentofinertiaestimation.me
