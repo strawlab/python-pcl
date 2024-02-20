@@ -84,6 +84,29 @@ cdef class PointCloud_Normal:
             p = idx.getptr(self.thisptr(), i)
             p.normal_x, p.normal_y, p.normal_z, p.curvature = arr[i, 0], arr[i, 1], arr[i, 2], arr[i, 3]
 
+
+    @cython.boundscheck(False)
+    def to_3d_array(self):
+        """
+        Return this object as a 2D numpy array (float32)
+        """
+        cdef float x,y,z
+        cdef cnp.npy_intp w = self.thisptr().width
+        cdef cnp.npy_intp h = self.thisptr().height
+        cdef cnp.ndarray[cnp.float32_t, ndim=3, mode="c"] result
+        cdef cpp.Normal *p
+
+        result = np.empty((h, w, 4), dtype=np.float32)
+        for i in range(w):
+            for j in range(h):
+
+                p = idx.getptr_at2(self.thisptr(), i, j)
+                result[j, i, 0] = p.normal_x
+                result[j, i, 1] = p.normal_y
+                result[j, i, 2] = p.normal_z
+                result[j, i, 3] = p.curvature
+        return result
+
     @cython.boundscheck(False)
     def to_array(self):
         """
