@@ -43,8 +43,27 @@ cdef class Segmentation:
         self.me.setDistanceThreshold (d)
 
 
-    def set_MaxIterations(self, int count):
+    def set_max_iterations(self, int count):
         self.me.setMaxIterations (count)
+
+
+    def set_eps_angle(self, double ea):
+        (<pcl_seg.SACSegmentation_t*>self.me).setEpsAngle (ea)
+
+
+    def get_eps_angle(self):
+        return (<pcl_seg.SACSegmentation_t*>self.me).getEpsAngle()
+
+
+    def set_axis(self, double ax1, double ax2, double ax3):
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pcl_seg.SACSegmentation_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pcl_seg.SACSegmentation_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
 cdef class Segmentation_PointXYZI:
@@ -83,6 +102,25 @@ cdef class Segmentation_PointXYZI:
         self.me.setDistanceThreshold (d)
 
 
+    def set_eps_angle(self, double ea):
+        (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).setEpsAngle (ea)
+
+
+    def get_eps_angle(self):
+        return (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).getEpsAngle()
+
+
+    def set_axis(self, double ax1, double ax2, double ax3):
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pcl_seg.SACSegmentation_PointXYZI_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
+
+
 cdef class Segmentation_PointXYZRGB:
     """
     Segmentation class for Sample Consensus methods and models
@@ -117,6 +155,24 @@ cdef class Segmentation_PointXYZRGB:
 
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
+
+
+    def set_eps_angle(self, double ea):
+        (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).setEpsAngle (ea)
+
+    def get_eps_angle(self):
+        return (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getEpsAngle()
+
+
+    def set_axis(self, double ax1, double ax2, double ax3):
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pcl_seg.SACSegmentation_PointXYZRGB_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
 
 cdef class Segmentation_PointXYZRGBA:
@@ -154,4 +210,22 @@ cdef class Segmentation_PointXYZRGBA:
     def set_distance_threshold(self, float d):
         self.me.setDistanceThreshold (d)
 
+
+    def set_eps_angle(self, double ea):
+        (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setEpsAngle (ea)
+
+
+    def get_eps_angle(self):
+        return (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).getEpsAngle()
+
+
+    def set_axis(self, double ax1, double ax2, double ax3):
+        cdef eigen3.Vector3f* vec = new eigen3.Vector3f(ax1, ax2, ax3)
+        (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).setAxis(deref(vec))
+
+
+    def get_axis(self):
+        vec = (<pcl_seg.SACSegmentation_PointXYZRGBA_t*>self.me).getAxis()
+        cdef float *data = vec.data()
+        return np.array([data[0], data[1], data[2]], dtype=np.float32)
 
